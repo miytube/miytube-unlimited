@@ -8,6 +8,13 @@ import Index from "./pages/Index";
 import Watch from "./pages/Watch";
 import Search from "./pages/Search";
 import NotFound from "./pages/NotFound";
+import Monetization from "./pages/Monetization";
+import Advertising from "./pages/Advertising";
+import Images from "./pages/Images";
+import Audio from "./pages/Audio";
+import Documents from "./pages/Documents";
+import Blog from "./pages/Blog";
+import LongVideos from "./pages/LongVideos";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +28,13 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/watch" element={<Watch />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/monetization" element={<Monetization />} />
+          <Route path="/advertising" element={<Advertising />} />
+          <Route path="/images" element={<Images />} />
+          <Route path="/audio" element={<Audio />} />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/long-videos" element={<LongVideos />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
