@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { VideoCard } from '@/components/VideoCard';
+import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
+import { VideoCard } from '@/components/VideoCard';
 
 const mockVideos = [
   {
@@ -49,57 +50,46 @@ const mockVideos = [
     timestamp: '3 weeks ago',
     duration: '32:45',
   },
-  {
-    id: 'video6',
-    title: 'The Art of Product Photography',
-    thumbnail: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Photo Pro',
-    views: '720K',
-    timestamp: '2 days ago',
-    duration: '15:20',
-  },
-  {
-    id: 'video7',
-    title: 'Minimal Home Interior Design Ideas',
-    thumbnail: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Interior Elegance',
-    views: '950K',
-    timestamp: '1 month ago',
-    duration: '10:05',
-  },
-  {
-    id: 'video8',
-    title: 'Mastering Digital Marketing Strategies',
-    thumbnail: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Marketing Masters',
-    views: '1.1M',
-    timestamp: '2 weeks ago',
-    duration: '27:30',
-  },
 ];
 
-const Index = () => {
+const Search = () => {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('q') || '';
+  
+  // Filter videos based on search query
+  const filteredVideos = query 
+    ? mockVideos.filter(video => 
+        video.title.toLowerCase().includes(query.toLowerCase()) || 
+        video.channelName.toLowerCase().includes(query.toLowerCase())
+      )
+    : mockVideos;
+
   return (
     <Layout>
-      <div className="mb-6">
-        <h1 className="text-xl font-medium mb-4">Recommended</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {mockVideos.map((video) => (
-            <VideoCard key={video.id} {...video} />
-          ))}
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <h2 className="text-xl font-medium mb-4">Trending</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {mockVideos.slice(4, 8).concat(mockVideos.slice(0, 4)).map((video) => (
-            <VideoCard key={`trending-${video.id}`} {...video} />
-          ))}
-        </div>
+      <div className="py-2">
+        {query && (
+          <h1 className="text-xl font-medium mb-6">
+            Search results for <span className="text-primary">"{query}"</span>
+          </h1>
+        )}
+        
+        {filteredVideos.length > 0 ? (
+          <div className="space-y-4 animate-fade-in">
+            {filteredVideos.map((video) => (
+              <VideoCard key={video.id} {...video} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <h2 className="text-xl font-medium mb-2">No results found</h2>
+            <p className="text-muted-foreground">
+              Try different keywords or check your spelling
+            </p>
+          </div>
+        )}
       </div>
     </Layout>
   );
 };
 
-export default Index;
+export default Search;
