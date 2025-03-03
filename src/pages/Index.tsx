@@ -1,7 +1,9 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { Layout } from '@/components/Layout';
+import { MessageSquare, Globe } from 'lucide-react';
 
 const mockVideos = [
   {
@@ -81,6 +83,31 @@ const mockVideos = [
 const Index = () => {
   return (
     <Layout>
+      {/* TalkAtCha Feature Banner */}
+      <div className="mb-8 p-4 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg shadow-sm">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex-1">
+            <h2 className="text-xl font-medium flex items-center gap-2 mb-2">
+              <Globe className="text-primary" size={20} />
+              <span>World Events & You</span>
+            </h2>
+            <p className="text-muted-foreground mb-4">Join discussions about how global events affect your daily life. Share experiences and connect with others.</p>
+            <Link to="/talk-at-cha" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+              <MessageSquare size={16} />
+              <span>Join the Conversation</span>
+            </Link>
+          </div>
+          <div className="flex gap-2 items-center justify-center">
+            <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <MessageSquare size={24} className="text-primary" />
+            </div>
+            <div className="h-12 w-12 rounded-full bg-primary/30 flex items-center justify-center">
+              <Globe size={24} className="text-primary" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="mb-6">
         <h1 className="text-xl font-medium mb-4">Recommended</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

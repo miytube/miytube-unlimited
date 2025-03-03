@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, Home, Video, Image, FileText, Music, Newspaper, DollarSign, ShoppingCart, Upload } from 'lucide-react';
+import { Bell, User, Home, Video, Image, FileText, Music, Newspaper, DollarSign, ShoppingCart, Upload, MessageSquare } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,10 @@ export const Header = () => {
           <Link to="/" className="text-foreground hover:text-primary transition-colors">Home</Link>
           <Link to="/search" className="text-foreground hover:text-primary transition-colors">Search</Link>
           <Link to="/long-videos" className="text-foreground hover:text-primary transition-colors">Long Videos</Link>
+          <Link to="/talk-at-cha" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+            <MessageSquare size={16} />
+            <span>TalkAtCha</span>
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger className="text-foreground hover:text-primary transition-colors">Content</DropdownMenuTrigger>
             <DropdownMenuContent>
