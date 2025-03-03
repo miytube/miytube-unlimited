@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
 
@@ -11,7 +10,7 @@ const Advertising = () => {
         <div className="bg-card p-6 rounded-lg shadow-md mb-8">
           <h2 className="text-xl font-semibold mb-4">Advertise on MiyTube</h2>
           <p className="text-muted-foreground mb-6">
-            Reach billions of people on MiyTube who are discovering content that they're interested in, when they're ready to pay attention.
+            Reach people on MiyTube who are discovering content that they're interested in, when they're ready to pay attention.
           </p>
           <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
             Get Started
@@ -95,16 +94,30 @@ const Advertising = () => {
           </div>
         </div>
         
-        <div>
-          <h2 className="text-2xl font-semibold mb-6">AdSense Integration</h2>
-          <div className="bg-card p-6 rounded-lg shadow-md">
-            <p className="text-muted-foreground mb-4">
-              MiyTube fully supports Google AdSense integration, allowing content creators to monetize their videos through targeted advertising. 
-              Connect your AdSense account to start earning revenue from your content.
-            </p>
-            <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
-              Connect AdSense Account
-            </button>
+        <div className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6">Ad Network Partnerships</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-card p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-3">Google AdSense</h3>
+              <p className="text-muted-foreground mb-4">
+                MiyTube fully supports Google AdSense integration, allowing content creators to monetize their videos through targeted advertising. 
+                Connect your AdSense account to start earning revenue from your content.
+              </p>
+              <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                Connect AdSense Account
+              </button>
+            </div>
+            
+            <div className="bg-card p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-3">Microsoft/Bing Ads</h3>
+              <p className="text-muted-foreground mb-4">
+                MiyTube now supports Microsoft Advertising and Bing Ads integration. Leverage Microsoft's ad platform to monetize your content and
+                reach a wider audience through the Microsoft Search Network.
+              </p>
+              <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                Connect Microsoft Ads Account
+              </button>
+            </div>
           </div>
         </div>
       </div>

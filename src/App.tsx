@@ -15,6 +15,7 @@ import Audio from "./pages/Audio";
 import Documents from "./pages/Documents";
 import Blog from "./pages/Blog";
 import LongVideos from "./pages/LongVideos";
+import TalkAtCha from "./pages/TalkAtCha";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/documents" element={<Documents />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/long-videos" element={<LongVideos />} />
+          <Route path="/talk-at-cha" element={<TalkAtCha />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

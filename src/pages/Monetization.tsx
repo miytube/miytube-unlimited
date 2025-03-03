@@ -68,8 +68,12 @@ const Monetization = () => {
           <h2 className="text-2xl font-semibold mb-6">Revenue Streams</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="p-5 border rounded-lg">
-              <h3 className="font-medium mb-2">Ad Revenue</h3>
-              <p className="text-sm text-muted-foreground">Earn from ads displayed on your videos</p>
+              <h3 className="font-medium mb-2">Google Ad Revenue</h3>
+              <p className="text-sm text-muted-foreground">Earn from Google ads displayed on your videos</p>
+            </div>
+            <div className="p-5 border rounded-lg">
+              <h3 className="font-medium mb-2">Microsoft/Bing Ads</h3>
+              <p className="text-sm text-muted-foreground">Monetize through Microsoft's advertising network</p>
             </div>
             <div className="p-5 border rounded-lg">
               <h3 className="font-medium mb-2">Channel Memberships</h3>
