@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { MessageCircle, Send, ThumbsUp, ChevronDown, Filter } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 // Mock data for discussions
 const INITIAL_DISCUSSIONS = [
@@ -20,7 +21,7 @@ const INITIAL_DISCUSSIONS = [
     category: 'Business',
     title: 'Tech startups to watch in 2023',
     author: 'TechEntrepreneur',
-    content: 'I've been following several promising startups in the AI sector. Which companies are on your radar?',
+    content: 'I\'ve been following several promising startups in the AI sector. Which companies are on your radar?',
     replies: 22,
     likes: 47,
     timestamp: '4 hours ago',
@@ -30,7 +31,7 @@ const INITIAL_DISCUSSIONS = [
     category: 'Music',
     title: 'Evolution of hip-hop over the decades',
     author: 'MusicHistorian',
-    content: 'The transition from early hip-hop to today's sound is fascinating. What era do you think was most influential?',
+    content: 'The transition from early hip-hop to today\'s sound is fascinating. What era do you think was most influential?',
     replies: 43,
     likes: 86,
     timestamp: '8 hours ago',
@@ -50,7 +51,7 @@ const INITIAL_DISCUSSIONS = [
     category: 'Books',
     title: 'Must-read books for personal growth',
     author: 'BookWorm',
-    content: 'I've recently finished "Atomic Habits" and it changed my perspective. What books have significantly impacted you?',
+    content: 'I\'ve recently finished "Atomic Habits" and it changed my perspective. What books have significantly impacted you?',
     replies: 48,
     likes: 103,
     timestamp: '2 days ago',
@@ -69,6 +70,7 @@ const CATEGORIES = [
 ];
 
 const TalkAtCha = () => {
+  const { toast } = useToast();
   const [discussions, setDiscussions] = useState(INITIAL_DISCUSSIONS);
   const [newPostVisible, setNewPostVisible] = useState(false);
   const [category, setCategory] = useState('All Categories');
@@ -97,6 +99,11 @@ const TalkAtCha = () => {
     setDiscussions([post, ...discussions]);
     setNewPost({ title: '', content: '', category: 'World Events' });
     setNewPostVisible(false);
+    
+    toast({
+      title: "Success!",
+      description: "Your discussion has been posted.",
+    });
   };
   
   const filteredDiscussions = category === 'All Categories' 
