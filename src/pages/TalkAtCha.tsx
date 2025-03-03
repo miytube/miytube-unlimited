@@ -4,69 +4,70 @@ import { Layout } from '@/components/Layout';
 import { MessageCircle, Send, ThumbsUp, ChevronDown, Filter } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
-// Mock data for discussions
+// Modified mock data for discussions about world events and personal impact
 const INITIAL_DISCUSSIONS = [
   {
     id: 1,
-    category: 'World Events',
-    title: 'Current events in Europe and their global impact',
-    author: 'GlobalObserver',
-    content: 'With the ongoing changes in Europe, how do you think this will affect global trade policies?',
+    category: 'Politics',
+    title: 'How new privacy laws affect your digital life',
+    author: 'PrivacyAdvocate',
+    content: 'With the recent privacy legislation changes, I\'ve had to adjust how I use social media. Has anyone else changed their online habits?',
     replies: 15,
     likes: 28,
     timestamp: '2 hours ago',
   },
   {
     id: 2,
-    category: 'Business',
-    title: 'Tech startups to watch in 2023',
-    author: 'TechEntrepreneur',
-    content: 'I\'ve been following several promising startups in the AI sector. Which companies are on your radar?',
+    category: 'Economy',
+    title: 'Rising inflation and your monthly budget',
+    author: 'BudgetPlanner',
+    content: 'I\'ve noticed my grocery bills increasing by about 20% this year. What strategies are you using to manage your household expenses?',
     replies: 22,
     likes: 47,
     timestamp: '4 hours ago',
   },
   {
     id: 3,
-    category: 'Music',
-    title: 'Evolution of hip-hop over the decades',
-    author: 'MusicHistorian',
-    content: 'The transition from early hip-hop to today\'s sound is fascinating. What era do you think was most influential?',
+    category: 'Climate',
+    title: 'Local effects of global warming in your area',
+    author: 'ClimateWatcher',
+    content: 'Our city experienced unusual flooding this spring. Have you noticed climate change affecting your local environment?',
     replies: 43,
     likes: 86,
     timestamp: '8 hours ago',
   },
   {
     id: 4,
-    category: 'Stocks',
-    title: 'Market predictions for next quarter',
-    author: 'InvestorInsight',
-    content: 'With current inflation trends, which sectors might outperform in the coming quarter?',
+    category: 'Technology',
+    title: 'How AI is changing your work environment',
+    author: 'TechObserver',
+    content: 'My company just implemented AI tools for customer service. Has anyone\'s job been significantly altered by new tech?',
     replies: 31,
     likes: 52,
     timestamp: '1 day ago',
   },
   {
     id: 5,
-    category: 'Books',
-    title: 'Must-read books for personal growth',
-    author: 'BookWorm',
-    content: 'I\'ve recently finished "Atomic Habits" and it changed my perspective. What books have significantly impacted you?',
+    category: 'Health',
+    title: 'Global health trends affecting your community',
+    author: 'HealthAdvocate',
+    content: 'After the pandemic, our community is much more conscious about public health. What lasting changes have you seen in your area?',
     replies: 48,
     likes: 103,
     timestamp: '2 days ago',
   },
 ];
 
+// Updated categories to focus on world events and personal impact
 const CATEGORIES = [
   'All Categories',
-  'World Events',
-  'Money',
-  'Music',
-  'Business',
-  'Books',
-  'Stocks',
-  'Employment',
+  'Politics',
+  'Economy',
+  'Climate',
+  'Technology',
+  'Health',
+  'Culture',
+  'Education',
 ];
 
 const TalkAtCha = () => {
@@ -77,7 +78,7 @@ const TalkAtCha = () => {
   const [newPost, setNewPost] = useState({ 
     title: '', 
     content: '', 
-    category: 'World Events' 
+    category: 'Politics' 
   });
   
   const handleNewPost = (e: React.FormEvent) => {
@@ -113,10 +114,10 @@ const TalkAtCha = () => {
   return (
     <Layout>
       <div className="py-6 animate-fade-in">
-        <h1 className="text-3xl font-bold mb-6">Talk At Cha</h1>
+        <h1 className="text-3xl font-bold mb-6">World Events & You</h1>
         <p className="text-muted-foreground mb-8">
-          Join discussions about world events, money, music, business, books, stocks, employment and more. 
-          Ask questions, share insights, and connect with others who share your interests.
+          Discuss how global events affect your personal life. Share your experiences, ask questions,
+          and connect with others about the impact of politics, economy, climate, technology, and more on your daily life.
         </p>
         
         <div className="mb-8 flex flex-wrap justify-between items-center gap-4">
@@ -127,7 +128,7 @@ const TalkAtCha = () => {
                 onClick={() => setNewPostVisible(!newPostVisible)}
               >
                 <MessageCircle size={18} />
-                <span>New Discussion</span>
+                <span>Share Your Experience</span>
               </button>
             </div>
             
@@ -159,11 +160,11 @@ const TalkAtCha = () => {
         
         {newPostVisible && (
           <div className="mb-8 bg-card p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Start a New Discussion</h2>
+            <h2 className="text-xl font-semibold mb-4">Share How World Events Affect You</h2>
             <form onSubmit={handleNewPost}>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-1" htmlFor="category">
-                  Category
+                  Topic Area
                 </label>
                 <select 
                   id="category"
@@ -178,7 +179,7 @@ const TalkAtCha = () => {
               </div>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-1" htmlFor="title">
-                  Title
+                  Discussion Title
                 </label>
                 <input 
                   type="text" 
@@ -186,21 +187,21 @@ const TalkAtCha = () => {
                   className="w-full p-2 border rounded-lg"
                   value={newPost.title}
                   onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-                  placeholder="Enter a title for your discussion"
+                  placeholder="Summarize how a world event affects you"
                   maxLength={100}
                   required
                 />
               </div>
               <div className="mb-6">
                 <label className="block text-sm font-medium mb-1" htmlFor="content">
-                  Content
+                  Your Experience
                 </label>
                 <textarea 
                   id="content"
                   className="w-full p-2 border rounded-lg min-h-[120px]"
                   value={newPost.content}
                   onChange={(e) => setNewPost({...newPost, content: e.target.value})}
-                  placeholder="Share your thoughts or question..."
+                  placeholder="Share how this global event or trend has affected your personal life..."
                   maxLength={2000}
                   required
                 />
@@ -217,7 +218,7 @@ const TalkAtCha = () => {
                   type="submit" 
                   className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
                 >
-                  Post Discussion
+                  Share Experience
                 </button>
               </div>
             </form>
@@ -235,7 +236,7 @@ const TalkAtCha = () => {
               <p className="text-muted-foreground mb-4">{discussion.content}</p>
               <div className="flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
-                  Posted by <span className="font-medium">{discussion.author}</span>
+                  Shared by <span className="font-medium">{discussion.author}</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1 text-sm">
@@ -252,15 +253,15 @@ const TalkAtCha = () => {
           )) : (
             <div className="bg-card p-8 rounded-lg shadow-md text-center">
               <MessageCircle size={40} className="mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-medium mb-2">No discussions yet</h3>
+              <h3 className="text-lg font-medium mb-2">No experiences shared yet</h3>
               <p className="text-muted-foreground mb-4">
-                Be the first to start a discussion in this category!
+                Be the first to share how this topic has affected your personal life!
               </p>
               <button 
                 className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
                 onClick={() => setNewPostVisible(true)}
               >
-                Start a Discussion
+                Share Your Experience
               </button>
             </div>
           )}
