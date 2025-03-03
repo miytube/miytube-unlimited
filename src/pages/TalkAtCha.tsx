@@ -13,7 +13,7 @@ const INITIAL_DISCUSSIONS = [
     content: 'With the ongoing changes in Europe, how do you think this will affect global trade policies?',
     replies: 15,
     likes: 28,
-    timestamp: '2 hours ago',
+    timestamp: '2 hours ago'
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const INITIAL_DISCUSSIONS = [
     content: 'I've been following several promising startups in the AI sector. Which companies are on your radar?',
     replies: 22,
     likes: 47,
-    timestamp: '4 hours ago',
+    timestamp: '4 hours ago'
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const INITIAL_DISCUSSIONS = [
     content: 'The transition from early hip-hop to today's sound is fascinating. What era do you think was most influential?',
     replies: 43,
     likes: 86,
-    timestamp: '8 hours ago',
+    timestamp: '8 hours ago'
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const INITIAL_DISCUSSIONS = [
     content: 'With current inflation trends, which sectors might outperform in the coming quarter?',
     replies: 31,
     likes: 52,
-    timestamp: '1 day ago',
+    timestamp: '1 day ago'
   },
   {
     id: 5,
@@ -53,7 +53,7 @@ const INITIAL_DISCUSSIONS = [
     content: 'I've recently finished "Atomic Habits" and it changed my perspective. What books have significantly impacted you?',
     replies: 48,
     likes: 103,
-    timestamp: '2 days ago',
+    timestamp: '2 days ago'
   },
 ];
 
