@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { MessageCircle, Send, ThumbsUp, ChevronDown, Filter } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock data for discussions
 const INITIAL_DISCUSSIONS = [
@@ -66,6 +67,7 @@ const CATEGORIES = [
   'Books',
   'Stocks',
   'Employment',
+  'Everyday Life'
 ];
 
 const TalkAtCha = () => {
@@ -77,6 +79,7 @@ const TalkAtCha = () => {
     content: '', 
     category: 'World Events' 
   });
+  const { toast } = useToast();
   
   const handleNewPost = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,6 +100,17 @@ const TalkAtCha = () => {
     setDiscussions([post, ...discussions]);
     setNewPost({ title: '', content: '', category: 'World Events' });
     setNewPostVisible(false);
+    
+    toast({
+      title: "Discussion posted!",
+      description: "Your discussion has been posted successfully.",
+    });
+  };
+
+  const handleLike = (id: number) => {
+    setDiscussions(discussions.map(d => 
+      d.id === id ? { ...d, likes: d.likes + 1 } : d
+    ));
   };
   
   const filteredDiscussions = category === 'All Categories' 
@@ -108,7 +122,7 @@ const TalkAtCha = () => {
       <div className="py-6 animate-fade-in">
         <h1 className="text-3xl font-bold mb-6">Talk At Cha</h1>
         <p className="text-muted-foreground mb-8">
-          Join discussions about world events, money, music, business, books, stocks, employment and more. 
+          Join discussions about world events, everyday life, money, music, business, books, stocks, employment and more. 
           Ask questions, share insights, and connect with others who share your interests.
         </p>
         
@@ -235,7 +249,8 @@ const TalkAtCha = () => {
                     <MessageCircle size={16} />
                     <span>{discussion.replies} replies</span>
                   </div>
-                  <div className="flex items-center gap-1 text-sm">
+                  <div className="flex items-center gap-1 text-sm cursor-pointer hover:text-primary transition-colors"
+                       onClick={() => handleLike(discussion.id)}>
                     <ThumbsUp size={16} />
                     <span>{discussion.likes} likes</span>
                   </div>
