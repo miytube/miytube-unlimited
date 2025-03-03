@@ -1,13 +1,13 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize, SkipBack, SkipForward } from 'lucide-react';
 
 interface VideoPlayerProps {
   videoId: string;
   title: string;
+  format?: string;
 }
 
-export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format = 'mp4' }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -19,10 +19,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Set up video source
-  const videoSrc = `https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`;
+  const videoSrc = `https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.${format}`;
   
-  // Handle playback
   const togglePlayPause = () => {
     if (videoRef.current) {
       if (isPlaying) {
@@ -34,7 +32,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
     }
   };
   
-  // Handle seeking
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = parseFloat(e.target.value);
     setCurrentTime(newTime);
@@ -43,7 +40,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
     }
   };
   
-  // Handle volume change
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
@@ -53,7 +49,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
     }
   };
   
-  // Toggle mute
   const toggleMute = () => {
     if (videoRef.current) {
       videoRef.current.muted = !isMuted;
@@ -61,7 +56,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
     }
   };
   
-  // Handle fullscreen
   const toggleFullscreen = () => {
     if (containerRef.current) {
       if (document.fullscreenElement) {
@@ -72,21 +66,18 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
     }
   };
   
-  // Skip forward/backward
   const skip = (seconds: number) => {
     if (videoRef.current) {
       videoRef.current.currentTime += seconds;
     }
   };
   
-  // Format time
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
   
-  // Handle time updates
   useEffect(() => {
     const video = videoRef.current;
     
@@ -121,7 +112,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
     };
   }, []);
   
-  // Show/hide controls on mouse movement
   const handleMouseMove = () => {
     setControlsVisible(true);
     
@@ -138,7 +128,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title }) => {
     setHideControlsTimeout(timeout);
   };
   
-  // Clean up timeout
   useEffect(() => {
     return () => {
       if (hideControlsTimeout) {

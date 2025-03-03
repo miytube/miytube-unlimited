@@ -43,6 +43,10 @@ const LongVideos = () => {
     },
   ];
 
+  // Define supported video and audio formats
+  const supportedVideoFormats = ['3gp', '3gpp', 'asf', 'avi', 'dat', 'flv', 'mov', 'mpg', 'mpeg', 'mp4', 'mkv', 'm4v', 'rm', 'wmv'];
+  const supportedAudioFormats = ['flac', 'm4a', 'mp3', 'mp4', 'ogg', 'rm', 'vqf', 'wav', 'wma'];
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in">
@@ -101,9 +105,15 @@ const LongVideos = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-2">File Formats</h3>
+              <h3 className="font-medium mb-2">Video Formats</h3>
               <p className="text-sm text-muted-foreground">
-                MP4, MOV, AVI, WMV, FLV, MKV, WEBM, M4V
+                {supportedVideoFormats.join(', ')}
+              </p>
+            </div>
+            <div className="border rounded-lg p-4">
+              <h3 className="font-medium mb-2">Audio Formats</h3>
+              <p className="text-sm text-muted-foreground">
+                {supportedAudioFormats.join(', ')}
               </p>
             </div>
             <div className="border rounded-lg p-4">
@@ -125,15 +135,9 @@ const LongVideos = () => {
               </p>
             </div>
             <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-2">Aspect Ratio</h3>
+              <h3 className="font-medium mb-2">No Time Limits</h3>
               <p className="text-sm text-muted-foreground">
-                Standard and custom aspect ratios supported
-              </p>
-            </div>
-            <div className="border rounded-lg p-4">
-              <h3 className="font-medium mb-2">Audio</h3>
-              <p className="text-sm text-muted-foreground">
-                AAC, MP3, WAV, FLAC, up to 384kbps
+                No expiration dates or time restrictions
               </p>
             </div>
           </div>

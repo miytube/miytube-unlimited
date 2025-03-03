@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Music, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
@@ -55,6 +54,8 @@ const Audio = () => {
     },
   ];
 
+  const supportedAudioFormats = ['flac', 'm4a', 'mp3', 'mp4', 'ogg', 'rm', 'vqf', 'wav', 'wma'];
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in">
@@ -74,7 +75,9 @@ const Audio = () => {
           <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
             <Music size={48} className="mx-auto mb-4 text-muted-foreground" />
             <p className="text-muted-foreground mb-2">Drag and drop audio files here, or click to browse</p>
-            <p className="text-xs text-muted-foreground mb-4">Supports MP3, WAV, FLAC up to 500MB</p>
+            <p className="text-xs text-muted-foreground mb-4">
+              Supported formats: {supportedAudioFormats.join(', ')} up to 500MB
+            </p>
             <button className="px-4 py-2 bg-secondary text-foreground rounded-md hover:bg-secondary/80 transition-colors">
               Select Files
             </button>
