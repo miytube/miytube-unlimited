@@ -55,7 +55,7 @@ const INITIAL_DISCUSSIONS = [
     replies: 48,
     likes: 103,
     timestamp: '2 days ago'
-  },
+  }
 ];
 
 const CATEGORIES = [
@@ -94,7 +94,7 @@ const TalkAtCha = () => {
       content: newPost.content,
       replies: 0,
       likes: 0,
-      timestamp: 'Just now',
+      timestamp: 'Just now'
     };
     
     setDiscussions([post, ...discussions]);
@@ -103,7 +103,7 @@ const TalkAtCha = () => {
     
     toast({
       title: "Discussion posted!",
-      description: "Your discussion has been posted successfully.",
+      description: "Your discussion has been posted successfully."
     });
   };
 
