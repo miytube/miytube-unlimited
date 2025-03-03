@@ -38,10 +38,10 @@ const INITIAL_DISCUSSIONS = [
   },
   {
     id: 4,
-    category: 'Stocks',
-    title: 'Market predictions for next quarter',
-    author: 'InvestorInsight',
-    content: 'With current inflation trends, which sectors might outperform in the coming quarter?',
+    category: 'Everyday Life',
+    title: 'Managing work-life balance in the digital age',
+    author: 'BalancedLiving',
+    content: 'With remote work becoming more common, how do you separate your work time from personal time effectively?',
     replies: 31,
     likes: 52,
     timestamp: '1 day ago'
@@ -61,13 +61,13 @@ const INITIAL_DISCUSSIONS = [
 const CATEGORIES = [
   'All Categories',
   'World Events',
-  'Money',
+  'Everyday Life',
   'Music',
   'Business',
   'Books',
   'Stocks',
   'Employment',
-  'Everyday Life'
+  'Health'
 ];
 
 const TalkAtCha = () => {
@@ -122,7 +122,7 @@ const TalkAtCha = () => {
       <div className="py-6 animate-fade-in">
         <h1 className="text-3xl font-bold mb-6">Talk At Cha</h1>
         <p className="text-muted-foreground mb-8">
-          Join discussions about world events, everyday life, money, music, business, books, stocks, employment and more. 
+          Join discussions about world events, everyday life, and more. 
           Ask questions, share insights, and connect with others who share your interests.
         </p>
         
