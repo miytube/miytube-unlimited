@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { MessageSquare, Users, Globe } from 'lucide-react';
+import { MessageSquare, Users } from 'lucide-react';
 
 export const TalkAtChaHeader = () => {
   return (
     <div className="mb-8">
       <div className="flex items-center gap-2 mb-2">
-        <Globe className="h-6 w-6 text-primary" />
-        <h1 className="text-3xl font-bold">World Events & You</h1>
+        <MessageSquare className="h-6 w-6 text-primary" />
+        <h1 className="text-3xl font-bold">Talk At Cha</h1>
       </div>
       
       <div className="flex items-center gap-2 text-muted-foreground mb-4">
