@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { Upload as UploadIcon } from 'lucide-react';
@@ -7,10 +7,15 @@ import { ContentTypeSelector } from '@/components/upload/ContentTypeSelector';
 import { UploadRequirementsDisplay } from '@/components/upload/UploadRequirementsDisplay';
 import { useUploadHandler } from '@/hooks/useUploadHandler';
 import { contentTypes } from '@/data/contentTypes';
+import { ContentType } from '@/types/upload';
+import { useToast } from '@/hooks/use-toast';
 
 const Upload = () => {
   const [selectedContentType, setSelectedContentType] = useState<string>("video");
+  const [key, setKey] = useState<number>(Date.now()); // Add a key to force re-render of FileUploader
   const { handleUpload } = useUploadHandler();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const currentContentType = contentTypes[selectedContentType];
   
@@ -28,6 +33,17 @@ const Upload = () => {
     );
   };
 
+  const handleContentTypeChange = (contentType: ContentType) => {
+    // Reset the FileUploader component by changing its key
+    setKey(Date.now());
+    
+    // Show a toast to inform the user about the content type change
+    toast({
+      title: `Content type changed to ${contentType.name}`,
+      description: `Select files to upload: ${contentType.supportedFormats.join(', ')}`,
+    });
+  };
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full">
@@ -43,9 +59,11 @@ const Upload = () => {
           contentTypes={contentTypes}
           selectedContentType={selectedContentType}
           setSelectedContentType={setSelectedContentType}
+          onContentTypeChange={handleContentTypeChange}
         />
         
         <FileUploader
+          key={key} // Add a key to force re-render when content type changes
           icon={currentContentType.icon}
           title={`Upload ${currentContentType.name}`}
           description={currentContentType.description}
@@ -53,7 +71,7 @@ const Upload = () => {
           supportedFormats={currentContentType.supportedFormats}
           maxSize={currentContentType.maxSize}
           onUpload={onUpload}
-          id={`${currentContentType.id}-upload-input`}
+          id={`${currentContentType.id}-upload-input-${key}`} // Add key to ensure unique ID
           uploadDestination={currentContentType.destination}
           categories={currentContentType.categories}
         />

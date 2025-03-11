@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+
+import { useState, useRef, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 
 interface UseFileUploadProps {
@@ -15,6 +16,14 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Reset state when the id changes (component is being reused for a different content type)
+  useEffect(() => {
+    setUploadedFiles([]);
+    setUploadError(null);
+    setUploading(false);
+    setIsDragging(false);
+  }, [id]);
 
   const validateFiles = (files: File[]) => {
     console.log('Validating files:', files);

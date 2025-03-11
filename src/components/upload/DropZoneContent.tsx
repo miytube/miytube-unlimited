@@ -28,8 +28,18 @@ export const DropZoneContent: React.FC<DropZoneContentProps> = ({
     <>
       <Icon size={48} className="mx-auto mb-4 text-muted-foreground" />
       <p className="text-muted-foreground mb-2">
-        {uploading ? 'Uploading...' : 'Drag and drop files here, or click to browse'}
+        {uploading ? 'Uploading...' : 'Drag and drop files here, or:'}
       </p>
+      
+      <Button 
+        type="button"
+        className={`mb-4 px-6 py-2 ${uploading ? 'opacity-50' : ''}`}
+        disabled={uploading}
+        onClick={handleBrowseClick}
+      >
+        {uploading ? 'Uploading...' : 'Browse Files'}
+      </Button>
+      
       <p className="text-xs text-muted-foreground mb-4">
         Supported formats: {supportedFormats.join(', ')} up to {maxSize}
       </p>
@@ -39,16 +49,6 @@ export const DropZoneContent: React.FC<DropZoneContentProps> = ({
         uploadDestination={uploadDestination}
         uploadedFiles={uploadedFiles}
       />
-      
-      <Button 
-        type="button"
-        variant="secondary"
-        className={uploading ? 'opacity-50' : ''}
-        disabled={uploading}
-        onClick={handleBrowseClick}
-      >
-        {uploading ? 'Uploading...' : 'Select Files'}
-      </Button>
     </>
   );
 };

@@ -1,20 +1,36 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ContentType } from '@/types/upload';
 
 interface ContentTypeSelectorProps {
   contentTypes: Record<string, ContentType>;
   selectedContentType: string;
   setSelectedContentType: (type: string) => void;
+  onContentTypeChange?: (contentType: ContentType) => void;
 }
 
 export const ContentTypeSelector: React.FC<ContentTypeSelectorProps> = ({
   contentTypes,
   selectedContentType,
-  setSelectedContentType
+  setSelectedContentType,
+  onContentTypeChange
 }) => {
+  const prevContentTypeRef = useRef<string>(selectedContentType);
+
+  useEffect(() => {
+    // If content type changed, call the callback
+    if (prevContentTypeRef.current !== selectedContentType && onContentTypeChange) {
+      onContentTypeChange(contentTypes[selectedContentType]);
+      prevContentTypeRef.current = selectedContentType;
+    }
+  }, [selectedContentType, contentTypes, onContentTypeChange]);
+
   const handleContentTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedContentType(e.target.value);
+  };
+
+  const handleTypeClick = (typeId: string) => {
+    setSelectedContentType(typeId);
   };
 
   return (
@@ -41,7 +57,7 @@ export const ContentTypeSelector: React.FC<ContentTypeSelectorProps> = ({
                 ? 'border-primary bg-primary/5' 
                 : 'border-transparent hover:border-muted-foreground/30'
             }`}
-            onClick={() => setSelectedContentType(type.id)}
+            onClick={() => handleTypeClick(type.id)}
           >
             <div className="flex items-center gap-3 mb-2">
               <type.icon size={24} className={selectedContentType === type.id ? 'text-primary' : 'text-muted-foreground'} />
