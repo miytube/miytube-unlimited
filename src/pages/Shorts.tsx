@@ -2,7 +2,7 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Film } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ShortCard } from '@/components/ShortCard';
 
 const Shorts = () => {
   // Mock data for shorts
@@ -31,26 +31,14 @@ const Shorts = () => {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {mockShorts.map((short) => (
-          <Link 
-            key={short.id} 
-            to={`/shorts/${short.id}`} 
-            className="group relative aspect-[9/16] bg-muted rounded-lg overflow-hidden hover:shadow-md transition-all"
-          >
-            <img 
-              src={short.thumbnail} 
-              alt={short.title} 
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-3">
-              <h3 className="text-sm font-medium text-white line-clamp-2 group-hover:underline">
-                {short.title}
-              </h3>
-              <div className="flex justify-between items-center mt-1">
-                <span className="text-xs text-white/80">{short.creator}</span>
-                <span className="text-xs text-white/80">{short.views}</span>
-              </div>
-            </div>
-          </Link>
+          <ShortCard
+            key={short.id}
+            id={short.id}
+            title={short.title}
+            thumbnail={short.thumbnail}
+            creator={short.creator}
+            views={short.views}
+          />
         ))}
       </div>
     </Layout>
