@@ -1,17 +1,18 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Maximize } from 'lucide-react';
 import { useVideoPlayer } from './useVideoPlayer';
 import { VideoPlayerControls } from './VideoPlayerControls';
 import { getVideoSource } from './videoPlayerUtils';
 
 interface VideoPlayerProps {
-  videoId: string;
+  videoId?: string;
   title: string;
   format?: string;
+  videoFile?: File;
 }
 
-export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format = 'mp4' }) => {
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format = 'mp4', videoFile }) => {
   const {
     isPlaying,
     currentTime,
@@ -31,7 +32,17 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format
     setControlsVisible
   } = useVideoPlayer();
   
-  const videoSrc = getVideoSource(videoId, format);
+  // Get video source - either from videoId or from local file
+  const videoSrc = videoFile ? URL.createObjectURL(videoFile) : (videoId ? getVideoSource(videoId, format) : '');
+  
+  // Clean up object URL when component unmounts or videoFile changes
+  useEffect(() => {
+    if (videoFile) {
+      return () => {
+        URL.revokeObjectURL(videoSrc);
+      };
+    }
+  }, [videoFile, videoSrc]);
   
   return (
     <div 

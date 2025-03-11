@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { useToast } from "@/hooks/use-toast";
 
@@ -71,10 +70,12 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
       
       // Simulate upload with a delay
       setTimeout(() => {
-        setUploadedFiles(prevFiles => [...prevFiles, ...files]);
+        // Add new files to the uploaded files list
+        const newFilesArray = [...files];
+        setUploadedFiles(prevFiles => [...prevFiles, ...newFilesArray]);
         
         if (onUpload) {
-          onUpload(files);
+          onUpload(newFilesArray);
         }
         
         console.log('Upload completed successfully');
@@ -142,6 +143,7 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
     setIsDragging,
     handleDrop,
     handleFileSelect,
-    handleBrowseClick
+    handleBrowseClick,
+    clearUploadedFiles: () => setUploadedFiles([])
   };
 };

@@ -1,6 +1,8 @@
 
-import React from 'react';
-import { AlertCircle, FileIcon, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertCircle, FileIcon, X, Play } from 'lucide-react';
+import { VideoPlayer } from '../video/VideoPlayer';
+import { useToast } from '@/hooks/use-toast';
 
 interface FilePreviewProps {
   uploadError: string | null;
@@ -9,6 +11,9 @@ interface FilePreviewProps {
 }
 
 export const FilePreview: React.FC<FilePreviewProps> = ({ uploadError, uploadDestination, uploadedFiles = [] }) => {
+  const [selectedVideoFile, setSelectedVideoFile] = useState<File | null>(null);
+  const { toast } = useToast();
+
   // Format file size to human-readable format
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
@@ -18,12 +23,46 @@ export const FilePreview: React.FC<FilePreviewProps> = ({ uploadError, uploadDes
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  const isVideoFile = (file: File): boolean => {
+    return file.type.startsWith('video/');
+  };
+
+  const handlePlayVideo = (file: File) => {
+    if (isVideoFile(file)) {
+      setSelectedVideoFile(file);
+    } else {
+      toast({
+        title: "Cannot play this file",
+        description: "This file is not a video file.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       {uploadError && (
         <div className="flex items-center gap-2 text-destructive text-sm mb-4">
           <AlertCircle size={16} />
           <span>{uploadError}</span>
+        </div>
+      )}
+      
+      {selectedVideoFile && (
+        <div className="mt-6 mb-6">
+          <h3 className="text-sm font-medium mb-2 flex justify-between items-center">
+            <span>Playing: {selectedVideoFile.name}</span>
+            <button 
+              onClick={() => setSelectedVideoFile(null)} 
+              className="text-muted-foreground hover:text-destructive"
+            >
+              <X size={18} />
+            </button>
+          </h3>
+          <VideoPlayer 
+            title={selectedVideoFile.name} 
+            videoFile={selectedVideoFile} 
+          />
         </div>
       )}
       
@@ -40,8 +79,18 @@ export const FilePreview: React.FC<FilePreviewProps> = ({ uploadError, uploadDes
                     <div className="text-muted-foreground text-xs">{formatFileSize(file.size)}</div>
                   </div>
                 </div>
-                <div className="text-xs bg-green-500/10 text-green-600 px-2 py-1 rounded">
-                  Uploaded
+                <div className="flex gap-2">
+                  {isVideoFile(file) && (
+                    <button 
+                      onClick={() => handlePlayVideo(file)}
+                      className="text-xs bg-primary text-white px-2 py-1 rounded flex items-center gap-1"
+                    >
+                      <Play size={12} /> Play
+                    </button>
+                  )}
+                  <div className="text-xs bg-green-500/10 text-green-600 px-2 py-1 rounded">
+                    Uploaded
+                  </div>
                 </div>
               </div>
             ))}

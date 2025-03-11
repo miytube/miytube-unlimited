@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
@@ -20,14 +21,14 @@ const VideoUpload = () => {
     setTimeout(() => {
       toast({
         title: "Upload complete",
-        description: "Your video has been processed and is now available in your library.",
+        description: "Your video has been processed and is now available to play directly from the upload section.",
       });
     }, 3000);
   };
 
   return (
     <Layout>
-      <div className="py-6 animate-fade-in w-full">
+      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
             <Upload className="h-6 w-6 text-primary" />
@@ -58,7 +59,7 @@ const VideoUpload = () => {
         <FileUploader
           icon={Film}
           title="Quick Upload"
-          description="Upload your video directly. Our system will automatically determine if it's a Short (under 60 seconds) or a standard video."
+          description="Upload your video directly. You can play your video after upload using the Play button."
           acceptedTypes="video/*"
           supportedFormats={['MP4', 'MOV', 'WebM', 'AVI', 'FLV', 'MKV']}
           maxSize="128GB"
@@ -85,8 +86,8 @@ const VideoUpload = () => {
                 <span className="font-bold text-primary">2</span>
               </div>
               <div>
-                <h3 className="font-medium">Edit Details</h3>
-                <p className="text-muted-foreground">Add title, description, tags, and thumbnail to make your video discoverable.</p>
+                <h3 className="font-medium">Preview</h3>
+                <p className="text-muted-foreground">Once uploaded, click the Play button to preview your video directly.</p>
               </div>
             </div>
             
@@ -96,7 +97,7 @@ const VideoUpload = () => {
               </div>
               <div>
                 <h3 className="font-medium">Publish</h3>
-                <p className="text-muted-foreground">Choose when to publish your video - immediately, scheduled, or as a draft.</p>
+                <p className="text-muted-foreground">In a real application, you could publish your video - immediately, scheduled, or as a draft.</p>
               </div>
             </div>
           </div>
