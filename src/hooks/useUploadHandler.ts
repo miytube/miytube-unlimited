@@ -42,15 +42,18 @@ export const useUploadHandler = () => {
       else if (contentTypeId === 'image') redirectPath = '/images';
       else if (contentTypeId === 'document') redirectPath = '/documents';
       
+      const viewText = redirectPath === '/' ? 'Home' : redirectPath.substring(1);
+      const altText = `Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`;
+      
       toast({
         title: "Upload complete",
         description: `Your ${contentTypeName.toLowerCase()} has been processed and is now available.`,
         action: (
           <ToastAction 
-            altText={`Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`} 
             onClick={() => navigate(redirectPath)}
+            className="flex items-center gap-1"
           >
-            View {redirectPath === '/' ? 'Home' : redirectPath.substring(1)}
+            View {viewText}
           </ToastAction>
         )
       });
