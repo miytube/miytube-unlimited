@@ -24,14 +24,14 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <article className="video-card animate-scale-in">
+    <article className="video-card animate-scale-in w-full">
       <Link to={`/watch?v=${id}`} className="block">
-        <div className="video-thumbnail">
+        <div className="video-thumbnail w-full">
           <div className={`w-full h-full ${!imageLoaded ? 'lazy-image-loading' : ''}`}>
             <img
               src={thumbnail}
               alt={title}
-              className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
               onLoad={() => setImageLoaded(true)}
               loading="lazy"
             />
