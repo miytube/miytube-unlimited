@@ -48,7 +48,8 @@ export const useUploadHandler = () => {
         action: (
           <ToastAction 
             altText={`Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`} 
-            onClick={() => navigate(redirectPath)}>
+            onClick={() => navigate(redirectPath)}
+          >
             View {redirectPath === '/' ? 'Home' : redirectPath.substring(1)}
           </ToastAction>
         )
