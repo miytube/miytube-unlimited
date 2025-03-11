@@ -31,7 +31,7 @@ export const CreateBlogPost = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-3xl mx-auto">
       <div>
         <label htmlFor="title" className="block text-sm font-medium mb-1">
           Title
