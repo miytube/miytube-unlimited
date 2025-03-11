@@ -42,6 +42,7 @@ const LongVideos = () => {
           supportedFormats={supportedVideoFormats}
           maxSize="128GB"
           onUpload={handleUpload}
+          id="video-upload-input"
         />
         
         <UploadRequirements 

@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { Upload } from 'lucide-react';
 
 interface FileUploaderProps {
   icon: React.ElementType;
@@ -11,6 +10,7 @@ interface FileUploaderProps {
   supportedFormats: string[];
   maxSize?: string;
   onUpload?: (files: File[]) => void;
+  id?: string;
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({
@@ -20,7 +20,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   acceptedTypes,
   supportedFormats,
   maxSize = "50MB",
-  onUpload
+  onUpload,
+  id
 }) => {
   const { toast } = useToast();
   const [isDragging, setIsDragging] = useState(false);
@@ -95,6 +96,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             accept={acceptedTypes}
             onChange={handleFileSelect}
             disabled={uploading}
+            id={id}
           />
           <button 
             type="button"

@@ -1,84 +1,101 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Edit, Clock, ThumbsUp, MessageSquare, Share, Bookmark, ChevronRight } from 'lucide-react';
+import { CreateBlogPost } from '@/components/blog/CreateBlogPost';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+const blogPosts = [
+  {
+    id: 'post1',
+    title: 'How to Grow Your MiyTube Channel in 2023',
+    excerpt: 'Learn the best strategies to grow your audience and increase engagement on your videos.',
+    author: 'Content Creator Pro',
+    date: 'May 15, 2023',
+    readTime: '8 min read',
+    likes: 1245,
+    comments: 87,
+    thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80',
+    category: 'Growth Strategy',
+  },
+  {
+    id: 'post2',
+    title: 'Video Editing Tips for Beginners',
+    excerpt: 'Start creating professional-looking videos with these simple editing techniques anyone can master.',
+    author: 'Edit Master',
+    date: 'June 3, 2023',
+    readTime: '6 min read',
+    likes: 986,
+    comments: 53,
+    thumbnail: 'https://images.unsplash.com/photo-1574717024453-354056afd6fc?auto=format&fit=crop&w=800&q=80',
+    category: 'Tutorials',
+  },
+  {
+    id: 'post3',
+    title: 'The Future of Content Creation: AI and Beyond',
+    excerpt: 'Explore how artificial intelligence is changing the landscape of content creation and what it means for creators.',
+    author: 'Tech Insights',
+    date: 'April 29, 2023',
+    readTime: '12 min read',
+    likes: 1782,
+    comments: 124,
+    thumbnail: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80',
+    category: 'Technology',
+  },
+];
+
+const recentPosts = [
+  {
+    id: 'recent1',
+    title: 'Setting Up the Perfect Home Studio',
+    date: '3 days ago',
+    category: 'Equipment',
+  },
+  {
+    id: 'recent2',
+    title: 'Monetization Strategies Beyond AdSense',
+    date: '5 days ago',
+    category: 'Monetization',
+  },
+  {
+    id: 'recent3',
+    title: 'Creating Engaging Thumbnails That Get Clicks',
+    date: '1 week ago',
+    category: 'Design',
+  },
+  {
+    id: 'recent4',
+    title: 'How to Analyze Your Video Performance',
+    date: '2 weeks ago',
+    category: 'Analytics',
+  },
+];
 
 const Blog = () => {
-  const blogPosts = [
-    {
-      id: 'post1',
-      title: 'How to Grow Your MiyTube Channel in 2023',
-      excerpt: 'Learn the best strategies to grow your audience and increase engagement on your videos.',
-      author: 'Content Creator Pro',
-      date: 'May 15, 2023',
-      readTime: '8 min read',
-      likes: 1245,
-      comments: 87,
-      thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80',
-      category: 'Growth Strategy',
-    },
-    {
-      id: 'post2',
-      title: 'Video Editing Tips for Beginners',
-      excerpt: 'Start creating professional-looking videos with these simple editing techniques anyone can master.',
-      author: 'Edit Master',
-      date: 'June 3, 2023',
-      readTime: '6 min read',
-      likes: 986,
-      comments: 53,
-      thumbnail: 'https://images.unsplash.com/photo-1574717024453-354056afd6fc?auto=format&fit=crop&w=800&q=80',
-      category: 'Tutorials',
-    },
-    {
-      id: 'post3',
-      title: 'The Future of Content Creation: AI and Beyond',
-      excerpt: 'Explore how artificial intelligence is changing the landscape of content creation and what it means for creators.',
-      author: 'Tech Insights',
-      date: 'April 29, 2023',
-      readTime: '12 min read',
-      likes: 1782,
-      comments: 124,
-      thumbnail: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80',
-      category: 'Technology',
-    },
-  ];
-
-  const recentPosts = [
-    {
-      id: 'recent1',
-      title: 'Setting Up the Perfect Home Studio',
-      date: '3 days ago',
-      category: 'Equipment',
-    },
-    {
-      id: 'recent2',
-      title: 'Monetization Strategies Beyond AdSense',
-      date: '5 days ago',
-      category: 'Monetization',
-    },
-    {
-      id: 'recent3',
-      title: 'Creating Engaging Thumbnails That Get Clicks',
-      date: '1 week ago',
-      category: 'Design',
-    },
-    {
-      id: 'recent4',
-      title: 'How to Analyze Your Video Performance',
-      date: '2 weeks ago',
-      category: 'Analytics',
-    },
-  ];
-
   return (
     <Layout>
       <div className="py-6 animate-fade-in">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">MiyTube Blog</h1>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
-            <Edit size={18} />
-            <span>Create Post</span>
-          </button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                <Edit size={18} />
+                <span>Create Post</span>
+              </button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[700px]">
+              <DialogHeader>
+                <DialogTitle>Create New Blog Post</DialogTitle>
+              </DialogHeader>
+              <CreateBlogPost />
+            </DialogContent>
+          </Dialog>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">

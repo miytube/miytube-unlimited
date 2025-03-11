@@ -1,66 +1,63 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Grid, Image, Upload } from 'lucide-react';
+import { Image, Upload, Grid } from 'lucide-react';
 import { FileUploader } from '@/components/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 
+const imageSamples = [
+  {
+    id: 'img1',
+    url: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=800&q=80',
+    title: 'Mountain Landscape',
+    author: 'Nature Photography',
+    views: '24K',
+  },
+  {
+    id: 'img2',
+    url: 'https://images.unsplash.com/photo-1620207418302-439b387441b0?auto=format&fit=crop&w=800&q=80',
+    title: 'Cityscape at Night',
+    author: 'Urban Explorer',
+    views: '18K',
+  },
+  {
+    id: 'img3',
+    url: 'https://images.unsplash.com/photo-1612178537253-bccd437b730e?auto=format&fit=crop&w=800&q=80',
+    title: 'Abstract Art Composition',
+    author: 'Creative Arts',
+    views: '42K',
+  },
+  {
+    id: 'img4',
+    url: 'https://images.unsplash.com/photo-1623944889288-133601606cd9?auto=format&fit=crop&w=800&q=80',
+    title: 'Wildlife Photography',
+    author: 'Animal World',
+    views: '31K',
+  },
+  {
+    id: 'img5',
+    url: 'https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=800&q=80',
+    title: 'Ocean Sunset',
+    author: 'Travel Moments',
+    views: '56K',
+  },
+  {
+    id: 'img6',
+    url: 'https://images.unsplash.com/photo-1516410529446-2c777cb7366d?auto=format&fit=crop&w=800&q=80',
+    title: 'Flower Closeup',
+    author: 'Macro Photography',
+    views: '15K',
+  },
+];
+
 const Images = () => {
   const { toast } = useToast();
-  const [uploading, setUploading] = useState(false);
   
   const handleUpload = (files: File[]) => {
-    // In a real app, you would upload these files to your server/storage
     toast({
       title: "Images uploaded",
       description: `${files.length} ${files.length === 1 ? 'image' : 'images'} uploaded successfully.`,
     });
   };
-  
-  const imageSamples = [
-    {
-      id: 'img1',
-      url: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=800&q=80',
-      title: 'Mountain Landscape',
-      author: 'Nature Photography',
-      views: '24K',
-    },
-    {
-      id: 'img2',
-      url: 'https://images.unsplash.com/photo-1620207418302-439b387441b0?auto=format&fit=crop&w=800&q=80',
-      title: 'Cityscape at Night',
-      author: 'Urban Explorer',
-      views: '18K',
-    },
-    {
-      id: 'img3',
-      url: 'https://images.unsplash.com/photo-1612178537253-bccd437b730e?auto=format&fit=crop&w=800&q=80',
-      title: 'Abstract Art Composition',
-      author: 'Creative Arts',
-      views: '42K',
-    },
-    {
-      id: 'img4',
-      url: 'https://images.unsplash.com/photo-1623944889288-133601606cd9?auto=format&fit=crop&w=800&q=80',
-      title: 'Wildlife Photography',
-      author: 'Animal World',
-      views: '31K',
-    },
-    {
-      id: 'img5',
-      url: 'https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=800&q=80',
-      title: 'Ocean Sunset',
-      author: 'Travel Moments',
-      views: '56K',
-    },
-    {
-      id: 'img6',
-      url: 'https://images.unsplash.com/photo-1516410529446-2c777cb7366d?auto=format&fit=crop&w=800&q=80',
-      title: 'Flower Closeup',
-      author: 'Macro Photography',
-      views: '15K',
-    },
-  ];
 
   return (
     <Layout>
@@ -86,6 +83,7 @@ const Images = () => {
           supportedFormats={['JPG', 'PNG', 'WebP']}
           maxSize="50MB"
           onUpload={handleUpload}
+          id="image-upload-input"
         />
         
         <div className="mb-8">

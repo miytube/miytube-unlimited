@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Music, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
 import { FileUploader } from '@/components/FileUploader';
@@ -92,6 +91,7 @@ const Audio = () => {
           supportedFormats={supportedAudioFormats}
           maxSize="500MB"
           onUpload={handleUpload}
+          id="audio-upload-input"
         />
         
         <div className="mb-8">

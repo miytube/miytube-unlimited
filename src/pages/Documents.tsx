@@ -1,9 +1,65 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Layout } from '@/components/Layout';
 import { FileText, Upload, Download, Search, Filter, Eye, MoreHorizontal } from 'lucide-react';
 import { FileUploader } from '@/components/FileUploader';
 import { useToast } from "@/hooks/use-toast";
+
+const documentSamples = [
+  {
+    id: 'doc1',
+    title: 'Business Proposal Template',
+    type: 'PDF',
+    size: '2.4 MB',
+    author: 'Business Pro',
+    views: '124K',
+    date: '3 days ago',
+  },
+  {
+    id: 'doc2',
+    title: 'Research Paper on AI Development',
+    type: 'PDF',
+    size: '3.8 MB',
+    author: 'Tech Research',
+    views: '87K',
+    date: '1 week ago',
+  },
+  {
+    id: 'doc3',
+    title: 'Monthly Budget Spreadsheet',
+    type: 'XLSX',
+    size: '1.2 MB',
+    author: 'Finance Helper',
+    views: '245K',
+    date: '2 weeks ago',
+  },
+  {
+    id: 'doc4',
+    title: 'Project Management Guide',
+    type: 'PDF',
+    size: '5.1 MB',
+    author: 'PM Experts',
+    views: '156K',
+    date: '1 month ago',
+  },
+  {
+    id: 'doc5',
+    title: 'Creative Writing Examples',
+    type: 'DOCX',
+    size: '850 KB',
+    author: 'Writers Guild',
+    views: '63K',
+    date: '5 days ago',
+  },
+  {
+    id: 'doc6',
+    title: 'Presentation on Market Trends',
+    type: 'PPTX',
+    size: '4.2 MB',
+    author: 'Market Analysis',
+    views: '92K',
+    date: '2 days ago',
+  },
+];
 
 const Documents = () => {
   const { toast } = useToast();
@@ -14,63 +70,6 @@ const Documents = () => {
       description: `${files.length} ${files.length === 1 ? 'document' : 'documents'} uploaded successfully.`,
     });
   };
-  
-  const documentSamples = [
-    {
-      id: 'doc1',
-      title: 'Business Proposal Template',
-      type: 'PDF',
-      size: '2.4 MB',
-      author: 'Business Pro',
-      views: '124K',
-      date: '3 days ago',
-    },
-    {
-      id: 'doc2',
-      title: 'Research Paper on AI Development',
-      type: 'PDF',
-      size: '3.8 MB',
-      author: 'Tech Research',
-      views: '87K',
-      date: '1 week ago',
-    },
-    {
-      id: 'doc3',
-      title: 'Monthly Budget Spreadsheet',
-      type: 'XLSX',
-      size: '1.2 MB',
-      author: 'Finance Helper',
-      views: '245K',
-      date: '2 weeks ago',
-    },
-    {
-      id: 'doc4',
-      title: 'Project Management Guide',
-      type: 'PDF',
-      size: '5.1 MB',
-      author: 'PM Experts',
-      views: '156K',
-      date: '1 month ago',
-    },
-    {
-      id: 'doc5',
-      title: 'Creative Writing Examples',
-      type: 'DOCX',
-      size: '850 KB',
-      author: 'Writers Guild',
-      views: '63K',
-      date: '5 days ago',
-    },
-    {
-      id: 'doc6',
-      title: 'Presentation on Market Trends',
-      type: 'PPTX',
-      size: '4.2 MB',
-      author: 'Market Analysis',
-      views: '92K',
-      date: '2 days ago',
-    },
-  ];
 
   return (
     <Layout>
@@ -96,6 +95,7 @@ const Documents = () => {
           supportedFormats={['PDF', 'DOCX', 'XLSX', 'PPTX', 'TXT']}
           maxSize="100MB"
           onUpload={handleUpload}
+          id="document-upload-input"
         />
         
         <div className="flex items-center justify-between mb-6">
