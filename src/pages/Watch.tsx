@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
-import { VideoPlayer } from '@/components/VideoPlayer';
+import { VideoPlayer } from '@/components/video/VideoPlayer';
 import { ThumbsUp, ThumbsDown, Share, Download, Flag, MessageSquare } from 'lucide-react';
 
 const mockVideos = [
