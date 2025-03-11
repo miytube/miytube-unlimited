@@ -6,6 +6,7 @@ import { Film, Upload } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { ToastAction } from '@/components/ui/toast';
 
 const VideoUpload = () => {
   const { toast } = useToast();
@@ -30,10 +31,11 @@ const VideoUpload = () => {
       toast({
         title: "Upload complete",
         description: "Your video has been processed and is now available on the home page and can be played directly.",
-        action: {
-          label: "View Home",
-          onClick: () => navigate('/')
-        }
+        action: (
+          <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
+            View Home
+          </ToastAction>
+        )
       });
     }, 3000);
   };
