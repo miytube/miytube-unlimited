@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { useVideoMetadata } from '@/hooks/useVideoMetadata';
 import { VideoMetadataForm } from './VideoMetadataForm';
@@ -45,6 +45,13 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     setTags,
     setMetadataFromFile
   } = useVideoMetadata();
+  
+  // Initialize the selected category if categories are provided and we're on the music component
+  useEffect(() => {
+    if (categories.length > 0 && acceptedTypes.includes('audio') && !selectedCategory) {
+      setSelectedCategory(categories[0].id);
+    }
+  }, [categories, acceptedTypes, selectedCategory, setSelectedCategory]);
   
   const {
     isDragging,
@@ -192,6 +199,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         disabled={uploading}
         id={id}
         ref={fileInputRef}
+        multiple={false}
       />
     </div>
   );

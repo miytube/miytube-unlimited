@@ -12,17 +12,17 @@ export const useVideoMetadata = ({
   defaultDescription = '',
   defaultCategory = ''
 }: UseVideoMetadataProps = {}) => {
-  const [videoTitle, setVideoTitle] = useState<string>('');
-  const [videoDescription, setVideoDescription] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [videoTitle, setVideoTitle] = useState<string>(defaultTitle || '');
+  const [videoDescription, setVideoDescription] = useState<string>(defaultDescription || '');
+  const [selectedCategory, setSelectedCategory] = useState<string>(defaultCategory || '');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
 
   // Set default values when props change
   useEffect(() => {
-    if (defaultTitle && !videoTitle) setVideoTitle(defaultTitle);
-    if (defaultDescription && !videoDescription) setVideoDescription(defaultDescription);
-    if (defaultCategory && !selectedCategory) setSelectedCategory(defaultCategory);
+    if (defaultTitle && videoTitle === '') setVideoTitle(defaultTitle);
+    if (defaultDescription && videoDescription === '') setVideoDescription(defaultDescription);
+    if (defaultCategory && selectedCategory === '') setSelectedCategory(defaultCategory);
   }, [defaultTitle, defaultDescription, defaultCategory, videoTitle, videoDescription, selectedCategory]);
 
   const extractTagsFromFilename = (fileName: string) => {
@@ -42,12 +42,12 @@ export const useVideoMetadata = ({
     
     const fileName = file.name.split('.').slice(0, -1).join('.');
     
-    if (!videoTitle) {
+    if (videoTitle === '') {
       setVideoTitle(fileName);
     }
     
-    if (!videoDescription) {
-      setVideoDescription(`Video about ${fileName}`);
+    if (videoDescription === '') {
+      setVideoDescription(`${file.type.includes('audio') ? 'Audio' : 'Video'} about ${fileName}`);
     }
     
     extractTagsFromFilename(fileName);
