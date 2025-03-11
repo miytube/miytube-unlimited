@@ -43,6 +43,7 @@ export const useUploadHandler = () => {
       else if (contentTypeId === 'document') redirectPath = '/documents';
       
       const viewText = redirectPath === '/' ? 'Home' : redirectPath.substring(1);
+      const altTextValue = `Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`;
       
       toast({
         title: "Upload complete",
@@ -51,7 +52,8 @@ export const useUploadHandler = () => {
           <ToastAction 
             className="flex items-center gap-1"
             onClick={() => navigate(redirectPath)}
-            aria-label={`Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`}
+            aria-label={altTextValue}
+            altText={altTextValue}
           >
             View {viewText}
           </ToastAction>
