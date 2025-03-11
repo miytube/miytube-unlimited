@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Edit, Clock, ThumbsUp, MessageSquare, Share, Bookmark, ChevronRight, Upload } from 'lucide-react';
 import { CreateBlogPost } from '@/components/blog/CreateBlogPost';
 import { useToast } from "@/hooks/use-toast";
-import { FileUploader } from '@/components/FileUploader';
+import { FileUploader } from '@/components/upload/FileUploader';
 import {
   Dialog,
   DialogContent,

@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
-import { FileUploader } from '@/components/FileUploader';
+import { FileUploader } from '@/components/upload/FileUploader';
 import { Film, Upload } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Link } from 'react-router-dom';

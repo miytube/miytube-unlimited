@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Film, Upload } from 'lucide-react';
 import { ShortCard } from '@/components/ShortCard';
-import { FileUploader } from '@/components/FileUploader';
+import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 
 const Shorts = () => {

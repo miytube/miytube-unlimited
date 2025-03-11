@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Image, Upload, Grid } from 'lucide-react';
-import { FileUploader } from '@/components/FileUploader';
+import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 
 const imageSamples = [

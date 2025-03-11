@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Music, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
-import { FileUploader } from '@/components/FileUploader';
+import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 
 const Audio = () => {
