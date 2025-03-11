@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { FilePreview } from './FilePreview';
+import { DropZoneContent } from './DropZoneContent';
 
 interface DropZoneProps {
   icon: React.ElementType;
@@ -17,7 +17,7 @@ interface DropZoneProps {
 }
 
 export const DropZone: React.FC<DropZoneProps> = ({
-  icon: Icon,
+  icon,
   isDragging,
   uploading,
   uploadError,
@@ -42,28 +42,16 @@ export const DropZone: React.FC<DropZoneProps> = ({
       }}
       onDrop={handleDrop}
     >
-      <Icon size={48} className="mx-auto mb-4 text-muted-foreground" />
-      <p className="text-muted-foreground mb-2">
-        {uploading ? 'Uploading...' : 'Drag and drop files here, or click to browse'}
-      </p>
-      <p className="text-xs text-muted-foreground mb-4">
-        Supported formats: {supportedFormats.join(', ')} up to {maxSize}
-      </p>
-      
-      <FilePreview 
+      <DropZoneContent
+        icon={icon}
+        uploading={uploading}
+        supportedFormats={supportedFormats}
+        maxSize={maxSize}
         uploadError={uploadError}
         uploadDestination={uploadDestination}
         uploadedFiles={uploadedFiles}
+        handleBrowseClick={handleBrowseClick}
       />
-      
-      <button 
-        type="button"
-        className={`px-4 py-2 ${uploading ? 'bg-secondary/50' : 'bg-secondary'} text-foreground rounded-md hover:bg-secondary/80 transition-colors`}
-        disabled={uploading}
-        onClick={handleBrowseClick}
-      >
-        {uploading ? 'Uploading...' : 'Select Files'}
-      </button>
     </div>
   );
 };
