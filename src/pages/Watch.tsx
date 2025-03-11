@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
@@ -76,10 +77,10 @@ const Watch = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6 max-w-[1400px] mx-auto py-4">
         <div className="lg:w-2/3">
-          {/* Video Player */}
-          <div className="mb-4">
+          {/* Video Player - Properly sized container */}
+          <div className="mb-4 w-full">
             <VideoPlayer videoId={videoId} title={currentVideo.title} />
           </div>
           

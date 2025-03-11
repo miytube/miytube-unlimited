@@ -36,14 +36,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format
   return (
     <div 
       ref={containerRef} 
-      className="video-player-container rounded-lg overflow-hidden bg-black shadow-xl"
+      className="video-player-container relative w-full aspect-video rounded-lg overflow-hidden bg-black shadow-xl"
       onMouseMove={handleMouseMove}
       onMouseLeave={() => isPlaying && setControlsVisible(false)}
     >
       <video
         ref={videoRef}
         src={videoSrc}
-        className="w-full h-full"
+        className="w-full h-full object-contain"
         onClick={togglePlayPause}
         playsInline
       />
