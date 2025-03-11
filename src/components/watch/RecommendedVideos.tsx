@@ -11,6 +11,7 @@ interface VideoItem {
   timestamp: string;
   duration: string;
   description: string;
+  tags?: string[];
 }
 
 interface RecommendedVideosProps {

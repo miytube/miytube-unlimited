@@ -3,10 +3,14 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { Film, Upload, Tv, ListVideo } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { UploadedVideosSection } from '@/components/video/UploadedVideosSection';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Videos = () => {
+  const { category } = useParams();
+  const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
+  
   const videoCategories = [
     { id: 'trending', name: 'Trending', icon: <Tv size={24} /> },
     { id: 'news', name: 'News', icon: <ListVideo size={24} /> },
@@ -15,6 +19,11 @@ const Videos = () => {
     { id: 'travel', name: 'Travel', icon: <Film size={24} /> },
     { id: 'howto', name: 'How-to', icon: <ListVideo size={24} /> },
   ];
+  
+  // Filter videos by category if a category parameter is provided
+  const displayedVideos = category 
+    ? getVideosByCategory(category)
+    : uploadedVideos;
   
   const featuredVideos = [
     {
@@ -61,7 +70,9 @@ const Videos = () => {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
             <Film className="h-6 w-6 text-primary" />
-            <h1 className="text-3xl font-bold">Videos</h1>
+            <h1 className="text-3xl font-bold">
+              {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Videos` : 'Videos'}
+            </h1>
           </div>
           <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
             <Upload size={18} />
@@ -69,27 +80,52 @@ const Videos = () => {
           </Link>
         </div>
         
-        {/* Uploaded Videos */}
-        <UploadedVideosSection />
+        {/* Only show this section on the main videos page */}
+        {!category && <UploadedVideosSection />}
+        
+        {/* Show category-specific videos if on a category page */}
+        {category && displayedVideos.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">{category.charAt(0).toUpperCase() + category.slice(1)} Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {displayedVideos.map((video) => (
+                <VideoCard
+                  key={video.id}
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                  tags={video.tags}
+                />
+              ))}
+            </div>
+          </div>
+        )}
         
         {/* Categories */}
-        <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Categories</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {videoCategories.map((category) => (
-              <Link 
-                key={category.id} 
-                to={`/videos/${category.id}`}
-                className="bg-card p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2"
-              >
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                  {category.icon}
-                </div>
-                <span className="font-medium">{category.name}</span>
-              </Link>
-            ))}
+        {!category && (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">Categories</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {videoCategories.map((categoryItem) => (
+                <Link 
+                  key={categoryItem.id} 
+                  to={`/videos/${categoryItem.id}`}
+                  className="bg-card p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2"
+                >
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    {categoryItem.icon}
+                  </div>
+                  <span className="font-medium">{categoryItem.name}</span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
         
         {/* Featured Videos */}
         <div className="mb-8">

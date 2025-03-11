@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
@@ -14,6 +13,7 @@ const mockVideos = [
     views: '1.2M',
     timestamp: '3 days ago',
     duration: '14:35',
+    tags: ['Design', 'UI/UX', 'Interfaces'],
   },
   {
     id: 'video2',
@@ -23,6 +23,7 @@ const mockVideos = [
     views: '856K',
     timestamp: '1 week ago',
     duration: '22:15',
+    tags: ['AI', 'Machine Learning', 'Technology'],
   },
   {
     id: 'video3',
@@ -32,6 +33,7 @@ const mockVideos = [
     views: '2.3M',
     timestamp: '2 months ago',
     duration: '18:42',
+    tags: ['Filmmaking', 'Cinema', 'Tutorial'],
   },
   {
     id: 'video4',
@@ -41,6 +43,7 @@ const mockVideos = [
     views: '4.5M',
     timestamp: '5 months ago',
     duration: '12:18',
+    tags: ['Productivity', 'Entrepreneurship'],
   },
   {
     id: 'video5',

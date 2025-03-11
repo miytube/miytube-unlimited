@@ -8,6 +8,7 @@ interface VideoInfoProps {
   views: string;
   timestamp: string;
   description: string;
+  tags?: string[];
 }
 
 export const VideoInfo: React.FC<VideoInfoProps> = ({
@@ -16,6 +17,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
   views,
   timestamp,
   description,
+  tags = [],
 }) => {
   return (
     <div className="mb-6 animate-fade-in">
@@ -62,6 +64,19 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
           </button>
         </div>
       </div>
+      
+      {tags && tags.length > 0 && (
+        <div className="flex flex-wrap gap-1 mt-3 mb-2">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-xs bg-secondary px-1.5 py-0.5 rounded-full"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
       
       <div className="mt-4 p-4 bg-secondary/50 rounded-lg">
         <div className="flex items-center gap-2 mb-2">
