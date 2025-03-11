@@ -1,8 +1,11 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Image, Upload, Grid } from 'lucide-react';
+import { Image, Upload, Grid, Plus } from 'lucide-react';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const imageSamples = [
   {
@@ -51,6 +54,22 @@ const imageSamples = [
 
 const Images = () => {
   const { toast } = useToast();
+  const [newCategory, setNewCategory] = useState('');
+  const [categories, setCategories] = useState([
+    'Nature', 'Urban', 'People', 'Animals', 'Art', 'Technology', 
+    'Food', 'Travel', 'Sports', 'Abstract', 'Vehicles', 'Architecture'
+  ]);
+  
+  const handleAddCategory = () => {
+    if (newCategory.trim() && !categories.includes(newCategory)) {
+      setCategories([...categories, newCategory]);
+      setNewCategory('');
+      toast({
+        title: "Category Added",
+        description: `Added ${newCategory} to image categories`,
+      });
+    }
+  };
   
   const handleUpload = (files: File[]) => {
     toast({
@@ -124,14 +143,35 @@ const Images = () => {
         </div>
         
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Image Categories</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-semibold">Image Categories</h2>
+            <div className="flex gap-2">
+              <Input 
+                type="text"
+                placeholder="New category name"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                className="max-w-[200px]"
+              />
+              <Button onClick={handleAddCategory} size="sm">
+                <Plus size={16} className="mr-1" /> Add
+              </Button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {['Nature', 'Urban', 'People', 'Animals', 'Art', 'Technology', 'Food', 'Travel', 'Sports', 'Abstract', 'Vehicles', 'Architecture'].map((category) => (
-              <div key={category} className="aspect-square rounded-lg overflow-hidden relative group">
+            {categories.map((category) => (
+              <div key={category} className="aspect-square rounded-lg overflow-hidden relative group bg-muted">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 text-white font-medium">{category}</div>
               </div>
             ))}
+            <button 
+              className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-2 hover:border-primary/40 transition-colors cursor-pointer"
+              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+            >
+              <Plus size={24} className="text-muted-foreground" />
+              <span className="font-medium text-muted-foreground">Add Category</span>
+            </button>
           </div>
         </div>
       </div>

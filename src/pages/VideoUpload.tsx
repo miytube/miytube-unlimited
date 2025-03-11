@@ -1,17 +1,42 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
-import { Film, Upload } from 'lucide-react';
+import { Film, Upload, Plus } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const VideoUpload = () => {
   const { toast } = useToast();
   const { addUploadedVideo } = useUploadedVideos();
   const navigate = useNavigate();
+  
+  const [newCategory, setNewCategory] = useState('');
+  const [categories, setCategories] = useState([
+    { id: 'long', name: 'Long-Form Videos', icon: <Film size={20} />, description: 'Upload videos up to 10 hours in length. Perfect for lectures, tutorials, and documentaries.' },
+    { id: 'short', name: 'Short Videos', icon: <Film size={20} />, description: 'Create catchy videos up to 60 seconds. Great for trends, quick tips, and creative moments.' },
+  ]);
+  
+  const handleAddCategory = () => {
+    if (newCategory.trim()) {
+      const newCategoryObj = {
+        id: `category-${Date.now()}`,
+        name: newCategory,
+        icon: <Film size={20} />,
+        description: 'Custom video category'
+      };
+      setCategories([...categories, newCategoryObj]);
+      setNewCategory('');
+      toast({
+        title: "Category Added",
+        description: `Added ${newCategory} to video categories`,
+      });
+    }
+  };
   
   const handleUpload = (files: File[]) => {
     console.log("Video upload initiated:", files);
@@ -48,26 +73,44 @@ const VideoUpload = () => {
             <Upload className="h-6 w-6 text-primary" />
             <h1 className="text-3xl font-bold">Upload Video</h1>
           </div>
+          <div className="flex items-center gap-2">
+            <Input 
+              type="text"
+              placeholder="New category name"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+              className="max-w-[200px]"
+            />
+            <Button onClick={handleAddCategory} size="sm">
+              <Plus size={16} className="mr-1" /> Add Category
+            </Button>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Link to="/long-videos" className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
-              <Film size={20} /> Long-Form Videos
-            </h2>
-            <p className="text-muted-foreground">
-              Upload videos up to 10 hours in length. Perfect for lectures, tutorials, and documentaries.
-            </p>
-          </Link>
+          {categories.map(category => (
+            <Link key={category.id} to={`/${category.id}-videos`} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                {category.icon} {category.name}
+              </h2>
+              <p className="text-muted-foreground">
+                {category.description}
+              </p>
+            </Link>
+          ))}
           
-          <Link to="/shorts" className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-            <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
-              <Film size={20} /> Short Videos
-            </h2>
+          <button 
+            className="bg-card p-6 rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-2 hover:border-primary/40 transition-colors cursor-pointer h-full text-center"
+            onClick={() => document.querySelector('input[type="text"]')?.focus()}
+          >
+            <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
+              <Plus size={24} className="text-muted-foreground" />
+            </div>
+            <h2 className="text-xl font-semibold">Create New Category</h2>
             <p className="text-muted-foreground">
-              Create catchy videos up to 60 seconds. Great for trends, quick tips, and creative moments.
+              Add a custom video category for your specialized content
             </p>
-          </Link>
+          </button>
         </div>
         
         <FileUploader

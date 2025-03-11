@@ -1,12 +1,39 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Film, Upload } from 'lucide-react';
+import { Film, Upload, Plus } from 'lucide-react';
 import { ShortCard } from '@/components/ShortCard';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 const Shorts = () => {
   const { toast } = useToast();
+  const [newCategory, setNewCategory] = useState('');
+  const [categories, setCategories] = useState([
+    { id: 'trending', name: 'Trending' },
+    { id: 'dance', name: 'Dance' },
+    { id: 'comedy', name: 'Comedy' },
+    { id: 'music', name: 'Music' },
+    { id: 'diy', name: 'DIY & Crafts' },
+    { id: 'cooking', name: 'Cooking' },
+  ]);
+  
+  const handleAddCategory = () => {
+    if (newCategory.trim()) {
+      const newCategoryObj = {
+        id: `category-${Date.now()}`,
+        name: newCategory
+      };
+      setCategories([...categories, newCategoryObj]);
+      setNewCategory('');
+      toast({
+        title: "Category Added",
+        description: `Added ${newCategory} to shorts categories`,
+      });
+    }
+  };
   
   // Mock data for shorts
   const mockShorts = [
@@ -97,6 +124,39 @@ const Shorts = () => {
         <p className="text-muted-foreground mb-6">
           Watch and create short, catchy videos from creators around the world.
         </p>
+        
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-medium">Categories</h2>
+            <div className="flex gap-2">
+              <Input 
+                type="text"
+                placeholder="New category name"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                className="max-w-[200px]"
+              />
+              <Button onClick={handleAddCategory} size="sm">
+                <Plus size={16} className="mr-1" /> Add
+              </Button>
+            </div>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <div key={category.id} className="bg-muted px-4 py-2 rounded-full font-medium text-sm cursor-pointer hover:bg-primary/10 transition-colors">
+                {category.name}
+              </div>
+            ))}
+            <button
+              className="bg-muted/50 px-4 py-2 rounded-full font-medium text-sm border-2 border-dashed border-muted-foreground/30 flex items-center gap-1 hover:border-primary/40 transition-colors"
+              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+            >
+              <Plus size={14} />
+              <span>Add Category</span>
+            </button>
+          </div>
+        </div>
         
         <FileUploader
           icon={Film}

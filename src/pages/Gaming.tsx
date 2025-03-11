@@ -1,20 +1,40 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
-import { Gamepad2, Upload, Target, Zap, Trophy } from 'lucide-react';
+import { Gamepad2, Upload, Target, Zap, Trophy, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
 
 const Gaming = () => {
-  const gamingCategories = [
+  const [newCategory, setNewCategory] = useState('');
+  const [gamingCategories, setGamingCategories] = useState([
     { id: 'fps', name: 'FPS', icon: <Target size={24} /> },
     { id: 'moba', name: 'MOBA', icon: <Zap size={24} /> },
     { id: 'rpg', name: 'RPG', icon: <Gamepad2 size={24} /> },
     { id: 'strategy', name: 'Strategy', icon: <Target size={24} /> },
     { id: 'simulation', name: 'Simulation', icon: <Gamepad2 size={24} /> },
     { id: 'esports', name: 'Esports', icon: <Trophy size={24} /> },
-  ];
+  ]);
   
+  const handleAddCategory = () => {
+    if (newCategory.trim()) {
+      const newCategoryObj = {
+        id: `category-${Date.now()}`,
+        name: newCategory,
+        icon: <Gamepad2 size={24} />
+      };
+      setGamingCategories([...gamingCategories, newCategoryObj]);
+      setNewCategory('');
+      toast({
+        title: "Category Added",
+        description: `Added ${newCategory} to gaming categories`,
+      });
+    }
+  };
+
   const gamingVideos = [
     {
       id: 'gaming1',
@@ -70,7 +90,21 @@ const Gaming = () => {
         
         {/* Categories */}
         <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Categories</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-medium">Categories</h2>
+            <div className="flex gap-2">
+              <Input 
+                type="text"
+                placeholder="New category name"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                className="max-w-[200px]"
+              />
+              <Button onClick={handleAddCategory} size="sm">
+                <Plus size={16} className="mr-1" /> Add
+              </Button>
+            </div>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {gamingCategories.map((category) => (
               <Link 
@@ -84,6 +118,15 @@ const Gaming = () => {
                 <span className="font-medium">{category.name}</span>
               </Link>
             ))}
+            <button 
+              className="bg-card p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-2 hover:border-primary/40 transition-colors cursor-pointer h-full"
+              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+            >
+              <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
+                <Plus size={24} className="text-muted-foreground" />
+              </div>
+              <span className="font-medium text-muted-foreground">Add Category</span>
+            </button>
           </div>
         </div>
         
