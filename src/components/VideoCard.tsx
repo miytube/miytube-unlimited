@@ -10,6 +10,7 @@ interface VideoCardProps {
   views: string;
   timestamp: string;
   duration: string;
+  description?: string; // Added description as an optional prop
 }
 
 export const VideoCard: React.FC<VideoCardProps> = ({
