@@ -30,11 +30,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 w-full">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 w-full">
-          <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6">
+          <div className="container mx-auto px-4 sm:px-6 max-w-[1400px]">
             {children}
           </div>
         </main>
