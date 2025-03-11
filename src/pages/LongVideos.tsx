@@ -43,6 +43,7 @@ const LongVideos = () => {
           maxSize="128GB"
           onUpload={handleUpload}
           id="video-upload-input"
+          uploadDestination="Your Channel > Long Videos section"
         />
         
         <UploadRequirements 

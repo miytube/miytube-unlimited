@@ -108,6 +108,7 @@ const Shorts = () => {
           maxSize="1GB"
           onUpload={handleUpload}
           id="shorts-upload-input"
+          uploadDestination="Your Channel > Shorts section"
         />
         
         <div className="mt-8">

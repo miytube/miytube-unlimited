@@ -17,6 +17,7 @@ import Blog from "./pages/Blog";
 import LongVideos from "./pages/LongVideos";
 import TalkAtCha from "./pages/TalkAtCha";
 import Shorts from "./pages/Shorts";
+import VideoUpload from "./pages/VideoUpload";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/long-videos" element={<LongVideos />} />
           <Route path="/talk-at-cha" element={<TalkAtCha />} />
           <Route path="/shorts" element={<Shorts />} />
+          <Route path="/upload/video" element={<VideoUpload />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
