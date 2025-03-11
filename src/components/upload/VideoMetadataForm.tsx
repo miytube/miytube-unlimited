@@ -39,9 +39,9 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   const subcategories = categories.find(cat => cat.id === selectedCategory)?.subcategories || [];
 
   return (
-    <div className="mb-6 grid grid-cols-1 gap-4">
+    <div className="space-y-6">
       <div>
-        <label htmlFor="video-title" className="block text-sm font-medium mb-1">
+        <label htmlFor="video-title" className="block text-sm font-medium mb-2">
           Video Title
         </label>
         <Input
@@ -54,7 +54,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
       </div>
       
       <div>
-        <label htmlFor="video-description" className="block text-sm font-medium mb-1">
+        <label htmlFor="video-description" className="block text-sm font-medium mb-2">
           Description
         </label>
         <textarea
@@ -69,7 +69,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
       {categories.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="category-select" className="block text-sm font-medium mb-1">
+            <label htmlFor="category-select" className="block text-sm font-medium mb-2">
               Category
             </label>
             <select
@@ -78,7 +78,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
               value={selectedCategory}
               onChange={(e) => {
                 setSelectedCategory(e.target.value);
-                setSelectedSubcategory(''); // Reset subcategory when category changes
+                setSelectedSubcategory('');
               }}
             >
               <option value="">Select a category</option>
@@ -92,7 +92,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
           
           {subcategories.length > 0 && (
             <div>
-              <label htmlFor="subcategory-select" className="block text-sm font-medium mb-1">
+              <label htmlFor="subcategory-select" className="block text-sm font-medium mb-2">
                 Subcategory
               </label>
               <select
