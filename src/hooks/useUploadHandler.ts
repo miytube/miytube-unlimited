@@ -46,7 +46,9 @@ export const useUploadHandler = () => {
         title: "Upload complete",
         description: `Your ${contentTypeName.toLowerCase()} has been processed and is now available.`,
         action: (
-          <ToastAction altText={`Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`} onClick={() => navigate(redirectPath)}>
+          <ToastAction 
+            altText={`Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`} 
+            onClick={() => navigate(redirectPath)}>
             View {redirectPath === '/' ? 'Home' : redirectPath.substring(1)}
           </ToastAction>
         )

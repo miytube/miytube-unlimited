@@ -2,6 +2,8 @@
 import React from 'react';
 import { UploadRequirements } from '@/components/longVideos/UploadRequirements';
 import { MusicUploadRequirements } from '@/components/music/UploadRequirements';
+import { ImageUploadRequirements } from '@/components/upload/ImageUploadRequirements';
+import { DocumentUploadRequirements } from '@/components/upload/DocumentUploadRequirements';
 import { ContentType } from '@/types/upload';
 
 interface UploadRequirementsDisplayProps {
@@ -14,7 +16,7 @@ export const UploadRequirementsDisplay: React.FC<UploadRequirementsDisplayProps>
   contentTypes
 }) => {
   // Return requirements based on content type
-  if (selectedContentType === 'video') {
+  if (selectedContentType === 'video' || selectedContentType === 'shorts') {
     return (
       <UploadRequirements 
         videoFormats={contentTypes.video.supportedFormats}
@@ -27,6 +29,22 @@ export const UploadRequirementsDisplay: React.FC<UploadRequirementsDisplayProps>
     return (
       <MusicUploadRequirements 
         audioFormats={contentTypes.music.supportedFormats}
+      />
+    );
+  }
+  
+  if (selectedContentType === 'image') {
+    return (
+      <ImageUploadRequirements 
+        imageFormats={contentTypes.image.supportedFormats}
+      />
+    );
+  }
+  
+  if (selectedContentType === 'document') {
+    return (
+      <DocumentUploadRequirements 
+        documentFormats={contentTypes.document.supportedFormats}
       />
     );
   }
