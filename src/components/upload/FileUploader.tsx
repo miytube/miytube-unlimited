@@ -34,6 +34,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const [videoTitle, setVideoTitle] = useState<string>('');
   const [videoDescription, setVideoDescription] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
+  const [defaultTitle, setDefaultTitle] = useState<string>('');
+  const [defaultDescription, setDefaultDescription] = useState<string>('');
+  const [defaultCategory, setDefaultCategory] = useState<string>('');
   
   const {
     isDragging,
@@ -47,21 +50,42 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     handleBrowseClick
   } = useFileUpload({ 
     supportedFormats, 
-    maxSize, 
+    maxSize,
     onUpload: (files) => {
       if (onUpload) {
         onUpload(files, videoTitle, videoDescription, selectedCategory, selectedSubcategory, tags);
       }
-    }, 
+    },
     id 
   });
   
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     originalHandleDrop(e);
+    if (e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      setDefaultTitle(file.name.split('.').slice(0, -1).join('.'));
+    }
   };
   
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     originalHandleFileSelect(e);
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setDefaultTitle(file.name.split('.').slice(0, -1).join('.'));
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (uploadedFiles.length > 0 && fileInputRef.current) {
+      const event = new Event('change', { bubbles: true });
+      Object.defineProperty(event, 'target', {
+        writable: false,
+        value: {
+          files: uploadedFiles
+        }
+      });
+      fileInputRef.current.dispatchEvent(event);
+    }
   };
 
   return (
@@ -69,7 +93,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       <p className="text-muted-foreground mb-6">{description}</p>
       
-      {/* Video Selection Zone at the top */}
       <div className="mb-8">
         <DropZone 
           icon={icon}
@@ -86,7 +109,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         />
       </div>
       
-      {/* Show metadata form only when a file is selected */}
       {uploadedFiles.length > 0 && (
         <div className="mb-8 animate-fade-in">
           <VideoMetadataForm 
@@ -101,20 +123,17 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             tags={tags}
             setTags={setTags}
             categories={categories}
+            defaultTitle={defaultTitle}
+            defaultDescription={defaultDescription}
+            defaultCategory={defaultCategory}
           />
           
-          {/* Upload button at the bottom */}
           <div className="mt-6 text-center">
             <button
               type="button"
               className={`px-6 py-2 ${uploading ? 'bg-primary/50' : 'bg-primary'} text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-lg font-medium`}
               disabled={uploading || !videoTitle}
-              onClick={() => {
-                if (fileInputRef.current) {
-                  const event = new Event('change', { bubbles: true });
-                  fileInputRef.current.dispatchEvent(event);
-                }
-              }}
+              onClick={handleUploadClick}
             >
               {uploading ? 'Uploading...' : 'Upload Video'}
             </button>

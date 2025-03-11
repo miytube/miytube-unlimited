@@ -21,6 +21,9 @@ interface VideoMetadataFormProps {
   tags: string[];
   setTags: (tags: string[]) => void;
   categories: Category[];
+  defaultTitle?: string;
+  defaultDescription?: string;
+  defaultCategory?: string;
 }
 
 export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
@@ -35,7 +38,17 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   tags,
   setTags,
   categories,
+  defaultTitle,
+  defaultDescription,
+  defaultCategory
 }) => {
+  // Set default values when props change
+  React.useEffect(() => {
+    if (defaultTitle) setVideoTitle(defaultTitle);
+    if (defaultDescription) setVideoDescription(defaultDescription);
+    if (defaultCategory) setSelectedCategory(defaultCategory);
+  }, [defaultTitle, defaultDescription, defaultCategory]);
+
   const subcategories = categories.find(cat => cat.id === selectedCategory)?.subcategories || [];
 
   return (
