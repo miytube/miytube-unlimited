@@ -33,8 +33,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex flex-1">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1">
-          <div className="max-w-[1400px] mx-auto px-2 sm:px-4">
+        <main className="flex-1 w-full">
+          <div className="max-w-[1400px] w-full mx-auto px-2 sm:px-4">
             {children}
           </div>
         </main>

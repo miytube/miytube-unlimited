@@ -82,7 +82,7 @@ const mockVideos = [
 const Index = () => {
   return (
     <Layout>
-      <div className="py-4">
+      <div className="py-4 w-full">
         <div className="mb-6">
           <h1 className="text-xl font-medium mb-4">Recommended</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
