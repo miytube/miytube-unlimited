@@ -5,10 +5,12 @@ import { Music as MusicIcon, Play, Upload, Clock, Heart, MoreHorizontal } from '
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useNavigate } from 'react-router-dom';
 
 const Music = () => {
   const { toast } = useToast();
   const { addUploadedVideo } = useUploadedVideos();
+  const navigate = useNavigate();
   
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     if (files.length > 0) {
@@ -18,9 +20,28 @@ const Music = () => {
         title: "Music files uploaded",
         description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
       });
+
+      setTimeout(() => {
+        navigate('/');
+        
+        if (category) {
+          toast({
+            title: "View in category",
+            description: `View your upload in the ${category} category`,
+            action: (
+              <button
+                onClick={() => navigate(`/music/${category}`)}
+                className="text-primary hover:underline"
+              >
+                Go to category
+              </button>
+            ),
+          });
+        }
+      }, 1500);
     }
   };
-  
+
   const audioSamples = [
     {
       id: 'audio1',

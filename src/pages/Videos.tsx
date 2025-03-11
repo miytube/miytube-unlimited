@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
@@ -6,11 +5,13 @@ import { Film, Upload, Tv, ListVideo } from 'lucide-react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { UploadedVideosSection } from '@/components/video/UploadedVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useToast } from "@/hooks/use-toast";
 
 const Videos = () => {
   const { category } = useParams();
   const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
   const navigate = useNavigate();
+  const { toast } = useToast();
   
   const videoCategories = [
     { id: 'trending', name: 'Trending', icon: <Tv size={24} /> },
@@ -21,7 +22,36 @@ const Videos = () => {
     { id: 'howto', name: 'How-to', icon: <ListVideo size={24} /> },
   ];
   
-  // Filter videos by category if a category parameter is provided
+  const handleUpload = (files: File[], title: string, description: string, category?: string) => {
+    if (files.length > 0) {
+      addUploadedVideo(files[0], title, description, category);
+      
+      toast({
+        title: "Video uploaded",
+        description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
+      });
+
+      setTimeout(() => {
+        navigate('/');
+        
+        if (category) {
+          toast({
+            title: "View in category",
+            description: `View your upload in the ${category} category`,
+            action: (
+              <button
+                onClick={() => navigate(`/videos/${category}`)}
+                className="text-primary hover:underline"
+              >
+                Go to category
+              </button>
+            ),
+          });
+        }
+      }, 1500);
+    }
+  };
+
   const displayedVideos = category 
     ? getVideosByCategory(category)
     : uploadedVideos;
@@ -84,10 +114,8 @@ const Videos = () => {
           </Link>
         </div>
         
-        {/* Only show this section on the main videos page */}
         {!category && <UploadedVideosSection />}
         
-        {/* Show category-specific videos if on a category page */}
         {category && displayedVideos.length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">{category.charAt(0).toUpperCase() + category.slice(1)} Videos</h2>
@@ -110,7 +138,6 @@ const Videos = () => {
           </div>
         )}
         
-        {/* Show message if no videos in category */}
         {category && displayedVideos.length === 0 && (
           <div className="mb-8 p-6 bg-muted/20 rounded-lg text-center">
             <h2 className="text-xl font-medium mb-2">No videos in this category yet</h2>
@@ -124,7 +151,6 @@ const Videos = () => {
           </div>
         )}
         
-        {/* Categories */}
         {!category && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">Categories</h2>
@@ -145,7 +171,6 @@ const Videos = () => {
           </div>
         )}
         
-        {/* Featured Videos */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Featured Videos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
