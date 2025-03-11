@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
@@ -9,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const Videos = () => {
   const { category } = useParams();
-  const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
+  const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
   const navigate = useNavigate();
   const { toast } = useToast();
   
