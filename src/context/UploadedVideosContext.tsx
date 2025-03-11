@@ -5,6 +5,7 @@ interface UploadedVideo {
   id: string;
   file: File;
   title: string;
+  description: string;
   thumbnail: string; 
   timestamp: string;
   views: string;
@@ -15,7 +16,7 @@ interface UploadedVideo {
 
 interface UploadedVideosContextType {
   uploadedVideos: UploadedVideo[];
-  addUploadedVideo: (file: File, category?: string, subcategory?: string) => void;
+  addUploadedVideo: (file: File, title: string, description: string, category?: string, subcategory?: string) => void;
   clearUploadedVideos: () => void;
   getVideosByCategory: (category: string, subcategory?: string) => UploadedVideo[];
 }
@@ -49,13 +50,14 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     return '0:30';
   };
 
-  const addUploadedVideo = (file: File, category?: string, subcategory?: string) => {
+  const addUploadedVideo = (file: File, title: string, description: string, category?: string, subcategory?: string) => {
     const timestamp = new Date().toLocaleDateString();
     
     const newVideo: UploadedVideo = {
       id: `upload-${Date.now()}`,
       file: file,
-      title: file.name,
+      title: title || file.name,
+      description: description || '',
       thumbnail: generateThumbnail(file),
       timestamp: 'Just now',
       views: '0',

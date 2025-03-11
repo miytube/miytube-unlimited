@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { FilePreview } from './FilePreview';
 import { Select } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 
 interface FileUploaderProps {
   icon: React.ElementType;
@@ -11,7 +12,7 @@ interface FileUploaderProps {
   acceptedTypes: string;
   supportedFormats: string[];
   maxSize?: string;
-  onUpload?: (files: File[], category?: string, subcategory?: string) => void;
+  onUpload?: (files: File[], title: string, description: string, category?: string, subcategory?: string) => void;
   id?: string;
   uploadDestination?: string;
   categories?: Array<{id: string, name: string, subcategories?: Array<{id: string, name: string}>}>;
@@ -31,6 +32,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  const [videoTitle, setVideoTitle] = useState<string>('');
+  const [videoDescription, setVideoDescription] = useState<string>('');
   
   const {
     isDragging,
@@ -47,7 +50,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     maxSize, 
     onUpload: (files) => {
       if (onUpload) {
-        onUpload(files, selectedCategory, selectedSubcategory);
+        onUpload(files, videoTitle, videoDescription, selectedCategory, selectedSubcategory);
       }
     }, 
     id 
@@ -69,6 +72,34 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     <div className="bg-card p-6 rounded-lg shadow-md mb-8 w-full">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       <p className="text-muted-foreground mb-4">{description}</p>
+      
+      <div className="mb-6 grid grid-cols-1 gap-4">
+        <div>
+          <label htmlFor="video-title" className="block text-sm font-medium mb-1">
+            Video Title
+          </label>
+          <Input
+            id="video-title"
+            placeholder="Enter video title"
+            value={videoTitle}
+            onChange={(e) => setVideoTitle(e.target.value)}
+            className="w-full"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="video-description" className="block text-sm font-medium mb-1">
+            Description
+          </label>
+          <textarea
+            id="video-description"
+            placeholder="Enter video description"
+            value={videoDescription}
+            onChange={(e) => setVideoDescription(e.target.value)}
+            className="w-full p-2 rounded-md border bg-background min-h-[100px]"
+          />
+        </div>
+      </div>
       
       {categories.length > 0 && (
         <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -40,8 +40,8 @@ const VideoUpload = () => {
     }
   };
   
-  const handleUpload = (files: File[], category?: string, subcategory?: string) => {
-    console.log("Video upload initiated:", files, "Category:", category, "Subcategory:", subcategory);
+  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string) => {
+    console.log("Video upload initiated:", files, "Title:", title, "Description:", description, "Category:", category, "Subcategory:", subcategory);
     
     toast({
       title: "Video upload started",
@@ -50,7 +50,7 @@ const VideoUpload = () => {
     
     // Add videos to global context with category information
     files.forEach(file => {
-      addUploadedVideo(file, category, subcategory);
+      addUploadedVideo(file, title || file.name, description || '', category, subcategory);
     });
     
     // Simulate upload completion
@@ -121,7 +121,7 @@ const VideoUpload = () => {
         <FileUploader
           icon={Film}
           title="Quick Upload"
-          description="Upload your video directly. Choose a category and subcategory to organize your content."
+          description="Upload your video directly. Add a title, description, and choose a category to organize your content."
           acceptedTypes="video/*"
           supportedFormats={['MP4', 'MOV', 'WebM', 'AVI', 'FLV', 'MKV']}
           maxSize="128GB"

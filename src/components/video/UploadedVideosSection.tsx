@@ -29,6 +29,7 @@ export const UploadedVideosSection: React.FC = () => {
             views={video.views}
             timestamp={video.timestamp}
             duration={video.duration}
+            description={video.description}
           />
         ))}
       </div>
