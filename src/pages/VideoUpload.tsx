@@ -19,10 +19,26 @@ const VideoUpload = () => {
   
   const [newCategory, setNewCategory] = useState('');
   const [videoCategories, setVideoCategories] = useState([
-    { id: 'music', name: 'Music', icon: <Film size={20} />, description: 'Upload your music videos, covers, or music-related content.' },
-    { id: 'gaming', name: 'Gaming', icon: <Film size={20} />, description: 'Share your gameplay, tutorials, and gaming commentary.' },
-    { id: 'sports', name: 'Sports', icon: <Film size={20} />, description: 'Upload videos related to sports, fitness, and athletic activities.' },
-    { id: 'education', name: 'Education', icon: <Film size={20} />, description: 'Share educational content, tutorials, and lectures.' },
+    { id: 'music', name: 'Music', icon: <Film size={20} />, description: 'Upload your music videos, covers, or music-related content.', subcategories: [
+      { id: 'pop', name: 'Pop' },
+      { id: 'rock', name: 'Rock' },
+      { id: 'hiphop', name: 'Hip Hop' },
+    ] },
+    { id: 'gaming', name: 'Gaming', icon: <Film size={20} />, description: 'Share your gameplay, tutorials, and gaming commentary.', subcategories: [
+      { id: 'fps', name: 'FPS Games' },
+      { id: 'rpg', name: 'RPG Games' },
+      { id: 'strategy', name: 'Strategy Games' },
+    ] },
+    { id: 'sports', name: 'Sports', icon: <Film size={20} />, description: 'Upload videos related to sports, fitness, and athletic activities.', subcategories: [
+      { id: 'soccer', name: 'Soccer' },
+      { id: 'basketball', name: 'Basketball' },
+      { id: 'tennis', name: 'Tennis' },
+    ] },
+    { id: 'education', name: 'Education', icon: <Film size={20} />, description: 'Share educational content, tutorials, and lectures.', subcategories: [
+      { id: 'science', name: 'Science' },
+      { id: 'math', name: 'Mathematics' },
+      { id: 'history', name: 'History' },
+    ] },
   ]);
   
   const handleAddCategory = () => {
@@ -31,7 +47,8 @@ const VideoUpload = () => {
         id: newCategory.toLowerCase().replace(/\s+/g, '-'),
         name: newCategory,
         icon: <Film size={20} />,
-        description: 'Custom video category'
+        description: 'Custom video category',
+        subcategories: []
       };
       setVideoCategories([...videoCategories, newCategoryObj]);
       setNewCategory('');
@@ -47,7 +64,7 @@ const VideoUpload = () => {
     
     toast({
       title: "Video upload started",
-      description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} ${category ? `in category: ${category}` : ''}`,
+      description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
     });
     
     // Add videos to global context with category information
@@ -134,10 +151,7 @@ const VideoUpload = () => {
           onUpload={handleUpload}
           id="quick-upload-input"
           uploadDestination="Your Videos on Home Page and Selected Category"
-          categories={videoCategories.map(cat => ({
-            id: cat.id,
-            name: cat.name
-          }))}
+          categories={videoCategories}
         />
         
         <div className="bg-card p-6 rounded-lg shadow-md mt-8">

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { TagInput } from './TagInput';
 
@@ -43,13 +43,14 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   defaultCategory
 }) => {
   // Set default values when props change
-  React.useEffect(() => {
+  useEffect(() => {
     if (defaultTitle && !videoTitle) setVideoTitle(defaultTitle);
     if (defaultDescription && !videoDescription) setVideoDescription(defaultDescription);
     if (defaultCategory && !selectedCategory) setSelectedCategory(defaultCategory);
   }, [defaultTitle, defaultDescription, defaultCategory, videoTitle, videoDescription, selectedCategory]);
 
-  const subcategories = categories.find(cat => cat.id === selectedCategory)?.subcategories || [];
+  const selectedCategoryObj = categories.find(cat => cat.id === selectedCategory);
+  const subcategories = selectedCategoryObj?.subcategories || [];
 
   return (
     <div className="space-y-6">
@@ -79,53 +80,56 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
         />
       </div>
 
-      {categories.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="category-select" className="block text-sm font-medium mb-2">
-              Category
-            </label>
-            <select
-              id="category-select"
-              className="w-full p-2 rounded-md border bg-background"
-              value={selectedCategory}
-              onChange={(e) => {
-                setSelectedCategory(e.target.value);
-                setSelectedSubcategory('');
-              }}
-            >
-              <option value="">Select a category</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          
-          {subcategories.length > 0 && (
-            <div>
-              <label htmlFor="subcategory-select" className="block text-sm font-medium mb-2">
-                Subcategory
-              </label>
-              <select
-                id="subcategory-select"
-                className="w-full p-2 rounded-md border bg-background"
-                value={selectedSubcategory}
-                onChange={(e) => setSelectedSubcategory(e.target.value)}
-                disabled={!selectedCategory}
-              >
-                <option value="">Select a subcategory</option>
-                {subcategories.map((subcategory) => (
-                  <option key={subcategory.id} value={subcategory.id}>
-                    {subcategory.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+      <div className="flex flex-col md:flex-row md:gap-4">
+        <div className="flex-1 mb-4 md:mb-0">
+          <label htmlFor="category-select" className="block text-sm font-medium mb-2">
+            Category
+          </label>
+          <select
+            id="category-select"
+            className="w-full p-2 rounded-md border bg-background"
+            value={selectedCategory}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value);
+              setSelectedSubcategory('');
+            }}
+          >
+            <option value="">Select a category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         </div>
-      )}
+        
+        <div className="flex-1">
+          <label htmlFor="subcategory-select" className="block text-sm font-medium mb-2">
+            Subcategory
+          </label>
+          <select
+            id="subcategory-select"
+            className="w-full p-2 rounded-md border bg-background"
+            value={selectedSubcategory}
+            onChange={(e) => setSelectedSubcategory(e.target.value)}
+            disabled={!selectedCategory || subcategories.length === 0}
+          >
+            <option value="">
+              {!selectedCategory 
+                ? "Select a category first" 
+                : subcategories.length === 0 
+                  ? "No subcategories available" 
+                  : "Select a subcategory"
+              }
+            </option>
+            {subcategories.map((subcategory) => (
+              <option key={subcategory.id} value={subcategory.id}>
+                {subcategory.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       
       <TagInput tags={tags} setTags={setTags} />
     </div>
