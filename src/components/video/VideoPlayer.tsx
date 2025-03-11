@@ -32,10 +32,15 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format
     setControlsVisible
   } = useVideoPlayer();
   
-  // Get video source - either from videoId or from local file
   const videoSrc = videoFile ? URL.createObjectURL(videoFile) : (videoId ? getVideoSource(videoId, format) : '');
   
-  // Clean up object URL when component unmounts or videoFile changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.volume = volume;
+      videoRef.current.muted = isMuted;
+    }
+  }, [volume, isMuted]);
+
   useEffect(() => {
     if (videoFile) {
       return () => {
@@ -57,6 +62,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format
         className="w-full h-full object-contain"
         onClick={togglePlayPause}
         playsInline
+        preload="metadata"
       />
       
       <VideoPlayerControls

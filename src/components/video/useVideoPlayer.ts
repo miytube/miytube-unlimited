@@ -18,7 +18,9 @@ export const useVideoPlayer = () => {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
-        videoRef.current.play();
+        videoRef.current.play().catch(error => {
+          console.error('Error playing video:', error);
+        });
       }
       setIsPlaying(!isPlaying);
     }
@@ -43,8 +45,9 @@ export const useVideoPlayer = () => {
   
   const toggleMute = () => {
     if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+      const newMutedState = !isMuted;
+      videoRef.current.muted = newMutedState;
+      setIsMuted(newMutedState);
     }
   };
   
@@ -53,7 +56,9 @@ export const useVideoPlayer = () => {
       if (document.fullscreenElement) {
         document.exitFullscreen();
       } else {
-        containerRef.current.requestFullscreen();
+        containerRef.current.requestFullscreen().catch(error => {
+          console.error('Error attempting to enable fullscreen:', error);
+        });
       }
     }
   };
