@@ -56,7 +56,7 @@ export const contentTypes: Record<string, ContentType> = {
     icon: Music,
     description: "Upload your music tracks, covers, remixes, and audio content.",
     acceptedTypes: "audio/*",
-    supportedFormats: ['MP3', 'WAV', 'AAC', 'FLAC', 'OGG'],
+    supportedFormats: ['MP4', 'WAV', 'AAC', 'FLAC', 'OGG'],
     maxSize: "10GB",
     categories: [
       { id: 'pop', name: 'Pop', subcategories: [
