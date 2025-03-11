@@ -5,18 +5,22 @@ import { ThumbsUp, ThumbsDown, Share, Download, Flag } from 'lucide-react';
 interface VideoInfoProps {
   title: string;
   channelName: string;
+  channelAvatar: string;
+  subscribers: string;
   views: string;
   timestamp: string;
-  description: string;
+  likes: string;
   tags?: string[];
 }
 
 export const VideoInfo: React.FC<VideoInfoProps> = ({
   title,
   channelName,
+  channelAvatar,
+  subscribers,
   views,
   timestamp,
-  description,
+  likes,
   tags = [],
 }) => {
   return (
@@ -25,12 +29,16 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
       
       <div className="flex flex-wrap justify-between items-center gap-4 py-3 border-b">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-lg font-bold">
-            {channelName.charAt(0)}
+          <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-lg font-bold overflow-hidden">
+            {channelAvatar ? (
+              <img src={channelAvatar} alt={channelName} className="w-full h-full object-cover" />
+            ) : (
+              channelName.charAt(0)
+            )}
           </div>
           <div>
             <h3 className="font-medium">{channelName}</h3>
-            <p className="text-sm text-muted-foreground">1.2M subscribers</p>
+            <p className="text-sm text-muted-foreground">{subscribers} subscribers</p>
           </div>
           <button className="ml-4 px-4 py-1.5 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
             Subscribe
@@ -41,7 +49,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
           <div className="flex rounded-full overflow-hidden bg-secondary">
             <button className="flex items-center gap-1 px-4 py-1.5 hover:bg-secondary/80 transition-colors">
               <ThumbsUp size={18} />
-              <span className="text-sm font-medium">24K</span>
+              <span className="text-sm font-medium">{likes}</span>
             </button>
             <div className="w-px bg-border h-full"></div>
             <button className="flex items-center gap-1 px-4 py-1.5 hover:bg-secondary/80 transition-colors">
@@ -80,13 +88,10 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
       
       <div className="mt-4 p-4 bg-secondary/50 rounded-lg">
         <div className="flex items-center gap-2 mb-2">
-          <span className="font-medium">{views} views</span>
+          <span className="font-medium">{views}</span>
           <span className="text-xs">•</span>
           <span>{timestamp}</span>
         </div>
-        <p className="text-sm leading-relaxed">
-          {description}
-        </p>
       </div>
     </div>
   );
