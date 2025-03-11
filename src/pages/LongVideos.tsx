@@ -1,9 +1,19 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Upload, Clock, Film, Info } from 'lucide-react';
+import { FileUploader } from '@/components/FileUploader';
+import { useToast } from "@/hooks/use-toast";
 
 const LongVideos = () => {
+  const { toast } = useToast();
+  
+  const handleUpload = (files: File[]) => {
+    toast({
+      title: "Video uploaded",
+      description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
+    });
+  };
+  
   const featuredLongVideos = [
     {
       id: 'longvid1',
@@ -52,51 +62,26 @@ const LongVideos = () => {
       <div className="py-6 animate-fade-in">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">Long-Form Videos</h1>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+          <button 
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            onClick={() => {
+              document.getElementById('video-upload-input')?.click();
+            }}
+          >
             <Upload size={18} />
             <span>Upload Long Video</span>
           </button>
         </div>
         
-        <div className="bg-card p-6 rounded-lg shadow-md mb-8">
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="md:w-2/3">
-              <h2 className="text-xl font-semibold mb-4">Upload Long-Form Content</h2>
-              <p className="text-muted-foreground mb-4">
-                MiyTube supports videos up to 10 hours in length with no storage restrictions. 
-                Perfect for lectures, concerts, documentaries, and other long-form content.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Film size={14} />
-                  </div>
-                  <div>
-                    <p className="font-medium">No Length Restrictions</p>
-                    <p className="text-sm text-muted-foreground">Upload videos up to 10 hours in length</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Clock size={14} />
-                  </div>
-                  <div>
-                    <p className="font-medium">No Expiration</p>
-                    <p className="text-sm text-muted-foreground">Your videos remain available forever with no time limitations</p>
-                  </div>
-                </div>
-              </div>
-              <button className="mt-6 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
-                Start Uploading
-              </button>
-            </div>
-            <div className="md:w-1/3 flex items-center justify-center">
-              <div className="w-full max-w-xs aspect-video bg-secondary/50 rounded-lg flex items-center justify-center">
-                <Clock size={48} className="text-primary" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <FileUploader
+          icon={Film}
+          title="Upload Long-Form Content"
+          description="MiyTube supports videos up to 10 hours in length with no storage restrictions. Perfect for lectures, concerts, documentaries, and other long-form content."
+          acceptedTypes="video/*"
+          supportedFormats={supportedVideoFormats}
+          maxSize="128GB"
+          onUpload={handleUpload}
+        />
         
         <div className="bg-card p-6 rounded-lg shadow-md mb-8">
           <div className="flex items-center gap-2 mb-4">

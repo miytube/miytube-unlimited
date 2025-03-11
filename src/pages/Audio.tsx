@@ -1,8 +1,20 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Music, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
+import { FileUploader } from '@/components/FileUploader';
+import { useToast } from "@/hooks/use-toast";
 
 const Audio = () => {
+  const { toast } = useToast();
+  
+  const handleUpload = (files: File[]) => {
+    toast({
+      title: "Audio files uploaded",
+      description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
+    });
+  };
+  
   const audioSamples = [
     {
       id: 'audio1',
@@ -61,28 +73,26 @@ const Audio = () => {
       <div className="py-6 animate-fade-in">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">MiyTube Audio</h1>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+          <button 
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            onClick={() => {
+              document.getElementById('audio-upload-input')?.click();
+            }}
+          >
             <Upload size={18} />
             <span>Upload Audio</span>
           </button>
         </div>
         
-        <div className="bg-card p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">Upload and Share Audio</h2>
-          <p className="text-muted-foreground mb-4">
-            Share your music, podcasts, and audio creations with the MiyTube community. Upload high-quality audio with no time restrictions.
-          </p>
-          <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-            <Music size={48} className="mx-auto mb-4 text-muted-foreground" />
-            <p className="text-muted-foreground mb-2">Drag and drop audio files here, or click to browse</p>
-            <p className="text-xs text-muted-foreground mb-4">
-              Supported formats: {supportedAudioFormats.join(', ')} up to 500MB
-            </p>
-            <button className="px-4 py-2 bg-secondary text-foreground rounded-md hover:bg-secondary/80 transition-colors">
-              Select Files
-            </button>
-          </div>
-        </div>
+        <FileUploader
+          icon={Music}
+          title="Upload and Share Audio"
+          description="Share your music, podcasts, and audio creations with the MiyTube community. Upload high-quality audio with no time restrictions."
+          acceptedTypes="audio/*"
+          supportedFormats={supportedAudioFormats}
+          maxSize="500MB"
+          onUpload={handleUpload}
+        />
         
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-6">Featured Audio</h2>

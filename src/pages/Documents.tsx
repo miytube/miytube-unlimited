@@ -1,9 +1,20 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { FileText, Upload, Download, Search, Filter, Eye, MoreHorizontal } from 'lucide-react';
+import { FileUploader } from '@/components/FileUploader';
+import { useToast } from "@/hooks/use-toast";
 
 const Documents = () => {
+  const { toast } = useToast();
+  
+  const handleUpload = (files: File[]) => {
+    toast({
+      title: "Documents uploaded",
+      description: `${files.length} ${files.length === 1 ? 'document' : 'documents'} uploaded successfully.`,
+    });
+  };
+  
   const documentSamples = [
     {
       id: 'doc1',
@@ -66,26 +77,26 @@ const Documents = () => {
       <div className="py-6 animate-fade-in">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">MiyTube Documents</h1>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            onClick={() => {
+              document.getElementById('document-upload-input')?.click();
+            }}
+          >
             <Upload size={18} />
             <span>Upload Document</span>
           </button>
         </div>
         
-        <div className="bg-card p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">Upload and Share Documents</h2>
-          <p className="text-muted-foreground mb-4">
-            Share your documents, presentations, spreadsheets, and more with the MiyTube community. Upload various file formats with no size restrictions.
-          </p>
-          <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-            <FileText size={48} className="mx-auto mb-4 text-muted-foreground" />
-            <p className="text-muted-foreground mb-2">Drag and drop documents here, or click to browse</p>
-            <p className="text-xs text-muted-foreground mb-4">Supports PDF, DOCX, XLSX, PPTX, and more</p>
-            <button className="px-4 py-2 bg-secondary text-foreground rounded-md hover:bg-secondary/80 transition-colors">
-              Select Files
-            </button>
-          </div>
-        </div>
+        <FileUploader
+          icon={FileText}
+          title="Upload and Share Documents"
+          description="Share your documents, presentations, spreadsheets, and more with the MiyTube community. Upload various file formats with no size restrictions."
+          acceptedTypes=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
+          supportedFormats={['PDF', 'DOCX', 'XLSX', 'PPTX', 'TXT']}
+          maxSize="100MB"
+          onUpload={handleUpload}
+        />
         
         <div className="flex items-center justify-between mb-6">
           <div className="relative flex-grow max-w-md">

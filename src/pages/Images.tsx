@@ -1,9 +1,22 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Grid, Image, Upload } from 'lucide-react';
+import { FileUploader } from '@/components/FileUploader';
+import { useToast } from "@/hooks/use-toast";
 
 const Images = () => {
+  const { toast } = useToast();
+  const [uploading, setUploading] = useState(false);
+  
+  const handleUpload = (files: File[]) => {
+    // In a real app, you would upload these files to your server/storage
+    toast({
+      title: "Images uploaded",
+      description: `${files.length} ${files.length === 1 ? 'image' : 'images'} uploaded successfully.`,
+    });
+  };
+  
   const imageSamples = [
     {
       id: 'img1',
@@ -54,26 +67,26 @@ const Images = () => {
       <div className="py-6 animate-fade-in">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">MiyTube Images</h1>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+          <button 
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            onClick={() => {
+              document.getElementById('image-upload-input')?.click();
+            }}
+          >
             <Upload size={18} />
             <span>Upload Images</span>
           </button>
         </div>
         
-        <div className="bg-card p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">Upload and Share Images</h2>
-          <p className="text-muted-foreground mb-4">
-            Share your photography and artwork with the MiyTube community. Upload high-resolution images with no time restrictions.
-          </p>
-          <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-            <Image size={48} className="mx-auto mb-4 text-muted-foreground" />
-            <p className="text-muted-foreground mb-2">Drag and drop images here, or click to browse</p>
-            <p className="text-xs text-muted-foreground mb-4">Supports JPG, PNG, WebP up to 50MB</p>
-            <button className="px-4 py-2 bg-secondary text-foreground rounded-md hover:bg-secondary/80 transition-colors">
-              Select Files
-            </button>
-          </div>
-        </div>
+        <FileUploader
+          icon={Image}
+          title="Upload and Share Images"
+          description="Share your photography and artwork with the MiyTube community. Upload high-resolution images with no time restrictions."
+          acceptedTypes="image/jpeg,image/png,image/webp"
+          supportedFormats={['JPG', 'PNG', 'WebP']}
+          maxSize="50MB"
+          onUpload={handleUpload}
+        />
         
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">

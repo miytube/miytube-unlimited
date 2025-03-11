@@ -21,24 +21,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   }, [location.pathname, isMobile, isOpen, onClose]);
 
   const mainLinks = [
-    { icon: Home, label: 'Home', path: '/' },
-    { icon: Compass, label: 'Explore', path: '/' },
-    { icon: Film, label: 'Shorts', path: '/shorts' },
+    { id: 'home', icon: Home, label: 'Home', path: '/' },
+    { id: 'explore', icon: Compass, label: 'Explore', path: '/' },
+    { id: 'shorts', icon: Film, label: 'Shorts', path: '/shorts' },
   ];
   
   const exploreLinks = [
-    { icon: Music, label: 'Audio', path: '/audio' },
-    { icon: Gamepad2, label: 'Documents', path: '/documents' },
-    { icon: Newspaper, label: 'Blog', path: '/blog' },
+    { id: 'audio', icon: Music, label: 'Audio', path: '/audio' },
+    { id: 'documents', icon: Gamepad2, label: 'Documents', path: '/documents' },
+    { id: 'blog', icon: Newspaper, label: 'Blog', path: '/blog' },
   ];
 
-  const renderNavLink = (item: { icon: any, label: string, path: string }) => {
+  const renderNavLink = (item: { id: string, icon: any, label: string, path: string }) => {
     const isActive = location.pathname === item.path;
     const Icon = item.icon;
     
     return (
       <Link 
-        key={item.path} 
+        key={item.id} 
         to={item.path} 
         className={`nav-link ${isActive ? 'active' : ''}`}
       >

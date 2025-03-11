@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useToast } from "@/hooks/use-toast";
 
 export interface NewPostFormData {
   title: string;
@@ -22,10 +23,32 @@ export const NewDiscussionForm: React.FC<NewDiscussionFormProps> = ({
   onSubmit,
   onPostChange,
 }) => {
+  const { toast } = useToast();
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!newPost.title.trim() || !newPost.content.trim()) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in both title and content.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    onSubmit(e);
+    
+    toast({
+      title: "Experience shared",
+      description: "Your discussion has been posted successfully.",
+    });
+  };
+  
   return (
     <div className="mb-8 bg-card p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-4">Share How World Events Affect You</h2>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1" htmlFor="category">
             Topic Area
