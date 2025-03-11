@@ -1,0 +1,60 @@
+
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from "./use-toast";
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { ToastAction } from '@/components/ui/toast';
+
+export const useUploadHandler = () => {
+  const { toast } = useToast();
+  const { addUploadedVideo } = useUploadedVideos();
+  const navigate = useNavigate();
+  
+  const handleUpload = (
+    contentTypeName: string,
+    files: File[], 
+    title: string, 
+    description: string, 
+    contentTypeId: string,
+    destination: string,
+    category?: string, 
+    subcategory?: string, 
+    tags?: string[]
+  ) => {
+    console.log(`${contentTypeName} upload initiated:`, files, "Title:", title, "Description:", description, "Category:", category, "Subcategory:", subcategory, "Tags:", tags);
+    
+    toast({
+      title: `${contentTypeName} upload started`,
+      description: `Processing ${files.length} ${files.length === 1 ? 'file' : 'files'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
+    });
+    
+    if (contentTypeId === 'video' || contentTypeId === 'shorts') {
+      files.forEach(file => {
+        addUploadedVideo(file, title || file.name, description || '', category, subcategory, tags);
+      });
+    }
+    
+    setTimeout(() => {
+      let redirectPath = '/';
+      
+      if (contentTypeId === 'shorts') redirectPath = '/shorts';
+      else if (contentTypeId === 'music') redirectPath = '/music';
+      else if (contentTypeId === 'image') redirectPath = '/images';
+      else if (contentTypeId === 'document') redirectPath = '/documents';
+      
+      toast({
+        title: "Upload complete",
+        description: `Your ${contentTypeName.toLowerCase()} has been processed and is now available.`,
+        action: (
+          <ToastAction altText={`Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`} onClick={() => navigate(redirectPath)}>
+            View {redirectPath === '/' ? 'Home' : redirectPath.substring(1)}
+          </ToastAction>
+        )
+      });
+      
+      navigate(redirectPath);
+    }, 2000);
+  };
+
+  return { handleUpload };
+};
