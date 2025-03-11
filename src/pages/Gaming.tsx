@@ -2,7 +2,7 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
-import { Gamepad2, Upload, Target, Zap } from 'lucide-react';
+import { Gamepad2, Upload, Target, Zap, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Gaming = () => {
