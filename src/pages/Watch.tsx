@@ -1,10 +1,10 @@
-
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
-import { VideoCard } from '@/components/VideoCard';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
-import { ThumbsUp, ThumbsDown, Share, Download, Flag, MessageSquare } from 'lucide-react';
+import { VideoInfo } from '@/components/watch/VideoInfo';
+import { CommentsSection } from '@/components/watch/CommentsSection';
+import { RecommendedVideos } from '@/components/watch/RecommendedVideos';
 
 const mockVideos = [
   {
@@ -84,122 +84,21 @@ const Watch = () => {
           </div>
           
           {/* Video Info */}
-          <div className="mb-6 animate-fade-in">
-            <h1 className="text-xl md:text-2xl font-medium mb-2">{currentVideo.title}</h1>
-            
-            <div className="flex flex-wrap justify-between items-center gap-4 py-3 border-b">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-lg font-bold">
-                  {currentVideo.channelName.charAt(0)}
-                </div>
-                <div>
-                  <h3 className="font-medium">{currentVideo.channelName}</h3>
-                  <p className="text-sm text-muted-foreground">1.2M subscribers</p>
-                </div>
-                <button className="ml-4 px-4 py-1.5 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
-                  Subscribe
-                </button>
-              </div>
-              
-              <div className="flex items-center gap-2 flex-wrap">
-                <div className="flex rounded-full overflow-hidden bg-secondary">
-                  <button className="flex items-center gap-1 px-4 py-1.5 hover:bg-secondary/80 transition-colors">
-                    <ThumbsUp size={18} />
-                    <span className="text-sm font-medium">24K</span>
-                  </button>
-                  <div className="w-px bg-border h-full"></div>
-                  <button className="flex items-center gap-1 px-4 py-1.5 hover:bg-secondary/80 transition-colors">
-                    <ThumbsDown size={18} />
-                  </button>
-                </div>
-                
-                <button className="flex items-center gap-1 px-4 py-1.5 bg-secondary rounded-full hover:bg-secondary/80 transition-colors">
-                  <Share size={18} />
-                  <span className="text-sm font-medium">Share</span>
-                </button>
-                
-                <button className="flex items-center gap-1 px-4 py-1.5 bg-secondary rounded-full hover:bg-secondary/80 transition-colors">
-                  <Download size={18} />
-                  <span className="text-sm font-medium">Download</span>
-                </button>
-                
-                <button className="p-2 rounded-full hover:bg-secondary transition-colors">
-                  <Flag size={18} />
-                </button>
-              </div>
-            </div>
-            
-            <div className="mt-4 p-4 bg-secondary/50 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-medium">{currentVideo.views} views</span>
-                <span className="text-xs">•</span>
-                <span>{currentVideo.timestamp}</span>
-              </div>
-              <p className="text-sm leading-relaxed">
-                {currentVideo.description}
-              </p>
-            </div>
-            
-            {/* Comments */}
-            <div className="mt-6">
-              <div className="flex items-center gap-2 mb-4">
-                <MessageSquare size={20} />
-                <h3 className="font-medium">Comments</h3>
-                <span className="text-sm text-muted-foreground">(643)</span>
-              </div>
-              
-              <div className="flex gap-3 mb-6">
-                <div className="w-8 h-8 rounded-full bg-secondary flex-shrink-0"></div>
-                <div className="w-full">
-                  <input 
-                    type="text" 
-                    placeholder="Add a comment..." 
-                    className="w-full bg-transparent border-b outline-none py-2 focus:border-primary transition-colors"
-                  />
-                </div>
-              </div>
-              
-              {/* Comment examples */}
-              <div className="space-y-4">
-                {[1, 2, 3].map((comment) => (
-                  <div key={comment} className="flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-secondary flex-shrink-0"></div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">User Name</span>
-                        <span className="text-xs text-muted-foreground">2 days ago</span>
-                      </div>
-                      <p className="text-sm mt-1">
-                        This is an amazing video! I learned so much from this content, thank you for sharing your knowledge.
-                      </p>
-                      <div className="flex items-center gap-3 mt-2">
-                        <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                          <ThumbsUp size={14} />
-                          <span>128</span>
-                        </button>
-                        <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-                          <ThumbsDown size={14} />
-                        </button>
-                        <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                          Reply
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <VideoInfo 
+            title={currentVideo.title}
+            channelName={currentVideo.channelName}
+            views={currentVideo.views}
+            timestamp={currentVideo.timestamp}
+            description={currentVideo.description}
+          />
+          
+          {/* Comments */}
+          <CommentsSection />
         </div>
         
         {/* Recommended Videos */}
         <div className="lg:w-1/3">
-          <h3 className="text-lg font-medium mb-4">Recommended</h3>
-          <div className="space-y-3 animate-fade-in">
-            {recommendedVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
-          </div>
+          <RecommendedVideos videos={recommendedVideos} />
         </div>
       </div>
     </Layout>
