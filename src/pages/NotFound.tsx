@@ -12,12 +12,20 @@ const NotFound = () => {
         <p className="text-muted-foreground mb-8 max-w-md">
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <Link
-          to="/"
-          className="px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
-        >
-          Back to Home
-        </Link>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Link
+            to="/"
+            className="px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+          >
+            Back to Home
+          </Link>
+          <Link
+            to="/shorts"
+            className="px-6 py-2 border border-primary text-primary rounded-full hover:bg-primary/10 transition-colors"
+          >
+            Browse Shorts
+          </Link>
+        </div>
       </div>
     </Layout>
   );
