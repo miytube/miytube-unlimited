@@ -40,14 +40,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   ];
 
   const renderNavLink = (item: { id: string, icon: any, label: string, path: string }) => {
-    const isActive = location.pathname === item.path;
+    const isActive = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
     const Icon = item.icon;
     
     return (
       <Link 
         key={item.id} 
         to={item.path} 
-        className={`nav-link ${isActive ? 'active' : ''}`}
+        className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-secondary transition-colors ${
+          isActive ? 'bg-secondary font-medium' : ''
+        }`}
       >
         <Icon size={20} />
         <span>{item.label}</span>
@@ -55,7 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     );
   };
 
-  const sidebarClasses = `fixed inset-y-0 left-0 z-40 w-60 bg-sidebar transition-transform duration-300 ease-in-out border-r overflow-y-auto ${
+  const sidebarClasses = `fixed inset-y-0 left-0 z-40 w-60 bg-sidebar bg-background transition-transform duration-300 ease-in-out border-r overflow-y-auto ${
     isOpen || !isMobile ? 'translate-x-0' : '-translate-x-full'
   }`;
 

@@ -24,6 +24,10 @@ export const Header = () => {
           <Link to="/" className="text-foreground hover:text-primary transition-colors">Home</Link>
           <Link to="/search" className="text-foreground hover:text-primary transition-colors">Search</Link>
           <Link to="/long-videos" className="text-foreground hover:text-primary transition-colors">Long Videos</Link>
+          <Link to="/music" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+            <Music size={16} />
+            <span>Music</span>
+          </Link>
           <Link to="/talk-at-cha" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
             <MessageSquare size={16} />
             <span>TalkAtCha</span>
@@ -115,6 +119,12 @@ export const Header = () => {
                 <Link to="/audio" className="flex items-center gap-2 w-full">
                   <Music size={16} />
                   <span>Upload Audio</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/music" className="flex items-center gap-2 w-full">
+                  <Music size={16} />
+                  <span>Upload Music</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
