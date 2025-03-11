@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, Home, Video, Image, FileText, Music, Newspaper, DollarSign, ShoppingCart, Upload, MessageSquare } from 'lucide-react';
+import { Bell, User, Home, Video, Image, FileText, Music, Newspaper, DollarSign, ShoppingCart, Upload, MessageSquare, Film } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +23,10 @@ export const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           <Link to="/" className="text-foreground hover:text-primary transition-colors">Home</Link>
           <Link to="/search" className="text-foreground hover:text-primary transition-colors">Search</Link>
+          <Link to="/shorts" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+            <Film size={16} />
+            <span>Shorts</span>
+          </Link>
           <Link to="/long-videos" className="text-foreground hover:text-primary transition-colors">Long Videos</Link>
           <Link to="/music" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
             <Music size={16} />
@@ -97,8 +101,8 @@ export const Header = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/upload/shorts" className="flex items-center gap-2 w-full">
-                  <Video size={16} />
+                <Link to="/shorts" className="flex items-center gap-2 w-full">
+                  <Film size={16} />
                   <span>Upload Shorts</span>
                 </Link>
               </DropdownMenuItem>

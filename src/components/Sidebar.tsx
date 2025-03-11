@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video } from 'lucide-react';
