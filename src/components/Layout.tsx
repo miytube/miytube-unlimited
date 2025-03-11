@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, Search, Bell, User, X, Image } from 'lucide-react';
@@ -33,7 +34,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         <main className="flex-1 w-full">
-          <div className="max-w-[1400px] w-full mx-auto px-2 sm:px-4">
+          <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6">
             {children}
           </div>
         </main>

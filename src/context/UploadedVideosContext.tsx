@@ -9,12 +9,15 @@ interface UploadedVideo {
   timestamp: string;
   views: string;
   duration: string;
+  category?: string;
+  subcategory?: string;
 }
 
 interface UploadedVideosContextType {
   uploadedVideos: UploadedVideo[];
-  addUploadedVideo: (file: File) => void;
+  addUploadedVideo: (file: File, category?: string, subcategory?: string) => void;
   clearUploadedVideos: () => void;
+  getVideosByCategory: (category: string, subcategory?: string) => UploadedVideo[];
 }
 
 const UploadedVideosContext = createContext<UploadedVideosContextType | undefined>(undefined);
@@ -46,7 +49,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     return '0:30';
   };
 
-  const addUploadedVideo = (file: File) => {
+  const addUploadedVideo = (file: File, category?: string, subcategory?: string) => {
     const timestamp = new Date().toLocaleDateString();
     
     const newVideo: UploadedVideo = {
@@ -57,6 +60,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       timestamp: 'Just now',
       views: '0',
       duration: formatDuration(file),
+      category,
+      subcategory,
     };
     
     setUploadedVideos((prev) => [newVideo, ...prev]);
@@ -65,6 +70,15 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const clearUploadedVideos = () => {
     setUploadedVideos([]);
   };
+  
+  const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
+    if (subcategory) {
+      return uploadedVideos.filter(
+        video => video.category === category && video.subcategory === subcategory
+      );
+    }
+    return uploadedVideos.filter(video => video.category === category);
+  };
 
   return (
     <UploadedVideosContext.Provider
@@ -72,6 +86,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         uploadedVideos,
         addUploadedVideo,
         clearUploadedVideos,
+        getVideosByCategory,
       }}
     >
       {children}

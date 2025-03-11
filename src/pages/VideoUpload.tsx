@@ -9,14 +9,16 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useCategoryManagement } from '@/components/categories/useCategoryManagement';
 
 const VideoUpload = () => {
   const { toast } = useToast();
   const { addUploadedVideo } = useUploadedVideos();
   const navigate = useNavigate();
+  const { categories, addCategory } = useCategoryManagement();
   
   const [newCategory, setNewCategory] = useState('');
-  const [categories, setCategories] = useState([
+  const [videoCategories, setVideoCategories] = useState([
     { id: 'long', name: 'Long-Form Videos', icon: <Film size={20} />, description: 'Upload videos up to 10 hours in length. Perfect for lectures, tutorials, and documentaries.' },
     { id: 'short', name: 'Short Videos', icon: <Film size={20} />, description: 'Create catchy videos up to 60 seconds. Great for trends, quick tips, and creative moments.' },
   ]);
@@ -29,7 +31,7 @@ const VideoUpload = () => {
         icon: <Film size={20} />,
         description: 'Custom video category'
       };
-      setCategories([...categories, newCategoryObj]);
+      setVideoCategories([...videoCategories, newCategoryObj]);
       setNewCategory('');
       toast({
         title: "Category Added",
@@ -38,24 +40,24 @@ const VideoUpload = () => {
     }
   };
   
-  const handleUpload = (files: File[]) => {
-    console.log("Video upload initiated:", files);
+  const handleUpload = (files: File[], category?: string, subcategory?: string) => {
+    console.log("Video upload initiated:", files, "Category:", category, "Subcategory:", subcategory);
     
     toast({
       title: "Video upload started",
-      description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'}. This may take a few minutes.`,
+      description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} in category: ${category || 'None'}`,
     });
     
-    // Add videos to global context
+    // Add videos to global context with category information
     files.forEach(file => {
-      addUploadedVideo(file);
+      addUploadedVideo(file, category, subcategory);
     });
     
     // Simulate upload completion
     setTimeout(() => {
       toast({
         title: "Upload complete",
-        description: "Your video has been processed and is now available on the home page and can be played directly.",
+        description: "Your video has been processed and is now available in its category and on the home page.",
         action: (
           <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
             View Home
@@ -67,7 +69,7 @@ const VideoUpload = () => {
 
   return (
     <Layout>
-      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
+      <div className="py-6 animate-fade-in w-full">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
             <Upload className="h-6 w-6 text-primary" />
@@ -88,7 +90,7 @@ const VideoUpload = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {categories.map(category => (
+          {videoCategories.map(category => (
             <Link key={category.id} to={`/${category.id}-videos`} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
                 {category.icon} {category.name}
@@ -119,13 +121,14 @@ const VideoUpload = () => {
         <FileUploader
           icon={Film}
           title="Quick Upload"
-          description="Upload your video directly. Your videos will appear on the home page and you can play them directly from there."
+          description="Upload your video directly. Choose a category and subcategory to organize your content."
           acceptedTypes="video/*"
           supportedFormats={['MP4', 'MOV', 'WebM', 'AVI', 'FLV', 'MKV']}
           maxSize="128GB"
           onUpload={handleUpload}
           id="quick-upload-input"
-          uploadDestination="Your Videos on Home Page"
+          uploadDestination="Your Videos on Home Page and Selected Category"
+          categories={categories}
         />
         
         <div className="bg-card p-6 rounded-lg shadow-md mt-8">

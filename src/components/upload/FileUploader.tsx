@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { FilePreview } from './FilePreview';
+import { Select } from '@/components/ui/select';
 
 interface FileUploaderProps {
   icon: React.ElementType;
@@ -10,9 +11,10 @@ interface FileUploaderProps {
   acceptedTypes: string;
   supportedFormats: string[];
   maxSize?: string;
-  onUpload?: (files: File[]) => void;
+  onUpload?: (files: File[], category?: string, subcategory?: string) => void;
   id?: string;
   uploadDestination?: string;
+  categories?: Array<{id: string, name: string, subcategories?: Array<{id: string, name: string}>}>;
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({
@@ -24,8 +26,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   maxSize = "50MB",
   onUpload,
   id,
-  uploadDestination
+  uploadDestination,
+  categories = []
 }) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  
   const {
     isDragging,
     uploading,
@@ -33,15 +39,84 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     uploadedFiles,
     fileInputRef,
     setIsDragging,
-    handleDrop,
-    handleFileSelect,
+    handleDrop: originalHandleDrop,
+    handleFileSelect: originalHandleFileSelect,
     handleBrowseClick
-  } = useFileUpload({ supportedFormats, maxSize, onUpload, id });
+  } = useFileUpload({ 
+    supportedFormats, 
+    maxSize, 
+    onUpload: (files) => {
+      if (onUpload) {
+        onUpload(files, selectedCategory, selectedSubcategory);
+      }
+    }, 
+    id 
+  });
+  
+  // Custom handlers that include category information
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    originalHandleDrop(e);
+  };
+  
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    originalHandleFileSelect(e);
+  };
+  
+  // Find subcategories for the selected category
+  const subcategories = categories.find(cat => cat.id === selectedCategory)?.subcategories || [];
 
   return (
     <div className="bg-card p-6 rounded-lg shadow-md mb-8 w-full">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       <p className="text-muted-foreground mb-4">{description}</p>
+      
+      {categories.length > 0 && (
+        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="category-select" className="block text-sm font-medium mb-1">
+              Category
+            </label>
+            <select
+              id="category-select"
+              className="w-full p-2 rounded-md border bg-background"
+              value={selectedCategory}
+              onChange={(e) => {
+                setSelectedCategory(e.target.value);
+                setSelectedSubcategory(''); // Reset subcategory when category changes
+              }}
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          {subcategories.length > 0 && (
+            <div>
+              <label htmlFor="subcategory-select" className="block text-sm font-medium mb-1">
+                Subcategory
+              </label>
+              <select
+                id="subcategory-select"
+                className="w-full p-2 rounded-md border bg-background"
+                value={selectedSubcategory}
+                onChange={(e) => setSelectedSubcategory(e.target.value)}
+                disabled={!selectedCategory}
+              >
+                <option value="">Select a subcategory</option>
+                {subcategories.map((subcategory) => (
+                  <option key={subcategory.id} value={subcategory.id}>
+                    {subcategory.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      )}
       
       <div 
         className={`border-2 border-dashed ${isDragging ? 'border-primary' : 'border-border'} rounded-lg p-8 text-center`}
