@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
@@ -8,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
 import { UploadRequirements } from '@/components/longVideos/UploadRequirements';
+import { MusicUploadRequirements } from '@/components/music/UploadRequirements';
 
-// Content type definitions
 interface ContentType {
   id: string;
   name: string;
@@ -31,10 +30,8 @@ const Upload = () => {
   const { addUploadedVideo } = useUploadedVideos();
   const navigate = useNavigate();
   
-  // State for selected content type
   const [selectedContentType, setSelectedContentType] = useState<string>("video");
   
-  // Define all content types
   const contentTypes: Record<string, ContentType> = {
     video: {
       id: "video",
@@ -155,7 +152,6 @@ const Upload = () => {
     },
   };
   
-  // Get the currently selected content type
   const currentContentType = contentTypes[selectedContentType];
   
   const handleContentTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -171,13 +167,11 @@ const Upload = () => {
     });
     
     if (selectedContentType === 'video' || selectedContentType === 'shorts') {
-      // Add videos to global context with category information
       files.forEach(file => {
         addUploadedVideo(file, title || file.name, description || '', category, subcategory, tags);
       });
     }
     
-    // Simulate upload completion and redirect to appropriate page
     setTimeout(() => {
       let redirectPath = '/';
       
@@ -196,7 +190,6 @@ const Upload = () => {
         )
       });
       
-      // Redirect to appropriate page after upload is complete
       navigate(redirectPath);
     }, 2000);
   };
@@ -263,6 +256,12 @@ const Upload = () => {
         {selectedContentType === 'video' && (
           <UploadRequirements 
             videoFormats={contentTypes.video.supportedFormats}
+            audioFormats={contentTypes.music.supportedFormats}
+          />
+        )}
+        
+        {selectedContentType === 'music' && (
+          <MusicUploadRequirements 
             audioFormats={contentTypes.music.supportedFormats}
           />
         )}
