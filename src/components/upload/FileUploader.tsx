@@ -30,6 +30,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     isDragging,
     uploading,
     uploadError,
+    uploadedFiles,
     fileInputRef,
     setIsDragging,
     handleDrop,
@@ -65,6 +66,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         <FilePreview 
           uploadError={uploadError}
           uploadDestination={uploadDestination}
+          uploadedFiles={uploadedFiles}
         />
         
         <input 

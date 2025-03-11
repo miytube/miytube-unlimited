@@ -14,6 +14,7 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateFiles = (files: File[]) => {
@@ -68,26 +69,38 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
     try {
       console.log('Starting upload process');
       
-      if (onUpload) {
-        onUpload(files);
-      }
+      // Simulate upload with a delay
+      setTimeout(() => {
+        setUploadedFiles(prevFiles => [...prevFiles, ...files]);
+        
+        if (onUpload) {
+          onUpload(files);
+        }
+        
+        console.log('Upload completed successfully');
+        
+        toast({
+          title: "Files uploaded successfully",
+          description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded.`,
+        });
+        
+        setUploading(false);
+        const inputElement = document.getElementById(id || '') as HTMLInputElement;
+        if (inputElement) {
+          inputElement.value = '';
+        }
+      }, 1500); // Simulating network delay
       
-      console.log('Upload completed successfully');
-      
-      toast({
-        title: "Files uploaded successfully",
-        description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded.`,
-      });
     } catch (error) {
       console.error('Upload error:', error);
       setUploadError("Upload failed. Please try again.");
+      setUploading(false);
       toast({
         title: "Upload failed",
         description: "There was an error uploading your files.",
         variant: "destructive",
       });
-    } finally {
-      setUploading(false);
+      
       const inputElement = document.getElementById(id || '') as HTMLInputElement;
       if (inputElement) {
         inputElement.value = '';
@@ -124,6 +137,7 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
     isDragging,
     uploading,
     uploadError,
+    uploadedFiles,
     fileInputRef,
     setIsDragging,
     handleDrop,
