@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { useParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { Music as MusicIcon } from 'lucide-react';
 
 const Music = () => {
   const { category } = useParams<{ category: string }>();
@@ -57,9 +58,15 @@ const Music = () => {
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
-        <h1 className="text-3xl font-bold mb-6">
-          {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Music` : 'Music'}
-        </h1>
+        <div className="flex items-center gap-3 mb-8">
+          <MusicIcon className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">
+            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Music` : 'Music Channel'}
+          </h1>
+          <p className="text-muted-foreground ml-2">
+            Discover and enjoy the latest music videos and trending tracks
+          </p>
+        </div>
         
         {/* Display uploaded music videos if any */}
         {musicVideos.length > 0 && (
