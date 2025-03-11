@@ -4,10 +4,13 @@ import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { Film, Upload } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const VideoUpload = () => {
   const { toast } = useToast();
+  const { addUploadedVideo } = useUploadedVideos();
+  const navigate = useNavigate();
   
   const handleUpload = (files: File[]) => {
     console.log("Video upload initiated:", files);
@@ -17,11 +20,20 @@ const VideoUpload = () => {
       description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'}. This may take a few minutes.`,
     });
     
+    // Add videos to global context
+    files.forEach(file => {
+      addUploadedVideo(file);
+    });
+    
     // Simulate upload completion
     setTimeout(() => {
       toast({
         title: "Upload complete",
-        description: "Your video has been processed and is now available to play directly from the upload section.",
+        description: "Your video has been processed and is now available on the home page and can be played directly.",
+        action: {
+          label: "View Home",
+          onClick: () => navigate('/')
+        }
       });
     }, 3000);
   };
@@ -59,13 +71,13 @@ const VideoUpload = () => {
         <FileUploader
           icon={Film}
           title="Quick Upload"
-          description="Upload your video directly. You can play your video after upload using the Play button."
+          description="Upload your video directly. Your videos will appear on the home page and you can play them directly from there."
           acceptedTypes="video/*"
           supportedFormats={['MP4', 'MOV', 'WebM', 'AVI', 'FLV', 'MKV']}
           maxSize="128GB"
           onUpload={handleUpload}
           id="quick-upload-input"
-          uploadDestination="Your Channel > Videos section"
+          uploadDestination="Your Videos on Home Page"
         />
         
         <div className="bg-card p-6 rounded-lg shadow-md mt-8">
@@ -77,7 +89,7 @@ const VideoUpload = () => {
               </div>
               <div>
                 <h3 className="font-medium">Processing</h3>
-                <p className="text-muted-foreground">Your video will be processed on our servers. This may take a few minutes.</p>
+                <p className="text-muted-foreground">Your video will be processed and appear on the home page.</p>
               </div>
             </div>
             
@@ -87,7 +99,7 @@ const VideoUpload = () => {
               </div>
               <div>
                 <h3 className="font-medium">Preview</h3>
-                <p className="text-muted-foreground">Once uploaded, click the Play button to preview your video directly.</p>
+                <p className="text-muted-foreground">Once uploaded, you can play your video directly from the home page.</p>
               </div>
             </div>
             
@@ -97,7 +109,7 @@ const VideoUpload = () => {
               </div>
               <div>
                 <h3 className="font-medium">Publish</h3>
-                <p className="text-muted-foreground">In a real application, you could publish your video - immediately, scheduled, or as a draft.</p>
+                <p className="text-muted-foreground">Your videos will be automatically published on the home page.</p>
               </div>
             </div>
           </div>

@@ -10,9 +10,16 @@ interface VideoPlayerProps {
   title: string;
   format?: string;
   videoFile?: File;
+  autoPlay?: boolean;
 }
 
-export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format = 'mp4', videoFile }) => {
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({ 
+  videoId, 
+  title, 
+  format = 'mp4', 
+  videoFile,
+  autoPlay = false
+}) => {
   const {
     isPlaying,
     currentTime,
@@ -30,7 +37,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format
     skip,
     handleMouseMove,
     setControlsVisible
-  } = useVideoPlayer();
+  } = useVideoPlayer(autoPlay);
   
   const videoSrc = videoFile ? URL.createObjectURL(videoFile) : (videoId ? getVideoSource(videoId, format) : '');
   
@@ -62,7 +69,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, title, format
         className="w-full h-full object-contain"
         onClick={togglePlayPause}
         playsInline
-        preload="metadata"
+        preload="auto"
+        controls={false}
       />
       
       <VideoPlayerControls

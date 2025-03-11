@@ -1,20 +1,21 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-export const useVideoPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+export const useVideoPlayer = (autoPlay: boolean = false) => {
+  const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
-  const [controlsVisible, setControlsVisible] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
   const [hideControlsTimeout, setHideControlsTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
   const togglePlayPause = () => {
-    if (videoRef.current) {
+    if (videoRef.current && isVideoReady) {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
@@ -103,11 +104,21 @@ export const useVideoPlayer = () => {
     const handleEnded = () => {
       setIsPlaying(false);
     };
+
+    const handleCanPlay = () => {
+      setIsVideoReady(true);
+      if (autoPlay && video) {
+        video.play().catch(error => {
+          console.error('Autoplay failed:', error);
+        });
+      }
+    };
     
     if (video) {
       video.addEventListener('timeupdate', handleTimeUpdate);
       video.addEventListener('durationchange', handleDurationChange);
       video.addEventListener('ended', handleEnded);
+      video.addEventListener('canplay', handleCanPlay);
     }
     
     return () => {
@@ -115,13 +126,14 @@ export const useVideoPlayer = () => {
         video.removeEventListener('timeupdate', handleTimeUpdate);
         video.removeEventListener('durationchange', handleDurationChange);
         video.removeEventListener('ended', handleEnded);
+        video.removeEventListener('canplay', handleCanPlay);
       }
       
       if (hideControlsTimeout) {
         clearTimeout(hideControlsTimeout);
       }
     };
-  }, [hideControlsTimeout]);
+  }, [autoPlay, hideControlsTimeout]);
   
   return {
     isPlaying,
@@ -130,6 +142,7 @@ export const useVideoPlayer = () => {
     volume,
     isMuted,
     controlsVisible,
+    isVideoReady,
     videoRef,
     containerRef,
     togglePlayPause,
