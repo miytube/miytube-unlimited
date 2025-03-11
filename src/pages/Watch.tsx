@@ -1,110 +1,147 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
-import { VideoInfo } from '@/components/watch/VideoInfo';
 import { RecommendedVideos } from '@/components/watch/RecommendedVideos';
-import { CommentsSection } from '@/components/watch/CommentsSection';
+import { VideoComments } from '@/components/watch/VideoComments';
+import { VideoInfo } from '@/components/watch/VideoInfo';
+import { VideoDescription } from '@/components/watch/VideoDescription';
+import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
-// Mock data for recommended videos
-const recommendedVideos = [
-  {
-    id: 'rec1',
-    title: 'How to Build a Responsive Website',
-    thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Code Masters',
-    views: '1.4M',
-    timestamp: '2 months ago',
-    duration: '18:24',
-    description: 'Learn the fundamentals of responsive web design',
-  },
-  {
-    id: 'rec2',
-    title: 'The Future of Design Systems',
-    thumbnail: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80',
-    channelName: 'UI Designers',
-    views: '852K',
-    timestamp: '3 weeks ago',
-    duration: '24:15',
-    description: 'Exploring modern design systems',
-  },
-  {
-    id: 'rec3',
-    title: 'Mastering Mobile Photography',
-    thumbnail: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Photo Pro',
-    views: '2.1M',
-    timestamp: '5 months ago',
-    duration: '12:33',
-    description: 'Tips and tricks for mobile photography',
-  },
-  {
-    id: 'rec4',
-    title: 'Creating Engaging Content for Social Media',
-    thumbnail: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Social Media Guru',
-    views: '736K',
-    timestamp: '1 month ago',
-    duration: '15:45',
-    description: 'Strategies for social media content',
-  },
-];
-
 const Watch = () => {
-  const location = useLocation();
+  const { id } = useParams<{ id: string }>();
+  const { getVideoById } = useVideos();
   const { uploadedVideos } = useUploadedVideos();
-  const [videoData, setVideoData] = useState({
-    title: 'How to Design Beautiful Interfaces',
-    description: 'Learn the fundamentals of interface design with practical examples and case studies. This comprehensive guide will help you understand the principles of good design and how to apply them to your projects.',
-    views: '1.2M',
-    timestamp: '3 days ago',
-    channelName: 'Design Masters',
-    src: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    tags: [],
-  });
-
+  const [video, setVideo] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const videoId = params.get('v');
-    
-    if (videoId) {
-      // Check if it's an uploaded video
-      const uploadedVideo = uploadedVideos.find(v => v.id === videoId);
+    if (id) {
+      // Check if it's an uploaded video first
+      const uploadedVideo = uploadedVideos.find(v => v.id === id);
       
       if (uploadedVideo) {
-        // Set video data from uploaded video
-        setVideoData({
+        setVideo({
+          id: uploadedVideo.id,
           title: uploadedVideo.title,
           description: uploadedVideo.description,
-          views: uploadedVideo.views,
-          timestamp: uploadedVideo.timestamp,
           channelName: 'Your Channel',
-          src: URL.createObjectURL(uploadedVideo.file),
-          tags: uploadedVideo.tags,
+          channelAvatar: 'https://ui-avatars.com/api/?name=Your+Channel&background=random',
+          views: '0 views',
+          timestamp: 'Just now',
+          likes: '0',
+          subscribers: '0',
+          file: uploadedVideo.file,
+          tags: uploadedVideo.tags || []
         });
+        setLoading(false);
+      } else {
+        // Otherwise fetch from mock API
+        const fetchedVideo = getVideoById(id);
+        if (fetchedVideo) {
+          setVideo(fetchedVideo);
+        }
+        setLoading(false);
       }
-      // If not an uploaded video, we keep the default mock data
     }
-  }, [location.search, uploadedVideos]);
-
+  }, [id, getVideoById, uploadedVideos]);
+  
+  // Mock recommended videos
+  const recommendedVideos = [
+    {
+      id: 'rec1',
+      title: 'How to Build a Website with React',
+      thumbnail: 'https://images.unsplash.com/photo-1593720213428-28a5b9e94613?auto=format&fit=crop&w=800&q=80',
+      channelName: 'React Masters',
+      views: '1.2M views',
+      timestamp: '2 months ago',
+      duration: '15:24',
+      description: 'Learn how to build a modern website using React and Tailwind CSS.'
+    },
+    {
+      id: 'rec2',
+      title: 'Advanced JavaScript Techniques',
+      thumbnail: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+      channelName: 'JS Wizards',
+      views: '856K views',
+      timestamp: '3 weeks ago',
+      duration: '22:15',
+      description: 'Master advanced JavaScript concepts and patterns.'
+    },
+    {
+      id: 'rec3',
+      title: 'CSS Grid Layout Tutorial',
+      thumbnail: 'https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?auto=format&fit=crop&w=800&q=80',
+      channelName: 'CSS Experts',
+      views: '450K views',
+      timestamp: '1 month ago',
+      duration: '18:30',
+      description: 'Learn how to create responsive layouts with CSS Grid.'
+    },
+    {
+      id: 'rec4',
+      title: 'TypeScript for Beginners',
+      thumbnail: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=800&q=80',
+      channelName: 'TypeScript Tutorials',
+      views: '325K views',
+      timestamp: '2 weeks ago',
+      duration: '25:42',
+      description: 'Get started with TypeScript and learn how to use it in your projects.'
+    },
+  ];
+  
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-[calc(100vh-80px)]">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      </Layout>
+    );
+  }
+  
+  if (!video) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-[calc(100vh-80px)]">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">Video not found</h2>
+            <p className="text-muted-foreground">The video you're looking for doesn't exist or has been removed.</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+  
   return (
     <Layout>
-      <div className="py-4 grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-[1600px] mx-auto px-2 sm:px-4">
-        <div className="lg:col-span-2">
-          <VideoPlayer src={videoData.src} />
-          <VideoInfo
-            title={videoData.title}
-            channelName={videoData.channelName}
-            views={videoData.views}
-            timestamp={videoData.timestamp}
-            description={videoData.description}
-            tags={videoData.tags}
-          />
-          <CommentsSection />
-        </div>
-        <div>
-          <RecommendedVideos videos={recommendedVideos} />
+      <div className="py-6 animate-fade-in">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-card rounded-lg overflow-hidden shadow-md">
+              <VideoPlayer videoFile={video.file} title={video.title} />
+            </div>
+            
+            <VideoInfo 
+              title={video.title}
+              channelName={video.channelName}
+              channelAvatar={video.channelAvatar}
+              subscribers={video.subscribers}
+              views={video.views}
+              timestamp={video.timestamp}
+              likes={video.likes}
+              tags={video.tags}
+            />
+            
+            <VideoDescription description={video.description} />
+            
+            <VideoComments videoId={video.id} />
+          </div>
+          
+          <div>
+            <RecommendedVideos videos={recommendedVideos} />
+          </div>
         </div>
       </div>
     </Layout>
