@@ -2,8 +2,8 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { FileText, Upload, Download, Search, Filter, Eye, MoreHorizontal } from 'lucide-react';
-import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from 'react-router-dom';
 
 const documentSamples = [
   {
@@ -64,13 +64,7 @@ const documentSamples = [
 
 const Documents = () => {
   const { toast } = useToast();
-  
-  const handleUpload = (files: File[]) => {
-    toast({
-      title: "Documents uploaded",
-      description: `${files.length} ${files.length === 1 ? 'document' : 'documents'} uploaded successfully.`,
-    });
-  };
+  const navigate = useNavigate();
 
   return (
     <Layout>
@@ -79,25 +73,12 @@ const Documents = () => {
           <h1 className="text-3xl font-bold">MiyTube Documents</h1>
           <button
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
-            onClick={() => {
-              document.getElementById('document-upload-input')?.click();
-            }}
+            onClick={() => navigate('/upload')}
           >
             <Upload size={18} />
             <span>Upload Document</span>
           </button>
         </div>
-        
-        <FileUploader
-          icon={FileText}
-          title="Upload and Share Documents"
-          description="Share your documents, presentations, spreadsheets, and more with the MiyTube community. Upload various file formats with no size restrictions."
-          acceptedTypes=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
-          supportedFormats={['PDF', 'DOCX', 'XLSX', 'PPTX', 'TXT']}
-          maxSize="100MB"
-          onUpload={handleUpload}
-          id="document-upload-input"
-        />
         
         <div className="flex items-center justify-between mb-6">
           <div className="relative flex-grow max-w-md">

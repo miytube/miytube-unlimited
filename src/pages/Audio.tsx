@@ -1,18 +1,13 @@
+
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Music, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
-import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from 'react-router-dom';
 
 const Audio = () => {
   const { toast } = useToast();
-  
-  const handleUpload = (files: File[]) => {
-    toast({
-      title: "Audio files uploaded",
-      description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
-    });
-  };
+  const navigate = useNavigate();
   
   const audioSamples = [
     {
@@ -65,8 +60,6 @@ const Audio = () => {
     },
   ];
 
-  const supportedAudioFormats = ['flac', 'm4a', 'mp3', 'mp4', 'ogg', 'rm', 'vqf', 'wav', 'wma'];
-
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full">
@@ -74,25 +67,12 @@ const Audio = () => {
           <h1 className="text-3xl font-bold">MiyTube Audio</h1>
           <button 
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
-            onClick={() => {
-              document.getElementById('audio-upload-input')?.click();
-            }}
+            onClick={() => navigate('/upload')}
           >
             <Upload size={18} />
             <span>Upload Audio</span>
           </button>
         </div>
-        
-        <FileUploader
-          icon={Music}
-          title="Upload and Share Audio"
-          description="Share your music, podcasts, and audio creations with the MiyTube community. Upload high-quality audio with no time restrictions."
-          acceptedTypes="audio/*"
-          supportedFormats={supportedAudioFormats}
-          maxSize="500MB"
-          onUpload={handleUpload}
-          id="audio-upload-input"
-        />
         
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-6">Featured Audio</h2>

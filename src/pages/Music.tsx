@@ -1,8 +1,8 @@
+
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { CategoryDropdown } from '@/components/categories/CategoryDropdown';
 import { Music as MusicIcon, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
-import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useNavigate } from 'react-router-dom';
@@ -12,36 +12,6 @@ const Music = () => {
   const { addUploadedVideo } = useUploadedVideos();
   const navigate = useNavigate();
   
-  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
-    if (files.length > 0) {
-      addUploadedVideo(files[0], title, description, category, subcategory, tags);
-      
-      toast({
-        title: "Music files uploaded",
-        description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
-      });
-
-      setTimeout(() => {
-        navigate('/');
-        
-        if (category) {
-          toast({
-            title: "View in category",
-            description: `View your upload in the ${category} category`,
-            action: (
-              <button
-                onClick={() => navigate(`/music/${category}`)}
-                className="text-primary hover:underline"
-              >
-                Go to category
-              </button>
-            ),
-          });
-        }
-      }, 1500);
-    }
-  };
-
   const audioSamples = [
     {
       id: 'audio1',
@@ -93,8 +63,6 @@ const Music = () => {
     },
   ];
 
-  const supportedFormats = ['mp3', 'mp4', 'flac', 'm4a', 'ogg', 'rm', 'vqf', 'wav', 'wma', 'mov', 'avi', 'webm', 'mkv'];
-
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
@@ -105,36 +73,12 @@ const Music = () => {
           </div>
           <button 
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
-            onClick={() => {
-              document.getElementById('music-upload-input')?.click();
-            }}
+            onClick={() => navigate('/upload')}
           >
             <Upload size={18} />
             <span>Upload Music</span>
           </button>
         </div>
-        
-        <FileUploader
-          icon={MusicIcon}
-          title="Upload and Share Music"
-          description="Share your music, music videos, and audio creations with the MiyTube community. Upload high-quality content with no time restrictions."
-          acceptedTypes="audio/*,video/*"
-          supportedFormats={supportedFormats}
-          maxSize="500MB"
-          onUpload={handleUpload}
-          id="music-upload-input"
-          uploadDestination="/watch?v=[video-id]"
-          categories={[
-            { id: 'pop', name: 'Pop' },
-            { id: 'rock', name: 'Rock' },
-            { id: 'hiphop', name: 'Hip Hop' },
-            { id: 'electronic', name: 'Electronic' },
-            { id: 'classical', name: 'Classical' },
-            { id: 'jazz', name: 'Jazz' },
-            { id: 'country', name: 'Country' },
-            { id: 'rnb', name: 'R&B' },
-          ]}
-        />
         
         <CategoryDropdown />
         

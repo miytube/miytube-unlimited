@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Edit, Clock, ThumbsUp, MessageSquare, Share, Bookmark, ChevronRight, Upload } from 'lucide-react';
 import { CreateBlogPost } from '@/components/blog/CreateBlogPost';
 import { useToast } from "@/hooks/use-toast";
-import { FileUploader } from '@/components/upload/FileUploader';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -80,13 +81,7 @@ const recentPosts = [
 
 const Blog = () => {
   const { toast } = useToast();
-  
-  const handleUpload = (files: File[]) => {
-    toast({
-      title: "Blog assets uploaded",
-      description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
-    });
-  };
+  const navigate = useNavigate();
   
   return (
     <Layout>
@@ -96,9 +91,7 @@ const Blog = () => {
           <div className="flex gap-2">
             <button
               className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground rounded-full hover:bg-secondary/80 transition-colors"
-              onClick={() => {
-                document.getElementById('blog-assets-upload-input')?.click();
-              }}
+              onClick={() => navigate('/upload')}
             >
               <Upload size={18} />
               <span>Upload Assets</span>
@@ -119,17 +112,6 @@ const Blog = () => {
             </Dialog>
           </div>
         </div>
-        
-        <FileUploader
-          icon={Edit}
-          title="Upload Blog Assets"
-          description="Upload images, documents, and other files to include in your blog posts."
-          acceptedTypes="image/*,.pdf,.doc,.docx"
-          supportedFormats={['JPG', 'PNG', 'WebP', 'PDF', 'DOCX']}
-          maxSize="10MB"
-          onUpload={handleUpload}
-          id="blog-assets-upload-input"
-        />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 mt-8">
           <div className="lg:col-span-2">

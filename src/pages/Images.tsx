@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Image, Upload, Grid, Plus } from 'lucide-react';
-import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const imageSamples = [
   {
@@ -54,6 +54,7 @@ const imageSamples = [
 
 const Images = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [newCategory, setNewCategory] = useState('');
   const [categories, setCategories] = useState([
     'Nature', 'Urban', 'People', 'Animals', 'Art', 'Technology', 
@@ -70,13 +71,6 @@ const Images = () => {
       });
     }
   };
-  
-  const handleUpload = (files: File[]) => {
-    toast({
-      title: "Images uploaded",
-      description: `${files.length} ${files.length === 1 ? 'image' : 'images'} uploaded successfully.`,
-    });
-  };
 
   return (
     <Layout>
@@ -85,25 +79,12 @@ const Images = () => {
           <h1 className="text-3xl font-bold">MiyTube Images</h1>
           <button 
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
-            onClick={() => {
-              document.getElementById('image-upload-input')?.click();
-            }}
+            onClick={() => navigate('/upload')}
           >
             <Upload size={18} />
             <span>Upload Images</span>
           </button>
         </div>
-        
-        <FileUploader
-          icon={Image}
-          title="Upload and Share Images"
-          description="Share your photography and artwork with the MiyTube community. Upload high-resolution images with no time restrictions."
-          acceptedTypes="image/jpeg,image/png,image/webp"
-          supportedFormats={['JPG', 'PNG', 'WebP']}
-          maxSize="50MB"
-          onUpload={handleUpload}
-          id="image-upload-input"
-        />
         
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
