@@ -33,7 +33,9 @@ export const DropZoneContent: React.FC<DropZoneContentProps> = ({
       
       <Button 
         type="button"
-        className={`mb-4 px-6 py-2 ${uploading ? 'opacity-50' : ''}`}
+        variant="default" 
+        size="lg"
+        className={`mb-4 px-8 py-3 text-base ${uploading ? 'opacity-50' : ''}`}
         disabled={uploading}
         onClick={handleBrowseClick}
       >

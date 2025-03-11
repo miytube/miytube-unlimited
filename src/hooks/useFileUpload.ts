@@ -23,7 +23,32 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
     setUploadError(null);
     setUploading(false);
     setIsDragging(false);
+
+    // Clear the file input when content type changes
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   }, [id]);
+
+  // Adding a browser-compatible way to programmatically open the file picker
+  useEffect(() => {
+    const openFilePicker = () => {
+      if (fileInputRef.current) {
+        fileInputRef.current.click();
+      }
+    };
+
+    // Exposing a method for components to call the file picker
+    if (typeof window !== 'undefined') {
+      window.openFilePicker = openFilePicker;
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        delete window.openFilePicker;
+      }
+    };
+  }, []);
 
   const validateFiles = (files: File[]) => {
     console.log('Validating files:', files);
@@ -140,7 +165,9 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
 
   const handleBrowseClick = () => {
     console.log('Browse button clicked');
-    fileInputRef.current?.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   return {
@@ -156,3 +183,10 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
     clearUploadedFiles: () => setUploadedFiles([])
   };
 };
+
+// Add this to window type
+declare global {
+  interface Window {
+    openFilePicker?: () => void;
+  }
+}
