@@ -55,7 +55,7 @@ export const contentTypes: Record<string, ContentType> = {
     name: "Music",
     icon: Music,
     description: "Upload your music tracks, covers, remixes, and audio content.",
-    acceptedTypes: "audio/*",
+    acceptedTypes: "video/*,.mp4,.mov,.webm,.avi,.flv,.mkv",
     supportedFormats: ['MP4', 'MOV', 'WebM', 'AVI', 'FLV', 'MKV'],
     maxSize: "10GB",
     categories: [
