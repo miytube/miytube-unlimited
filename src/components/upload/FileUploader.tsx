@@ -1,9 +1,11 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useFileUpload } from '@/hooks/useFileUpload';
+import { useVideoMetadata } from '@/hooks/useVideoMetadata';
 import { VideoMetadataForm } from './VideoMetadataForm';
 import { DropZone } from './DropZone';
 import { FilePreview } from './FilePreview';
+import { UploadActions } from './UploadActions';
 
 interface FileUploaderProps {
   icon: React.ElementType;
@@ -30,14 +32,19 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   uploadDestination,
   categories = []
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
-  const [videoTitle, setVideoTitle] = useState<string>('');
-  const [videoDescription, setVideoDescription] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
-  const [defaultTitle, setDefaultTitle] = useState<string>('');
-  const [defaultDescription, setDefaultDescription] = useState<string>('');
-  const [defaultCategory, setDefaultCategory] = useState<string>('');
+  const {
+    videoTitle,
+    setVideoTitle,
+    videoDescription,
+    setVideoDescription,
+    selectedCategory,
+    setSelectedCategory,
+    selectedSubcategory,
+    setSelectedSubcategory,
+    tags,
+    setTags,
+    setMetadataFromFile
+  } = useVideoMetadata();
   
   const {
     isDragging,
@@ -46,67 +53,59 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     uploadedFiles,
     fileInputRef,
     setIsDragging,
-    handleDrop: originalHandleDrop,
     handleFileSelect: originalHandleFileSelect,
     handleBrowseClick
   } = useFileUpload({ 
     supportedFormats, 
     maxSize,
     onUpload: (files) => {
-      // We'll handle the actual upload in handleUploadClick now
       console.log("Files ready for upload:", files);
     },
     id 
   });
   
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    originalHandleDrop(e);
+    e.preventDefault();
+    setIsDragging(false);
+    
     if (e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];
-      const fileName = file.name.split('.').slice(0, -1).join('.');
-      setDefaultTitle(fileName);
+      setMetadataFromFile(file);
       
-      // Set basic description based on filename
-      setDefaultDescription(`Video about ${fileName}`);
-      
-      // Extract potential tags from filename
-      const potentialTags = fileName
-        .replace(/[^a-zA-Z0-9\s]/g, ' ')
-        .split(' ')
-        .filter(word => word.length > 3)
-        .slice(0, 3);
-      
-      if (potentialTags.length > 0) {
-        setTags(potentialTags);
-      }
+      // Pass to the original file upload handler
+      const files = Array.from(e.dataTransfer.files);
+      handleFiles(files);
     }
   };
   
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    originalHandleFileSelect(e);
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      const fileName = file.name.split('.').slice(0, -1).join('.');
-      setDefaultTitle(fileName);
-      
-      // Set basic description based on filename
-      setDefaultDescription(`Video about ${fileName}`);
-      
-      // Extract potential tags from filename
-      const potentialTags = fileName
-        .replace(/[^a-zA-Z0-9\s]/g, ' ')
-        .split(' ')
-        .filter(word => word.length > 3)
-        .slice(0, 3);
-      
-      if (potentialTags.length > 0) {
-        setTags(potentialTags);
-      }
+      setMetadataFromFile(file);
     }
+    
+    // Call the original handler
+    originalHandleFileSelect(e);
+  };
+  
+  const handleFiles = (files: File[]) => {
+    // This is a simplified version that calls the hooks internal handler
+    if (fileInputRef.current) {
+      fileInputRef.current.files = createFileList(files);
+      const event = new Event('change', { bubbles: true });
+      fileInputRef.current.dispatchEvent(event);
+    }
+  };
+  
+  // Helper function to create a FileList from an array of Files
+  const createFileList = (files: File[]): FileList => {
+    const dataTransfer = new DataTransfer();
+    files.forEach(file => dataTransfer.items.add(file));
+    return dataTransfer.files;
   };
 
   const handleUploadClick = () => {
-    if (uploadedFiles.length > 0) {
+    if (uploadedFiles.length > 0 && onUpload) {
       console.log("Uploading files with metadata:", {
         files: uploadedFiles,
         title: videoTitle,
@@ -116,10 +115,14 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         tags: tags
       });
       
-      // Directly call the onUpload function with the current form values
-      if (onUpload) {
-        onUpload(uploadedFiles, videoTitle, videoDescription, selectedCategory, selectedSubcategory, tags);
-      }
+      onUpload(
+        uploadedFiles, 
+        videoTitle, 
+        videoDescription, 
+        selectedCategory, 
+        selectedSubcategory, 
+        tags
+      );
     }
   };
 
@@ -168,21 +171,16 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             tags={tags}
             setTags={setTags}
             categories={categories}
-            defaultTitle={defaultTitle}
-            defaultDescription={defaultDescription}
-            defaultCategory={defaultCategory}
+            defaultTitle={videoTitle}
+            defaultDescription={videoDescription}
+            defaultCategory={selectedCategory}
           />
           
-          <div className="mt-6 text-center">
-            <button
-              type="button"
-              className={`px-6 py-2 ${uploading ? 'bg-primary/50' : 'bg-primary'} text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-lg font-medium`}
-              disabled={uploading || !videoTitle}
-              onClick={handleUploadClick}
-            >
-              {uploading ? 'Uploading...' : 'Upload Video'}
-            </button>
-          </div>
+          <UploadActions
+            uploading={uploading}
+            isValid={!!videoTitle}
+            onUpload={handleUploadClick}
+          />
         </div>
       )}
       
