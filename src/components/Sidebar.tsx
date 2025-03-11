@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Compass, Clock, ThumbsUp, History, Film, Music, Gamepad2, Trophy, Newspaper, Flame, ShoppingBag } from 'lucide-react';
+import { Home, Compass, Film, Music, Gamepad2, Newspaper } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SidebarProps {
@@ -22,20 +22,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   const mainLinks = [
     { icon: Home, label: 'Home', path: '/' },
-    { icon: Compass, label: 'Explore', path: '/explore' },
+    { icon: Compass, label: 'Explore', path: '/' },
     { icon: Film, label: 'Shorts', path: '/shorts' },
-    { icon: Clock, label: 'Watch Later', path: '/playlist?list=WL' },
-    { icon: ThumbsUp, label: 'Liked Videos', path: '/playlist?list=LL' },
-    { icon: History, label: 'History', path: '/history' },
   ];
   
   const exploreLinks = [
-    { icon: Flame, label: 'Trending', path: '/trending' },
-    { icon: Music, label: 'Music', path: '/music' },
-    { icon: Gamepad2, label: 'Gaming', path: '/gaming' },
-    { icon: Trophy, label: 'Sports', path: '/sports' },
-    { icon: Newspaper, label: 'News', path: '/news' },
-    { icon: ShoppingBag, label: 'Shopping', path: '/shopping' },
+    { icon: Music, label: 'Audio', path: '/audio' },
+    { icon: Gamepad2, label: 'Documents', path: '/documents' },
+    { icon: Newspaper, label: 'Blog', path: '/blog' },
   ];
 
   const renderNavLink = (item: { icon: any, label: string, path: string }) => {
