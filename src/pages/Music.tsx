@@ -1,19 +1,24 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { CategoryDropdown } from '@/components/categories/CategoryDropdown';
-import { Music as MusicIcon } from 'lucide-react';
-import { Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
+import { Music as MusicIcon, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Music = () => {
   const { toast } = useToast();
+  const { addUploadedVideo } = useUploadedVideos();
   
-  const handleUpload = (files: File[]) => {
-    toast({
-      title: "Audio files uploaded",
-      description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
-    });
+  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
+    if (files.length > 0) {
+      addUploadedVideo(files[0], title, description, category, subcategory, tags);
+      
+      toast({
+        title: "Music files uploaded",
+        description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
+      });
+    }
   };
   
   const audioSamples = [
@@ -67,7 +72,7 @@ const Music = () => {
     },
   ];
 
-  const supportedAudioFormats = ['flac', 'm4a', 'mp3', 'mp4', 'ogg', 'rm', 'vqf', 'wav', 'wma'];
+  const supportedFormats = ['mp3', 'mp4', 'flac', 'm4a', 'ogg', 'rm', 'vqf', 'wav', 'wma', 'mov', 'avi', 'webm', 'mkv'];
 
   return (
     <Layout>
@@ -80,23 +85,34 @@ const Music = () => {
           <button 
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
             onClick={() => {
-              document.getElementById('audio-upload-input')?.click();
+              document.getElementById('music-upload-input')?.click();
             }}
           >
             <Upload size={18} />
-            <span>Upload Audio</span>
+            <span>Upload Music</span>
           </button>
         </div>
         
         <FileUploader
           icon={MusicIcon}
-          title="Upload and Share Audio"
-          description="Share your music, podcasts, and audio creations with the MiyTube community. Upload high-quality audio with no time restrictions."
-          acceptedTypes="audio/*"
-          supportedFormats={supportedAudioFormats}
+          title="Upload and Share Music"
+          description="Share your music, music videos, and audio creations with the MiyTube community. Upload high-quality content with no time restrictions."
+          acceptedTypes="audio/*,video/*"
+          supportedFormats={supportedFormats}
           maxSize="500MB"
           onUpload={handleUpload}
-          id="audio-upload-input"
+          id="music-upload-input"
+          uploadDestination="/watch?v=[video-id]"
+          categories={[
+            { id: 'pop', name: 'Pop' },
+            { id: 'rock', name: 'Rock' },
+            { id: 'hiphop', name: 'Hip Hop' },
+            { id: 'electronic', name: 'Electronic' },
+            { id: 'classical', name: 'Classical' },
+            { id: 'jazz', name: 'Jazz' },
+            { id: 'country', name: 'Country' },
+            { id: 'rnb', name: 'R&B' },
+          ]}
         />
         
         <CategoryDropdown />
