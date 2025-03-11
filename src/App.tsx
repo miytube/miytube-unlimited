@@ -19,6 +19,7 @@ import LongVideos from "./pages/LongVideos";
 import TalkAtCha from "./pages/TalkAtCha";
 import Shorts from "./pages/Shorts";
 import VideoUpload from "./pages/VideoUpload";
+import Upload from "./pages/Upload"; // Add the new Universal Upload page
 import Videos from "./pages/Videos";
 import Music from "./pages/Music";
 import Sports from "./pages/Sports";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/shorts" element={<Shorts />} />
             <Route path="/shorts/:id" element={<Shorts />} />
             <Route path="/upload/video" element={<VideoUpload />} />
+            <Route path="/upload" element={<Upload />} /> {/* Add the universal upload route */}
             <Route path="/videos" element={<Videos />} />
             <Route path="/videos/:category" element={<Videos />} />
             <Route path="/music" element={<Music />} />

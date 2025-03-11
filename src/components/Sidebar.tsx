@@ -1,6 +1,7 @@
+
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video } from 'lucide-react';
+import { Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video, Upload } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SidebarProps {
@@ -23,6 +24,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { id: 'home', icon: Home, label: 'Home', path: '/' },
     { id: 'explore', icon: Compass, label: 'Explore', path: '/' },
     { id: 'shorts', icon: Film, label: 'Shorts', path: '/shorts' },
+    { id: 'upload', icon: Upload, label: 'Universal Upload', path: '/upload' },
   ];
   
   const contentLinks = [

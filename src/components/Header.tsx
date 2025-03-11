@@ -95,6 +95,13 @@ export const Header = () => {
               <DropdownMenuLabel>Upload Content</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
+                <Link to="/upload" className="flex items-center gap-2 w-full font-medium text-primary">
+                  <Upload size={16} />
+                  <span>Universal Upload</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
                 <Link to="/upload/video" className="flex items-center gap-2 w-full">
                   <Video size={16} />
                   <span>Upload Video</span>
