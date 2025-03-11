@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { VideoPlayer } from './VideoPlayer';
+import { VideoCard } from '@/components/VideoCard';
 
 export const UploadedVideosSection: React.FC = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -20,25 +20,16 @@ export const UploadedVideosSection: React.FC = () => {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {uploadedVideos.map((video) => (
-          <div key={video.id} className="space-y-2">
-            <div className="relative aspect-video rounded-lg overflow-hidden">
-              <VideoPlayer 
-                title={video.title} 
-                videoFile={video.file} 
-              />
-            </div>
-            <div>
-              <h3 className="font-medium text-sm line-clamp-2">{video.title}</h3>
-              <div className="mt-1 text-sm text-muted-foreground">
-                <p>Your Channel</p>
-                <div className="flex items-center gap-1 text-xs">
-                  <span>{video.views} views</span>
-                  <span>•</span>
-                  <span>{video.timestamp}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <VideoCard
+            key={video.id}
+            id={video.id}
+            title={video.title}
+            thumbnail={video.thumbnail}
+            channelName="Your Channel"
+            views={video.views}
+            timestamp={video.timestamp}
+            duration={video.duration}
+          />
         ))}
       </div>
     </div>

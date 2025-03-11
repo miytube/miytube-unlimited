@@ -19,6 +19,10 @@ import LongVideos from "./pages/LongVideos";
 import TalkAtCha from "./pages/TalkAtCha";
 import Shorts from "./pages/Shorts";
 import VideoUpload from "./pages/VideoUpload";
+import Videos from "./pages/Videos";
+import Music from "./pages/Music";
+import Sports from "./pages/Sports";
+import Gaming from "./pages/Gaming";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +47,14 @@ const App = () => (
             <Route path="/talk-at-cha" element={<TalkAtCha />} />
             <Route path="/shorts" element={<Shorts />} />
             <Route path="/upload/video" element={<VideoUpload />} />
+            <Route path="/videos" element={<Videos />} />
+            <Route path="/videos/:category" element={<Videos />} />
+            <Route path="/music" element={<Music />} />
+            <Route path="/music/:category" element={<Music />} />
+            <Route path="/sports" element={<Sports />} />
+            <Route path="/sports/:category" element={<Sports />} />
+            <Route path="/gaming" element={<Gaming />} />
+            <Route path="/gaming/:category" element={<Gaming />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

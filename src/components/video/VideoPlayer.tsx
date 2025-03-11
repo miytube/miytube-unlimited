@@ -45,9 +45,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     if (videoRef.current) {
       videoRef.current.volume = volume;
       videoRef.current.muted = isMuted;
+      
+      // Preload metadata to prevent flickering
+      videoRef.current.preload = "metadata";
     }
   }, [volume, isMuted]);
 
+  // Clean up object URL when component unmounts
   useEffect(() => {
     if (videoFile) {
       return () => {
@@ -69,7 +73,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         className="w-full h-full object-contain"
         onClick={togglePlayPause}
         playsInline
-        preload="auto"
+        preload="metadata"
+        poster={videoFile ? undefined : "https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80"}
         controls={false}
       />
       

@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Compass, Film, Music, Gamepad2, Newspaper } from 'lucide-react';
+import { Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SidebarProps {
@@ -26,9 +26,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { id: 'shorts', icon: Film, label: 'Shorts', path: '/shorts' },
   ];
   
+  const contentLinks = [
+    { id: 'videos', icon: Video, label: 'Videos', path: '/videos' },
+    { id: 'music', icon: Music, label: 'Music', path: '/music' },
+    { id: 'sports', icon: Trophy, label: 'Sports', path: '/sports' },
+    { id: 'gaming', icon: Gamepad2, label: 'Gaming', path: '/gaming' },
+  ];
+  
   const exploreLinks = [
     { id: 'audio', icon: Music, label: 'Audio', path: '/audio' },
-    { id: 'documents', icon: Gamepad2, label: 'Documents', path: '/documents' },
+    { id: 'documents', icon: Newspaper, label: 'Documents', path: '/documents' },
     { id: 'blog', icon: Newspaper, label: 'Blog', path: '/blog' },
   ];
 
@@ -66,6 +73,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </div>
           
           <div className="border-t pt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">CONTENT</h3>
+            <div className="space-y-1">
+              {contentLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
             <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">EXPLORE</h3>
             <div className="space-y-1">
               {exploreLinks.map(renderNavLink)}
