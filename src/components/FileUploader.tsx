@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { AlertCircle } from 'lucide-react';
 
@@ -30,6 +29,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -53,7 +53,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       return false;
     }
 
-    // Check file types
     const validExtensions = supportedFormats.map(format => format.toLowerCase());
     
     for (const file of files) {
@@ -71,7 +70,6 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         return false;
       }
       
-      // Check file size (rough estimate: 1MB = 1048576 bytes)
       const maxSizeInBytes = parseInt(maxSize) * 1048576;
       if (file.size > maxSizeInBytes) {
         const errorMsg = `File too large: ${file.name}`;
@@ -137,12 +135,16 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       });
     } finally {
       setUploading(false);
-      // Clear the input
       const inputElement = document.getElementById(id || '') as HTMLInputElement;
       if (inputElement) {
         inputElement.value = '';
       }
     }
+  };
+
+  const handleBrowseClick = () => {
+    console.log('Browse button clicked');
+    fileInputRef.current?.click();
   };
 
   return (
@@ -178,23 +180,23 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           </div>
         )}
         
-        <label>
-          <input 
-            type="file" 
-            className="hidden" 
-            accept={acceptedTypes}
-            onChange={handleFileSelect}
-            disabled={uploading}
-            id={id}
-          />
-          <button 
-            type="button"
-            className={`px-4 py-2 ${uploading ? 'bg-secondary/50' : 'bg-secondary'} text-foreground rounded-md hover:bg-secondary/80 transition-colors`}
-            disabled={uploading}
-          >
-            {uploading ? 'Uploading...' : 'Select Files'}
-          </button>
-        </label>
+        <input 
+          type="file" 
+          className="hidden" 
+          accept={acceptedTypes}
+          onChange={handleFileSelect}
+          disabled={uploading}
+          id={id}
+          ref={fileInputRef}
+        />
+        <button 
+          type="button"
+          className={`px-4 py-2 ${uploading ? 'bg-secondary/50' : 'bg-secondary'} text-foreground rounded-md hover:bg-secondary/80 transition-colors`}
+          disabled={uploading}
+          onClick={handleBrowseClick}
+        >
+          {uploading ? 'Uploading...' : 'Select Files'}
+        </button>
       </div>
     </div>
   );
