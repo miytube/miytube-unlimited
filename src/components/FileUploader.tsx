@@ -30,48 +30,97 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
+    console.log('File being dragged over dropzone');
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
+    console.log('File drag left dropzone');
+  };
+
+  const validateFiles = (files: File[]) => {
+    console.log('Validating files:', files);
+    
+    if (files.length === 0) {
+      console.log('No files selected');
+      return false;
+    }
+
+    // Log file details
+    files.forEach(file => {
+      console.log('File details:', {
+        name: file.name,
+        type: file.type,
+        size: file.size
+      });
+    });
+
+    return true;
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
+    console.log('File dropped');
     
     const files = Array.from(e.dataTransfer.files);
     handleFiles(files);
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('File input change event triggered');
+    
     if (e.target.files && e.target.files.length > 0) {
       const files = Array.from(e.target.files);
       handleFiles(files);
+    } else {
+      console.log('No files selected from input');
     }
   };
 
   const handleFiles = (files: File[]) => {
+    console.log('Handling files...');
+    
+    if (!validateFiles(files)) {
+      console.log('File validation failed');
+      return;
+    }
+
     setUploading(true);
     
-    // Simulate upload process
-    setTimeout(() => {
-      setUploading(false);
+    try {
+      console.log('Starting upload process');
       
       if (onUpload) {
         onUpload(files);
       }
       
+      console.log('Upload completed successfully');
+      
       toast({
         title: "Files uploaded successfully",
         description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded.`,
       });
-    }, 1500);
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({
+        title: "Upload failed",
+        description: "There was an error uploading your files.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+      // Clear the input
+      const inputElement = document.getElementById(id || '') as HTMLInputElement;
+      if (inputElement) {
+        inputElement.value = '';
+      }
+    }
   };
 
   return (
-    <div className="bg-card p-6 rounded-lg shadow-md mb-8">
+    <div className="bg-card p-6 rounded-lg shadow-md mb-8 w-full">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
       <p className="text-muted-foreground mb-4">
         {description}
