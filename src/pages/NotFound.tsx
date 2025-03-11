@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const NotFound = () => {
   return (
     <Layout>
-      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center animate-fade-in">
+      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center animate-fade-in w-full">
         <div className="text-7xl font-bold text-primary mb-4">404</div>
         <h1 className="text-3xl font-bold mb-4">Page Not Found</h1>
         <p className="text-muted-foreground mb-8 max-w-md">

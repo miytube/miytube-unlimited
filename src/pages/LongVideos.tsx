@@ -31,7 +31,7 @@ const LongVideos = () => {
 
   return (
     <Layout>
-      <div className="py-6 animate-fade-in max-w-7xl mx-auto w-full">
+      <div className="py-6 animate-fade-in w-full">
         <LongVideosHeader onUploadClick={handleUploadClick} />
         
         <FileUploader

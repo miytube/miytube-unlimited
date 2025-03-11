@@ -35,8 +35,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className={`flex-1 overflow-y-auto transition-all duration-300 ease-in-out ${isWatchPage ? 'pt-0' : 'pt-4'} px-4 md:px-6 lg:px-8 ${isHome ? 'pb-6' : 'pb-16'}`}>
-          <div className={`w-full max-w-7xl mx-auto ${isWatchPage ? '' : 'animate-fade-in'}`}>
+        <main className="flex-1 overflow-y-auto transition-all duration-300 ease-in-out px-4 md:px-6 lg:px-8 pb-16">
+          <div className="w-full max-w-7xl mx-auto">
             {/* Category and Logo Management Buttons - only show on certain pages */}
             {!isWatchPage && location.pathname.includes('/upload') && (
               <div className="mb-6 flex flex-wrap gap-3">
