@@ -2,7 +2,7 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { FileText, Upload, Download, Search, Filter, Eye, MoreHorizontal } from 'lucide-react';
-import { FileUploader } from '@/components/FileUploader';
+import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 
 const documentSamples = [
