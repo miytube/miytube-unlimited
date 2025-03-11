@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +9,8 @@ interface VideoCardProps {
   views: string;
   timestamp: string;
   duration: string;
-  description?: string; // Added description as an optional prop
+  description?: string;
+  tags?: string[];
 }
 
 export const VideoCard: React.FC<VideoCardProps> = ({
@@ -21,6 +21,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   views,
   timestamp,
   duration,
+  tags = [],
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -45,6 +46,18 @@ export const VideoCard: React.FC<VideoCardProps> = ({
         </div>
         <div className="mt-2">
           <h3 className="font-medium text-sm line-clamp-2">{title}</h3>
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-1">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-xs bg-secondary px-1.5 py-0.5 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="mt-1 text-sm text-muted-foreground">
             <p>{channelName}</p>
             <div className="flex items-center gap-1 text-xs">

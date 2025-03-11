@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface UploadedVideo {
@@ -6,17 +5,25 @@ interface UploadedVideo {
   file: File;
   title: string;
   description: string;
-  thumbnail: string; 
+  thumbnail: string;
   timestamp: string;
   views: string;
   duration: string;
   category?: string;
   subcategory?: string;
+  tags: string[];
 }
 
 interface UploadedVideosContextType {
   uploadedVideos: UploadedVideo[];
-  addUploadedVideo: (file: File, title: string, description: string, category?: string, subcategory?: string) => void;
+  addUploadedVideo: (
+    file: File, 
+    title: string, 
+    description: string, 
+    category?: string, 
+    subcategory?: string,
+    tags?: string[]
+  ) => void;
   clearUploadedVideos: () => void;
   getVideosByCategory: (category: string, subcategory?: string) => UploadedVideo[];
 }
@@ -39,18 +46,21 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
 
   const generateThumbnail = (file: File): string => {
-    // For now, return a placeholder thumbnail
-    // In a real app, you would generate a real thumbnail from the video
     return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
   };
 
   const formatDuration = (file: File): string => {
-    // In a real app, you would get the actual duration from the video file
-    // For now, return a placeholder duration
     return '0:30';
   };
 
-  const addUploadedVideo = (file: File, title: string, description: string, category?: string, subcategory?: string) => {
+  const addUploadedVideo = (
+    file: File, 
+    title: string, 
+    description: string, 
+    category?: string, 
+    subcategory?: string,
+    tags: string[] = []
+  ) => {
     const timestamp = new Date().toLocaleDateString();
     
     const newVideo: UploadedVideo = {
@@ -64,6 +74,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       duration: formatDuration(file),
       category,
       subcategory,
+      tags,
     };
     
     setUploadedVideos((prev) => [newVideo, ...prev]);

@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { FilePreview } from './FilePreview';
 import { Select } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import { X } from 'lucide-react';
 
 interface FileUploaderProps {
   icon: React.ElementType;
@@ -12,7 +12,7 @@ interface FileUploaderProps {
   acceptedTypes: string;
   supportedFormats: string[];
   maxSize?: string;
-  onUpload?: (files: File[], title: string, description: string, category?: string, subcategory?: string) => void;
+  onUpload?: (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => void;
   id?: string;
   uploadDestination?: string;
   categories?: Array<{id: string, name: string, subcategories?: Array<{id: string, name: string}>}>;
@@ -34,6 +34,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
   const [videoTitle, setVideoTitle] = useState<string>('');
   const [videoDescription, setVideoDescription] = useState<string>('');
+  const [tags, setTags] = useState<string[]>([]);
+  const [currentTag, setCurrentTag] = useState('');
   
   const {
     isDragging,
@@ -50,13 +52,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     maxSize, 
     onUpload: (files) => {
       if (onUpload) {
-        onUpload(files, videoTitle, videoDescription, selectedCategory, selectedSubcategory);
+        onUpload(files, videoTitle, videoDescription, selectedCategory, selectedSubcategory, tags);
       }
     }, 
     id 
   });
   
-  // Custom handlers that include category information
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     originalHandleDrop(e);
   };
@@ -65,8 +66,21 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     originalHandleFileSelect(e);
   };
   
-  // Find subcategories for the selected category
   const subcategories = categories.find(cat => cat.id === selectedCategory)?.subcategories || [];
+
+  const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && currentTag.trim()) {
+      e.preventDefault();
+      if (!tags.includes(currentTag.trim())) {
+        setTags([...tags, currentTag.trim()]);
+      }
+      setCurrentTag('');
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
 
   return (
     <div className="bg-card p-6 rounded-lg shadow-md mb-8 w-full">
@@ -148,6 +162,39 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           )}
         </div>
       )}
+      
+      <div className="mb-6">
+        <label htmlFor="video-tags" className="block text-sm font-medium mb-1">
+          Tags
+        </label>
+        <div className="flex flex-wrap gap-2 mb-2">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="bg-secondary px-2 py-1 rounded-full text-sm flex items-center gap-1"
+            >
+              {tag}
+              <button
+                onClick={() => removeTag(tag)}
+                className="hover:text-destructive"
+              >
+                <X size={14} />
+              </button>
+            </span>
+          ))}
+        </div>
+        <Input
+          id="video-tags"
+          placeholder="Add tags (press Enter)"
+          value={currentTag}
+          onChange={(e) => setCurrentTag(e.target.value)}
+          onKeyDown={handleAddTag}
+          className="w-full"
+        />
+        <p className="text-xs text-muted-foreground mt-1">
+          Press Enter to add a tag
+        </p>
+      </div>
       
       <div 
         className={`border-2 border-dashed ${isDragging ? 'border-primary' : 'border-border'} rounded-lg p-8 text-center`}
