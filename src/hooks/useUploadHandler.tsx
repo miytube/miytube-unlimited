@@ -49,8 +49,8 @@ export const useUploadHandler = () => {
         description: `Your ${contentTypeName.toLowerCase()} has been processed and is now available.`,
         action: (
           <ToastAction 
-            onClick={() => navigate(redirectPath)}
             className="flex items-center gap-1"
+            onClick={() => navigate(redirectPath)}
             aria-label={`Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`}
           >
             View {viewText}
