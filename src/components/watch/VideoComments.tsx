@@ -32,7 +32,7 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
       userName: 'Alex Johnson',
       avatarUrl: '',
       timestamp: '3 days ago',
-      content: 'I've been looking for content like this for a long time. Thanks for making this!',
+      content: 'I\'ve been looking for content like this for a long time. Thanks for making this!',
       likes: 84
     }
   ];
