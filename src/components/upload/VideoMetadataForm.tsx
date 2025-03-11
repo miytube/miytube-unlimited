@@ -44,10 +44,10 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
 }) => {
   // Set default values when props change
   React.useEffect(() => {
-    if (defaultTitle) setVideoTitle(defaultTitle);
-    if (defaultDescription) setVideoDescription(defaultDescription);
-    if (defaultCategory) setSelectedCategory(defaultCategory);
-  }, [defaultTitle, defaultDescription, defaultCategory]);
+    if (defaultTitle && !videoTitle) setVideoTitle(defaultTitle);
+    if (defaultDescription && !videoDescription) setVideoDescription(defaultDescription);
+    if (defaultCategory && !selectedCategory) setSelectedCategory(defaultCategory);
+  }, [defaultTitle, defaultDescription, defaultCategory, videoTitle, videoDescription, selectedCategory]);
 
   const subcategories = categories.find(cat => cat.id === selectedCategory)?.subcategories || [];
 
@@ -59,7 +59,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
         </label>
         <Input
           id="video-title"
-          placeholder="Enter video title"
+          placeholder={defaultTitle || "Enter video title"}
           value={videoTitle}
           onChange={(e) => setVideoTitle(e.target.value)}
           className="w-full"
@@ -72,7 +72,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
         </label>
         <textarea
           id="video-description"
-          placeholder="Enter video description"
+          placeholder={defaultDescription || "Enter video description"}
           value={videoDescription}
           onChange={(e) => setVideoDescription(e.target.value)}
           className="w-full p-2 rounded-md border bg-background min-h-[100px]"

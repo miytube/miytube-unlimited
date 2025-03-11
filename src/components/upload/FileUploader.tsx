@@ -63,7 +63,22 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     originalHandleDrop(e);
     if (e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];
-      setDefaultTitle(file.name.split('.').slice(0, -1).join('.'));
+      const fileName = file.name.split('.').slice(0, -1).join('.');
+      setDefaultTitle(fileName);
+      
+      // Set basic description based on filename
+      setDefaultDescription(`Video about ${fileName}`);
+      
+      // Extract potential tags from filename
+      const potentialTags = fileName
+        .replace(/[^a-zA-Z0-9\s]/g, ' ')
+        .split(' ')
+        .filter(word => word.length > 3)
+        .slice(0, 3);
+      
+      if (potentialTags.length > 0) {
+        setTags(potentialTags);
+      }
     }
   };
   
@@ -71,20 +86,31 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     originalHandleFileSelect(e);
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      setDefaultTitle(file.name.split('.').slice(0, -1).join('.'));
+      const fileName = file.name.split('.').slice(0, -1).join('.');
+      setDefaultTitle(fileName);
+      
+      // Set basic description based on filename
+      setDefaultDescription(`Video about ${fileName}`);
+      
+      // Extract potential tags from filename
+      const potentialTags = fileName
+        .replace(/[^a-zA-Z0-9\s]/g, ' ')
+        .split(' ')
+        .filter(word => word.length > 3)
+        .slice(0, 3);
+      
+      if (potentialTags.length > 0) {
+        setTags(potentialTags);
+      }
     }
   };
 
   const handleUploadClick = () => {
-    if (uploadedFiles.length > 0 && fileInputRef.current) {
-      const event = new Event('change', { bubbles: true });
-      Object.defineProperty(event, 'target', {
-        writable: false,
-        value: {
-          files: uploadedFiles
-        }
-      });
-      fileInputRef.current.dispatchEvent(event);
+    if (uploadedFiles.length > 0) {
+      // Directly call the onUpload function with the current form values
+      if (onUpload) {
+        onUpload(uploadedFiles, videoTitle, videoDescription, selectedCategory, selectedSubcategory, tags);
+      }
     }
   };
 

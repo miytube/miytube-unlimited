@@ -46,6 +46,7 @@ const App = () => (
             <Route path="/long-videos" element={<LongVideos />} />
             <Route path="/talk-at-cha" element={<TalkAtCha />} />
             <Route path="/shorts" element={<Shorts />} />
+            <Route path="/shorts/:id" element={<Shorts />} />
             <Route path="/upload/video" element={<VideoUpload />} />
             <Route path="/videos" element={<Videos />} />
             <Route path="/videos/:category" element={<Videos />} />
