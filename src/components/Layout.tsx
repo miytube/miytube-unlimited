@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, Search, Bell, User, X, Image } from 'lucide-react';
@@ -7,7 +6,7 @@ import { Sidebar } from './Sidebar';
 import { SearchBar } from './SearchBar';
 import { Header } from './Header';
 import { Footer } from './Footer';
-import { CategoryDropdown } from './CategoryDropdown';
+import { CategoryDropdown } from './categories/CategoryDropdown';
 
 interface LayoutProps {
   children: React.ReactNode;

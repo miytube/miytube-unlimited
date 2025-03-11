@@ -167,7 +167,10 @@ const Images = () => {
             ))}
             <button 
               className="aspect-square rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-2 hover:border-primary/40 transition-colors cursor-pointer"
-              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+              onClick={() => {
+                const inputElement = document.querySelector('input[type="text"]') as HTMLInputElement;
+                if (inputElement) inputElement.focus();
+              }}
             >
               <Plus size={24} className="text-muted-foreground" />
               <span className="font-medium text-muted-foreground">Add Category</span>

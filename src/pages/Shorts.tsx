@@ -150,7 +150,10 @@ const Shorts = () => {
             ))}
             <button
               className="bg-muted/50 px-4 py-2 rounded-full font-medium text-sm border-2 border-dashed border-muted-foreground/30 flex items-center gap-1 hover:border-primary/40 transition-colors"
-              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+              onClick={() => {
+                const inputElement = document.querySelector('input[type="text"]') as HTMLInputElement;
+                if (inputElement) inputElement.focus();
+              }}
             >
               <Plus size={14} />
               <span>Add Category</span>

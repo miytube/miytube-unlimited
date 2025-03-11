@@ -120,7 +120,10 @@ const Gaming = () => {
             ))}
             <button 
               className="bg-card p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-2 hover:border-primary/40 transition-colors cursor-pointer h-full"
-              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+              onClick={() => {
+                const inputElement = document.querySelector('input[type="text"]') as HTMLInputElement;
+                if (inputElement) inputElement.focus();
+              }}
             >
               <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
                 <Plus size={24} className="text-muted-foreground" />

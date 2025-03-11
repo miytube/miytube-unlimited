@@ -106,7 +106,10 @@ const LongVideos = () => {
             ))}
             <button 
               className="bg-card p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 flex items-center gap-3 hover:border-primary/40 transition-colors cursor-pointer"
-              onClick={() => document.querySelector('input[type="text"]')?.focus()}
+              onClick={() => {
+                const inputElement = document.querySelector('input[type="text"]') as HTMLInputElement;
+                if (inputElement) inputElement.focus();
+              }}
             >
               <span className="w-8 h-8 flex items-center justify-center rounded-full bg-muted/50">
                 <Plus size={16} className="text-muted-foreground" />
