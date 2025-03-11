@@ -1,101 +1,159 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
-import { VideoCard } from '@/components/VideoCard';
-import { useParams } from 'react-router-dom';
-import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { CategoryDropdown } from '@/components/categories/CategoryDropdown';
 import { Music as MusicIcon } from 'lucide-react';
+import { Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react';
+import { FileUploader } from '@/components/upload/FileUploader';
+import { useToast } from "@/hooks/use-toast";
 
 const Music = () => {
-  const { category } = useParams<{ category: string }>();
-  const { getVideosByCategory, uploadedVideos } = useUploadedVideos();
+  const { toast } = useToast();
   
-  const musicVideos = category 
-    ? getVideosByCategory('music', category)
-    : getVideosByCategory('music');
+  const handleUpload = (files: File[]) => {
+    toast({
+      title: "Audio files uploaded",
+      description: `${files.length} ${files.length === 1 ? 'file' : 'files'} uploaded successfully.`,
+    });
+  };
   
-  console.log("Music videos:", musicVideos);
-  
-  const mockMusicVideos = [
+  const audioSamples = [
     {
-      id: 'music1',
-      title: 'Summer Vibes Mix 2023',
-      thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Mix Masters',
-      views: '1.8M',
-      timestamp: '2 weeks ago',
-      duration: '58:24',
+      id: 'audio1',
+      title: 'Ambient Electronic',
+      artist: 'Sound Waves',
+      duration: '3:24',
+      plays: '246K',
+      image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
     },
     {
-      id: 'music2',
-      title: 'Acoustic Coffee Shop Playlist',
-      thumbnail: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Acoustic Vibes',
-      views: '765K',
-      timestamp: '1 month ago',
-      duration: '1:12:30',
+      id: 'audio2',
+      title: 'Jazz Ensemble',
+      artist: 'Smooth Notes',
+      duration: '5:17',
+      plays: '128K',
+      image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
     },
     {
-      id: 'music3',
-      title: 'Classical Piano Masterpieces',
-      thumbnail: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Classical Channel',
-      views: '450K',
-      timestamp: '3 weeks ago',
-      duration: '45:12',
+      id: 'audio3',
+      title: 'Acoustic Guitar',
+      artist: 'String Melodies',
+      duration: '4:05',
+      plays: '352K',
+      image: 'https://images.unsplash.com/photo-1549213783-8284d0336c4f?auto=format&fit=crop&w=800&q=80',
     },
     {
-      id: 'music4',
-      title: 'Electronic Dance Music 2023',
-      thumbnail: 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=800&q=80',
-      channelName: 'EDM World',
-      views: '2.1M',
-      timestamp: '5 days ago',
-      duration: '1:05:45',
+      id: 'audio4',
+      title: 'Hip Hop Beat',
+      artist: 'Urban Rhythm',
+      duration: '2:58',
+      plays: '189K',
+      image: 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      id: 'audio5',
+      title: 'Piano Sonata',
+      artist: 'Classic Keys',
+      duration: '6:12',
+      plays: '275K',
+      image: 'https://images.unsplash.com/photo-1552422535-c45813c61732?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      id: 'audio6',
+      title: 'Synthwave Night',
+      artist: 'Retro Future',
+      duration: '4:32',
+      plays: '164K',
+      image: 'https://images.unsplash.com/photo-1614149162883-81628d7c9a62?auto=format&fit=crop&w=800&q=80',
     },
   ];
+
+  const supportedAudioFormats = ['flac', 'm4a', 'mp3', 'mp4', 'ogg', 'rm', 'vqf', 'wav', 'wma'];
 
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
-        <div className="flex items-center gap-3 mb-8">
-          <MusicIcon className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold">
-            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Music` : 'Music Channel'}
-          </h1>
-          <p className="text-muted-foreground ml-2">
-            Discover and enjoy the latest music videos and trending tracks
-          </p>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <MusicIcon className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold">Music</h1>
+          </div>
+          <button 
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            onClick={() => {
+              document.getElementById('audio-upload-input')?.click();
+            }}
+          >
+            <Upload size={18} />
+            <span>Upload Audio</span>
+          </button>
         </div>
         
-        {/* Display uploaded music videos if any */}
-        {musicVideos.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-medium mb-4">Your Music Uploads</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {musicVideos.map((video) => (
-                <VideoCard
-                  key={video.id}
-                  id={video.id}
-                  title={video.title}
-                  thumbnail={video.thumbnail}
-                  channelName="Your Channel"
-                  views={video.views}
-                  timestamp={video.timestamp}
-                  duration={video.duration}
-                  tags={video.tags}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        <FileUploader
+          icon={MusicIcon}
+          title="Upload and Share Audio"
+          description="Share your music, podcasts, and audio creations with the MiyTube community. Upload high-quality audio with no time restrictions."
+          acceptedTypes="audio/*"
+          supportedFormats={supportedAudioFormats}
+          maxSize="500MB"
+          onUpload={handleUpload}
+          id="audio-upload-input"
+        />
         
-        {/* Display popular music videos */}
+        <CategoryDropdown />
+        
         <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Popular Music</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {mockMusicVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
+          <h2 className="text-2xl font-semibold mb-6">Featured Audio</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {audioSamples.map((audio) => (
+              <div key={audio.id} className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow bg-card">
+                <div className="aspect-square relative overflow-hidden">
+                  <img 
+                    src={audio.image} 
+                    alt={audio.title} 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center">
+                      <Play size={24} />
+                    </button>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-medium">{audio.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-2">{audio.artist}</p>
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center gap-1 text-muted-foreground">
+                        <Clock size={14} />
+                        {audio.duration}
+                      </span>
+                      <span className="text-muted-foreground">{audio.plays} plays</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button className="text-muted-foreground hover:text-primary transition-colors">
+                        <Heart size={18} />
+                      </button>
+                      <button className="text-muted-foreground hover:text-foreground transition-colors">
+                        <MoreHorizontal size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Popular Categories</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {['Music', 'Podcasts', 'Audiobooks', 'Sound Effects', 'Meditation', 'ASMR', 'Speech', 'Educational', 'Gaming', 'Nature Sounds', 'Comedy', 'Interviews'].map((category) => (
+              <div key={category} className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+                <div className="text-center">
+                  <MusicIcon size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">{category}</div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
