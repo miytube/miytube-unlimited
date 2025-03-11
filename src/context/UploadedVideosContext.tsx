@@ -85,7 +85,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     console.log("Adding new video:", newVideo);
     console.log("With category:", category);
     
-    setUploadedVideos((prev) => [newVideo, ...prev]);
+    // Ensure the video is added correctly and immediately available for all pages
+    setUploadedVideos(prev => [newVideo, ...prev]);
   };
 
   const clearUploadedVideos = () => {
@@ -98,10 +99,13 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     
     if (subcategory) {
       return uploadedVideos.filter(
-        video => video.category === category && video.subcategory === subcategory
+        video => video.category?.toLowerCase() === category.toLowerCase() && 
+                video.subcategory?.toLowerCase() === subcategory.toLowerCase()
       );
     }
-    return uploadedVideos.filter(video => video.category === category);
+    return uploadedVideos.filter(
+      video => video.category?.toLowerCase() === category.toLowerCase()
+    );
   };
 
   return (

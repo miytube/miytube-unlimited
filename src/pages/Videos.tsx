@@ -67,14 +67,17 @@ const Videos = () => {
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <Film className="h-6 w-6 text-primary" />
-            <h1 className="text-3xl font-bold">
-              {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Videos` : 'Videos'}
-            </h1>
-          </div>
-          <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+        <div className="flex items-center gap-3 mb-8">
+          <Film className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">
+            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Videos` : 'Video Library'}
+          </h1>
+          <p className="text-muted-foreground ml-2">
+            {category 
+              ? `Browse our collection of ${category.toLowerCase()} videos` 
+              : 'Discover and enjoy a wide variety of videos in our library'}
+          </p>
+          <Link to="/upload/video" className="ml-auto flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
             <Upload size={18} />
             <span>Upload Video</span>
           </Link>

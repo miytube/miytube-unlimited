@@ -72,12 +72,13 @@ const VideoUpload = () => {
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <Upload className="h-6 w-6 text-primary" />
-            <h1 className="text-3xl font-bold">Upload Video</h1>
-          </div>
-          <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 mb-8">
+          <Upload className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-bold">Upload Video</h1>
+          <p className="text-muted-foreground ml-2">
+            Share your videos with the world
+          </p>
+          <div className="flex items-center gap-2 ml-auto">
             <Input 
               type="text"
               placeholder="New category name"
@@ -130,7 +131,10 @@ const VideoUpload = () => {
           onUpload={handleUpload}
           id="quick-upload-input"
           uploadDestination="Your Videos on Home Page and Selected Category"
-          categories={categories}
+          categories={videoCategories.map(cat => ({
+            id: cat.id,
+            name: cat.name
+          }))}
         />
         
         <div className="bg-card p-6 rounded-lg shadow-md mt-8">
