@@ -82,10 +82,10 @@ const mockVideos = [
 const Index = () => {
   return (
     <Layout>
-      <div className="space-y-8">
-        <div>
+      <div className="py-4">
+        <div className="mb-6">
           <h1 className="text-xl font-medium mb-4">Recommended</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {mockVideos.map((video) => (
               <VideoCard key={video.id} {...video} />
             ))}
@@ -94,7 +94,7 @@ const Index = () => {
 
         <div>
           <h2 className="text-xl font-medium mb-4">Trending</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {mockVideos.slice(4, 8).concat(mockVideos.slice(0, 4)).map((video) => (
               <VideoCard key={`trending-${video.id}`} {...video} />
             ))}

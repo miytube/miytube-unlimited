@@ -24,7 +24,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <article className="video-card">
+    <article className="w-full">
       <Link to={`/watch?v=${id}`} className="block">
         <div className="relative aspect-video rounded-lg overflow-hidden">
           <div className={`absolute inset-0 ${!imageLoaded ? 'lazy-image-loading' : ''}`}>
