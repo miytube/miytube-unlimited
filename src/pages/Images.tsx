@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { Image, Upload, Grid } from 'lucide-react';
@@ -61,7 +62,7 @@ const Images = () => {
 
   return (
     <Layout>
-      <div className="py-6 animate-fade-in">
+      <div className="py-6 animate-fade-in w-full">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">MiyTube Images</h1>
           <button 

@@ -1,45 +1,130 @@
 
 import React from 'react';
 import { Layout } from '@/components/Layout';
-import { Film } from 'lucide-react';
+import { Film, Upload } from 'lucide-react';
 import { ShortCard } from '@/components/ShortCard';
+import { FileUploader } from '@/components/FileUploader';
+import { useToast } from "@/hooks/use-toast";
 
 const Shorts = () => {
+  const { toast } = useToast();
+  
   // Mock data for shorts
   const mockShorts = [
-    { id: 's1', title: 'Amazing sunset views', views: '1.2M', creator: 'NatureLover', thumbnail: '/placeholder.svg' },
-    { id: 's2', title: 'Quick cooking hack', views: '4.5M', creator: 'ChefMaster', thumbnail: '/placeholder.svg' },
-    { id: 's3', title: 'Dance challenge', views: '2.8M', creator: 'DanceKing', thumbnail: '/placeholder.svg' },
-    { id: 's4', title: 'DIY home decor', views: '985K', creator: 'CraftyCreator', thumbnail: '/placeholder.svg' },
-    { id: 's5', title: 'Tech tip in 30 seconds', views: '1.5M', creator: 'TechGuru', thumbnail: '/placeholder.svg' },
-    { id: 's6', title: 'Workout of the day', views: '2.1M', creator: 'FitnessPro', thumbnail: '/placeholder.svg' },
-    { id: 's7', title: 'Cute puppy moments', views: '5.3M', creator: 'PetLover', thumbnail: '/placeholder.svg' },
-    { id: 's8', title: 'Magic trick revealed', views: '3.4M', creator: 'MagicMaster', thumbnail: '/placeholder.svg' },
+    { 
+      id: 's1', 
+      title: 'Amazing sunset views', 
+      views: '1.2M', 
+      creator: 'NatureLover', 
+      thumbnail: 'https://images.unsplash.com/photo-1532767153582-b1a0e5145009?auto=format&fit=crop&w=800&q=80' 
+    },
+    { 
+      id: 's2', 
+      title: 'Quick cooking hack', 
+      views: '4.5M', 
+      creator: 'ChefMaster', 
+      thumbnail: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?auto=format&fit=crop&w=800&q=80' 
+    },
+    { 
+      id: 's3', 
+      title: 'Dance challenge', 
+      views: '2.8M', 
+      creator: 'DanceKing', 
+      thumbnail: 'https://images.unsplash.com/photo-1535525153412-5a42439a210d?auto=format&fit=crop&w=800&q=80' 
+    },
+    { 
+      id: 's4', 
+      title: 'DIY home decor', 
+      views: '985K', 
+      creator: 'CraftyCreator', 
+      thumbnail: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80' 
+    },
+    { 
+      id: 's5', 
+      title: 'Tech tip in 30 seconds', 
+      views: '1.5M', 
+      creator: 'TechGuru', 
+      thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80' 
+    },
+    { 
+      id: 's6', 
+      title: 'Workout of the day', 
+      views: '2.1M', 
+      creator: 'FitnessPro', 
+      thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80' 
+    },
+    { 
+      id: 's7', 
+      title: 'Cute puppy moments', 
+      views: '5.3M', 
+      creator: 'PetLover', 
+      thumbnail: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=800&q=80' 
+    },
+    { 
+      id: 's8', 
+      title: 'Magic trick revealed', 
+      views: '3.4M', 
+      creator: 'MagicMaster', 
+      thumbnail: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=800&q=80' 
+    },
   ];
+
+  const handleUpload = (files: File[]) => {
+    toast({
+      title: "Short video uploaded",
+      description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
+    });
+  };
 
   return (
     <Layout>
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-2">
-          <Film className="h-6 w-6 text-primary" />
-          <h1 className="text-3xl font-bold">Shorts</h1>
+      <div className="py-6 animate-fade-in w-full">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-2">
+            <Film className="h-6 w-6 text-primary" />
+            <h1 className="text-3xl font-bold">Shorts</h1>
+          </div>
+          <button 
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            onClick={() => {
+              document.getElementById('shorts-upload-input')?.click();
+            }}
+          >
+            <Upload size={18} />
+            <span>Upload Short</span>
+          </button>
         </div>
-        <p className="text-muted-foreground">
-          Watch short, catchy videos from creators around the world.
+        
+        <p className="text-muted-foreground mb-6">
+          Watch and create short, catchy videos from creators around the world.
         </p>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {mockShorts.map((short) => (
-          <ShortCard
-            key={short.id}
-            id={short.id}
-            title={short.title}
-            thumbnail={short.thumbnail}
-            creator={short.creator}
-            views={short.views}
-          />
-        ))}
+        
+        <FileUploader
+          icon={Film}
+          title="Upload Short Video"
+          description="Share quick, engaging content up to 60 seconds long. Perfect for trends, tips, and creative moments."
+          acceptedTypes="video/*"
+          supportedFormats={['MP4', 'MOV', 'WebM']}
+          maxSize="1GB"
+          onUpload={handleUpload}
+          id="shorts-upload-input"
+        />
+        
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-6">Trending Shorts</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {mockShorts.map((short) => (
+              <ShortCard
+                key={short.id}
+                id={short.id}
+                title={short.title}
+                thumbnail={short.thumbnail}
+                creator={short.creator}
+                views={short.views}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </Layout>
   );
