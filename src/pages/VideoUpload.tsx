@@ -55,7 +55,7 @@ const VideoUpload = () => {
       addUploadedVideo(file, title || file.name, description || '', category, subcategory, tags);
     });
     
-    // Simulate upload completion
+    // Simulate upload completion and redirect to home page
     setTimeout(() => {
       toast({
         title: "Upload complete",
@@ -66,6 +66,9 @@ const VideoUpload = () => {
           </ToastAction>
         )
       });
+      
+      // Redirect to home page after upload is complete
+      navigate('/');
     }, 2000);
   };
 

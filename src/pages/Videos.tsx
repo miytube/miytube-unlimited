@@ -1,15 +1,16 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { Film, Upload, Tv, ListVideo } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { UploadedVideosSection } from '@/components/video/UploadedVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Videos = () => {
   const { category } = useParams();
   const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
+  const navigate = useNavigate();
   
   const videoCategories = [
     { id: 'trending', name: 'Trending', icon: <Tv size={24} /> },
@@ -106,6 +107,20 @@ const Videos = () => {
                 />
               ))}
             </div>
+          </div>
+        )}
+        
+        {/* Show message if no videos in category */}
+        {category && displayedVideos.length === 0 && (
+          <div className="mb-8 p-6 bg-muted/20 rounded-lg text-center">
+            <h2 className="text-xl font-medium mb-2">No videos in this category yet</h2>
+            <p className="text-muted-foreground mb-4">
+              Be the first to upload a video to the {category} category!
+            </p>
+            <Link to="/upload/video" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+              <Upload size={18} />
+              <span>Upload Video</span>
+            </Link>
           </div>
         )}
         
