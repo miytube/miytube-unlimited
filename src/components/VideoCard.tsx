@@ -24,29 +24,33 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <article className="video-card animate-scale-in w-full">
+    <article className="video-card">
       <Link to={`/watch?v=${id}`} className="block">
-        <div className="video-thumbnail w-full">
-          <div className={`w-full h-full ${!imageLoaded ? 'lazy-image-loading' : ''}`}>
+        <div className="relative aspect-video rounded-lg overflow-hidden">
+          <div className={`absolute inset-0 ${!imageLoaded ? 'lazy-image-loading' : ''}`}>
             <img
               src={thumbnail}
               alt={title}
-              className={`w-full h-full object-cover rounded-md transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`w-full h-full object-cover transition-opacity duration-300 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
               onLoad={() => setImageLoaded(true)}
               loading="lazy"
             />
           </div>
-          <span className="video-duration">{duration}</span>
+          <span className="absolute bottom-2 right-2 px-1 py-0.5 text-xs bg-black/70 text-white rounded">
+            {duration}
+          </span>
         </div>
-        <div className="video-info">
-          <h3 className="video-title">{title}</h3>
-          <div className="video-meta">
-            <span className="video-channel">{channelName}</span>
-            <span className="flex items-center gap-1">
+        <div className="mt-2">
+          <h3 className="font-medium text-sm line-clamp-2">{title}</h3>
+          <div className="mt-1 text-sm text-muted-foreground">
+            <p>{channelName}</p>
+            <div className="flex items-center gap-1 text-xs">
               <span>{views} views</span>
-              <span className="text-xs">•</span>
+              <span>•</span>
               <span>{timestamp}</span>
-            </span>
+            </div>
           </div>
         </div>
       </Link>
