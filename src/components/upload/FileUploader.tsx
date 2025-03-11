@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { VideoMetadataForm } from './VideoMetadataForm';
 import { DropZone } from './DropZone';
+import { FilePreview } from './FilePreview';
 
 interface FileUploaderProps {
   icon: React.ElementType;
@@ -52,9 +53,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     supportedFormats, 
     maxSize,
     onUpload: (files) => {
-      if (onUpload) {
-        onUpload(files, videoTitle, videoDescription, selectedCategory, selectedSubcategory, tags);
-      }
+      // We'll handle the actual upload in handleUploadClick now
+      console.log("Files ready for upload:", files);
     },
     id 
   });
@@ -107,6 +107,15 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
   const handleUploadClick = () => {
     if (uploadedFiles.length > 0) {
+      console.log("Uploading files with metadata:", {
+        files: uploadedFiles,
+        title: videoTitle,
+        description: videoDescription,
+        category: selectedCategory,
+        subcategory: selectedSubcategory,
+        tags: tags
+      });
+      
       // Directly call the onUpload function with the current form values
       if (onUpload) {
         onUpload(uploadedFiles, videoTitle, videoDescription, selectedCategory, selectedSubcategory, tags);
@@ -134,6 +143,16 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           handleBrowseClick={handleBrowseClick}
         />
       </div>
+      
+      {uploadedFiles.length > 0 && (
+        <div className="mt-4 mb-6">
+          <FilePreview 
+            uploadError={uploadError}
+            uploadDestination={uploadDestination}
+            uploadedFiles={uploadedFiles}
+          />
+        </div>
+      )}
       
       {uploadedFiles.length > 0 && (
         <div className="mb-8 animate-fade-in">

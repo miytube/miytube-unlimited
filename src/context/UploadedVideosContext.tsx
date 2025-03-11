@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface UploadedVideo {
@@ -46,10 +47,14 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
 
   const generateThumbnail = (file: File): string => {
+    // In a real app, we would generate a thumbnail from the video
+    // For now, we use a placeholder
     return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
   };
 
   const formatDuration = (file: File): string => {
+    // In a real app, we would extract the duration from the video
+    // For now, we return a placeholder
     return '0:30';
   };
 
@@ -77,6 +82,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
     };
     
+    console.log("Adding new video:", newVideo);
+    console.log("With category:", category);
+    
     setUploadedVideos((prev) => [newVideo, ...prev]);
   };
 
@@ -85,6 +93,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
   
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
+    console.log("Getting videos by category:", category);
+    console.log("Current uploaded videos:", uploadedVideos);
+    
     if (subcategory) {
       return uploadedVideos.filter(
         video => video.category === category && video.subcategory === subcategory

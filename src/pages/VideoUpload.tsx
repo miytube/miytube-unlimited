@@ -19,14 +19,16 @@ const VideoUpload = () => {
   
   const [newCategory, setNewCategory] = useState('');
   const [videoCategories, setVideoCategories] = useState([
-    { id: 'long', name: 'Long-Form Videos', icon: <Film size={20} />, description: 'Upload videos up to 10 hours in length. Perfect for lectures, tutorials, and documentaries.' },
-    { id: 'short', name: 'Short Videos', icon: <Film size={20} />, description: 'Create catchy videos up to 60 seconds. Great for trends, quick tips, and creative moments.' },
+    { id: 'music', name: 'Music', icon: <Film size={20} />, description: 'Upload your music videos, covers, or music-related content.' },
+    { id: 'gaming', name: 'Gaming', icon: <Film size={20} />, description: 'Share your gameplay, tutorials, and gaming commentary.' },
+    { id: 'sports', name: 'Sports', icon: <Film size={20} />, description: 'Upload videos related to sports, fitness, and athletic activities.' },
+    { id: 'education', name: 'Education', icon: <Film size={20} />, description: 'Share educational content, tutorials, and lectures.' },
   ]);
   
   const handleAddCategory = () => {
     if (newCategory.trim()) {
       const newCategoryObj = {
-        id: `category-${Date.now()}`,
+        id: newCategory.toLowerCase().replace(/\s+/g, '-'),
         name: newCategory,
         icon: <Film size={20} />,
         description: 'Custom video category'
@@ -40,31 +42,31 @@ const VideoUpload = () => {
     }
   };
   
-  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string) => {
-    console.log("Video upload initiated:", files, "Title:", title, "Description:", description, "Category:", category, "Subcategory:", subcategory);
+  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
+    console.log("Video upload initiated:", files, "Title:", title, "Description:", description, "Category:", category, "Subcategory:", subcategory, "Tags:", tags);
     
     toast({
       title: "Video upload started",
-      description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} in category: ${category || 'None'}`,
+      description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} ${category ? `in category: ${category}` : ''}`,
     });
     
     // Add videos to global context with category information
     files.forEach(file => {
-      addUploadedVideo(file, title || file.name, description || '', category, subcategory);
+      addUploadedVideo(file, title || file.name, description || '', category, subcategory, tags);
     });
     
     // Simulate upload completion
     setTimeout(() => {
       toast({
         title: "Upload complete",
-        description: "Your video has been processed and is now available in its category and on the home page.",
+        description: "Your video has been processed and is now available on the home page and category pages.",
         action: (
           <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
             View Home
           </ToastAction>
         )
       });
-    }, 3000);
+    }, 2000);
   };
 
   return (
@@ -91,7 +93,7 @@ const VideoUpload = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {videoCategories.map(category => (
-            <Link key={category.id} to={`/${category.id}-videos`} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <Link key={category.id} to={`/${category.id}`} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
                 {category.icon} {category.name}
               </h2>
@@ -149,8 +151,8 @@ const VideoUpload = () => {
                 <span className="font-bold text-primary">2</span>
               </div>
               <div>
-                <h3 className="font-medium">Preview</h3>
-                <p className="text-muted-foreground">Once uploaded, you can play your video directly from the home page.</p>
+                <h3 className="font-medium">Category</h3>
+                <p className="text-muted-foreground">Your video will also be available on the category page you selected (like Music, Gaming, etc.).</p>
               </div>
             </div>
             
@@ -159,8 +161,8 @@ const VideoUpload = () => {
                 <span className="font-bold text-primary">3</span>
               </div>
               <div>
-                <h3 className="font-medium">Publish</h3>
-                <p className="text-muted-foreground">Your videos will be automatically published on the home page.</p>
+                <h3 className="font-medium">Play</h3>
+                <p className="text-muted-foreground">Click on your video to watch it with our custom video player.</p>
               </div>
             </div>
           </div>

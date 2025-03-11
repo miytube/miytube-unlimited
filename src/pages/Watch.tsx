@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
 import { RecommendedVideos } from '@/components/watch/RecommendedVideos';
 import { VideoComments } from '@/components/watch/VideoComments';
@@ -10,16 +10,20 @@ import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Watch = () => {
-  const { id } = useParams<{ id: string }>();
+  const location = useLocation();
+  const videoId = new URLSearchParams(location.search).get('v');
   const { getVideoById } = useVideos();
   const { uploadedVideos } = useUploadedVideos();
   const [video, setVideo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    if (id) {
+    if (videoId) {
+      console.log("Looking for video with ID:", videoId);
+      
       // Check if it's an uploaded video first
-      const uploadedVideo = uploadedVideos.find(v => v.id === id);
+      const uploadedVideo = uploadedVideos.find(v => v.id === videoId);
+      console.log("Found uploaded video:", uploadedVideo);
       
       if (uploadedVideo) {
         setVideo({
@@ -33,19 +37,22 @@ const Watch = () => {
           likes: '0',
           subscribers: '0',
           file: uploadedVideo.file,
-          tags: uploadedVideo.tags || []
+          tags: uploadedVideo.tags || [],
+          category: uploadedVideo.category,
+          subcategory: uploadedVideo.subcategory
         });
         setLoading(false);
       } else {
         // Otherwise fetch from mock API
-        const fetchedVideo = getVideoById(id);
+        const fetchedVideo = getVideoById(videoId);
+        console.log("Found mock video:", fetchedVideo);
         if (fetchedVideo) {
           setVideo(fetchedVideo);
         }
         setLoading(false);
       }
     }
-  }, [id, getVideoById, uploadedVideos]);
+  }, [videoId, getVideoById, uploadedVideos]);
   
   // Mock recommended videos
   const recommendedVideos = [

@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Maximize } from 'lucide-react';
 import { useVideoPlayer } from './useVideoPlayer';
 import { VideoPlayerControls } from './VideoPlayerControls';
@@ -20,6 +20,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   videoFile,
   autoPlay = false
 }) => {
+  const [videoSrc, setVideoSrc] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  
   const {
     isPlaying,
     currentTime,
@@ -39,7 +42,17 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     setControlsVisible
   } = useVideoPlayer(autoPlay);
   
-  const videoSrc = videoFile ? URL.createObjectURL(videoFile) : (videoId ? getVideoSource(videoId, format) : '');
+  useEffect(() => {
+    // Set video source and handle object URL creation
+    if (videoFile) {
+      const url = URL.createObjectURL(videoFile);
+      setVideoSrc(url);
+    } else if (videoId) {
+      setVideoSrc(getVideoSource(videoId, format));
+    }
+    
+    setIsLoading(true);
+  }, [videoFile, videoId, format]);
   
   useEffect(() => {
     if (videoRef.current) {
@@ -53,12 +66,16 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   // Clean up object URL when component unmounts
   useEffect(() => {
-    if (videoFile) {
-      return () => {
+    return () => {
+      if (videoFile && videoSrc) {
         URL.revokeObjectURL(videoSrc);
-      };
-    }
+      }
+    };
   }, [videoFile, videoSrc]);
+  
+  const handleVideoLoaded = () => {
+    setIsLoading(false);
+  };
   
   return (
     <div 
@@ -67,6 +84,12 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       onMouseMove={handleMouseMove}
       onMouseLeave={() => isPlaying && setControlsVisible(false)}
     >
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      )}
+      
       <video
         ref={videoRef}
         src={videoSrc}
@@ -76,6 +99,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         preload="metadata"
         poster={videoFile ? undefined : "https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80"}
         controls={false}
+        onLoadedData={handleVideoLoaded}
+        onLoadedMetadata={handleVideoLoaded}
       />
       
       <VideoPlayerControls
