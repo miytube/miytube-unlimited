@@ -17,7 +17,7 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
       avatarUrl: '',
       timestamp: '2 days ago',
       content: 'This is an amazing video! I learned so much from this content, thank you for sharing your knowledge.',
-      likes: 128,
+      likes: 128
     },
     {
       id: '2',
@@ -25,7 +25,7 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
       avatarUrl: '',
       timestamp: '1 week ago',
       content: 'Great explanation! Could you make a follow-up video on this topic?',
-      likes: 57,
+      likes: 57
     },
     {
       id: '3',
@@ -33,8 +33,8 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
       avatarUrl: '',
       timestamp: '3 days ago',
       content: 'I've been looking for content like this for a long time. Thanks for making this!',
-      likes: 84,
-    },
+      likes: 84
+    }
   ];
   
   const handleCommentSubmit = (e: React.FormEvent) => {
