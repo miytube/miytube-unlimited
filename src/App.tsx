@@ -22,6 +22,7 @@ import VideoUpload from "./pages/VideoUpload";
 import Upload from "./pages/Upload"; // Add the new Universal Upload page
 import Videos from "./pages/Videos";
 import Music from "./pages/Music";
+import MusicUpload from "./pages/MusicUpload"; // Import the MusicUpload page
 import Sports from "./pages/Sports";
 import Gaming from "./pages/Gaming";
 
@@ -49,7 +50,8 @@ const App = () => (
             <Route path="/shorts" element={<Shorts />} />
             <Route path="/shorts/:id" element={<Shorts />} />
             <Route path="/upload/video" element={<VideoUpload />} />
-            <Route path="/upload" element={<Upload />} /> {/* Add the universal upload route */}
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/upload/music" element={<MusicUpload />} /> {/* Add the music upload route */}
             <Route path="/videos" element={<Videos />} />
             <Route path="/videos/:category" element={<Videos />} />
             <Route path="/music" element={<Music />} />
