@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { Layout } from '@/components/Layout';
 import { UploadedVideosSection } from '@/components/video/UploadedVideosSection';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
+import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 
 const mockVideos = [
   {
@@ -102,7 +102,7 @@ const Index = () => {
 
         <ShortVideosSection />
 
-        <div>
+        <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Trending</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {mockVideos.slice(4, 8).concat(mockVideos.slice(0, 4)).map((video) => (
@@ -110,6 +110,8 @@ const Index = () => {
             ))}
           </div>
         </div>
+        
+        <TrendingShortVideosSection />
       </div>
     </Layout>
   );
