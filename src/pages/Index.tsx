@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
@@ -100,7 +101,9 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Shorts sections positioned together */}
         <ShortVideosSection />
+        <TrendingShortVideosSection />
 
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Trending</h2>
@@ -110,8 +113,6 @@ const Index = () => {
             ))}
           </div>
         </div>
-        
-        <TrendingShortVideosSection />
       </div>
     </Layout>
   );
