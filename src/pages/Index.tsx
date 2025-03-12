@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { Layout } from '@/components/Layout';
 import { UploadedVideosSection } from '@/components/video/UploadedVideosSection';
+import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 
 const mockVideos = [
   {
@@ -88,6 +90,8 @@ const Index = () => {
     <Layout>
       <div className="py-4 w-full">
         <UploadedVideosSection />
+        
+        <ShortVideosSection />
         
         <div className="mb-6">
           <h1 className="text-xl font-medium mb-4">Recommended</h1>
