@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
@@ -126,12 +127,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           
           <div className="border-t mt-6 pt-4 text-xs text-muted-foreground">
             <div className="flex flex-wrap gap-x-2 px-3 mb-4">
-              <a href="#" className="hover:underline">About</a>
-              <a href="#" className="hover:underline">Press</a>
-              <a href="#" className="hover:underline">Copyright</a>
-              <a href="#" className="hover:underline">Contact</a>
-              <a href="#" className="hover:underline">Terms</a>
-              <a href="#" className="hover:underline">Privacy</a>
+              <Link to="/about" className="hover:underline">About</Link>
+              <Link to="/copyright" className="hover:underline">Copyright</Link>
+              <Link to="/contact" className="hover:underline">Contact</Link>
+              <Link to="/terms" className="hover:underline">Terms</Link>
+              <Link to="/privacy" className="hover:underline">Privacy</Link>
             </div>
             <p className="px-3">© 2023 MiyTube</p>
           </div>
