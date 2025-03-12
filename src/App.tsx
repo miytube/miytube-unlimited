@@ -36,6 +36,7 @@ import NewsAndPolitics from "./pages/NewsAndPolitics";
 import Weather from "./pages/Weather";
 import Oceans from "./pages/Oceans";
 import Disasters from "./pages/Disasters";
+import Trending from "./pages/Trending";
 
 const queryClient = new QueryClient();
 
@@ -93,6 +94,7 @@ const App = () => (
             <Route path="/oceans/:category" element={<Oceans />} />
             <Route path="/disasters" element={<Disasters />} />
             <Route path="/disasters/:category" element={<Disasters />} />
+            <Route path="/trending" element={<Trending />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

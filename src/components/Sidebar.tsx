@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video, Upload,
-  BookOpen, Moon, GraduationCap, Leaf, Smile, Globe, Cloud, Waves, Zap
+  BookOpen, Moon, GraduationCap, Leaf, Smile, Globe, Cloud, Waves, Zap, TrendingUp
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -26,6 +26,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const mainLinks = [
     { id: 'home', icon: Home, label: 'Home', path: '/' },
     { id: 'explore', icon: Compass, label: 'Explore', path: '/' },
+    { id: 'trending', icon: TrendingUp, label: 'Trending', path: '/trending' },
     { id: 'shorts', icon: Film, label: 'Shorts', path: '/shorts' },
     { id: 'upload', icon: Upload, label: 'Universal Upload', path: '/upload' },
   ];
