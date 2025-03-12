@@ -22,7 +22,7 @@ const Comedy = () => {
             </p>
           </div>
           <Link 
-            to="/upload/audio" 
+            to="/upload" 
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
           >
             <Upload size={18} />
