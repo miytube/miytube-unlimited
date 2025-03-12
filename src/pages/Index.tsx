@@ -91,8 +91,6 @@ const Index = () => {
       <div className="py-4 w-full">
         <UploadedVideosSection />
         
-        <ShortVideosSection />
-        
         <div className="mb-6">
           <h1 className="text-xl font-medium mb-4">Recommended</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -101,6 +99,8 @@ const Index = () => {
             ))}
           </div>
         </div>
+
+        <ShortVideosSection />
 
         <div>
           <h2 className="text-xl font-medium mb-4">Trending</h2>
