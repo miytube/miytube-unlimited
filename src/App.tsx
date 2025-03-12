@@ -37,6 +37,7 @@ import Weather from "./pages/Weather";
 import Oceans from "./pages/Oceans";
 import Disasters from "./pages/Disasters";
 import Trending from "./pages/Trending";
+import Channel from "./pages/Channel";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,7 @@ const App = () => (
             <Route path="/disasters" element={<Disasters />} />
             <Route path="/disasters/:category" element={<Disasters />} />
             <Route path="/trending" element={<Trending />} />
+            <Route path="/channel" element={<Channel />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
