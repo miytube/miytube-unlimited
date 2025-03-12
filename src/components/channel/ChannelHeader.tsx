@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { VideoCamera, Upload, BarChart } from 'lucide-react';
+import { Video, Upload, BarChart } from 'lucide-react';
 
 export const ChannelHeader: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ export const ChannelHeader: React.FC = () => {
       
       <div className="flex flex-wrap gap-4 mb-6">
         <Button className="gap-2">
-          <VideoCamera size={18} />
+          <Video size={18} />
           Create Content
         </Button>
         <Button variant="outline" className="gap-2">

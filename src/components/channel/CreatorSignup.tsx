@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
-import { VideoCamera, BarChart, DollarSign } from 'lucide-react';
+import { Video, BarChart, DollarSign } from 'lucide-react';
 
 export const CreatorSignup: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -62,7 +62,7 @@ export const CreatorSignup: React.FC = () => {
         <div className="space-y-6">
           <div className="flex items-start gap-4">
             <div className="bg-primary/10 p-3 rounded-lg">
-              <VideoCamera className="h-6 w-6 text-primary" />
+              <Video className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="font-semibold">Share Your Content</h3>
