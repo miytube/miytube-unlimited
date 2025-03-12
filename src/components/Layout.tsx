@@ -20,7 +20,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <LogoPlaceholder />
+      <div className="w-full bg-muted">
+        <div className="container mx-auto px-4">
+          <LogoPlaceholder />
+        </div>
+      </div>
+      
       <Header />
       
       <div className="flex flex-1 w-full">
