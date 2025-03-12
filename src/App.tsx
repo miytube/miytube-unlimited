@@ -38,6 +38,12 @@ import Oceans from "./pages/Oceans";
 import Disasters from "./pages/Disasters";
 import Trending from "./pages/Trending";
 import Channel from "./pages/Channel";
+// Import pages for about, copyright, contact, terms, and privacy
+import About from "./pages/About";
+import Copyright from "./pages/Copyright";
+import Contact from "./pages/Contact";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -97,6 +103,13 @@ const App = () => (
             <Route path="/disasters/:category" element={<Disasters />} />
             <Route path="/trending" element={<Trending />} />
             <Route path="/channel" element={<Channel />} />
+            
+            {/* Routes for about, copyright, contact, terms, and privacy pages */}
+            <Route path="/about" element={<About />} />
+            <Route path="/copyright" element={<Copyright />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

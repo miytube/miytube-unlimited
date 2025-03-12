@@ -61,11 +61,11 @@ export const Footer = () => {
           <div>
             <h3 className="font-medium mb-4">Resources</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Help Center</a></li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Help Center</Link></li>
               <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Community</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Creator Academy</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Safety Center</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Copyright</a></li>
+              <li><Link to="/copyright" className="text-muted-foreground hover:text-foreground transition-colors">Copyright</Link></li>
+              <li><Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About Us</Link></li>
             </ul>
           </div>
         </div>
@@ -73,11 +73,11 @@ export const Footer = () => {
         <div className="border-t pt-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
-              <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
+              <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+              <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
               <a href="#" className="hover:text-foreground transition-colors">Accessibility</a>
               <a href="#" className="hover:text-foreground transition-colors">Cookie Preferences</a>
-              <a href="#" className="hover:text-foreground transition-colors">Contact Us</a>
+              <Link to="/contact" className="hover:text-foreground transition-colors">Contact Us</Link>
             </div>
             <div className="text-xs text-muted-foreground">
               © 2023 MiyTube. All rights reserved.
