@@ -19,12 +19,23 @@ import LongVideos from "./pages/LongVideos";
 import TalkAtCha from "./pages/TalkAtCha";
 import Shorts from "./pages/Shorts";
 import VideoUpload from "./pages/VideoUpload";
-import Upload from "./pages/Upload"; // Add the new Universal Upload page
+import Upload from "./pages/Upload"; 
 import Videos from "./pages/Videos";
 import Music from "./pages/Music";
-import MusicUpload from "./pages/MusicUpload"; // Import the MusicUpload page
+import MusicUpload from "./pages/MusicUpload";
 import Sports from "./pages/Sports";
 import Gaming from "./pages/Gaming";
+// Import new pages
+import Podcasts from "./pages/Podcasts";
+import Audiobooks from "./pages/Audiobooks";
+import Meditation from "./pages/Meditation";
+import Educational from "./pages/Educational";
+import NatureSounds from "./pages/NatureSounds";
+import Comedy from "./pages/Comedy";
+import NewsAndPolitics from "./pages/NewsAndPolitics";
+import Weather from "./pages/Weather";
+import Oceans from "./pages/Oceans";
+import Disasters from "./pages/Disasters";
 
 const queryClient = new QueryClient();
 
@@ -51,7 +62,7 @@ const App = () => (
             <Route path="/shorts/:id" element={<Shorts />} />
             <Route path="/upload/video" element={<VideoUpload />} />
             <Route path="/upload" element={<Upload />} />
-            <Route path="/upload/music" element={<MusicUpload />} /> {/* Add the music upload route */}
+            <Route path="/upload/music" element={<MusicUpload />} />
             <Route path="/videos" element={<Videos />} />
             <Route path="/videos/:category" element={<Videos />} />
             <Route path="/music" element={<Music />} />
@@ -60,6 +71,29 @@ const App = () => (
             <Route path="/sports/:category" element={<Sports />} />
             <Route path="/gaming" element={<Gaming />} />
             <Route path="/gaming/:category" element={<Gaming />} />
+            
+            {/* New routes for the newly created pages */}
+            <Route path="/podcasts" element={<Podcasts />} />
+            <Route path="/podcasts/:category" element={<Podcasts />} />
+            <Route path="/audiobooks" element={<Audiobooks />} />
+            <Route path="/audiobooks/:category" element={<Audiobooks />} />
+            <Route path="/meditation" element={<Meditation />} />
+            <Route path="/meditation/:category" element={<Meditation />} />
+            <Route path="/educational" element={<Educational />} />
+            <Route path="/educational/:category" element={<Educational />} />
+            <Route path="/nature-sounds" element={<NatureSounds />} />
+            <Route path="/nature-sounds/:category" element={<NatureSounds />} />
+            <Route path="/comedy" element={<Comedy />} />
+            <Route path="/comedy/:category" element={<Comedy />} />
+            <Route path="/news" element={<NewsAndPolitics />} />
+            <Route path="/news/:category" element={<NewsAndPolitics />} />
+            <Route path="/weather" element={<Weather />} />
+            <Route path="/weather/:category" element={<Weather />} />
+            <Route path="/oceans" element={<Oceans />} />
+            <Route path="/oceans/:category" element={<Oceans />} />
+            <Route path="/disasters" element={<Disasters />} />
+            <Route path="/disasters/:category" element={<Disasters />} />
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

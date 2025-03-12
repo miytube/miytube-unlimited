@@ -1,7 +1,11 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, User, Home, Video, Image, FileText, Music, Newspaper, DollarSign, ShoppingCart, Upload, MessageSquare, Film } from 'lucide-react';
+import { 
+  Bell, User, Home, Video, Image, FileText, Music, Newspaper, 
+  DollarSign, ShoppingCart, Upload, MessageSquare, Film,
+  BookOpen, Moon, GraduationCap, Leaf, Smile, Globe, Cloud, Waves, Zap
+} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +13,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 
 export const Header = () => {
@@ -36,6 +44,7 @@ export const Header = () => {
             <MessageSquare size={16} />
             <span>TalkAtCha</span>
           </Link>
+          
           <DropdownMenu>
             <DropdownMenuTrigger className="text-foreground hover:text-primary transition-colors">Content</DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -51,6 +60,87 @@ export const Header = () => {
                   <span>Audio</span>
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="flex items-center gap-2">
+                  <Music size={16} />
+                  <span>Audio Categories</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>
+                    <Link to="/podcasts" className="flex items-center gap-2 w-full">
+                      <Music size={16} />
+                      <span>Podcasts</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/audiobooks" className="flex items-center gap-2 w-full">
+                      <BookOpen size={16} />
+                      <span>Audiobooks</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/meditation" className="flex items-center gap-2 w-full">
+                      <Moon size={16} />
+                      <span>Meditation</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/educational" className="flex items-center gap-2 w-full">
+                      <GraduationCap size={16} />
+                      <span>Educational</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/nature-sounds" className="flex items-center gap-2 w-full">
+                      <Leaf size={16} />
+                      <span>Nature Sounds</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/comedy" className="flex items-center gap-2 w-full">
+                      <Smile size={16} />
+                      <span>Comedy</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger className="flex items-center gap-2">
+                  <Globe size={16} />
+                  <span>News & Weather</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>
+                    <Link to="/news" className="flex items-center gap-2 w-full">
+                      <Globe size={16} />
+                      <span>News & Politics</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/weather" className="flex items-center gap-2 w-full">
+                      <Cloud size={16} />
+                      <span>Weather</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/oceans" className="flex items-center gap-2 w-full">
+                      <Waves size={16} />
+                      <span>Oceans</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/disasters" className="flex items-center gap-2 w-full">
+                      <Zap size={16} />
+                      <span>Disasters</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              
+              <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Link to="/documents" className="flex items-center gap-2 w-full">
                   <FileText size={16} />
@@ -65,6 +155,7 @@ export const Header = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          
           <DropdownMenu>
             <DropdownMenuTrigger className="text-foreground hover:text-primary transition-colors">Business</DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -121,21 +212,28 @@ export const Header = () => {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
+                <Link to="/upload/music" className="flex items-center gap-2 w-full">
+                  <Music size={16} />
+                  <span>Upload Music</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/podcasts" className="flex items-center gap-2 w-full">
+                  <Music size={16} />
+                  <span>Upload Podcast</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/audiobooks" className="flex items-center gap-2 w-full">
+                  <BookOpen size={16} />
+                  <span>Upload Audiobook</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
                 <Link to="/images" className="flex items-center gap-2 w-full">
                   <Image size={16} />
                   <span>Upload Image</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/audio" className="flex items-center gap-2 w-full">
-                  <Music size={16} />
-                  <span>Upload Audio</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/music" className="flex items-center gap-2 w-full">
-                  <Music size={16} />
-                  <span>Upload Music</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>

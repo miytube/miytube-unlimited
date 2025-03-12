@@ -1,7 +1,10 @@
 
 import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video, Upload } from 'lucide-react';
+import { 
+  Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video, Upload,
+  BookOpen, Moon, GraduationCap, Leaf, Smile, Globe, Cloud, Waves, Zap
+} from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SidebarProps {
@@ -32,6 +35,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { id: 'music', icon: Music, label: 'Music', path: '/music' },
     { id: 'sports', icon: Trophy, label: 'Sports', path: '/sports' },
     { id: 'gaming', icon: Gamepad2, label: 'Gaming', path: '/gaming' },
+  ];
+  
+  const audioLinks = [
+    { id: 'podcasts', icon: Music, label: 'Podcasts', path: '/podcasts' },
+    { id: 'audiobooks', icon: BookOpen, label: 'Audiobooks', path: '/audiobooks' },
+    { id: 'meditation', icon: Moon, label: 'Meditation', path: '/meditation' },
+    { id: 'educational', icon: GraduationCap, label: 'Educational', path: '/educational' },
+    { id: 'nature-sounds', icon: Leaf, label: 'Nature Sounds', path: '/nature-sounds' },
+    { id: 'comedy', icon: Smile, label: 'Comedy', path: '/comedy' },
+  ];
+  
+  const newsAndWeatherLinks = [
+    { id: 'news', icon: Globe, label: 'News & Politics', path: '/news' },
+    { id: 'weather', icon: Cloud, label: 'Weather', path: '/weather' },
+    { id: 'oceans', icon: Waves, label: 'Oceans', path: '/oceans' },
+    { id: 'disasters', icon: Zap, label: 'Disasters', path: '/disasters' },
   ];
   
   const exploreLinks = [
@@ -79,6 +98,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">CONTENT</h3>
             <div className="space-y-1">
               {contentLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">AUDIO</h3>
+            <div className="space-y-1">
+              {audioLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">NEWS & WEATHER</h3>
+            <div className="space-y-1">
+              {newsAndWeatherLinks.map(renderNavLink)}
             </div>
           </div>
           
