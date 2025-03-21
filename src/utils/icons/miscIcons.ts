@@ -3,7 +3,7 @@ import {
   GraduationCap, Scissors, Dog, Microscope, Pizza, 
   Utensils, Quote, Star, Gavel, House, Wrench, 
   Trophy, Zap, Cloud, Waves, Brush, Map, Wine,
-  Salad, Apple, Cookie, Chef, Bug, Fungi, Skull,
+  Salad, Apple, Cookie, Flower, Bug, Skull,
   Tv, Mountain, Snowflake, Wind, BookOpen, 
   Stethoscope, HeartPulse, School, Rocket, FlaskConical
 } from 'lucide-react';
@@ -31,10 +31,10 @@ export const miscIcons: IconMapping = {
   Wine,
   Salad, 
   Apple, 
-  Cookie, 
-  Chef,
+  Cookie,
+  Flower, // Replacing Chef
   Bug,
-  Fungi,
+  Flower, // Replacing Fungi
   Skull,
   Tv,
   Mountain,

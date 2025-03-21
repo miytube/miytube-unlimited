@@ -1,5 +1,4 @@
-
-import { Utensils, Salad, Apple, Cookie, Scale, Chef } from 'lucide-react';
+import { Utensils, Salad, Apple, Cookie, Scale } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const foodsSubcategories: SubcategoryMapping = {
@@ -15,7 +14,7 @@ export const foodsSubcategories: SubcategoryMapping = {
   'foods-cooking': {
     title: 'Cooking & Food Preparation',
     description: 'Content about cooking techniques and food preparation',
-    icon: Chef,
+    icon: Utensils,
     parent: {
       route: '/foods',
       name: 'Foods'

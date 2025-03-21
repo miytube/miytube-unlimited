@@ -2,7 +2,7 @@
 import { 
   Film, Clapperboard, Music, Headphones, 
   Speaker, Camera, FileText, Drama, Laugh, 
-  Heart, Sword, Compass, Castle, Masks, 
+  Heart, Sword, Compass, Castle, Bookmark, 
   Bomb, Scale, Medal, Flame, Flower
 } from 'lucide-react';
 import { IconMapping } from './types';
@@ -22,7 +22,7 @@ export const mediaIcons: IconMapping = {
   Sword,
   Compass,
   Castle,
-  Masks,
+  Bookmark,
   Bomb,
   Scale,
   Medal,

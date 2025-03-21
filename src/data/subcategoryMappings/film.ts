@@ -1,5 +1,4 @@
-
-import { Film, Clapperboard, Drama, Laugh, Skull, Heart, Flask, Sword, Compass, Castle, Masks, Bomb, Scale, Medal, Flame, Flower } from 'lucide-react';
+import { Film, Clapperboard, Drama, Laugh, Skull, Heart, FlaskConical, Sword, Compass, Castle, Bookmark, Bomb, Scale, Medal, Flame, Flower } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const filmSubcategories: SubcategoryMapping = {
@@ -42,7 +41,7 @@ export const filmSubcategories: SubcategoryMapping = {
   'film-comedy-drama-crime': {
     title: 'Comedy, Drama & Crime',
     description: 'Films combining comedy, drama, and crime elements',
-    icon: Masks,
+    icon: Bookmark,
     parent: {
       route: '/film',
       name: 'Film'
@@ -105,7 +104,7 @@ export const filmSubcategories: SubcategoryMapping = {
   'film-scientific': {
     title: 'Scientific Films',
     description: 'Films with scientific themes and concepts',
-    icon: Flask,
+    icon: FlaskConical,
     parent: {
       route: '/film',
       name: 'Film'
@@ -168,7 +167,7 @@ export const filmSubcategories: SubcategoryMapping = {
   'film-animation-comedy-crime': {
     title: 'Comedy & Crime Animation',
     description: 'Animated films combining comedy and crime elements',
-    icon: Masks,
+    icon: Bookmark,
     parent: {
       route: '/film-animation',
       name: 'Film & Animation'
