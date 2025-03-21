@@ -1,0 +1,58 @@
+
+import { SubcategoryMapping } from './types';
+import { sportsSubcategories } from './sports';
+import { businessSubcategories } from './business';
+import { carsSubcategories } from './cars';
+import { fitnessSubcategories } from './fitness';
+import { comedySubcategories } from './comedy';
+import { relationshipsSubcategories } from './relationships';
+import { disastersSubcategories } from './disasters';
+import { educationSubcategories } from './education';
+import { courtsSubcategories } from './courts';
+import { documentsSubcategories } from './documents';
+import { shippingSubcategories } from './shipping';
+import { cosmeticsSubcategories } from './cosmetics';
+import { danceSubcategories } from './dance';
+import { drinksSubcategories } from './drinks';
+import { dronesSubcategories } from './drones';
+
+// Merge all subcategory mappings
+export const subcategoryMappings: SubcategoryMapping = {
+  ...sportsSubcategories,
+  ...businessSubcategories,
+  ...carsSubcategories,
+  ...fitnessSubcategories,
+  ...comedySubcategories,
+  ...relationshipsSubcategories,
+  ...disastersSubcategories,
+  ...educationSubcategories,
+  ...courtsSubcategories,
+  ...documentsSubcategories,
+  ...shippingSubcategories,
+  ...cosmeticsSubcategories,
+  ...danceSubcategories,
+  ...drinksSubcategories,
+  ...dronesSubcategories,
+};
+
+// Re-export types
+export type { SubcategoryInfo, SubcategoryMapping } from './types';
+
+// Re-export individual subcategory groups
+export {
+  sportsSubcategories,
+  businessSubcategories,
+  carsSubcategories,
+  fitnessSubcategories,
+  comedySubcategories,
+  relationshipsSubcategories,
+  disastersSubcategories,
+  educationSubcategories,
+  courtsSubcategories,
+  documentsSubcategories,
+  shippingSubcategories,
+  cosmeticsSubcategories,
+  danceSubcategories,
+  drinksSubcategories,
+  dronesSubcategories
+};
