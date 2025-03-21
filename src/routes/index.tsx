@@ -140,6 +140,11 @@ const AppRoutes = () => {
       <Route path="/real-estate" element={<CategoryPage category="Real Estate" icon="House" />} />
       <Route path="/shipping-ports" element={<CategoryPage category="Shipping Ports" icon="Anchor" />} />
       <Route path="/shipping" element={<CategoryPage category="Shipping" icon="Truck" />} />
+      <Route path="/fitness" element={<CategoryPage category="Fitness" icon="Dumbbell" />} />
+      <Route path="/cosmetics" element={<CategoryPage category="Cosmetics" icon="Brush" />} />
+      <Route path="/dance" element={<CategoryPage category="Dance" icon="Music" />} />
+      <Route path="/drinks" element={<CategoryPage category="Drinks" icon="Wine" />} />
+      <Route path="/drones" element={<CategoryPage category="Drones" icon="Plane" />} />
       
       {/* Sports/Boxing Routes */}
       <Route path="/sports/boxing" element={<BoxingPage />} />
@@ -172,6 +177,11 @@ const AppRoutes = () => {
       <Route path="/cars/strange" element={<GenericSubcategoryPage />} />
       <Route path="/cars/supercars" element={<GenericSubcategoryPage />} />
       <Route path="/cars/accidents" element={<GenericSubcategoryPage />} />
+      <Route path="/cars/crashes" element={<GenericSubcategoryPage />} />
+      <Route path="/cars/motorcycles" element={<GenericSubcategoryPage />} />
+      
+      {/* Fitness Routes */}
+      <Route path="/fitness/calisthenics" element={<GenericSubcategoryPage />} />
       
       {/* Comedy Routes */}
       <Route path="/comedy/standup" element={<GenericSubcategoryPage />} />
@@ -179,6 +189,7 @@ const AppRoutes = () => {
       <Route path="/comedy/snl" element={<GenericSubcategoryPage />} />
       <Route path="/comedy/sitcom" element={<GenericSubcategoryPage />} />
       <Route path="/comedy/pranks" element={<GenericSubcategoryPage />} />
+      <Route path="/comedy/interviews" element={<GenericSubcategoryPage />} />
       
       {/* Dating Routes */}
       <Route path="/relationships/dating" element={<GenericSubcategoryPage />} />
@@ -207,11 +218,29 @@ const AppRoutes = () => {
       <Route path="/courts-police/supreme-court" element={<GenericSubcategoryPage />} />
       <Route path="/courts-police/fraud" element={<GenericSubcategoryPage />} />
       <Route path="/courts-police/gangs" element={<GenericSubcategoryPage />} />
-      
+      <Route path="/courts-police/crime" element={<GenericSubcategoryPage />} />
+      <Route path="/courts-police/enterprises" element={<GenericSubcategoryPage />} />
+
       {/* Documents & Media Routes */}
       <Route path="/documents/word" element={<GenericSubcategoryPage />} />
       <Route path="/documents/excel" element={<GenericSubcategoryPage />} />
       <Route path="/documents/writing" element={<GenericSubcategoryPage />} />
+      
+      {/* Shipping Routes */}
+      <Route path="/shipping/container-ships" element={<GenericSubcategoryPage />} />
+      
+      {/* Cosmetics Routes */}
+      <Route path="/cosmetics/foundation" element={<GenericSubcategoryPage />} />
+      <Route path="/cosmetics/lipstick" element={<GenericSubcategoryPage />} />
+      
+      {/* Dance Routes */}
+      <Route path="/dance/styles" element={<GenericSubcategoryPage />} />
+      
+      {/* Drinks Routes */}
+      <Route path="/drinks/alcohol" element={<GenericSubcategoryPage />} />
+      
+      {/* Drones Routes */}
+      <Route path="/drones/civilian" element={<GenericSubcategoryPage />} />
 
       {/* Entertainment Routes */}
       <Route path="/entertainment/acting" element={<SubcategoryPage category="Entertainment" subcategory="Acting (Off Script, Unscripted)" parentCategory="Entertainment" icon={Film} />} />
@@ -260,7 +289,6 @@ const AppRoutes = () => {
       
       {/* Boats Routes */}
       <Route path="/boats/all" element={<SubcategoryPage category="Boats" subcategory="All Boats" parentCategory="Boats" icon={Ship} />} />
-      <Route path="/shipping/container-ships" element={<GenericSubcategoryPage />} />
       
       {/* Catch-all Route */}
       <Route path="*" element={<NotFound />} />

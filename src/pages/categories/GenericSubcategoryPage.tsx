@@ -9,7 +9,8 @@ import {
   Microscope, Plane, Pizza, Utensils, Quote, Clapperboard, Star, 
   Gavel, Ship, UserRound, House, Anchor, Truck, BarChart, Wrench,
   Bitcoin, Trophy, Smile, Zap, Cloud, Waves, Music, MessageSquare,
-  LucideIcon
+  Dumbbell, Camera, Brush, Map, Headphones, Speaker, FileText,
+  Wine, Globe, ShoppingCart, Shirt, BarChart4, LucideIcon
 } from 'lucide-react';
 
 interface SubcategoryMapping {
@@ -32,7 +33,9 @@ const GenericSubcategoryPage = () => {
     Car, GraduationCap, Film, Scissors, HeartHandshake, Users, Dog, 
     Microscope, Plane, Pizza, Utensils, Quote, Clapperboard, Star, 
     Gavel, Ship, UserRound, House, Anchor, Truck, BarChart, Wrench,
-    Bitcoin, Trophy, Smile, Zap, Cloud, Waves, Music, MessageSquare
+    Bitcoin, Trophy, Smile, Zap, Cloud, Waves, Music, MessageSquare,
+    Dumbbell, Camera, Brush, Map, Headphones, Speaker, FileText,
+    Wine, Globe, ShoppingCart, Shirt, BarChart4
   };
   
   // This mapping can be expanded with all subcategories
@@ -97,13 +100,13 @@ const GenericSubcategoryPage = () => {
     'business-commerce': {
       title: 'Commerce & Trade',
       description: 'Commercial business, trade practices and logistics',
-      icon: BarChart,
+      icon: ShoppingCart,
       parent: { route: '/business', name: 'Business' }
     },
     'business-internet': {
       title: 'Internet Business',
       description: 'Online platforms, coding solutions and web services',
-      icon: BarChart,
+      icon: Globe,
       parent: { route: '/business', name: 'Business' }
     },
     
@@ -174,6 +177,26 @@ const GenericSubcategoryPage = () => {
       icon: Car,
       parent: { route: '/cars', name: 'Cars' }
     },
+    'cars-crashes': {
+      title: 'Vehicle Crashes',
+      description: 'Cars, trucks, and motorcycle crashes and accidents',
+      icon: Car,
+      parent: { route: '/cars', name: 'Cars' }
+    },
+    'cars-motorcycles': {
+      title: 'Cars, Trucks & Motorcycles',
+      description: 'Various vehicle types and transportation methods',
+      icon: Car,
+      parent: { route: '/cars', name: 'Cars' }
+    },
+    
+    // Fitness subcategories
+    'fitness-calisthenics': {
+      title: 'Calisthenics Workout',
+      description: 'Bodyweight exercises, street workouts and calisthenics training',
+      icon: Dumbbell,
+      parent: { route: '/fitness', name: 'Fitness' }
+    },
     
     // Comedy Routes
     'comedy-standup': {
@@ -203,6 +226,12 @@ const GenericSubcategoryPage = () => {
     'comedy-pranks': {
       title: 'Pranks & Funny Videos',
       description: 'Practical jokes, pranks and humorous clips',
+      icon: Smile,
+      parent: { route: '/comedy', name: 'Comedy' }
+    },
+    'comedy-interviews': {
+      title: 'Comedian Interviews',
+      description: 'Interviews with comedians, backstage content and work discussions',
       icon: Smile,
       parent: { route: '/comedy', name: 'Comedy' }
     },
@@ -334,31 +363,83 @@ const GenericSubcategoryPage = () => {
       icon: Gavel,
       parent: { route: '/courts-police', name: 'Courts & Police' }
     },
+    'courts-police-crime': {
+      title: 'Crime',
+      description: 'Criminal activities, definitions and consequences',
+      icon: Gavel,
+      parent: { route: '/courts-police', name: 'Courts & Police' }
+    },
+    'courts-police-enterprises': {
+      title: 'Criminal Enterprises',
+      description: 'Organized crime operations and criminal business activities',
+      icon: Gavel,
+      parent: { route: '/courts-police', name: 'Courts & Police' }
+    },
     
     // Documents & Media Routes
     'documents-word': {
       title: 'Word Processing',
       description: 'Microsoft Word tutorials, templates and tips',
-      icon: Microscope,
+      icon: FileText,
       parent: { route: '/documents', name: 'Documents' }
     },
     'documents-excel': {
       title: 'Excel Spreadsheets',
       description: 'Microsoft Excel tutorials, formulas and data analysis',
-      icon: Microscope,
+      icon: FileText,
       parent: { route: '/documents', name: 'Documents' }
     },
     'documents-writing': {
       title: 'Writing & Composition',
       description: 'Writing techniques, styles and document creation',
-      icon: Microscope,
+      icon: FileText,
       parent: { route: '/documents', name: 'Documents' }
     },
+    
+    // Shipping and Container Routes
     'shipping-container-ships': {
       title: 'Container Ships',
       description: 'Container vessels, oil tankers and commercial shipping',
       icon: Ship,
       parent: { route: '/shipping', name: 'Shipping' }
+    },
+    
+    // Cosmetics Routes
+    'cosmetics-foundation': {
+      title: 'Foundation & Powders',
+      description: 'Makeup foundations, powders and base products',
+      icon: Brush,
+      parent: { route: '/cosmetics', name: 'Cosmetics' }
+    },
+    'cosmetics-lipstick': {
+      title: 'Lipstick & Makeup',
+      description: 'Lipsticks, lip products and general makeup tutorials',
+      icon: Brush,
+      parent: { route: '/cosmetics', name: 'Cosmetics' }
+    },
+    
+    // Dance Routes
+    'dance-styles': {
+      title: 'Dance Styles',
+      description: 'Various dance styles, choreography and performance',
+      icon: Music,
+      parent: { route: '/dance', name: 'Dance' }
+    },
+    
+    // Drinks Routes
+    'drinks-alcohol': {
+      title: 'Alcoholic & Non-Alcoholic Drinks',
+      description: 'Drink recipes, mixing tutorials and beverage information',
+      icon: Wine,
+      parent: { route: '/drinks', name: 'Drinks' }
+    },
+    
+    // Drone Routes
+    'drones-civilian': {
+      title: 'Civilian Drones',
+      description: 'Consumer drones, remote controlled aircraft and aerial photography',
+      icon: Plane,
+      parent: { route: '/drones', name: 'Drones' }
     },
   };
   
