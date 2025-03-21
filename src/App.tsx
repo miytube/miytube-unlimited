@@ -49,6 +49,14 @@ import Privacy from "./pages/Privacy";
 import CategoryPage from "./pages/CategoryPage";
 import SubcategoryPage from "./components/SubcategoryPage";
 
+// Import new category pages
+import GenericSubcategoryPage from "./pages/categories/GenericSubcategoryPage";
+import BoxingPage from "./pages/categories/sports/BoxingPage";
+import BusinessPage from "./pages/categories/business/BusinessPage";
+import CryptocurrencyPage from "./pages/categories/business/CryptocurrencyPage";
+import CarsPage from "./pages/categories/cars/CarsPage";
+import CarRepairsPage from "./pages/categories/cars/CarRepairsPage";
+
 // Import icons
 import { 
   Film, GraduationCap, Car, Scissors, HeartHandshake, Users, Dog, 
@@ -145,8 +153,80 @@ const App = () => (
             <Route path="/shipping-ports" element={<CategoryPage category="Shipping Ports" icon="Anchor" />} />
             <Route path="/shipping" element={<CategoryPage category="Shipping" icon="Truck" />} />
 
-            {/* NEW SUBCATEGORY ROUTES */}
+            {/* NEW CATEGORY ROUTES */}
             
+            {/* Sports / Boxing routes */}
+            <Route path="/sports/boxing" element={<BoxingPage />} />
+            <Route path="/sports/boxing/professional" element={<GenericSubcategoryPage />} />
+            <Route path="/sports/boxing/street-fighting" element={<GenericSubcategoryPage />} />
+            <Route path="/sports/boxing/training" element={<GenericSubcategoryPage />} />
+            <Route path="/sports/boxing/amateur" element={<GenericSubcategoryPage />} />
+            
+            {/* Business routes */}
+            <Route path="/business" element={<BusinessPage />} />
+            <Route path="/business/cryptocurrency" element={<CryptocurrencyPage />} />
+            <Route path="/business/leadership" element={<GenericSubcategoryPage />} />
+            <Route path="/business/finance" element={<GenericSubcategoryPage />} />
+            <Route path="/business/services" element={<GenericSubcategoryPage />} />
+            <Route path="/business/farming" element={<GenericSubcategoryPage />} />
+            <Route path="/business/commerce" element={<GenericSubcategoryPage />} />
+            <Route path="/business/internet" element={<GenericSubcategoryPage />} />
+            
+            {/* Cars routes */}
+            <Route path="/cars" element={<CarsPage />} />
+            <Route path="/cars/repairs" element={<CarRepairsPage />} />
+            <Route path="/cars/repairs/major" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/repairs/minor" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/repairs/hacks" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/repairs/maintenance" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/drifting" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/expensive" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/future" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/types" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/strange" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/supercars" element={<GenericSubcategoryPage />} />
+            <Route path="/cars/accidents" element={<GenericSubcategoryPage />} />
+            
+            {/* Comedy routes */}
+            <Route path="/comedy/standup" element={<GenericSubcategoryPage />} />
+            <Route path="/comedy/roasts" element={<GenericSubcategoryPage />} />
+            <Route path="/comedy/snl" element={<GenericSubcategoryPage />} />
+            <Route path="/comedy/sitcom" element={<GenericSubcategoryPage />} />
+            <Route path="/comedy/pranks" element={<GenericSubcategoryPage />} />
+            
+            {/* Dating routes */}
+            <Route path="/relationships/dating" element={<GenericSubcategoryPage />} />
+            <Route path="/relationships/breakups" element={<GenericSubcategoryPage />} />
+            <Route path="/relationships/flirting" element={<GenericSubcategoryPage />} />
+            <Route path="/relationships/singles" element={<GenericSubcategoryPage />} />
+            <Route path="/relationships/divorce" element={<GenericSubcategoryPage />} />
+            
+            {/* Disasters routes */}
+            <Route path="/disasters/avalanche" element={<GenericSubcategoryPage />} />
+            <Route path="/disasters/earthquakes" element={<GenericSubcategoryPage />} />
+            <Route path="/disasters/fires" element={<GenericSubcategoryPage />} />
+            <Route path="/disasters/hurricanes" element={<GenericSubcategoryPage />} />
+            <Route path="/disasters/volcano" element={<GenericSubcategoryPage />} />
+            
+            {/* Education routes */}
+            <Route path="/education/anatomy" element={<GenericSubcategoryPage />} />
+            <Route path="/education/countries-history" element={<GenericSubcategoryPage />} />
+            <Route path="/education/immigration" element={<GenericSubcategoryPage />} />
+            <Route path="/education/geography" element={<GenericSubcategoryPage />} />
+            <Route path="/education/laws" element={<GenericSubcategoryPage />} />
+            
+            {/* Courts & Crime routes */}
+            <Route path="/courts-police/trails" element={<GenericSubcategoryPage />} />
+            <Route path="/courts-police/sentencing" element={<GenericSubcategoryPage />} />
+            <Route path="/courts-police/supreme-court" element={<GenericSubcategoryPage />} />
+            <Route path="/courts-police/fraud" element={<GenericSubcategoryPage />} />
+            <Route path="/courts-police/gangs" element={<GenericSubcategoryPage />} />
+            
+            {/* Documents & Media routes */}
+            <Route path="/documents/word" element={<GenericSubcategoryPage />} />
+            <Route path="/documents/excel" element={<GenericSubcategoryPage />} />
+            <Route path="/documents/writing" element={<GenericSubcategoryPage />} />
+
             {/* Entertainment Subcategories */}
             <Route path="/entertainment/acting" element={<SubcategoryPage category="Entertainment" subcategory="Acting (Off Script, Unscripted)" parentCategory="Entertainment" icon={Film} />} />
             <Route path="/entertainment/actors-actress" element={<SubcategoryPage category="Entertainment" subcategory="Actors & Actresses (Bios)" parentCategory="Entertainment" icon={Film} />} />
@@ -192,11 +272,9 @@ const App = () => (
             <Route path="/science-tech/humanoid-robots" element={<SubcategoryPage category="Science & Technology" subcategory="Humanoid Robots" parentCategory="Science & Technology" icon={Microscope} />} />
             <Route path="/science-tech/robots" element={<SubcategoryPage category="Science & Technology" subcategory="Robots" parentCategory="Science & Technology" icon={Microscope} />} />
             
-            {/* Disaster Subcategories */}
-            <Route path="/disasters/avalanche" element={<SubcategoryPage category="Disasters" subcategory="Avalanche" parentCategory="Disasters" icon={Globe} />} />
-            
             {/* Boats Subcategory */}
             <Route path="/boats/all" element={<SubcategoryPage category="Boats" subcategory="All Boats" parentCategory="Boats" icon={Ship} />} />
+            <Route path="/shipping/container-ships" element={<GenericSubcategoryPage />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
