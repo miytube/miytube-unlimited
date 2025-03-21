@@ -4,6 +4,12 @@ import { SubcategoryMapping } from './types';
 
 export const courtsSubcategories: SubcategoryMapping = {
   // Courts & Crime Routes
+  'courts-police': {
+    title: 'Courts & Police',
+    description: 'Legal proceedings, law enforcement and the justice system',
+    icon: Gavel,
+    parent: { route: '/courts', name: 'Courts' }
+  },
   'courts-police-trails': {
     title: 'Court Trials',
     description: 'Court proceedings, trials and legal procedures',

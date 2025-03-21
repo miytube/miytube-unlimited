@@ -2,7 +2,7 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, Film, AlertCircle } from 'lucide-react';
+import { Home, Search, Film, AlertCircle, GraduationCap, Clapperboard, Gavel, Microscope, Mountain, Utensils, Laugh, Music } from 'lucide-react';
 
 const NotFound = () => {
   const location = useLocation();
@@ -54,6 +54,12 @@ const NotFound = () => {
           <Link to="/film" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Film
           </Link>
+          <Link to="/film-animation" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Film & Animation
+          </Link>
+          <Link to="/film-movies" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Film & Movies
+          </Link>
           <Link to="/foods" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Foods
           </Link>
@@ -63,11 +69,17 @@ const NotFound = () => {
           <Link to="/courts" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Courts
           </Link>
+          <Link to="/courts-police" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Courts & Police
+          </Link>
           <Link to="/funny" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Funny
           </Link>
           <Link to="/sports" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Sports
+          </Link>
+          <Link to="/science-tech" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Science & Tech
           </Link>
         </div>
       </div>

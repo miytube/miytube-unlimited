@@ -72,6 +72,7 @@ export const newSubcategoryRoutes = [
   <Route key="funny-weird" path="/funny/weird" element={<GenericSubcategoryPage />} />,
   
   /* Additional Routes (to fix 404s) */
-  <Route key="courts-police" path="/courts/police" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police" path="/courts-police" element={<GenericSubcategoryPage />} />,
   <Route key="courts-general" path="/courts" element={<GenericSubcategoryPage />} />,
+  <Route key="science-tech" path="/science-tech" element={<GenericSubcategoryPage />} />,
 ];

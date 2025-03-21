@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Image, Music, FileText, Newspaper, Film, Utensils, GraduationCap, Laugh, Clapperboard, Mountain } from 'lucide-react';
+import { Image, Music, FileText, Newspaper, Film, Utensils, GraduationCap, Laugh, Clapperboard, Mountain, Microscope, Gavel } from 'lucide-react';
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 export const MainContentLinks: React.FC = () => {
@@ -68,6 +68,24 @@ export const MainContentLinks: React.FC = () => {
         <Link to="/funny" className="flex items-center gap-2 w-full">
           <Laugh size={16} />
           <span>Funny</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/courts" className="flex items-center gap-2 w-full">
+          <Gavel size={16} />
+          <span>Courts</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/courts-police" className="flex items-center gap-2 w-full">
+          <Gavel size={16} />
+          <span>Courts & Police</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/science-tech" className="flex items-center gap-2 w-full">
+          <Microscope size={16} />
+          <span>Science & Technology</span>
         </Link>
       </DropdownMenuItem>
     </>

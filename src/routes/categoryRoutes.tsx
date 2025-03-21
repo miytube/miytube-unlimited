@@ -40,4 +40,6 @@ export const categoryRoutes = [
   <Route key="weather" path="/weather" element={<Weather />} />,
   <Route key="disasters" path="/disasters" element={<Disasters />} />,
   <Route key="courts" path="/courts" element={<CategoryPage category="Courts" icon="Gavel" />} />,
+  <Route key="courts-police" path="/courts-police" element={<CategoryPage category="Courts & Police" icon="Gavel" />} />,
+  <Route key="science-tech" path="/science-tech" element={<CategoryPage category="Science & Technology" icon="Microscope" />} />,
 ];
