@@ -1,12 +1,12 @@
 
-import { Flower, Skull } from 'lucide-react';
+import { Mountain, Skull } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const fungiSubcategories: SubcategoryMapping = {
   'fungi-general': {
     title: 'Fungi',
     description: 'Content about different types of fungi',
-    icon: Flower,
+    icon: Mountain,
     parent: {
       route: '/fungi',
       name: 'Fungi'

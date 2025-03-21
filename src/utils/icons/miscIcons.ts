@@ -32,12 +32,12 @@ export const miscIcons: IconMapping = {
   Salad, 
   Apple, 
   Cookie,
-  Flower, // Replacing Chef
-  Bug,
-  Flower, // Replacing Fungi
+  Flower,  // Using Flower for Chef/Flora representation
+  Bug,      // For insects/bugs
+  Mountain, // Alternative icon for Fungi (representing nature)
   Skull,
   Tv,
-  Mountain,
+  // Mountain was moved up, so removing duplicate
   Snowflake,
   Wind,
   BookOpen,
