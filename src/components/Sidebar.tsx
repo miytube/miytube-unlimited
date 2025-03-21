@@ -4,7 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, Compass, Film, Music, Gamepad2, Newspaper, Trophy, Video, Upload,
   BookOpen, Moon, GraduationCap, Leaf, Smile, Globe, Cloud, Waves, Zap, TrendingUp,
-  UserCircle
+  UserCircle, Car, Scissors, Heart, Users, Dog, Microscope, Plane, Pizza, Utensils,
+  Quote, Clapperboard, Star, CloudLightning, Gavel, Fish, Ship, HeartHandshake, 
+  Building, House, Anchor, UserRound, Truck
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -33,31 +35,64 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { id: 'channel', icon: UserCircle, label: 'Your Channel', path: '/channel' },
   ];
   
-  const contentLinks = [
+  const videoAndEntertainmentLinks = [
     { id: 'videos', icon: Video, label: 'Videos', path: '/videos' },
-    { id: 'music', icon: Music, label: 'Music', path: '/music' },
-    { id: 'sports', icon: Trophy, label: 'Sports', path: '/sports' },
+    { id: 'film-animation', icon: Clapperboard, label: 'Film & Animation', path: '/film-animation' },
+    { id: 'entertainment', icon: Film, label: 'Entertainment', path: '/entertainment' },
+    { id: 'comedy', icon: Smile, label: 'Comedy', path: '/comedy' },
     { id: 'gaming', icon: Gamepad2, label: 'Gaming', path: '/gaming' },
+    { id: 'sports', icon: Trophy, label: 'Sports', path: '/sports' },
   ];
   
-  const audioLinks = [
+  const educationAndInformationLinks = [
+    { id: 'education', icon: GraduationCap, label: 'Education', path: '/education' },
+    { id: 'how-to-style', icon: Scissors, label: 'How-to & Style', path: '/how-to-style' },
+    { id: 'science-tech', icon: Microscope, label: 'Science & Technology', path: '/science-tech' },
+    { id: 'news-politics', icon: Newspaper, label: 'News & Politics', path: '/news' },
+  ];
+  
+  const musicAndAudioLinks = [
+    { id: 'music', icon: Music, label: 'Music', path: '/music' },
     { id: 'podcasts', icon: Music, label: 'Podcasts', path: '/podcasts' },
     { id: 'audiobooks', icon: BookOpen, label: 'Audiobooks', path: '/audiobooks' },
     { id: 'meditation', icon: Moon, label: 'Meditation', path: '/meditation' },
-    { id: 'educational', icon: GraduationCap, label: 'Educational', path: '/educational' },
-    { id: 'nature-sounds', icon: Leaf, label: 'Nature Sounds', path: '/nature-sounds' },
-    { id: 'comedy', icon: Smile, label: 'Comedy', path: '/comedy' },
+    { id: 'quotes-poems', icon: Quote, label: 'Quotes & Poems', path: '/quotes-poems' },
   ];
   
-  const newsAndWeatherLinks = [
-    { id: 'news', icon: Globe, label: 'News & Politics', path: '/news' },
+  const peopleAndSocietyLinks = [
+    { id: 'people-blogs', icon: Users, label: 'People & Blogs', path: '/people-blogs' },
+    { id: 'relationships', icon: UserRound, label: 'Relationships', path: '/relationships' },
+    { id: 'nonprofits', icon: HeartHandshake, label: 'Nonprofits', path: '/nonprofits' },
+    { id: 'pets-animals', icon: Dog, label: 'Pets & Animals', path: '/pets-animals' },
+    { id: 'models', icon: Star, label: 'Models', path: '/models' },
+  ];
+  
+  const placesAndLocationsLinks = [
+    { id: 'travel-events', icon: Plane, label: 'Travel & Events', path: '/travel-events' },
+    { id: 'airports', icon: Plane, label: 'Airports', path: '/airports' },
+    { id: 'real-estate', icon: House, label: 'Real Estate', path: '/real-estate' },
+    { id: 'restaurants', icon: Utensils, label: 'Restaurants', path: '/restaurants' },
+    { id: 'foods', icon: Pizza, label: 'Foods', path: '/foods' },
+  ];
+  
+  const environmentAndWeatherLinks = [
     { id: 'weather', icon: Cloud, label: 'Weather', path: '/weather' },
-    { id: 'oceans', icon: Waves, label: 'Oceans', path: '/oceans' },
     { id: 'disasters', icon: Zap, label: 'Disasters', path: '/disasters' },
+    { id: 'oceans', icon: Waves, label: 'Waters & Oceans', path: '/oceans' },
+    { id: 'boats', icon: Ship, label: 'Boats', path: '/boats' },
+    { id: 'shipping-ports', icon: Anchor, label: 'Shipping Ports', path: '/shipping-ports' },
   ];
   
-  const exploreLinks = [
-    { id: 'audio', icon: Music, label: 'Audio', path: '/audio' },
+  const transportAndVehiclesLinks = [
+    { id: 'autos-vehicles', icon: Car, label: 'Autos & Vehicles', path: '/autos-vehicles' },
+    { id: 'shipping', icon: Truck, label: 'Shipping', path: '/shipping' },
+  ];
+  
+  const lawAndJusticeLinks = [
+    { id: 'courts-police', icon: Gavel, label: 'Courts & Police', path: '/courts-police' },
+  ];
+  
+  const documentAndMediaLinks = [
     { id: 'documents', icon: Newspaper, label: 'Documents', path: '/documents' },
     { id: 'blog', icon: Newspaper, label: 'Blog', path: '/blog' },
   ];
@@ -98,30 +133,65 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </div>
           
           <div className="border-t pt-4">
-            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">CONTENT</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">VIDEO & ENTERTAINMENT</h3>
             <div className="space-y-1">
-              {contentLinks.map(renderNavLink)}
+              {videoAndEntertainmentLinks.map(renderNavLink)}
             </div>
           </div>
           
           <div className="border-t pt-4 mt-4">
-            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">AUDIO</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">EDUCATION & INFORMATION</h3>
             <div className="space-y-1">
-              {audioLinks.map(renderNavLink)}
+              {educationAndInformationLinks.map(renderNavLink)}
             </div>
           </div>
           
           <div className="border-t pt-4 mt-4">
-            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">NEWS & WEATHER</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">MUSIC & AUDIO</h3>
             <div className="space-y-1">
-              {newsAndWeatherLinks.map(renderNavLink)}
+              {musicAndAudioLinks.map(renderNavLink)}
             </div>
           </div>
           
           <div className="border-t pt-4 mt-4">
-            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">EXPLORE</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">PEOPLE & SOCIETY</h3>
             <div className="space-y-1">
-              {exploreLinks.map(renderNavLink)}
+              {peopleAndSocietyLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">PLACES & LOCATIONS</h3>
+            <div className="space-y-1">
+              {placesAndLocationsLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">ENVIRONMENT & WEATHER</h3>
+            <div className="space-y-1">
+              {environmentAndWeatherLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">TRANSPORT & VEHICLES</h3>
+            <div className="space-y-1">
+              {transportAndVehiclesLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">LAW & JUSTICE</h3>
+            <div className="space-y-1">
+              {lawAndJusticeLinks.map(renderNavLink)}
+            </div>
+          </div>
+          
+          <div className="border-t pt-4 mt-4">
+            <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">DOCUMENTS & MEDIA</h3>
+            <div className="space-y-1">
+              {documentAndMediaLinks.map(renderNavLink)}
             </div>
           </div>
           

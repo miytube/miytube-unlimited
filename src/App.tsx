@@ -45,6 +45,9 @@ import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 
+// Import placeholder component for new category pages
+import CategoryPage from "./pages/CategoryPage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -110,6 +113,29 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            
+            {/* Routes for new category pages */}
+            <Route path="/autos-vehicles" element={<CategoryPage category="Autos & Vehicles" icon="Car" />} />
+            <Route path="/education" element={<CategoryPage category="Education" icon="GraduationCap" />} />
+            <Route path="/entertainment" element={<CategoryPage category="Entertainment" icon="Film" />} />
+            <Route path="/how-to-style" element={<CategoryPage category="How To & Style" icon="Scissors" />} />
+            <Route path="/nonprofits" element={<CategoryPage category="Nonprofits & Activism" icon="HeartHandshake" />} />
+            <Route path="/people-blogs" element={<CategoryPage category="People & Blogs" icon="Users" />} />
+            <Route path="/pets-animals" element={<CategoryPage category="Pets & Animals" icon="Dog" />} />
+            <Route path="/science-tech" element={<CategoryPage category="Science & Technology" icon="Microscope" />} />
+            <Route path="/travel-events" element={<CategoryPage category="Travel & Events" icon="Plane" />} />
+            <Route path="/foods" element={<CategoryPage category="Foods" icon="Pizza" />} />
+            <Route path="/restaurants" element={<CategoryPage category="Restaurants" icon="Utensils" />} />
+            <Route path="/quotes-poems" element={<CategoryPage category="Quotes, Poems, Statements" icon="Quote" />} />
+            <Route path="/film-animation" element={<CategoryPage category="Film & Animation Movies" icon="Clapperboard" />} />
+            <Route path="/models" element={<CategoryPage category="Models" icon="Star" />} />
+            <Route path="/courts-police" element={<CategoryPage category="Courts & Police, Crime" icon="Gavel" />} />
+            <Route path="/boats" element={<CategoryPage category="Boats" icon="Ship" />} />
+            <Route path="/relationships" element={<CategoryPage category="Relationships" icon="UserRound" />} />
+            <Route path="/airports" element={<CategoryPage category="Airports" icon="Plane" />} />
+            <Route path="/real-estate" element={<CategoryPage category="Real Estate" icon="House" />} />
+            <Route path="/shipping-ports" element={<CategoryPage category="Shipping Ports" icon="Anchor" />} />
+            <Route path="/shipping" element={<CategoryPage category="Shipping" icon="Truck" />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
