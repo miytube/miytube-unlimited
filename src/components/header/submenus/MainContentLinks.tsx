@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Image, Music, FileText, Newspaper } from 'lucide-react';
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Image, Music, FileText, Newspaper, Film, Utensils, GraduationCap, Laugh, Clapperboard, Mountain } from 'lucide-react';
+import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 export const MainContentLinks: React.FC = () => {
   return (
@@ -29,6 +29,45 @@ export const MainContentLinks: React.FC = () => {
         <Link to="/blog" className="flex items-center gap-2 w-full">
           <Newspaper size={16} />
           <span>Blog</span>
+        </Link>
+      </DropdownMenuItem>
+      
+      <DropdownMenuSeparator />
+      
+      <DropdownMenuItem>
+        <Link to="/education" className="flex items-center gap-2 w-full">
+          <GraduationCap size={16} />
+          <span>Education</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/entertainment" className="flex items-center gap-2 w-full">
+          <Clapperboard size={16} />
+          <span>Entertainment</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/film" className="flex items-center gap-2 w-full">
+          <Film size={16} />
+          <span>Film</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/foods" className="flex items-center gap-2 w-full">
+          <Utensils size={16} />
+          <span>Foods</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/fungi" className="flex items-center gap-2 w-full">
+          <Mountain size={16} />
+          <span>Fungi</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/funny" className="flex items-center gap-2 w-full">
+          <Laugh size={16} />
+          <span>Funny</span>
         </Link>
       </DropdownMenuItem>
     </>

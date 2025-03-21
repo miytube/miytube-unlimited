@@ -30,7 +30,7 @@ export const categoryRoutes = [
   <Route key="film-animation" path="/film-animation" element={<CategoryPage category="Film & Animation" icon="Clapperboard" />} />,
   <Route key="film-movies" path="/film-movies" element={<CategoryPage category="Film & Movies" icon="Film" />} />,
   <Route key="foods" path="/foods" element={<CategoryPage category="Foods" icon="Utensils" />} />,
-  <Route key="fungi" path="/fungi" element={<CategoryPage category="Fungi" icon="Fungi" />} />,
+  <Route key="fungi" path="/fungi" element={<CategoryPage category="Fungi" icon="Mountain" />} />,
   <Route key="funny" path="/funny" element={<CategoryPage category="Funny" icon="Laugh" />} />,
   <Route key="music" path="/music" element={<Music />} />,
   <Route key="news" path="/news" element={<News />} />,
@@ -39,4 +39,5 @@ export const categoryRoutes = [
   <Route key="sports" path="/sports" element={<Sports />} />,
   <Route key="weather" path="/weather" element={<Weather />} />,
   <Route key="disasters" path="/disasters" element={<Disasters />} />,
+  <Route key="courts" path="/courts" element={<CategoryPage category="Courts" icon="Gavel" />} />,
 ];
