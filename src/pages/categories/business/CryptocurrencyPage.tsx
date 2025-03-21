@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Layout } from '@/components/Layout';
-import { BarChart, Upload, Bitcoin, ChevronRight } from 'lucide-react';
+import { Upload, Bitcoin, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 

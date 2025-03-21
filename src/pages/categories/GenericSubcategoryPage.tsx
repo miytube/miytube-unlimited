@@ -8,14 +8,15 @@ import {
   Car, GraduationCap, Film, Scissors, HeartHandshake, Users, Dog, 
   Microscope, Plane, Pizza, Utensils, Quote, Clapperboard, Star, 
   Gavel, Ship, UserRound, House, Anchor, Truck, BarChart, Wrench,
-  Bitcoin, Trophy, Smile, Zap, Cloud, Waves, Music, MessageSquare
+  Bitcoin, Trophy, Smile, Zap, Cloud, Waves, Music, MessageSquare,
+  LucideIcon
 } from 'lucide-react';
 
 interface SubcategoryMapping {
   [key: string]: {
     title: string;
     description: string;
-    icon: React.ElementType;
+    icon: LucideIcon;
     parent: {
       route: string;
       name: string;
@@ -25,6 +26,14 @@ interface SubcategoryMapping {
 
 const GenericSubcategoryPage = () => {
   const { category, subcategory } = useParams<{ category: string; subcategory: string }>();
+  
+  // Map of icons for lookup
+  const iconComponents: Record<string, LucideIcon> = {
+    Car, GraduationCap, Film, Scissors, HeartHandshake, Users, Dog, 
+    Microscope, Plane, Pizza, Utensils, Quote, Clapperboard, Star, 
+    Gavel, Ship, UserRound, House, Anchor, Truck, BarChart, Wrench,
+    Bitcoin, Trophy, Smile, Zap, Cloud, Waves, Music, MessageSquare
+  };
   
   // This mapping can be expanded with all subcategories
   const subcategoryMappings: SubcategoryMapping = {
@@ -129,7 +138,7 @@ const GenericSubcategoryPage = () => {
   // Default values in case the category is not in our mapping
   let pageTitle = subcategory ? subcategory.replace(/-/g, ' ') : 'Category';
   let pageDescription = 'Explore videos and content in this category';
-  let IconComponent = Film;
+  let IconComponent: LucideIcon = Film;
   let parentRoute = '/';
   let parentName = 'Home';
   
