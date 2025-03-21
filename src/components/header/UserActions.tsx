@@ -2,19 +2,20 @@
 import React from 'react';
 import { Bell, User } from 'lucide-react';
 import { UploadDropdown } from './UploadDropdown';
+import { Button } from '@/components/ui/button';
 
 export const UserActions: React.FC = () => {
   return (
     <div className="flex items-center gap-4">
       <UploadDropdown />
       
-      <button className="p-2 rounded-full hover:bg-secondary transition-colors">
+      <Button variant="ghost" size="icon" aria-label="Notifications">
         <Bell size={20} />
-      </button>
+      </Button>
       
-      <button className="p-2 rounded-full hover:bg-secondary transition-colors">
+      <Button variant="ghost" size="icon" aria-label="User profile">
         <User size={20} />
-      </button>
+      </Button>
     </div>
   );
 };
