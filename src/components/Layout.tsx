@@ -26,16 +26,18 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
       
-      <Header />
-      
-      <div className="flex flex-1 w-full">
+      <div className="flex flex-1">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <main className="flex-1 w-full">
-          <div className="container mx-auto px-4 sm:px-6 max-w-[1400px]">
-            {children}
-          </div>
-        </main>
+        <div className="flex flex-col flex-1 w-full">
+          <Header />
+          
+          <main className="flex-1 w-full">
+            <div className="container mx-auto px-4 sm:px-6 max-w-[1400px]">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
       
       <Footer />

@@ -21,8 +21,8 @@ import {
 
 export const Header = () => {
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b">
-      <div className="container mx-auto flex items-center justify-between px-4 h-16">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b w-full">
+      <div className="mx-auto flex items-center justify-between px-4 h-16">
         <Link to="/" className="flex items-center gap-1">
           <span className="text-primary font-bold text-2xl">Miy</span>
           <span className="font-bold text-2xl">Tube</span>
