@@ -1,9 +1,70 @@
-
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, BookOpen, Stethoscope, HeartPulse, School } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const educationSubcategories: SubcategoryMapping = {
-  // Education Routes
+  'education-science': {
+    title: 'Science Education',
+    description: 'Educational content about various scientific disciplines',
+    icon: GraduationCap,
+    parent: {
+      route: '/education',
+      name: 'Education'
+    }
+  },
+  'education-math': {
+    title: 'Mathematics',
+    description: 'Educational content about mathematics and numerical concepts',
+    icon: GraduationCap,
+    parent: {
+      route: '/education',
+      name: 'Education'
+    }
+  },
+  'education-history': {
+    title: 'History',
+    description: 'Educational content about historical events and time periods',
+    icon: GraduationCap,
+    parent: {
+      route: '/education',
+      name: 'Education'
+    }
+  },
+  'education-medicine': {
+    title: 'Medicine & Medication',
+    description: 'Educational content about medicine, pharmaceuticals, and healthcare',
+    icon: Stethoscope,
+    parent: {
+      route: '/education',
+      name: 'Education'
+    }
+  },
+  'education-religion': {
+    title: 'Religion',
+    description: 'Educational content about religious studies and theology',
+    icon: BookOpen,
+    parent: {
+      route: '/education',
+      name: 'Education'
+    }
+  },
+  'education-nursing': {
+    title: 'Nursing & Healthcare',
+    description: 'Educational content about nursing (RN, LVN) and healthcare aides',
+    icon: HeartPulse,
+    parent: {
+      route: '/education',
+      name: 'Education'
+    }
+  },
+  'education-learn': {
+    title: 'Learning Techniques',
+    description: 'Educational content about mastering learning techniques and grasping concepts',
+    icon: School,
+    parent: {
+      route: '/education',
+      name: 'Education'
+    }
+  },
   'education-anatomy': {
     title: 'Anatomy',
     description: 'Human body structure, function and medical information',

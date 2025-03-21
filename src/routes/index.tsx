@@ -6,6 +6,7 @@ import { contentRoutes } from "./contentRoutes";
 import { categoryRoutes } from "./categoryRoutes";
 import { subcategoryRoutes } from "./subcategoryRoutes";
 import { specialSubcategoryRoutes } from "./specialSubcategoryRoutes";
+import { newSubcategoryRoutes } from "./newSubcategoryRoutes";
 
 const AppRoutes = () => {
   return (
@@ -27,6 +28,9 @@ const AppRoutes = () => {
       
       {/* Special Subcategory Routes with Custom Components */}
       {specialSubcategoryRoutes}
+      
+      {/* New Subcategory Routes */}
+      {newSubcategoryRoutes}
     </Routes>
   );
 };

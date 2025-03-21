@@ -1,7 +1,9 @@
 
 import { 
   Film, Clapperboard, Music, Headphones, 
-  Speaker, Camera, FileText
+  Speaker, Camera, FileText, Drama, Laugh, 
+  Heart, Sword, Compass, Castle, Masks, 
+  Bomb, Scale, Medal, Flame, Flower
 } from 'lucide-react';
 import { IconMapping } from './types';
 
@@ -14,4 +16,16 @@ export const mediaIcons: IconMapping = {
   Speaker,
   Camera,
   FileText,
+  Drama,
+  Laugh,
+  Heart,
+  Sword,
+  Compass,
+  Castle,
+  Masks,
+  Bomb,
+  Scale,
+  Medal,
+  Flame,
+  Flower
 };

@@ -15,6 +15,13 @@ import { cosmeticsSubcategories } from './cosmetics';
 import { danceSubcategories } from './dance';
 import { drinksSubcategories } from './drinks';
 import { dronesSubcategories } from './drones';
+import { entertainmentSubcategories } from './entertainment';
+import { experimentsSubcategories } from './experiments';
+import { extremeSubcategories } from './extreme';
+import { filmSubcategories } from './film';
+import { foodsSubcategories } from './foods';
+import { fungiSubcategories } from './fungi';
+import { funnySubcategories } from './funny';
 
 // Merge all subcategory mappings
 export const subcategoryMappings: SubcategoryMapping = {
@@ -33,6 +40,13 @@ export const subcategoryMappings: SubcategoryMapping = {
   ...danceSubcategories,
   ...drinksSubcategories,
   ...dronesSubcategories,
+  ...entertainmentSubcategories,
+  ...experimentsSubcategories,
+  ...extremeSubcategories,
+  ...filmSubcategories,
+  ...foodsSubcategories,
+  ...fungiSubcategories,
+  ...funnySubcategories,
 };
 
 // Re-export types
@@ -54,5 +68,12 @@ export {
   cosmeticsSubcategories,
   danceSubcategories,
   drinksSubcategories,
-  dronesSubcategories
+  dronesSubcategories,
+  entertainmentSubcategories,
+  experimentsSubcategories,
+  extremeSubcategories,
+  filmSubcategories,
+  foodsSubcategories,
+  fungiSubcategories,
+  funnySubcategories
 };
