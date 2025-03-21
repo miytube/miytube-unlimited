@@ -20,27 +20,26 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="w-full bg-muted">
-        <div className="container mx-auto px-4">
-          <LogoPlaceholder />
-        </div>
-      </div>
+      {/* Remove the logo section that was crossing the sidebar */}
       
       <div className="flex flex-1">
+        {/* Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <div className="flex flex-col flex-1 w-full">
+        {/* Main content area */}
+        <div className="flex flex-col flex-1">
+          {/* Header is within the main content area, not overlapping the sidebar */}
           <Header />
           
-          <main className="flex-1 w-full">
+          <main className="flex-1">
             <div className="container mx-auto px-4 sm:px-6 max-w-[1400px]">
               {children}
             </div>
           </main>
+          
+          <Footer />
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };
