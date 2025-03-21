@@ -47,6 +47,14 @@ import Privacy from "./pages/Privacy";
 
 // Import placeholder component for new category pages
 import CategoryPage from "./pages/CategoryPage";
+import SubcategoryPage from "./components/SubcategoryPage";
+
+// Import icons
+import { 
+  Film, GraduationCap, Car, Scissors, HeartHandshake, Users, Dog, 
+  Microscope, Plane, Pizza, Utensils, Quote, Clapperboard, Star, 
+  Gavel, Ship, UserRound, House, Anchor, Truck, Globe
+} from 'lucide-react';
 
 const queryClient = new QueryClient();
 
@@ -136,6 +144,59 @@ const App = () => (
             <Route path="/real-estate" element={<CategoryPage category="Real Estate" icon="House" />} />
             <Route path="/shipping-ports" element={<CategoryPage category="Shipping Ports" icon="Anchor" />} />
             <Route path="/shipping" element={<CategoryPage category="Shipping" icon="Truck" />} />
+
+            {/* NEW SUBCATEGORY ROUTES */}
+            
+            {/* Entertainment Subcategories */}
+            <Route path="/entertainment/acting" element={<SubcategoryPage category="Entertainment" subcategory="Acting (Off Script, Unscripted)" parentCategory="Entertainment" icon={Film} />} />
+            <Route path="/entertainment/actors-actress" element={<SubcategoryPage category="Entertainment" subcategory="Actors & Actresses (Bios)" parentCategory="Entertainment" icon={Film} />} />
+            <Route path="/entertainment/actors-info" element={<SubcategoryPage category="Entertainment" subcategory="Actors, Actresses Information" parentCategory="Entertainment" icon={Film} />} />
+            <Route path="/entertainment/auditions" element={<SubcategoryPage category="Entertainment" subcategory="Auditions & Contests" parentCategory="Entertainment" icon={Film} />} />
+            
+            {/* Film & Animation Subcategories */}
+            <Route path="/film-animation/military" element={<SubcategoryPage category="Film & Animation" subcategory="Military Animation & Film" parentCategory="Film & Animation Movies" icon={Clapperboard} />} />
+            <Route path="/film-animation/classics" element={<SubcategoryPage category="Film & Animation" subcategory="Classics Animation, Film, Movies" parentCategory="Film & Animation Movies" icon={Clapperboard} />} />
+            <Route path="/film-animation/bloopers" element={<SubcategoryPage category="Film & Animation" subcategory="Bloopers (Screwups, Blunders)" parentCategory="Film & Animation Movies" icon={Clapperboard} />} />
+            
+            {/* Airports Subcategories */}
+            <Route path="/airports/fails" element={<SubcategoryPage category="Airports" subcategory="Airport Fails" parentCategory="Airports" icon={Plane} />} />
+            
+            {/* Airplanes Subcategories */}
+            <Route path="/travel-events/airplanes-airships" element={<SubcategoryPage category="Travel & Events" subcategory="Airplanes (Airships, Blimps)" parentCategory="Travel & Events" icon={Plane} />} />
+            <Route path="/travel-events/airplanes-cargo" element={<SubcategoryPage category="Travel & Events" subcategory="Airplanes (Cargo Planes)" parentCategory="Travel & Events" icon={Plane} />} />
+            <Route path="/travel-events/airplanes-commercial" element={<SubcategoryPage category="Travel & Events" subcategory="Airplanes (Commercial, Jumbo)" parentCategory="Travel & Events" icon={Plane} />} />
+            <Route path="/travel-events/airplanes-land-water" element={<SubcategoryPage category="Travel & Events" subcategory="Airplanes (Land, Water)" parentCategory="Travel & Events" icon={Plane} />} />
+            <Route path="/travel-events/airplanes-pilots" element={<SubcategoryPage category="Travel & Events" subcategory="Airplanes (Pilots, Captains)" parentCategory="Travel & Events" icon={Plane} />} />
+            <Route path="/travel-events/airplanes-single-engine" element={<SubcategoryPage category="Travel & Events" subcategory="Airplanes (Single Engine)" parentCategory="Travel & Events" icon={Plane} />} />
+            
+            {/* Animal Subcategories */}
+            <Route path="/pets-animals/amphibians" element={<SubcategoryPage category="Pets & Animals" subcategory="Amphibians (Frogs, Salamanders)" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/insects" element={<SubcategoryPage category="Pets & Animals" subcategory="Insects & Spiders" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/birds" element={<SubcategoryPage category="Pets & Animals" subcategory="Birds & Raptors" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/crustaceans" element={<SubcategoryPage category="Pets & Animals" subcategory="Crabs, Lobsters & Crustaceans" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/fish" element={<SubcategoryPage category="Pets & Animals" subcategory="Fish & Fishes" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/mammals" element={<SubcategoryPage category="Pets & Animals" subcategory="Mammals, Birds & Reptiles" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/marine-mammals" element={<SubcategoryPage category="Pets & Animals" subcategory="Orcas, Dolphins & Marine Mammals" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/reptiles" element={<SubcategoryPage category="Pets & Animals" subcategory="Reptiles & Snakes" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/rodents" element={<SubcategoryPage category="Pets & Animals" subcategory="Rodents, Rats & Beavers" parentCategory="Pets & Animals" icon={Dog} />} />
+            <Route path="/pets-animals/cephalopods" element={<SubcategoryPage category="Pets & Animals" subcategory="Octopus, Squid & Cephalopods" parentCategory="Pets & Animals" icon={Dog} />} />
+            
+            {/* History Subcategories */}
+            <Route path="/education/american-history" element={<SubcategoryPage category="Education" subcategory="American History" parentCategory="Education" icon={GraduationCap} />} />
+            <Route path="/education/biblical-history" element={<SubcategoryPage category="Education" subcategory="Biblical History" parentCategory="Education" icon={GraduationCap} />} />
+            <Route path="/education/bible-quotes" element={<SubcategoryPage category="Education" subcategory="Bible Quotes & Scriptures" parentCategory="Education" icon={GraduationCap} />} />
+            
+            {/* Science & Technology Subcategories */}
+            <Route path="/science-tech/artifacts" element={<SubcategoryPage category="Science & Technology" subcategory="Artifacts, Antiques & Antiquities" parentCategory="Science & Technology" icon={Microscope} />} />
+            <Route path="/science-tech/ai" element={<SubcategoryPage category="Science & Technology" subcategory="Artificial Intelligence" parentCategory="Science & Technology" icon={Microscope} />} />
+            <Route path="/science-tech/humanoid-robots" element={<SubcategoryPage category="Science & Technology" subcategory="Humanoid Robots" parentCategory="Science & Technology" icon={Microscope} />} />
+            <Route path="/science-tech/robots" element={<SubcategoryPage category="Science & Technology" subcategory="Robots" parentCategory="Science & Technology" icon={Microscope} />} />
+            
+            {/* Disaster Subcategories */}
+            <Route path="/disasters/avalanche" element={<SubcategoryPage category="Disasters" subcategory="Avalanche" parentCategory="Disasters" icon={Globe} />} />
+            
+            {/* Boats Subcategory */}
+            <Route path="/boats/all" element={<SubcategoryPage category="Boats" subcategory="All Boats" parentCategory="Boats" icon={Ship} />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

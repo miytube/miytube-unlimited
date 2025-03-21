@@ -6,7 +6,9 @@ import {
   BookOpen, Moon, GraduationCap, Leaf, Smile, Globe, Cloud, Waves, Zap, TrendingUp,
   UserCircle, Car, Scissors, Heart, Users, Dog, Microscope, Plane, Pizza, Utensils,
   Quote, Clapperboard, Star, CloudLightning, Gavel, Fish, Ship, HeartHandshake, 
-  Building, House, Anchor, UserRound, Truck
+  Building, House, Anchor, UserRound, Truck, Theater, Camera, History, Frog, Bug,
+  Bird, Crab, Fish as FishIcon, Whale, Skull, Mouse, Octagon, Mountain, Bible, Landmark,
+  Clock
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -37,17 +39,43 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   
   const videoAndEntertainmentLinks = [
     { id: 'videos', icon: Video, label: 'Videos', path: '/videos' },
-    { id: 'film-animation', icon: Clapperboard, label: 'Film & Animation', path: '/film-animation' },
-    { id: 'entertainment', icon: Film, label: 'Entertainment', path: '/entertainment' },
+    { id: 'film-animation', icon: Clapperboard, label: 'Film & Animation', path: '/film-animation', 
+      subItems: [
+        { id: 'animation-military', label: 'Military Animation', path: '/film-animation/military' },
+        { id: 'animation-classics', label: 'Classic Animation', path: '/film-animation/classics' },
+        { id: 'animation-bloopers', label: 'Bloopers & Mistakes', path: '/film-animation/bloopers' }
+      ]
+    },
+    { id: 'entertainment', icon: Film, label: 'Entertainment', path: '/entertainment',
+      subItems: [
+        { id: 'entertainment-acting', label: 'Acting (Unscripted)', path: '/entertainment/acting' },
+        { id: 'entertainment-bios', label: 'Actor & Actress Bios', path: '/entertainment/actors-actress' },
+        { id: 'entertainment-info', label: 'Actor & Actress Info', path: '/entertainment/actors-info' },
+        { id: 'entertainment-auditions', label: 'Auditions & Contests', path: '/entertainment/auditions' }
+      ]
+    },
     { id: 'comedy', icon: Smile, label: 'Comedy', path: '/comedy' },
     { id: 'gaming', icon: Gamepad2, label: 'Gaming', path: '/gaming' },
     { id: 'sports', icon: Trophy, label: 'Sports', path: '/sports' },
   ];
   
   const educationAndInformationLinks = [
-    { id: 'education', icon: GraduationCap, label: 'Education', path: '/education' },
+    { id: 'education', icon: GraduationCap, label: 'Education', path: '/education',
+      subItems: [
+        { id: 'american-history', label: 'American History', path: '/education/american-history' },
+        { id: 'biblical-history', label: 'Biblical History', path: '/education/biblical-history' },
+        { id: 'bible-quotes', label: 'Bible Quotes', path: '/education/bible-quotes' }
+      ]
+    },
     { id: 'how-to-style', icon: Scissors, label: 'How-to & Style', path: '/how-to-style' },
-    { id: 'science-tech', icon: Microscope, label: 'Science & Technology', path: '/science-tech' },
+    { id: 'science-tech', icon: Microscope, label: 'Science & Technology', path: '/science-tech',
+      subItems: [
+        { id: 'artifacts', label: 'Artifacts & Antiques', path: '/science-tech/artifacts' },
+        { id: 'ai', label: 'Artificial Intelligence', path: '/science-tech/ai' },
+        { id: 'humanoid-robots', label: 'Humanoid Robots', path: '/science-tech/humanoid-robots' },
+        { id: 'robots', label: 'Robots', path: '/science-tech/robots' }
+      ]
+    },
     { id: 'news-politics', icon: Newspaper, label: 'News & Politics', path: '/news' },
   ];
   
@@ -63,13 +91,39 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { id: 'people-blogs', icon: Users, label: 'People & Blogs', path: '/people-blogs' },
     { id: 'relationships', icon: UserRound, label: 'Relationships', path: '/relationships' },
     { id: 'nonprofits', icon: HeartHandshake, label: 'Nonprofits', path: '/nonprofits' },
-    { id: 'pets-animals', icon: Dog, label: 'Pets & Animals', path: '/pets-animals' },
+    { id: 'pets-animals', icon: Dog, label: 'Pets & Animals', path: '/pets-animals',
+      subItems: [
+        { id: 'amphibians', label: 'Amphibians', path: '/pets-animals/amphibians' },
+        { id: 'insects', label: 'Insects & Spiders', path: '/pets-animals/insects' },
+        { id: 'birds', label: 'Birds & Raptors', path: '/pets-animals/birds' },
+        { id: 'crustaceans', label: 'Crabs & Lobsters', path: '/pets-animals/crustaceans' },
+        { id: 'fish', label: 'Fish', path: '/pets-animals/fish' },
+        { id: 'mammals', label: 'Mammals', path: '/pets-animals/mammals' },
+        { id: 'marine-mammals', label: 'Orcas & Dolphins', path: '/pets-animals/marine-mammals' },
+        { id: 'reptiles', label: 'Reptiles & Snakes', path: '/pets-animals/reptiles' },
+        { id: 'rodents', label: 'Rodents', path: '/pets-animals/rodents' },
+        { id: 'cephalopods', label: 'Octopus & Squid', path: '/pets-animals/cephalopods' }
+      ]
+    },
     { id: 'models', icon: Star, label: 'Models', path: '/models' },
   ];
   
   const placesAndLocationsLinks = [
-    { id: 'travel-events', icon: Plane, label: 'Travel & Events', path: '/travel-events' },
-    { id: 'airports', icon: Plane, label: 'Airports', path: '/airports' },
+    { id: 'travel-events', icon: Plane, label: 'Travel & Events', path: '/travel-events',
+      subItems: [
+        { id: 'airplanes-airships', label: 'Airships & Blimps', path: '/travel-events/airplanes-airships' },
+        { id: 'airplanes-cargo', label: 'Cargo Planes', path: '/travel-events/airplanes-cargo' },
+        { id: 'airplanes-commercial', label: 'Commercial Jets', path: '/travel-events/airplanes-commercial' },
+        { id: 'airplanes-land-water', label: 'Land & Water Planes', path: '/travel-events/airplanes-land-water' },
+        { id: 'airplanes-pilots', label: 'Pilots & Captains', path: '/travel-events/airplanes-pilots' },
+        { id: 'airplanes-single-engine', label: 'Single Engine Planes', path: '/travel-events/airplanes-single-engine' }
+      ]
+    },
+    { id: 'airports', icon: Plane, label: 'Airports', path: '/airports',
+      subItems: [
+        { id: 'airport-fails', label: 'Airport Fails', path: '/airports/fails' }
+      ]
+    },
     { id: 'real-estate', icon: House, label: 'Real Estate', path: '/real-estate' },
     { id: 'restaurants', icon: Utensils, label: 'Restaurants', path: '/restaurants' },
     { id: 'foods', icon: Pizza, label: 'Foods', path: '/foods' },
@@ -77,9 +131,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   
   const environmentAndWeatherLinks = [
     { id: 'weather', icon: Cloud, label: 'Weather', path: '/weather' },
-    { id: 'disasters', icon: Zap, label: 'Disasters', path: '/disasters' },
+    { id: 'disasters', icon: Zap, label: 'Disasters', path: '/disasters',
+      subItems: [
+        { id: 'avalanche', label: 'Avalanche', path: '/disasters/avalanche' }
+      ]
+    },
     { id: 'oceans', icon: Waves, label: 'Waters & Oceans', path: '/oceans' },
-    { id: 'boats', icon: Ship, label: 'Boats', path: '/boats' },
+    { id: 'boats', icon: Ship, label: 'Boats', path: '/boats',
+      subItems: [
+        { id: 'all-boats', label: 'All Boats', path: '/boats/all' }
+      ]
+    },
     { id: 'shipping-ports', icon: Anchor, label: 'Shipping Ports', path: '/shipping-ports' },
   ];
   
@@ -97,9 +159,49 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     { id: 'blog', icon: Newspaper, label: 'Blog', path: '/blog' },
   ];
 
-  const renderNavLink = (item: { id: string, icon: any, label: string, path: string }) => {
+  const renderNavLink = (item: { id: string, icon: any, label: string, path: string, subItems?: Array<{id: string, label: string, path: string}> }) => {
     const isActive = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
     const Icon = item.icon;
+    
+    if (item.subItems && item.subItems.length > 0) {
+      const isParentOrChildActive = isActive || item.subItems.some(subItem => 
+        location.pathname === subItem.path || location.pathname.startsWith(`${subItem.path}/`)
+      );
+      
+      return (
+        <div key={item.id} className="mb-1">
+          <Link 
+            to={item.path} 
+            className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-secondary transition-colors ${
+              isParentOrChildActive ? 'bg-secondary font-medium' : ''
+            }`}
+          >
+            <Icon size={20} />
+            <span>{item.label}</span>
+          </Link>
+          
+          {isParentOrChildActive && (
+            <div className="pl-8 space-y-1 mt-1">
+              {item.subItems.map(subItem => {
+                const isSubActive = location.pathname === subItem.path || location.pathname.startsWith(`${subItem.path}/`);
+                
+                return (
+                  <Link
+                    key={subItem.id}
+                    to={subItem.path}
+                    className={`block px-3 py-1 text-sm rounded-md hover:bg-secondary/60 transition-colors ${
+                      isSubActive ? 'text-primary font-medium' : 'text-muted-foreground'
+                    }`}
+                  >
+                    {subItem.label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      );
+    }
     
     return (
       <Link 
