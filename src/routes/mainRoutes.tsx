@@ -39,6 +39,7 @@ import Nonprofits from "@/pages/Nonprofits";
 import Relationships from "@/pages/Relationships";
 import PeopleBlogs from "@/pages/PeopleBlogs";
 import QuotesPoems from "@/pages/QuotesPoems";
+import GenericCategoryPage from "@/components/GenericCategoryPage";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -97,6 +98,13 @@ export const mainRoutes = [
   <Route key="relationships" path="/relationships" element={<Relationships />} />,
   <Route key="people-blogs" path="/people-blogs" element={<PeopleBlogs />} />,
   <Route key="quotes-poems" path="/quotes-poems" element={<QuotesPoems />} />,
+  
+  // New category pages
+  <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={() => import('lucide-react').then(({ Shield }) => Shield)} />} />,
+  <Route key="fire-department" path="/fire-department" element={<GenericCategoryPage title="Fire Department" description="Explore content about firefighters and fire departments" Icon={() => import('lucide-react').then(({ Flame }) => Flame)} />} />,
+  <Route key="beaches" path="/beaches" element={<GenericCategoryPage title="Beaches & Lagoons" description="Explore beautiful beaches and lagoons around the world" Icon={() => import('lucide-react').then(({ Beach }) => Beach)} />} />,
+  <Route key="shipping-ports" path="/shipping-ports" element={<GenericCategoryPage title="Shipping Ports" description="Explore content about shipping ports and maritime logistics" Icon={() => import('lucide-react').then(({ Anchor }) => Anchor)} />} />,
+  <Route key="music-artists" path="/music-artists" element={<GenericCategoryPage title="Music Artists" description="Explore content about music artists, their works and careers" Icon={() => import('lucide-react').then(({ Mic }) => Mic)} />} />,
   
   <Route key="not-found" path="*" element={<NotFound />} />,
 ];

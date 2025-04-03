@@ -1,14 +1,29 @@
 
 import React from 'react';
-import { Users, UserRound, HeartHandshake, Dog, Star } from 'lucide-react';
+import { Users, UserRound, HeartHandshake, Dog, Star, Heart } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const PeopleSocietyLinks: React.FC = () => {
   const peopleAndSocietyLinks = [
     { id: 'people-blogs', icon: Users, label: 'People & Blogs', path: '/people-blogs' },
-    { id: 'relationships', icon: UserRound, label: 'Relationships', path: '/relationships' },
+    { 
+      id: 'relationships', 
+      icon: Heart, 
+      label: 'Relationships', 
+      path: '/relationships',
+      subItems: [
+        { id: 'relationships-dating', label: 'Dating', path: '/relationships/dating' },
+        { id: 'relationships-marriage', label: 'Marriage', path: '/relationships/marriage' },
+        { id: 'relationships-divorce', label: 'Divorce', path: '/relationships/divorce' },
+        { id: 'relationships-breakups', label: 'Breakups', path: '/relationships/breakups' }
+      ]
+    },
     { id: 'nonprofits', icon: HeartHandshake, label: 'Nonprofits', path: '/nonprofits' },
-    { id: 'pets-animals', icon: Dog, label: 'Pets & Animals', path: '/pets-animals',
+    { 
+      id: 'pets-animals', 
+      icon: Dog, 
+      label: 'Pets & Animals', 
+      path: '/pets-animals',
       subItems: [
         { id: 'amphibians', label: 'Amphibians', path: '/pets-animals/amphibians' },
         { id: 'insects', label: 'Insects & Spiders', path: '/pets-animals/insects' },

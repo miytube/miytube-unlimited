@@ -5,7 +5,11 @@ import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EducationInformationLinks: React.FC = () => {
   const educationAndInformationLinks = [
-    { id: 'education', icon: GraduationCap, label: 'Education', path: '/education',
+    { 
+      id: 'education', 
+      icon: GraduationCap, 
+      label: 'Education', 
+      path: '/education',
       subItems: [
         { id: 'american-history', label: 'American History', path: '/education/american-history' },
         { id: 'biblical-history', label: 'Biblical History', path: '/education/biblical-history' },
@@ -13,11 +17,18 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'medicine', label: 'Medicine & Medication', path: '/education/medicine' },
         { id: 'religion', label: 'Religion', path: '/education/religion' },
         { id: 'nursing', label: 'Nursing & Healthcare', path: '/education/nursing' },
-        { id: 'learn', label: 'Learning Techniques', path: '/education/learn' }
+        { id: 'learn', label: 'Learning Techniques', path: '/education/learn' },
+        { id: 'math', label: 'Mathematics', path: '/education/math' },
+        { id: 'science', label: 'Science', path: '/education/science' },
+        { id: 'music-education', label: 'Music Education', path: '/education/music-education' }
       ]
     },
     { id: 'how-to-style', icon: Scissors, label: 'How-to & Style', path: '/how-to-style' },
-    { id: 'science-tech', icon: Microscope, label: 'Science & Technology', path: '/science-tech',
+    { 
+      id: 'science-tech', 
+      icon: Microscope, 
+      label: 'Science & Technology', 
+      path: '/science-tech',
       subItems: [
         { id: 'artifacts', label: 'Artifacts & Antiques', path: '/science-tech/artifacts' },
         { id: 'ai', label: 'Artificial Intelligence', path: '/science-tech/ai' },
