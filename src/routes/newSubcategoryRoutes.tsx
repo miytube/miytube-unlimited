@@ -71,8 +71,23 @@ export const newSubcategoryRoutes = [
   <Route key="funny-short-videos" path="/funny/short-videos" element={<GenericSubcategoryPage />} />,
   <Route key="funny-weird" path="/funny/weird" element={<GenericSubcategoryPage />} />,
   
-  /* Additional Routes (to fix 404s) */
+  /* Science & Technology Routes */
+  <Route key="science-tech-general" path="/science-tech" element={<GenericSubcategoryPage />} />,
+  <Route key="science-tech-artifacts" path="/science-tech/artifacts" element={<GenericSubcategoryPage />} />,
+  <Route key="science-tech-ai" path="/science-tech/ai" element={<GenericSubcategoryPage />} />,
+  <Route key="science-tech-humanoid-robots" path="/science-tech/humanoid-robots" element={<GenericSubcategoryPage />} />,
+  <Route key="science-tech-robots" path="/science-tech/robots" element={<GenericSubcategoryPage />} />,
+  
+  /* Courts & Police Routes */
   <Route key="courts-police" path="/courts-police" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-trails" path="/courts-police/trails" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-sentencing" path="/courts-police/sentencing" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-supreme-court" path="/courts-police/supreme-court" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-fraud" path="/courts-police/fraud" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-gangs" path="/courts-police/gangs" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-crime" path="/courts-police/crime" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-enterprises" path="/courts-police/enterprises" element={<GenericSubcategoryPage />} />,
+  
+  /* Courts Routes */
   <Route key="courts-general" path="/courts" element={<GenericSubcategoryPage />} />,
-  <Route key="science-tech" path="/science-tech" element={<GenericSubcategoryPage />} />,
 ];

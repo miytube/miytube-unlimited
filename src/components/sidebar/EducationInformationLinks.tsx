@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { GraduationCap, Scissors, Microscope, Newspaper } from 'lucide-react';
+import { GraduationCap, Scissors, Microscope, Newspaper, Stethoscope, BookOpen, HeartPulse, School } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EducationInformationLinks: React.FC = () => {
@@ -9,7 +9,11 @@ export const EducationInformationLinks: React.FC = () => {
       subItems: [
         { id: 'american-history', label: 'American History', path: '/education/american-history' },
         { id: 'biblical-history', label: 'Biblical History', path: '/education/biblical-history' },
-        { id: 'bible-quotes', label: 'Bible Quotes', path: '/education/bible-quotes' }
+        { id: 'bible-quotes', label: 'Bible Quotes', path: '/education/bible-quotes' },
+        { id: 'medicine', label: 'Medicine & Medication', path: '/education/medicine' },
+        { id: 'religion', label: 'Religion', path: '/education/religion' },
+        { id: 'nursing', label: 'Nursing & Healthcare', path: '/education/nursing' },
+        { id: 'learn', label: 'Learning Techniques', path: '/education/learn' }
       ]
     },
     { id: 'how-to-style', icon: Scissors, label: 'How-to & Style', path: '/how-to-style' },

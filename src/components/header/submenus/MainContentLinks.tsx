@@ -53,6 +53,18 @@ export const MainContentLinks: React.FC = () => {
         </Link>
       </DropdownMenuItem>
       <DropdownMenuItem>
+        <Link to="/film-animation" className="flex items-center gap-2 w-full">
+          <Clapperboard size={16} />
+          <span>Film & Animation</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Link to="/film-movies" className="flex items-center gap-2 w-full">
+          <Film size={16} />
+          <span>Film & Movies</span>
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem>
         <Link to="/foods" className="flex items-center gap-2 w-full">
           <Utensils size={16} />
           <span>Foods</span>

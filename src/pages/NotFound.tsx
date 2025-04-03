@@ -48,11 +48,23 @@ const NotFound = () => {
           <Link to="/education" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Education
           </Link>
-          <Link to="/entertainment" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
-            Entertainment
+          <Link to="/education/medicine" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Medicine
+          </Link>
+          <Link to="/education/religion" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Religion
+          </Link>
+          <Link to="/education/nursing" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Nursing
           </Link>
           <Link to="/film" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Film
+          </Link>
+          <Link to="/film/romance" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Film Romance
+          </Link>
+          <Link to="/film/comedy" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
+            Film Comedy
           </Link>
           <Link to="/film-animation" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Film & Animation
@@ -60,27 +72,39 @@ const NotFound = () => {
           <Link to="/film-movies" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Film & Movies
           </Link>
-          <Link to="/foods" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
-            Foods
-          </Link>
-          <Link to="/music" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
-            Music
-          </Link>
           <Link to="/courts" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Courts
           </Link>
           <Link to="/courts-police" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Courts & Police
           </Link>
-          <Link to="/funny" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
-            Funny
-          </Link>
-          <Link to="/sports" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
-            Sports
-          </Link>
           <Link to="/science-tech" className="p-3 bg-card rounded-lg hover:bg-secondary transition-colors text-center">
             Science & Tech
           </Link>
+        </div>
+        
+        <div className="mt-8 max-w-2xl">
+          <h2 className="text-xl font-bold mb-3">Popular Film Categories</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <Link to="/film/action-crime-thriller" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
+              Action, Crime & Thriller
+            </Link>
+            <Link to="/film/drama" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
+              Drama
+            </Link>
+            <Link to="/film/comedy-drama-crime" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
+              Comedy, Drama & Crime
+            </Link>
+            <Link to="/film-animation/comedy" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
+              Animation Comedy
+            </Link>
+            <Link to="/film-animation/cartoons" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
+              Cartoons
+            </Link>
+            <Link to="/film-movies/clips" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
+              Movie Clips
+            </Link>
+          </div>
         </div>
       </div>
     </Layout>
