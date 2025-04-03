@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, Clapperboard, Drama, Laugh, Heart, Sword, Castle } from 'lucide-react';
+import { GraduationCap, Stethoscope, BookOpen, HeartPulse, School } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,109 +11,92 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
-export const FilmCategories: React.FC = () => {
+export const EducationDropdown: React.FC = () => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Film</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Education</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid grid-cols-2 gap-3 p-4 w-[500px]">
               <div>
-                <h3 className="font-medium text-sm mb-2 text-muted-foreground">Film</h3>
+                <h3 className="font-medium text-sm mb-2 text-muted-foreground">Educational Topics</h3>
                 <div className="space-y-1.5">
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film/romance" 
+                      to="/education/american-history" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Heart className="h-4 w-4" />
-                      <span>Romance</span>
+                      <GraduationCap className="h-4 w-4" />
+                      <span>American History</span>
                     </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film/action-crime-thriller" 
+                      to="/education/biblical-history" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Sword className="h-4 w-4" />
-                      <span>Action, Crime & Thriller</span>
+                      <BookOpen className="h-4 w-4" />
+                      <span>Biblical History</span>
                     </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film/comedy" 
+                      to="/education/bible-quotes" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Laugh className="h-4 w-4" />
-                      <span>Comedy</span>
+                      <BookOpen className="h-4 w-4" />
+                      <span>Bible Quotes</span>
                     </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film/drama" 
-                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
-                    >
-                      <Drama className="h-4 w-4" />
-                      <span>Drama</span>
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      to="/film" 
+                      to="/education" 
                       className="flex items-center justify-center gap-2 p-2 bg-primary/10 hover:bg-primary/20 rounded-md text-sm mt-2"
                     >
-                      <span>View all Film categories</span>
+                      <span>View all Education categories</span>
                     </Link>
                   </NavigationMenuLink>
                 </div>
               </div>
               
               <div>
-                <h3 className="font-medium text-sm mb-2 text-muted-foreground">Film & Animation</h3>
+                <h3 className="font-medium text-sm mb-2 text-muted-foreground">Professional Education</h3>
                 <div className="space-y-1.5">
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film-animation/action" 
+                      to="/education/medicine" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Sword className="h-4 w-4" />
-                      <span>Action Animation</span>
+                      <Stethoscope className="h-4 w-4" />
+                      <span>Medicine & Medication</span>
                     </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film-animation/comedy" 
+                      to="/education/religion" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Laugh className="h-4 w-4" />
-                      <span>Comedy Animation</span>
+                      <BookOpen className="h-4 w-4" />
+                      <span>Religion</span>
                     </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film-animation/fantasy-drama" 
+                      to="/education/nursing" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Castle className="h-4 w-4" />
-                      <span>Fantasy & Drama Animation</span>
+                      <HeartPulse className="h-4 w-4" />
+                      <span>Nursing & Healthcare</span>
                     </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/film-animation/cartoons" 
+                      to="/education/learn" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Clapperboard className="h-4 w-4" />
-                      <span>Cartoons</span>
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link 
-                      to="/film-animation" 
-                      className="flex items-center justify-center gap-2 p-2 bg-primary/10 hover:bg-primary/20 rounded-md text-sm mt-2"
-                    >
-                      <span>View all Animation categories</span>
+                      <School className="h-4 w-4" />
+                      <span>Learning Techniques</span>
                     </Link>
                   </NavigationMenuLink>
                 </div>

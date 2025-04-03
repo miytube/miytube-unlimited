@@ -10,6 +10,9 @@ import { MainContentLinks } from './submenus/MainContentLinks';
 import { AudioSubmenu } from './submenus/AudioSubmenu';
 import { NewsWeatherSubmenu } from './submenus/NewsWeatherSubmenu';
 import { FilmCategories } from './FilmCategories';
+import { EducationDropdown } from './EducationDropdown';
+import { ScienceTechDropdown } from './ScienceTechDropdown';
+import { MusicDropdown } from './MusicDropdown';
 
 export const ContentDropdown: React.FC = () => {
   return (
@@ -26,6 +29,9 @@ export const ContentDropdown: React.FC = () => {
       </DropdownMenu>
       
       <FilmCategories />
+      <EducationDropdown />
+      <ScienceTechDropdown />
+      <MusicDropdown />
     </>
   );
 };
