@@ -1,5 +1,5 @@
-
 import { Route } from "react-router-dom";
+import { Shield, Flame, Waves, Anchor, Mic } from 'lucide-react';
 
 import Index from "@/pages/Index";
 import Videos from "@/pages/Videos";
@@ -99,12 +99,12 @@ export const mainRoutes = [
   <Route key="people-blogs" path="/people-blogs" element={<PeopleBlogs />} />,
   <Route key="quotes-poems" path="/quotes-poems" element={<QuotesPoems />} />,
   
-  // New category pages
-  <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={() => import('lucide-react').then(({ Shield }) => Shield)} />} />,
-  <Route key="fire-department" path="/fire-department" element={<GenericCategoryPage title="Fire Department" description="Explore content about firefighters and fire departments" Icon={() => import('lucide-react').then(({ Flame }) => Flame)} />} />,
-  <Route key="beaches" path="/beaches" element={<GenericCategoryPage title="Beaches & Lagoons" description="Explore beautiful beaches and lagoons around the world" Icon={() => import('lucide-react').then(({ Beach }) => Beach)} />} />,
-  <Route key="shipping-ports" path="/shipping-ports" element={<GenericCategoryPage title="Shipping Ports" description="Explore content about shipping ports and maritime logistics" Icon={() => import('lucide-react').then(({ Anchor }) => Anchor)} />} />,
-  <Route key="music-artists" path="/music-artists" element={<GenericCategoryPage title="Music Artists" description="Explore content about music artists, their works and careers" Icon={() => import('lucide-react').then(({ Mic }) => Mic)} />} />,
+  // New category pages with fixed icon imports
+  <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={Shield} />} />,
+  <Route key="fire-department" path="/fire-department" element={<GenericCategoryPage title="Fire Department" description="Explore content about firefighters and fire departments" Icon={Flame} />} />,
+  <Route key="beaches" path="/beaches" element={<GenericCategoryPage title="Beaches & Lagoons" description="Explore beautiful beaches and lagoons around the world" Icon={Waves} />} />,
+  <Route key="shipping-ports" path="/shipping-ports" element={<GenericCategoryPage title="Shipping Ports" description="Explore content about shipping ports and maritime logistics" Icon={Anchor} />} />,
+  <Route key="music-artists" path="/music-artists" element={<GenericCategoryPage title="Music Artists" description="Explore content about music artists, their works and careers" Icon={Mic} />} />,
   
   <Route key="not-found" path="*" element={<NotFound />} />,
 ];

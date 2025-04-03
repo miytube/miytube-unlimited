@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Plane, House, Utensils, Pizza, Map, Building, Sailboat, Beach } from 'lucide-react';
+import { Plane, House, Utensils, Pizza, Map, Building, Sailboat, Waves } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const PlacesLocationsLinks: React.FC = () => {
@@ -57,7 +57,7 @@ export const PlacesLocationsLinks: React.FC = () => {
     },
     { 
       id: 'beaches', 
-      icon: Beach, 
+      icon: Waves, 
       label: 'Beaches & Lagoons', 
       path: '/beaches' 
     },
