@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Microscope, Cpu, Robot, Mountain } from 'lucide-react';
+import { Microscope, Cpu, Bot, Mountain } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -59,7 +59,7 @@ export const ScienceTechDropdown: React.FC = () => {
                       to="/science-tech/humanoid-robots" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Robot className="h-4 w-4" />
+                      <Bot className="h-4 w-4" />
                       <span>Humanoid Robots</span>
                     </Link>
                   </NavigationMenuLink>
@@ -68,7 +68,7 @@ export const ScienceTechDropdown: React.FC = () => {
                       to="/science-tech/robots" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
-                      <Robot className="h-4 w-4" />
+                      <Bot className="h-4 w-4" />
                       <span>Robots</span>
                     </Link>
                   </NavigationMenuLink>
