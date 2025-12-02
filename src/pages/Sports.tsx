@@ -69,10 +69,14 @@ const Sports = () => {
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <Trophy className="h-6 w-6 text-primary" />
-            <h1 className="text-3xl font-bold">Sports</h1>
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <p className="text-sm text-muted-foreground mb-1">MiyTube / Sports</p>
+            <div className="flex items-center gap-2">
+              <Trophy className="h-8 w-8 text-primary" />
+              <h1 className="text-3xl font-bold">Sports</h1>
+            </div>
           </div>
           <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
             <Upload size={18} />

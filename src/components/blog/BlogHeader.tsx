@@ -15,9 +15,13 @@ export const BlogHeader = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="flex items-center justify-between mb-8">
-      <h1 className="text-3xl font-bold">MiyTube Blog</h1>
-      <div className="flex gap-2">
+    <div className="mb-8">
+      <p className="text-sm text-muted-foreground mb-2">
+        <span className="font-semibold text-primary">MiyTube</span> / Blog
+      </p>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">MiyTube Blog</h1>
+        <div className="flex gap-2">
         <button
           className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground rounded-full hover:bg-secondary/80 transition-colors"
           onClick={() => navigate('/upload')}
@@ -39,6 +43,7 @@ export const BlogHeader = () => {
             <CreateBlogPost />
           </DialogContent>
         </Dialog>
+        </div>
       </div>
     </div>
   );

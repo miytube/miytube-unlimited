@@ -6,6 +6,9 @@ import { Video, Upload, BarChart } from 'lucide-react';
 export const ChannelHeader: React.FC = () => {
   return (
     <div className="mb-8">
+      <p className="text-sm text-muted-foreground mb-2">
+        <span className="font-semibold text-primary">MiyTube</span> / Creator Studio
+      </p>
       <h1 className="text-3xl font-bold mb-2">Creator Studio</h1>
       <p className="text-muted-foreground mb-6">
         Create, manage, and grow your channel with MiyTube creator tools
