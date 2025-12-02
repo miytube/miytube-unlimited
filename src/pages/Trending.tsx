@@ -1,11 +1,14 @@
 
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { TrendingUp, ArrowRight } from 'lucide-react';
+import { TrendingUp, ArrowRight, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { FileUploader } from '@/components/upload/FileUploader';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock data for trending content
 const trendingVideos = [
@@ -136,6 +139,35 @@ const TrendingCategory: React.FC<TrendingCategoryProps> = ({ title, linkTo, chil
 
 const Trending: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'videos' | 'music' | 'podcasts'>('all');
+  const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
+  const { toast } = useToast();
+
+  // Get uploaded trending videos
+  const uploadedTrendingVideos = getVideosByCategory('trending');
+  
+  // Format uploaded videos for VideoCard
+  const formattedUploadedVideos = uploadedTrendingVideos.map(video => ({
+    id: video.id,
+    title: video.title,
+    thumbnail: video.thumbnail,
+    channelName: 'Your Channel',
+    views: video.views,
+    timestamp: video.timestamp,
+    duration: video.duration,
+  }));
+
+  // Combine uploaded with mock data
+  const allTrendingVideos = [...formattedUploadedVideos, ...trendingVideos].slice(0, 20);
+
+  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
+    files.forEach(file => {
+      addUploadedVideo(file, title || file.name, description || '', 'trending', subcategory, tags);
+    });
+    toast({
+      title: "Video uploaded to Trending",
+      description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
+    });
+  };
 
   return (
     <Layout>
@@ -188,10 +220,28 @@ const Trending: React.FC = () => {
           </div>
         </div>
 
+        {/* Upload Section */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">Upload to Trending</h2>
+          </div>
+          <FileUploader
+            icon={TrendingUp}
+            title="Upload Trending Video"
+            description="Share your video content to appear in the trending section."
+            acceptedTypes="video/*"
+            supportedFormats={['MP4', 'MOV', 'WebM', 'AVI']}
+            maxSize="10GB"
+            onUpload={handleUpload}
+            id="trending-upload-input"
+            uploadDestination="Trending Section"
+          />
+        </div>
+
         {(activeTab === 'all' || activeTab === 'videos') && (
           <TrendingCategory title="Trending Videos" linkTo="/videos/trending">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {trendingVideos.map(video => (
+              {allTrendingVideos.map(video => (
                 <VideoCard key={video.id} {...video} />
               ))}
             </div>
