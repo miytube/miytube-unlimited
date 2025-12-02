@@ -50,6 +50,24 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
     };
   }, []);
 
+  const parseMaxSize = (sizeStr: string): number => {
+    const num = parseFloat(sizeStr);
+    const unit = sizeStr.replace(/[0-9.]/g, '').toUpperCase();
+    
+    switch (unit) {
+      case 'TB':
+        return num * 1024 * 1024 * 1024 * 1024;
+      case 'GB':
+        return num * 1024 * 1024 * 1024;
+      case 'MB':
+        return num * 1024 * 1024;
+      case 'KB':
+        return num * 1024;
+      default:
+        return num * 1024 * 1024; // Default to MB
+    }
+  };
+
   const validateFiles = (files: File[]) => {
     console.log('Validating files:', files);
     setUploadError(null);
@@ -77,9 +95,9 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
         return false;
       }
       
-      const maxSizeInBytes = parseInt(maxSize) * 1048576;
+      const maxSizeInBytes = parseMaxSize(maxSize);
       if (file.size > maxSizeInBytes) {
-        const errorMsg = `File too large: ${file.name}`;
+        const errorMsg = `File too large: ${file.name}. Max size is ${maxSize}`;
         console.error(errorMsg);
         setUploadError(errorMsg);
         return false;
