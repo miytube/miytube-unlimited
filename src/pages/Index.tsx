@@ -28,14 +28,14 @@ const Index = () => {
   // Combine uploaded videos with mock videos for Recommended (uploaded first)
   const recommendedVideos = useMemo(() => {
     const combined = [...formattedUploadedVideos, ...mockVideos];
-    return combined.slice(0, 8); // Show max 8 videos
+    return combined.slice(0, 20); // Show max 20 videos (4x5 grid)
   }, [formattedUploadedVideos]);
 
   // Combine uploaded videos with mock videos for Trending (uploaded first)
   const trendingVideos = useMemo(() => {
     const shuffledMock = [...mockVideos.slice(4, 8), ...mockVideos.slice(0, 4)];
     const combined = [...formattedUploadedVideos, ...shuffledMock];
-    return combined.slice(0, 8); // Show max 8 videos
+    return combined.slice(0, 20); // Show max 20 videos (4x5 grid)
   }, [formattedUploadedVideos]);
 
   return (

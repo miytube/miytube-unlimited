@@ -20,45 +20,16 @@ const SubcategoryPage: React.FC<SubcategoryPageProps> = ({
   parentIcon: ParentIcon,
   icon: Icon,
 }) => {
-  // Sample videos for demo purposes
-  const sampleVideos = [
-    {
-      id: `${subcategory.toLowerCase().replace(/\s+/g, '-')}-1`,
-      title: `Popular ${subcategory} Content`,
-      thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Content Creator',
-      views: '1.2M',
-      timestamp: '3 days ago',
-      duration: '14:35',
-    },
-    {
-      id: `${subcategory.toLowerCase().replace(/\s+/g, '-')}-2`,
-      title: `Trending in ${subcategory}`,
-      thumbnail: 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Trending Channel',
-      views: '856K',
-      timestamp: '1 week ago',
-      duration: '22:15',
-    },
-    {
-      id: `${subcategory.toLowerCase().replace(/\s+/g, '-')}-3`,
-      title: `Best of ${subcategory} 2023`,
-      thumbnail: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Top Picks',
-      views: '2.3M',
-      timestamp: '2 months ago',
-      duration: '18:42',
-    },
-    {
-      id: `${subcategory.toLowerCase().replace(/\s+/g, '-')}-4`,
-      title: `${subcategory} Highlights`,
-      thumbnail: 'https://images.unsplash.com/photo-1507090960745-b32f65d3113a?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Featured Channel',
-      views: '4.5M',
-      timestamp: '5 months ago',
-      duration: '12:18',
-    },
-  ];
+  // Generate 20 sample videos for 4x5 grid
+  const sampleVideos = Array.from({ length: 20 }, (_, i) => ({
+    id: `${subcategory.toLowerCase().replace(/\s+/g, '-')}-${i + 1}`,
+    title: `${subcategory} Content ${i + 1}`,
+    thumbnail: `https://images.unsplash.com/photo-${1550745165 + i * 1000}-9bc0b252726f?auto=format&fit=crop&w=800&q=80`,
+    channelName: `${subcategory} Creator ${(i % 5) + 1}`,
+    views: `${Math.floor(Math.random() * 900) + 100}K`,
+    timestamp: `${(i % 7) + 1} days ago`,
+    duration: `${Math.floor(Math.random() * 20) + 5}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
+  }));
 
   return (
     <Layout>
