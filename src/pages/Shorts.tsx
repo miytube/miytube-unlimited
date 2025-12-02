@@ -7,9 +7,11 @@ import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Shorts = () => {
   const { toast } = useToast();
+  const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
   const [newCategory, setNewCategory] = useState('');
   const [categories, setCategories] = useState([
     { id: 'trending', name: 'Trending' },
@@ -95,7 +97,25 @@ const Shorts = () => {
     },
   ];
 
-  const handleUpload = (files: File[]) => {
+  // Get uploaded shorts
+  const uploadedShorts = getVideosByCategory('shorts');
+  
+  // Format uploaded shorts for ShortCard
+  const formattedUploadedShorts = uploadedShorts.map(video => ({
+    id: video.id,
+    title: video.title,
+    thumbnail: video.thumbnail,
+    creator: 'Your Channel',
+    views: video.views,
+  }));
+
+  // Combine uploaded with mock data
+  const allShorts = [...formattedUploadedShorts, ...mockShorts];
+
+  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
+    files.forEach(file => {
+      addUploadedVideo(file, title || file.name, description || '', 'shorts', subcategory, tags);
+    });
     toast({
       title: "Short video uploaded",
       description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
@@ -176,7 +196,7 @@ const Shorts = () => {
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-6">Trending Shorts</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {mockShorts.map((short) => (
+            {allShorts.map((short) => (
               <ShortCard
                 key={short.id}
                 id={short.id}
