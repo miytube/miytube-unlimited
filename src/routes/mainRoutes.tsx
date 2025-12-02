@@ -45,7 +45,7 @@ export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
   <Route key="videos" path="/videos" element={<Videos />} />,
   <Route key="videos-category" path="/videos/:category" element={<Videos />} />,
-  <Route key="watch" path="/watch/:id" element={<Watch />} />,
+  <Route key="watch" path="/watch" element={<Watch />} />,
   <Route key="search" path="/search" element={<Search />} />,
   <Route key="upload" path="/upload" element={<Upload />} />,
   <Route key="upload-video" path="/upload/video" element={<VideoUpload />} />,
