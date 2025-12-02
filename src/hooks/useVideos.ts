@@ -1,5 +1,6 @@
 
 import { useState, useCallback } from 'react';
+import { mockVideos as homeVideos } from '@/data/mockVideos';
 
 // Mock data for videos
 const mockVideos = [
@@ -61,8 +62,27 @@ const mockVideos = [
   },
 ];
 
+// Convert home videos to match the detailed format
+const allVideos = [
+  ...mockVideos,
+  ...homeVideos.map(v => ({
+    id: v.id,
+    title: v.title,
+    description: `Watch ${v.title} - an amazing video from ${v.channelName}.`,
+    channelName: v.channelName,
+    channelAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(v.channelName)}&background=random`,
+    views: v.views + ' views',
+    timestamp: v.timestamp,
+    likes: '0',
+    subscribers: '0',
+    thumbnail: v.thumbnail,
+    file: '',
+    tags: v.tags || []
+  }))
+];
+
 export const useVideos = () => {
-  const [videos] = useState(mockVideos);
+  const [videos] = useState(allVideos);
   
   const getVideoById = useCallback((id: string) => {
     return videos.find(video => video.id === id);
