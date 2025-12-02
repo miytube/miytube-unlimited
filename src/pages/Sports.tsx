@@ -9,10 +9,22 @@ const Sports = () => {
   const sportsCategories = [
     { id: 'football', name: 'Football', icon: <Trophy size={24} /> },
     { id: 'basketball', name: 'Basketball', icon: <Activity size={24} /> },
+    { id: 'baseball', name: 'Baseball', icon: <Trophy size={24} /> },
+    { id: 'hockey', name: 'Hockey', icon: <Activity size={24} /> },
     { id: 'soccer', name: 'Soccer', icon: <Trophy size={24} /> },
+    { id: 'golf', name: 'Golf', icon: <Dumbbell size={24} /> },
     { id: 'tennis', name: 'Tennis', icon: <Dumbbell size={24} /> },
+    { id: 'mma', name: 'MMA', icon: <Activity size={24} /> },
+    { id: 'boxing', name: 'Boxing', icon: <Trophy size={24} /> },
+    { id: 'wrestling', name: 'Wrestling', icon: <Activity size={24} /> },
     { id: 'cricket', name: 'Cricket', icon: <Trophy size={24} /> },
-    { id: 'olympics', name: 'Olympics', icon: <Activity size={24} /> },
+    { id: 'rugby', name: 'Rugby', icon: <Activity size={24} /> },
+    { id: 'track-field', name: 'Track & Field', icon: <Dumbbell size={24} /> },
+    { id: 'swimming', name: 'Swimming', icon: <Activity size={24} /> },
+    { id: 'gymnastics', name: 'Gymnastics', icon: <Dumbbell size={24} /> },
+    { id: 'olympics', name: 'Olympics', icon: <Trophy size={24} /> },
+    { id: 'motorsports', name: 'Motorsports', icon: <Activity size={24} /> },
+    { id: 'extreme-sports', name: 'Extreme Sports', icon: <Dumbbell size={24} /> },
   ];
   
   const sportsVideos = [
