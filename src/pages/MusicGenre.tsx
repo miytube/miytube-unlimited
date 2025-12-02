@@ -8,10 +8,12 @@ import { Upload, Music } from 'lucide-react';
 import { allCategoryMappings } from '@/data/allCategoryMappings';
 
 const MusicGenre = () => {
-  const { genre, '*': splat } = useParams();
+  const params = useParams();
+  const location = window.location.pathname;
   
-  // Get genre from path - could be /music/blues or /music/:genre
-  const actualGenre = genre || splat || '';
+  // Get genre from path - extract from URL like /music/country
+  const pathParts = location.split('/').filter(Boolean);
+  const actualGenre = pathParts[pathParts.length - 1] || params.genre || params['*'] || '';
   
   // Get the genre info from mappings
   const genreKey = `music-${actualGenre}`;

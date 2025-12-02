@@ -4,6 +4,10 @@ import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 
 // Generate routes for all categories from the mapping
 const categoryKeys = [
+  // Gaming Categories
+  'game-challenges', 'game-toys', 'arcade-games', 'casino-slots', 'dominos',
+  'lottery', 'xbox-playstation', 'gaming-cards', 'magic-tricks', 'fps', 'moba', 'esports',
+  
   // Comedy Categories
   'comedy-snl', 'comedians-interviews', 'comedy-funny-pranks', 'comedy-roasts',
   'comedy-standup', 'comedy-jokes-pranks', 'comedy-sitcom', 'bloopers',
