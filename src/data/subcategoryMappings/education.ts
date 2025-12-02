@@ -1,4 +1,4 @@
-import { GraduationCap, BookOpen, Stethoscope, HeartPulse, School } from 'lucide-react';
+import { GraduationCap, BookOpen, Stethoscope, HeartPulse, School, Gavel } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const educationSubcategories: SubcategoryMapping = {
@@ -93,6 +93,18 @@ export const educationSubcategories: SubcategoryMapping = {
     title: 'Laws & Constitution',
     description: 'Legal education, constitutional principles and rights',
     icon: GraduationCap,
+    parent: { route: '/education', name: 'Education' }
+  },
+  'education-doctor': {
+    title: 'Doctor & Medical Practice',
+    description: 'Medical practice, patient care and clinical education',
+    icon: Stethoscope,
+    parent: { route: '/education', name: 'Education' }
+  },
+  'education-lawyer': {
+    title: 'Lawyer & Attorney',
+    description: 'Legal practice, court procedures and legal education',
+    icon: Gavel,
     parent: { route: '/education', name: 'Education' }
   },
 };
