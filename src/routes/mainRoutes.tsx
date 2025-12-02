@@ -63,7 +63,8 @@ export const mainRoutes = [
   <Route key="news-politics" path="/news" element={<NewsAndPolitics />} />,
   <Route key="talk-at-cha" path="/talk-at-cha" element={<TalkAtCha />} />,
   <Route key="educational" path="/educational" element={<Educational />} />,
-  <Route key="channel" path="/channel/:id" element={<Channel />} />,
+  <Route key="channel" path="/channel" element={<Channel />} />,
+  <Route key="channel-id" path="/channel/:id" element={<Channel />} />,
   
   // New routes to fix 404s
   <Route key="how-to-style" path="/how-to-style" element={<HowToStyle />} />,
