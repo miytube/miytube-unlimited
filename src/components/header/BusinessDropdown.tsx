@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { DollarSign, ShoppingCart } from 'lucide-react';
+import { DollarSign, ShoppingCart, BarChart } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,12 @@ export const BusinessDropdown: React.FC = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="text-foreground hover:text-primary transition-colors">Business</DropdownMenuTrigger>
       <DropdownMenuContent>
+        <DropdownMenuItem>
+          <Link to="/business" className="flex items-center gap-2 w-full">
+            <BarChart size={16} />
+            <span>Business</span>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <Link to="/monetization" className="flex items-center gap-2 w-full">
             <DollarSign size={16} />
