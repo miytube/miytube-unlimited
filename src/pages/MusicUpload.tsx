@@ -15,7 +15,6 @@ const MusicUpload = () => {
   const navigate = useNavigate();
   const { handleUpload } = useUploadHandler();
   const musicContentType = contentTypes.music;
-  const audioFormats = musicContentType.supportedFormats;
   
   const onMusicUpload = (
     files: File[], 
@@ -53,15 +52,15 @@ const MusicUpload = () => {
           <CategoryDropdown />
         </div>
         
-        <MusicUploadRequirements audioFormats={audioFormats} />
+        <MusicUploadRequirements audioFormats={musicContentType.supportedFormats} />
         
         <FileUploader
           icon={Music}
-          title="Upload Music Track"
-          description="Upload your music, tracks, covers, remixes, and audio content."
-          acceptedTypes="audio/*,.mp3,.wav,.flac,.aac,.ogg"
-          supportedFormats={audioFormats}
-          maxSize="10GB"
+          title="Upload Music or Music Video"
+          description="Upload your music tracks, music videos, covers, remixes, and audio/video content."
+          acceptedTypes={musicContentType.acceptedTypes}
+          supportedFormats={musicContentType.supportedFormats}
+          maxSize={musicContentType.maxSize}
           onUpload={onMusicUpload}
           id="music-upload-input"
           uploadDestination={musicContentType.destination}
