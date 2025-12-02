@@ -20,10 +20,9 @@ const SubcategoryHeader: React.FC<SubcategoryHeaderProps> = ({
 }) => {
   return (
     <>
+      {/* MiyTube Breadcrumb */}
       <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-        <Link to="/" className="hover:text-primary">
-          Home
-        </Link>
+        <span className="font-semibold text-primary">MiyTube</span>
         <ChevronRight size={14} />
         <Link to={parentRoute} className="hover:text-primary">
           {parentName}
@@ -33,10 +32,12 @@ const SubcategoryHeader: React.FC<SubcategoryHeaderProps> = ({
       </div>
       
       <div className="flex items-center justify-between gap-3 mb-8">
-        <div className="flex items-center gap-3">
-          <IconComponent className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold">{pageTitle}</h1>
-          <p className="text-muted-foreground ml-2">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-3">
+            <IconComponent className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold">{pageTitle}</h1>
+          </div>
+          <p className="text-muted-foreground">
             {pageDescription}
           </p>
         </div>

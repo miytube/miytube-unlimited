@@ -141,6 +141,9 @@ const Trending: React.FC = () => {
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
         <div className="mb-8">
+          <p className="text-sm text-muted-foreground mb-2">
+            <span className="font-semibold text-primary">MiyTube</span> / Trending
+          </p>
           <h1 className="text-3xl font-bold flex items-center gap-2">
             <TrendingUp className="h-8 w-8 text-primary" />
             Trending Now
