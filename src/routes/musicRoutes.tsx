@@ -1,0 +1,24 @@
+
+import { Route } from "react-router-dom";
+import Music from "@/pages/Music";
+import MusicGenre from "@/pages/MusicGenre";
+import MusicUpload from "@/pages/MusicUpload";
+
+// All music genre routes
+const musicGenres = [
+  'lyrics', 'mandarin', 'mandarin-lyrics', 'christmas', 'christmas-lyrics',
+  'blues', 'classical', 'country', 'folk', 'funk-rock', 'alternative',
+  'rock-soul-pop', 'funk-hiphop-rap', 'history', 'heavy-metal', 'mexican-spanish',
+  'soundtracks', 'parody', 'pop', 'rap-reggaeton', 'relaxation', 'salsa',
+  'soul-train', 'garage', 'artists-interviews', 'artists-news', 'challenges',
+  'christian'
+];
+
+export const musicRoutes = [
+  <Route key="music-main" path="/music" element={<Music />} />,
+  <Route key="music-upload" path="/upload/music" element={<MusicUpload />} />,
+  <Route key="musical-instruments" path="/musical-instruments" element={<MusicGenre />} />,
+  ...musicGenres.map(genre => (
+    <Route key={`music-${genre}`} path={`/music/${genre}`} element={<MusicGenre />} />
+  )),
+];

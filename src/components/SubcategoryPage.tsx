@@ -34,6 +34,9 @@ const SubcategoryPage: React.FC<SubcategoryPageProps> = ({
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
+        <p className="text-sm text-muted-foreground mb-2">
+          <span className="font-semibold text-primary">MiyTube</span> / {category} / {subcategory}
+        </p>
         <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
           {parentCategory && (
             <>
@@ -74,7 +77,7 @@ const SubcategoryPage: React.FC<SubcategoryPageProps> = ({
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Popular in {subcategory}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sampleVideos.map((video, index) => ({
+            {sampleVideos.slice(0, 20).map((video, index) => ({
               ...video,
               id: `popular-${index}`,
               title: `Popular ${subcategory} - ${index + 1}`,
