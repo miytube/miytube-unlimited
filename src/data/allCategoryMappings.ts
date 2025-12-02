@@ -38,6 +38,195 @@ export interface CategoryInfo {
 }
 
 export const allCategoryMappings: Record<string, CategoryInfo> = {
+  // Comedy Categories
+  'comedy': { title: 'Comedy', description: 'Laugh with our comedy content', icon: Laugh },
+  'comedy-snl': { title: 'Saturday Night Live', description: 'SNL sketches, performers and history', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedians-interviews': { title: 'Comedians (Interviews, Work)', description: 'Comedian interviews and behind the scenes', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-funny-pranks': { title: 'Comedy (Funny, Pranks) Videos', description: 'Funny videos and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-roasts': { title: 'Comedy (Roasts, Jokes, Events)', description: 'Comedy roasts and events', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-standup': { title: 'Comedy (Stand Up, Jokes)', description: 'Stand-up comedy performances', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-jokes-pranks': { title: 'Comedy & Jokes, Pranks', description: 'Jokes and prank content', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-sitcom': { title: 'Comedy Show (Sitcom)', description: 'Sitcom clips and episodes', icon: Tv, parent: { route: '/comedy', name: 'Comedy' } },
+  'bloopers': { title: 'Bloopers (Screwup, Blunder)', description: 'Funny bloopers and mistakes', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  
+  // Actors & Celebrities
+  'actors-actress-bios': { title: 'Actors & Actress (Bios)', description: 'Actor and actress biographies', icon: Film },
+  'actors-information': { title: 'Actors, Actresses Information', description: 'Information about actors and actresses', icon: Users },
+  'celebrities': { title: 'Celebrities (Actors, Actresses)', description: 'Celebrity news and content', icon: Star },
+  
+  // AI Categories
+  'ai-agents': { title: 'AI (AI Agents, Software Systems)', description: 'AI agents and systems', icon: Code },
+  'ai-chatgpt': { title: 'AI (ChatGPT, Gemini, Microsoft)', description: 'AI assistants and chatbots', icon: Terminal },
+  'artificial-intelligence': { title: 'Artificial Intelligence (Bots)', description: 'AI and robotics content', icon: Cog },
+  'ai-hr': { title: 'Artificial Intelligence H/R', description: 'AI in human resources', icon: Users },
+  'ai-humanoids': { title: 'Artificial Intelligence Humanoids', description: 'AI humanoid robots', icon: PersonStanding },
+  'ai-robots': { title: 'Artificial Intelligence Robots', description: 'Robotics and AI', icon: Cog },
+  
+  // Airplanes Categories
+  'airplanes-blimps': { title: 'Airplanes (Airships, Blimps)', description: 'Airships and blimps', icon: Plane },
+  'airplanes-cargo': { title: 'Airplanes (Cargo Planes)', description: 'Cargo aircraft', icon: Plane },
+  'airplanes-commercial': { title: 'Airplanes (Commercial, Jumbo)', description: 'Commercial airliners', icon: Plane },
+  'airplanes-land-water': { title: 'Airplanes (Land, Water)', description: 'Amphibious aircraft', icon: Plane },
+  'airplanes-pilots': { title: 'Airplanes (Pilots, Captain)', description: 'Pilots and aviation crew', icon: Plane },
+  'airplanes-single-engine': { title: 'Airplanes (Single Engine)', description: 'Single engine aircraft', icon: Plane },
+  'airplanes-fleet': { title: 'Airplanes Fleet (Aircrafts)', description: 'Aircraft fleets', icon: Plane },
+  
+  // Airports
+  'airports': { title: 'Airports', description: 'Airport content and tours', icon: Plane },
+  'airports-improvements': { title: 'Airports (Improvements, Construction)', description: 'Airport development', icon: Building },
+  'airports-fails': { title: 'Airports Fails', description: 'Airport fails and incidents', icon: AlertTriangle },
+  
+  // History
+  'american-history': { title: 'American History', description: 'American historical content', icon: Flag },
+  'biblical-history': { title: 'Biblical History', description: 'Biblical and religious history', icon: BookOpen },
+  'bible-quotes': { title: 'Bible (Quotes, Scriptures)', description: 'Bible quotes and scriptures', icon: Cross },
+  
+  // Animals
+  'amphibians': { title: 'Amphibian (Frog, Salamander)', description: 'Amphibian content', icon: Dog },
+  'animal-insects': { title: 'Animal (Insects, Spiders)', description: 'Insects and spiders', icon: Dog },
+  'animals-birds': { title: 'Animals (Birds, Raptors, Fowl)', description: 'Birds and fowl', icon: Dog },
+  'animals-crabs': { title: 'Animals (Crabs, Lobsters, Crustaceans)', description: 'Crustaceans', icon: Dog },
+  'animals-fish': { title: 'Animals (Fishes, Fish)', description: 'Fish and aquatic life', icon: Dog },
+  'animals-mammals': { title: 'Animals (Mammals, Birds, Reptiles)', description: 'Various animals', icon: Dog },
+  'animals-orcas': { title: 'Animals (Mammals, Orcas, Dolphins)', description: 'Marine mammals', icon: Dog },
+  'animals-jellyfish': { title: 'Animals (Man of War, Siphonophore)', description: 'Jellyfish and related', icon: Dog },
+  'animals-reptiles': { title: 'Animals (Reptiles, Snakes)', description: 'Reptiles and snakes', icon: Dog },
+  'animals-rodents': { title: 'Animals (Rodents, Rats, Beavers)', description: 'Rodents', icon: Dog },
+  'animals-octopus': { title: 'Animals Octopus (Squid, Cephalopod)', description: 'Cephalopods', icon: Dog },
+  
+  // Animation & Film
+  'animation-film-military': { title: 'Animation & Film, Military', description: 'Military animation and films', icon: Film },
+  'animation-film-movies': { title: 'Animation, Film, Movies (Clips)', description: 'Movie clips and animation', icon: Clapperboard },
+  
+  // Arguments
+  'arguments': { title: 'Arguments (Arguments, Disrespect)', description: 'Arguments and confrontations', icon: MessageSquare },
+  
+  // Artifacts
+  'artifacts': { title: 'Artifact (Antique, Antiquities)', description: 'Antiques and artifacts', icon: Crown },
+  
+  // Attorney
+  'attorney': { title: 'Attorney (Information, Statistics)', description: 'Legal information', icon: Scale },
+  
+  // Dating & Attraction
+  'attraction-dating': { title: 'Attraction (Dating)', description: 'Dating and attraction content', icon: Heart },
+  'dating': { title: 'Dating (Dating)', description: 'Dating content', icon: Heart },
+  'dating-breakups': { title: 'Dating (Breakups)', description: 'Breakup content', icon: Heart },
+  'dating-flirting': { title: 'Dating (Flirting, Crush)', description: 'Flirting tips', icon: Heart },
+  'dating-relationship': { title: 'Dating (Relationship)', description: 'Relationship advice', icon: Heart },
+  'dating-single': { title: 'Dating, Single', description: 'Single life content', icon: Heart },
+  'divorce': { title: 'Divorce', description: 'Divorce content', icon: Heart },
+  
+  // Auditions
+  'auditions-contests': { title: 'Auditions, Contests (Entertainment)', description: 'Talent shows and contests', icon: Star },
+  
+  // Autos & Vehicles
+  'autos-vehicles': { title: 'Autos & Vehicles', description: 'Cars and vehicles', icon: Car },
+  'avalanche': { title: 'Avalanche', description: 'Avalanche footage', icon: Mountain },
+  
+  // Babies
+  'babies-infants': { title: 'Babies/Infants (Funny/Comedy)', description: 'Funny baby content', icon: Baby },
+  
+  // Blizzard
+  'blizzard': { title: 'Blizzard (Blowing Snow, Visibility)', description: 'Blizzard footage', icon: Snowflake },
+  
+  // Boats
+  'boats': { title: 'Boats', description: 'Boat content', icon: Sailboat },
+  
+  // Boxing
+  'boxing-street': { title: 'Boxing (Street Fighting, Brawl)', description: 'Street fighting content', icon: Trophy },
+  
+  // Business Categories
+  'business-bitcoin': { title: 'Business (Bitcoins, Cryptocurrency)', description: 'Crypto and bitcoin', icon: DollarSign },
+  'business-developments': { title: 'Business (Developments, Economy)', description: 'Business and economy', icon: TrendingUp },
+  'business-leaders': { title: 'Business (Leaders, Advise)', description: 'Business leadership', icon: Briefcase },
+  'business-money': { title: 'Business (Money, Taxes, Interest)', description: 'Finance and taxes', icon: DollarSign },
+  'business-services': { title: 'Business (Services, Drones)', description: 'Business services', icon: Cog },
+  'business-farmers': { title: 'Business Farmers (Farming)', description: 'Farming and agriculture', icon: Leaf },
+  'create-business-internet': { title: 'Create Business Internet', description: 'Online business creation', icon: Globe },
+  
+  // Calisthenics
+  'calisthenics': { title: 'Calisthenics - Workout', description: 'Calisthenics training', icon: Dumbbell },
+  
+  // Car Categories
+  'car-major-repairs': { title: 'Car (Major Repairs)', description: 'Major car repairs', icon: Wrench },
+  'car-minor-repairs': { title: 'Car (Minor Repairs)', description: 'Minor car repairs', icon: Wrench },
+  'car-racing-crashes': { title: 'Car Racing (Crashes, Accidents)', description: 'Racing crashes', icon: Car },
+  'car-repairs-hacks': { title: 'Car Repairs, Car Hacks', description: 'Car repair tips', icon: Wrench },
+  'car-repo': { title: 'Car Repo (Repossession)', description: 'Car repossession content', icon: Car },
+  'cars-drifting': { title: 'Cars (Drifting, Drivers)', description: 'Drifting videos', icon: Car },
+  'cars-expensive': { title: 'Cars (Expensive, Rarest)', description: 'Luxury and rare cars', icon: Crown },
+  'cars-future': { title: 'Cars (Future Vehicles)', description: 'Future car concepts', icon: Car },
+  'cars-sedans': { title: 'Cars (Sedans, Coupe)', description: 'Sedans and coupes', icon: Car },
+  'cars-strange': { title: 'Cars (Strange, Weird)', description: 'Unusual cars', icon: Car },
+  'cars-supercars': { title: 'Cars (Supercars, Hypercars)', description: 'Supercars and hypercars', icon: Car },
+  'cars-accidents': { title: 'Cars Accidents (Idiot, Bad Drivers)', description: 'Car accident footage', icon: AlertTriangle },
+  'cars-trucks-motorcycles': { title: 'Cars, Trucks, Motorcycles', description: 'All vehicles', icon: Car },
+  'crashes': { title: 'Crashes (Cars, Trucks, Motorcycles)', description: 'Vehicle crashes', icon: AlertTriangle },
+  
+  // Cell Phone
+  'cell-phone-tricks': { title: 'Cell Phone (Tricks, Hacks)', description: 'Phone tips and tricks', icon: Smartphone },
+  
+  // Colosseum
+  'colosseum': { title: 'Colosseum (Rome, Arena, Stadium)', description: 'Colosseum content', icon: Landmark },
+  
+  // Container Ships
+  'container-ships': { title: 'Container Ships, Oil Tankers', description: 'Large vessels', icon: Ship },
+  
+  // Cosmetics
+  'cosmetics-eyelashes': { title: 'Cosmetics (Eyelashes, Eyeshadow)', description: 'Eye makeup', icon: Eye },
+  'cosmetics-foundation': { title: 'Cosmetics (Foundation, Powder)', description: 'Foundation makeup', icon: Palette },
+  'cosmetics-lipstick': { title: 'Cosmetics (Lipstick, Makeup)', description: 'Lip makeup', icon: Palette },
+  
+  // Courts Categories
+  'court-trials': { title: 'Court Trials, Court Procedures', description: 'Court trials', icon: Gavel },
+  'courts-indictment': { title: 'Courts (Indictment, Charges)', description: 'Legal charges', icon: Gavel },
+  'courts-sentencing': { title: 'Courts (Sentencing, Judgement)', description: 'Court sentencing', icon: Scale },
+  'courts-police-crime': { title: 'Courts & Police, Crime', description: 'Crime and courts', icon: Shield },
+  'courts-supreme': { title: 'Courts, Supreme Courts, District', description: 'Supreme court content', icon: Landmark },
+  
+  // Crime
+  'crime-fraud': { title: 'Crime (Fraud, Scammers, Swindlers)', description: 'Fraud and scams', icon: AlertTriangle },
+  'crime-works': { title: 'Crime (Works, Commit, What Is)', description: 'Crime content', icon: Shield },
+  'criminal-enterprises': { title: 'Criminal Enterprises', description: 'Criminal organizations', icon: Shield },
+  'criminal-gangs': { title: 'Criminal Gangs', description: 'Gang content', icon: Users },
+  'criminal-gangsters': { title: 'Criminal Gangsters', description: 'Gangster content', icon: Users },
+  
+  // Crazy/Amazing
+  'crazy-amazing': { title: "Crazy/Amazing/Wouldn't Believe", description: 'Unbelievable content', icon: Sparkles },
+  
+  // Dances
+  'dances-styles': { title: 'Dances (Different Styles)', description: 'Dance styles', icon: Music },
+  'dances-choreography': { title: 'Dances (Music Choreography)', description: 'Dance choreography', icon: Music },
+  
+  // Disasters
+  'disasters-avalanches': { title: 'Disasters (Avalanches, Snow)', description: 'Avalanche disasters', icon: Mountain },
+  'disasters-earthquakes': { title: 'Disasters (Earthquakes, Floods)', description: 'Earthquakes and floods', icon: AlertTriangle },
+  'disasters-fires': { title: 'Disasters (Fires, Explosion)', description: 'Fire disasters', icon: Flame },
+  'disasters-hurricanes': { title: 'Disasters (Hurricanes, Tornado)', description: 'Storm disasters', icon: Wind },
+  'disasters-volcano': { title: 'Disasters (Volcano)', description: 'Volcanic disasters', icon: Flame },
+  
+  // Documents & Documentaries
+  'document-word': { title: 'Document (Word, Excel, Writing)', description: 'Document tutorials', icon: FileText },
+  'documentaries-drugs': { title: 'Documentaries (Drugs, Dealers)', description: 'Drug documentaries', icon: Film },
+  'documentary': { title: 'Documentary (Real Events, People)', description: 'Documentary films', icon: Film },
+  
+  // Drinks
+  'drinks': { title: 'Drinks (Alcohol, Non-Alcohol)', description: 'Beverage content', icon: Wine },
+  
+  // Drones
+  'drones-civilian': { title: 'Drones (Civilian Drones, Remote)', description: 'Drone content', icon: Plane },
+  
+  // Drugs
+  'drugs-money': { title: 'Drugs (Drugs, Money, Dealers)', description: 'Drug-related content', icon: AlertTriangle },
+  
+  // Education Categories
+  'education': { title: 'Education', description: 'Educational content', icon: GraduationCap },
+  'education-anatomy': { title: 'Education (Anatomy, Human Body)', description: 'Anatomy education', icon: Activity },
+  'education-countries': { title: 'Education (Countries History)', description: 'Country history', icon: Globe },
+  'education-immigration': { title: 'Education (Immigration, Questions)', description: 'Immigration education', icon: Globe },
+  'education-kids-geography': { title: 'Education (Kids Geography)', description: 'Geography for kids', icon: Map },
+  'education-laws': { title: 'Education (Laws, Constitution)', description: 'Legal education', icon: Scale },
+  
   // News & Politics
   'news-politics': { title: 'News & Politics', description: 'Stay informed with the latest news and political coverage', icon: Newspaper },
   'news-shows': { title: 'News Shows', description: '60 minutes, investigative reports and more', icon: Tv },

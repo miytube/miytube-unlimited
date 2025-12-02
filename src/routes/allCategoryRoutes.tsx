@@ -4,6 +4,69 @@ import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 
 // Generate routes for all categories from the mapping
 const categoryKeys = [
+  // Comedy Categories
+  'comedy-snl', 'comedians-interviews', 'comedy-funny-pranks', 'comedy-roasts',
+  'comedy-standup', 'comedy-jokes-pranks', 'comedy-sitcom', 'bloopers',
+  
+  // Actors & Celebrities
+  'actors-actress-bios', 'actors-information', 'celebrities',
+  
+  // AI Categories
+  'ai-agents', 'ai-chatgpt', 'artificial-intelligence', 'ai-hr', 'ai-humanoids', 'ai-robots',
+  
+  // Airplanes Categories
+  'airplanes-blimps', 'airplanes-cargo', 'airplanes-commercial', 'airplanes-land-water',
+  'airplanes-pilots', 'airplanes-single-engine', 'airplanes-fleet',
+  
+  // Airports
+  'airports', 'airports-improvements', 'airports-fails',
+  
+  // History
+  'american-history', 'biblical-history', 'bible-quotes',
+  
+  // Animals
+  'amphibians', 'animal-insects', 'animals-birds', 'animals-crabs', 'animals-fish',
+  'animals-mammals', 'animals-orcas', 'animals-jellyfish', 'animals-reptiles',
+  'animals-rodents', 'animals-octopus',
+  
+  // Animation & Film
+  'animation-film-military', 'animation-film-movies',
+  
+  // Various Categories
+  'arguments', 'artifacts', 'attorney', 'attraction-dating', 'auditions-contests',
+  'autos-vehicles', 'avalanche', 'babies-infants', 'blizzard', 'boats', 'boxing-street',
+  
+  // Business Categories
+  'business-bitcoin', 'business-developments', 'business-leaders', 'business-money',
+  'business-services', 'business-farmers', 'create-business-internet',
+  
+  // Calisthenics & Cars
+  'calisthenics', 'car-major-repairs', 'car-minor-repairs', 'car-racing-crashes',
+  'car-repairs-hacks', 'car-repo', 'cars-drifting', 'cars-expensive', 'cars-future',
+  'cars-sedans', 'cars-strange', 'cars-supercars', 'cars-accidents', 'cars-trucks-motorcycles',
+  'crashes', 'cell-phone-tricks', 'colosseum', 'container-ships',
+  
+  // Cosmetics
+  'cosmetics-eyelashes', 'cosmetics-foundation', 'cosmetics-lipstick',
+  
+  // Courts & Crime
+  'court-trials', 'courts-indictment', 'courts-sentencing', 'courts-police-crime',
+  'courts-supreme', 'crime-fraud', 'crime-works', 'criminal-enterprises',
+  'criminal-gangs', 'criminal-gangsters', 'crazy-amazing',
+  
+  // Dances & Dating
+  'dances-styles', 'dances-choreography', 'dating', 'dating-breakups', 'dating-flirting',
+  'dating-relationship', 'dating-single', 'divorce',
+  
+  // Disasters & Documentaries
+  'disasters-avalanches', 'disasters-earthquakes', 'disasters-fires', 'disasters-hurricanes',
+  'disasters-volcano', 'document-word', 'documentaries-drugs', 'documentary',
+  'drinks', 'drones-civilian', 'drugs-money',
+  
+  // Education
+  'education', 'education-anatomy', 'education-countries', 'education-immigration',
+  'education-kids-geography', 'education-laws',
+  
   // News & Politics
   'news-politics', 'news-shows', 'news-politics-podcasts', 'politics', 
   'senate-house', 'tv-news-shows', 'tv-news-court', 'talk-shows',
@@ -174,6 +237,9 @@ const categoryKeys = [
   
   // Nonprofits
   'nonprofits',
+  
+  // Pets & Animals
+  'pets-animals',
 ];
 
 export const allCategoryRoutes = categoryKeys.map(key => (
