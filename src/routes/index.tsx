@@ -7,6 +7,8 @@ import { categoryRoutes } from "./categoryRoutes";
 import { subcategoryRoutes } from "./subcategoryRoutes";
 import { specialSubcategoryRoutes } from "./specialSubcategoryRoutes";
 import { newSubcategoryRoutes } from "./newSubcategoryRoutes";
+import { allCategoryRoutes } from "./allCategoryRoutes";
+import { musicRoutes } from "./musicRoutes";
 
 const AppRoutes = () => {
   return (
@@ -23,6 +25,9 @@ const AppRoutes = () => {
       {/* Category Pages */}
       {categoryRoutes}
       
+      {/* Music Routes */}
+      {musicRoutes}
+      
       {/* Subcategory Routes */}
       {subcategoryRoutes}
       
@@ -31,6 +36,9 @@ const AppRoutes = () => {
       
       {/* New Subcategory Routes */}
       {newSubcategoryRoutes}
+      
+      {/* All Category Routes */}
+      {allCategoryRoutes}
     </Routes>
   );
 };

@@ -6,11 +6,12 @@ import { MockVideo } from '@/data/mockVideos';
 interface VideoContentProps {
   title: string;
   videos: MockVideo[];
+  maxVideos?: number;
 }
 
-const VideoContent: React.FC<VideoContentProps> = ({ title, videos }) => {
-  // Limit to 20 videos (4x5 grid)
-  const displayVideos = videos.slice(0, 20);
+const VideoContent: React.FC<VideoContentProps> = ({ title, videos, maxVideos = 20 }) => {
+  // Limit to 20 videos (4x5 grid) by default
+  const displayVideos = videos.slice(0, maxVideos);
   
   return (
     <div className="mb-8">
