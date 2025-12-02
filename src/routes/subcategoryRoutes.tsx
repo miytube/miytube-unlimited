@@ -80,6 +80,9 @@ export const subcategoryRoutes = [
   <Route key="education-immigration" path="/education/immigration" element={<GenericSubcategoryPage />} />,
   <Route key="education-geography" path="/education/geography" element={<GenericSubcategoryPage />} />,
   <Route key="education-laws" path="/education/laws" element={<GenericSubcategoryPage />} />,
+  <Route key="education-medicine" path="/education/medicine" element={<GenericSubcategoryPage />} />,
+  <Route key="education-religion" path="/education/religion" element={<GenericSubcategoryPage />} />,
+  <Route key="education-nursing" path="/education/nursing" element={<GenericSubcategoryPage />} />,
   
   /* Courts & Crime Routes */
   <Route key="courts-police-trails" path="/courts-police/trails" element={<GenericSubcategoryPage />} />,
@@ -110,4 +113,18 @@ export const subcategoryRoutes = [
   
   /* Drones Routes */
   <Route key="drones-civilian" path="/drones/civilian" element={<GenericSubcategoryPage />} />,
+  
+  /* Film Routes */
+  <Route key="film-romance" path="/film/romance" element={<GenericSubcategoryPage />} />,
+  <Route key="film-comedy" path="/film/comedy" element={<GenericSubcategoryPage />} />,
+  <Route key="film-action-crime-thriller" path="/film/action-crime-thriller" element={<GenericSubcategoryPage />} />,
+  <Route key="film-drama" path="/film/drama" element={<GenericSubcategoryPage />} />,
+  <Route key="film-comedy-drama-crime" path="/film/comedy-drama-crime" element={<GenericSubcategoryPage />} />,
+  
+  /* Film & Animation Routes */
+  <Route key="film-animation-comedy" path="/film-animation/comedy" element={<GenericSubcategoryPage />} />,
+  <Route key="film-animation-cartoons" path="/film-animation/cartoons" element={<GenericSubcategoryPage />} />,
+  
+  /* Film & Movies Routes */
+  <Route key="film-movies-clips" path="/film-movies/clips" element={<GenericSubcategoryPage />} />,
 ];
