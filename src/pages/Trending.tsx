@@ -139,14 +139,11 @@ const TrendingCategory: React.FC<TrendingCategoryProps> = ({ title, linkTo, chil
 
 const Trending: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'videos' | 'music' | 'podcasts'>('all');
-  const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
+  const { uploadedVideos, addUploadedVideo } = useUploadedVideos();
   const { toast } = useToast();
 
-  // Get uploaded trending videos
-  const uploadedTrendingVideos = getVideosByCategory('trending');
-  
-  // Format uploaded videos for VideoCard
-  const formattedUploadedVideos = uploadedTrendingVideos.map(video => ({
+  // All uploaded videos appear first on trending page (newest first)
+  const formattedUploadedVideos = uploadedVideos.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
@@ -156,8 +153,8 @@ const Trending: React.FC = () => {
     duration: video.duration,
   }));
 
-  // Combine uploaded with mock data
-  const allTrendingVideos = [...formattedUploadedVideos, ...trendingVideos].slice(0, 20);
+  // Combine all uploads (newest first) with mock trending videos
+  const allTrendingVideos = [...[...formattedUploadedVideos].reverse(), ...trendingVideos].slice(0, 20);
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach(file => {

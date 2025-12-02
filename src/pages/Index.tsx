@@ -25,16 +25,18 @@ const Index = () => {
     }));
   }, [uploadedVideos]);
 
-  // Combine uploaded videos with mock videos for Recommended (uploaded first)
+  // All uploaded videos appear first on home page (newest first), then mock videos fill remaining slots
   const recommendedVideos = useMemo(() => {
-    const combined = [...formattedUploadedVideos, ...mockVideos];
+    const sortedUploads = [...formattedUploadedVideos].reverse(); // Newest uploads first
+    const combined = [...sortedUploads, ...mockVideos];
     return combined.slice(0, 20); // Show max 20 videos (4x5 grid)
   }, [formattedUploadedVideos]);
 
-  // Combine uploaded videos with mock videos for Trending (uploaded first)
+  // All uploaded videos appear first on trending (newest first), then mock videos fill remaining slots
   const trendingVideos = useMemo(() => {
+    const sortedUploads = [...formattedUploadedVideos].reverse(); // Newest uploads first
     const shuffledMock = [...mockVideos.slice(4, 8), ...mockVideos.slice(0, 4)];
-    const combined = [...formattedUploadedVideos, ...shuffledMock];
+    const combined = [...sortedUploads, ...shuffledMock];
     return combined.slice(0, 20); // Show max 20 videos (4x5 grid)
   }, [formattedUploadedVideos]);
 
