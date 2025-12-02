@@ -28,9 +28,12 @@ export const useUploadHandler = () => {
       description: `Processing ${files.length} ${files.length === 1 ? 'file' : 'files'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
     });
     
-    if (contentTypeId === 'video' || contentTypeId === 'shorts') {
+    // Store uploads in context with proper category
+    if (contentTypeId === 'video' || contentTypeId === 'shorts' || contentTypeId === 'music') {
       files.forEach(file => {
-        addUploadedVideo(file, title || file.name, description || '', category, subcategory, tags);
+        // For music uploads, ensure category is set to 'music' if not specified
+        const uploadCategory = contentTypeId === 'music' ? (category || 'music') : category;
+        addUploadedVideo(file, title || file.name, description || '', uploadCategory, subcategory, tags);
       });
     }
     
