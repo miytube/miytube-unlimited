@@ -59,6 +59,7 @@ export const mainRoutes = [
   <Route key="copyright" path="/copyright" element={<Copyright />} />,
   <Route key="advertising" path="/advertising" element={<Advertising />} />,
   <Route key="blog" path="/blog" element={<Blog />} />,
+  <Route key="blog-new" path="/blog/new" element={<Blog />} />,
   <Route key="long-videos" path="/long-videos" element={<LongVideos />} />,
   <Route key="news-politics" path="/news" element={<NewsAndPolitics />} />,
   <Route key="talk-at-cha" path="/talk-at-cha" element={<TalkAtCha />} />,
