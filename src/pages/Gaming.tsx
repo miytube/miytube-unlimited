@@ -1,88 +1,52 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
-import { Gamepad2, Upload, Target, Zap, Trophy, Plus } from 'lucide-react';
+import { Gamepad2, Upload, Target, Zap, Trophy, Dice1, Sparkles, Ticket, CreditCard, Smartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { toast } from '@/components/ui/use-toast';
 
 const Gaming = () => {
-  const [newCategory, setNewCategory] = useState('');
-  const [gamingCategories, setGamingCategories] = useState([
-    { id: 'fps', name: 'FPS', icon: <Target size={24} /> },
-    { id: 'moba', name: 'MOBA', icon: <Zap size={24} /> },
-    { id: 'rpg', name: 'RPG', icon: <Gamepad2 size={24} /> },
-    { id: 'strategy', name: 'Strategy', icon: <Target size={24} /> },
-    { id: 'simulation', name: 'Simulation', icon: <Gamepad2 size={24} /> },
-    { id: 'esports', name: 'Esports', icon: <Trophy size={24} /> },
-  ]);
-  
-  const handleAddCategory = () => {
-    if (newCategory.trim()) {
-      const newCategoryObj = {
-        id: `category-${Date.now()}`,
-        name: newCategory,
-        icon: <Gamepad2 size={24} />
-      };
-      setGamingCategories([...gamingCategories, newCategoryObj]);
-      setNewCategory('');
-      toast({
-        title: "Category Added",
-        description: `Added ${newCategory} to gaming categories`,
-      });
-    }
-  };
-
-  const gamingVideos = [
-    {
-      id: 'gaming1',
-      title: 'Call of Duty: Modern Warfare 3 - Full Gameplay Walkthrough',
-      thumbnail: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80',
-      channelName: 'GamersUnite',
-      views: '4.5M',
-      timestamp: '1 week ago',
-      duration: '45:12',
-    },
-    {
-      id: 'gaming2',
-      title: 'League of Legends World Championship Finals Highlights',
-      thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Esports Central',
-      views: '2.1M',
-      timestamp: '3 days ago',
-      duration: '22:38',
-    },
-    {
-      id: 'gaming3',
-      title: 'Minecraft Building Tips and Tricks for Beginners',
-      thumbnail: 'https://images.unsplash.com/photo-1632749042901-936b337902df?auto=format&fit=crop&w=800&q=80',
-      channelName: 'BlockMaster',
-      views: '980K',
-      timestamp: '2 weeks ago',
-      duration: '18:25',
-    },
-    {
-      id: 'gaming4',
-      title: 'The Elder Scrolls VI - Official Trailer Analysis',
-      thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
-      channelName: 'RPG World',
-      views: '3.7M',
-      timestamp: '5 days ago',
-      duration: '15:40',
-    },
+  const gamingCategories = [
+    { id: 'game-challenges', name: 'Game Challenges', icon: <Target size={24} />, path: '/gaming/game-challenges' },
+    { id: 'game-toys', name: 'Game Toys', icon: <Sparkles size={24} />, path: '/gaming/game-toys' },
+    { id: 'arcade-games', name: 'Arcade Games', icon: <Gamepad2 size={24} />, path: '/gaming/arcade-games' },
+    { id: 'casino-slots', name: 'Casino Slots', icon: <Dice1 size={24} />, path: '/gaming/casino-slots' },
+    { id: 'dominos', name: 'Dominos', icon: <Dice1 size={24} />, path: '/gaming/dominos' },
+    { id: 'lottery', name: 'Lottery', icon: <Ticket size={24} />, path: '/gaming/lottery' },
+    { id: 'xbox-playstation', name: 'Xbox & PlayStation', icon: <Smartphone size={24} />, path: '/gaming/xbox-playstation' },
+    { id: 'gaming-cards', name: 'Gaming Cards', icon: <CreditCard size={24} />, path: '/gaming/gaming-cards' },
+    { id: 'magic-tricks', name: 'Magic Tricks', icon: <Sparkles size={24} />, path: '/gaming/magic-tricks' },
+    { id: 'fps', name: 'FPS', icon: <Target size={24} />, path: '/gaming/fps' },
+    { id: 'moba', name: 'MOBA', icon: <Zap size={24} />, path: '/gaming/moba' },
+    { id: 'esports', name: 'Esports', icon: <Trophy size={24} />, path: '/gaming/esports' },
   ];
+
+  // Generate 20 videos for 4x5 grid
+  const gamingVideos = Array.from({ length: 20 }, (_, i) => ({
+    id: `gaming-${i + 1}`,
+    title: `Gaming Video ${i + 1} - ${['Call of Duty', 'League of Legends', 'Minecraft', 'Fortnite', 'GTA V'][i % 5]} Gameplay`,
+    thumbnail: `https://images.unsplash.com/photo-${1542751371 + i * 1000}-adc38448a05e?auto=format&fit=crop&w=800&q=80`,
+    channelName: `Gamer ${i + 1}`,
+    views: `${Math.floor(Math.random() * 900) + 100}K`,
+    timestamp: `${Math.floor(Math.random() * 30) + 1} days ago`,
+    duration: `${Math.floor(Math.random() * 45) + 15}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+  }));
 
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-muted-foreground text-sm">MiyTube</span>
+          <span className="text-muted-foreground text-sm">/</span>
+          <span className="text-sm font-medium">Gaming</span>
+        </div>
+        
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-2">
             <Gamepad2 className="h-6 w-6 text-primary" />
             <h1 className="text-3xl font-bold">Gaming</h1>
           </div>
-          <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+          <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
             <Upload size={18} />
             <span>Upload Gaming Video</span>
           </Link>
@@ -90,50 +54,24 @@ const Gaming = () => {
         
         {/* Categories */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-medium">Categories</h2>
-            <div className="flex gap-2">
-              <Input 
-                type="text"
-                placeholder="New category name"
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                className="max-w-[200px]"
-              />
-              <Button onClick={handleAddCategory} size="sm">
-                <Plus size={16} className="mr-1" /> Add
-              </Button>
-            </div>
-          </div>
+          <h2 className="text-xl font-medium mb-4">Categories</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {gamingCategories.map((category) => (
               <Link 
                 key={category.id} 
-                to={`/gaming/${category.id}`}
+                to={category.path}
                 className="bg-card p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2"
               >
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                   {category.icon}
                 </div>
-                <span className="font-medium">{category.name}</span>
+                <span className="font-medium text-center">{category.name}</span>
               </Link>
             ))}
-            <button 
-              className="bg-card p-4 rounded-lg border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center gap-2 hover:border-primary/40 transition-colors cursor-pointer h-full"
-              onClick={() => {
-                const inputElement = document.querySelector('input[type="text"]') as HTMLInputElement;
-                if (inputElement) inputElement.focus();
-              }}
-            >
-              <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center">
-                <Plus size={24} className="text-muted-foreground" />
-              </div>
-              <span className="font-medium text-muted-foreground">Add Category</span>
-            </button>
           </div>
         </div>
         
-        {/* Trending Gaming Videos */}
+        {/* Trending Gaming Videos - 4x5 Grid */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Trending in Gaming</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

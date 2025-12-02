@@ -38,6 +38,21 @@ export interface CategoryInfo {
 }
 
 export const allCategoryMappings: Record<string, CategoryInfo> = {
+  // Gaming Categories
+  'gaming': { title: 'Gaming', description: 'Video games, esports and gaming content', icon: Gamepad2 },
+  'game-challenges': { title: 'Game Challenges', description: 'Gaming challenges and competitions', icon: Target, parent: { route: '/gaming', name: 'Gaming' } },
+  'game-toys': { title: 'Game Toys (Rockets, Missiles)', description: 'Gaming toys and RC toys', icon: Rocket, parent: { route: '/gaming', name: 'Gaming' } },
+  'arcade-games': { title: 'Gaming (Arcade, Games)', description: 'Arcade and retro gaming', icon: Gamepad2, parent: { route: '/gaming', name: 'Gaming' } },
+  'casino-slots': { title: 'Gaming (Casino Slots)', description: 'Casino slot machine games', icon: Dice1, parent: { route: '/gaming', name: 'Gaming' } },
+  'dominos': { title: 'Gaming (Dominos, Dominos Falls)', description: 'Domino games and setups', icon: Dice1, parent: { route: '/gaming', name: 'Gaming' } },
+  'lottery': { title: 'Gaming (Lottery, Prize, Raffle)', description: 'Lottery and prize games', icon: Ticket, parent: { route: '/gaming', name: 'Gaming' } },
+  'xbox-playstation': { title: 'Gaming (Xbox, PlayStation 5)', description: 'Console gaming on Xbox and PlayStation', icon: Gamepad2, parent: { route: '/gaming', name: 'Gaming' } },
+  'gaming-cards': { title: 'Gaming Cards', description: 'Card games and trading cards', icon: CreditCard, parent: { route: '/gaming', name: 'Gaming' } },
+  'magic-tricks': { title: 'Gaming Magic Tricks', description: 'Magic tricks and illusions', icon: Sparkles, parent: { route: '/gaming', name: 'Gaming' } },
+  'fps': { title: 'FPS Games', description: 'First person shooter games', icon: Target, parent: { route: '/gaming', name: 'Gaming' } },
+  'moba': { title: 'MOBA Games', description: 'Multiplayer online battle arena games', icon: Zap, parent: { route: '/gaming', name: 'Gaming' } },
+  'esports': { title: 'Esports', description: 'Competitive gaming and tournaments', icon: Trophy, parent: { route: '/gaming', name: 'Gaming' } },
+  
   // Comedy Categories
   'comedy': { title: 'Comedy', description: 'Laugh with our comedy content', icon: Laugh },
   'comedy-snl': { title: 'Saturday Night Live', description: 'SNL sketches, performers and history', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },

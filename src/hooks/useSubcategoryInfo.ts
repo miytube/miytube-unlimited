@@ -20,6 +20,10 @@ export const useSubcategoryInfo = (): SubcategoryData => {
   // Get the path key from URL (remove leading slash)
   const pathKey = location.pathname.slice(1);
   
+  // For nested routes like /gaming/game-challenges, extract the last segment
+  const pathParts = pathKey.split('/');
+  const lastSegment = pathParts[pathParts.length - 1];
+  
   // Generate a key from the category and subcategory (for nested routes)
   const mappingKey = subcategory ? `${category}-${subcategory}` : (category || pathKey);
   
@@ -38,6 +42,15 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent = mapping.icon;
     parentRoute = mapping.parent.route;
     parentName = mapping.parent.name;
+  }
+  // Check allCategoryMappings for the last segment (for nested routes like /gaming/game-challenges)
+  else if (allCategoryMappings[lastSegment]) {
+    const mapping = allCategoryMappings[lastSegment];
+    pageTitle = mapping.title;
+    pageDescription = mapping.description;
+    IconComponent = mapping.icon;
+    parentRoute = mapping.parent?.route || '/';
+    parentName = mapping.parent?.name || 'Home';
   }
   // Then check allCategoryMappings for direct path routes
   else if (allCategoryMappings[pathKey]) {

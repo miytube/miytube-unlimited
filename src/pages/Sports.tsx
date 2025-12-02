@@ -7,64 +7,36 @@ import { Link } from 'react-router-dom';
 
 const Sports = () => {
   const sportsCategories = [
-    { id: 'football', name: 'Football', icon: <Trophy size={24} /> },
-    { id: 'basketball', name: 'Basketball', icon: <Activity size={24} /> },
-    { id: 'baseball', name: 'Baseball', icon: <Trophy size={24} /> },
-    { id: 'hockey', name: 'Hockey', icon: <Activity size={24} /> },
-    { id: 'soccer', name: 'Soccer', icon: <Trophy size={24} /> },
-    { id: 'golf', name: 'Golf', icon: <Dumbbell size={24} /> },
-    { id: 'tennis', name: 'Tennis', icon: <Dumbbell size={24} /> },
-    { id: 'mma', name: 'MMA', icon: <Activity size={24} /> },
-    { id: 'boxing', name: 'Boxing', icon: <Trophy size={24} /> },
-    { id: 'wrestling', name: 'Wrestling', icon: <Activity size={24} /> },
-    { id: 'cricket', name: 'Cricket', icon: <Trophy size={24} /> },
-    { id: 'rugby', name: 'Rugby', icon: <Activity size={24} /> },
-    { id: 'track-field', name: 'Track & Field', icon: <Dumbbell size={24} /> },
-    { id: 'swimming', name: 'Swimming', icon: <Activity size={24} /> },
-    { id: 'gymnastics', name: 'Gymnastics', icon: <Dumbbell size={24} /> },
-    { id: 'olympics', name: 'Olympics', icon: <Trophy size={24} /> },
-    { id: 'motorsports', name: 'Motorsports', icon: <Activity size={24} /> },
-    { id: 'extreme-sports', name: 'Extreme Sports', icon: <Dumbbell size={24} /> },
+    { id: 'sports-nfl-football', name: 'NFL Football', icon: <Trophy size={24} /> },
+    { id: 'sports-nba-basketball', name: 'NBA Basketball', icon: <Activity size={24} /> },
+    { id: 'sports-mlb-baseball', name: 'MLB Baseball', icon: <Trophy size={24} /> },
+    { id: 'sports-nhl-hockey', name: 'NHL Hockey', icon: <Activity size={24} /> },
+    { id: 'sports-soccer', name: 'Soccer', icon: <Trophy size={24} /> },
+    { id: 'sports-professional-golf', name: 'Golf', icon: <Dumbbell size={24} /> },
+    { id: 'sports-tennis-men', name: 'Tennis Men', icon: <Dumbbell size={24} /> },
+    { id: 'sports-tennis-women', name: 'Tennis Women', icon: <Dumbbell size={24} /> },
+    { id: 'sports-mma-ufc', name: 'MMA/UFC', icon: <Activity size={24} /> },
+    { id: 'sports-boxing', name: 'Boxing', icon: <Trophy size={24} /> },
+    { id: 'sports-wwe-wrestling', name: 'WWE Wrestling', icon: <Activity size={24} /> },
+    { id: 'sports-rugby-cricket', name: 'Rugby & Cricket', icon: <Trophy size={24} /> },
+    { id: 'sports-track-field', name: 'Track & Field', icon: <Dumbbell size={24} /> },
+    { id: 'sports-volleyball', name: 'Volleyball', icon: <Activity size={24} /> },
+    { id: 'sports-olympics-track', name: 'Olympics', icon: <Trophy size={24} /> },
+    { id: 'sports-nascar', name: 'NASCAR', icon: <Activity size={24} /> },
+    { id: 'sports-formula-one', name: 'Formula One', icon: <Dumbbell size={24} /> },
+    { id: 'sports-horse-racing', name: 'Horse Racing', icon: <Trophy size={24} /> },
   ];
   
-  const sportsVideos = [
-    {
-      id: 'sports1',
-      title: 'NFL 2023 Top Plays of the Week',
-      thumbnail: 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&w=800&q=80',
-      channelName: 'SportsCenter',
-      views: '3.2M',
-      timestamp: '3 days ago',
-      duration: '10:15',
-    },
-    {
-      id: 'sports2',
-      title: 'NBA Finals 2023 - Game 7 Highlights',
-      thumbnail: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=800&q=80',
-      channelName: 'NBA Official',
-      views: '5.7M',
-      timestamp: '1 week ago',
-      duration: '15:42',
-    },
-    {
-      id: 'sports3',
-      title: 'Champions League Final - Full Match Analysis',
-      thumbnail: 'https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Soccer World',
-      views: '2.8M',
-      timestamp: '5 days ago',
-      duration: '22:10',
-    },
-    {
-      id: 'sports4',
-      title: 'Wimbledon 2023 - Men\'s Singles Final',
-      thumbnail: 'https://images.unsplash.com/photo-1595435934349-5c8a5ef2d2b0?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Tennis Channel',
-      views: '1.9M',
-      timestamp: '2 weeks ago',
-      duration: '18:35',
-    },
-  ];
+  // Generate 20 videos for 4x5 grid
+  const sportsVideos = Array.from({ length: 20 }, (_, i) => ({
+    id: `sports-${i + 1}`,
+    title: `${['NFL', 'NBA', 'MLB', 'NHL', 'Soccer'][i % 5]} - ${['Top Plays', 'Highlights', 'Finals', 'Championship', 'Best Moments'][i % 5]} ${i + 1}`,
+    thumbnail: `https://images.unsplash.com/photo-${1566577739112 + i * 1000}-5180d4bf9390?auto=format&fit=crop&w=800&q=80`,
+    channelName: `Sports Channel ${i + 1}`,
+    views: `${Math.floor(Math.random() * 900) + 100}K`,
+    timestamp: `${Math.floor(Math.random() * 30) + 1} days ago`,
+    duration: `${Math.floor(Math.random() * 20) + 10}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
+  }));
 
   return (
     <Layout>
@@ -78,7 +50,7 @@ const Sports = () => {
               <h1 className="text-3xl font-bold">Sports</h1>
             </div>
           </div>
-          <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+          <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
             <Upload size={18} />
             <span>Upload Sports Video</span>
           </Link>
@@ -91,19 +63,19 @@ const Sports = () => {
             {sportsCategories.map((category) => (
               <Link 
                 key={category.id} 
-                to={`/sports/${category.id}`}
+                to={`/${category.id}`}
                 className="bg-card p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col items-center gap-2"
               >
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                   {category.icon}
                 </div>
-                <span className="font-medium">{category.name}</span>
+                <span className="font-medium text-center">{category.name}</span>
               </Link>
             ))}
           </div>
         </div>
         
-        {/* Trending Sports Videos */}
+        {/* Trending Sports Videos - 4x5 Grid */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Trending in Sports</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
