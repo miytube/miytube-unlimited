@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, Stethoscope, BookOpen, HeartPulse, School } from 'lucide-react';
+import { GraduationCap, Stethoscope, BookOpen, HeartPulse, School, Gavel } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -97,6 +97,24 @@ export const EducationDropdown: React.FC = () => {
                     >
                       <School className="h-4 w-4" />
                       <span>Learning Techniques</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/education/doctor" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Stethoscope className="h-4 w-4" />
+                      <span>Doctor & Medical Practice</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/education/lawyer" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Gavel className="h-4 w-4" />
+                      <span>Lawyer & Attorney</span>
                     </Link>
                   </NavigationMenuLink>
                 </div>
