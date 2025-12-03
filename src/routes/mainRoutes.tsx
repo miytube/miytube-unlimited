@@ -1,5 +1,5 @@
 import { Route } from "react-router-dom";
-import { Shield, Flame, Waves, Anchor, Mic } from 'lucide-react';
+import { Shield, Flame, Waves, Anchor, Mic, Plane } from 'lucide-react';
 
 import Index from "@/pages/Index";
 import Videos from "@/pages/Videos";
@@ -76,7 +76,7 @@ export const mainRoutes = [
   <Route key="restaurants" path="/restaurants" element={<Restaurants />} />,
   <Route key="real-estate" path="/real-estate" element={<RealEstate />} />,
   <Route key="airports" path="/airports" element={<Airports />} />,
-  <Route key="airports-fails" path="/airports/fails" element={<Airports />} />,
+  <Route key="airports-fails" path="/airports-fails" element={<GenericCategoryPage title="Airports Fails" description="Watch airport fails and incidents" Icon={Plane} />} />,
   <Route key="travel-events" path="/travel-events" element={<TravelEvents />} />,
   <Route key="travel-events-airplanes-airships" path="/travel-events/airplanes-airships" element={<TravelEvents />} />,
   <Route key="travel-events-airplanes-cargo" path="/travel-events/airplanes-cargo" element={<TravelEvents />} />,

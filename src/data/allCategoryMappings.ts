@@ -552,6 +552,85 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Nonprofits
   'nonprofits': { title: 'Nonprofits & Activism', description: 'Nonprofit organizations and activism', icon: HeartHandshake },
+  
+  // Sound Effects & Audio
+  'sound-effects': { title: 'Sound Effects', description: 'Sound effects for projects', icon: Volume2 },
+  'asmr': { title: 'ASMR', description: 'Relaxing ASMR content', icon: Headphones },
+  
+  // Police Department Categories
+  'police-department': { title: 'Police Department', description: 'Police department content', icon: Shield },
+  'police-fails': { title: 'Police Fails', description: 'Police fails and funny moments', icon: Siren },
+  'police-trainings': { title: 'Police Department (Trainings)', description: 'Police training content', icon: Shield },
+  'police-personnel': { title: 'Police Department (Personnel)', description: 'Police personnel and officers', icon: Users },
+  'police-equipment': { title: 'Police Department (Equipment)', description: 'Police equipment and gear', icon: Shield },
+  'police-weapons': { title: 'Police Department (Weapons)', description: 'Police weapons and armory', icon: Target },
+  'police-boot-camp': { title: 'Police Department (Boot Camp Training)', description: 'Police boot camp and academy training', icon: Shield },
+  'police-vehicle-chases': { title: 'Police Department (Vehicle Chases)', description: 'High-speed police vehicle chases', icon: Car },
+  'police-vehicle-crashes': { title: 'Police Department (Vehicle Crashes)', description: 'Police vehicle crashes and accidents', icon: AlertTriangle },
+  'police-shootings': { title: 'Police Department (Shootings)', description: 'Police shooting incidents', icon: Target },
+  
+  // Fire Department Categories
+  'fire-department': { title: 'Fire Department', description: 'Fire department content', icon: Flame },
+  'fire-department-fails': { title: 'Fire Department Fails', description: 'Fire department fails and funny moments', icon: Flame },
+  'fire-trucks': { title: 'Fire Trucks', description: 'Fire trucks and emergency vehicles', icon: Truck },
+  'fire-personnel-training': { title: 'Fire Personnel Training', description: 'Firefighter training and personnel', icon: Flame },
+  'fire-house-fires': { title: 'Fire Department (House Fires)', description: 'House fire response and rescue', icon: Flame },
+  'fire-building-fires': { title: 'Fire Department (Building Fires)', description: 'Building fire response', icon: Building },
+  'fire-land-fires': { title: 'Fire Department (Land Fires)', description: 'Land and wildfire response', icon: Flame },
+  
+  // Military Marines
+  'military-marines': { title: 'Military: Marines', description: 'US Marine Corps content', icon: Shield },
+  'marine-training': { title: 'Military (Marine Training)', description: 'Marine Corps training', icon: Target },
+  'marine-boot-camp': { title: 'Military (Marine Boot Camp)', description: 'Marine boot camp', icon: Shield },
+  'marine-ships': { title: 'Military (Marine Ships)', description: 'Marine Corps ships', icon: Ship },
+  'marine-personnel': { title: 'Military (Marine Personnel)', description: 'Marine personnel and soldiers', icon: Users },
+  'marine-weapons': { title: 'Military (Marine Weapons)', description: 'Marine weapons systems', icon: Target },
+  'marine-pilots': { title: 'Military (Marine Pilots)', description: 'Marine pilots and aviation', icon: Plane },
+  'marine-duties': { title: 'Military (Marine Duties)', description: 'Marine duties and operations', icon: Shield },
+  
+  // Military Army
+  'military-army': { title: 'Military: Army', description: 'US Army content', icon: Shield },
+  'army-training': { title: 'Military (Army Training)', description: 'Army training exercises', icon: Target },
+  'army-boot-camp': { title: 'Military (Army Boot Camp)', description: 'Army boot camp training', icon: Shield },
+  'army-ships': { title: 'Military (Army Ships)', description: 'Army watercraft', icon: Ship },
+  'army-personnel': { title: 'Military (Army Personnel)', description: 'Army personnel and soldiers', icon: Users },
+  'army-weapons': { title: 'Military (Army Weapons)', description: 'Army weapons systems', icon: Target },
+  'army-pilots': { title: 'Military (Army Pilots)', description: 'Army aviation pilots', icon: Plane },
+  'army-duties': { title: 'Military (Army Duties)', description: 'Army duties and operations', icon: Shield },
+  
+  // Military Navy
+  'military-navy': { title: 'Military: Navy', description: 'US Navy content', icon: Anchor },
+  'navy-training': { title: 'Military (Navy Training)', description: 'Navy training exercises', icon: Target },
+  'navy-boot-camp': { title: 'Military (Navy Boot Camp)', description: 'Navy boot camp training', icon: Anchor },
+  'navy-ships': { title: 'Military (Navy Ships)', description: 'Navy ships and vessels', icon: Ship },
+  'navy-personnel': { title: 'Military (Navy Personnel)', description: 'Navy personnel and sailors', icon: Users },
+  'navy-weapons': { title: 'Military (Navy Weapons)', description: 'Navy weapons systems', icon: Target },
+  'navy-pilots': { title: 'Military (Navy Pilots)', description: 'Navy aviation pilots', icon: Plane },
+  'navy-duties': { title: 'Military (Navy Duties)', description: 'Navy duties and operations', icon: Anchor },
+  
+  // Military Coast Guard
+  'military-coast-guard': { title: 'Military: Coast Guard', description: 'US Coast Guard content', icon: Anchor },
+  'coast-guard-training': { title: 'Military (Coast Guard Training)', description: 'Coast Guard training', icon: Target },
+  'coast-guard-boot-camp': { title: 'Military (Coast Guard Boot Camp)', description: 'Coast Guard boot camp', icon: Anchor },
+  'coast-guard-ships': { title: 'Military (Coast Guard Ships)', description: 'Coast Guard vessels', icon: Ship },
+  'coast-guard-personnel': { title: 'Military (Coast Guard Personnel)', description: 'Coast Guard personnel', icon: Users },
+  'coast-guard-weapons': { title: 'Military (Coast Guard Weapons)', description: 'Coast Guard weapons', icon: Target },
+  'coast-guard-pilots': { title: 'Military (Coast Guard Pilots)', description: 'Coast Guard aviation', icon: Plane },
+  'coast-guard-duties': { title: 'Military (Coast Guard Duties)', description: 'Coast Guard duties', icon: Anchor },
+  
+  // Military Airforce
+  'military-airforce': { title: 'Military: Airforce', description: 'US Air Force content', icon: Plane },
+  'airforce-training': { title: 'Military (Airforce Training)', description: 'Air Force training', icon: Target },
+  'airforce-boot-camp': { title: 'Military (Airforce Boot Camp)', description: 'Air Force boot camp', icon: Plane },
+  'airforce-planes': { title: 'Military (Airforce Planes)', description: 'Air Force aircraft', icon: Plane },
+  'airforce-ships': { title: 'Military (Airforce Ships)', description: 'Air Force support vessels', icon: Ship },
+  'airforce-personnel': { title: 'Military (Airforce Personnel)', description: 'Air Force personnel', icon: Users },
+  'airforce-weapons': { title: 'Military (Airforce Weapons)', description: 'Air Force weapons', icon: Target },
+  'airforce-pilots': { title: 'Military (Airforce Pilots)', description: 'Air Force pilots', icon: Plane },
+  'airforce-duties': { title: 'Military (Airforce Duties)', description: 'Air Force duties', icon: Plane },
+  
+  // Military Weapons Drones (shared across branches)
+  'military-weapons-drones': { title: 'Military Weapons Drones', description: 'Military drone weapons systems', icon: Plane },
 };
 
 // Helper function to get category info

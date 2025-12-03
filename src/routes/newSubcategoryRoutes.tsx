@@ -62,9 +62,6 @@ export const newSubcategoryRoutes = [
   <Route key="military-weapons" path="/military/weapons" element={<GenericSubcategoryPage />} />,
   <Route key="military-heavy-weapons" path="/military/heavy-weapons" element={<GenericSubcategoryPage />} />,
 
-  // Fire Department
-  <Route key="fire-department" path="/fire-department" element={<GenericSubcategoryPage />} />,
-
   // Law & Justice routes
   <Route key="courts-police-sheriffs" path="/courts-police/police-sheriffs" element={<GenericSubcategoryPage />} />,
   <Route key="courts-police-fbi-atf" path="/courts-police/fbi-atf" element={<GenericSubcategoryPage />} />,
