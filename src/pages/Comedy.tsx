@@ -4,18 +4,17 @@ import { Layout } from '@/components/Layout';
 import { Smile, Upload, Mic, Tv, Laugh, Film } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Comedy = () => {
-  // Generate 20 sample videos for 4x5 grid
-  const comedyVideos = Array.from({ length: 20 }, (_, i) => ({
-    id: `comedy-${i + 1}`,
-    title: `Comedy Content ${i + 1}`,
-    thumbnail: `https://images.unsplash.com/photo-${1550745165 + i * 1000}-9bc0b252726f?auto=format&fit=crop&w=800&q=80`,
-    channelName: `Comedy Creator ${(i % 5) + 1}`,
-    views: `${Math.floor(Math.random() * 900) + 100}K`,
-    timestamp: `${(i % 7) + 1} days ago`,
-    duration: `${Math.floor(Math.random() * 20) + 5}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
-  }));
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Filter for comedy-related videos
+  const comedyVideos = uploadedVideos.filter(video => 
+    video.category === 'comedy' || 
+    video.subcategory?.toLowerCase().includes('comedy') ||
+    video.tags?.some(tag => tag.toLowerCase().includes('comedy'))
+  );
 
   const comedyCategories = [
     { name: 'SNL, Saturday Night Live', icon: Tv, route: '/comedy-snl' },
@@ -68,27 +67,39 @@ const Comedy = () => {
           </div>
         </div>
         
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Featured Comedy</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {comedyVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {comedyVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Comedy Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {comedyVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Popular Comedy</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {comedyVideos.slice(0, 20).map((video, index) => ({
-              ...video,
-              id: `popular-comedy-${index}`,
-              title: `Popular Comedy - ${index + 1}`,
-            })).map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            <Smile className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Comedy Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload comedy content!</p>
+            <Link 
+              to="/upload" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload Comedy</span>
+            </Link>
           </div>
-        </div>
+        )}
 
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About Comedy</h2>

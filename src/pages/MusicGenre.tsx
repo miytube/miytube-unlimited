@@ -6,10 +6,12 @@ import { VideoCard } from '@/components/VideoCard';
 import { Link } from 'react-router-dom';
 import { Upload, Music } from 'lucide-react';
 import { allCategoryMappings } from '@/data/allCategoryMappings';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const MusicGenre = () => {
   const params = useParams();
   const location = window.location.pathname;
+  const { uploadedVideos } = useUploadedVideos();
   
   // Get genre from path - extract from URL like /music/country
   const pathParts = location.split('/').filter(Boolean);
@@ -25,16 +27,13 @@ const MusicGenre = () => {
 
   const Icon = genreInfo.icon;
 
-  // Generate 20 sample videos for 4x5 grid
-  const sampleVideos = Array.from({ length: 20 }, (_, i) => ({
-    id: `${genreKey}-${i + 1}`,
-    title: `${genreInfo.title} Track ${i + 1}`,
-    thumbnail: `https://images.unsplash.com/photo-${1470225620780 + i * 1000}-dba8ba36b745?auto=format&fit=crop&w=800&q=80`,
-    channelName: `${genreInfo.title} Artist ${(i % 5) + 1}`,
-    views: `${Math.floor(Math.random() * 900) + 100}K`,
-    timestamp: `${(i % 7) + 1} days ago`,
-    duration: `${Math.floor(Math.random() * 5) + 2}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
-  }));
+  // Filter for music videos matching this genre
+  const genreVideos = uploadedVideos.filter(video => 
+    video.category === 'music' ||
+    video.category === actualGenre ||
+    video.subcategory?.toLowerCase().includes(actualGenre) ||
+    video.tags?.some(tag => tag.toLowerCase().includes(actualGenre) || tag.toLowerCase().includes('music'))
+  );
 
   return (
     <Layout>
@@ -62,27 +61,39 @@ const MusicGenre = () => {
           </div>
         </div>
         
-        <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Featured {genreInfo.title}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sampleVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {genreVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">{genreInfo.title} Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {genreVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-        
-        <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Popular in {genreInfo.title}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sampleVideos.slice(0, 20).map((video, index) => ({
-              ...video,
-              id: `popular-${index}`,
-              title: `Popular ${genreInfo.title} - ${index + 1}`,
-            })).map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            <Icon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No {genreInfo.title} Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload {genreInfo.title.toLowerCase()} content!</p>
+            <Link 
+              to="/upload/music" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload {genreInfo.title}</span>
+            </Link>
           </div>
-        </div>
+        )}
         
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About {genreInfo.title}</h2>

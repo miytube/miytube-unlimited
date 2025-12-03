@@ -4,8 +4,18 @@ import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { Gamepad2, Upload, Target, Zap, Trophy, Dice1, Sparkles, Ticket, CreditCard, Smartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Gaming = () => {
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Filter for gaming-related videos
+  const gamingVideos = uploadedVideos.filter(video => 
+    video.category === 'gaming' || 
+    video.subcategory?.toLowerCase().includes('gaming') ||
+    video.tags?.some(tag => tag.toLowerCase().includes('gaming') || tag.toLowerCase().includes('game'))
+  );
+
   const gamingCategories = [
     { id: 'game-challenges', name: 'Game Challenges', icon: <Target size={24} />, path: '/gaming/game-challenges' },
     { id: 'game-toys', name: 'Game Toys', icon: <Sparkles size={24} />, path: '/gaming/game-toys' },
@@ -20,17 +30,6 @@ const Gaming = () => {
     { id: 'moba', name: 'MOBA', icon: <Zap size={24} />, path: '/gaming/moba' },
     { id: 'esports', name: 'Esports', icon: <Trophy size={24} />, path: '/gaming/esports' },
   ];
-
-  // Generate 20 videos for 4x5 grid
-  const gamingVideos = Array.from({ length: 20 }, (_, i) => ({
-    id: `gaming-${i + 1}`,
-    title: `Gaming Video ${i + 1} - ${['Call of Duty', 'League of Legends', 'Minecraft', 'Fortnite', 'GTA V'][i % 5]} Gameplay`,
-    thumbnail: `https://images.unsplash.com/photo-${1542751371 + i * 1000}-adc38448a05e?auto=format&fit=crop&w=800&q=80`,
-    channelName: `Gamer ${i + 1}`,
-    views: `${Math.floor(Math.random() * 900) + 100}K`,
-    timestamp: `${Math.floor(Math.random() * 30) + 1} days ago`,
-    duration: `${Math.floor(Math.random() * 45) + 15}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  }));
 
   return (
     <Layout>
@@ -71,15 +70,40 @@ const Gaming = () => {
           </div>
         </div>
         
-        {/* Trending Gaming Videos - 4x5 Grid */}
-        <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Trending in Gaming</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {gamingVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {/* Gaming Videos */}
+        {gamingVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">Gaming Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {gamingVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            <Gamepad2 className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Gaming Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload gaming content!</p>
+            <Link 
+              to="/upload/video" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload Gaming Video</span>
+            </Link>
+          </div>
+        )}
       </div>
     </Layout>
   );
