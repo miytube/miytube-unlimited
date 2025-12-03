@@ -93,8 +93,29 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     });
   };
 
-  const formatDuration = (file: File): string => {
-    return '0:30';
+  const getVideoDuration = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      if (file.type.startsWith('video/')) {
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        
+        video.onloadedmetadata = () => {
+          const duration = video.duration;
+          const minutes = Math.floor(duration / 60);
+          const seconds = Math.floor(duration % 60);
+          URL.revokeObjectURL(video.src);
+          resolve(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+        };
+        
+        video.onerror = () => {
+          resolve('0:00');
+        };
+        
+        video.src = URL.createObjectURL(file);
+      } else {
+        resolve('0:00');
+      }
+    });
   };
 
   const addUploadedVideo = async (
@@ -105,7 +126,10 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     subcategory?: string,
     tags: string[] = []
   ) => {
-    const thumbnail = await generateThumbnail(file);
+    const [thumbnail, duration] = await Promise.all([
+      generateThumbnail(file),
+      getVideoDuration(file)
+    ]);
     const newVideo: UploadedVideo = {
       id: `upload-${Date.now()}`,
       file: file,
@@ -114,7 +138,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       thumbnail,
       timestamp: 'Just now',
       views: '0',
-      duration: formatDuration(file),
+      duration,
       category,
       subcategory,
       tags,
