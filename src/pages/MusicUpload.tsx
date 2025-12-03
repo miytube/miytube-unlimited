@@ -37,14 +37,21 @@ const MusicUpload = () => {
       tags
     );
 
-    // Generate a thumbnail from video if possible
+    // Generate a thumbnail and video data URL from video if possible
     let thumbnailUrl: string | null = null;
+    let videoDataUrl: string | null = null;
     const file = files[0];
-    if (file && file.type.startsWith('video/')) {
-      try {
-        thumbnailUrl = await generateThumbnail(file);
-      } catch (err) {
-        console.error('Thumbnail generation failed:', err);
+    
+    if (file) {
+      // Convert file to data URL for playback
+      videoDataUrl = await fileToDataUrl(file);
+      
+      if (file.type.startsWith('video/')) {
+        try {
+          thumbnailUrl = await generateThumbnail(file);
+        } catch (err) {
+          console.error('Thumbnail generation failed:', err);
+        }
       }
     }
 
@@ -59,6 +66,7 @@ const MusicUpload = () => {
           subcategory,
           tags,
           thumbnail_url: thumbnailUrl,
+          video_url: videoDataUrl,
           // Traffic source - mark as organic upload
           traffic_organic: 1,
         })
@@ -92,6 +100,16 @@ const MusicUpload = () => {
     } catch (err) {
       console.error('Database error:', err);
     }
+  };
+
+  // Convert file to data URL
+  const fileToDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   // Generate thumbnail from video file

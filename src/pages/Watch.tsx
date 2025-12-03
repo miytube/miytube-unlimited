@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
-
-
 import { VideoInfo } from '@/components/watch/VideoInfo';
 import { VideoDescription } from '@/components/watch/VideoDescription';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
@@ -11,6 +9,7 @@ import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useToast } from '@/hooks/use-toast';
 import { Film } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,52 +25,104 @@ const Watch = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const videoId = new URLSearchParams(location.search).get('v');
+  const searchParams = new URLSearchParams(location.search);
+  const videoId = searchParams.get('v');
+  const musicVideoId = searchParams.get('id');
+  const videoType = searchParams.get('type');
+  
   const { getVideoById } = useVideos();
   const { uploadedVideos, isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const [video, setVideo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isMusicVideo, setIsMusicVideo] = useState(false);
 
   // Get regular videos and shorts for sidebar
-  const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts' && v.id !== videoId);
+  const actualVideoId = videoId || musicVideoId;
+  const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts' && v.id !== actualVideoId);
   const shortVideos = uploadedVideos.filter(v => v.category === 'shorts');
   
   useEffect(() => {
-    if (videoId) {
-      console.log("Looking for video with ID:", videoId);
-      
-      const uploadedVideo = uploadedVideos.find(v => v.id === videoId);
-      console.log("Found uploaded video:", uploadedVideo);
-      
-      if (uploadedVideo) {
-        setVideo({
-          id: uploadedVideo.id,
-          title: uploadedVideo.title,
-          description: uploadedVideo.description,
-          channelName: 'Your Channel',
-          channelAvatar: 'https://ui-avatars.com/api/?name=Your+Channel&background=random',
-          views: '0 views',
-          timestamp: 'Just now',
-          likes: '0',
-          subscribers: '0',
-          file: uploadedVideo.file,
-          tags: uploadedVideo.tags || [],
-          category: uploadedVideo.category,
-          subcategory: uploadedVideo.subcategory
-        });
-        setLoading(false);
-      } else {
-        const fetchedVideo = getVideoById(videoId);
-        console.log("Found mock video:", fetchedVideo);
-        if (fetchedVideo) {
-          setVideo(fetchedVideo);
+    const fetchVideo = async () => {
+      // Handle music video from Supabase
+      if (musicVideoId && videoType === 'music') {
+        setIsMusicVideo(true);
+        try {
+          const { data, error } = await supabase
+            .from('music_videos')
+            .select('*')
+            .eq('id', musicVideoId)
+            .single();
+          
+          if (error) {
+            console.error('Error fetching music video:', error);
+            setLoading(false);
+            return;
+          }
+          
+          if (data) {
+            setVideo({
+              id: data.id,
+              title: data.title,
+              description: data.description,
+              channelName: 'Music Channel',
+              channelAvatar: 'https://ui-avatars.com/api/?name=Music&background=random',
+              views: `${data.views} views`,
+              timestamp: new Date(data.created_at).toLocaleDateString(),
+              likes: data.likes.toString(),
+              subscribers: '0',
+              file: data.video_url, // This is the video data URL
+              tags: data.tags || [],
+              category: data.category,
+              subcategory: data.subcategory
+            });
+          }
+          setLoading(false);
+        } catch (err) {
+          console.error('Error:', err);
+          setLoading(false);
         }
-        setLoading(false);
+        return;
       }
-    }
-  }, [videoId, getVideoById, uploadedVideos]);
+
+      // Handle regular video from IndexedDB or mock data
+      if (videoId) {
+        console.log("Looking for video with ID:", videoId);
+        
+        const uploadedVideo = uploadedVideos.find(v => v.id === videoId);
+        console.log("Found uploaded video:", uploadedVideo);
+        
+        if (uploadedVideo) {
+          setVideo({
+            id: uploadedVideo.id,
+            title: uploadedVideo.title,
+            description: uploadedVideo.description,
+            channelName: 'Your Channel',
+            channelAvatar: 'https://ui-avatars.com/api/?name=Your+Channel&background=random',
+            views: '0 views',
+            timestamp: 'Just now',
+            likes: '0',
+            subscribers: '0',
+            file: uploadedVideo.file,
+            tags: uploadedVideo.tags || [],
+            category: uploadedVideo.category,
+            subcategory: uploadedVideo.subcategory
+          });
+          setLoading(false);
+        } else {
+          const fetchedVideo = getVideoById(videoId);
+          console.log("Found mock video:", fetchedVideo);
+          if (fetchedVideo) {
+            setVideo(fetchedVideo);
+          }
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchVideo();
+  }, [videoId, musicVideoId, videoType, getVideoById, uploadedVideos]);
 
   const handleEditSave = (updates: {
     title: string;
@@ -102,7 +153,7 @@ const Watch = () => {
   };
   
 
-  const isUserUpload = videoId ? isUploadedVideo(videoId) : false;
+  const isUserUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
   
   if (loading) {
     return (
