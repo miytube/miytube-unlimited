@@ -84,4 +84,16 @@ export const newSubcategoryRoutes = [
 
   // Entertainment routes
   <Route key="entertainment-actors-works" path="/entertainment/actors-works" element={<GenericSubcategoryPage />} />,
+
+  // Physical Fitness routes
+  <Route key="fitness-weight-lifting" path="/physical-fitness/weight-lifting" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-weightlifting-female" path="/physical-fitness/weightlifting-female" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-weightlifting-male" path="/physical-fitness/weightlifting-male" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workers" path="/physical-fitness/workers" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workout" path="/physical-fitness/workout" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workout-female" path="/physical-fitness/workout-female" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workout-fitness" path="/physical-fitness/workout-fitness" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workout-male" path="/physical-fitness/workout-male" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-yoga-workout" path="/physical-fitness/yoga-workout" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-calisthenics" path="/physical-fitness/calisthenics" element={<GenericSubcategoryPage />} />,
 ];
