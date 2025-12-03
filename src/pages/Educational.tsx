@@ -4,18 +4,18 @@ import { Layout } from '@/components/Layout';
 import { GraduationCap, Upload, BookOpen, Globe, Calculator, Microscope, History, Languages } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Educational = () => {
-  // Generate 20 sample videos for 4x5 grid
-  const educationalVideos = Array.from({ length: 20 }, (_, i) => ({
-    id: `education-${i + 1}`,
-    title: `Education Content ${i + 1}`,
-    thumbnail: `https://images.unsplash.com/photo-${1550745165 + i * 1000}-9bc0b252726f?auto=format&fit=crop&w=800&q=80`,
-    channelName: `Education Creator ${(i % 5) + 1}`,
-    views: `${Math.floor(Math.random() * 900) + 100}K`,
-    timestamp: `${(i % 7) + 1} days ago`,
-    duration: `${Math.floor(Math.random() * 20) + 5}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
-  }));
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Filter for education-related videos
+  const educationalVideos = uploadedVideos.filter(video => 
+    video.category === 'education' || 
+    video.category === 'educational' ||
+    video.subcategory?.toLowerCase().includes('education') ||
+    video.tags?.some(tag => tag.toLowerCase().includes('education'))
+  );
 
   const educationCategories = [
     { name: 'Anatomy', icon: Microscope, route: '/education-anatomy' },
@@ -66,27 +66,39 @@ const Educational = () => {
           </div>
         </div>
         
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Featured Education Content</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {educationalVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {educationalVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Education Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {educationalVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Popular in Education</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {educationalVideos.slice(0, 20).map((video, index) => ({
-              ...video,
-              id: `popular-education-${index}`,
-              title: `Popular Education - ${index + 1}`,
-            })).map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            <GraduationCap className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Education Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload educational content!</p>
+            <Link 
+              to="/upload" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload Education Content</span>
+            </Link>
           </div>
-        </div>
+        )}
 
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About Education</h2>

@@ -4,18 +4,17 @@ import { Layout } from '@/components/Layout';
 import { Moon, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Meditation = () => {
-  // Generate 20 sample meditation videos for 4x5 grid
-  const meditationVideos = Array.from({ length: 20 }, (_, i) => ({
-    id: `meditation-${i + 1}`,
-    title: `Meditation Session ${i + 1} - ${['Mindfulness', 'Sleep', 'Stress Relief', 'Morning', 'Anxiety', 'Focus'][i % 6]} Meditation`,
-    thumbnail: `https://images.unsplash.com/photo-${1544367567738 + i * 1000}-b89239b6d5d8?auto=format&fit=crop&w=800&q=80`,
-    channelName: `Zen Master ${i + 1}`,
-    views: `${Math.floor(Math.random() * 900) + 100}K`,
-    timestamp: `${Math.floor(Math.random() * 30) + 1} days ago`,
-    duration: `${Math.floor(Math.random() * 45) + 15}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`,
-  }));
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Filter for meditation-related videos
+  const meditationVideos = uploadedVideos.filter(video => 
+    video.category === 'meditation' || 
+    video.subcategory?.toLowerCase().includes('meditation') ||
+    video.tags?.some(tag => tag.toLowerCase().includes('meditation') || tag.toLowerCase().includes('mindfulness'))
+  );
   
   return (
     <Layout>
@@ -43,14 +42,39 @@ const Meditation = () => {
           </Link>
         </div>
         
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Featured Meditation</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {meditationVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {meditationVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Meditation Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {meditationVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            <Moon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Meditation Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload meditation content!</p>
+            <Link 
+              to="/upload" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload Meditation Content</span>
+            </Link>
+          </div>
+        )}
 
         <div>
           <h2 className="text-2xl font-semibold mb-4">Popular Categories</h2>
