@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 export interface UploadedVideo {
   id: string;
   file: File | null;
-  fileDataUrl?: string; // For persistence
+  fileDataUrl?: string;
   title: string;
   description: string;
   thumbnail: string;
@@ -54,7 +54,9 @@ interface UploadedVideosContextType {
 
 const UploadedVideosContext = createContext<UploadedVideosContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'miytube_uploaded_videos';
+const DB_NAME = 'miytube_videos_db';
+const DB_VERSION = 1;
+const STORE_NAME = 'videos';
 
 export const useUploadedVideos = () => {
   const context = useContext(UploadedVideosContext);
@@ -67,6 +69,67 @@ export const useUploadedVideos = () => {
 interface UploadedVideosProviderProps {
   children: ReactNode;
 }
+
+// IndexedDB helpers
+const openDB = (): Promise<IDBDatabase> => {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result);
+    
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+      }
+    };
+  });
+};
+
+const saveVideoToDB = async (video: StoredVideo): Promise<void> => {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.put(video);
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve();
+  });
+};
+
+const getAllVideosFromDB = async (): Promise<StoredVideo[]> => {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.getAll();
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve(request.result || []);
+  });
+};
+
+const deleteVideoFromDB = async (id: string): Promise<void> => {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.delete(id);
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve();
+  });
+};
+
+const clearDB = async (): Promise<void> => {
+  const db = await openDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.clear();
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => resolve();
+  });
+};
 
 // Convert File to base64 data URL
 const fileToDataUrl = (file: File): Promise<string> => {
@@ -94,67 +157,34 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load videos from localStorage on mount
+  // Load videos from IndexedDB on mount
   useEffect(() => {
     const loadStoredVideos = async () => {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const storedVideos: StoredVideo[] = JSON.parse(stored);
-          const videos: UploadedVideo[] = storedVideos.map(sv => ({
-            id: sv.id,
-            file: dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType),
-            fileDataUrl: sv.fileDataUrl,
-            title: sv.title,
-            description: sv.description,
-            thumbnail: sv.thumbnail,
-            timestamp: sv.timestamp,
-            views: sv.views,
-            duration: sv.duration,
-            category: sv.category,
-            subcategory: sv.subcategory,
-            tags: sv.tags || [],
-          }));
-          setUploadedVideos(videos);
-        }
+        const storedVideos = await getAllVideosFromDB();
+        const videos: UploadedVideo[] = storedVideos.map(sv => ({
+          id: sv.id,
+          file: dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType),
+          fileDataUrl: sv.fileDataUrl,
+          title: sv.title,
+          description: sv.description,
+          thumbnail: sv.thumbnail,
+          timestamp: sv.timestamp,
+          views: sv.views,
+          duration: sv.duration,
+          category: sv.category,
+          subcategory: sv.subcategory,
+          tags: sv.tags || [],
+        }));
+        setUploadedVideos(videos);
+        console.log('Loaded videos from IndexedDB:', videos.length);
       } catch (error) {
-        console.error('Error loading videos from localStorage:', error);
+        console.error('Error loading videos from IndexedDB:', error);
       }
       setIsLoaded(true);
     };
     loadStoredVideos();
   }, []);
-
-  // Save videos to localStorage whenever they change
-  useEffect(() => {
-    if (!isLoaded) return;
-    
-    const saveVideos = async () => {
-      try {
-        const storedVideos: StoredVideo[] = await Promise.all(
-          uploadedVideos.map(async (video) => ({
-            id: video.id,
-            fileDataUrl: video.fileDataUrl || (video.file ? await fileToDataUrl(video.file) : ''),
-            fileName: video.file?.name || 'video',
-            fileType: video.file?.type || 'video/mp4',
-            title: video.title,
-            description: video.description,
-            thumbnail: video.thumbnail,
-            timestamp: video.timestamp,
-            views: video.views,
-            duration: video.duration,
-            category: video.category,
-            subcategory: video.subcategory,
-            tags: video.tags,
-          }))
-        );
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(storedVideos));
-      } catch (error) {
-        console.error('Error saving videos to localStorage:', error);
-      }
-    };
-    saveVideos();
-  }, [uploadedVideos, isLoaded]);
 
   const generateThumbnail = async (file: File): Promise<string> => {
     return new Promise((resolve) => {
@@ -234,8 +264,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       fileToDataUrl(file)
     ]);
     
+    const videoId = `upload-${Date.now()}`;
     const newVideo: UploadedVideo = {
-      id: `upload-${Date.now()}`,
+      id: videoId,
       file: file,
       fileDataUrl,
       title: title || file.name,
@@ -249,30 +280,84 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
     };
     
-    console.log("Adding new video:", newVideo.id, newVideo.title);
+    // Save to IndexedDB
+    try {
+      await saveVideoToDB({
+        id: videoId,
+        fileDataUrl,
+        fileName: file.name,
+        fileType: file.type,
+        title: newVideo.title,
+        description: newVideo.description,
+        thumbnail,
+        timestamp: newVideo.timestamp,
+        views: newVideo.views,
+        duration,
+        category,
+        subcategory,
+        tags,
+      });
+      console.log("Saved video to IndexedDB:", videoId);
+    } catch (error) {
+      console.error("Error saving video to IndexedDB:", error);
+    }
+    
+    console.log("Adding new video:", videoId, newVideo.title, "category:", category);
     setUploadedVideos(prev => [newVideo, ...prev]);
   };
 
-  const updateUploadedVideo = (
+  const updateUploadedVideo = async (
     id: string,
     updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
   ) => {
-    setUploadedVideos(prev => 
-      prev.map(video => 
+    setUploadedVideos(prev => {
+      const updated = prev.map(video => 
         video.id === id ? { ...video, ...updates } : video
-      )
-    );
+      );
+      
+      // Update in IndexedDB
+      const videoToUpdate = updated.find(v => v.id === id);
+      if (videoToUpdate) {
+        saveVideoToDB({
+          id: videoToUpdate.id,
+          fileDataUrl: videoToUpdate.fileDataUrl || '',
+          fileName: videoToUpdate.file?.name || 'video',
+          fileType: videoToUpdate.file?.type || 'video/mp4',
+          title: videoToUpdate.title,
+          description: videoToUpdate.description,
+          thumbnail: videoToUpdate.thumbnail,
+          timestamp: videoToUpdate.timestamp,
+          views: videoToUpdate.views,
+          duration: videoToUpdate.duration,
+          category: videoToUpdate.category,
+          subcategory: videoToUpdate.subcategory,
+          tags: videoToUpdate.tags,
+        }).catch(err => console.error('Error updating video in IndexedDB:', err));
+      }
+      
+      return updated;
+    });
     console.log("Updated video:", id, updates);
   };
 
-  const deleteUploadedVideo = (id: string) => {
+  const deleteUploadedVideo = async (id: string) => {
     setUploadedVideos(prev => prev.filter(video => video.id !== id));
-    console.log("Deleted video:", id);
+    
+    try {
+      await deleteVideoFromDB(id);
+      console.log("Deleted video from IndexedDB:", id);
+    } catch (error) {
+      console.error("Error deleting video from IndexedDB:", error);
+    }
   };
 
-  const clearUploadedVideos = () => {
+  const clearUploadedVideos = async () => {
     setUploadedVideos([]);
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+      await clearDB();
+    } catch (error) {
+      console.error("Error clearing IndexedDB:", error);
+    }
   };
   
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
