@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface UploadedVideo {
+export interface UploadedVideo {
   id: string;
   file: File;
   title: string;
@@ -25,8 +25,14 @@ interface UploadedVideosContextType {
     subcategory?: string,
     tags?: string[]
   ) => void;
+  updateUploadedVideo: (
+    id: string,
+    updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
+  ) => void;
+  deleteUploadedVideo: (id: string) => void;
   clearUploadedVideos: () => void;
   getVideosByCategory: (category: string, subcategory?: string) => UploadedVideo[];
+  isUploadedVideo: (id: string) => boolean;
 }
 
 const UploadedVideosContext = createContext<UploadedVideosContextType | undefined>(undefined);
@@ -47,14 +53,10 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
 
   const generateThumbnail = (file: File): string => {
-    // In a real app, we would generate a thumbnail from the video
-    // For now, we use a placeholder
     return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
   };
 
   const formatDuration = (file: File): string => {
-    // In a real app, we would extract the duration from the video
-    // For now, we return a placeholder
     return '0:30';
   };
 
@@ -66,8 +68,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     subcategory?: string,
     tags: string[] = []
   ) => {
-    const timestamp = new Date().toLocaleDateString();
-    
     const newVideo: UploadedVideo = {
       id: `upload-${Date.now()}`,
       file: file,
@@ -83,11 +83,24 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     };
     
     console.log("Adding new video:", newVideo);
-    console.log("With category:", category);
-    console.log("With subcategory:", subcategory);
-    
-    // Ensure the video is added correctly and immediately available for all pages
     setUploadedVideos(prev => [newVideo, ...prev]);
+  };
+
+  const updateUploadedVideo = (
+    id: string,
+    updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
+  ) => {
+    setUploadedVideos(prev => 
+      prev.map(video => 
+        video.id === id ? { ...video, ...updates } : video
+      )
+    );
+    console.log("Updated video:", id, updates);
+  };
+
+  const deleteUploadedVideo = (id: string) => {
+    setUploadedVideos(prev => prev.filter(video => video.id !== id));
+    console.log("Deleted video:", id);
   };
 
   const clearUploadedVideos = () => {
@@ -95,20 +108,19 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
   
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
-    console.log("Getting videos by category:", category);
-    console.log("Getting videos by subcategory:", subcategory);
-    console.log("Current uploaded videos:", uploadedVideos);
-    
     if (subcategory) {
       return uploadedVideos.filter(
         video => video.category?.toLowerCase() === category.toLowerCase() && 
                 video.subcategory?.toLowerCase() === subcategory.toLowerCase()
       );
     }
-    
     return uploadedVideos.filter(
       video => video.category?.toLowerCase() === category.toLowerCase()
     );
+  };
+
+  const isUploadedVideo = (id: string): boolean => {
+    return uploadedVideos.some(video => video.id === id);
   };
 
   return (
@@ -116,8 +128,11 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       value={{
         uploadedVideos,
         addUploadedVideo,
+        updateUploadedVideo,
+        deleteUploadedVideo,
         clearUploadedVideos,
         getVideosByCategory,
+        isUploadedVideo,
       }}
     >
       {children}

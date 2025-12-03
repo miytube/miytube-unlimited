@@ -1,27 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
 import { RecommendedVideos } from '@/components/watch/RecommendedVideos';
 import { VideoComments } from '@/components/watch/VideoComments';
 import { VideoInfo } from '@/components/watch/VideoInfo';
 import { VideoDescription } from '@/components/watch/VideoDescription';
+import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const Watch = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const videoId = new URLSearchParams(location.search).get('v');
   const { getVideoById } = useVideos();
-  const { uploadedVideos } = useUploadedVideos();
+  const { uploadedVideos, isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const [video, setVideo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   
   useEffect(() => {
     if (videoId) {
       console.log("Looking for video with ID:", videoId);
       
-      // Check if it's an uploaded video first
       const uploadedVideo = uploadedVideos.find(v => v.id === videoId);
       console.log("Found uploaded video:", uploadedVideo);
       
@@ -43,7 +58,6 @@ const Watch = () => {
         });
         setLoading(false);
       } else {
-        // Otherwise fetch from mock API
         const fetchedVideo = getVideoById(videoId);
         console.log("Found mock video:", fetchedVideo);
         if (fetchedVideo) {
@@ -53,8 +67,35 @@ const Watch = () => {
       }
     }
   }, [videoId, getVideoById, uploadedVideos]);
+
+  const handleEditSave = (updates: {
+    title: string;
+    description: string;
+    category?: string;
+    subcategory?: string;
+    tags: string[];
+  }) => {
+    if (videoId) {
+      updateUploadedVideo(videoId, updates);
+      setVideo((prev: any) => ({ ...prev, ...updates }));
+      toast({
+        title: "Video updated",
+        description: "Your video has been updated successfully.",
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    if (videoId) {
+      deleteUploadedVideo(videoId);
+      toast({
+        title: "Video deleted",
+        description: "Your video has been deleted.",
+      });
+      navigate('/');
+    }
+  };
   
-  // Mock recommended videos
   const recommendedVideos = [
     {
       id: 'rec1',
@@ -97,6 +138,8 @@ const Watch = () => {
       description: 'Get started with TypeScript and learn how to use it in your projects.'
     },
   ];
+
+  const isUserUpload = videoId ? isUploadedVideo(videoId) : false;
   
   if (loading) {
     return (
@@ -139,6 +182,9 @@ const Watch = () => {
               timestamp={video.timestamp}
               likes={video.likes}
               tags={video.tags}
+              isUploadedVideo={isUserUpload}
+              onEdit={() => setEditDialogOpen(true)}
+              onDelete={() => setDeleteDialogOpen(true)}
             />
             
             <VideoDescription description={video.description} />
@@ -151,6 +197,41 @@ const Watch = () => {
           </div>
         </div>
       </div>
+
+      {isUserUpload && video && (
+        <>
+          <VideoEditDialog
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            video={{
+              id: video.id,
+              title: video.title,
+              description: video.description,
+              category: video.category,
+              subcategory: video.subcategory,
+              tags: video.tags,
+            }}
+            onSave={handleEditSave}
+          />
+
+          <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Video</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete this video? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </>
+      )}
     </Layout>
   );
 };

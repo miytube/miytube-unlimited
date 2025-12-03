@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { ThumbsUp, ThumbsDown, Share, Download, Flag } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Share, Download, Flag, Pencil, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface VideoInfoProps {
   title: string;
@@ -11,6 +12,9 @@ interface VideoInfoProps {
   timestamp: string;
   likes: string;
   tags?: string[];
+  isUploadedVideo?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export const VideoInfo: React.FC<VideoInfoProps> = ({
@@ -22,10 +26,38 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
   timestamp,
   likes,
   tags = [],
+  isUploadedVideo = false,
+  onEdit,
+  onDelete,
 }) => {
   return (
     <div className="mb-6 animate-fade-in">
-      <h1 className="text-xl md:text-2xl font-medium mb-2">{title}</h1>
+      <div className="flex items-start justify-between gap-4">
+        <h1 className="text-xl md:text-2xl font-medium mb-2 flex-1">{title}</h1>
+        
+        {isUploadedVideo && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onEdit}
+              className="flex items-center gap-1"
+            >
+              <Pencil size={16} />
+              Edit
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={onDelete}
+              className="flex items-center gap-1"
+            >
+              <Trash2 size={16} />
+              Delete
+            </Button>
+          </div>
+        )}
+      </div>
       
       <div className="flex flex-wrap justify-between items-center gap-4 py-3 border-b">
         <div className="flex items-center gap-2">
@@ -40,7 +72,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
             <h3 className="font-medium">{channelName}</h3>
             <p className="text-sm text-muted-foreground">{subscribers} subscribers</p>
           </div>
-          <button className="ml-4 px-4 py-1.5 bg-primary text-white rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
+          <button className="ml-4 px-4 py-1.5 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 transition-colors">
             Subscribe
           </button>
         </div>
