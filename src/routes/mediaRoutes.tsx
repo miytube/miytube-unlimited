@@ -7,6 +7,7 @@ import Blog from "@/pages/Blog";
 import LongVideos from "@/pages/LongVideos";
 import TalkAtCha from "@/pages/TalkAtCha";
 import Shorts from "@/pages/Shorts";
+import ShortsWatch from "@/pages/ShortsWatch";
 import Videos from "@/pages/Videos";
 
 export const mediaRoutes = [
@@ -20,7 +21,7 @@ export const mediaRoutes = [
   
   /* Video Routes */
   <Route key="shorts" path="/shorts" element={<Shorts />} />,
-  <Route key="shorts-id" path="/shorts/:id" element={<Shorts />} />,
+  <Route key="shorts-id" path="/shorts/:id" element={<ShortsWatch />} />,
   <Route key="videos" path="/videos" element={<Videos />} />,
   <Route key="videos-category" path="/videos/:category" element={<Videos />} />,
 ];
