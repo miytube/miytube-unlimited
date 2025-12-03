@@ -9,12 +9,21 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 const Comedy = () => {
   const { uploadedVideos } = useUploadedVideos();
   
+  // Comedy-related keywords to match
+  const comedyKeywords = ['comedy', 'sitcom', 'standup', 'stand-up', 'roast', 'prank', 'funny', 'blooper', 'snl', 'comedian', 'jokes', 'humor', 'humour', 'sketch'];
+  
   // Filter for comedy-related videos
-  const comedyVideos = uploadedVideos.filter(video => 
-    video.category === 'comedy' || 
-    video.subcategory?.toLowerCase().includes('comedy') ||
-    video.tags?.some(tag => tag.toLowerCase().includes('comedy'))
-  );
+  const comedyVideos = uploadedVideos.filter(video => {
+    const category = video.category?.toLowerCase() || '';
+    const subcategory = video.subcategory?.toLowerCase() || '';
+    const tags = video.tags?.map(t => t.toLowerCase()) || [];
+    
+    return comedyKeywords.some(keyword => 
+      category.includes(keyword) || 
+      subcategory.includes(keyword) ||
+      tags.some(tag => tag.includes(keyword))
+    );
+  });
 
   const comedyCategories = [
     { name: 'SNL, Saturday Night Live', icon: Tv, route: '/comedy-snl' },
