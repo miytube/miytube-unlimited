@@ -40,12 +40,23 @@ const ShortsWatch = () => {
   }, [id, uploadedVideos]);
 
   useEffect(() => {
-    if (video?.file && videoRef.current) {
-      const url = URL.createObjectURL(video.file);
-      videoRef.current.src = url;
-      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    if (videoRef.current) {
+      let url: string | null = null;
       
-      return () => URL.revokeObjectURL(url);
+      if (video?.file) {
+        url = URL.createObjectURL(video.file);
+        videoRef.current.src = url;
+      } else if (video?.fileDataUrl) {
+        videoRef.current.src = video.fileDataUrl;
+      }
+      
+      if (video) {
+        videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+      
+      return () => {
+        if (url) URL.revokeObjectURL(url);
+      };
     }
   }, [video]);
 
