@@ -36,9 +36,9 @@ export const useFeaturedMusicVideo = () => {
           .select('*')
           .order('featured_score', { ascending: false })
           .limit(1)
-          .single();
+          .maybeSingle();
 
-        if (fetchError && fetchError.code !== 'PGRST116') {
+        if (fetchError) {
           throw fetchError;
         }
 
