@@ -3,17 +3,32 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/Layout';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { ArrowLeft, Play, Pause, Volume2, VolumeX, ThumbsUp, MessageCircle, Share } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Volume2, VolumeX, ThumbsUp, MessageCircle, Share, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
+import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const ShortsWatch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { uploadedVideos } = useUploadedVideos();
+  const { toast } = useToast();
+  const { uploadedVideos, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [video, setVideo] = useState<any>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -52,6 +67,34 @@ const ShortsWatch = () => {
     }
   };
 
+  const handleEditSave = (updates: {
+    title: string;
+    description: string;
+    category?: string;
+    subcategory?: string;
+    tags: string[];
+  }) => {
+    if (id) {
+      updateUploadedVideo(id, updates);
+      setVideo((prev: any) => ({ ...prev, ...updates }));
+      toast({
+        title: "Short updated",
+        description: "Your short has been updated successfully.",
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    if (id) {
+      deleteUploadedVideo(id);
+      toast({
+        title: "Short deleted",
+        description: "Your short has been deleted.",
+      });
+      navigate('/shorts');
+    }
+  };
+
   if (!video) {
     return (
       <Layout>
@@ -81,6 +124,26 @@ const ShortsWatch = () => {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
+
+          {/* Edit/Delete buttons */}
+          <div className="absolute top-4 right-4 z-20 flex gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/50 text-white hover:bg-black/70"
+              onClick={() => setEditDialogOpen(true)}
+            >
+              <Edit className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/50 text-white hover:bg-red-500/70"
+              onClick={() => setDeleteDialogOpen(true)}
+            >
+              <Trash2 className="h-5 w-5" />
+            </Button>
+          </div>
 
           {/* Video container */}
           <div className="relative aspect-[9/16] bg-black rounded-xl overflow-hidden">
@@ -147,6 +210,39 @@ const ShortsWatch = () => {
           </div>
         </div>
       </div>
+
+      {/* Edit Dialog */}
+      <VideoEditDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        video={{
+          id: video.id,
+          title: video.title,
+          description: video.description || '',
+          category: video.category,
+          subcategory: video.subcategory,
+          tags: video.tags || [],
+        }}
+        onSave={handleEditSave}
+      />
+
+      {/* Delete Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Short</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this short? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };
