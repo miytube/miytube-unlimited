@@ -4,55 +4,32 @@ import { Layout } from '@/components/Layout';
 import { Wrench, Upload, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const CarRepairsPage = () => {
-  // Sample videos for demo purposes
-  const repairVideos = [
-    {
-      id: 'repair-1',
-      title: 'How to Change Your Oil in 15 Minutes',
-      thumbnail: 'https://images.unsplash.com/photo-1599240211563-17590b1af857?auto=format&fit=crop&w=800&q=80',
-      channelName: 'DIY Mechanic',
-      views: '1.8M',
-      timestamp: '1 week ago',
-      duration: '14:35',
-    },
-    {
-      id: 'repair-2',
-      title: 'Engine Diagnostics: The Complete Guide',
-      thumbnail: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Auto Repair Pro',
-      views: '956K',
-      timestamp: '3 weeks ago',
-      duration: '32:15',
-    },
-    {
-      id: 'repair-3',
-      title: 'Car Maintenance Tips Everyone Should Know',
-      thumbnail: 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Car Care Channel',
-      views: '2.3M',
-      timestamp: '2 months ago',
-      duration: '18:42',
-    },
-    {
-      id: 'repair-4',
-      title: 'Suspension Repair: DIY Guide',
-      thumbnail: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Auto Enthusiast',
-      views: '1.5M',
-      timestamp: '5 months ago',
-      duration: '22:18',
-    },
-  ];
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Filter for car repair-related videos
+  const repairKeywords = ['repair', 'mechanic', 'maintenance', 'fix', 'diy', 'car repair', 'auto repair'];
+  const repairVideos = uploadedVideos.filter(video => {
+    const category = video.category?.toLowerCase() || '';
+    const subcategory = video.subcategory?.toLowerCase() || '';
+    const tags = video.tags?.map(t => t.toLowerCase()) || [];
+    
+    return repairKeywords.some(keyword => 
+      category.includes(keyword) || 
+      subcategory.includes(keyword) ||
+      tags.some(tag => tag.includes(keyword))
+    );
+  });
 
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
         <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-          <Link to="/cars" className="hover:text-primary">
-            Cars
-          </Link>
+          <span className="font-semibold text-primary">MiyTube</span>
+          <ChevronRight size={14} />
+          <Link to="/cars" className="hover:text-primary">Cars</Link>
           <ChevronRight size={14} />
           <span className="text-foreground">Repairs</span>
         </div>
@@ -74,20 +51,45 @@ const CarRepairsPage = () => {
           </Link>
         </div>
         
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Featured Car Repair Content</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {repairVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {repairVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Car Repair Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {repairVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            <Wrench className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Car Repair Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload car repair content!</p>
+            <Link 
+              to="/upload" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload Repair Content</span>
+            </Link>
+          </div>
+        )}
 
         <div>
           <h2 className="text-2xl font-semibold mb-4">Repair Categories</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             <Link to="/cars/repairs/major" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Wrench size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Major Repairs</div>
@@ -95,7 +97,7 @@ const CarRepairsPage = () => {
               </div>
             </Link>
             <Link to="/cars/repairs/minor" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Wrench size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Minor Repairs</div>
@@ -103,7 +105,7 @@ const CarRepairsPage = () => {
               </div>
             </Link>
             <Link to="/cars/repairs/hacks" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Wrench size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Car Hacks</div>
@@ -111,7 +113,7 @@ const CarRepairsPage = () => {
               </div>
             </Link>
             <Link to="/cars/repairs/maintenance" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Wrench size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Maintenance</div>
