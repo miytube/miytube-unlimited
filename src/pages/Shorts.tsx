@@ -14,19 +14,44 @@ const Shorts = () => {
   const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
   const [newCategory, setNewCategory] = useState('');
   const [categories, setCategories] = useState([
-    { id: 'trending', name: 'Trending' },
-    { id: 'dance', name: 'Dance' },
-    { id: 'comedy', name: 'Comedy' },
-    { id: 'music', name: 'Music' },
-    { id: 'diy', name: 'DIY & Crafts' },
-    { id: 'cooking', name: 'Cooking' },
+    { id: 'trending', name: 'Trending', subcategories: [
+      { id: 'challenge', name: 'Challenge' },
+      { id: 'viral', name: 'Viral' },
+      { id: 'reaction', name: 'Reaction' },
+    ]},
+    { id: 'dance', name: 'Dance', subcategories: [
+      { id: 'choreography', name: 'Choreography' },
+      { id: 'freestyle', name: 'Freestyle' },
+      { id: 'tutorial', name: 'Tutorial' },
+    ]},
+    { id: 'comedy', name: 'Comedy', subcategories: [
+      { id: 'prank', name: 'Prank' },
+      { id: 'skit', name: 'Skit' },
+      { id: 'standup', name: 'Stand-up' },
+    ]},
+    { id: 'music', name: 'Music', subcategories: [
+      { id: 'cover', name: 'Cover' },
+      { id: 'original', name: 'Original' },
+      { id: 'lipsync', name: 'Lip Sync' },
+    ]},
+    { id: 'diy', name: 'DIY & Crafts', subcategories: [
+      { id: 'home', name: 'Home Decor' },
+      { id: 'art', name: 'Art & Craft' },
+      { id: 'lifehack', name: 'Life Hacks' },
+    ]},
+    { id: 'cooking', name: 'Cooking', subcategories: [
+      { id: 'recipe', name: 'Quick Recipe' },
+      { id: 'tips', name: 'Cooking Tips' },
+      { id: 'dessert', name: 'Desserts' },
+    ]},
   ]);
   
   const handleAddCategory = () => {
     if (newCategory.trim()) {
       const newCategoryObj = {
         id: `category-${Date.now()}`,
-        name: newCategory
+        name: newCategory,
+        subcategories: []
       };
       setCategories([...categories, newCategoryObj]);
       setNewCategory('');
@@ -128,6 +153,7 @@ const Shorts = () => {
           onUpload={handleUpload}
           id="shorts-upload-input"
           uploadDestination="Your Channel > Shorts section"
+          categories={categories}
         />
         
         <div className="mt-8">
