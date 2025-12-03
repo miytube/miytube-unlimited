@@ -1,7 +1,8 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { TagInput } from './TagInput';
+import { CategoryCombobox } from './CategoryCombobox';
 
 interface Category {
   id: string;
@@ -42,6 +43,10 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   defaultDescription,
   defaultCategory
 }) => {
+  // Track custom categories added by user
+  const [customCategories, setCustomCategories] = useState<Category[]>([]);
+  const [customSubcategories, setCustomSubcategories] = useState<Array<{id: string, name: string}>>([]);
+
   // Set default values when props change
   useEffect(() => {
     if (defaultTitle && !videoTitle) setVideoTitle(defaultTitle);
@@ -49,8 +54,34 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
     if (defaultCategory && !selectedCategory) setSelectedCategory(defaultCategory);
   }, [defaultTitle, defaultDescription, defaultCategory, videoTitle, videoDescription, selectedCategory]);
 
-  const selectedCategoryObj = categories.find(cat => cat.id === selectedCategory);
-  const subcategories = selectedCategoryObj?.subcategories || [];
+  // Combine built-in and custom categories
+  const allCategories = [...categories, ...customCategories];
+  
+  const selectedCategoryObj = allCategories.find(cat => cat.id === selectedCategory);
+  const builtInSubcategories = selectedCategoryObj?.subcategories || [];
+  const allSubcategories = [...builtInSubcategories, ...customSubcategories];
+
+  const handleAddCustomCategory = (customName: string) => {
+    const newCategory: Category = {
+      id: customName.toLowerCase().replace(/\s+/g, '-'),
+      name: customName,
+      subcategories: []
+    };
+    setCustomCategories(prev => [...prev, newCategory]);
+  };
+
+  const handleAddCustomSubcategory = (customName: string) => {
+    const newSubcategory = {
+      id: customName.toLowerCase().replace(/\s+/g, '-'),
+      name: customName
+    };
+    setCustomSubcategories(prev => [...prev, newSubcategory]);
+  };
+
+  // Reset custom subcategories when category changes
+  useEffect(() => {
+    setCustomSubcategories([]);
+  }, [selectedCategory]);
 
   return (
     <div className="space-y-6">
@@ -85,49 +116,32 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
           <label htmlFor="category-select" className="block text-sm font-medium mb-2">
             Category
           </label>
-          <select
-            id="category-select"
-            className="w-full p-2 rounded-md border bg-background"
+          <CategoryCombobox
+            options={allCategories.map(cat => ({ id: cat.id, name: cat.name }))}
             value={selectedCategory}
-            onChange={(e) => {
-              setSelectedCategory(e.target.value);
+            onValueChange={(value) => {
+              setSelectedCategory(value);
               setSelectedSubcategory('');
             }}
-          >
-            <option value="">Select a category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+            placeholder="Select or add category..."
+            emptyText="No categories found."
+            onAddCustom={handleAddCustomCategory}
+          />
         </div>
         
         <div className="flex-1">
           <label htmlFor="subcategory-select" className="block text-sm font-medium mb-2">
             Subcategory
           </label>
-          <select
-            id="subcategory-select"
-            className="w-full p-2 rounded-md border bg-background"
+          <CategoryCombobox
+            options={allSubcategories.map(sub => ({ id: sub.id, name: sub.name }))}
             value={selectedSubcategory}
-            onChange={(e) => setSelectedSubcategory(e.target.value)}
-            disabled={!selectedCategory || subcategories.length === 0}
-          >
-            <option value="">
-              {!selectedCategory 
-                ? "Select a category first" 
-                : subcategories.length === 0 
-                  ? "No subcategories available" 
-                  : "Select a subcategory"
-              }
-            </option>
-            {subcategories.map((subcategory) => (
-              <option key={subcategory.id} value={subcategory.id}>
-                {subcategory.name}
-              </option>
-            ))}
-          </select>
+            onValueChange={setSelectedSubcategory}
+            placeholder={!selectedCategory ? "Select a category first" : "Select or add subcategory..."}
+            emptyText={!selectedCategory ? "Select a category first" : "No subcategories found."}
+            disabled={!selectedCategory}
+            onAddCustom={handleAddCustomSubcategory}
+          />
         </div>
       </div>
       
