@@ -23,6 +23,9 @@ const Index = () => {
         timestamp: video.timestamp,
         duration: video.duration,
         description: video.description,
+        category: video.category,
+        subcategory: video.subcategory,
+        tags: video.tags,
       }));
   }, [uploadedVideos]);
 

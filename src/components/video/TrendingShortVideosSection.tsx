@@ -18,6 +18,10 @@ export const TrendingShortVideosSection: React.FC = () => {
     thumbnail: video.thumbnail,
     creator: 'Your Channel',
     views: video.views,
+    description: video.description,
+    category: video.category,
+    subcategory: video.subcategory,
+    tags: video.tags,
   }));
 
   // Don't render section if no shorts uploaded
@@ -46,6 +50,10 @@ export const TrendingShortVideosSection: React.FC = () => {
             thumbnail={short.thumbnail}
             creator={short.creator}
             views={short.views}
+            description={short.description}
+            category={short.category}
+            subcategory={short.subcategory}
+            tags={short.tags}
           />
         ))}
       </div>
