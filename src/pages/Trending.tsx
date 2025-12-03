@@ -10,110 +10,6 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
 
-// Mock data for trending content
-const trendingVideos = [
-  {
-    id: 'trv1',
-    title: 'How AI is Changing Content Creation',
-    thumbnail: 'https://images.unsplash.com/photo-1593642532842-98d0fd5ebc1a?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Future Tech',
-    views: '2.4M',
-    timestamp: '3 days ago',
-    duration: '18:42',
-  },
-  {
-    id: 'trv2',
-    title: 'Learn React in 30 Minutes',
-    thumbnail: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Code Masters',
-    views: '1.7M',
-    timestamp: '1 week ago',
-    duration: '32:15',
-  },
-  {
-    id: 'trv3',
-    title: 'The Most Beautiful Places in the World',
-    thumbnail: 'https://images.unsplash.com/photo-1470770903676-69b98201ea1c?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Travel Diaries',
-    views: '3.9M',
-    timestamp: '2 weeks ago',
-    duration: '24:10',
-  },
-  {
-    id: 'trv4',
-    title: 'Healthy Breakfast Ideas for Busy Mornings',
-    thumbnail: 'https://images.unsplash.com/photo-1533089860892-a9b385b26c73?auto=format&fit=crop&w=800&q=80',
-    channelName: 'Health & Wellness',
-    views: '1.3M',
-    timestamp: '5 days ago',
-    duration: '15:23',
-  },
-];
-
-const trendingMusic = [
-  {
-    id: 'trm1',
-    title: 'Summer Vibes - Electronic Mix',
-    thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
-    creator: 'ElectroBeats',
-    views: '897K',
-  },
-  {
-    id: 'trm2',
-    title: 'Acoustic Coffee House Playlist',
-    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
-    creator: 'Mellow Tunes',
-    views: '1.2M',
-  },
-  {
-    id: 'trm3',
-    title: 'Hip Hop Workout Mix 2023',
-    thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80',
-    creator: 'Fitness Beats',
-    views: '2.1M',
-  },
-  {
-    id: 'trm4',
-    title: 'Indie Rock Anthems',
-    thumbnail: 'https://images.unsplash.com/photo-1499364615650-ec38552f4f34?auto=format&fit=crop&w=800&q=80',
-    creator: 'Rock Revolution',
-    views: '745K',
-  },
-];
-
-const trendingPodcasts = [
-  {
-    id: 'trp1',
-    title: 'The Future of Technology',
-    thumbnail: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
-    creator: 'Tech Talks',
-    views: '456K',
-  },
-  {
-    id: 'trp2',
-    title: 'True Crime Stories: Unsolved Mysteries',
-    thumbnail: 'https://images.unsplash.com/photo-1585314062604-1a357de8b000?auto=format&fit=crop&w=800&q=80',
-    creator: 'Crime Junkie',
-    views: '1.5M',
-  },
-  {
-    id: 'trp3',
-    title: 'Mindfulness and Mental Health',
-    thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80',
-    creator: 'Wellness Warriors',
-    views: '892K',
-  },
-  {
-    id: 'trp4',
-    title: 'Business Strategies for Growth',
-    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
-    creator: 'Entrepreneur Edge',
-    views: '678K',
-  },
-];
-
-// We can add more trending categories as needed
-
 interface TrendingCategoryProps {
   title: string;
   linkTo: string;
@@ -139,11 +35,11 @@ const TrendingCategory: React.FC<TrendingCategoryProps> = ({ title, linkTo, chil
 
 const Trending: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'videos' | 'music' | 'podcasts'>('all');
-  const { uploadedVideos, addUploadedVideo } = useUploadedVideos();
+  const { uploadedVideos, addUploadedVideo, getVideosByCategory } = useUploadedVideos();
   const { toast } = useToast();
 
-  // All uploaded videos appear first on trending page (newest first)
-  const formattedUploadedVideos = uploadedVideos.map(video => ({
+  // Get uploaded videos by category
+  const trendingVideos = uploadedVideos.filter(v => v.category !== 'shorts').map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
@@ -153,8 +49,23 @@ const Trending: React.FC = () => {
     duration: video.duration,
   }));
 
-  // Combine all uploads (newest first) with mock trending videos
-  const allTrendingVideos = [...[...formattedUploadedVideos].reverse(), ...trendingVideos].slice(0, 20);
+  // Get uploaded music
+  const musicVideos = getVideosByCategory('music').map(video => ({
+    id: video.id,
+    title: video.title,
+    thumbnail: video.thumbnail,
+    creator: 'Your Channel',
+    views: video.views,
+  }));
+
+  // Get uploaded podcasts
+  const podcastVideos = getVideosByCategory('podcasts').map(video => ({
+    id: video.id,
+    title: video.title,
+    thumbnail: video.thumbnail,
+    creator: 'Your Channel',
+    views: video.views,
+  }));
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach(file => {
@@ -235,10 +146,10 @@ const Trending: React.FC = () => {
           />
         </div>
 
-        {(activeTab === 'all' || activeTab === 'videos') && (
+        {(activeTab === 'all' || activeTab === 'videos') && trendingVideos.length > 0 && (
           <TrendingCategory title="Trending Videos" linkTo="/videos/trending">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {allTrendingVideos.map(video => (
+              {trendingVideos.slice(0, 20).map(video => (
                 <VideoCard key={video.id} {...video} />
               ))}
             </div>
@@ -247,10 +158,10 @@ const Trending: React.FC = () => {
 
         {(activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
 
-        {(activeTab === 'all' || activeTab === 'music') && (
+        {(activeTab === 'all' || activeTab === 'music') && musicVideos.length > 0 && (
           <TrendingCategory title="Trending Music" linkTo="/music">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {trendingMusic.map(item => (
+              {musicVideos.slice(0, 8).map(item => (
                 <ShortCard
                   key={item.id}
                   id={item.id}
@@ -264,10 +175,10 @@ const Trending: React.FC = () => {
           </TrendingCategory>
         )}
 
-        {(activeTab === 'all' || activeTab === 'podcasts') && (
+        {(activeTab === 'all' || activeTab === 'podcasts') && podcastVideos.length > 0 && (
           <TrendingCategory title="Trending Podcasts" linkTo="/podcasts">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {trendingPodcasts.map(item => (
+              {podcastVideos.slice(0, 8).map(item => (
                 <ShortCard
                   key={item.id}
                   id={item.id}
@@ -279,6 +190,12 @@ const Trending: React.FC = () => {
               ))}
             </div>
           </TrendingCategory>
+        )}
+
+        {trendingVideos.length === 0 && musicVideos.length === 0 && podcastVideos.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            <p>No trending content yet. Upload videos to see them here!</p>
+          </div>
         )}
       </div>
     </Layout>

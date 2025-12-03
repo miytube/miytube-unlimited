@@ -5,39 +5,37 @@ import { VideoCard } from '@/components/VideoCard';
 import { Layout } from '@/components/Layout';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
-import { mockVideos } from '@/data/mockVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Index = () => {
   const { uploadedVideos } = useUploadedVideos();
 
-  // Convert uploaded videos to VideoCard format
+  // Convert uploaded videos (non-shorts) to VideoCard format
   const formattedUploadedVideos = useMemo(() => {
-    return uploadedVideos.map(video => ({
-      id: video.id,
-      title: video.title,
-      thumbnail: video.thumbnail,
-      channelName: 'Your Channel',
-      views: video.views,
-      timestamp: video.timestamp,
-      duration: video.duration,
-      description: video.description,
-    }));
+    return uploadedVideos
+      .filter(video => video.category !== 'shorts')
+      .map(video => ({
+        id: video.id,
+        title: video.title,
+        thumbnail: video.thumbnail,
+        channelName: 'Your Channel',
+        views: video.views,
+        timestamp: video.timestamp,
+        duration: video.duration,
+        description: video.description,
+      }));
   }, [uploadedVideos]);
 
-  // All uploaded videos appear first on home page (newest first), then mock videos fill remaining slots
+  // All uploaded videos appear first on home page (newest first)
   const recommendedVideos = useMemo(() => {
-    const sortedUploads = [...formattedUploadedVideos].reverse(); // Newest uploads first
-    const combined = [...sortedUploads, ...mockVideos];
-    return combined.slice(0, 20); // Show max 20 videos (4x5 grid)
+    const sortedUploads = [...formattedUploadedVideos].reverse();
+    return sortedUploads.slice(0, 20);
   }, [formattedUploadedVideos]);
 
-  // All uploaded videos appear first on trending (newest first), then mock videos fill remaining slots
+  // Trending videos (same as recommended for now)
   const trendingVideos = useMemo(() => {
-    const sortedUploads = [...formattedUploadedVideos].reverse(); // Newest uploads first
-    const shuffledMock = [...mockVideos.slice(4, 8), ...mockVideos.slice(0, 4)];
-    const combined = [...sortedUploads, ...shuffledMock];
-    return combined.slice(0, 20); // Show max 20 videos (4x5 grid)
+    const sortedUploads = [...formattedUploadedVideos].reverse();
+    return sortedUploads.slice(0, 20);
   }, [formattedUploadedVideos]);
 
   return (
@@ -51,27 +49,40 @@ const Index = () => {
           <h1 className="text-3xl font-bold mb-4">Home</h1>
         </div>
 
-        <div className="mb-6">
-          <h2 className="text-xl font-medium mb-4">Recommended</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {recommendedVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {recommendedVideos.length > 0 && (
+          <div className="mb-6">
+            <h2 className="text-xl font-medium mb-4">Recommended</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {recommendedVideos.map((video) => (
+                <VideoCard key={video.id} {...video} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Shorts sections positioned together */}
         <ShortVideosSection />
         <TrendingShortVideosSection />
 
-        <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Trending</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {trendingVideos.map((video, index) => (
-              <VideoCard key={`trending-${video.id}-${index}`} {...video} />
-            ))}
+        {trendingVideos.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">Trending</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {trendingVideos.map((video, index) => (
+                <VideoCard key={`trending-${video.id}-${index}`} {...video} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {recommendedVideos.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            <p>No videos uploaded yet. Upload videos to see them here!</p>
+            <Link to="/upload" className="text-primary hover:underline mt-2 inline-block">
+              Upload your first video
+            </Link>
+          </div>
+        )}
       </div>
     </Layout>
   );

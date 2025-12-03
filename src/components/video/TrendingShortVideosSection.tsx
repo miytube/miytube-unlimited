@@ -3,40 +3,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShortCard } from '@/components/ShortCard';
 import { TrendingUp } from 'lucide-react';
-
-// Mock data for trending shorts to display on the home page
-const trendingShorts = [
-  { 
-    id: 'ts1', 
-    title: 'Viral dance move everyone is trying', 
-    views: '5.7M', 
-    creator: 'DanceMaster', 
-    thumbnail: 'https://images.unsplash.com/photo-1545242104-7c7bf0d92a4b?auto=format&fit=crop&w=800&q=80' 
-  },
-  { 
-    id: 'ts2', 
-    title: 'This food hack will blow your mind', 
-    views: '3.2M', 
-    creator: 'CookingPro', 
-    thumbnail: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=800&q=80' 
-  },
-  { 
-    id: 'ts3', 
-    title: 'Street magic reaction compilation', 
-    views: '7.1M', 
-    creator: 'MagicTricks', 
-    thumbnail: 'https://images.unsplash.com/photo-1524486361537-8ad15938e1a3?auto=format&fit=crop&w=800&q=80' 
-  },
-  { 
-    id: 'ts4', 
-    title: 'Unbelievable basketball skills', 
-    views: '4.5M', 
-    creator: 'SportsHero', 
-    thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80' 
-  }
-];
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 export const TrendingShortVideosSection: React.FC = () => {
+  const { getVideosByCategory } = useUploadedVideos();
+  
+  // Get uploaded shorts only
+  const uploadedShorts = getVideosByCategory('shorts');
+  
+  // Format for ShortCard and limit to 4
+  const shortsToDisplay = uploadedShorts.slice(0, 4).map(video => ({
+    id: video.id,
+    title: video.title,
+    thumbnail: video.thumbnail,
+    creator: 'Your Channel',
+    views: video.views,
+  }));
+
+  // Don't render section if no shorts uploaded
+  if (shortsToDisplay.length === 0) {
+    return null;
+  }
+
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
@@ -50,7 +38,7 @@ export const TrendingShortVideosSection: React.FC = () => {
       </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-        {trendingShorts.map((short) => (
+        {shortsToDisplay.map((short) => (
           <ShortCard
             key={short.id}
             id={short.id}
