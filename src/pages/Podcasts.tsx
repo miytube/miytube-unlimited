@@ -7,8 +7,8 @@ import { AudioCard } from '@/components/music/AudioCard';
 import { audioSamples } from '@/components/music/musicData';
 
 const Podcasts = () => {
-  // Filter audio samples or use all for demonstration
-  const podcastSamples = audioSamples.slice(0, 6);
+  // Use all 20 audio samples for 4x5 grid
+  const podcastSamples = audioSamples;
   
   return (
     <Layout>
@@ -31,7 +31,7 @@ const Podcasts = () => {
         
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-6">Featured Podcasts</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {podcastSamples.map((audio) => (
               <AudioCard key={audio.id} audio={audio} />
             ))}

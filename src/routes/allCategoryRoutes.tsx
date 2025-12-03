@@ -244,6 +244,43 @@ const categoryKeys = [
   
   // Pets & Animals
   'pets-animals',
+  
+  // Sound Effects & Audio
+  'sound-effects', 'asmr',
+  
+  // Police Department
+  'police-department', 'police-fails', 'police-trainings', 'police-personnel',
+  'police-equipment', 'police-weapons', 'police-boot-camp', 'police-vehicle-chases',
+  'police-vehicle-crashes', 'police-shootings',
+  
+  // Fire Department
+  'fire-department', 'fire-department-fails', 'fire-trucks', 'fire-personnel-training',
+  'fire-house-fires', 'fire-building-fires', 'fire-land-fires',
+  
+  // Military Marines
+  'military-marines', 'marine-training', 'marine-boot-camp', 'marine-ships',
+  'marine-personnel', 'marine-weapons', 'marine-pilots', 'marine-duties',
+  
+  // Military Army
+  'military-army', 'army-training', 'army-boot-camp', 'army-ships',
+  'army-personnel', 'army-weapons', 'army-pilots', 'army-duties',
+  
+  // Military Navy
+  'military-navy', 'navy-training', 'navy-boot-camp', 'navy-ships',
+  'navy-personnel', 'navy-weapons', 'navy-pilots', 'navy-duties',
+  
+  // Military Coast Guard
+  'military-coast-guard', 'coast-guard-training', 'coast-guard-boot-camp',
+  'coast-guard-ships', 'coast-guard-personnel', 'coast-guard-weapons',
+  'coast-guard-pilots', 'coast-guard-duties',
+  
+  // Military Airforce
+  'military-airforce', 'airforce-training', 'airforce-boot-camp', 'airforce-planes',
+  'airforce-ships', 'airforce-personnel', 'airforce-weapons', 'airforce-pilots',
+  'airforce-duties',
+  
+  // Military Drones
+  'military-weapons-drones',
 ];
 
 export const allCategoryRoutes = categoryKeys.map(key => (
