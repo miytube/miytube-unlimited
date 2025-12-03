@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/Layout';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { ArrowLeft, Play, Pause, Volume2, VolumeX, ThumbsUp, MessageCircle, Share, Edit, Trash2 } from 'lucide-react';
+import { ArrowLeft, Play, Pause, Volume2, VolumeX, ThumbsUp, MessageCircle, Share, Edit, Trash2, Film } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +29,10 @@ const ShortsWatch = () => {
   const [video, setVideo] = useState<any>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  // Get regular videos and other shorts for sidebar
+  const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts');
+  const otherShorts = uploadedVideos.filter(v => v.category === 'shorts' && v.id !== id);
 
   useEffect(() => {
     if (id) {
@@ -124,7 +128,8 @@ const ShortsWatch = () => {
 
   return (
     <Layout>
-      <div className="flex justify-center items-center min-h-[calc(100vh-120px)] py-4">
+      <div className="flex justify-center gap-6 min-h-[calc(100vh-120px)] py-4 px-4">
+        {/* Main Short Player */}
         <div className="relative max-w-[400px] w-full">
           {/* Back button */}
           <Button
@@ -219,6 +224,75 @@ const ShortsWatch = () => {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Right Sidebar */}
+        <div className="w-72 hidden lg:block space-y-6">
+          {/* Other Shorts */}
+          {otherShorts.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Film className="h-4 w-4 text-primary" />
+                <h3 className="text-sm font-semibold">More Shorts</h3>
+              </div>
+              <div className="grid grid-cols-4 gap-1">
+                {otherShorts.slice(0, 4).map((short) => (
+                  <Link 
+                    key={short.id} 
+                    to={`/shorts/${short.id}`}
+                    className="relative aspect-[9/16] rounded overflow-hidden bg-muted group"
+                  >
+                    <img 
+                      src={short.thumbnail} 
+                      alt={short.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Regular Videos */}
+          {regularVideos.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold mb-3">Videos</h3>
+              <div className="space-y-2">
+                {regularVideos.slice(0, 6).map((vid) => (
+                  <Link 
+                    key={vid.id} 
+                    to={`/watch?v=${vid.id}`}
+                    className="flex gap-2 group hover:bg-muted/50 rounded-lg p-1 transition-colors"
+                  >
+                    <div className="relative w-28 h-16 flex-shrink-0 rounded overflow-hidden bg-muted">
+                      <img 
+                        src={vid.thumbnail} 
+                        alt={vid.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute bottom-1 right-1 bg-black/80 text-white text-[10px] px-1 rounded">
+                        {vid.duration}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-xs font-medium line-clamp-2 group-hover:text-primary">
+                        {vid.title}
+                      </h4>
+                      <p className="text-[10px] text-muted-foreground mt-1">{vid.views} views</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {regularVideos.length === 0 && otherShorts.length === 0 && (
+            <div className="text-center p-4 bg-muted/20 rounded-lg">
+              <p className="text-sm text-muted-foreground">No other videos uploaded yet</p>
+            </div>
+          )}
         </div>
       </div>
 
