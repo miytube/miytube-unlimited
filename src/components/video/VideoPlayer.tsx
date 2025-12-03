@@ -9,7 +9,7 @@ interface VideoPlayerProps {
   videoId?: string;
   title: string;
   format?: string;
-  videoFile?: File;
+  videoFile?: File | string; // Can be File object or data URL string
   autoPlay?: boolean;
 }
 
@@ -45,8 +45,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   useEffect(() => {
     // Set video source and handle object URL creation
     if (videoFile) {
-      const url = URL.createObjectURL(videoFile);
-      setVideoSrc(url);
+      // Check if videoFile is already a string URL (data URL or http URL)
+      if (typeof videoFile === 'string') {
+        setVideoSrc(videoFile);
+      } else {
+        // It's a File object, create object URL
+        const url = URL.createObjectURL(videoFile);
+        setVideoSrc(url);
+      }
     } else if (videoId) {
       setVideoSrc(getVideoSource(videoId, format));
     }
@@ -64,10 +70,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   }, [volume, isMuted]);
 
-  // Clean up object URL when component unmounts
+  // Clean up object URL when component unmounts (only for File objects)
   useEffect(() => {
     return () => {
-      if (videoFile && videoSrc) {
+      if (videoFile && typeof videoFile !== 'string' && videoSrc && !videoSrc.startsWith('data:')) {
         URL.revokeObjectURL(videoSrc);
       }
     };
