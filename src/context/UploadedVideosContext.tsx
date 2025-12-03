@@ -24,7 +24,7 @@ interface UploadedVideosContextType {
     category?: string, 
     subcategory?: string,
     tags?: string[]
-  ) => void;
+  ) => Promise<void>;
   updateUploadedVideo: (
     id: string,
     updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
@@ -52,15 +52,52 @@ interface UploadedVideosProviderProps {
 export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ children }) => {
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
 
-  const generateThumbnail = (file: File): string => {
-    return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+  const generateThumbnail = async (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      if (file.type.startsWith('video/')) {
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.muted = true;
+        video.playsInline = true;
+        
+        video.onloadeddata = () => {
+          // Seek to 1 second or 10% of video duration
+          video.currentTime = Math.min(1, video.duration * 0.1);
+        };
+        
+        video.onseeked = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth || 640;
+          canvas.height = video.videoHeight || 360;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const thumbnailUrl = canvas.toDataURL('image/jpeg', 0.8);
+            URL.revokeObjectURL(video.src);
+            resolve(thumbnailUrl);
+          } else {
+            resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+          }
+        };
+        
+        video.onerror = () => {
+          resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+        };
+        
+        video.src = URL.createObjectURL(file);
+        video.load();
+      } else {
+        // For non-video files, use placeholder
+        resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+      }
+    });
   };
 
   const formatDuration = (file: File): string => {
     return '0:30';
   };
 
-  const addUploadedVideo = (
+  const addUploadedVideo = async (
     file: File, 
     title: string, 
     description: string, 
@@ -68,12 +105,13 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     subcategory?: string,
     tags: string[] = []
   ) => {
+    const thumbnail = await generateThumbnail(file);
     const newVideo: UploadedVideo = {
       id: `upload-${Date.now()}`,
       file: file,
       title: title || file.name,
       description: description || '',
-      thumbnail: generateThumbnail(file),
+      thumbnail,
       timestamp: 'Just now',
       views: '0',
       duration: formatDuration(file),
