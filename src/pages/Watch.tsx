@@ -3,7 +3,7 @@ import { Layout } from '@/components/Layout';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
 
-import { VideoComments } from '@/components/watch/VideoComments';
+
 import { VideoInfo } from '@/components/watch/VideoInfo';
 import { VideoDescription } from '@/components/watch/VideoDescription';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
@@ -153,7 +153,7 @@ const Watch = () => {
             
             <VideoDescription description={video.description} />
             
-            <VideoComments videoId={video.id} />
+            
           </div>
 
           {/* Right Sidebar */}
