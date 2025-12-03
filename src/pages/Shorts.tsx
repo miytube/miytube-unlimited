@@ -37,80 +37,17 @@ const Shorts = () => {
     }
   };
   
-  // Mock data for shorts
-  const mockShorts = [
-    { 
-      id: 's1', 
-      title: 'Amazing sunset views', 
-      views: '1.2M', 
-      creator: 'NatureLover', 
-      thumbnail: 'https://images.unsplash.com/photo-1532767153582-b1a0e5145009?auto=format&fit=crop&w=800&q=80' 
-    },
-    { 
-      id: 's2', 
-      title: 'Quick cooking hack', 
-      views: '4.5M', 
-      creator: 'ChefMaster', 
-      thumbnail: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?auto=format&fit=crop&w=800&q=80' 
-    },
-    { 
-      id: 's3', 
-      title: 'Dance challenge', 
-      views: '2.8M', 
-      creator: 'DanceKing', 
-      thumbnail: 'https://images.unsplash.com/photo-1535525153412-5a42439a210d?auto=format&fit=crop&w=800&q=80' 
-    },
-    { 
-      id: 's4', 
-      title: 'DIY home decor', 
-      views: '985K', 
-      creator: 'CraftyCreator', 
-      thumbnail: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80' 
-    },
-    { 
-      id: 's5', 
-      title: 'Tech tip in 30 seconds', 
-      views: '1.5M', 
-      creator: 'TechGuru', 
-      thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80' 
-    },
-    { 
-      id: 's6', 
-      title: 'Workout of the day', 
-      views: '2.1M', 
-      creator: 'FitnessPro', 
-      thumbnail: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80' 
-    },
-    { 
-      id: 's7', 
-      title: 'Cute puppy moments', 
-      views: '5.3M', 
-      creator: 'PetLover', 
-      thumbnail: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=800&q=80' 
-    },
-    { 
-      id: 's8', 
-      title: 'Magic trick revealed', 
-      views: '3.4M', 
-      creator: 'MagicMaster', 
-      thumbnail: 'https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=800&q=80' 
-    },
-  ];
-
-  // Get uploaded shorts
+  // Get uploaded shorts only (no mock data)
   const uploadedShorts = getVideosByCategory('shorts');
   
   // Format uploaded shorts for ShortCard
-  const formattedUploadedShorts = uploadedShorts.map(video => ({
+  const allShorts = uploadedShorts.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
     creator: 'Your Channel',
     views: video.views,
   }));
-
-  // Combine uploaded with mock data
-  const allShorts = [...formattedUploadedShorts, ...mockShorts];
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach(file => {
