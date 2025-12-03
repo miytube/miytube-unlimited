@@ -157,19 +157,25 @@ const Shorts = () => {
         />
         
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-6">Trending Shorts</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {allShorts.map((short) => (
-              <ShortCard
-                key={short.id}
-                id={short.id}
-                title={short.title}
-                thumbnail={short.thumbnail}
-                creator={short.creator}
-                views={short.views}
-              />
-            ))}
-          </div>
+          <h2 className="text-2xl font-semibold mb-6">Your Shorts</h2>
+          {allShorts.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {allShorts.map((short) => (
+                <ShortCard
+                  key={short.id}
+                  id={short.id}
+                  title={short.title}
+                  thumbnail={short.thumbnail}
+                  creator={short.creator}
+                  views={short.views}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 text-muted-foreground border-2 border-dashed border-muted rounded-lg">
+              <p>No shorts uploaded yet. Use the uploader above to add your first short!</p>
+            </div>
+          )}
         </div>
       </div>
     </Layout>
