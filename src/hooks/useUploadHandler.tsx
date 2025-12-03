@@ -28,11 +28,12 @@ export const useUploadHandler = () => {
       description: `Processing ${files.length} ${files.length === 1 ? 'file' : 'files'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
     });
     
-    // Store uploads in context with proper category
-    if (contentTypeId === 'video' || contentTypeId === 'shorts' || contentTypeId === 'music') {
+    // Store uploads in context - save ALL video/audio content types
+    const videoContentTypes = ['video', 'shorts', 'music', 'comedy', 'news', 'podcast', 'audiobook', 'asmr', 'meditation', 'nature-sounds', 'sound-effects'];
+    if (videoContentTypes.includes(contentTypeId) || contentTypeId.includes('video') || files.some(f => f.type.startsWith('video/') || f.type.startsWith('audio/'))) {
       for (const file of files) {
-        // For music uploads, ensure category is set to 'music' if not specified
-        const uploadCategory = contentTypeId === 'music' ? (category || 'music') : category;
+        // Use category from form, or fall back to contentTypeId
+        const uploadCategory = category || contentTypeId;
         await addUploadedVideo(file, title || file.name, description || '', uploadCategory, subcategory, tags);
       }
     }
