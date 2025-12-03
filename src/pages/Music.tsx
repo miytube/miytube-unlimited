@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { MusicHeader } from '@/components/music/MusicHeader';
 import { FeaturedMusicVideo } from '@/components/music/FeaturedMusicVideo';
 import { MusicCategories } from '@/components/music/MusicCategories';
+import { MusicVideosNeedingUpdate } from '@/components/music/MusicVideosNeedingUpdate';
 import { musicCategories } from '@/components/music/musicData';
 import { VideoCard } from '@/components/VideoCard';
 
@@ -33,6 +33,8 @@ const Music = () => {
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
         <MusicHeader />
+        
+        <MusicVideosNeedingUpdate />
         
         {/* Show uploaded music videos first */}
         {musicVideos.length > 0 && (
