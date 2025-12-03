@@ -1,16 +1,19 @@
 
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Film, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { LongVideosHeader } from '@/components/longVideos/LongVideosHeader';
 import { FeaturedLongVideos } from '@/components/longVideos/FeaturedLongVideos';
-import { featuredLongVideos } from '@/components/longVideos/longVideosData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useNavigate } from 'react-router-dom';
 
 const LongVideos = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { uploadedVideos } = useUploadedVideos();
   const [newCategory, setNewCategory] = useState('');
   const [videoCategories, setVideoCategories] = useState([
     { name: 'Educational Courses', icon: '🎓' },
@@ -22,6 +25,24 @@ const LongVideos = () => {
     { name: 'Conferences', icon: '👥' },
     { name: 'Audiobooks', icon: '📖' }
   ]);
+
+  // Filter uploaded videos for long-form content (duration > 60 seconds or category matches)
+  const longFormVideos = uploadedVideos.filter(video => {
+    // Parse duration string to check if it's a long video
+    const durationParts = video.duration?.split(':') || [];
+    let totalSeconds = 0;
+    if (durationParts.length === 3) {
+      totalSeconds = parseInt(durationParts[0]) * 3600 + parseInt(durationParts[1]) * 60 + parseInt(durationParts[2]);
+    } else if (durationParts.length === 2) {
+      totalSeconds = parseInt(durationParts[0]) * 60 + parseInt(durationParts[1]);
+    }
+    // Consider videos longer than 10 minutes as long-form
+    return totalSeconds > 600 || video.category === 'long-videos';
+  });
+
+  const handleUploadClick = () => {
+    navigate('/upload/video');
+  };
   
   const handleAddCategory = () => {
     if (newCategory.trim()) {
@@ -41,9 +62,26 @@ const LongVideos = () => {
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full">
-        <LongVideosHeader onUploadClick={() => document.getElementById('video-upload-input')?.click()} />
+        <LongVideosHeader onUploadClick={handleUploadClick} />
         
-        <FeaturedLongVideos videos={featuredLongVideos} />
+        {longFormVideos.length > 0 && (
+          <FeaturedLongVideos videos={longFormVideos.map(video => ({
+            id: video.id,
+            title: video.title,
+            thumbnail: video.thumbnail,
+            channelName: 'Your Channel',
+            views: video.views,
+            timestamp: video.timestamp,
+            duration: video.duration,
+          }))} />
+        )}
+        
+        {longFormVideos.length === 0 && (
+          <div className="mb-8 p-8 border-2 border-dashed border-muted-foreground/30 rounded-lg text-center">
+            <p className="text-muted-foreground mb-4">No long-form videos yet. Upload videos longer than 10 minutes to see them here.</p>
+            <Button onClick={handleUploadClick}>Upload Long Video</Button>
+          </div>
+        )}
         
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
