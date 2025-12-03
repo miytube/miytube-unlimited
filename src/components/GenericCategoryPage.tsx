@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { Link } from 'react-router-dom';
 import { Upload, LucideIcon } from 'lucide-react';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 interface GenericCategoryPageProps {
   title: string;
@@ -16,16 +17,23 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
   description = `Explore our collection of ${title.toLowerCase()} content`,
   Icon,
 }) => {
-  // Generate 20 sample videos for 4x5 grid
-  const sampleVideos = Array.from({ length: 20 }, (_, i) => ({
-    id: `${title.toLowerCase().replace(/\s+/g, '-')}-${i + 1}`,
-    title: `${title} Content ${i + 1}`,
-    thumbnail: `https://images.unsplash.com/photo-${1550745165 + i * 1000}-9bc0b252726f?auto=format&fit=crop&w=800&q=80`,
-    channelName: `${title} Creator ${(i % 5) + 1}`,
-    views: `${Math.floor(Math.random() * 900) + 100}K`,
-    timestamp: `${(i % 7) + 1} days ago`,
-    duration: `${Math.floor(Math.random() * 20) + 5}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')}`,
-  }));
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Filter videos for this category
+  const titleLower = title.toLowerCase();
+  const titleWords = titleLower.split(/[\s&]+/).filter(w => w.length > 2);
+  
+  const categoryVideos = uploadedVideos.filter(video => {
+    const category = video.category?.toLowerCase() || '';
+    const subcategory = video.subcategory?.toLowerCase() || '';
+    const tags = video.tags?.map(t => t.toLowerCase()) || [];
+    
+    return titleWords.some(word => 
+      category.includes(word) || 
+      subcategory.includes(word) ||
+      tags.some(tag => tag.includes(word))
+    );
+  });
 
   return (
     <Layout>
@@ -45,7 +53,7 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
             </div>
             <Link 
               to="/upload" 
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
             >
               <Upload size={18} />
               <span>Upload</span>
@@ -53,27 +61,38 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
           </div>
         </div>
         
-        <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Featured {title} Content</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sampleVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {categoryVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">{title} Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {categoryVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-        
-        <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Popular in {title}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {sampleVideos.map((video, index) => ({
-              ...video,
-              id: `popular-${index}`,
-              title: `Popular ${title} - ${index + 1}`,
-            })).slice(0, 20).map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            {Icon && <Icon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />}
+            <h3 className="text-xl font-semibold mb-2">No {title} Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload {title.toLowerCase()} content!</p>
+            <Link 
+              to="/upload" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload {title} Content</span>
+            </Link>
           </div>
-        </div>
+        )}
         
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About {title}</h2>
@@ -85,7 +104,7 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
           <div className="mt-4">
             <Link 
               to="/upload" 
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
             >
               <Upload size={18} />
               <span>Upload {title} Content</span>
