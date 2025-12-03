@@ -10,7 +10,7 @@ export const useUploadHandler = () => {
   const { addUploadedVideo } = useUploadedVideos();
   const navigate = useNavigate();
   
-  const handleUpload = (
+  const handleUpload = async (
     contentTypeName: string,
     files: File[], 
     title: string, 
@@ -30,11 +30,11 @@ export const useUploadHandler = () => {
     
     // Store uploads in context with proper category
     if (contentTypeId === 'video' || contentTypeId === 'shorts' || contentTypeId === 'music') {
-      files.forEach(file => {
+      for (const file of files) {
         // For music uploads, ensure category is set to 'music' if not specified
         const uploadCategory = contentTypeId === 'music' ? (category || 'music') : category;
-        addUploadedVideo(file, title || file.name, description || '', uploadCategory, subcategory, tags);
-      });
+        await addUploadedVideo(file, title || file.name, description || '', uploadCategory, subcategory, tags);
+      }
     }
     
     setTimeout(() => {
