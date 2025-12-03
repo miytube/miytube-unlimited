@@ -72,6 +72,10 @@ const Shorts = () => {
     thumbnail: video.thumbnail,
     creator: 'Your Channel',
     views: video.views,
+    description: video.description,
+    category: video.category,
+    subcategory: video.subcategory,
+    tags: video.tags,
   }));
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
@@ -168,6 +172,10 @@ const Shorts = () => {
                   thumbnail={short.thumbnail}
                   creator={short.creator}
                   views={short.views}
+                  description={short.description}
+                  category={short.category}
+                  subcategory={short.subcategory}
+                  tags={short.tags}
                 />
               ))}
             </div>
