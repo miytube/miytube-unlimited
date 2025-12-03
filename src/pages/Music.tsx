@@ -3,9 +3,9 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { MusicHeader } from '@/components/music/MusicHeader';
-import { FeaturedAudio } from '@/components/music/FeaturedAudio';
+import { FeaturedMusicVideo } from '@/components/music/FeaturedMusicVideo';
 import { MusicCategories } from '@/components/music/MusicCategories';
-import { audioSamples, musicCategories } from '@/components/music/musicData';
+import { musicCategories } from '@/components/music/musicData';
 import { VideoCard } from '@/components/VideoCard';
 
 const Music = () => {
@@ -55,7 +55,7 @@ const Music = () => {
           </div>
         )}
         
-        <FeaturedAudio audioTracks={audioSamples} />
+        <FeaturedMusicVideo />
         
         <MusicCategories categories={musicCategories} />
       </div>

@@ -1,1 +1,4 @@
 project_id = "dfwbddmckfzfocpruvtj"
+
+[functions.analyze-music-video]
+verify_jwt = false

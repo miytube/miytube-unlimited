@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      music_videos: {
+        Row: {
+          category: string | null
+          click_through_rate: number | null
+          comments_count: number
+          content_clarity_score: number | null
+          conversion_rate: number | null
+          created_at: string
+          description: string | null
+          duration: string | null
+          featured_score: number | null
+          id: string
+          is_featured: boolean | null
+          likes: number
+          shares: number
+          subcategory: string | null
+          tags: string[] | null
+          thumbnail_quality_score: number | null
+          thumbnail_url: string | null
+          title: string
+          title_effectiveness_score: number | null
+          traffic_external: number | null
+          traffic_organic: number | null
+          traffic_search: number | null
+          traffic_suggested: number | null
+          updated_at: string
+          user_id: string | null
+          video_url: string | null
+          views: number
+          watch_time_seconds: number
+        }
+        Insert: {
+          category?: string | null
+          click_through_rate?: number | null
+          comments_count?: number
+          content_clarity_score?: number | null
+          conversion_rate?: number | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          featured_score?: number | null
+          id?: string
+          is_featured?: boolean | null
+          likes?: number
+          shares?: number
+          subcategory?: string | null
+          tags?: string[] | null
+          thumbnail_quality_score?: number | null
+          thumbnail_url?: string | null
+          title: string
+          title_effectiveness_score?: number | null
+          traffic_external?: number | null
+          traffic_organic?: number | null
+          traffic_search?: number | null
+          traffic_suggested?: number | null
+          updated_at?: string
+          user_id?: string | null
+          video_url?: string | null
+          views?: number
+          watch_time_seconds?: number
+        }
+        Update: {
+          category?: string | null
+          click_through_rate?: number | null
+          comments_count?: number
+          content_clarity_score?: number | null
+          conversion_rate?: number | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          featured_score?: number | null
+          id?: string
+          is_featured?: boolean | null
+          likes?: number
+          shares?: number
+          subcategory?: string | null
+          tags?: string[] | null
+          thumbnail_quality_score?: number | null
+          thumbnail_url?: string | null
+          title?: string
+          title_effectiveness_score?: number | null
+          traffic_external?: number | null
+          traffic_organic?: number | null
+          traffic_search?: number | null
+          traffic_suggested?: number | null
+          updated_at?: string
+          user_id?: string | null
+          video_url?: string | null
+          views?: number
+          watch_time_seconds?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
