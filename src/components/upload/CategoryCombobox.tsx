@@ -1,21 +1,15 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface CategoryOption {
   id: string;
@@ -52,7 +46,7 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
     opt.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
-  // Check if input matches any existing option
+  // Check if input matches any existing option exactly
   const exactMatch = options.some(
     opt => opt.name.toLowerCase() === inputValue.toLowerCase()
   );
@@ -69,6 +63,12 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
     }
   };
 
+  const handleSelect = (optionId: string) => {
+    onValueChange(optionId);
+    setOpen(false);
+    setInputValue('');
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -83,62 +83,67 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0 bg-popover border z-50" align="start">
-        <Command>
-          <CommandInput 
-            placeholder={`Search or type to add...`}
+      <PopoverContent className="w-full min-w-[250px] p-0 bg-popover border z-50" align="start">
+        <div className="p-2 border-b">
+          <Input
+            placeholder="Search or type to add..."
             value={inputValue}
-            onValueChange={setInputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            className="h-9"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && inputValue.trim() && !exactMatch) {
+                e.preventDefault();
+                handleAddCustom();
+              }
+            }}
           />
-          <CommandList>
-            <CommandEmpty>
-              <div className="p-2 text-center">
-                <p className="text-sm text-muted-foreground mb-2">{emptyText}</p>
-                {inputValue.trim() && !exactMatch && (
-                  <Button
-                    size="sm"
-                    onClick={handleAddCustom}
-                    className="gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Add "{inputValue.trim()}"
-                  </Button>
-                )}
+        </div>
+        
+        <ScrollArea className="max-h-[200px]">
+          <div className="p-1">
+            {filteredOptions.length === 0 && !inputValue.trim() && (
+              <div className="py-6 text-center text-sm text-muted-foreground">
+                {emptyText}
               </div>
-            </CommandEmpty>
-            <CommandGroup>
-              {filteredOptions.map((option) => (
-                <CommandItem
-                  key={option.id}
-                  value={option.name}
-                  onSelect={() => {
-                    onValueChange(option.id);
-                    setOpen(false);
-                    setInputValue('');
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === option.id ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {option.name}
-                </CommandItem>
-              ))}
-              {inputValue.trim() && !exactMatch && filteredOptions.length > 0 && (
-                <CommandItem
-                  value={`add-${inputValue}`}
-                  onSelect={handleAddCustom}
-                  className="text-primary"
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add "{inputValue.trim()}" as new category
-                </CommandItem>
-              )}
-            </CommandGroup>
-          </CommandList>
-        </Command>
+            )}
+            
+            {filteredOptions.map((option) => (
+              <button
+                key={option.id}
+                onClick={() => handleSelect(option.id)}
+                className={cn(
+                  "flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent hover:text-accent-foreground cursor-pointer",
+                  value === option.id && "bg-accent"
+                )}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4",
+                    value === option.id ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {option.name}
+              </button>
+            ))}
+            
+            {/* Always show add option when typing something new */}
+            {inputValue.trim() && !exactMatch && (
+              <button
+                onClick={handleAddCustom}
+                className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent hover:text-accent-foreground cursor-pointer text-primary font-medium"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add "{inputValue.trim()}"
+              </button>
+            )}
+            
+            {filteredOptions.length === 0 && inputValue.trim() && exactMatch && (
+              <div className="py-6 text-center text-sm text-muted-foreground">
+                {emptyText}
+              </div>
+            )}
+          </div>
+        </ScrollArea>
       </PopoverContent>
     </Popover>
   );
