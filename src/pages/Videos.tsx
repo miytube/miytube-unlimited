@@ -1,18 +1,27 @@
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
+import { ShortCard } from '@/components/ShortCard';
 import { Film, Upload, Tv, ListVideo } from 'lucide-react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { UploadedVideosSection } from '@/components/video/UploadedVideosSection';
+import { Link, useParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { useToast } from "@/hooks/use-toast";
 
 const Videos = () => {
   const { category } = useParams();
-  const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Separate regular videos and shorts
+  const regularVideos = uploadedVideos.filter(video => video.category !== 'shorts');
+  const shortVideos = uploadedVideos.filter(video => video.category === 'shorts');
+  
+  // Filter by category if specified
+  const displayedRegularVideos = category 
+    ? regularVideos.filter(v => v.category === category)
+    : regularVideos;
+    
+  const displayedShortVideos = category
+    ? shortVideos.filter(v => v.subcategory === category)
+    : shortVideos;
   
   const videoCategories = [
     { id: 'trending', name: 'Trending', icon: <Tv size={24} /> },
@@ -21,79 +30,6 @@ const Videos = () => {
     { id: 'technology', name: 'Technology', icon: <Tv size={24} /> },
     { id: 'travel', name: 'Travel', icon: <Film size={24} /> },
     { id: 'howto', name: 'How-to', icon: <ListVideo size={24} /> },
-  ];
-  
-  const handleUpload = (files: File[], title: string, description: string, category?: string) => {
-    if (files.length > 0) {
-      addUploadedVideo(files[0], title, description, category);
-      
-      toast({
-        title: "Video uploaded",
-        description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
-      });
-
-      setTimeout(() => {
-        navigate('/');
-        
-        if (category) {
-          toast({
-            title: "View in category",
-            description: `View your upload in the ${category} category`,
-            action: (
-              <button
-                onClick={() => navigate(`/videos/${category}`)}
-                className="text-primary hover:underline"
-              >
-                Go to category
-              </button>
-            ),
-          });
-        }
-      }, 1500);
-    }
-  };
-
-  const displayedVideos = category 
-    ? getVideosByCategory(category)
-    : uploadedVideos;
-  
-  const featuredVideos = [
-    {
-      id: 'video1',
-      title: 'How to Design Beautiful Interfaces',
-      thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Design Masters',
-      views: '1.2M',
-      timestamp: '3 days ago',
-      duration: '14:35',
-    },
-    {
-      id: 'video2',
-      title: 'The Future of Technology: AI and Machine Learning Advancements',
-      thumbnail: 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Tech Insights',
-      views: '856K',
-      timestamp: '1 week ago',
-      duration: '22:15',
-    },
-    {
-      id: 'video3',
-      title: 'Beautiful Cinematic Film Making Tutorial',
-      thumbnail: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Film Academy',
-      views: '2.3M',
-      timestamp: '2 months ago',
-      duration: '18:42',
-    },
-    {
-      id: 'video4',
-      title: 'Morning Routine: Productivity Tips for Entrepreneurs',
-      thumbnail: 'https://images.unsplash.com/photo-1507090960745-b32f65d3113a?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Productivity Pro',
-      views: '4.5M',
-      timestamp: '5 months ago',
-      duration: '12:18',
-    },
   ];
 
   return (
@@ -115,43 +51,6 @@ const Videos = () => {
           </Link>
         </div>
         
-        {!category && <UploadedVideosSection />}
-        
-        {category && displayedVideos.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-medium mb-4">{category.charAt(0).toUpperCase() + category.slice(1)} Videos</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {displayedVideos.map((video) => (
-                <VideoCard
-                  key={video.id}
-                  id={video.id}
-                  title={video.title}
-                  thumbnail={video.thumbnail}
-                  channelName="Your Channel"
-                  views={video.views}
-                  timestamp={video.timestamp}
-                  duration={video.duration}
-                  description={video.description}
-                  tags={video.tags}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        
-        {category && displayedVideos.length === 0 && (
-          <div className="mb-8 p-6 bg-muted/20 rounded-lg text-center">
-            <h2 className="text-xl font-medium mb-2">No videos in this category yet</h2>
-            <p className="text-muted-foreground mb-4">
-              Be the first to upload a video to the {category} category!
-            </p>
-            <Link to="/upload/video" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
-              <Upload size={18} />
-              <span>Upload Video</span>
-            </Link>
-          </div>
-        )}
-        
         {!category && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">Categories</h2>
@@ -172,13 +71,79 @@ const Videos = () => {
           </div>
         )}
         
+        {/* Regular Videos Section */}
         <div className="mb-8">
-          <h2 className="text-xl font-medium mb-4">Featured Videos</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {featuredVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+          <h2 className="text-xl font-medium mb-4">
+            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Videos` : 'Regular Videos'}
+          </h2>
+          {displayedRegularVideos.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {displayedRegularVideos.slice(0, 20).map((video) => (
+                <VideoCard
+                  key={video.id}
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                  category={video.category}
+                  subcategory={video.subcategory}
+                  tags={video.tags}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="p-6 bg-muted/20 rounded-lg text-center">
+              <p className="text-muted-foreground mb-4">
+                No regular videos uploaded yet. Be the first to upload!
+              </p>
+              <Link to="/upload/video" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                <Upload size={18} />
+                <span>Upload Video</span>
+              </Link>
+            </div>
+          )}
+        </div>
+        
+        {/* Shorts Section */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-medium">Shorts</h2>
+            <Link to="/shorts" className="text-primary text-sm hover:underline">
+              View all
+            </Link>
           </div>
+          {displayedShortVideos.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {displayedShortVideos.slice(0, 10).map((video) => (
+                <ShortCard
+                  key={video.id}
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  creator="Your Channel"
+                  views={video.views}
+                  description={video.description}
+                  category={video.category}
+                  subcategory={video.subcategory}
+                  tags={video.tags}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="p-6 bg-muted/20 rounded-lg text-center">
+              <p className="text-muted-foreground mb-4">
+                No shorts uploaded yet. Upload your first short video!
+              </p>
+              <Link to="/upload/video" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                <Upload size={18} />
+                <span>Upload Short</span>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </Layout>
