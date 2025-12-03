@@ -4,55 +4,32 @@ import { Layout } from '@/components/Layout';
 import { Upload, Bitcoin, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const CryptocurrencyPage = () => {
-  // Sample videos for demo purposes
-  const cryptoVideos = [
-    {
-      id: 'crypto-1',
-      title: 'Bitcoin: The Future of Money',
-      thumbnail: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Crypto Academy',
-      views: '1.5M',
-      timestamp: '2 days ago',
-      duration: '18:22',
-    },
-    {
-      id: 'crypto-2',
-      title: 'Ethereum vs. Bitcoin: What You Need to Know',
-      thumbnail: 'https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Crypto Insights',
-      views: '956K',
-      timestamp: '1 week ago',
-      duration: '26:15',
-    },
-    {
-      id: 'crypto-3',
-      title: 'Cryptocurrency for Beginners',
-      thumbnail: 'https://images.unsplash.com/photo-1523759533935-e4b770303b1d?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Finance Guru',
-      views: '3.2M',
-      timestamp: '3 months ago',
-      duration: '22:42',
-    },
-    {
-      id: 'crypto-4',
-      title: 'The Future of Cryptocurrency',
-      thumbnail: 'https://images.unsplash.com/photo-1516245834210-c4c142787335?auto=format&fit=crop&w=800&q=80',
-      channelName: 'Future Tech',
-      views: '2.7M',
-      timestamp: '2 months ago',
-      duration: '15:38',
-    },
-  ];
+  const { uploadedVideos } = useUploadedVideos();
+  
+  // Filter for crypto-related videos
+  const cryptoKeywords = ['crypto', 'cryptocurrency', 'bitcoin', 'ethereum', 'blockchain', 'nft', 'defi'];
+  const cryptoVideos = uploadedVideos.filter(video => {
+    const category = video.category?.toLowerCase() || '';
+    const subcategory = video.subcategory?.toLowerCase() || '';
+    const tags = video.tags?.map(t => t.toLowerCase()) || [];
+    
+    return cryptoKeywords.some(keyword => 
+      category.includes(keyword) || 
+      subcategory.includes(keyword) ||
+      tags.some(tag => tag.includes(keyword))
+    );
+  });
 
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
         <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-          <Link to="/business" className="hover:text-primary">
-            Business
-          </Link>
+          <span className="font-semibold text-primary">MiyTube</span>
+          <ChevronRight size={14} />
+          <Link to="/business" className="hover:text-primary">Business</Link>
           <ChevronRight size={14} />
           <span className="text-foreground">Cryptocurrency</span>
         </div>
@@ -74,27 +51,39 @@ const CryptocurrencyPage = () => {
           </Link>
         </div>
         
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-6">Featured Cryptocurrency Content</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {cryptoVideos.map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        {cryptoVideos.length > 0 ? (
+          <div className="mb-8">
+            <h2 className="text-2xl font-semibold mb-6">Cryptocurrency Videos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {cryptoVideos.slice(0, 20).map((video) => (
+                <VideoCard 
+                  key={video.id} 
+                  id={video.id}
+                  title={video.title}
+                  thumbnail={video.thumbnail}
+                  channelName="Your Channel"
+                  views={video.views}
+                  timestamp={video.timestamp}
+                  duration={video.duration}
+                  description={video.description}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Popular in Cryptocurrency</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {cryptoVideos.map((video, index) => ({
-              ...video,
-              id: `popular-${index}`,
-              title: `Popular Crypto Content - ${index + 1}`,
-            })).map((video) => (
-              <VideoCard key={video.id} {...video} />
-            ))}
+        ) : (
+          <div className="text-center py-12 bg-card rounded-lg mb-8">
+            <Bitcoin className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold mb-2">No Cryptocurrency Videos Yet</h3>
+            <p className="text-muted-foreground mb-4">Be the first to upload crypto content!</p>
+            <Link 
+              to="/upload" 
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            >
+              <Upload size={18} />
+              <span>Upload Crypto Content</span>
+            </Link>
           </div>
-        </div>
+        )}
         
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About Cryptocurrency</h2>
