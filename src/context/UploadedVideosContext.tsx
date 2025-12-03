@@ -161,6 +161,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   useEffect(() => {
     const loadStoredVideos = async () => {
       try {
+        // Clear old localStorage data (migration cleanup)
+        localStorage.removeItem('miytube_uploaded_videos');
+        
         const storedVideos = await getAllVideosFromDB();
         const videos: UploadedVideo[] = storedVideos.map(sv => ({
           id: sv.id,
