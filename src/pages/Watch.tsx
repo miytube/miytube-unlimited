@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
+import { YouTubeEmbed } from '@/components/video/YouTubeEmbed';
 import { VideoInfo } from '@/components/watch/VideoInfo';
 import { VideoDescription } from '@/components/watch/VideoDescription';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
@@ -37,6 +38,8 @@ const Watch = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isMusicVideo, setIsMusicVideo] = useState(false);
+  const [isYouTubeVideo, setIsYouTubeVideo] = useState(false);
+  const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
 
   // Get regular videos and shorts for sidebar
   const actualVideoId = videoId || musicVideoId;
@@ -94,6 +97,15 @@ const Watch = () => {
         console.log("Found uploaded video:", uploadedVideo);
         
         if (uploadedVideo) {
+          // Check if it's a YouTube embed
+          if (uploadedVideo.isYouTubeEmbed && uploadedVideo.youtubeId) {
+            setIsYouTubeVideo(true);
+            setYoutubeVideoId(uploadedVideo.youtubeId);
+          } else {
+            setIsYouTubeVideo(false);
+            setYoutubeVideoId(null);
+          }
+          
           // For cloud-stored videos, use cloudUrl; for local videos, use file or fileDataUrl
           const videoSource = uploadedVideo.isCloudStored 
             ? uploadedVideo.cloudUrl 
@@ -112,7 +124,9 @@ const Watch = () => {
             file: videoSource,
             tags: uploadedVideo.tags || [],
             category: uploadedVideo.category,
-            subcategory: uploadedVideo.subcategory
+            subcategory: uploadedVideo.subcategory,
+            isYouTubeEmbed: uploadedVideo.isYouTubeEmbed,
+            youtubeId: uploadedVideo.youtubeId
           });
           setLoading(false);
         } else {
@@ -190,7 +204,11 @@ const Watch = () => {
           {/* Main Video Section */}
           <div className="flex-1 max-w-4xl space-y-6">
             <div className="bg-card rounded-lg overflow-hidden shadow-md">
-              <VideoPlayer videoFile={video.file} title={video.title} />
+              {isYouTubeVideo && youtubeVideoId ? (
+                <YouTubeEmbed videoId={youtubeVideoId} title={video.title} />
+              ) : (
+                <VideoPlayer videoFile={video.file} title={video.title} />
+              )}
             </div>
             
             <VideoInfo 

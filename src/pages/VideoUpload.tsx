@@ -89,29 +89,31 @@ const VideoUpload = () => {
     }, 2000);
   };
 
-  const handleUrlImport = async (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
-    console.log("URL import initiated:", url, "Title:", title, "Description:", description, "Category:", category);
+  const handleUrlImport = async (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[], isYouTube?: boolean, youtubeId?: string) => {
+    console.log("URL import initiated:", url, "Title:", title, "Description:", description, "Category:", category, "isYouTube:", isYouTube, "youtubeId:", youtubeId);
     
     toast({
-      title: "Importing video from URL",
-      description: "Processing your video link...",
+      title: isYouTube ? "Adding YouTube video" : "Importing video from URL",
+      description: isYouTube ? "Embedding YouTube video..." : "Processing your video link...",
     });
     
     try {
       // Add video with URL directly to context
       await addUploadedVideo(
         new File([], title || 'Imported Video', { type: 'video/mp4' }), // Placeholder file
-        title || 'Imported Video',
+        title || (isYouTube ? 'YouTube Video' : 'Imported Video'),
         description || '',
         category,
         subcategory,
         tags,
-        url // Pass URL for direct storage
+        url, // Pass URL for direct storage
+        isYouTube,
+        youtubeId
       );
       
       toast({
-        title: "Import complete",
-        description: "Your video has been added and is now available.",
+        title: isYouTube ? "YouTube video added" : "Import complete",
+        description: isYouTube ? "YouTube video has been embedded and is now available." : "Your video has been added and is now available.",
         action: (
           <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
             View Home

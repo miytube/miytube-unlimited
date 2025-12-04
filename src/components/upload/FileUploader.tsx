@@ -15,7 +15,7 @@ interface FileUploaderProps {
   supportedFormats: string[];
   maxSize?: string;
   onUpload?: (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => void;
-  onUrlImport?: (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => void;
+  onUrlImport?: (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[], isYouTube?: boolean, youtubeId?: string) => void;
   id?: string;
   uploadDestination?: string;
   categories?: Array<{id: string, name: string, subcategories?: Array<{id: string, name: string}>}>;
@@ -37,6 +37,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   showUrlImport = true
 }) => {
   const [importedUrl, setImportedUrl] = useState<string | null>(null);
+  const [isYouTubeImport, setIsYouTubeImport] = useState(false);
+  const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
   
   const {
     videoTitle,
@@ -109,20 +111,27 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     triggerFileInputChangeEvent(fileInputRef, files);
   };
 
-  const handleUrlImport = (url: string) => {
+  const handleUrlImport = (url: string, isYouTube?: boolean, youtubeId?: string) => {
     setImportedUrl(url);
+    setIsYouTubeImport(isYouTube || false);
+    setYoutubeVideoId(youtubeId || null);
+    
     // Extract title from URL if no title set
     if (!videoTitle) {
-      try {
-        const urlObj = new URL(url);
-        const pathParts = urlObj.pathname.split('/');
-        const filename = pathParts[pathParts.length - 1];
-        if (filename) {
-          const nameWithoutExt = filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
-          setVideoTitle(decodeURIComponent(nameWithoutExt));
+      if (isYouTube) {
+        setVideoTitle('YouTube Video');
+      } else {
+        try {
+          const urlObj = new URL(url);
+          const pathParts = urlObj.pathname.split('/');
+          const filename = pathParts[pathParts.length - 1];
+          if (filename) {
+            const nameWithoutExt = filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+            setVideoTitle(decodeURIComponent(nameWithoutExt));
+          }
+        } catch {
+          // Ignore URL parsing errors
         }
-      } catch {
-        // Ignore URL parsing errors
       }
     }
   };
@@ -136,7 +145,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         description: videoDescription,
         category: selectedCategory,
         subcategory: selectedSubcategory,
-        tags: tags
+        tags: tags,
+        isYouTube: isYouTubeImport,
+        youtubeId: youtubeVideoId
       });
       
       onUrlImport(
@@ -145,9 +156,13 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         videoDescription,
         selectedCategory,
         selectedSubcategory,
-        tags
+        tags,
+        isYouTubeImport,
+        youtubeVideoId || undefined
       );
       setImportedUrl(null);
+      setIsYouTubeImport(false);
+      setYoutubeVideoId(null);
       return;
     }
     
