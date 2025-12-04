@@ -26,7 +26,10 @@ const LongVideos = () => {
     { name: 'Audiobooks', icon: '📖' }
   ]);
 
-  // Filter uploaded videos for long-form content (duration > 60 seconds or category matches)
+  // Filter uploaded videos for long-form content
+  // Include videos >1 minute OR matching long-form categories
+  const longFormCategories = ['long-videos', 'meditation', 'educational', 'documentary', 'podcast', 'lecture', 'conference', 'audiobook', 'concert'];
+  
   const longFormVideos = uploadedVideos.filter(video => {
     // Parse duration string to check if it's a long video
     const durationParts = video.duration?.split(':') || [];
@@ -36,8 +39,13 @@ const LongVideos = () => {
     } else if (durationParts.length === 2) {
       totalSeconds = parseInt(durationParts[0]) * 60 + parseInt(durationParts[1]);
     }
-    // Consider videos longer than 10 minutes as long-form
-    return totalSeconds > 600 || video.category === 'long-videos';
+    // Consider videos longer than 1 minute as long-form, or matching long-form categories
+    const isLongDuration = totalSeconds > 60;
+    const isLongFormCategory = longFormCategories.some(cat => 
+      video.category?.toLowerCase().includes(cat) || 
+      video.subcategory?.toLowerCase().includes(cat)
+    );
+    return isLongDuration || isLongFormCategory;
   });
 
   const handleUploadClick = () => {
