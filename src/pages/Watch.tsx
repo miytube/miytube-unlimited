@@ -231,42 +231,37 @@ const Watch = () => {
           </div>
 
           {/* Right Sidebar */}
-          <div className="w-80 hidden lg:block space-y-6">
-            {/* Regular Videos */}
+          <div className="w-80 hidden lg:block space-y-4">
+            <h3 className="text-sm font-semibold">Up Next</h3>
+            
+            {/* First Video */}
             {regularVideos.length > 0 && (
-              <div>
-                <h3 className="text-sm font-semibold mb-3">Up Next</h3>
-                <div className="space-y-2">
-                  {regularVideos.slice(0, 8).map((vid) => (
-                    <Link 
-                      key={vid.id} 
-                      to={`/watch?v=${vid.id}`}
-                      className="flex gap-2 group hover:bg-muted/50 rounded-lg p-1 transition-colors"
-                    >
-                      <div className="relative w-40 h-24 flex-shrink-0 rounded overflow-hidden bg-muted">
-                        <img 
-                          src={vid.thumbnail} 
-                          alt={vid.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <span className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
-                          {vid.duration}
-                        </span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium line-clamp-2 group-hover:text-primary">
-                          {vid.title}
-                        </h4>
-                        <p className="text-xs text-muted-foreground mt-1">Your Channel</p>
-                        <p className="text-xs text-muted-foreground">{vid.views} views</p>
-                      </div>
-                    </Link>
-                  ))}
+              <Link 
+                key={regularVideos[0].id} 
+                to={`/watch?v=${regularVideos[0].id}`}
+                className="flex gap-2 group hover:bg-muted/50 rounded-lg p-1 transition-colors"
+              >
+                <div className="relative w-40 h-24 flex-shrink-0 rounded overflow-hidden bg-muted">
+                  <img 
+                    src={regularVideos[0].thumbnail} 
+                    alt={regularVideos[0].title}
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
+                    {regularVideos[0].duration}
+                  </span>
                 </div>
-              </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-sm font-medium line-clamp-2 group-hover:text-primary">
+                    {regularVideos[0].title}
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-1">Your Channel</p>
+                  <p className="text-xs text-muted-foreground">{regularVideos[0].views} views</p>
+                </div>
+              </Link>
             )}
 
-            {/* Shorts Section */}
+            {/* Shorts Section - Right after first video */}
             {shortVideos.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
@@ -289,6 +284,37 @@ const Watch = () => {
                     </Link>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* Remaining Videos */}
+            {regularVideos.length > 1 && (
+              <div className="space-y-2">
+                {regularVideos.slice(1, 8).map((vid) => (
+                  <Link 
+                    key={vid.id} 
+                    to={`/watch?v=${vid.id}`}
+                    className="flex gap-2 group hover:bg-muted/50 rounded-lg p-1 transition-colors"
+                  >
+                    <div className="relative w-40 h-24 flex-shrink-0 rounded overflow-hidden bg-muted">
+                      <img 
+                        src={vid.thumbnail} 
+                        alt={vid.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
+                        {vid.duration}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-medium line-clamp-2 group-hover:text-primary">
+                        {vid.title}
+                      </h4>
+                      <p className="text-xs text-muted-foreground mt-1">Your Channel</p>
+                      <p className="text-xs text-muted-foreground">{vid.views} views</p>
+                    </div>
+                  </Link>
+                ))}
               </div>
             )}
 
