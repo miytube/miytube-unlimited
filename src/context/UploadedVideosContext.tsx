@@ -46,7 +46,8 @@ interface UploadedVideosContextType {
     description: string, 
     category?: string, 
     subcategory?: string,
-    tags?: string[]
+    tags?: string[],
+    importUrl?: string
   ) => Promise<void>;
   updateUploadedVideo: (
     id: string,
@@ -268,8 +269,60 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     description: string, 
     category?: string, 
     subcategory?: string,
-    tags: string[] = []
+    tags: string[] = [],
+    importUrl?: string
   ): Promise<void> => {
+    // If URL is provided, skip file upload and use URL directly
+    if (importUrl) {
+      console.log(`Importing video from URL: ${importUrl}`);
+      
+      const videoId = `upload-${Date.now()}`;
+      const newVideo: UploadedVideo = {
+        id: videoId,
+        file: null,
+        fileDataUrl: '',
+        cloudUrl: importUrl,
+        isCloudStored: true,
+        title: title || 'Imported Video',
+        description: description || '',
+        thumbnail: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
+        timestamp: 'Just now',
+        views: '0',
+        duration: '0:00',
+        category,
+        subcategory,
+        tags,
+      };
+      
+      // Save metadata to IndexedDB
+      try {
+        await saveVideoToDB({
+          id: videoId,
+          fileDataUrl: '',
+          cloudUrl: importUrl,
+          isCloudStored: true,
+          fileName: title || 'imported-video',
+          fileType: 'video/mp4',
+          title: newVideo.title,
+          description: newVideo.description,
+          thumbnail: newVideo.thumbnail,
+          timestamp: newVideo.timestamp,
+          views: newVideo.views,
+          duration: newVideo.duration,
+          category,
+          subcategory,
+          tags,
+        });
+        console.log("Saved URL import to IndexedDB:", videoId);
+      } catch (error) {
+        console.error("Error saving URL import to IndexedDB:", error);
+        throw new Error("Failed to save imported video.");
+      }
+      
+      setUploadedVideos(prev => [newVideo, ...prev]);
+      return;
+    }
+
     const useCloud = shouldUseCloudStorage(file);
     const fileSizeMB = (file.size / (1024 * 1024)).toFixed(0);
     

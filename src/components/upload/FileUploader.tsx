@@ -1,9 +1,10 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { useVideoMetadata } from '@/hooks/useVideoMetadata';
 import { FileInputSection } from './FileInputSection';
 import { MetadataFormSection } from './MetadataFormSection';
+import { UrlImportSection } from './UrlImportSection';
 import { triggerFileInputChangeEvent } from '@/utils/fileUploadUtils';
 
 interface FileUploaderProps {
@@ -14,9 +15,11 @@ interface FileUploaderProps {
   supportedFormats: string[];
   maxSize?: string;
   onUpload?: (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => void;
+  onUrlImport?: (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => void;
   id?: string;
   uploadDestination?: string;
   categories?: Array<{id: string, name: string, subcategories?: Array<{id: string, name: string}>}>;
+  showUrlImport?: boolean;
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({
@@ -27,10 +30,14 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   supportedFormats,
   maxSize = "50MB",
   onUpload,
+  onUrlImport,
   id,
   uploadDestination,
-  categories = []
+  categories = [],
+  showUrlImport = true
 }) => {
+  const [importedUrl, setImportedUrl] = useState<string | null>(null);
+  
   const {
     videoTitle,
     setVideoTitle,
@@ -73,6 +80,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
+    setImportedUrl(null); // Clear URL if user drops a file
     
     if (e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];
@@ -85,6 +93,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   };
   
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImportedUrl(null); // Clear URL if user selects a file
+    
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       setMetadataFromFile(file);
@@ -99,7 +109,49 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     triggerFileInputChangeEvent(fileInputRef, files);
   };
 
+  const handleUrlImport = (url: string) => {
+    setImportedUrl(url);
+    // Extract title from URL if no title set
+    if (!videoTitle) {
+      try {
+        const urlObj = new URL(url);
+        const pathParts = urlObj.pathname.split('/');
+        const filename = pathParts[pathParts.length - 1];
+        if (filename) {
+          const nameWithoutExt = filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+          setVideoTitle(decodeURIComponent(nameWithoutExt));
+        }
+      } catch {
+        // Ignore URL parsing errors
+      }
+    }
+  };
+
   const handleUploadClick = () => {
+    // Handle URL import
+    if (importedUrl && onUrlImport) {
+      console.log("Importing from URL:", {
+        url: importedUrl,
+        title: videoTitle,
+        description: videoDescription,
+        category: selectedCategory,
+        subcategory: selectedSubcategory,
+        tags: tags
+      });
+      
+      onUrlImport(
+        importedUrl,
+        videoTitle,
+        videoDescription,
+        selectedCategory,
+        selectedSubcategory,
+        tags
+      );
+      setImportedUrl(null);
+      return;
+    }
+    
+    // Handle file upload
     if (uploadedFiles.length > 0 && onUpload) {
       console.log("Uploading files with metadata:", {
         files: uploadedFiles,
@@ -120,6 +172,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       );
     }
   };
+
+  const hasContent = uploadedFiles.length > 0 || importedUrl;
 
   return (
     <div className="bg-card p-6 rounded-lg shadow-md mb-8 w-full max-w-3xl mx-auto">
@@ -144,8 +198,22 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         id={id}
       />
       
+      {showUrlImport && (
+        <UrlImportSection
+          onUrlImport={handleUrlImport}
+          disabled={uploading}
+        />
+      )}
+      
+      {importedUrl && (
+        <div className="mt-4 p-3 bg-muted rounded-lg">
+          <p className="text-sm font-medium text-foreground">URL Ready to Import:</p>
+          <p className="text-xs text-muted-foreground truncate">{importedUrl}</p>
+        </div>
+      )}
+      
       <MetadataFormSection
-        uploadedFiles={uploadedFiles}
+        uploadedFiles={hasContent ? (uploadedFiles.length > 0 ? uploadedFiles : [new File([], 'url-import')]) : []}
         uploadError={uploadError}
         uploadDestination={uploadDestination}
         uploading={uploading}
