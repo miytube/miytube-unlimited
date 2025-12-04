@@ -103,9 +103,14 @@ const Advertising = () => {
                 MiyTube fully supports Google AdSense integration, allowing content creators to monetize their videos through targeted advertising. 
                 Connect your AdSense account to start earning revenue from your content.
               </p>
-              <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+              <a 
+                href="https://www.google.com/adsense/start/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
+              >
                 Connect AdSense Account
-              </button>
+              </a>
             </div>
             
             <div className="bg-card p-6 rounded-lg shadow-md">
@@ -114,9 +119,14 @@ const Advertising = () => {
                 MiyTube now supports Microsoft Advertising and Bing Ads integration. Leverage Microsoft's ad platform to monetize your content and
                 reach a wider audience through the Microsoft Search Network.
               </p>
-              <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+              <a 
+                href="https://ads.microsoft.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
+              >
                 Connect Microsoft Ads Account
-              </button>
+              </a>
             </div>
           </div>
         </div>
