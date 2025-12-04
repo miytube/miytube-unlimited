@@ -31,10 +31,20 @@ export const useUploadHandler = () => {
     // Store uploads in context - save ALL video/audio content types
     const videoContentTypes = ['video', 'shorts', 'music', 'comedy', 'news', 'podcast', 'audiobook', 'asmr', 'meditation', 'nature-sounds', 'sound-effects'];
     if (videoContentTypes.includes(contentTypeId) || contentTypeId.includes('video') || files.some(f => f.type.startsWith('video/') || f.type.startsWith('audio/'))) {
-      for (const file of files) {
-        // Use category from form, or fall back to contentTypeId
-        const uploadCategory = category || contentTypeId;
-        await addUploadedVideo(file, title || file.name, description || '', uploadCategory, subcategory, tags);
+      try {
+        for (const file of files) {
+          // Use category from form, or fall back to contentTypeId
+          const uploadCategory = category || contentTypeId;
+          await addUploadedVideo(file, title || file.name, description || '', uploadCategory, subcategory, tags);
+        }
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+        toast({
+          title: "Upload failed",
+          description: errorMessage,
+          variant: "destructive",
+        });
+        return; // Don't continue with success flow
       }
     }
     
