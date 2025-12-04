@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { shouldUseCloudStorage, uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
+import { useUploadProgress } from './UploadProgressContext';
 
 export interface UploadedVideo {
   id: string;
@@ -161,6 +162,7 @@ const dataUrlToFile = (dataUrl: string, fileName: string, fileType: string): Fil
 export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ children }) => {
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { startUpload, completeUpload, failUpload } = useUploadProgress();
 
   // Load videos from IndexedDB on mount
   useEffect(() => {
@@ -283,11 +285,18 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     
     if (useCloud) {
       // Upload to Supabase Storage for large files
+      const fileSizeMB = Math.round(file.size / (1024 * 1024));
+      const estimatedMinutes = Math.ceil(fileSizeMB / 10); // ~10MB/s estimate
+      
+      startUpload(file.name, fileSizeMB, estimatedMinutes);
+      
       try {
         cloudUrl = await uploadVideoToCloud(file);
         console.log("Uploaded to cloud storage:", cloudUrl);
+        completeUpload();
       } catch (error) {
         console.error("Cloud upload error:", error);
+        failUpload(error instanceof Error ? error.message : 'Unknown error');
         throw new Error(`Failed to upload large video: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else {

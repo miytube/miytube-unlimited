@@ -6,6 +6,7 @@ import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { LogoPlaceholder } from './LogoPlaceholder';
+import { UploadProgressIndicator } from './upload/UploadProgressIndicator';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -40,6 +41,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Footer />
         </div>
       </div>
+      
+      {/* Upload progress indicator - fixed position */}
+      <UploadProgressIndicator />
     </div>
   );
 };
