@@ -260,12 +260,28 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     category?: string, 
     subcategory?: string,
     tags: string[] = []
-  ) => {
-    const [thumbnail, duration, fileDataUrl] = await Promise.all([
+  ): Promise<void> => {
+    // Check file size - browser storage has limits (~500MB practical limit)
+    const MAX_BROWSER_STORAGE_SIZE = 500 * 1024 * 1024; // 500MB
+    if (file.size > MAX_BROWSER_STORAGE_SIZE) {
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(0);
+      console.error(`File too large for browser storage: ${fileSizeMB}MB. Maximum is 500MB.`);
+      throw new Error(`File is too large (${fileSizeMB}MB). Browser storage limit is 500MB. Please use a smaller file or consider cloud storage for large videos.`);
+    }
+
+    const [thumbnail, duration] = await Promise.all([
       generateThumbnail(file),
       getVideoDuration(file),
-      fileToDataUrl(file)
     ]);
+    
+    // Convert file to data URL for storage
+    let fileDataUrl: string;
+    try {
+      fileDataUrl = await fileToDataUrl(file);
+    } catch (error) {
+      console.error("Error converting file to data URL:", error);
+      throw new Error("Failed to process video file. The file may be too large.");
+    }
     
     const videoId = `upload-${Date.now()}`;
     const newVideo: UploadedVideo = {
@@ -303,6 +319,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       console.log("Saved video to IndexedDB:", videoId);
     } catch (error) {
       console.error("Error saving video to IndexedDB:", error);
+      throw new Error("Failed to save video. Browser storage may be full or the file is too large.");
     }
     
     console.log("Adding new video:", videoId, newVideo.title, "category:", category);
