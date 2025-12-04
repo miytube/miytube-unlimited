@@ -1,10 +1,13 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { shouldUseCloudStorage, uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
 
 export interface UploadedVideo {
   id: string;
   file: File | null;
   fileDataUrl?: string;
+  cloudUrl?: string; // URL for cloud-stored videos
+  isCloudStored?: boolean;
   title: string;
   description: string;
   thumbnail: string;
@@ -19,6 +22,8 @@ export interface UploadedVideo {
 interface StoredVideo {
   id: string;
   fileDataUrl: string;
+  cloudUrl?: string;
+  isCloudStored?: boolean;
   fileName: string;
   fileType: string;
   title: string;
@@ -167,8 +172,10 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         const storedVideos = await getAllVideosFromDB();
         const videos: UploadedVideo[] = storedVideos.map(sv => ({
           id: sv.id,
-          file: dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType),
+          file: sv.isCloudStored ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
           fileDataUrl: sv.fileDataUrl,
+          cloudUrl: sv.cloudUrl,
+          isCloudStored: sv.isCloudStored,
           title: sv.title,
           description: sv.description,
           thumbnail: sv.thumbnail,
@@ -180,7 +187,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           tags: sv.tags || [],
         }));
         setUploadedVideos(videos);
-        console.log('Loaded videos from IndexedDB:', videos.length);
+        console.log('Loaded videos from IndexedDB:', videos.length, 'cloud:', videos.filter(v => v.isCloudStored).length);
       } catch (error) {
         console.error('Error loading videos from IndexedDB:', error);
       }
@@ -261,33 +268,45 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     subcategory?: string,
     tags: string[] = []
   ): Promise<void> => {
-    // Check file size - browser storage has limits (~500MB practical limit)
-    const MAX_BROWSER_STORAGE_SIZE = 500 * 1024 * 1024; // 500MB
-    if (file.size > MAX_BROWSER_STORAGE_SIZE) {
-      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(0);
-      console.error(`File too large for browser storage: ${fileSizeMB}MB. Maximum is 500MB.`);
-      throw new Error(`File is too large (${fileSizeMB}MB). Browser storage limit is 500MB. Please use a smaller file or consider cloud storage for large videos.`);
-    }
+    const useCloud = shouldUseCloudStorage(file);
+    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(0);
+    
+    console.log(`Uploading video: ${file.name} (${fileSizeMB}MB) - ${useCloud ? 'Cloud storage' : 'Browser storage'}`);
 
     const [thumbnail, duration] = await Promise.all([
       generateThumbnail(file),
       getVideoDuration(file),
     ]);
     
-    // Convert file to data URL for storage
-    let fileDataUrl: string;
-    try {
-      fileDataUrl = await fileToDataUrl(file);
-    } catch (error) {
-      console.error("Error converting file to data URL:", error);
-      throw new Error("Failed to process video file. The file may be too large.");
+    let fileDataUrl = '';
+    let cloudUrl = '';
+    
+    if (useCloud) {
+      // Upload to Supabase Storage for large files
+      try {
+        cloudUrl = await uploadVideoToCloud(file);
+        console.log("Uploaded to cloud storage:", cloudUrl);
+      } catch (error) {
+        console.error("Cloud upload error:", error);
+        throw new Error(`Failed to upload large video: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+    } else {
+      // Convert file to data URL for browser storage
+      try {
+        fileDataUrl = await fileToDataUrl(file);
+      } catch (error) {
+        console.error("Error converting file to data URL:", error);
+        throw new Error("Failed to process video file. The file may be too large.");
+      }
     }
     
     const videoId = `upload-${Date.now()}`;
     const newVideo: UploadedVideo = {
       id: videoId,
-      file: file,
-      fileDataUrl,
+      file: useCloud ? null : file,
+      fileDataUrl: useCloud ? '' : fileDataUrl,
+      cloudUrl: useCloud ? cloudUrl : undefined,
+      isCloudStored: useCloud,
       title: title || file.name,
       description: description || '',
       thumbnail,
@@ -299,11 +318,13 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
     };
     
-    // Save to IndexedDB
+    // Save metadata to IndexedDB (cloud videos just store URL, not file data)
     try {
       await saveVideoToDB({
         id: videoId,
-        fileDataUrl,
+        fileDataUrl: useCloud ? '' : fileDataUrl,
+        cloudUrl: useCloud ? cloudUrl : undefined,
+        isCloudStored: useCloud,
         fileName: file.name,
         fileType: file.type,
         title: newVideo.title,
@@ -316,13 +337,17 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         subcategory,
         tags,
       });
-      console.log("Saved video to IndexedDB:", videoId);
+      console.log("Saved video metadata to IndexedDB:", videoId);
     } catch (error) {
       console.error("Error saving video to IndexedDB:", error);
-      throw new Error("Failed to save video. Browser storage may be full or the file is too large.");
+      // If cloud upload succeeded but IndexedDB failed, try to clean up
+      if (useCloud && cloudUrl) {
+        await deleteVideoFromCloud(cloudUrl).catch(() => {});
+      }
+      throw new Error("Failed to save video metadata.");
     }
     
-    console.log("Adding new video:", videoId, newVideo.title, "category:", category);
+    console.log("Adding new video:", videoId, newVideo.title, "category:", category, useCloud ? "(cloud)" : "(local)");
     setUploadedVideos(prev => [newVideo, ...prev]);
   };
 
@@ -341,6 +366,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         saveVideoToDB({
           id: videoToUpdate.id,
           fileDataUrl: videoToUpdate.fileDataUrl || '',
+          cloudUrl: videoToUpdate.cloudUrl,
+          isCloudStored: videoToUpdate.isCloudStored,
           fileName: videoToUpdate.file?.name || 'video',
           fileType: videoToUpdate.file?.type || 'video/mp4',
           title: videoToUpdate.title,
@@ -361,13 +388,22 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
 
   const deleteUploadedVideo = async (id: string) => {
+    // Find video to check if it's cloud stored
+    const videoToDelete = uploadedVideos.find(v => v.id === id);
+    
     setUploadedVideos(prev => prev.filter(video => video.id !== id));
     
     try {
+      // Delete from cloud storage if applicable
+      if (videoToDelete?.isCloudStored && videoToDelete?.cloudUrl) {
+        await deleteVideoFromCloud(videoToDelete.cloudUrl);
+        console.log("Deleted video from cloud storage:", id);
+      }
+      
       await deleteVideoFromDB(id);
       console.log("Deleted video from IndexedDB:", id);
     } catch (error) {
-      console.error("Error deleting video from IndexedDB:", error);
+      console.error("Error deleting video:", error);
     }
   };
 
