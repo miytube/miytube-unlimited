@@ -9,6 +9,8 @@ export interface UploadedVideo {
   fileDataUrl?: string;
   cloudUrl?: string; // URL for cloud-stored videos
   isCloudStored?: boolean;
+  isYouTubeEmbed?: boolean; // Flag for YouTube embedded videos
+  youtubeId?: string; // YouTube video ID for embeds
   title: string;
   description: string;
   thumbnail: string;
@@ -25,6 +27,8 @@ interface StoredVideo {
   fileDataUrl: string;
   cloudUrl?: string;
   isCloudStored?: boolean;
+  isYouTubeEmbed?: boolean;
+  youtubeId?: string;
   fileName: string;
   fileType: string;
   title: string;
@@ -47,7 +51,9 @@ interface UploadedVideosContextType {
     category?: string, 
     subcategory?: string,
     tags?: string[],
-    importUrl?: string
+    importUrl?: string,
+    isYouTube?: boolean,
+    youtubeId?: string
   ) => Promise<void>;
   updateUploadedVideo: (
     id: string,
@@ -175,10 +181,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         const storedVideos = await getAllVideosFromDB();
         const videos: UploadedVideo[] = storedVideos.map(sv => ({
           id: sv.id,
-          file: sv.isCloudStored ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
+          file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
           fileDataUrl: sv.fileDataUrl,
           cloudUrl: sv.cloudUrl,
           isCloudStored: sv.isCloudStored,
+          isYouTubeEmbed: sv.isYouTubeEmbed,
+          youtubeId: sv.youtubeId,
           title: sv.title,
           description: sv.description,
           thumbnail: sv.thumbnail,
@@ -190,7 +198,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           tags: sv.tags || [],
         }));
         setUploadedVideos(videos);
-        console.log('Loaded videos from IndexedDB:', videos.length, 'cloud:', videos.filter(v => v.isCloudStored).length);
+        console.log('Loaded videos from IndexedDB:', videos.length, 'cloud:', videos.filter(v => v.isCloudStored).length, 'youtube:', videos.filter(v => v.isYouTubeEmbed).length);
       } catch (error) {
         console.error('Error loading videos from IndexedDB:', error);
       }
@@ -270,9 +278,68 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     category?: string, 
     subcategory?: string,
     tags: string[] = [],
-    importUrl?: string
+    importUrl?: string,
+    isYouTube?: boolean,
+    youtubeId?: string
   ): Promise<void> => {
-    // If URL is provided, skip file upload and use URL directly
+    // Handle YouTube embed
+    if (isYouTube && youtubeId) {
+      console.log(`Adding YouTube embed: ${youtubeId}`);
+      
+      const videoId = `upload-${Date.now()}`;
+      const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+      
+      const newVideo: UploadedVideo = {
+        id: videoId,
+        file: null,
+        fileDataUrl: '',
+        cloudUrl: importUrl || `https://www.youtube.com/watch?v=${youtubeId}`,
+        isCloudStored: false,
+        isYouTubeEmbed: true,
+        youtubeId: youtubeId,
+        title: title || 'YouTube Video',
+        description: description || '',
+        thumbnail: youtubeThumbnail,
+        timestamp: 'Just now',
+        views: '0',
+        duration: '0:00',
+        category,
+        subcategory,
+        tags,
+      };
+      
+      // Save metadata to IndexedDB
+      try {
+        await saveVideoToDB({
+          id: videoId,
+          fileDataUrl: '',
+          cloudUrl: newVideo.cloudUrl,
+          isCloudStored: false,
+          isYouTubeEmbed: true,
+          youtubeId: youtubeId,
+          fileName: title || 'youtube-video',
+          fileType: 'video/youtube',
+          title: newVideo.title,
+          description: newVideo.description,
+          thumbnail: youtubeThumbnail,
+          timestamp: newVideo.timestamp,
+          views: newVideo.views,
+          duration: newVideo.duration,
+          category,
+          subcategory,
+          tags,
+        });
+        console.log("Saved YouTube embed to IndexedDB:", videoId);
+      } catch (error) {
+        console.error("Error saving YouTube embed to IndexedDB:", error);
+        throw new Error("Failed to save YouTube video.");
+      }
+      
+      setUploadedVideos(prev => [newVideo, ...prev]);
+      return;
+    }
+    
+    // If URL is provided (non-YouTube), skip file upload and use URL directly
     if (importUrl) {
       console.log(`Importing video from URL: ${importUrl}`);
       
