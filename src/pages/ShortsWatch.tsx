@@ -47,7 +47,10 @@ const ShortsWatch = () => {
     if (videoRef.current) {
       let url: string | null = null;
       
-      if (video?.file) {
+      // Handle cloud-stored videos
+      if (video?.isCloudStored && video?.cloudUrl) {
+        videoRef.current.src = video.cloudUrl;
+      } else if (video?.file) {
         url = URL.createObjectURL(video.file);
         videoRef.current.src = url;
       } else if (video?.fileDataUrl) {

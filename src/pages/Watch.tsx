@@ -94,6 +94,11 @@ const Watch = () => {
         console.log("Found uploaded video:", uploadedVideo);
         
         if (uploadedVideo) {
+          // For cloud-stored videos, use cloudUrl; for local videos, use file or fileDataUrl
+          const videoSource = uploadedVideo.isCloudStored 
+            ? uploadedVideo.cloudUrl 
+            : (uploadedVideo.file || uploadedVideo.fileDataUrl);
+          
           setVideo({
             id: uploadedVideo.id,
             title: uploadedVideo.title,
@@ -104,7 +109,7 @@ const Watch = () => {
             timestamp: 'Just now',
             likes: '0',
             subscribers: '0',
-            file: uploadedVideo.file,
+            file: videoSource,
             tags: uploadedVideo.tags || [],
             category: uploadedVideo.category,
             subcategory: uploadedVideo.subcategory
