@@ -15,7 +15,11 @@ export const uploadVideoToCloud = async (
   const filePath = `uploads/${fileName}`;
   
   const fileSizeMB = (file.size / (1024 * 1024)).toFixed(0);
-  console.log(`Starting cloud upload: ${file.name} (${fileSizeMB}MB) to path: ${filePath}`);
+  const fileSizeGB = (file.size / (1024 * 1024 * 1024)).toFixed(2);
+  const estimatedMinutes = Math.ceil(file.size / (1024 * 1024) / 10); // Rough estimate at 10MB/s
+  
+  console.log(`Starting cloud upload: ${file.name} (${fileSizeMB}MB / ${fileSizeGB}GB) to path: ${filePath}`);
+  console.log(`Estimated upload time: ${estimatedMinutes} minutes (depends on your connection speed)`);
 
   try {
     const { data, error } = await supabase.storage
@@ -30,7 +34,18 @@ export const uploadVideoToCloud = async (
         message: error.message,
         name: error.name,
         statusCode: (error as any).statusCode,
+        cause: (error as any).cause,
       });
+      
+      // Provide more specific error messages
+      if (error.message.includes('Payload too large')) {
+        throw new Error('File too large for upload. Maximum size is 10GB.');
+      } else if (error.message.includes('timeout') || error.message.includes('Timeout')) {
+        throw new Error('Upload timed out. Please try again with a stable internet connection.');
+      } else if (error.message.includes('network') || error.message.includes('Network')) {
+        throw new Error('Network error during upload. Please check your connection and try again.');
+      }
+      
       throw new Error(`Failed to upload video: ${error.message}`);
     }
 
@@ -45,6 +60,12 @@ export const uploadVideoToCloud = async (
     return urlData.publicUrl;
   } catch (err) {
     console.error('Cloud upload exception:', err);
+    
+    // Check for specific browser/network errors
+    if (err instanceof TypeError && err.message.includes('fetch')) {
+      throw new Error('Network connection lost during upload. Please try again.');
+    }
+    
     throw err instanceof Error ? err : new Error('Unknown upload error occurred');
   }
 };
