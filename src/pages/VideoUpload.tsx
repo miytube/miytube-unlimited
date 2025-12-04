@@ -89,6 +89,47 @@ const VideoUpload = () => {
     }, 2000);
   };
 
+  const handleUrlImport = async (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
+    console.log("URL import initiated:", url, "Title:", title, "Description:", description, "Category:", category);
+    
+    toast({
+      title: "Importing video from URL",
+      description: "Processing your video link...",
+    });
+    
+    try {
+      // Add video with URL directly to context
+      await addUploadedVideo(
+        new File([], title || 'Imported Video', { type: 'video/mp4' }), // Placeholder file
+        title || 'Imported Video',
+        description || '',
+        category,
+        subcategory,
+        tags,
+        url // Pass URL for direct storage
+      );
+      
+      toast({
+        title: "Import complete",
+        description: "Your video has been added and is now available.",
+        action: (
+          <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
+            View Home
+          </ToastAction>
+        )
+      });
+      
+      navigate('/');
+    } catch (error) {
+      console.error("URL import error:", error);
+      toast({
+        title: "Import failed",
+        description: error instanceof Error ? error.message : "Failed to import video from URL",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full">
@@ -144,14 +185,16 @@ const VideoUpload = () => {
         <FileUploader
           icon={Film}
           title="Quick Upload"
-          description="Upload your video directly. Add a title, description, and choose a category to organize your content."
+          description="Upload your video directly or import from a URL. Add a title, description, and choose a category to organize your content."
           acceptedTypes="video/*"
           supportedFormats={['MP4', 'MOV', 'WebM', 'AVI', 'FLV', 'MKV']}
           maxSize="128GB"
           onUpload={handleUpload}
+          onUrlImport={handleUrlImport}
           id="quick-upload-input"
           uploadDestination="Your Videos on Home Page and Selected Category"
           categories={videoCategories}
+          showUrlImport={true}
         />
         
         <div className="bg-card p-6 rounded-lg shadow-md mt-8">
