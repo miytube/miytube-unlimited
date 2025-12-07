@@ -52,7 +52,7 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">{title} Videos</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {categoryVideos.slice(0, 20).map((video) => (
+              {[...categoryVideos].reverse().slice(0, 20).map((video) => (
                 <VideoCard 
                   key={video.id} 
                   id={video.id}
@@ -62,6 +62,10 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
                   views={video.views}
                   timestamp={video.timestamp}
                   duration={video.duration}
+                  description={video.description}
+                  category={video.category}
+                  subcategory={video.subcategory}
+                  tags={video.tags}
                 />
               ))}
             </div>

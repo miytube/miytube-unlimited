@@ -62,11 +62,11 @@ const Shorts = () => {
     }
   };
   
-  // Get uploaded shorts only (no mock data)
+  // Get ALL uploaded shorts - use flexible matching
   const uploadedShorts = getVideosByCategory('shorts');
   
-  // Format uploaded shorts for ShortCard
-  const allShorts = uploadedShorts.map(video => ({
+  // Format uploaded shorts for ShortCard - newest first, 20 per page
+  const allShorts = [...uploadedShorts].reverse().slice(0, 20).map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,

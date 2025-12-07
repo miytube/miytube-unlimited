@@ -8,20 +8,27 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Videos = () => {
   const { category } = useParams();
-  const { uploadedVideos } = useUploadedVideos();
+  const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
   
-  // Separate regular videos and shorts
-  const regularVideos = uploadedVideos.filter(video => video.category !== 'shorts');
-  const shortVideos = uploadedVideos.filter(video => video.category === 'shorts');
+  // ALL videos go to video library (except shorts which have their own section)
+  const allRegularVideos = uploadedVideos.filter(video => 
+    video.category?.toLowerCase() !== 'shorts'
+  );
   
-  // Filter by category if specified
+  // Shorts for the shorts section
+  const allShortVideos = getVideosByCategory('shorts');
+  
+  // Filter by category if a specific category is selected in URL
   const displayedRegularVideos = category 
-    ? regularVideos.filter(v => v.category === category)
-    : regularVideos;
+    ? getVideosByCategory(category).filter(v => v.category?.toLowerCase() !== 'shorts')
+    : allRegularVideos;
     
   const displayedShortVideos = category
-    ? shortVideos.filter(v => v.subcategory === category)
-    : shortVideos;
+    ? allShortVideos.filter(v => 
+        v.subcategory?.toLowerCase() === category.toLowerCase() ||
+        v.tags?.some(t => t.toLowerCase() === category.toLowerCase())
+      )
+    : allShortVideos;
   
   const videoCategories = [
     { id: 'trending', name: 'Trending', icon: <Tv size={24} /> },
@@ -32,9 +39,17 @@ const Videos = () => {
     { id: 'howto', name: 'How-to', icon: <ListVideo size={24} /> },
   ];
 
+  // Newest first, 20 per page
+  const videosToShow = [...displayedRegularVideos].reverse().slice(0, 20);
+  const shortsToShow = [...displayedShortVideos].reverse().slice(0, 20);
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
+        <p className="text-sm text-muted-foreground mb-2">
+          <span className="font-semibold text-primary">MiyTube</span> / {category ? `Videos / ${category.charAt(0).toUpperCase() + category.slice(1)}` : 'Video Library'}
+        </p>
+        
         <div className="flex items-center gap-3 mb-8">
           <Film className="h-8 w-8 text-primary" />
           <h1 className="text-3xl font-bold">
@@ -45,7 +60,7 @@ const Videos = () => {
               ? `Browse our collection of ${category.toLowerCase()} videos` 
               : 'Discover and enjoy a wide variety of videos in our library'}
           </p>
-          <Link to="/upload/video" className="ml-auto flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+          <Link to="/upload/video" className="ml-auto flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
             <Upload size={18} />
             <span>Upload Video</span>
           </Link>
@@ -71,14 +86,14 @@ const Videos = () => {
           </div>
         )}
         
-        {/* Regular Videos Section */}
+        {/* Regular Videos Section - 4 columns, 20 per page */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">
-            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Videos` : 'Regular Videos'}
+            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Videos` : 'All Videos'}
           </h2>
-          {displayedRegularVideos.length > 0 ? (
+          {videosToShow.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {displayedRegularVideos.slice(0, 20).map((video) => (
+              {videosToShow.map((video) => (
                 <VideoCard
                   key={video.id}
                   id={video.id}
@@ -98,9 +113,9 @@ const Videos = () => {
           ) : (
             <div className="p-6 bg-muted/20 rounded-lg text-center">
               <p className="text-muted-foreground mb-4">
-                No regular videos uploaded yet. Be the first to upload!
+                No videos uploaded yet. Be the first to upload!
               </p>
-              <Link to="/upload/video" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+              <Link to="/upload/video" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
                 <Upload size={18} />
                 <span>Upload Video</span>
               </Link>
@@ -108,7 +123,7 @@ const Videos = () => {
           )}
         </div>
         
-        {/* Shorts Section */}
+        {/* Shorts Section - 4 columns */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-medium">Shorts</h2>
@@ -116,9 +131,9 @@ const Videos = () => {
               View all
             </Link>
           </div>
-          {displayedShortVideos.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {displayedShortVideos.slice(0, 10).map((video) => (
+          {shortsToShow.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {shortsToShow.slice(0, 8).map((video) => (
                 <ShortCard
                   key={video.id}
                   id={video.id}
@@ -138,7 +153,7 @@ const Videos = () => {
               <p className="text-muted-foreground mb-4">
                 No shorts uploaded yet. Upload your first short video!
               </p>
-              <Link to="/upload/video" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+              <Link to="/shorts" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
                 <Upload size={18} />
                 <span>Upload Short</span>
               </Link>
