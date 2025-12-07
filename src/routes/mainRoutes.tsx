@@ -23,6 +23,8 @@ import NewsAndPolitics from "@/pages/NewsAndPolitics";
 import TalkAtCha from "@/pages/TalkAtCha";
 import Educational from "@/pages/Educational";
 import Channel from "@/pages/Channel";
+import Auth from "@/pages/Auth";
+import Admin from "@/pages/Admin";
 
 // New pages to fix 404s
 import HowToStyle from "@/pages/HowToStyle";
@@ -67,6 +69,8 @@ export const mainRoutes = [
   <Route key="educational" path="/educational" element={<Educational />} />,
   <Route key="channel" path="/channel" element={<Channel />} />,
   <Route key="channel-id" path="/channel/:id" element={<Channel />} />,
+  <Route key="auth" path="/auth" element={<Auth />} />,
+  <Route key="admin" path="/admin" element={<Admin />} />,
   
   // New routes to fix 404s
   <Route key="how-to-style" path="/how-to-style" element={<HowToStyle />} />,
