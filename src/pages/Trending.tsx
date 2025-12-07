@@ -38,8 +38,8 @@ const Trending: React.FC = () => {
   const { uploadedVideos, addUploadedVideo, getVideosByCategory } = useUploadedVideos();
   const { toast } = useToast();
 
-  // Get uploaded videos by category
-  const trendingVideos = uploadedVideos.filter(v => v.category !== 'shorts').map(video => ({
+  // ALL uploaded videos appear on trending page (newest first) - including shorts
+  const trendingVideos = uploadedVideos.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,

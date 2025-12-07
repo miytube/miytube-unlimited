@@ -10,23 +10,21 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 const Index = () => {
   const { uploadedVideos } = useUploadedVideos();
 
-  // ALL uploaded videos appear on home page (newest first), shorts included in shorts section
+  // ALL uploaded videos appear on home page (newest first) - including shorts
   const allVideos = useMemo(() => {
-    return uploadedVideos
-      .filter(video => video.category?.toLowerCase() !== 'shorts')
-      .map(video => ({
-        id: video.id,
-        title: video.title,
-        thumbnail: video.thumbnail,
-        channelName: 'Your Channel',
-        views: video.views,
-        timestamp: video.timestamp,
-        duration: video.duration,
-        description: video.description,
-        category: video.category,
-        subcategory: video.subcategory,
-        tags: video.tags,
-      }));
+    return uploadedVideos.map(video => ({
+      id: video.id,
+      title: video.title,
+      thumbnail: video.thumbnail,
+      channelName: 'Your Channel',
+      views: video.views,
+      timestamp: video.timestamp,
+      duration: video.duration,
+      description: video.description,
+      category: video.category,
+      subcategory: video.subcategory,
+      tags: video.tags,
+    }));
   }, [uploadedVideos]);
 
   // All uploaded videos appear first on home page (newest first) - 20 per page
