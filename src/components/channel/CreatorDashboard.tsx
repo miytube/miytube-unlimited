@@ -1,9 +1,10 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { UploadCloud, TrendingUp, Users, Clock, Settings } from 'lucide-react';
+import { UploadCloud, TrendingUp, Users, Settings } from 'lucide-react';
 
 export const CreatorDashboard: React.FC = () => {
   return (
@@ -14,9 +15,11 @@ export const CreatorDashboard: React.FC = () => {
           <p className="text-muted-foreground">Manage your content and channel</p>
         </div>
         
-        <Button className="gap-2">
-          <UploadCloud size={16} />
-          Upload New Content
+        <Button className="gap-2" asChild>
+          <Link to="/upload">
+            <UploadCloud size={16} />
+            Upload New Content
+          </Link>
         </Button>
       </div>
       
@@ -74,9 +77,11 @@ export const CreatorDashboard: React.FC = () => {
               <p className="text-muted-foreground text-center max-w-md mb-6">
                 Start uploading videos, music, podcasts, or other content to grow your channel.
               </p>
-              <Button className="gap-2">
-                <UploadCloud size={16} />
-                Upload Your First Content
+              <Button className="gap-2" asChild>
+                <Link to="/upload">
+                  <UploadCloud size={16} />
+                  Upload Your First Content
+                </Link>
               </Button>
             </CardContent>
           </Card>
