@@ -546,15 +546,37 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
   
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
-    if (subcategory) {
-      return uploadedVideos.filter(
-        video => video.category?.toLowerCase() === category.toLowerCase() && 
-                video.subcategory?.toLowerCase() === subcategory.toLowerCase()
+    const categoryLower = category.toLowerCase();
+    const categoryWords = categoryLower.split(/[\s&-]+/).filter(w => w.length > 2);
+    
+    return uploadedVideos.filter(video => {
+      const vidCategory = video.category?.toLowerCase() || '';
+      const vidSubcategory = video.subcategory?.toLowerCase() || '';
+      const vidTags = video.tags?.map(t => t.toLowerCase()) || [];
+      
+      // If subcategory is specified, require exact match
+      if (subcategory) {
+        const subLower = subcategory.toLowerCase();
+        return (vidCategory === categoryLower || vidCategory.includes(categoryLower) || categoryLower.includes(vidCategory)) &&
+               (vidSubcategory === subLower || vidSubcategory.includes(subLower) || subLower.includes(vidSubcategory));
+      }
+      
+      // Match by exact category, partial match, or tag match
+      const categoryMatch = 
+        vidCategory === categoryLower || 
+        vidCategory.includes(categoryLower) || 
+        categoryLower.includes(vidCategory) ||
+        categoryWords.some(word => vidCategory.includes(word) || vidSubcategory.includes(word));
+      
+      const tagMatch = vidTags.some(tag => 
+        tag === categoryLower || 
+        tag.includes(categoryLower) || 
+        categoryLower.includes(tag) ||
+        categoryWords.some(word => tag.includes(word))
       );
-    }
-    return uploadedVideos.filter(
-      video => video.category?.toLowerCase() === category.toLowerCase()
-    );
+      
+      return categoryMatch || tagMatch;
+    });
   };
 
   const isUploadedVideo = (id: string): boolean => {
