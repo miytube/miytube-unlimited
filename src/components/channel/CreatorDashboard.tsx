@@ -4,11 +4,13 @@ import { subDays } from 'date-fns';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { UploadCloud, TrendingUp, Users, Eye, ThumbsUp, Share2, Clock, Loader2 } from 'lucide-react';
+import { UploadCloud, TrendingUp, Users, Eye, ThumbsUp, Share2, Clock, Loader2, Download } from 'lucide-react';
 import { ChannelSettingsForm } from './ChannelSettingsForm';
 import { AnalyticsCharts } from './AnalyticsCharts';
 import { DateRangeFilter } from './DateRangeFilter';
+import { exportAnalyticsToCSV } from './analyticsExport';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface DateRange {
   from: Date | undefined;
@@ -38,6 +40,7 @@ interface ContentItem {
 }
 
 export const CreatorDashboard: React.FC = () => {
+  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<CreatorStats>({
     totalViews: 0,
@@ -381,15 +384,35 @@ export const CreatorDashboard: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  {filteredContent.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-4">
-                      No content found in the selected date range.
-                    </p>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">
-                      Showing analytics for {filteredContent.length} item{filteredContent.length !== 1 ? 's' : ''} in selected period
-                    </p>
-                  )}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    {filteredContent.length === 0 ? (
+                      <p className="text-center text-muted-foreground py-4">
+                        No content found in the selected date range.
+                      </p>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        Showing analytics for {filteredContent.length} item{filteredContent.length !== 1 ? 's' : ''} in selected period
+                      </p>
+                    )}
+                    
+                    {filteredContent.length > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          exportAnalyticsToCSV(filteredContent, filteredStats, dateRange);
+                          toast({
+                            title: 'Export complete',
+                            description: 'Analytics data has been downloaded as CSV',
+                          });
+                        }}
+                        className="gap-2"
+                      >
+                        <Download className="h-4 w-4" />
+                        Export CSV
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
 
