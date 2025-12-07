@@ -10,6 +10,9 @@ const Videos = () => {
   const { category } = useParams();
   const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
   
+  // Debug: Log all video categories to understand what's stored
+  console.log('All uploaded videos:', uploadedVideos.map(v => ({ id: v.id, title: v.title, category: v.category, subcategory: v.subcategory })));
+  
   // ALL videos go to video library (except shorts which have their own section)
   const allRegularVideos = uploadedVideos.filter(video => 
     video.category?.toLowerCase() !== 'shorts'
@@ -17,6 +20,7 @@ const Videos = () => {
   
   // Shorts for the shorts section
   const allShortVideos = getVideosByCategory('shorts');
+  console.log('Shorts found:', allShortVideos.length);
   
   // Filter by category if a specific category is selected in URL
   const displayedRegularVideos = category 
