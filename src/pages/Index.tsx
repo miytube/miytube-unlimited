@@ -10,10 +10,10 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 const Index = () => {
   const { uploadedVideos } = useUploadedVideos();
 
-  // Convert uploaded videos (non-shorts) to VideoCard format
-  const formattedUploadedVideos = useMemo(() => {
+  // ALL uploaded videos appear on home page (newest first), shorts included in shorts section
+  const allVideos = useMemo(() => {
     return uploadedVideos
-      .filter(video => video.category !== 'shorts')
+      .filter(video => video.category?.toLowerCase() !== 'shorts')
       .map(video => ({
         id: video.id,
         title: video.title,
@@ -29,17 +29,10 @@ const Index = () => {
       }));
   }, [uploadedVideos]);
 
-  // All uploaded videos appear first on home page (newest first)
+  // All uploaded videos appear first on home page (newest first) - 20 per page
   const recommendedVideos = useMemo(() => {
-    const sortedUploads = [...formattedUploadedVideos].reverse();
-    return sortedUploads.slice(0, 20);
-  }, [formattedUploadedVideos]);
-
-  // Trending videos (same as recommended for now)
-  const trendingVideos = useMemo(() => {
-    const sortedUploads = [...formattedUploadedVideos].reverse();
-    return sortedUploads.slice(0, 20);
-  }, [formattedUploadedVideos]);
+    return [...allVideos].reverse().slice(0, 20);
+  }, [allVideos]);
 
   return (
     <Layout>
@@ -66,17 +59,6 @@ const Index = () => {
         {/* Shorts sections positioned together */}
         <ShortVideosSection />
         <TrendingShortVideosSection />
-
-        {trendingVideos.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-medium mb-4">Trending</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {trendingVideos.map((video, index) => (
-                <VideoCard key={`trending-${video.id}-${index}`} {...video} />
-              ))}
-            </div>
-          </div>
-        )}
 
         {recommendedVideos.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">
