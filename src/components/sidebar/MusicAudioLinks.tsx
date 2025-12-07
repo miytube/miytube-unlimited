@@ -14,7 +14,7 @@ export const MusicAudioLinks: React.FC = () => {
         { id: 'music-spanish', label: 'Spanish Music', path: '/music/spanish' },
         { id: 'music-folk', label: 'Folk Music', path: '/music/folk' },
         { id: 'music-chinese', label: 'Chinese Music', path: '/music/chinese' },
-        { id: 'music-rnb', label: 'R&B Music', path: '/music/rnb' },
+        { id: 'music-r-and-b', label: 'R & B Music', path: '/music/r-and-b' },
         { id: 'music-soul', label: 'Soul Music', path: '/music/soul' },
         { id: 'music-jazz', label: 'Jazz Music', path: '/music/jazz' },
         { id: 'music-country', label: 'Country & Western', path: '/music/country' }

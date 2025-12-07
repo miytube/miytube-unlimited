@@ -36,7 +36,7 @@ export const newSubcategoryRoutes = [
   <Route key="music-spanish" path="/music/spanish" element={<GenericSubcategoryPage />} />,
   <Route key="music-folk" path="/music/folk" element={<GenericSubcategoryPage />} />,
   <Route key="music-chinese" path="/music/chinese" element={<GenericSubcategoryPage />} />,
-  <Route key="music-rnb" path="/music/rnb" element={<GenericSubcategoryPage />} />,
+  <Route key="music-r-and-b" path="/music/r-and-b" element={<GenericSubcategoryPage />} />,
   <Route key="music-soul" path="/music/soul" element={<GenericSubcategoryPage />} />,
   <Route key="music-jazz" path="/music/jazz" element={<GenericSubcategoryPage />} />,
   <Route key="music-country" path="/music/country" element={<GenericSubcategoryPage />} />,
