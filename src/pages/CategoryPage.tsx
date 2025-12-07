@@ -40,19 +40,10 @@ const icons = {
 
 const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
   const IconComponent = icons[icon as keyof typeof icons] || Film;
-  const { uploadedVideos } = useUploadedVideos();
+  const { getVideosByCategory } = useUploadedVideos();
   
-  // Filter videos for this category
-  const categoryLower = category.toLowerCase();
-  const categoryVideos = uploadedVideos.filter(video => {
-    const vidCategory = video.category?.toLowerCase() || '';
-    const vidSubcategory = video.subcategory?.toLowerCase() || '';
-    const vidTags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return vidCategory.includes(categoryLower) || 
-           vidSubcategory.includes(categoryLower) ||
-           vidTags.some(tag => tag.includes(categoryLower));
-  });
+  // Filter videos for this category using the context's improved matching
+  const categoryVideos = getVideosByCategory(category);
 
   return (
     <Layout>

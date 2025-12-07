@@ -17,23 +17,10 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
   description = `Explore our collection of ${title.toLowerCase()} content`,
   Icon,
 }) => {
-  const { uploadedVideos } = useUploadedVideos();
+  const { getVideosByCategory } = useUploadedVideos();
   
-  // Filter videos for this category
-  const titleLower = title.toLowerCase();
-  const titleWords = titleLower.split(/[\s&]+/).filter(w => w.length > 2);
-  
-  const categoryVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return titleWords.some(word => 
-      category.includes(word) || 
-      subcategory.includes(word) ||
-      tags.some(tag => tag.includes(word))
-    );
-  });
+  // Filter videos for this category using the context's improved matching
+  const categoryVideos = getVideosByCategory(title);
 
   return (
     <Layout>
