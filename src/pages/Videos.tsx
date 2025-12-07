@@ -20,7 +20,7 @@ const Videos = () => {
   
   // Shorts for the shorts section
   const allShortVideos = getVideosByCategory('shorts');
-  console.log('Shorts found:', allShortVideos.length);
+  console.log('Shorts found:', allShortVideos.length, allShortVideos.map(v => v.title));
   
   // Filter by category if a specific category is selected in URL
   const displayedRegularVideos = category 
