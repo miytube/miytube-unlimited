@@ -546,43 +546,20 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
   
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
-    const categoryLower = category.toLowerCase();
+    const categoryLower = category.toLowerCase().trim();
     
     return uploadedVideos.filter(video => {
-      const vidCategory = video.category?.toLowerCase() || '';
-      const vidSubcategory = video.subcategory?.toLowerCase() || '';
-      const vidTags = video.tags?.map(t => t.toLowerCase()) || [];
-      
-      // Special handling for "shorts" - must be an exact match
-      if (categoryLower === 'shorts') {
-        return vidCategory === 'shorts';
-      }
+      const vidCategory = video.category?.toLowerCase().trim() || '';
+      const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
       
       // If subcategory is specified, require exact match on both
       if (subcategory) {
-        const subLower = subcategory.toLowerCase();
+        const subLower = subcategory.toLowerCase().trim();
         return vidCategory === categoryLower && vidSubcategory === subLower;
       }
       
-      // For other categories, use exact match first
-      if (vidCategory === categoryLower) {
-        return true;
-      }
-      
-      // Check if video's category contains search term (but not vice versa to avoid false positives)
-      if (vidCategory.includes(categoryLower) && categoryLower.length >= 3) {
-        return true;
-      }
-      
-      // Check subcategory match
-      if (vidSubcategory === categoryLower || (vidSubcategory.includes(categoryLower) && categoryLower.length >= 3)) {
-        return true;
-      }
-      
-      // Check tag match
-      const tagMatch = vidTags.some(tag => tag === categoryLower || tag.includes(categoryLower));
-      
-      return tagMatch;
+      // Exact category match only - no partial matching
+      return vidCategory === categoryLower;
     });
   };
 
