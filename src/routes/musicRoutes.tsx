@@ -12,7 +12,7 @@ const musicGenres = [
   'rock-soul-pop', 'funk-hiphop-rap', 'history', 'heavy-metal', 'mexican-spanish',
   'soundtracks', 'parody', 'pop', 'rap-reggaeton', 'relaxation', 'salsa',
   'soul-train', 'garage', 'artists-interviews', 'artists-news', 'challenges',
-  'christian'
+  'christian', 'r-and-b'
 ];
 
 export const musicRoutes = [

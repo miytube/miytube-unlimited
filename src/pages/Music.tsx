@@ -23,7 +23,7 @@ const Music = () => {
            category === 'jazz' ||
            category === 'country' ||
            category === 'classical' ||
-           category === 'rnb' ||
+           category === 'r-and-b' ||
            category === 'soul' ||
            category === 'folk' ||
            category === 'blues';
