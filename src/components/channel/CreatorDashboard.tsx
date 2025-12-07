@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { UploadCloud, TrendingUp, Users, Eye, ThumbsUp, Share2, Clock, Loader2 } from 'lucide-react';
 import { ChannelSettingsForm } from './ChannelSettingsForm';
+import { AnalyticsCharts } from './AnalyticsCharts';
 import { supabase } from '@/integrations/supabase/client';
 
 interface CreatorStats {
@@ -272,13 +273,13 @@ export const CreatorDashboard: React.FC = () => {
         </TabsContent>
         
         <TabsContent value="analytics" className="pt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Analytics</CardTitle>
-              <CardDescription>Track your channel performance</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {stats.contentCount === 0 ? (
+          {stats.contentCount === 0 ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>Analytics</CardTitle>
+                <CardDescription>Track your channel performance</CardDescription>
+              </CardHeader>
+              <CardContent>
                 <div className="flex flex-col items-center justify-center py-10">
                   <div className="rounded-full bg-muted p-6 mb-4">
                     <TrendingUp className="h-10 w-10 text-muted-foreground" />
@@ -288,69 +289,58 @@ export const CreatorDashboard: React.FC = () => {
                     Upload content to start tracking views, engagement, and growth metrics.
                   </p>
                 </div>
-              ) : (
-                <div className="space-y-6">
-                  {/* Top Performing Content */}
-                  <div>
-                    <h4 className="font-medium mb-3">Top Performing Content</h4>
-                    <div className="space-y-3">
-                      {content
-                        .sort((a, b) => b.views - a.views)
-                        .slice(0, 5)
-                        .map((item, index) => (
-                          <div key={item.id} className="flex items-center gap-3">
-                            <span className="text-lg font-bold text-muted-foreground w-6">{index + 1}</span>
-                            <div className="flex-1 min-w-0">
-                              <p className="font-medium truncate">{item.title}</p>
-                            </div>
-                            <div className="flex items-center gap-4 text-sm">
-                              <span className="flex items-center gap-1">
-                                <Eye className="h-4 w-4 text-muted-foreground" />
-                                {formatNumber(item.views)}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <ThumbsUp className="h-4 w-4 text-muted-foreground" />
-                                {formatNumber(item.likes)}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-6">
+              {/* Charts Section */}
+              <AnalyticsCharts 
+                content={content} 
+                stats={{
+                  totalViews: stats.totalViews,
+                  totalLikes: stats.totalLikes,
+                  totalShares: stats.totalShares,
+                }} 
+              />
 
-                  {/* Engagement Summary */}
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Avg Views per Video</p>
+              {/* Summary Stats */}
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Performance Summary</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center p-4 rounded-lg bg-muted/50">
+                      <p className="text-sm text-muted-foreground">Avg Views</p>
                       <p className="text-xl font-bold">
                         {formatNumber(Math.round(stats.totalViews / stats.contentCount))}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Avg Likes per Video</p>
+                    <div className="text-center p-4 rounded-lg bg-muted/50">
+                      <p className="text-sm text-muted-foreground">Avg Likes</p>
                       <p className="text-xl font-bold">
                         {formatNumber(Math.round(stats.totalLikes / stats.contentCount))}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Like-to-View Ratio</p>
+                    <div className="text-center p-4 rounded-lg bg-muted/50">
+                      <p className="text-sm text-muted-foreground">Like-to-View</p>
                       <p className="text-xl font-bold">
                         {stats.totalViews > 0 
                           ? ((stats.totalLikes / stats.totalViews) * 100).toFixed(1) 
                           : 0}%
                       </p>
                     </div>
-                    <div>
+                    <div className="text-center p-4 rounded-lg bg-muted/50">
                       <p className="text-sm text-muted-foreground">Avg Watch Time</p>
                       <p className="text-xl font-bold">
                         {formatWatchTime(Math.round(stats.totalWatchTime / stats.contentCount))}
                       </p>
                     </div>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </TabsContent>
         
         <TabsContent value="comments" className="pt-4">
