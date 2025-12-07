@@ -5,6 +5,7 @@ import { VideoPlayer } from '@/components/video/VideoPlayer';
 import { YouTubeEmbed } from '@/components/video/YouTubeEmbed';
 import { VideoInfo } from '@/components/watch/VideoInfo';
 import { VideoDescription } from '@/components/watch/VideoDescription';
+import { VideoComments } from '@/components/watch/VideoComments';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
@@ -223,9 +224,12 @@ const Watch = () => {
               isUploadedVideo={isUserUpload}
               onEdit={() => setEditDialogOpen(true)}
               onDelete={() => setDeleteDialogOpen(true)}
+              videoId={actualVideoId || undefined}
             />
             
             <VideoDescription description={video.description} />
+            
+            {actualVideoId && <VideoComments videoId={actualVideoId} />}
             
             
           </div>
