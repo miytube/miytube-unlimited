@@ -364,6 +364,24 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  'mlb-world-series': {
+    title: 'MLB World Series',
+    description: 'MLB World Series games',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  'mlb-baseball-world-series': {
+    title: 'MLB World Series',
+    description: 'MLB World Series games',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  'mlb-baseball': {
+    title: 'MLB Baseball',
+    description: 'MLB baseball games and highlights',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
   'sports-mlb-world-series-present': {
     title: 'MLB World Series Present',
     description: 'Current MLB World Series content',
