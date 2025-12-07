@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { subDays } from 'date-fns';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { UploadCloud, TrendingUp, Users, Eye, ThumbsUp, Share2, Clock, Loader2 } from 'lucide-react';
 import { ChannelSettingsForm } from './ChannelSettingsForm';
 import { AnalyticsCharts } from './AnalyticsCharts';
+import { DateRangeFilter } from './DateRangeFilter';
 import { supabase } from '@/integrations/supabase/client';
+
+interface DateRange {
+  from: Date | undefined;
+  to: Date | undefined;
+}
 
 interface CreatorStats {
   totalViews: number;
@@ -45,6 +52,10 @@ export const CreatorDashboard: React.FC = () => {
     trafficSuggested: 0,
   });
   const [content, setContent] = useState<ContentItem[]>([]);
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: subDays(new Date(), 30),
+    to: new Date(),
+  });
 
   useEffect(() => {
     fetchCreatorData();
@@ -107,6 +118,52 @@ export const CreatorDashboard: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Filter content based on date range for analytics
+  const filteredContent = useMemo(() => {
+    if (!dateRange.from && !dateRange.to) return content;
+    
+    return content.filter(item => {
+      const itemDate = new Date(item.created_at);
+      if (dateRange.from && itemDate < dateRange.from) return false;
+      if (dateRange.to && itemDate > dateRange.to) return false;
+      return true;
+    });
+  }, [content, dateRange]);
+
+  // Calculate filtered stats
+  const filteredStats = useMemo(() => {
+    if (filteredContent.length === 0) {
+      return {
+        totalViews: 0,
+        totalLikes: 0,
+        totalShares: 0,
+        contentCount: 0,
+        totalWatchTime: 0,
+        avgClickThroughRate: 0,
+        trafficOrganic: 0,
+        trafficSearch: 0,
+        trafficExternal: 0,
+        trafficSuggested: 0,
+      };
+    }
+
+    const totalViews = filteredContent.reduce((sum, v) => sum + v.views, 0);
+    const totalLikes = filteredContent.reduce((sum, v) => sum + v.likes, 0);
+
+    return {
+      totalViews,
+      totalLikes,
+      totalShares: Math.round(totalViews * 0.05), // Estimate from filtered
+      contentCount: filteredContent.length,
+      totalWatchTime: Math.round(totalViews * 30), // Estimate avg 30s per view
+      avgClickThroughRate: stats.avgClickThroughRate,
+      trafficOrganic: Math.round(stats.trafficOrganic * (filteredContent.length / (content.length || 1))),
+      trafficSearch: Math.round(stats.trafficSearch * (filteredContent.length / (content.length || 1))),
+      trafficExternal: Math.round(stats.trafficExternal * (filteredContent.length / (content.length || 1))),
+      trafficSuggested: Math.round(stats.trafficSuggested * (filteredContent.length / (content.length || 1))),
+    };
+  }, [filteredContent, content.length, stats]);
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
@@ -309,58 +366,89 @@ export const CreatorDashboard: React.FC = () => {
             </Card>
           ) : (
             <div className="space-y-6">
-              {/* Charts Section */}
-              <AnalyticsCharts 
-                content={content} 
-                stats={{
-                  totalViews: stats.totalViews,
-                  totalLikes: stats.totalLikes,
-                  totalShares: stats.totalShares,
-                }}
-                trafficSources={{
-                  organic: stats.trafficOrganic,
-                  search: stats.trafficSearch,
-                  external: stats.trafficExternal,
-                  suggested: stats.trafficSuggested,
-                }}
-              />
-
-              {/* Summary Stats */}
+              {/* Date Range Filter */}
               <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-base">Performance Summary</CardTitle>
+                <CardHeader className="pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <CardTitle className="text-base">Analytics Overview</CardTitle>
+                      <CardDescription>Filter by date range to analyze specific periods</CardDescription>
+                    </div>
+                    <DateRangeFilter 
+                      dateRange={dateRange} 
+                      onDateRangeChange={setDateRange} 
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center p-4 rounded-lg bg-muted/50">
-                      <p className="text-sm text-muted-foreground">Avg Views</p>
-                      <p className="text-xl font-bold">
-                        {formatNumber(Math.round(stats.totalViews / stats.contentCount))}
-                      </p>
-                    </div>
-                    <div className="text-center p-4 rounded-lg bg-muted/50">
-                      <p className="text-sm text-muted-foreground">Avg Likes</p>
-                      <p className="text-xl font-bold">
-                        {formatNumber(Math.round(stats.totalLikes / stats.contentCount))}
-                      </p>
-                    </div>
-                    <div className="text-center p-4 rounded-lg bg-muted/50">
-                      <p className="text-sm text-muted-foreground">Like-to-View</p>
-                      <p className="text-xl font-bold">
-                        {stats.totalViews > 0 
-                          ? ((stats.totalLikes / stats.totalViews) * 100).toFixed(1) 
-                          : 0}%
-                      </p>
-                    </div>
-                    <div className="text-center p-4 rounded-lg bg-muted/50">
-                      <p className="text-sm text-muted-foreground">Avg Watch Time</p>
-                      <p className="text-xl font-bold">
-                        {formatWatchTime(Math.round(stats.totalWatchTime / stats.contentCount))}
-                      </p>
-                    </div>
-                  </div>
+                  {filteredContent.length === 0 ? (
+                    <p className="text-center text-muted-foreground py-4">
+                      No content found in the selected date range.
+                    </p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Showing analytics for {filteredContent.length} item{filteredContent.length !== 1 ? 's' : ''} in selected period
+                    </p>
+                  )}
                 </CardContent>
               </Card>
+
+              {filteredContent.length > 0 && (
+                <>
+                  {/* Charts Section */}
+                  <AnalyticsCharts 
+                    content={filteredContent} 
+                    stats={{
+                      totalViews: filteredStats.totalViews,
+                      totalLikes: filteredStats.totalLikes,
+                      totalShares: filteredStats.totalShares,
+                    }}
+                    trafficSources={{
+                      organic: filteredStats.trafficOrganic,
+                      search: filteredStats.trafficSearch,
+                      external: filteredStats.trafficExternal,
+                      suggested: filteredStats.trafficSuggested,
+                    }}
+                  />
+
+                  {/* Summary Stats */}
+                  <Card>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base">Performance Summary</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="text-center p-4 rounded-lg bg-muted/50">
+                          <p className="text-sm text-muted-foreground">Avg Views</p>
+                          <p className="text-xl font-bold">
+                            {formatNumber(Math.round(filteredStats.totalViews / filteredStats.contentCount))}
+                          </p>
+                        </div>
+                        <div className="text-center p-4 rounded-lg bg-muted/50">
+                          <p className="text-sm text-muted-foreground">Avg Likes</p>
+                          <p className="text-xl font-bold">
+                            {formatNumber(Math.round(filteredStats.totalLikes / filteredStats.contentCount))}
+                          </p>
+                        </div>
+                        <div className="text-center p-4 rounded-lg bg-muted/50">
+                          <p className="text-sm text-muted-foreground">Like-to-View</p>
+                          <p className="text-xl font-bold">
+                            {filteredStats.totalViews > 0 
+                              ? ((filteredStats.totalLikes / filteredStats.totalViews) * 100).toFixed(1) 
+                              : 0}%
+                          </p>
+                        </div>
+                        <div className="text-center p-4 rounded-lg bg-muted/50">
+                          <p className="text-sm text-muted-foreground">Avg Watch Time</p>
+                          <p className="text-xl font-bold">
+                            {formatWatchTime(Math.round(filteredStats.totalWatchTime / filteredStats.contentCount))}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </div>
           )}
         </TabsContent>
