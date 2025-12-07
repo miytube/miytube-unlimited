@@ -15,6 +15,10 @@ interface CreatorStats {
   contentCount: number;
   totalWatchTime: number;
   avgClickThroughRate: number;
+  trafficOrganic: number;
+  trafficSearch: number;
+  trafficExternal: number;
+  trafficSuggested: number;
 }
 
 interface ContentItem {
@@ -35,6 +39,10 @@ export const CreatorDashboard: React.FC = () => {
     contentCount: 0,
     totalWatchTime: 0,
     avgClickThroughRate: 0,
+    trafficOrganic: 0,
+    trafficSearch: 0,
+    trafficExternal: 0,
+    trafficSuggested: 0,
   });
   const [content, setContent] = useState<ContentItem[]>([]);
 
@@ -53,7 +61,7 @@ export const CreatorDashboard: React.FC = () => {
       // Fetch all music videos for the logged-in user
       const { data: videos, error } = await supabase
         .from('music_videos')
-        .select('id, title, views, likes, shares, watch_time_seconds, click_through_rate, created_at, thumbnail_url')
+        .select('id, title, views, likes, shares, watch_time_seconds, click_through_rate, created_at, thumbnail_url, traffic_organic, traffic_search, traffic_external, traffic_suggested')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
@@ -66,6 +74,10 @@ export const CreatorDashboard: React.FC = () => {
         const totalShares = videos.reduce((sum, v) => sum + (v.shares || 0), 0);
         const totalWatchTime = videos.reduce((sum, v) => sum + (v.watch_time_seconds || 0), 0);
         const avgCTR = videos.reduce((sum, v) => sum + (Number(v.click_through_rate) || 0), 0) / videos.length;
+        const trafficOrganic = videos.reduce((sum, v) => sum + (v.traffic_organic || 0), 0);
+        const trafficSearch = videos.reduce((sum, v) => sum + (v.traffic_search || 0), 0);
+        const trafficExternal = videos.reduce((sum, v) => sum + (v.traffic_external || 0), 0);
+        const trafficSuggested = videos.reduce((sum, v) => sum + (v.traffic_suggested || 0), 0);
 
         setStats({
           totalViews,
@@ -74,6 +86,10 @@ export const CreatorDashboard: React.FC = () => {
           contentCount: videos.length,
           totalWatchTime,
           avgClickThroughRate: avgCTR,
+          trafficOrganic,
+          trafficSearch,
+          trafficExternal,
+          trafficSuggested,
         });
 
         setContent(videos.map(v => ({
@@ -300,7 +316,13 @@ export const CreatorDashboard: React.FC = () => {
                   totalViews: stats.totalViews,
                   totalLikes: stats.totalLikes,
                   totalShares: stats.totalShares,
-                }} 
+                }}
+                trafficSources={{
+                  organic: stats.trafficOrganic,
+                  search: stats.trafficSearch,
+                  external: stats.trafficExternal,
+                  suggested: stats.trafficSuggested,
+                }}
               />
 
               {/* Summary Stats */}
