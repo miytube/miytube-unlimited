@@ -6,6 +6,7 @@ import { Layout } from '@/components/Layout';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { TrendingUp } from 'lucide-react';
 
 const Index = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -32,6 +33,27 @@ const Index = () => {
     return [...allVideos].reverse().slice(0, 20);
   }, [allVideos]);
 
+  // Trending section - regular videos only (non-shorts), newest first
+  const trendingVideos = useMemo(() => {
+    return uploadedVideos
+      .filter(video => video.category?.toLowerCase() !== 'shorts')
+      .map(video => ({
+        id: video.id,
+        title: video.title,
+        thumbnail: video.thumbnail,
+        channelName: 'Your Channel',
+        views: video.views,
+        timestamp: video.timestamp,
+        duration: video.duration,
+        description: video.description,
+        category: video.category,
+        subcategory: video.subcategory,
+        tags: video.tags,
+      }))
+      .reverse()
+      .slice(0, 8);
+  }, [uploadedVideos]);
+
   return (
     <Layout>
       <div className="py-4 w-full">
@@ -48,6 +70,24 @@ const Index = () => {
             <h2 className="text-xl font-medium mb-4">Recommended</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {recommendedVideos.map((video) => (
+                <VideoCard key={video.id} {...video} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Trending Videos Section - Regular videos only */}
+        {trendingVideos.length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp className="h-5 w-5 text-primary" />
+              <h2 className="text-xl font-medium">Trending Videos</h2>
+              <Link to="/trending" className="ml-auto text-primary text-sm hover:underline">
+                View all
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {trendingVideos.map((video) => (
                 <VideoCard key={video.id} {...video} />
               ))}
             </div>
