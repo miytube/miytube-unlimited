@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
-import { Film, Upload, Tv, ListVideo } from 'lucide-react';
+import { Film, Upload, Tv, ListVideo, Clock, Lock, User, Megaphone, Star, Eye, Heart, ThumbsUp, MessageSquare, Reply } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
@@ -41,6 +41,20 @@ const Videos = () => {
     { id: 'technology', name: 'Technology', icon: <Tv size={24} /> },
     { id: 'travel', name: 'Travel', icon: <Film size={24} /> },
     { id: 'howto', name: 'How-to', icon: <ListVideo size={24} /> },
+  ];
+
+  // Library filter categories
+  const libraryCategories = [
+    { id: 'latest', name: 'Latest', icon: <Clock size={18} /> },
+    { id: 'private', name: 'Private', icon: <Lock size={18} /> },
+    { id: 'personal', name: 'Personal', icon: <User size={18} /> },
+    { id: 'promoted', name: 'Promoted', icon: <Megaphone size={18} /> },
+    { id: 'featured', name: 'Featured', icon: <Star size={18} /> },
+    { id: 'most-viewed', name: 'Most Viewed', icon: <Eye size={18} /> },
+    { id: 'favorited', name: 'Favorited', icon: <Heart size={18} /> },
+    { id: 'liked', name: 'Liked', icon: <ThumbsUp size={18} /> },
+    { id: 'commented', name: 'Commented', icon: <MessageSquare size={18} /> },
+    { id: 'responded', name: 'Responded', icon: <Reply size={18} /> },
   ];
 
   // Newest first, 20 per page
@@ -89,7 +103,25 @@ const Videos = () => {
             </div>
           </div>
         )}
-        
+
+        {/* Library Filter Buttons */}
+        {!category && (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">Filter By</h2>
+            <div className="flex flex-wrap gap-2">
+              {libraryCategories.map((libCat) => (
+                <Link 
+                  key={libCat.id} 
+                  to={`/videos/${libCat.id}`}
+                  className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-full hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
+                  {libCat.icon}
+                  <span className="text-sm font-medium">{libCat.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
         {/* Regular Videos Section - 4 columns, 20 per page */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">

@@ -13,10 +13,30 @@ import Shorts from "@/pages/Shorts";
 import Sports from "@/pages/Sports";
 import Weather from "@/pages/Weather";
 import Disasters from "@/pages/Disasters";
+import LatestVideos from "@/pages/videos/LatestVideos";
+import PrivateVideos from "@/pages/videos/PrivateVideos";
+import PersonalVideos from "@/pages/videos/PersonalVideos";
+import PromotedVideos from "@/pages/videos/PromotedVideos";
+import FeaturedVideos from "@/pages/videos/FeaturedVideos";
+import MostViewedVideos from "@/pages/videos/MostViewedVideos";
+import FavoritedVideos from "@/pages/videos/FavoritedVideos";
+import LikedVideos from "@/pages/videos/LikedVideos";
+import CommentedVideos from "@/pages/videos/CommentedVideos";
+import RespondedVideos from "@/pages/videos/RespondedVideos";
 
 export const categoryRoutes = [
   <Route key="videos" path="/videos" element={<Videos />} />,
   <Route key="videos-category" path="/videos/:category" element={<Videos />} />,
+  <Route key="videos-latest" path="/videos/latest" element={<LatestVideos />} />,
+  <Route key="videos-private" path="/videos/private" element={<PrivateVideos />} />,
+  <Route key="videos-personal" path="/videos/personal" element={<PersonalVideos />} />,
+  <Route key="videos-promoted" path="/videos/promoted" element={<PromotedVideos />} />,
+  <Route key="videos-featured" path="/videos/featured" element={<FeaturedVideos />} />,
+  <Route key="videos-most-viewed" path="/videos/most-viewed" element={<MostViewedVideos />} />,
+  <Route key="videos-favorited" path="/videos/favorited" element={<FavoritedVideos />} />,
+  <Route key="videos-liked" path="/videos/liked" element={<LikedVideos />} />,
+  <Route key="videos-commented" path="/videos/commented" element={<CommentedVideos />} />,
+  <Route key="videos-responded" path="/videos/responded" element={<RespondedVideos />} />,
   <Route key="audio" path="/audio" element={<Audio />} />,
   <Route key="audio-category" path="/audio/:category" element={<Audio />} />,
   <Route key="documents" path="/documents" element={<Documents />} />,
