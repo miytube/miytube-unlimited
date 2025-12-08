@@ -9,9 +9,9 @@ const realEstateLinks = [
     label: 'Real Estate', 
     path: '/real-estate',
     subItems: [
-      { id: 'real-estate-residential', label: 'Residential Property', path: '/category/real-estate-residential' },
-      { id: 'real-estate-commercial', label: 'Commercial Property', path: '/category/real-estate-commercial' },
-      { id: 'real-estate-luxury', label: 'Luxury & Million Dollar', path: '/category/real-estate-luxury' },
+      { id: 'real-estate-residential', label: 'Residential Property', path: '/real-estate/residential' },
+      { id: 'real-estate-commercial', label: 'Commercial Property', path: '/real-estate/commercial' },
+      { id: 'real-estate-luxury', label: 'Luxury & Million Dollar', path: '/real-estate/luxury' },
     ]
   },
 ];
