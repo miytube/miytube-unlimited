@@ -16,7 +16,7 @@ import { HollywoodLinks } from './sidebar/HollywoodLinks';
 import { FilmAnimationLinks } from './sidebar/FilmAnimationLinks';
 import { RealEstateLinks } from './sidebar/RealEstateLinks';
 import { SidebarFooter } from './sidebar/SidebarFooter';
-import { CollapsibleSidebarSection } from './sidebar/CollapsibleSidebarSection';
+import { Separator } from './ui/separator';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -49,26 +49,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="p-4">
           <SidebarMainLinks />
           
-          <CollapsibleSidebarSection title="Entertainment & Media">
-            <VideoEntertainmentLinks />
-            <MusicAudioLinks />
-            <FilmAnimationLinks />
-            <HollywoodLinks />
-          </CollapsibleSidebarSection>
+          <Separator className="my-3" />
           
-          <CollapsibleSidebarSection title="Education & Information">
-            <EducationInformationLinks />
-            <DocumentMediaLinks />
-            <LawJusticeLinks />
-          </CollapsibleSidebarSection>
+          {/* Entertainment & Media */}
+          <VideoEntertainmentLinks />
+          <MusicAudioLinks />
+          <FilmAnimationLinks />
+          <HollywoodLinks />
           
-          <CollapsibleSidebarSection title="Lifestyle & Places">
-            <PeopleSocietyLinks />
-            <PlacesLocationsLinks />
-            <RealEstateLinks />
-            <EnvironmentWeatherLinks />
-            <TransportVehiclesLinks />
-          </CollapsibleSidebarSection>
+          <Separator className="my-3" />
+          
+          {/* Education & Information */}
+          <EducationInformationLinks />
+          <DocumentMediaLinks />
+          <LawJusticeLinks />
+          
+          <Separator className="my-3" />
+          
+          {/* Lifestyle & Places */}
+          <PeopleSocietyLinks />
+          <PlacesLocationsLinks />
+          <RealEstateLinks />
+          <EnvironmentWeatherLinks />
+          <TransportVehiclesLinks />
           
           <SidebarFooter />
         </div>
