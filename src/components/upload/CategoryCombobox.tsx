@@ -41,15 +41,40 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
   const selectedOption = options.find(opt => opt.id === value);
   const displayValue = selectedOption?.name || value || '';
 
-  // Filter options based on input
-  const filteredOptions = options.filter(opt =>
-    opt.name.toLowerCase().includes(inputValue.toLowerCase())
-  );
+  // Calculate similarity score between two strings (Levenshtein-based)
+  const getSimilarity = (str1: string, str2: string): number => {
+    const s1 = str1.toLowerCase();
+    const s2 = str2.toLowerCase();
+    if (s1 === s2) return 1;
+    if (s1.includes(s2) || s2.includes(s1)) return 0.8;
+    
+    // Simple character overlap ratio
+    const chars1 = new Set(s1.split(''));
+    const chars2 = new Set(s2.split(''));
+    const intersection = [...chars1].filter(c => chars2.has(c)).length;
+    const union = new Set([...chars1, ...chars2]).size;
+    return intersection / union;
+  };
+
+  // Filter and sort options based on input with fuzzy matching
+  const filteredOptions = options
+    .map(opt => ({
+      ...opt,
+      similarity: getSimilarity(opt.name, inputValue),
+      includes: opt.name.toLowerCase().includes(inputValue.toLowerCase())
+    }))
+    .filter(opt => opt.includes || (inputValue.length > 2 && opt.similarity > 0.5))
+    .sort((a, b) => b.similarity - a.similarity);
 
   // Check if input matches any existing option exactly
   const exactMatch = options.some(
     opt => opt.name.toLowerCase() === inputValue.toLowerCase()
   );
+  
+  // Find close matches for typo suggestions
+  const closeMatch = !exactMatch && inputValue.length > 3 
+    ? options.find(opt => getSimilarity(opt.name, inputValue) > 0.7)
+    : null;
 
   const handleAddCustom = () => {
     if (inputValue.trim() && !exactMatch) {
@@ -125,6 +150,16 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
                 {option.name}
               </button>
             ))}
+            
+            {/* Show typo suggestion if close match found */}
+            {closeMatch && inputValue.trim() && (
+              <div className="px-2 py-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 rounded-sm mb-1">
+                Did you mean "<button 
+                  onClick={() => handleSelect(closeMatch.id)}
+                  className="font-medium underline hover:no-underline"
+                >{closeMatch.name}</button>"?
+              </div>
+            )}
             
             {/* Always show add option when typing something new */}
             {inputValue.trim() && !exactMatch && (
