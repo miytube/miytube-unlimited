@@ -63,8 +63,13 @@ export const filterVideosBySubcategory = (
   const titleLower = pageTitle.toLowerCase().trim();
   const keyLower = mappingKey.toLowerCase().trim();
   
+  // Handle path-based keys like "real-estate/luxury" -> extract last segment "luxury"
+  const keySegments = keyLower.split('/');
+  const lastSegment = keySegments[keySegments.length - 1];
+  const parentSegment = keySegments.length > 1 ? keySegments[0] : '';
+  
   // Extract core keywords from mapping key (e.g., "sports-mlb-world-series" -> ["mlb", "world", "series"])
-  const keyWords = keyLower.split('-').filter(w => w.length > 2);
+  const keyWords = keyLower.split(/[-\/]/).filter(w => w.length > 2);
   
   return videos.filter(video => {
     const vidCategory = video.category?.toLowerCase().trim() || '';
@@ -74,8 +79,18 @@ export const filterVideosBySubcategory = (
     // Exact match on title
     if (vidCategory === titleLower || vidSubcategory === titleLower) return true;
     
+    // Match subcategory directly (e.g., "luxury" matches subcategory "luxury")
+    if (vidSubcategory === lastSegment) return true;
+    
+    // Match combined parent-subcategory pattern (e.g., "real-estate-luxury")
+    const combinedKey = `${parentSegment}-${lastSegment}`;
+    if (vidCategory === combinedKey || vidSubcategory === combinedKey) return true;
+    
+    // Match "real estate" category with "luxury" subcategory
+    if (parentSegment && vidCategory.replace(/[\s-]/g, '') === parentSegment.replace(/[\s-]/g, '') && 
+        vidSubcategory === lastSegment) return true;
+    
     // Check if category/subcategory contains the page title exactly
-    // (e.g., "MLB World Series" matches "sports mlb world series")
     const titleWords = titleLower.split(' ').filter(w => w.length > 2);
     const combinedText = `${vidCategory} ${vidSubcategory}`;
     
@@ -89,7 +104,7 @@ export const filterVideosBySubcategory = (
     if (keyWords.length >= 2 && keyWords.every(word => combinedText.includes(word))) return true;
     
     // Check tags for exact match
-    if (vidTags.includes(titleLower) || vidTags.includes(keyLower)) return true;
+    if (vidTags.includes(titleLower) || vidTags.includes(keyLower) || vidTags.includes(lastSegment)) return true;
     
     // Check if tag contains all key words
     if (vidTags.some(tag => keyWords.length >= 2 && keyWords.every(word => tag.includes(word)))) return true;
