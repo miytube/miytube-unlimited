@@ -5,23 +5,14 @@ import { Upload, Bitcoin, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const CryptocurrencyPage = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for crypto-related videos
-  const cryptoKeywords = ['crypto', 'cryptocurrency', 'bitcoin', 'ethereum', 'blockchain', 'nft', 'defi'];
-  const cryptoVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return cryptoKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for crypto-related videos using strict matching
+  const cryptoKeywords = ['cryptocurrency', 'business-cryptocurrency', 'crypto', 'bitcoin', 'ethereum', 'blockchain'];
+  const cryptoVideos = filterVideosByCategory(uploadedVideos, 'cryptocurrency', cryptoKeywords);
 
   return (
     <Layout>

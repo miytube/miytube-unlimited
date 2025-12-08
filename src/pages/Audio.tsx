@@ -5,24 +5,15 @@ import { Music, Play, Upload, Clock, Heart, MoreHorizontal } from 'lucide-react'
 import { useNavigate, Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { VideoCard } from '@/components/VideoCard';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const Audio = () => {
   const navigate = useNavigate();
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for audio-related content
-  const audioKeywords = ['audio', 'music', 'podcast', 'sound', 'asmr', 'meditation'];
-  const audioVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return audioKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for audio-related content using strict matching
+  const audioKeywords = ['audio', 'music', 'podcast', 'sound', 'asmr', 'meditation', 'audiobook', 'sound-effects', 'nature-sounds'];
+  const audioVideos = filterVideosByCategory(uploadedVideos, 'audio', audioKeywords);
 
   return (
     <Layout>

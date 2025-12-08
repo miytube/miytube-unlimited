@@ -5,23 +5,14 @@ import { Wrench, Upload, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const CarRepairsPage = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for car repair-related videos
-  const repairKeywords = ['repair', 'mechanic', 'maintenance', 'fix', 'diy', 'car repair', 'auto repair'];
-  const repairVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return repairKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for car repair-related videos using strict matching
+  const repairKeywords = ['car-repairs', 'cars-repairs', 'cars-repairs-major', 'cars-repairs-minor', 'cars-repairs-hacks', 'cars-repairs-maintenance'];
+  const repairVideos = filterVideosByCategory(uploadedVideos, 'car-repairs', repairKeywords);
 
   return (
     <Layout>

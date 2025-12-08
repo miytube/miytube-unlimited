@@ -5,23 +5,14 @@ import { BarChart, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const BusinessPage = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for business-related videos
-  const businessKeywords = ['business', 'crypto', 'cryptocurrency', 'finance', 'leadership', 'tax', 'entrepreneur', 'commerce', 'trade'];
-  const businessVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return businessKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for business-related videos using strict matching
+  const businessKeywords = ['business', 'cryptocurrency', 'finance', 'leadership', 'commerce', 'trade', 'business-cryptocurrency', 'business-leadership', 'business-finance', 'business-services', 'business-farming', 'business-commerce', 'business-internet'];
+  const businessVideos = filterVideosByCategory(uploadedVideos, 'business', businessKeywords);
 
   return (
     <Layout>

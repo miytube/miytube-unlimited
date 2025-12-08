@@ -27,7 +27,7 @@ const LongVideos = () => {
   ]);
 
   // Filter uploaded videos for long-form content
-  // Include videos >1 minute OR matching long-form categories
+  // Include videos >1 minute OR matching exact long-form categories
   const longFormCategories = ['long-videos', 'meditation', 'educational', 'documentary', 'podcast', 'lecture', 'conference', 'audiobook', 'concert'];
   
   const longFormVideos = uploadedVideos.filter(video => {
@@ -39,11 +39,14 @@ const LongVideos = () => {
     } else if (durationParts.length === 2) {
       totalSeconds = parseInt(durationParts[0]) * 60 + parseInt(durationParts[1]);
     }
-    // Consider videos longer than 1 minute as long-form, or matching long-form categories
+    // Consider videos longer than 1 minute as long-form
     const isLongDuration = totalSeconds > 60;
+    
+    // Check for exact category match (no loose includes)
+    const vidCategory = video.category?.toLowerCase().trim() || '';
+    const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
     const isLongFormCategory = longFormCategories.some(cat => 
-      video.category?.toLowerCase().includes(cat) || 
-      video.subcategory?.toLowerCase().includes(cat)
+      vidCategory === cat || vidSubcategory === cat
     );
     return isLongDuration || isLongFormCategory;
   });

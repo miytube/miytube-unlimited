@@ -5,16 +5,14 @@ import { Moon, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const Meditation = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for meditation-related videos
-  const meditationVideos = uploadedVideos.filter(video => 
-    video.category === 'meditation' || 
-    video.subcategory?.toLowerCase().includes('meditation') ||
-    video.tags?.some(tag => tag.toLowerCase().includes('meditation') || tag.toLowerCase().includes('mindfulness'))
-  );
+  // Filter for meditation-related videos using strict matching
+  const meditationKeywords = ['meditation', 'mindfulness', 'meditation-mindfulness', 'meditation-sleep', 'meditation-stress-relief', 'meditation-morning', 'meditation-anxiety', 'meditation-focus'];
+  const meditationVideos = filterVideosByCategory(uploadedVideos, 'meditation', meditationKeywords);
   
   return (
     <Layout>
