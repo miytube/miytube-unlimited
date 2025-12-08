@@ -14,6 +14,7 @@ import { LawJusticeLinks } from './sidebar/LawJusticeLinks';
 import { DocumentMediaLinks } from './sidebar/DocumentMediaLinks';
 import { HollywoodLinks } from './sidebar/HollywoodLinks';
 import { FilmAnimationLinks } from './sidebar/FilmAnimationLinks';
+import { RealEstateLinks } from './sidebar/RealEstateLinks';
 import { SidebarFooter } from './sidebar/SidebarFooter';
 
 interface SidebarProps {
@@ -58,6 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <TransportVehiclesLinks />
           <LawJusticeLinks />
           <DocumentMediaLinks />
+          <RealEstateLinks />
           
           <SidebarFooter />
         </div>
