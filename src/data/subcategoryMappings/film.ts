@@ -1,145 +1,202 @@
-import { Film, Clapperboard, Drama, Laugh, Skull, Heart, FlaskConical, Sword, Compass, Castle, Bookmark, Bomb, Scale, Medal, Flame, Flower } from 'lucide-react';
+import { Film, Clapperboard, Drama, Laugh, Skull, Heart, FlaskConical, Sword, Compass, Castle, Bookmark, Bomb, Scale, Medal, Flame, Flower, Scissors, Music, Popcorn, FileText, Ghost } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const filmSubcategories: SubcategoryMapping = {
+  // Film & Movies subcategories
   'film-romance': {
-    title: 'Romance Films',
-    description: 'Films focused on romantic relationships and love stories',
+    title: 'Film (Romance)',
+    description: 'Romantic films and love stories',
     icon: Heart,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-action-crime-thriller': {
-    title: 'Action, Crime & Thriller',
-    description: 'Films in the action, crime, and thriller genres',
+    title: 'Film (Action, Crime, Thriller)',
+    description: 'Action-packed crime and thriller films',
     icon: Bomb,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-action-thriller-adventure': {
-    title: 'Action, Thriller & Adventure',
-    description: 'Films combining action, thriller, and adventure elements',
+    title: 'Film (Action, Thriller, Adventure)',
+    description: 'Action, thriller, and adventure films',
     icon: Sword,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-adventure-fantasy': {
-    title: 'Adventure & Fantasy',
-    description: 'Films in the adventure and fantasy genres',
+    title: 'Film (Adventure, Fantasy, Thriller)',
+    description: 'Adventure, fantasy, and thriller films',
     icon: Castle,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-comedy-drama-crime': {
-    title: 'Comedy, Drama & Crime',
-    description: 'Films combining comedy, drama, and crime elements',
+    title: 'Film (Comedy, Drama, Crime)',
+    description: 'Films combining comedy, drama, and crime',
     icon: Bookmark,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-comedy': {
-    title: 'Comedy Films',
-    description: 'Films in the comedy genre',
+    title: 'Film (Comedy)',
+    description: 'Comedy films and humorous movies',
     icon: Laugh,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-crime-drama-thriller': {
-    title: 'Crime, Drama & Thriller',
-    description: 'Films combining crime, drama, and thriller elements',
+    title: 'Film (Crime, Drama, Thriller)',
+    description: 'Crime, drama, and thriller films',
     icon: Scale,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-documentary-drama-crime': {
-    title: 'Documentary, Drama & Crime',
-    description: 'Documentary-style films with drama and crime elements',
+    title: 'Film (Documentary, Drama, Crime)',
+    description: 'Documentary-style drama and crime films',
     icon: Film,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-drama': {
-    title: 'Drama Films',
-    description: 'Films in the drama genre',
+    title: 'Film (Drama)',
+    description: 'Dramatic films and emotional stories',
     icon: Drama,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-gangsters-crime-drama': {
-    title: 'Gangsters, Crime & Drama',
-    description: 'Films about gangsters with crime and drama elements',
+    title: 'Film (Gangsters, Crime, Drama)',
+    description: 'Gangster films with crime and drama',
     icon: Skull,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-mystery-fiction': {
+    title: 'Film (Mystery, Fiction)',
+    description: 'Mystery and fiction films',
+    icon: FlaskConical,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-romance-comedy-drama': {
-    title: 'Romance, Comedy & Drama',
-    description: 'Films combining romance, comedy, and drama elements',
+    title: 'Film (Romance, Comedy, Drama)',
+    description: 'Romantic comedies and dramatic love stories',
     icon: Flower,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-scientific': {
-    title: 'Scientific Films',
-    description: 'Films with scientific themes and concepts',
+    title: 'Film (Scientific)',
+    description: 'Scientific and science-themed films',
     icon: FlaskConical,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-war-action-thriller': {
-    title: 'War, Action & Thriller',
+    title: 'Film (War, Action, Thriller)',
     description: 'War films with action and thriller elements',
     icon: Sword,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
   'film-westerns-action-drama': {
-    title: 'Westerns, Action & Drama',
-    description: 'Western films with action and drama elements',
+    title: 'Film (Westerns, Action, Drama)',
+    description: 'Western films with action and drama',
     icon: Flame,
     parent: {
-      route: '/film',
-      name: 'Film'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
   },
-  'film-animation-action': {
-    title: 'Action Animation',
-    description: 'Animated films in the action genre',
+  'film-westerns-crime-thriller': {
+    title: 'Film (Westerns, Crime, Thriller)',
+    description: 'Western films with crime and thriller elements',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-movies-action-thriller': {
+    title: 'Film, Movies (Action, Thriller)',
+    description: 'Action and thriller movies',
+    icon: Bomb,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-movies-clips': {
+    title: 'Film, Movies (Clips)',
+    description: 'Movie clips and film excerpts',
+    icon: Scissors,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-movies-created': {
+    title: 'Films, Movies (Created, Filmed)',
+    description: 'Original created and filmed movies',
     icon: Clapperboard,
     parent: {
       route: '/film-animation',
       name: 'Film & Animation'
     }
   },
+
+  // Film Animation subcategories
+  'film-animation-action': {
+    title: 'Film & Animation (Action)',
+    description: 'Action-packed animated films',
+    icon: Sword,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-animation-movies': {
+    title: 'Film & Animation Movies',
+    description: 'Animated feature films and movies',
+    icon: Popcorn,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
   'film-animation-fantasy-drama': {
-    title: 'Fantasy & Drama Animation',
-    description: 'Animated films combining fantasy and drama elements',
+    title: 'Film Animation (Fantasy, Drama)',
+    description: 'Fantasy and drama animated films',
     icon: Castle,
     parent: {
       route: '/film-animation',
@@ -147,8 +204,8 @@ export const filmSubcategories: SubcategoryMapping = {
     }
   },
   'film-animation-adventure': {
-    title: 'Adventure Animation',
-    description: 'Animated films in the adventure genre',
+    title: 'Film Animation (Adventure)',
+    description: 'Adventure animated films',
     icon: Compass,
     parent: {
       route: '/film-animation',
@@ -156,8 +213,8 @@ export const filmSubcategories: SubcategoryMapping = {
     }
   },
   'film-animation-cartoons': {
-    title: 'Cartoons',
-    description: 'Traditional cartoons and animation',
+    title: 'Film Animation (Cartoons)',
+    description: 'Traditional cartoons and animated series',
     icon: Clapperboard,
     parent: {
       route: '/film-animation',
@@ -165,8 +222,8 @@ export const filmSubcategories: SubcategoryMapping = {
     }
   },
   'film-animation-comedy-crime': {
-    title: 'Comedy & Crime Animation',
-    description: 'Animated films combining comedy and crime elements',
+    title: 'Film Animation (Comedy, Crime)',
+    description: 'Comedy and crime animated films',
     icon: Bookmark,
     parent: {
       route: '/film-animation',
@@ -174,8 +231,8 @@ export const filmSubcategories: SubcategoryMapping = {
     }
   },
   'film-animation-comedy': {
-    title: 'Comedy Animation',
-    description: 'Animated films in the comedy genre',
+    title: 'Film Animation (Comedy)',
+    description: 'Comedy animated films',
     icon: Laugh,
     parent: {
       route: '/film-animation',
@@ -183,39 +240,57 @@ export const filmSubcategories: SubcategoryMapping = {
     }
   },
   'film-animation-drama': {
-    title: 'Drama Animation',
-    description: 'Animated films in the drama genre',
+    title: 'Film Animation (Drama)',
+    description: 'Dramatic animated films',
     icon: Drama,
     parent: {
       route: '/film-animation',
       name: 'Film & Animation'
     }
   },
+  'film-animation-musical-comedy': {
+    title: 'Film Animation (Musical, Comedy)',
+    description: 'Musical comedy animated films',
+    icon: Music,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
   'film-animation-parody-comedy': {
-    title: 'Parody & Comedy Animation',
-    description: 'Animated films combining parody and comedy elements',
+    title: 'Film Animation (Parody, Comedy)',
+    description: 'Parody and comedy animated films',
     icon: Laugh,
     parent: {
       route: '/film-animation',
       name: 'Film & Animation'
     }
   },
-  'film-movies-action-thriller': {
-    title: 'Action & Thriller Movies',
-    description: 'Movies combining action and thriller elements',
-    icon: Bomb,
-    parent: {
-      route: '/film-movies',
-      name: 'Film & Movies'
-    }
-  },
-  'film-movies-clips': {
-    title: 'Movie Clips',
-    description: 'Short clips from films and movies',
+  'film-animation-short-film': {
+    title: 'Film Animation (Short Film)',
+    description: 'Short animated films',
     icon: Film,
     parent: {
-      route: '/film-movies',
-      name: 'Film & Movies'
+      route: '/film-animation',
+      name: 'Film & Animation'
     }
-  }
+  },
+  'film-animation-clips-trailers': {
+    title: 'Film, Animation (Clips, Trailers)',
+    description: 'Animation clips and movie trailers',
+    icon: Scissors,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-animation-horror': {
+    title: 'Film, Animation, Movies (Horror)',
+    description: 'Horror animated films and movies',
+    icon: Ghost,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
 };
