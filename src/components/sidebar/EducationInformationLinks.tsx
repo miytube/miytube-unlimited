@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { GraduationCap, Scissors, Microscope, Newspaper, Stethoscope, BookOpen, HeartPulse, School } from 'lucide-react';
+import { GraduationCap, Scissors, Microscope, Newspaper } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EducationInformationLinks: React.FC = () => {
@@ -23,7 +23,18 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'music-education', label: 'Music Education', path: '/education/music-education' }
       ]
     },
-    { id: 'how-to-style', icon: Scissors, label: 'How-to & Style', path: '/how-to-style' },
+    { 
+      id: 'how-to-style', 
+      icon: Scissors, 
+      label: 'How-to & Style', 
+      path: '/how-to-style',
+      subItems: [
+        { id: 'howto-diy', label: 'DIY Projects', path: '/how-to-style/diy' },
+        { id: 'howto-fashion', label: 'Fashion Tips', path: '/how-to-style/fashion' },
+        { id: 'howto-beauty', label: 'Beauty & Makeup', path: '/how-to-style/beauty' },
+        { id: 'howto-home', label: 'Home Improvement', path: '/how-to-style/home' }
+      ]
+    },
     { 
       id: 'science-tech', 
       icon: Microscope, 
@@ -36,7 +47,18 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'robots', label: 'Robots', path: '/science-tech/robots' }
       ]
     },
-    { id: 'news-politics', icon: Newspaper, label: 'News & Politics', path: '/news' },
+    { 
+      id: 'news-politics', 
+      icon: Newspaper, 
+      label: 'News & Politics', 
+      path: '/news',
+      subItems: [
+        { id: 'news-breaking', label: 'Breaking News', path: '/news/breaking' },
+        { id: 'news-politics', label: 'Politics', path: '/news/politics' },
+        { id: 'news-world', label: 'World News', path: '/news/world' },
+        { id: 'news-local', label: 'Local News', path: '/news/local' }
+      ]
+    },
   ];
 
   return <SidebarCategoryLinks title="EDUCATION & INFORMATION" links={educationAndInformationLinks} />;
