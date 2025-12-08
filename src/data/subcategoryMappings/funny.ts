@@ -5,7 +5,7 @@ import { SubcategoryMapping } from './types';
 export const funnySubcategories: SubcategoryMapping = {
   'funny-short-videos': {
     title: 'Funny Short Videos',
-    description: 'Short comedic video content for quick laughs',
+    description: 'Short comedic videos for quick laughs',
     icon: Laugh,
     parent: {
       route: '/funny',
@@ -14,7 +14,7 @@ export const funnySubcategories: SubcategoryMapping = {
   },
   'funny-weird': {
     title: 'Wacky & Bizarre',
-    description: 'Strange, unusual, and bizarre funny content',
+    description: 'Strange, unusual, and bizarre funny videos',
     icon: Bug,
     parent: {
       route: '/funny',

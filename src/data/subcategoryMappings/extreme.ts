@@ -5,7 +5,7 @@ import { SubcategoryMapping } from './types';
 export const extremeSubcategories: SubcategoryMapping = {
   'extreme-activity': {
     title: 'Extreme Activities',
-    description: 'Content featuring extreme sports and activities',
+    description: 'Extreme sports and activities',
     icon: Mountain,
     parent: {
       route: '/extreme',
@@ -14,7 +14,7 @@ export const extremeSubcategories: SubcategoryMapping = {
   },
   'extreme-sports': {
     title: 'Extreme Sports',
-    description: 'Content about extreme sports and high-adrenaline activities',
+    description: 'Extreme sports and high-adrenaline activities',
     icon: Wind,
     parent: {
       route: '/extreme',
@@ -23,7 +23,7 @@ export const extremeSubcategories: SubcategoryMapping = {
   },
   'extreme-adventures': {
     title: 'Extreme Adventures',
-    description: 'Content featuring extreme adventure expeditions and challenges',
+    description: 'Extreme adventure expeditions and challenges',
     icon: Snowflake,
     parent: {
       route: '/extreme',

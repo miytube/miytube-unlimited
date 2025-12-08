@@ -12,13 +12,13 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-basketball-football': {
     title: 'Basketball & Football',
-    description: 'Basketball and football content and highlights',
+    description: 'Basketball and football highlights',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-car-racing': {
     title: 'Car Racing, WRC',
-    description: 'Car racing, WRC, and motorsports content',
+    description: 'Car racing, WRC, and motorsports',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -42,37 +42,37 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-kickboxing': {
     title: 'Kickboxing',
-    description: 'Kickboxing matches and training content',
+    description: 'Kickboxing matches and training',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-mlb-players': {
     title: 'MLB Players & Coaches',
-    description: 'MLB players, coaches, and team content',
+    description: 'MLB players, coaches, and teams',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-nba-players': {
     title: 'NBA Players & Coaches',
-    description: 'NBA players, coaches, and team content',
+    description: 'NBA players, coaches, and teams',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-nfl-players': {
     title: 'NFL Players & Coaches',
-    description: 'NFL players, coaches, and team content',
+    description: 'NFL players, coaches, and teams',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-nhl-players': {
     title: 'NHL Players & Coaches',
-    description: 'NHL players, coaches, and team content',
+    description: 'NHL players, coaches, and teams',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-pga-golf': {
     title: 'PGA & Golf Players',
-    description: 'PGA tour and golf player content',
+    description: 'PGA tour and golf players',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -96,7 +96,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-soccer': {
     title: 'Soccer & Football',
-    description: 'Soccer and American football content',
+    description: 'Soccer and American football',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -114,7 +114,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-tennis-men': {
     title: 'Tennis Men',
-    description: 'Men\'s tennis matches and content',
+    description: 'Men\'s tennis matches',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -126,7 +126,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-tennis-women': {
     title: 'Tennis Women',
-    description: 'Women\'s tennis matches and content',
+    description: 'Women\'s tennis matches',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -138,7 +138,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-track-field': {
     title: 'Track & Field',
-    description: 'Track and field sports content',
+    description: 'Track and field sports',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -164,7 +164,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // Boxing
   'sports-boxing': {
     title: 'Sports Boxing',
-    description: 'Professional and amateur boxing content',
+    description: 'Professional and amateur boxing',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -250,7 +250,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // Racing
   'sports-formula-one': {
     title: 'Formula One Racing',
-    description: 'Formula 1 races and content',
+    description: 'Formula 1 races',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -262,7 +262,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-nhra': {
     title: 'NHRA Drag Racing',
-    description: 'NHRA drag racing content',
+    description: 'NHRA drag racing',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -296,25 +296,25 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-nhl-allstar-east': {
     title: 'NHL All-Star East',
-    description: 'NHL All-Star East team content',
+    description: 'NHL All-Star East team',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-nhl-allstar': {
     title: 'NHL All-Star Hockey',
-    description: 'NHL All-Star game content',
+    description: 'NHL All-Star game',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-nhl-allstar-west': {
     title: 'NHL All-Star West',
-    description: 'NHL All-Star West team content',
+    description: 'NHL All-Star West team',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-nhl-playoffs': {
     title: 'NHL Playoffs',
-    description: 'NHL hockey playoffs content',
+    description: 'NHL hockey playoffs',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -328,7 +328,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // Horse Sports
   'sports-horse-racing': {
     title: 'Horse Racing',
-    description: 'Horse racing events and content',
+    description: 'Horse racing events',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -386,7 +386,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // Soccer
   'sports-mls-fifa': {
     title: 'MLS, FIFA, USL, WSL',
-    description: 'MLS, FIFA, USL, WSL soccer content',
+    description: 'MLS, FIFA, USL, WSL soccer',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -394,7 +394,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // MMA
   'sports-mma-ufc': {
     title: 'MMA & UFC Fighting',
-    description: 'MMA and UFC fights and content',
+    description: 'MMA and UFC fights',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -442,7 +442,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   },
   'sports-nfl-superbowl': {
     title: 'NFL Super Bowl',
-    description: 'NFL Super Bowl games and content',
+    description: 'NFL Super Bowl games',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -506,19 +506,19 @@ export const sportsSubcategories: SubcategoryMapping = {
   // WNBA
   'sports-wnba-players': {
     title: 'WNBA Players & Coaches',
-    description: 'WNBA players and coaches content',
+    description: 'WNBA players and coaches',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-wnba-champions': {
     title: 'WNBA Champions',
-    description: 'WNBA championship content',
+    description: 'WNBA championships',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
   'sports-wnba-coaches': {
     title: 'WNBA Coaches',
-    description: 'WNBA coaches and team content',
+    description: 'WNBA coaches and teams',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -538,7 +538,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // Wrestling
   'sports-wwe-wrestling': {
     title: 'WWE Wrestling',
-    description: 'WWE wrestling content',
+    description: 'WWE wrestling',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -546,7 +546,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // Women's Basketball
   'sports-women-basketball-ncaa': {
     title: 'Women Basketball NCAA',
-    description: 'Women\'s NCAA basketball content',
+    description: 'Women\'s NCAA basketball',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
@@ -554,7 +554,7 @@ export const sportsSubcategories: SubcategoryMapping = {
   // High School Sports
   'sports-high-school': {
     title: 'High School Sports',
-    description: 'High school sports content',
+    description: 'High school sports',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },

@@ -6,19 +6,19 @@ export const fitnessSubcategories: SubcategoryMapping = {
   // Physical Fitness subcategories
   'fitness-weight-lifting': {
     title: 'Weight Lifting',
-    description: 'Weight lifting videos, pranks, and amazing content',
+    description: 'Weight lifting videos, pranks, and amazing feats',
     icon: Dumbbell,
     parent: { route: '/physical-fitness', name: 'Physical Fitness' }
   },
   'fitness-weightlifting-female': {
     title: 'Weightlifting Female',
-    description: 'Female weightlifting content and inspiration',
+    description: 'Female weightlifting and inspiration',
     icon: Dumbbell,
     parent: { route: '/physical-fitness', name: 'Physical Fitness' }
   },
   'fitness-weightlifting-male': {
     title: 'Weightlifting Male',
-    description: 'Male weightlifting content and training',
+    description: 'Male weightlifting and training',
     icon: Dumbbell,
     parent: { route: '/physical-fitness', name: 'Physical Fitness' }
   },
@@ -30,7 +30,7 @@ export const fitnessSubcategories: SubcategoryMapping = {
   },
   'fitness-workout': {
     title: 'Workout',
-    description: 'Workout videos, weightlifting and fitness content',
+    description: 'Workout videos, weightlifting and fitness',
     icon: Dumbbell,
     parent: { route: '/physical-fitness', name: 'Physical Fitness' }
   },
@@ -42,7 +42,7 @@ export const fitnessSubcategories: SubcategoryMapping = {
   },
   'fitness-workout-fitness': {
     title: 'Workout Fitness',
-    description: 'General workout and fitness training content',
+    description: 'General workout and fitness training',
     icon: Dumbbell,
     parent: { route: '/physical-fitness', name: 'Physical Fitness' }
   },

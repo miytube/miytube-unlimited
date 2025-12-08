@@ -4,7 +4,7 @@ import { SubcategoryMapping } from './types';
 export const foodsSubcategories: SubcategoryMapping = {
   'foods-general': {
     title: 'Foods',
-    description: 'Content about various types of foods and cuisine',
+    description: 'Various types of foods and cuisine',
     icon: Utensils,
     parent: {
       route: '/foods',
@@ -13,7 +13,7 @@ export const foodsSubcategories: SubcategoryMapping = {
   },
   'foods-cooking': {
     title: 'Cooking & Food Preparation',
-    description: 'Content about cooking techniques and food preparation',
+    description: 'Cooking techniques and food preparation',
     icon: Utensils,
     parent: {
       route: '/foods',
@@ -22,7 +22,7 @@ export const foodsSubcategories: SubcategoryMapping = {
   },
   'foods-dieting': {
     title: 'Dieting & Weight Loss',
-    description: 'Content about dieting, nutrition, and weight loss',
+    description: 'Dieting, nutrition, and weight loss',
     icon: Scale,
     parent: {
       route: '/foods',
@@ -31,7 +31,7 @@ export const foodsSubcategories: SubcategoryMapping = {
   },
   'foods-fruits-vegetables': {
     title: 'Fruits & Vegetables',
-    description: 'Content about fruits, vegetables, and produce',
+    description: 'Fruits, vegetables, and produce',
     icon: Apple,
     parent: {
       route: '/foods',
@@ -40,7 +40,7 @@ export const foodsSubcategories: SubcategoryMapping = {
   },
   'foods-gain-weight': {
     title: 'Weight Gain',
-    description: 'Content about nutrition for weight gain and muscle building',
+    description: 'Nutrition for weight gain and muscle building',
     icon: Scale,
     parent: {
       route: '/foods',
@@ -49,7 +49,7 @@ export const foodsSubcategories: SubcategoryMapping = {
   },
   'foods-sweets': {
     title: 'Sweets & Desserts',
-    description: 'Content about cakes, desserts, and sweet foods',
+    description: 'Cakes, desserts, and sweet foods',
     icon: Cookie,
     parent: {
       route: '/foods',
@@ -58,7 +58,7 @@ export const foodsSubcategories: SubcategoryMapping = {
   },
   'foods-harvest': {
     title: 'Harvest Foods',
-    description: 'Content about harvested foods, seasonal produce, and farming',
+    description: 'Harvested foods, seasonal produce, and farming',
     icon: Salad,
     parent: {
       route: '/foods',
