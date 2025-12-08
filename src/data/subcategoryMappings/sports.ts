@@ -382,12 +382,6 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
-  'sports-mlb-world-series-present': {
-    title: 'MLB World Series Present',
-    description: 'Current MLB World Series content',
-    icon: Trophy,
-    parent: { route: '/sports', name: 'Sports' }
-  },
 
   // Soccer
   'sports-mls-fifa': {
