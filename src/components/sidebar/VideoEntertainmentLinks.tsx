@@ -55,7 +55,19 @@ export const VideoEntertainmentLinks: React.FC = () => {
         { id: 'music-artists-works', label: 'Artists Works & Hobbies', path: '/music-artists/works' }
       ]
     },
-    { id: 'comedy', icon: Smile, label: 'Comedy', path: '/comedy' },
+    { 
+      id: 'comedy', 
+      icon: Smile, 
+      label: 'Comedy', 
+      path: '/comedy',
+      subItems: [
+        { id: 'comedy-standup', label: 'Stand-Up Comedy', path: '/comedy/standup' },
+        { id: 'comedy-sketches', label: 'Sketches & Skits', path: '/comedy/sketches' },
+        { id: 'comedy-pranks', label: 'Pranks & Fails', path: '/comedy/pranks' },
+        { id: 'comedy-improv', label: 'Improv Comedy', path: '/comedy/improv' },
+        { id: 'comedy-parody', label: 'Parody & Satire', path: '/comedy/parody' }
+      ]
+    },
     { id: 'gaming', icon: Gamepad2, label: 'Gaming', path: '/gaming' },
     { 
       id: 'sports', 
