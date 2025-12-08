@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { Film, Upload, Plus } from 'lucide-react';
 import { ShortCard } from '@/components/ShortCard';
 import { FileUploader } from '@/components/upload/FileUploader';
+import { Link } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -130,9 +131,13 @@ const Shorts = () => {
           
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
-              <div key={category.id} className="bg-muted px-4 py-2 rounded-full font-medium text-sm cursor-pointer hover:bg-primary/10 transition-colors">
+              <Link 
+                key={category.id} 
+                to={`/${category.id === 'diy' ? 'how-to-style' : category.id === 'cooking' ? 'foods' : category.id}`}
+                className="bg-muted px-4 py-2 rounded-full font-medium text-sm cursor-pointer hover:bg-primary/10 transition-colors"
+              >
                 {category.name}
-              </div>
+              </Link>
             ))}
             <button
               className="bg-muted/50 px-4 py-2 rounded-full font-medium text-sm border-2 border-dashed border-muted-foreground/30 flex items-center gap-1 hover:border-primary/40 transition-colors"
