@@ -27,13 +27,20 @@ const MusicGenre = () => {
 
   const Icon = genreInfo.icon;
 
-  // Filter for music videos matching this genre
-  const genreVideos = uploadedVideos.filter(video => 
-    video.category === 'music' ||
-    video.category === actualGenre ||
-    video.subcategory?.toLowerCase().includes(actualGenre) ||
-    video.tags?.some(tag => tag.toLowerCase().includes(actualGenre) || tag.toLowerCase().includes('music'))
-  );
+  // Filter for music videos matching this specific genre - strict matching only
+  const genreVideos = uploadedVideos.filter(video => {
+    const genreLower = actualGenre.toLowerCase();
+    const categoryLower = video.category?.toLowerCase() || '';
+    const subcategoryLower = video.subcategory?.toLowerCase() || '';
+    
+    // Exact match on subcategory or category equals the genre
+    return (
+      categoryLower === genreLower ||
+      subcategoryLower === genreLower ||
+      subcategoryLower === `music-${genreLower}` ||
+      video.tags?.some(tag => tag.toLowerCase() === genreLower || tag.toLowerCase() === `music-${genreLower}`)
+    );
+  });
 
   return (
     <Layout>
