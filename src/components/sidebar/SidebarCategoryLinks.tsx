@@ -51,18 +51,23 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
         >
           <Icon size={20} />
           <span className="flex-1">{item.label}</span>
-          {isExpanded ? (
-            <ChevronDown size={16} className="text-muted-foreground" />
-          ) : (
-            <ChevronRight size={16} className="text-muted-foreground" />
-          )}
+          <ChevronDown 
+            size={16} 
+            className={`text-muted-foreground transition-transform duration-200 ${
+              isExpanded ? 'rotate-0' : '-rotate-90'
+            }`} 
+          />
         </div>
         
-        {isExpanded && (
+        <div 
+          className={`overflow-hidden transition-all duration-200 ease-out ${
+            isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
           <div className="pl-8 space-y-1 mt-1">
             <Link
               to={item.path}
-              className={`block px-3 py-1 text-sm rounded-md hover:bg-secondary/60 transition-colors ${
+              className={`block px-3 py-1.5 text-sm rounded-md hover:bg-secondary/60 transition-colors ${
                 location.pathname === item.path ? 'text-primary font-medium' : 'text-muted-foreground'
               }`}
             >
@@ -75,7 +80,7 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
                 <Link
                   key={subItem.id}
                   to={subItem.path}
-                  className={`block px-3 py-1 text-sm rounded-md hover:bg-secondary/60 transition-colors ${
+                  className={`block px-3 py-1.5 text-sm rounded-md hover:bg-secondary/60 transition-colors ${
                     isSubActive ? 'text-primary font-medium' : 'text-muted-foreground'
                   }`}
                 >
@@ -84,7 +89,7 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
               );
             })}
           </div>
-        )}
+        </div>
       </div>
     );
   }
