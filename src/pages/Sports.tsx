@@ -82,8 +82,7 @@ const Sports = () => {
     { id: 'sports-mlb-playoffs-al', name: 'Sports MLB (mlb playoffs AL...)' },
     { id: 'sports-mlb-playoffs-nl', name: 'Sports MLB (mlb playoffs NL...)' },
     { id: 'sports-mlb-baseball', name: 'Sports MLB Baseball' },
-    { id: 'sports-mlb-world-series', name: 'Sports MLB Baseball (world series...)' },
-    { id: 'sports-mlb-world-series-present', name: 'Sports MLB World Series (present...)' },
+    { id: 'sports-mlb-world-series', name: 'Sports MLB World Series' },
     
     // Soccer
     { id: 'sports-mls-fifa', name: 'Sports MLS, FIFA, USL, WSL...' },

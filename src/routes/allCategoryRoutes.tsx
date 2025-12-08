@@ -169,7 +169,7 @@ const categoryKeys = [
   'sports-college-womens-softball', 'sports-fans-challenges', 'sports-football-high-school',
   'sports-formula-one', 'sports-game-challenges', 'sports-golf-ryder-cup', 'sports-hockey-countries',
   'sports-horse-racing', 'sports-horses', 'sports-mlb-playoffs-al', 'sports-mlb-playoffs-nl',
-  'sports-mlb-baseball', 'sports-mlb-world-series', 'sports-mlb-world-series-present',
+  'sports-mlb-baseball', 'sports-mlb-world-series',
   'sports-mls-fifa', 'sports-mma-ufc', 'sports-motorcycles', 'sports-nascar',
   'sports-nba-east-playoffs', 'sports-nba-west-playoffs', 'sports-nba-basketball',
   'sports-news-podcasts', 'sports-nfl-football', 'sports-nfl-superbowl',
