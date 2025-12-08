@@ -15,6 +15,7 @@ import { audioRoutes } from "./audioRoutes";
 import { hollywoodRoutes } from "./hollywoodRoutes";
 import { militaryRoutes } from "./militaryRoutes";
 import { filmRoutes } from "./filmRoutes";
+import { comprehensiveSubcategoryRoutes } from "./comprehensiveSubcategoryRoutes";
 
 const AppRoutes = () => {
   return (
@@ -63,6 +64,9 @@ const AppRoutes = () => {
       
       {/* All Category Routes */}
       {allCategoryRoutes}
+      
+      {/* Comprehensive Subcategory Routes */}
+      {comprehensiveSubcategoryRoutes}
     </Routes>
   );
 };

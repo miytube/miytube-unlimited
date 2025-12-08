@@ -1,23 +1,30 @@
 
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Film, GraduationCap, Compass } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { SidebarMainLinks } from './sidebar/SidebarMainLinks';
-import { VideoEntertainmentLinks } from './sidebar/VideoEntertainmentLinks';
-import { EducationInformationLinks } from './sidebar/EducationInformationLinks';
-import { MusicAudioLinks } from './sidebar/MusicAudioLinks';
-import { PeopleSocietyLinks } from './sidebar/PeopleSocietyLinks';
-import { PlacesLocationsLinks } from './sidebar/PlacesLocationsLinks';
-import { EnvironmentWeatherLinks } from './sidebar/EnvironmentWeatherLinks';
-import { TransportVehiclesLinks } from './sidebar/TransportVehiclesLinks';
-import { LawJusticeLinks } from './sidebar/LawJusticeLinks';
-import { DocumentMediaLinks } from './sidebar/DocumentMediaLinks';
-import { HollywoodLinks } from './sidebar/HollywoodLinks';
-import { FilmAnimationLinks } from './sidebar/FilmAnimationLinks';
-import { RealEstateLinks } from './sidebar/RealEstateLinks';
 import { SidebarFooter } from './sidebar/SidebarFooter';
 import { Separator } from './ui/separator';
+
+// New comprehensive sidebar components
+import { AITechnologyLinks } from './sidebar/AITechnologyLinks';
+import { AviationTransportLinks } from './sidebar/AviationTransportLinks';
+import { AnimalsNatureLinks } from './sidebar/AnimalsNatureLinks';
+import { CrimeJusticeLinks } from './sidebar/CrimeJusticeLinks';
+import { BusinessFinanceLinks } from './sidebar/BusinessFinanceLinks';
+import { FoodDrinksLinks } from './sidebar/FoodDrinksLinks';
+import { EnvironmentWeatherLinks } from './sidebar/EnvironmentWeatherLinks';
+import { EntertainmentMediaLinks } from './sidebar/EntertainmentMediaLinks';
+import { ComedyFunnyLinks } from './sidebar/ComedyFunnyLinks';
+import { MusicFullLinks } from './sidebar/MusicFullLinks';
+import { GamingHobbiesLinks } from './sidebar/GamingHobbiesLinks';
+import { FitnessHealthLinks } from './sidebar/FitnessHealthLinks';
+import { ModelsPhotosLinks } from './sidebar/ModelsPhotosLinks';
+import { TravelPlacesLinks } from './sidebar/TravelPlacesLinks';
+import { HowToEducationLinks } from './sidebar/HowToEducationLinks';
+import { PeopleWorkersLinks } from './sidebar/PeopleWorkersLinks';
+import { DocumentMediaLinks } from './sidebar/DocumentMediaLinks';
+import { EducationInformationLinks } from './sidebar/EducationInformationLinks';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -51,34 +58,58 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <SidebarMainLinks />
           
           <Separator className="my-3" />
-          <h3 className="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-            <Film className="h-3.5 w-3.5" />
-            Entertainment & Media
-          </h3>
-          <VideoEntertainmentLinks />
-          <MusicAudioLinks />
-          <FilmAnimationLinks />
-          <HollywoodLinks />
+          
+          {/* Entertainment & Media */}
+          <EntertainmentMediaLinks />
+          <ComedyFunnyLinks />
+          <MusicFullLinks />
+          <GamingHobbiesLinks />
           
           <Separator className="my-3" />
-          <h3 className="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-            <GraduationCap className="h-3.5 w-3.5" />
-            Education & Information
-          </h3>
+          
+          {/* Technology & Science */}
+          <AITechnologyLinks />
+          
+          <Separator className="my-3" />
+          
+          {/* Education & Information */}
           <EducationInformationLinks />
+          <HowToEducationLinks />
           <DocumentMediaLinks />
-          <LawJusticeLinks />
           
           <Separator className="my-3" />
-          <h3 className="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-            <Compass className="h-3.5 w-3.5" />
-            Lifestyle & Places
-          </h3>
-          <PeopleSocietyLinks />
-          <PlacesLocationsLinks />
-          <RealEstateLinks />
+          
+          {/* Business & Finance */}
+          <BusinessFinanceLinks />
+          
+          <Separator className="my-3" />
+          
+          {/* Lifestyle & People */}
+          <PeopleWorkersLinks />
+          <FitnessHealthLinks />
+          <ModelsPhotosLinks />
+          
+          <Separator className="my-3" />
+          
+          {/* Food & Drinks */}
+          <FoodDrinksLinks />
+          
+          <Separator className="my-3" />
+          
+          {/* Animals & Nature */}
+          <AnimalsNatureLinks />
           <EnvironmentWeatherLinks />
-          <TransportVehiclesLinks />
+          
+          <Separator className="my-3" />
+          
+          {/* Travel & Places */}
+          <TravelPlacesLinks />
+          <AviationTransportLinks />
+          
+          <Separator className="my-3" />
+          
+          {/* Crime & Justice */}
+          <CrimeJusticeLinks />
           
           <SidebarFooter />
         </div>
