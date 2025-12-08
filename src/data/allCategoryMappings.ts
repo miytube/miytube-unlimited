@@ -390,6 +390,14 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'speech-persuasive': { title: 'Speech (Persuasive, Protest)', description: 'Persuasive speeches', icon: Megaphone },
   'speeches': { title: 'Speeches', description: 'Various speeches', icon: Mic },
   
+  // Education Speeches (nested under education)
+  'education-speech-commencement': { title: 'Speech (Commencement)', description: 'Graduation speeches', icon: GraduationCap },
+  'education-speech-eulogy': { title: 'Speech (Eulogy, Memorial)', description: 'Memorial speeches', icon: Heart },
+  'education-speech-informative': { title: 'Speech (Informative)', description: 'Informative speeches', icon: Info },
+  'education-speech-motivational': { title: 'Speech (Motivational)', description: 'Motivational speeches', icon: Zap },
+  'education-speech-persuasive': { title: 'Speech (Persuasive, Protest)', description: 'Persuasive speeches', icon: Megaphone },
+  'education-speeches': { title: 'Speeches', description: 'Various speeches', icon: Mic },
+  
   // Sports - Main categories
   'sports': { title: 'Sports', description: 'Sports content and coverage', icon: Trophy },
   'sports-arenas': { title: 'Sports (Arenas, Stadiums)', description: 'Sports venues', icon: Building2 },

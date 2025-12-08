@@ -83,6 +83,12 @@ export const subcategoryRoutes = [
   <Route key="education-medicine" path="/education/medicine" element={<GenericSubcategoryPage />} />,
   <Route key="education-religion" path="/education/religion" element={<GenericSubcategoryPage />} />,
   <Route key="education-nursing" path="/education/nursing" element={<GenericSubcategoryPage />} />,
+  <Route key="education-speech-commencement" path="/education/speech-commencement" element={<GenericSubcategoryPage />} />,
+  <Route key="education-speech-eulogy" path="/education/speech-eulogy" element={<GenericSubcategoryPage />} />,
+  <Route key="education-speech-informative" path="/education/speech-informative" element={<GenericSubcategoryPage />} />,
+  <Route key="education-speech-motivational" path="/education/speech-motivational" element={<GenericSubcategoryPage />} />,
+  <Route key="education-speech-persuasive" path="/education/speech-persuasive" element={<GenericSubcategoryPage />} />,
+  <Route key="education-speeches" path="/education/speeches" element={<GenericSubcategoryPage />} />,
   
   /* Courts & Crime Routes */
   <Route key="courts-police-trails" path="/courts-police/trails" element={<GenericSubcategoryPage />} />,
