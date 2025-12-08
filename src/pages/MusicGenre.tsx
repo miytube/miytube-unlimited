@@ -48,7 +48,7 @@ const MusicGenre = () => {
               <p className="text-muted-foreground">{genreInfo.description}</p>
             </div>
             <Link 
-              to="/upload/music" 
+              to={`/upload/music?genre=${actualGenre}`} 
               className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
             >
               <Upload size={18} />
@@ -82,7 +82,7 @@ const MusicGenre = () => {
             <h3 className="text-xl font-semibold mb-2">No {genreInfo.title} Videos Yet</h3>
             <p className="text-muted-foreground mb-4">Be the first to upload {genreInfo.title.toLowerCase()} content!</p>
             <Link 
-              to="/upload/music" 
+              to={`/upload/music?genre=${actualGenre}`} 
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
             >
               <Upload size={18} />
@@ -99,7 +99,7 @@ const MusicGenre = () => {
           </p>
           <div className="mt-4">
             <Link 
-              to="/upload/music" 
+              to={`/upload/music?genre=${actualGenre}`} 
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
             >
               <Upload size={18} />
