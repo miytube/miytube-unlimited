@@ -63,32 +63,50 @@ export const filterVideosBySubcategory = (
   const titleLower = pageTitle.toLowerCase().trim();
   const keyLower = mappingKey.toLowerCase().trim();
   
-  // Handle path-based keys like "real-estate/luxury" -> extract last segment "luxury"
+  // Handle path-based keys like "real-estate/luxury" -> extract segments
   const keySegments = keyLower.split('/');
   const lastSegment = keySegments[keySegments.length - 1];
   const parentSegment = keySegments.length > 1 ? keySegments[0] : '';
   
-  // Extract core keywords from mapping key (e.g., "sports-mlb-world-series" -> ["mlb", "world", "series"])
+  // Also handle hyphen-separated keys like "real-estate-luxury"
+  const hyphenSegments = keyLower.split('-');
+  const lastHyphenSegment = hyphenSegments[hyphenSegments.length - 1];
+  
+  // Extract core keywords from mapping key
   const keyWords = keyLower.split(/[-\/]/).filter(w => w.length > 2);
+  
+  console.log('Filtering for subcategory:', { titleLower, keyLower, lastSegment, parentSegment });
   
   return videos.filter(video => {
     const vidCategory = video.category?.toLowerCase().trim() || '';
     const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
     const vidTags = video.tags?.map(t => t.toLowerCase().trim()) || [];
     
+    console.log('Checking video:', { id: video.id, vidCategory, vidSubcategory, vidTags });
+    
+    // Exact match on subcategory (e.g., video.subcategory === "luxury")
+    if (vidSubcategory === lastSegment) {
+      console.log('Match: subcategory equals lastSegment');
+      return true;
+    }
+    
+    // Match when video category matches parent and subcategory matches last segment
+    // e.g., video.category="real-estate", video.subcategory="luxury", key="real-estate/luxury"
+    if (parentSegment) {
+      const normalizedParent = parentSegment.replace(/[\s-]/g, '');
+      const normalizedVidCategory = vidCategory.replace(/[\s-]/g, '');
+      if (normalizedVidCategory === normalizedParent && vidSubcategory === lastSegment) {
+        console.log('Match: category matches parent and subcategory matches lastSegment');
+        return true;
+      }
+    }
+    
     // Exact match on title
     if (vidCategory === titleLower || vidSubcategory === titleLower) return true;
-    
-    // Match subcategory directly (e.g., "luxury" matches subcategory "luxury")
-    if (vidSubcategory === lastSegment) return true;
     
     // Match combined parent-subcategory pattern (e.g., "real-estate-luxury")
     const combinedKey = `${parentSegment}-${lastSegment}`;
     if (vidCategory === combinedKey || vidSubcategory === combinedKey) return true;
-    
-    // Match "real estate" category with "luxury" subcategory
-    if (parentSegment && vidCategory.replace(/[\s-]/g, '') === parentSegment.replace(/[\s-]/g, '') && 
-        vidSubcategory === lastSegment) return true;
     
     // Check if category/subcategory contains the page title exactly
     const titleWords = titleLower.split(' ').filter(w => w.length > 2);
