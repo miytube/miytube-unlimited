@@ -11,6 +11,7 @@ export const MusicAudioLinks: React.FC = () => {
       label: 'Music', 
       path: '/music',
       subItems: [
+        { id: 'music-lyrics', label: 'Lyrics', path: '/music/lyrics' },
         { id: 'music-spanish', label: 'Spanish Music', path: '/music/spanish' },
         { id: 'music-folk', label: 'Folk Music', path: '/music/folk' },
         { id: 'music-chinese', label: 'Chinese Music', path: '/music/chinese' },

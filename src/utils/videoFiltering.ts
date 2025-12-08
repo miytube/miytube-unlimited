@@ -140,6 +140,9 @@ export const filterVideosByMusicGenre = (
     // Check tags for exact match
     if (tags.includes(genreLower) || tags.includes(`music-${genreLower}`) || tags.includes(genreSpaced)) return true;
     
+    // Check if category or subcategory contains the genre (for cases like "music-lyrics" matching "lyrics")
+    if (categoryLower.includes(genreLower) || subcategoryLower.includes(genreLower)) return true;
+    
     return false;
   });
 };
