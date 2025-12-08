@@ -65,7 +65,7 @@ export const MusicDropdown: React.FC = () => {
                 <div className="space-y-1.5">
                   <NavigationMenuLink asChild>
                     <Link 
-                      to="/music/upload" 
+                      to="/upload/music" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
                       <Music className="h-4 w-4" />
