@@ -37,86 +37,17 @@ export const LawJusticeLinks: React.FC = () => {
       ]
     },
     { 
-      id: 'military-marines', 
-      icon: Ship, 
-      label: 'Military: Marines', 
-      path: '/military-marines',
-      subItems: [
-        { id: 'marine-training', label: 'Marine Training', path: '/marine-training' },
-        { id: 'marine-boot-camp', label: 'Marine Boot Camp', path: '/marine-boot-camp' },
-        { id: 'marine-ships', label: 'Marine Ships', path: '/marine-ships' },
-        { id: 'marine-personnel', label: 'Marine Personnel', path: '/marine-personnel' },
-        { id: 'marine-weapons', label: 'Marine Weapons', path: '/marine-weapons' },
-        { id: 'marine-pilots', label: 'Marine Pilots', path: '/marine-pilots' },
-        { id: 'marine-duties', label: 'Marine Duties', path: '/marine-duties' }
-      ]
-    },
-    { 
-      id: 'military-army', 
+      id: 'military', 
       icon: Shield, 
-      label: 'Military: Army', 
-      path: '/military-army',
+      label: 'Military', 
+      path: '/military',
       subItems: [
-        { id: 'army-training', label: 'Army Training', path: '/army-training' },
-        { id: 'army-boot-camp', label: 'Army Boot Camp', path: '/army-boot-camp' },
-        { id: 'army-ships', label: 'Army Ships', path: '/army-ships' },
-        { id: 'army-personnel', label: 'Army Personnel', path: '/army-personnel' },
-        { id: 'army-weapons', label: 'Army Weapons', path: '/army-weapons' },
-        { id: 'army-pilots', label: 'Army Pilots', path: '/army-pilots' },
-        { id: 'army-duties', label: 'Army Duties', path: '/army-duties' }
+        { id: 'military-army', label: 'Army', path: '/military/army' },
+        { id: 'military-airforce', label: 'Air Force', path: '/military/airforce' },
+        { id: 'military-navy', label: 'Navy', path: '/military/navy' },
+        { id: 'military-coast-guard', label: 'Coast Guard', path: '/military/coast-guard' },
+        { id: 'military-marines', label: 'Marines', path: '/military/marines' }
       ]
-    },
-    { 
-      id: 'military-navy', 
-      icon: Anchor, 
-      label: 'Military: Navy', 
-      path: '/military-navy',
-      subItems: [
-        { id: 'navy-training', label: 'Navy Training', path: '/navy-training' },
-        { id: 'navy-boot-camp', label: 'Navy Boot Camp', path: '/navy-boot-camp' },
-        { id: 'navy-ships', label: 'Navy Ships', path: '/navy-ships' },
-        { id: 'navy-personnel', label: 'Navy Personnel', path: '/navy-personnel' },
-        { id: 'navy-weapons', label: 'Navy Weapons', path: '/navy-weapons' },
-        { id: 'navy-pilots', label: 'Navy Pilots', path: '/navy-pilots' },
-        { id: 'navy-duties', label: 'Navy Duties', path: '/navy-duties' }
-      ]
-    },
-    { 
-      id: 'military-coast-guard', 
-      icon: Anchor, 
-      label: 'Military: Coast Guard', 
-      path: '/military-coast-guard',
-      subItems: [
-        { id: 'coast-guard-training', label: 'Coast Guard Training', path: '/coast-guard-training' },
-        { id: 'coast-guard-boot-camp', label: 'Coast Guard Boot Camp', path: '/coast-guard-boot-camp' },
-        { id: 'coast-guard-ships', label: 'Coast Guard Ships', path: '/coast-guard-ships' },
-        { id: 'coast-guard-personnel', label: 'Coast Guard Personnel', path: '/coast-guard-personnel' },
-        { id: 'coast-guard-weapons', label: 'Coast Guard Weapons', path: '/coast-guard-weapons' },
-        { id: 'coast-guard-pilots', label: 'Coast Guard Pilots', path: '/coast-guard-pilots' },
-        { id: 'coast-guard-duties', label: 'Coast Guard Duties', path: '/coast-guard-duties' }
-      ]
-    },
-    { 
-      id: 'military-airforce', 
-      icon: Plane, 
-      label: 'Military: Airforce', 
-      path: '/military-airforce',
-      subItems: [
-        { id: 'airforce-training', label: 'Airforce Training', path: '/airforce-training' },
-        { id: 'airforce-boot-camp', label: 'Airforce Boot Camp', path: '/airforce-boot-camp' },
-        { id: 'airforce-planes', label: 'Airforce Planes', path: '/airforce-planes' },
-        { id: 'airforce-ships', label: 'Airforce Ships', path: '/airforce-ships' },
-        { id: 'airforce-personnel', label: 'Airforce Personnel', path: '/airforce-personnel' },
-        { id: 'airforce-weapons', label: 'Airforce Weapons', path: '/airforce-weapons' },
-        { id: 'airforce-pilots', label: 'Airforce Pilots', path: '/airforce-pilots' },
-        { id: 'airforce-duties', label: 'Airforce Duties', path: '/airforce-duties' }
-      ]
-    },
-    { 
-      id: 'military-weapons-drones', 
-      icon: Target, 
-      label: 'Military Weapons Drones', 
-      path: '/military-weapons-drones' 
     },
     { 
       id: 'courts-police', 
