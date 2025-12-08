@@ -26,6 +26,7 @@ import { boatsSubcategories } from './boats';
 import { hollywoodSubcategories } from './hollywood';
 import { realEstateSubcategories } from './realEstate';
 import { sidebarSubcategories } from './sidebar';
+import { newCategorySubcategories } from './newCategories';
 
 // Merge all subcategory mappings
 export const subcategoryMappings: SubcategoryMapping = {
@@ -55,6 +56,7 @@ export const subcategoryMappings: SubcategoryMapping = {
   ...hollywoodSubcategories,
   ...realEstateSubcategories,
   ...sidebarSubcategories,
+  ...newCategorySubcategories,
 };
 
 // Re-export types
