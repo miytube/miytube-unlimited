@@ -16,6 +16,7 @@ import { HollywoodLinks } from './sidebar/HollywoodLinks';
 import { FilmAnimationLinks } from './sidebar/FilmAnimationLinks';
 import { RealEstateLinks } from './sidebar/RealEstateLinks';
 import { SidebarFooter } from './sidebar/SidebarFooter';
+import { CollapsibleSidebarSection } from './sidebar/CollapsibleSidebarSection';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -48,23 +49,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="p-4">
           <SidebarMainLinks />
           
-          {/* Entertainment & Media */}
-          <VideoEntertainmentLinks />
-          <MusicAudioLinks />
-          <FilmAnimationLinks />
-          <HollywoodLinks />
+          <CollapsibleSidebarSection title="Entertainment & Media">
+            <VideoEntertainmentLinks />
+            <MusicAudioLinks />
+            <FilmAnimationLinks />
+            <HollywoodLinks />
+          </CollapsibleSidebarSection>
           
-          {/* Education & Information */}
-          <EducationInformationLinks />
-          <DocumentMediaLinks />
-          <LawJusticeLinks />
+          <CollapsibleSidebarSection title="Education & Information">
+            <EducationInformationLinks />
+            <DocumentMediaLinks />
+            <LawJusticeLinks />
+          </CollapsibleSidebarSection>
           
-          {/* Lifestyle & Places */}
-          <PeopleSocietyLinks />
-          <PlacesLocationsLinks />
-          <RealEstateLinks />
-          <EnvironmentWeatherLinks />
-          <TransportVehiclesLinks />
+          <CollapsibleSidebarSection title="Lifestyle & Places">
+            <PeopleSocietyLinks />
+            <PlacesLocationsLinks />
+            <RealEstateLinks />
+            <EnvironmentWeatherLinks />
+            <TransportVehiclesLinks />
+          </CollapsibleSidebarSection>
           
           <SidebarFooter />
         </div>
