@@ -50,23 +50,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <SidebarMainLinks />
           
           <Separator className="my-3" />
-          
-          {/* Entertainment & Media */}
+          <h3 className="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Entertainment & Media</h3>
           <VideoEntertainmentLinks />
           <MusicAudioLinks />
           <FilmAnimationLinks />
           <HollywoodLinks />
           
           <Separator className="my-3" />
-          
-          {/* Education & Information */}
+          <h3 className="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Education & Information</h3>
           <EducationInformationLinks />
           <DocumentMediaLinks />
           <LawJusticeLinks />
           
           <Separator className="my-3" />
-          
-          {/* Lifestyle & Places */}
+          <h3 className="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Lifestyle & Places</h3>
           <PeopleSocietyLinks />
           <PlacesLocationsLinks />
           <RealEstateLinks />
