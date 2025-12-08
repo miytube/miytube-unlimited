@@ -1,8 +1,8 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { TagInput } from './TagInput';
 import { CategoryCombobox } from './CategoryCombobox';
+import { getSubcategoryOptionsForCategory } from '@/utils/subcategoryOptions';
 
 interface Category {
   id: string;
@@ -59,7 +59,28 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   
   const selectedCategoryObj = allCategories.find(cat => cat.id === selectedCategory);
   const builtInSubcategories = selectedCategoryObj?.subcategories || [];
-  const allSubcategories = [...builtInSubcategories, ...customSubcategories];
+  
+  // Get predefined subcategories from our comprehensive list
+  const predefinedSubcategories = useMemo(() => {
+    if (!selectedCategory) return [];
+    return getSubcategoryOptionsForCategory(selectedCategory);
+  }, [selectedCategory]);
+  
+  // Merge all subcategory sources: built-in, predefined, and custom
+  const allSubcategories = useMemo(() => {
+    const merged = new Map<string, { id: string; name: string }>();
+    
+    // Add built-in subcategories
+    builtInSubcategories.forEach(sub => merged.set(sub.id, sub));
+    
+    // Add predefined subcategories
+    predefinedSubcategories.forEach(sub => merged.set(sub.id, sub));
+    
+    // Add custom subcategories
+    customSubcategories.forEach(sub => merged.set(sub.id, sub));
+    
+    return Array.from(merged.values());
+  }, [builtInSubcategories, predefinedSubcategories, customSubcategories]);
 
   const handleAddCustomCategory = (customName: string) => {
     const newCategory: Category = {
