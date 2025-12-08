@@ -545,6 +545,19 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     }
   };
   
+  // Fuzzy matching helper for typos
+  const isFuzzyMatch = (input: string, target: string, threshold = 0.75): boolean => {
+    const s1 = input.toLowerCase().trim();
+    const s2 = target.toLowerCase().trim();
+    if (s1 === s2) return true;
+    if (s1.includes(s2) || s2.includes(s1)) return 0.9 >= threshold;
+    const chars1 = new Set(s1.split(''));
+    const chars2 = new Set(s2.split(''));
+    const intersection = [...chars1].filter(c => chars2.has(c)).length;
+    const union = new Set([...chars1, ...chars2]).size;
+    return (intersection / union) >= threshold;
+  };
+
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
     const categoryLower = category.toLowerCase().trim();
     
@@ -552,14 +565,16 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       const vidCategory = video.category?.toLowerCase().trim() || '';
       const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
       
-      // If subcategory is specified, require exact match on both
+      // If subcategory is specified, require exact or fuzzy match on both
       if (subcategory) {
         const subLower = subcategory.toLowerCase().trim();
-        return vidCategory === categoryLower && vidSubcategory === subLower;
+        const categoryMatches = vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
+        const subcategoryMatches = vidSubcategory === subLower || isFuzzyMatch(vidSubcategory, subLower);
+        return categoryMatches && subcategoryMatches;
       }
       
-      // Exact category match only - no partial matching
-      return vidCategory === categoryLower;
+      // Exact category match or fuzzy match for typos
+      return vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
     });
   };
 
