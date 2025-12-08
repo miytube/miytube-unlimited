@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { renderNavLink } from './SidebarCategoryLinks';
+import { Link, useLocation } from 'react-router-dom';
 import { Home, Compass, Film, Upload, UserCircle, TrendingUp } from 'lucide-react';
 
 interface SidebarMainLinksProps {
@@ -22,7 +21,23 @@ export const SidebarMainLinks: React.FC<SidebarMainLinksProps> = ({ className })
 
   return (
     <div className={`space-y-1 mb-6 ${className}`}>
-      {mainLinks.map(link => renderNavLink(link, location))}
+      {mainLinks.map(link => {
+        const isActive = location.pathname === link.path;
+        const Icon = link.icon;
+        
+        return (
+          <Link 
+            key={link.id} 
+            to={link.path} 
+            className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-secondary transition-colors ${
+              isActive ? 'bg-secondary font-medium' : ''
+            }`}
+          >
+            <Icon size={20} />
+            <span>{link.label}</span>
+          </Link>
+        );
+      })}
     </div>
   );
 };
