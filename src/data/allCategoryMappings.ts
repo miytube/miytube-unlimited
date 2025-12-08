@@ -113,6 +113,51 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'animation-film-military': { title: 'Animation & Film, Military', description: 'Military animation and films', icon: Film },
   'animation-film-movies': { title: 'Animation, Film, Movies (Clips)', description: 'Movie clips and animation', icon: Clapperboard },
   
+  // Film & Animation (nested routes)
+  'film-animation-military': { title: 'Military Animation & Film', description: 'Military animation and film content', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
+  'film-animation-classics': { title: 'Classics Animation, Film, Movies', description: 'Classic animation and films', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
+  'film-animation-bloopers': { title: 'Bloopers (Screwups, Blunders)', description: 'Film and animation bloopers', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
+  
+  // Entertainment (nested routes)
+  'entertainment-acting': { title: 'Acting (Off Script, Unscripted)', description: 'Acting and unscripted content', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
+  'entertainment-actors-actress': { title: 'Actors & Actresses (Bios)', description: 'Actor and actress biographies', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
+  'entertainment-actors-info': { title: 'Actors, Actresses Information', description: 'Information about actors and actresses', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
+  'entertainment-auditions': { title: 'Auditions & Contests', description: 'Auditions and talent contests', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
+  
+  // Travel & Events Airplanes (nested routes)
+  'travel-events-airplanes-airships': { title: 'Airplanes (Airships, Blimps)', description: 'Airships and blimps', icon: Plane, parent: { route: '/travel-events', name: 'Travel & Events' } },
+  'travel-events-airplanes-cargo': { title: 'Airplanes (Cargo Planes)', description: 'Cargo aircraft', icon: Plane, parent: { route: '/travel-events', name: 'Travel & Events' } },
+  'travel-events-airplanes-commercial': { title: 'Airplanes (Commercial, Jumbo)', description: 'Commercial airliners', icon: Plane, parent: { route: '/travel-events', name: 'Travel & Events' } },
+  'travel-events-airplanes-land-water': { title: 'Airplanes (Land, Water)', description: 'Amphibious aircraft', icon: Plane, parent: { route: '/travel-events', name: 'Travel & Events' } },
+  'travel-events-airplanes-pilots': { title: 'Airplanes (Pilots, Captains)', description: 'Pilots and aviation crew', icon: Plane, parent: { route: '/travel-events', name: 'Travel & Events' } },
+  'travel-events-airplanes-single-engine': { title: 'Airplanes (Single Engine)', description: 'Single engine aircraft', icon: Plane, parent: { route: '/travel-events', name: 'Travel & Events' } },
+  
+  // Pets & Animals (nested routes)
+  'pets-animals-amphibians': { title: 'Amphibians (Frogs, Salamanders)', description: 'Amphibian content', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-insects': { title: 'Insects & Spiders', description: 'Insects and spiders', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-birds': { title: 'Birds & Raptors', description: 'Birds and raptors', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-crustaceans': { title: 'Crabs, Lobsters & Crustaceans', description: 'Crustaceans', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-fish': { title: 'Fish & Fishes', description: 'Fish and aquatic life', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-mammals': { title: 'Mammals, Birds & Reptiles', description: 'Various animals', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-marine-mammals': { title: 'Orcas, Dolphins & Marine Mammals', description: 'Marine mammals', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-reptiles': { title: 'Reptiles & Snakes', description: 'Reptiles and snakes', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-rodents': { title: 'Rodents, Rats & Beavers', description: 'Rodents', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-cephalopods': { title: 'Octopus, Squid & Cephalopods', description: 'Cephalopods', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  
+  // Education History (nested routes)
+  'education-american-history': { title: 'American History', description: 'American historical content', icon: GraduationCap, parent: { route: '/education', name: 'Education' } },
+  'education-biblical-history': { title: 'Biblical History', description: 'Biblical and religious history', icon: GraduationCap, parent: { route: '/education', name: 'Education' } },
+  'education-bible-quotes': { title: 'Bible Quotes & Scriptures', description: 'Bible quotes and scriptures', icon: GraduationCap, parent: { route: '/education', name: 'Education' } },
+  
+  // Science & Tech (nested routes)
+  'science-tech-artifacts': { title: 'Artifacts, Antiques & Antiquities', description: 'Artifacts and antiques', icon: Microscope, parent: { route: '/science-tech', name: 'Science & Technology' } },
+  'science-tech-ai': { title: 'Artificial Intelligence', description: 'AI and machine learning', icon: Microscope, parent: { route: '/science-tech', name: 'Science & Technology' } },
+  'science-tech-humanoid-robots': { title: 'Humanoid Robots', description: 'Humanoid robotics', icon: Microscope, parent: { route: '/science-tech', name: 'Science & Technology' } },
+  'science-tech-robots': { title: 'Robots', description: 'Robotics and automation', icon: Microscope, parent: { route: '/science-tech', name: 'Science & Technology' } },
+  
+  // Boats (nested routes)
+  'boats-all': { title: 'All Boats', description: 'All boat content', icon: Sailboat, parent: { route: '/boats', name: 'Boats' } },
+  
   // Arguments
   'arguments': { title: 'Arguments (Arguments, Disrespect)', description: 'Arguments and confrontations', icon: MessageSquare },
   
