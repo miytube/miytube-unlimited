@@ -23,6 +23,7 @@ import { foodsSubcategories } from './foods';
 import { fungiSubcategories } from './fungi';
 import { funnySubcategories } from './funny';
 import { boatsSubcategories } from './boats';
+import { hollywoodSubcategories } from './hollywood';
 
 // Merge all subcategory mappings
 export const subcategoryMappings: SubcategoryMapping = {
@@ -49,6 +50,7 @@ export const subcategoryMappings: SubcategoryMapping = {
   ...fungiSubcategories,
   ...funnySubcategories,
   ...boatsSubcategories,
+  ...hollywoodSubcategories,
 };
 
 // Re-export types
@@ -78,5 +80,6 @@ export {
   foodsSubcategories,
   fungiSubcategories,
   funnySubcategories,
-  boatsSubcategories
+  boatsSubcategories,
+  hollywoodSubcategories
 };
