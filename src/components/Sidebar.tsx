@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { SidebarMainLinks } from './sidebar/SidebarMainLinks';
 import { SidebarFooter } from './sidebar/SidebarFooter';
+import { SidebarSearch } from './sidebar/SidebarSearch';
 import { Separator } from './ui/separator';
 
 // New comprehensive sidebar components
@@ -55,6 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className={overlayClasses} onClick={onClose} />
       <nav className={sidebarClasses}>
         <div className="p-4">
+          <SidebarSearch />
           <SidebarMainLinks />
           
           <Separator className="my-3" />
