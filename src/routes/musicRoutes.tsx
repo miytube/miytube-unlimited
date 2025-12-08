@@ -12,7 +12,8 @@ const musicGenres = [
   'rock-soul-pop', 'funk-hiphop-rap', 'history', 'heavy-metal', 'mexican-spanish',
   'soundtracks', 'parody', 'pop', 'rap-reggaeton', 'relaxation', 'salsa',
   'soul-train', 'garage', 'artists-interviews', 'artists-news', 'challenges',
-  'christian', 'r-and-b'
+  'christian', 'r-and-b', 'rock', 'spanish', 'chinese', 'soul', 'jazz', 'playlists',
+  'hiphop', 'electronic', 'indie', 'reggae', 'latin', 'punk', 'metal'
 ];
 
 export const musicRoutes = [
