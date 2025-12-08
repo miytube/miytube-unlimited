@@ -96,4 +96,9 @@ export const newSubcategoryRoutes = [
   <Route key="fitness-workout-male" path="/physical-fitness/workout-male" element={<GenericSubcategoryPage />} />,
   <Route key="fitness-yoga-workout" path="/physical-fitness/yoga-workout" element={<GenericSubcategoryPage />} />,
   <Route key="fitness-calisthenics" path="/physical-fitness/calisthenics" element={<GenericSubcategoryPage />} />,
+
+  // Real Estate routes
+  <Route key="real-estate-residential" path="/real-estate/residential" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-commercial" path="/real-estate/commercial" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-luxury" path="/real-estate/luxury" element={<GenericSubcategoryPage />} />,
 ];
