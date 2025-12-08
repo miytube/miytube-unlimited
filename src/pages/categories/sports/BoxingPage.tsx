@@ -5,23 +5,14 @@ import { Trophy, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const BoxingPage = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for boxing-related videos
-  const boxingKeywords = ['boxing', 'boxer', 'fight', 'knockout', 'mma', 'ufc', 'combat'];
-  const boxingVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return boxingKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for boxing-related videos using strict matching
+  const boxingKeywords = ['boxing', 'sports-boxing', 'sports-boxing-interviews', 'sports-boxing-professional', 'sports-boxing-street-fighting', 'sports-boxing-training', 'sports-boxing-amateur'];
+  const boxingVideos = filterVideosByCategory(uploadedVideos, 'boxing', boxingKeywords);
 
   return (
     <Layout>

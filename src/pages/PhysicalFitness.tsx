@@ -5,6 +5,7 @@ import { VideoCard } from '@/components/VideoCard';
 import { Dumbbell, Upload, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const subcategories = [
   { name: 'Weight Lifting', route: '/physical-fitness/weight-lifting' },
@@ -22,19 +23,9 @@ const subcategories = [
 const PhysicalFitness = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  const fitnessKeywords = ['fitness', 'workout', 'weightlifting', 'weight lifting', 'gym', 'exercise', 'yoga', 'calisthenics', 'training', 'muscle', 'bodybuilding', 'crossfit'];
-  
-  const fitnessVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return fitnessKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for fitness-related videos using strict matching
+  const fitnessKeywords = ['fitness', 'physical-fitness', 'workout', 'weightlifting', 'yoga', 'calisthenics', 'physical-fitness-weight-lifting', 'physical-fitness-workout', 'physical-fitness-yoga-workout'];
+  const fitnessVideos = filterVideosByCategory(uploadedVideos, 'physical-fitness', fitnessKeywords);
 
   return (
     <Layout>

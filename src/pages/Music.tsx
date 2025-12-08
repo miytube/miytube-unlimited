@@ -7,27 +7,14 @@ import { MusicCategories } from '@/components/music/MusicCategories';
 import { MusicVideosNeedingUpdate } from '@/components/music/MusicVideosNeedingUpdate';
 import { musicCategories } from '@/components/music/musicData';
 import { VideoCard } from '@/components/VideoCard';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const Music = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Get all music-related uploaded videos
-  const musicVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    // Match any music-related categories
-    return category === 'music' || 
-           category === 'pop' || 
-           category === 'rock' || 
-           category === 'hiphop' || 
-           category === 'electronic' ||
-           category === 'jazz' ||
-           category === 'country' ||
-           category === 'classical' ||
-           category === 'r-and-b' ||
-           category === 'soul' ||
-           category === 'folk' ||
-           category === 'blues';
-  });
+  // Get all music-related uploaded videos using strict matching
+  const musicKeywords = ['music', 'pop', 'rock', 'hiphop', 'electronic', 'jazz', 'country', 'classical', 'r-and-b', 'soul', 'folk', 'blues', 'music-pop', 'music-rock', 'music-country', 'music-jazz', 'music-classical'];
+  const musicVideos = filterVideosByCategory(uploadedVideos, 'music', musicKeywords);
   
   return (
     <Layout>

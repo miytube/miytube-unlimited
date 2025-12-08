@@ -8,6 +8,7 @@ import VideoContent from '@/components/subcategory/VideoContent';
 import AboutSection from '@/components/subcategory/AboutSection';
 import { Link } from 'react-router-dom';
 import { Upload } from 'lucide-react';
+import { filterVideosBySubcategory } from '@/utils/videoFiltering';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -22,37 +23,8 @@ const GenericSubcategoryPage = () => {
     mappingKey
   } = useSubcategoryInfo();
   
-  // Filter videos for this subcategory
-  const titleLower = pageTitle.toLowerCase();
-  const keyLower = mappingKey.toLowerCase();
-  
-  // Extract core keywords from mapping key (e.g., "sports-mlb-world-series" -> ["mlb", "world", "series"])
-  const keyWords = keyLower.split('-').filter(w => w.length > 2);
-  
-  const subcategoryVideos = uploadedVideos.filter(video => {
-    const vidCategory = video.category?.toLowerCase() || '';
-    const vidSubcategory = video.subcategory?.toLowerCase() || '';
-    const vidTags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    // Exact match on title
-    if (vidCategory === titleLower || vidSubcategory === titleLower) return true;
-    
-    // Check if category/subcategory contains the page title (e.g., "MLB World Series" includes "mlb world series")
-    if (vidCategory.includes(titleLower) || vidSubcategory.includes(titleLower)) return true;
-    
-    // Check if key matches
-    if (vidCategory.includes(keyLower) || vidSubcategory.includes(keyLower)) return true;
-    
-    // Check if all key words are present in category or subcategory
-    const combinedText = `${vidCategory} ${vidSubcategory}`;
-    if (keyWords.length >= 2 && keyWords.every(word => combinedText.includes(word))) return true;
-    
-    // Check tags
-    if (vidTags.some(tag => tag.includes(titleLower) || tag.includes(keyLower))) return true;
-    if (vidTags.some(tag => keyWords.every(word => tag.includes(word)))) return true;
-    
-    return false;
-  });
+  // Filter videos for this subcategory using strict matching
+  const subcategoryVideos = filterVideosBySubcategory(uploadedVideos, pageTitle, mappingKey);
 
   return (
     <Layout>

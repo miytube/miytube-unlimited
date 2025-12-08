@@ -5,21 +5,14 @@ import { Music, Moon, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const MusicMeditation = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for meditation music videos
-  const meditationMusicVideos = uploadedVideos.filter(video => 
-    (video.category === 'meditation' || video.category === 'music') &&
-    (video.subcategory?.toLowerCase().includes('meditation') ||
-     video.title?.toLowerCase().includes('meditation') ||
-     video.tags?.some(tag => 
-       tag.toLowerCase().includes('meditation') || 
-       tag.toLowerCase().includes('relaxation') ||
-       tag.toLowerCase().includes('calm')
-     ))
-  );
+  // Filter for meditation music videos using strict matching
+  const meditationMusicKeywords = ['music-meditation', 'meditation-music', 'music-meditation-deep-sleep', 'music-meditation-calm', 'music-meditation-focus', 'music-meditation-healing', 'music-meditation-spa', 'music-meditation-zen'];
+  const meditationMusicVideos = filterVideosByCategory(uploadedVideos, 'music-meditation', meditationMusicKeywords);
   
   return (
     <Layout>

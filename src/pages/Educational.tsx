@@ -5,17 +5,14 @@ import { GraduationCap, Upload, BookOpen, Globe, Calculator, Microscope, History
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const Educational = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for education-related videos
-  const educationalVideos = uploadedVideos.filter(video => 
-    video.category === 'education' || 
-    video.category === 'educational' ||
-    video.subcategory?.toLowerCase().includes('education') ||
-    video.tags?.some(tag => tag.toLowerCase().includes('education'))
-  );
+  // Filter for education-related videos using strict matching
+  const educationKeywords = ['education', 'educational', 'education-anatomy', 'education-countries', 'education-kids-geography', 'education-laws', 'education-immigration', 'american-history'];
+  const educationalVideos = filterVideosByCategory(uploadedVideos, 'education', educationKeywords);
 
   const educationCategories = [
     { name: 'Anatomy', icon: Microscope, route: '/education-anatomy' },

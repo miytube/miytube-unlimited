@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Upload, Music } from 'lucide-react';
 import { allCategoryMappings } from '@/data/allCategoryMappings';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByMusicGenre } from '@/utils/videoFiltering';
 
 const MusicGenre = () => {
   const params = useParams();
@@ -21,26 +22,14 @@ const MusicGenre = () => {
   const genreKey = `music-${actualGenre}`;
   const genreInfo = allCategoryMappings[genreKey] || {
     title: `Music (${actualGenre ? actualGenre.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Genre'})`,
-    description: `Explore ${actualGenre || 'music'} content`,
+    description: `Explore ${actualGenre || 'music'}`,
     icon: Music
   };
 
   const Icon = genreInfo.icon;
 
-  // Filter for music videos matching this specific genre - strict matching only
-  const genreVideos = uploadedVideos.filter(video => {
-    const genreLower = actualGenre.toLowerCase();
-    const categoryLower = video.category?.toLowerCase() || '';
-    const subcategoryLower = video.subcategory?.toLowerCase() || '';
-    
-    // Exact match on subcategory or category equals the genre
-    return (
-      categoryLower === genreLower ||
-      subcategoryLower === genreLower ||
-      subcategoryLower === `music-${genreLower}` ||
-      video.tags?.some(tag => tag.toLowerCase() === genreLower || tag.toLowerCase() === `music-${genreLower}`)
-    );
-  });
+  // Filter for music videos matching this specific genre using strict matching
+  const genreVideos = filterVideosByMusicGenre(uploadedVideos, actualGenre);
 
   return (
     <Layout>

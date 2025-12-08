@@ -5,25 +5,14 @@ import { Smile, Upload, Mic, Tv, Laugh, Film } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const Comedy = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Comedy-related keywords to match
-  const comedyKeywords = ['comedy', 'sitcom', 'standup', 'stand-up', 'roast', 'prank', 'funny', 'blooper', 'snl', 'comedian', 'jokes', 'humor', 'humour', 'sketch'];
-  
-  // Filter for comedy-related videos
-  const comedyVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return comedyKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for comedy-related videos using strict matching
+  const comedyKeywords = ['comedy', 'comedy-snl', 'comedy-standup', 'comedy-roasts', 'comedy-funny-pranks', 'comedy-sitcom', 'bloopers', 'comedians-interviews', 'comedy-jokes-pranks'];
+  const comedyVideos = filterVideosByCategory(uploadedVideos, 'comedy', comedyKeywords);
 
   const comedyCategories = [
     { name: 'SNL, Saturday Night Live', icon: Tv, route: '/comedy-snl' },

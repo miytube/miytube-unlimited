@@ -5,23 +5,14 @@ import { Car, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { filterVideosByCategory } from '@/utils/videoFiltering';
 
 const CarsPage = () => {
   const { uploadedVideos } = useUploadedVideos();
   
-  // Filter for car-related videos
-  const carKeywords = ['car', 'cars', 'auto', 'vehicle', 'supercar', 'drift', 'driving', 'automotive'];
-  const carVideos = uploadedVideos.filter(video => {
-    const category = video.category?.toLowerCase() || '';
-    const subcategory = video.subcategory?.toLowerCase() || '';
-    const tags = video.tags?.map(t => t.toLowerCase()) || [];
-    
-    return carKeywords.some(keyword => 
-      category.includes(keyword) || 
-      subcategory.includes(keyword) ||
-      tags.some(tag => tag.includes(keyword))
-    );
-  });
+  // Filter for car-related videos using strict matching
+  const carKeywords = ['cars', 'car', 'cars-repairs', 'cars-drifting', 'cars-expensive', 'cars-future', 'cars-types', 'cars-strange', 'cars-supercars', 'cars-accidents'];
+  const carVideos = filterVideosByCategory(uploadedVideos, 'cars', carKeywords);
 
   return (
     <Layout>
