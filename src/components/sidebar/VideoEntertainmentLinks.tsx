@@ -5,7 +5,18 @@ import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const VideoEntertainmentLinks: React.FC = () => {
   const videoAndEntertainmentLinks = [
-    { id: 'videos', icon: Video, label: 'Videos', path: '/videos' },
+    { 
+      id: 'videos', 
+      icon: Video, 
+      label: 'Videos', 
+      path: '/videos',
+      subItems: [
+        { id: 'videos-latest', label: 'Latest Videos', path: '/videos/latest' },
+        { id: 'videos-featured', label: 'Featured Videos', path: '/videos/featured' },
+        { id: 'videos-most-viewed', label: 'Most Viewed', path: '/videos/most-viewed' },
+        { id: 'videos-long', label: 'Long Videos', path: '/long-videos' }
+      ]
+    },
     { 
       id: 'film-animation', 
       icon: Clapperboard, 
@@ -68,7 +79,19 @@ export const VideoEntertainmentLinks: React.FC = () => {
         { id: 'comedy-parody', label: 'Parody & Satire', path: '/comedy/parody' }
       ]
     },
-    { id: 'gaming', icon: Gamepad2, label: 'Gaming', path: '/gaming' },
+    { 
+      id: 'gaming', 
+      icon: Gamepad2, 
+      label: 'Gaming', 
+      path: '/gaming',
+      subItems: [
+        { id: 'gaming-action', label: 'Action Games', path: '/gaming/action' },
+        { id: 'gaming-rpg', label: 'RPG Games', path: '/gaming/rpg' },
+        { id: 'gaming-sports', label: 'Sports Games', path: '/gaming/sports' },
+        { id: 'gaming-streaming', label: 'Live Streaming', path: '/gaming/streaming' },
+        { id: 'gaming-reviews', label: 'Game Reviews', path: '/gaming/reviews' }
+      ]
+    },
     { 
       id: 'sports', 
       icon: Trophy, 

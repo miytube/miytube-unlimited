@@ -1,12 +1,33 @@
 
 import React from 'react';
-import { Newspaper } from 'lucide-react';
+import { FileText, PenTool } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const DocumentMediaLinks: React.FC = () => {
   const documentAndMediaLinks = [
-    { id: 'documents', icon: Newspaper, label: 'Documents', path: '/documents' },
-    { id: 'blog', icon: Newspaper, label: 'Blog', path: '/blog' },
+    { 
+      id: 'documents', 
+      icon: FileText, 
+      label: 'Documents', 
+      path: '/documents',
+      subItems: [
+        { id: 'documents-templates', label: 'Templates', path: '/documents/templates' },
+        { id: 'documents-forms', label: 'Forms', path: '/documents/forms' },
+        { id: 'documents-guides', label: 'Guides', path: '/documents/guides' },
+        { id: 'documents-reports', label: 'Reports', path: '/documents/reports' }
+      ]
+    },
+    { 
+      id: 'blog', 
+      icon: PenTool, 
+      label: 'Blog', 
+      path: '/blog',
+      subItems: [
+        { id: 'blog-latest', label: 'Latest Posts', path: '/blog/latest' },
+        { id: 'blog-featured', label: 'Featured Posts', path: '/blog/featured' },
+        { id: 'blog-create', label: 'Create Post', path: '/blog/create' }
+      ]
+    },
   ];
 
   return <SidebarCategoryLinks title="DOCUMENTS & MEDIA" links={documentAndMediaLinks} />;

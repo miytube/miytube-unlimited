@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Cloud, Waves, Ship, Anchor, Zap, Droplets, Mountain } from 'lucide-react';
+import { Cloud, Waves, Ship, Anchor, Zap } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EnvironmentWeatherLinks: React.FC = () => {
@@ -9,7 +9,13 @@ export const EnvironmentWeatherLinks: React.FC = () => {
       id: 'weather', 
       icon: Cloud, 
       label: 'Weather', 
-      path: '/weather' 
+      path: '/weather',
+      subItems: [
+        { id: 'weather-forecast', label: 'Weather Forecast', path: '/weather/forecast' },
+        { id: 'weather-storms', label: 'Storms & Hurricanes', path: '/weather/storms' },
+        { id: 'weather-climate', label: 'Climate Change', path: '/weather/climate' },
+        { id: 'weather-extreme', label: 'Extreme Weather', path: '/weather/extreme' }
+      ]
     },
     { 
       id: 'disasters', 
@@ -29,7 +35,13 @@ export const EnvironmentWeatherLinks: React.FC = () => {
       id: 'oceans', 
       icon: Waves, 
       label: 'Waters & Oceans', 
-      path: '/oceans' 
+      path: '/oceans',
+      subItems: [
+        { id: 'oceans-marine-life', label: 'Marine Life', path: '/oceans/marine-life' },
+        { id: 'oceans-deep-sea', label: 'Deep Sea', path: '/oceans/deep-sea' },
+        { id: 'oceans-coral-reefs', label: 'Coral Reefs', path: '/oceans/coral-reefs' },
+        { id: 'oceans-exploration', label: 'Ocean Exploration', path: '/oceans/exploration' }
+      ]
     },
     { 
       id: 'boats', 
@@ -38,14 +50,21 @@ export const EnvironmentWeatherLinks: React.FC = () => {
       path: '/boats',
       subItems: [
         { id: 'all-boats', label: 'All Boats', path: '/boats/all' },
-        { id: 'yachts', label: 'Yachts', path: '/boats/yachts' }
+        { id: 'yachts', label: 'Yachts', path: '/boats/yachts' },
+        { id: 'sailboats', label: 'Sailboats', path: '/boats/sailboats' },
+        { id: 'speedboats', label: 'Speedboats', path: '/boats/speedboats' }
       ]
     },
     { 
       id: 'shipping-ports', 
       icon: Anchor, 
       label: 'Shipping Ports', 
-      path: '/shipping-ports' 
+      path: '/shipping-ports',
+      subItems: [
+        { id: 'ports-cargo', label: 'Cargo Ports', path: '/shipping-ports/cargo' },
+        { id: 'ports-cruise', label: 'Cruise Terminals', path: '/shipping-ports/cruise' },
+        { id: 'ports-history', label: 'Historic Ports', path: '/shipping-ports/history' }
+      ]
     },
   ];
 

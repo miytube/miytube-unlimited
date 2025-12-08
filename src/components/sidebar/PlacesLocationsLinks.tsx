@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Plane, Utensils, Pizza, Map, Sailboat, Waves } from 'lucide-react';
+import { Plane, Utensils, Pizza, Map, Waves } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const PlacesLocationsLinks: React.FC = () => {
@@ -34,26 +34,45 @@ export const PlacesLocationsLinks: React.FC = () => {
       label: 'Airports', 
       path: '/airports',
       subItems: [
-        { id: 'airport-fails', label: 'Airport Fails', path: '/airports/fails' }
+        { id: 'airport-fails', label: 'Airport Fails', path: '/airports/fails' },
+        { id: 'airport-security', label: 'Airport Security', path: '/airports/security' },
+        { id: 'airport-lounges', label: 'Airport Lounges', path: '/airports/lounges' }
       ]
     },
     { 
       id: 'restaurants', 
       icon: Utensils, 
       label: 'Restaurants', 
-      path: '/restaurants' 
+      path: '/restaurants',
+      subItems: [
+        { id: 'restaurants-fine-dining', label: 'Fine Dining', path: '/restaurants/fine-dining' },
+        { id: 'restaurants-fast-food', label: 'Fast Food', path: '/restaurants/fast-food' },
+        { id: 'restaurants-reviews', label: 'Restaurant Reviews', path: '/restaurants/reviews' },
+        { id: 'restaurants-celebrity', label: 'Celebrity Chefs', path: '/restaurants/celebrity-chefs' }
+      ]
     },
     { 
       id: 'foods', 
       icon: Pizza, 
       label: 'Foods', 
-      path: '/foods' 
+      path: '/foods',
+      subItems: [
+        { id: 'foods-recipes', label: 'Recipes', path: '/foods/recipes' },
+        { id: 'foods-cooking', label: 'Cooking Tips', path: '/foods/cooking' },
+        { id: 'foods-baking', label: 'Baking', path: '/foods/baking' },
+        { id: 'foods-street', label: 'Street Food', path: '/foods/street' }
+      ]
     },
     { 
       id: 'beaches', 
       icon: Waves, 
       label: 'Beaches & Lagoons', 
-      path: '/beaches' 
+      path: '/beaches',
+      subItems: [
+        { id: 'beaches-tropical', label: 'Tropical Beaches', path: '/beaches/tropical' },
+        { id: 'beaches-surfing', label: 'Surfing Spots', path: '/beaches/surfing' },
+        { id: 'beaches-resorts', label: 'Beach Resorts', path: '/beaches/resorts' }
+      ]
     },
   ];
 
