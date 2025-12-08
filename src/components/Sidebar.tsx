@@ -48,18 +48,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="p-4">
           <SidebarMainLinks />
           
+          {/* Entertainment & Media */}
           <VideoEntertainmentLinks />
-          <FilmAnimationLinks />
-          <EducationInformationLinks />
           <MusicAudioLinks />
+          <FilmAnimationLinks />
           <HollywoodLinks />
+          
+          {/* Education & Information */}
+          <EducationInformationLinks />
+          <DocumentMediaLinks />
+          <LawJusticeLinks />
+          
+          {/* Lifestyle & Places */}
           <PeopleSocietyLinks />
           <PlacesLocationsLinks />
+          <RealEstateLinks />
           <EnvironmentWeatherLinks />
           <TransportVehiclesLinks />
-          <LawJusticeLinks />
-          <DocumentMediaLinks />
-          <RealEstateLinks />
           
           <SidebarFooter />
         </div>
