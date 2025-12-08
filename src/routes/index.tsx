@@ -7,6 +7,7 @@ import { categoryRoutes } from "./categoryRoutes";
 import { subcategoryRoutes } from "./subcategoryRoutes";
 import { specialSubcategoryRoutes } from "./specialSubcategoryRoutes";
 import { newSubcategoryRoutes } from "./newSubcategoryRoutes";
+import { sidebarSubcategoryRoutes } from "./sidebarSubcategoryRoutes";
 import { allCategoryRoutes } from "./allCategoryRoutes";
 import { musicRoutes } from "./musicRoutes";
 import { gamingRoutes } from "./gamingRoutes";
@@ -47,6 +48,9 @@ const AppRoutes = () => {
       
       {/* New Subcategory Routes */}
       {newSubcategoryRoutes}
+      
+      {/* Sidebar Subcategory Routes */}
+      {sidebarSubcategoryRoutes}
       
       {/* Hollywood Routes */}
       {hollywoodRoutes}
