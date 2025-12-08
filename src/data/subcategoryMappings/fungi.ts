@@ -5,7 +5,7 @@ import { SubcategoryMapping } from './types';
 export const fungiSubcategories: SubcategoryMapping = {
   'fungi-general': {
     title: 'Fungi',
-    description: 'Content about different types of fungi',
+    description: 'Different types of fungi',
     icon: Mountain,
     parent: {
       route: '/fungi',
@@ -14,7 +14,7 @@ export const fungiSubcategories: SubcategoryMapping = {
   },
   'fungi-killer': {
     title: 'Killer Fungi',
-    description: 'Content about dangerous and toxic fungi species',
+    description: 'Dangerous and toxic fungi species',
     icon: Skull,
     parent: {
       route: '/fungi',

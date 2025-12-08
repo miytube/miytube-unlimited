@@ -39,7 +39,7 @@ export interface CategoryInfo {
 
 export const allCategoryMappings: Record<string, CategoryInfo> = {
   // Gaming Categories
-  'gaming': { title: 'Gaming', description: 'Video games, esports and gaming content', icon: Gamepad2 },
+  'gaming': { title: 'Gaming', description: 'Video games, esports and gaming', icon: Gamepad2 },
   'game-challenges': { title: 'Game Challenges', description: 'Gaming challenges and competitions', icon: Target, parent: { route: '/gaming', name: 'Gaming' } },
   'game-toys': { title: 'Game Toys (Rockets, Missiles)', description: 'Gaming toys and RC toys', icon: Rocket, parent: { route: '/gaming', name: 'Gaming' } },
   'arcade-games': { title: 'Gaming (Arcade, Games)', description: 'Arcade and retro gaming', icon: Gamepad2, parent: { route: '/gaming', name: 'Gaming' } },
@@ -54,13 +54,13 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'esports': { title: 'Esports', description: 'Competitive gaming and tournaments', icon: Trophy, parent: { route: '/gaming', name: 'Gaming' } },
   
   // Comedy Categories
-  'comedy': { title: 'Comedy', description: 'Laugh with our comedy content', icon: Laugh },
+  'comedy': { title: 'Comedy', description: 'Laugh with our comedy videos', icon: Laugh },
   'comedy-snl': { title: 'Saturday Night Live', description: 'SNL sketches, performers and history', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedians-interviews': { title: 'Comedians (Interviews, Work)', description: 'Comedian interviews and behind the scenes', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-funny-pranks': { title: 'Comedy (Funny, Pranks) Videos', description: 'Funny videos and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-roasts': { title: 'Comedy (Roasts, Jokes, Events)', description: 'Comedy roasts and events', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-standup': { title: 'Comedy (Stand Up, Jokes)', description: 'Stand-up comedy performances', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
-  'comedy-jokes-pranks': { title: 'Comedy & Jokes, Pranks', description: 'Jokes and prank content', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-jokes-pranks': { title: 'Comedy & Jokes, Pranks', description: 'Jokes and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-sitcom': { title: 'Comedy Show (Sitcom)', description: 'Sitcom clips and episodes', icon: Tv, parent: { route: '/comedy', name: 'Comedy' } },
   'bloopers': { title: 'Bloopers (Screwup, Blunder)', description: 'Funny bloopers and mistakes', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   
@@ -97,7 +97,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'bible-quotes': { title: 'Bible (Quotes, Scriptures)', description: 'Bible quotes and scriptures', icon: Cross },
   
   // Animals
-  'amphibians': { title: 'Amphibian (Frog, Salamander)', description: 'Amphibian content', icon: Dog },
+  'amphibians': { title: 'Amphibian (Frog, Salamander)', description: 'Amphibians', icon: Dog },
   'animal-insects': { title: 'Animal (Insects, Spiders)', description: 'Insects and spiders', icon: Dog },
   'animals-birds': { title: 'Animals (Birds, Raptors, Fowl)', description: 'Birds and fowl', icon: Dog },
   'animals-crabs': { title: 'Animals (Crabs, Lobsters, Crustaceans)', description: 'Crustaceans', icon: Dog },
@@ -114,12 +114,12 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'animation-film-movies': { title: 'Animation, Film, Movies (Clips)', description: 'Movie clips and animation', icon: Clapperboard },
   
   // Film & Animation (nested routes)
-  'film-animation-military': { title: 'Military Animation & Film', description: 'Military animation and film content', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
+  'film-animation-military': { title: 'Military Animation & Film', description: 'Military animation and film', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
   'film-animation-classics': { title: 'Classics Animation, Film, Movies', description: 'Classic animation and films', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
   'film-animation-bloopers': { title: 'Bloopers (Screwups, Blunders)', description: 'Film and animation bloopers', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
   
   // Entertainment (nested routes)
-  'entertainment-acting': { title: 'Acting (Off Script, Unscripted)', description: 'Acting and unscripted content', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
+  'entertainment-acting': { title: 'Acting (Off Script, Unscripted)', description: 'Acting and unscripted performances', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
   'entertainment-actors-actress': { title: 'Actors & Actresses (Bios)', description: 'Actor and actress biographies', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
   'entertainment-actors-info': { title: 'Actors, Actresses Information', description: 'Information about actors and actresses', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
   'entertainment-auditions': { title: 'Auditions & Contests', description: 'Auditions and talent contests', icon: Film, parent: { route: '/entertainment', name: 'Entertainment' } },
@@ -133,7 +133,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'travel-events-airplanes-single-engine': { title: 'Airplanes (Single Engine)', description: 'Single engine aircraft', icon: Plane, parent: { route: '/travel-events', name: 'Travel & Events' } },
   
   // Pets & Animals (nested routes)
-  'pets-animals-amphibians': { title: 'Amphibians (Frogs, Salamanders)', description: 'Amphibian content', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
+  'pets-animals-amphibians': { title: 'Amphibians (Frogs, Salamanders)', description: 'Amphibians', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
   'pets-animals-insects': { title: 'Insects & Spiders', description: 'Insects and spiders', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
   'pets-animals-birds': { title: 'Birds & Raptors', description: 'Birds and raptors', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
   'pets-animals-crustaceans': { title: 'Crabs, Lobsters & Crustaceans', description: 'Crustaceans', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
@@ -145,7 +145,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'pets-animals-cephalopods': { title: 'Octopus, Squid & Cephalopods', description: 'Cephalopods', icon: Dog, parent: { route: '/pets-animals', name: 'Pets & Animals' } },
   
   // Education History (nested routes)
-  'education-american-history': { title: 'American History', description: 'American historical content', icon: GraduationCap, parent: { route: '/education', name: 'Education' } },
+  'education-american-history': { title: 'American History', description: 'American historical events', icon: GraduationCap, parent: { route: '/education', name: 'Education' } },
   'education-biblical-history': { title: 'Biblical History', description: 'Biblical and religious history', icon: GraduationCap, parent: { route: '/education', name: 'Education' } },
   'education-bible-quotes': { title: 'Bible Quotes & Scriptures', description: 'Bible quotes and scriptures', icon: GraduationCap, parent: { route: '/education', name: 'Education' } },
   
@@ -156,7 +156,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'science-tech-robots': { title: 'Robots', description: 'Robotics and automation', icon: Microscope, parent: { route: '/science-tech', name: 'Science & Technology' } },
   
   // Boats (nested routes)
-  'boats-all': { title: 'All Boats', description: 'All boat content', icon: Sailboat, parent: { route: '/boats', name: 'Boats' } },
+  'boats-all': { title: 'All Boats', description: 'All boats', icon: Sailboat, parent: { route: '/boats', name: 'Boats' } },
   
   // Arguments
   'arguments': { title: 'Arguments (Arguments, Disrespect)', description: 'Arguments and confrontations', icon: MessageSquare },
@@ -190,10 +190,10 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'blizzard': { title: 'Blizzard (Blowing Snow, Visibility)', description: 'Blizzard footage', icon: Snowflake },
   
   // Boats
-  'boats': { title: 'Boats', description: 'Boat content', icon: Sailboat },
+  'boats': { title: 'Boats', description: 'Boats', icon: Sailboat },
   
   // Boxing
-  'boxing-street': { title: 'Boxing (Street Fighting, Brawl)', description: 'Street fighting content', icon: Trophy },
+  'boxing-street': { title: 'Boxing (Street Fighting, Brawl)', description: 'Street fighting', icon: Trophy },
   
   // Business Categories
   'business-bitcoin': { title: 'Business (Bitcoins, Cryptocurrency)', description: 'Crypto and bitcoin', icon: DollarSign },
@@ -227,7 +227,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'cell-phone-tricks': { title: 'Cell Phone (Tricks, Hacks)', description: 'Phone tips and tricks', icon: Smartphone },
   
   // Colosseum
-  'colosseum': { title: 'Colosseum (Rome, Arena, Stadium)', description: 'Colosseum content', icon: Landmark },
+  'colosseum': { title: 'Colosseum (Rome, Arena, Stadium)', description: 'Colosseum', icon: Landmark },
   
   // Container Ships
   'container-ships': { title: 'Container Ships, Oil Tankers', description: 'Large vessels', icon: Ship },
@@ -246,13 +246,13 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Crime
   'crime-fraud': { title: 'Crime (Fraud, Scammers, Swindlers)', description: 'Fraud and scams', icon: AlertTriangle },
-  'crime-works': { title: 'Crime (Works, Commit, What Is)', description: 'Crime content', icon: Shield },
+  'crime-works': { title: 'Crime (Works, Commit, What Is)', description: 'Crime', icon: Shield },
   'criminal-enterprises': { title: 'Criminal Enterprises', description: 'Criminal organizations', icon: Shield },
-  'criminal-gangs': { title: 'Criminal Gangs', description: 'Gang content', icon: Users },
-  'criminal-gangsters': { title: 'Criminal Gangsters', description: 'Gangster content', icon: Users },
+  'criminal-gangs': { title: 'Criminal Gangs', description: 'Gangs', icon: Users },
+  'criminal-gangsters': { title: 'Criminal Gangsters', description: 'Gangsters', icon: Users },
   
   // Crazy/Amazing
-  'crazy-amazing': { title: "Crazy/Amazing/Wouldn't Believe", description: 'Unbelievable content', icon: Sparkles },
+  'crazy-amazing': { title: "Crazy/Amazing/Wouldn't Believe", description: 'Unbelievable moments', icon: Sparkles },
   
   // Dances
   'dances-styles': { title: 'Dances (Different Styles)', description: 'Dance styles', icon: Music },
@@ -271,16 +271,16 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'documentary': { title: 'Documentary (Real Events, People)', description: 'Documentary films', icon: Film },
   
   // Drinks
-  'drinks': { title: 'Drinks (Alcohol, Non-Alcohol)', description: 'Beverage content', icon: Wine },
+  'drinks': { title: 'Drinks (Alcohol, Non-Alcohol)', description: 'Beverages', icon: Wine },
   
   // Drones
-  'drones-civilian': { title: 'Drones (Civilian Drones, Remote)', description: 'Drone content', icon: Plane },
+  'drones-civilian': { title: 'Drones (Civilian Drones, Remote)', description: 'Drones', icon: Plane },
   
   // Drugs
-  'drugs-money': { title: 'Drugs (Drugs, Money, Dealers)', description: 'Drug-related content', icon: AlertTriangle },
+  'drugs-money': { title: 'Drugs (Drugs, Money, Dealers)', description: 'Drug-related', icon: AlertTriangle },
   
   // Education Categories
-  'education': { title: 'Education', description: 'Educational content', icon: GraduationCap },
+  'education': { title: 'Education', description: 'Educational videos', icon: GraduationCap },
   'education-anatomy': { title: 'Education (Anatomy, Human Body)', description: 'Anatomy education', icon: Activity },
   'education-countries': { title: 'Education (Countries History)', description: 'Country history', icon: Globe },
   'education-immigration': { title: 'Education (Immigration, Questions)', description: 'Immigration education', icon: Globe },
@@ -330,12 +330,12 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'musical-instruments': { title: 'Musical Instrument Players', description: 'Musical instrument performances', icon: Piano },
   
   // People Categories
-  'people': { title: 'People', description: 'Content about people and society', icon: Users },
-  'people-bigotry': { title: 'People (Bigotry, Favoritism)', description: 'Content addressing social issues', icon: Users },
+  'people': { title: 'People', description: 'People and society', icon: Users },
+  'people-bigotry': { title: 'People (Bigotry, Favoritism)', description: 'Social issues', icon: Users },
   'people-fighting': { title: 'People (Fighting, Confrontations)', description: 'Confrontations and conflicts', icon: Users },
-  'people-karma': { title: 'People (Karma, Deserved)', description: 'Karma and justice content', icon: Scale },
+  'people-karma': { title: 'People (Karma, Deserved)', description: 'Karma and justice', icon: Scale },
   'people-look-alikes': { title: 'People (Look-alikes, Impressions)', description: 'Celebrity look-alikes and impressions', icon: Users },
-  'people-thefts': { title: 'People (Thefts, Stealing)', description: 'Theft and crime content', icon: AlertTriangle },
+  'people-thefts': { title: 'People (Thefts, Stealing)', description: 'Theft and crime', icon: AlertTriangle },
   'people-blogs': { title: 'People & Blogs', description: 'Personal blogs and vlogs', icon: Users },
   'people-amazing': { title: 'People Amazing', description: 'Amazing people and stories', icon: Star },
   'people-amazing-things': { title: 'People Amazing Things', description: 'Amazing feats and achievements', icon: Sparkles },
@@ -343,7 +343,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'people-workers': { title: 'People Worker (Fails, Accidents)', description: 'Worker fails and accidents', icon: Wrench },
   
   // Pets & Animals
-  'pets-animals': { title: 'Pets & Animals', description: 'Content about pets and animals', icon: Dog },
+  'pets-animals': { title: 'Pets & Animals', description: 'Pets and animals', icon: Dog },
   
   // Pictures & Photos
   'pictures-photos': { title: 'Pictures & Photos', description: 'Photography and images', icon: Camera },
@@ -353,7 +353,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Police Categories
   'police-chases': { title: 'Police Chases', description: 'High-speed police chases', icon: Siren },
-  'police-sheriff': { title: 'Police, Sheriff, Highway Patrol', description: 'Law enforcement content', icon: Shield },
+  'police-sheriff': { title: 'Police, Sheriff, Highway Patrol', description: 'Law enforcement', icon: Shield },
   'police-stops': { title: 'Police/Sheriff Stop', description: 'Traffic stops and encounters', icon: Shield },
   
   // Pranks
@@ -362,10 +362,10 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   // Presidents
   'president-motorcade': { title: "President's Motorcade", description: 'Presidential motorcade footage', icon: Car },
   'presidents': { title: 'Presidents (Air Force One, Marine One)', description: 'Presidential aircraft and transport', icon: Plane },
-  'presidents-former': { title: 'Presidents (Former Presidents)', description: 'Former presidents content', icon: Landmark },
+  'presidents-former': { title: 'Presidents (Former Presidents)', description: 'Former presidents', icon: Landmark },
   
   // Property
-  'property': { title: 'Property (Land, Buildings)', description: 'Property and real estate content', icon: Building },
+  'property': { title: 'Property (Land, Buildings)', description: 'Property and real estate', icon: Building },
   
   // Protesters
   'protesters': { title: 'Protesters (Demonstrators)', description: 'Protests and demonstrations', icon: Megaphone },
@@ -383,13 +383,13 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'real-estate-luxury': { title: 'Real Estate (Luxury, Million Dollar)', description: 'Luxury real estate', icon: Crown },
   
   // Relationships
-  'relationships': { title: 'Relationships', description: 'Relationship advice and content', icon: Heart },
+  'relationships': { title: 'Relationships', description: 'Relationship advice', icon: Heart },
   
   // Reproductive Systems
-  'reproductive-systems': { title: 'Reproductive Systems', description: 'Health and education content', icon: Activity },
+  'reproductive-systems': { title: 'Reproductive Systems', description: 'Health and education', icon: Activity },
   
   // Restaurants
-  'restaurants': { title: 'Restaurants', description: 'Restaurant reviews and content', icon: Utensils },
+  'restaurants': { title: 'Restaurants', description: 'Restaurant reviews', icon: Utensils },
   
   // Riddles
   'riddles': { title: 'Riddles (Conundrum, Puzzle)', description: 'Riddles and puzzles', icon: HelpCircle },
@@ -409,10 +409,10 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'science': { title: 'Science (Knowledge, Know How)', description: 'Science education and knowledge', icon: Microscope },
   'science-tech-invent': { title: 'Science & Tech (Inventions)', description: 'Scientific inventions', icon: Lightbulb },
   'science-tech-gadgets': { title: 'Science & Tech (Gadgets)', description: 'Technology gadgets', icon: Smartphone },
-  'science-technology': { title: 'Science & Technology', description: 'Science and technology content', icon: Atom },
+  'science-technology': { title: 'Science & Technology', description: 'Science and technology', icon: Atom },
   
   // Seas & Oceans
-  'seas': { title: 'Seas', description: 'Sea and ocean content', icon: Waves },
+  'seas': { title: 'Seas', description: 'Sea and ocean', icon: Waves },
   'waters-oceans': { title: 'Waters, Oceans, Seas, Lakes', description: 'Water bodies and marine life', icon: Waves },
   
   // Snow & Weather
@@ -424,7 +424,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'volcanos': { title: 'Volcanos (Lava, Eruptions)', description: 'Volcanic eruptions', icon: Flame },
   
   // Space
-  'space': { title: 'Space (Craft, Ship, Shuttle)', description: 'Space exploration content', icon: Rocket },
+  'space': { title: 'Space (Craft, Ship, Shuttle)', description: 'Space exploration', icon: Rocket },
   'universe': { title: 'Universe (Space, Earth)', description: 'Universe and astronomy', icon: Globe },
   
   // Speeches
@@ -444,12 +444,12 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'education-speeches': { title: 'Speeches', description: 'Various speeches', icon: Mic },
   
   // Sports - Main categories
-  'sports': { title: 'Sports', description: 'Sports content and coverage', icon: Trophy },
+  'sports': { title: 'Sports', description: 'Sports coverage', icon: Trophy },
   'sports-arenas': { title: 'Sports (Arenas, Stadiums)', description: 'Sports venues', icon: Building2 },
   'sports-basketball-football': { title: 'Sports (Basketball, Football)', description: 'Basketball and football', icon: Trophy },
   'sports-car-racing': { title: 'Sports (Car Racing, WRC)', description: 'Car racing events', icon: Car },
   'sports-comedy': { title: 'Sports (Comedy, Bloopers)', description: 'Sports comedy and bloopers', icon: Laugh },
-  'sports-fishing': { title: 'Sports (Fishing)', description: 'Fishing content', icon: Anchor },
+  'sports-fishing': { title: 'Sports (Fishing)', description: 'Fishing', icon: Anchor },
   'sports-interviews': { title: 'Sports (Interviews, Athletes)', description: 'Athlete interviews', icon: Mic },
   'sports-kickboxing': { title: 'Sports (Kickboxing)', description: 'Kickboxing fights', icon: Trophy },
   'sports-mlb-players': { title: 'Sports (MLB Players, Coaches)', description: 'MLB players and coaches', icon: Trophy },
@@ -468,10 +468,10 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'sports-tennis-women': { title: 'Sports (Tennis Women)', description: 'Women tennis', icon: Trophy },
   'sports-track-field-highlights': { title: 'Sports (Track & Field Highlights)', description: 'Track & field highlights', icon: Trophy },
   'sports-track-field': { title: 'Sports (Track & Field)', description: 'Track & field events', icon: Timer },
-  'sports-volleyball': { title: 'Sports (Volleyball)', description: 'Volleyball content', icon: Volleyball },
+  'sports-volleyball': { title: 'Sports (Volleyball)', description: 'Volleyball', icon: Volleyball },
   'sports-weightlifting': { title: 'Sports (Weightlifting Olympics)', description: 'Olympic weightlifting', icon: Weight },
   'sports-wwe': { title: 'Sports (WWE Sports Entertainment)', description: 'WWE wrestling', icon: Trophy },
-  'sports-boxing': { title: 'Sports Boxing', description: 'Boxing content', icon: Trophy },
+  'sports-boxing': { title: 'Sports Boxing', description: 'Boxing', icon: Trophy },
   'sports-boxing-interviews': { title: 'Sports Boxing (Interviews)', description: 'Boxing interviews', icon: Mic },
   'sports-college-swimming': { title: 'Sports College (Swimming, Hockey)', description: 'College swimming and hockey', icon: Waves },
   'sports-college-baseball': { title: 'Sports College Baseball', description: 'College baseball', icon: Trophy },
@@ -541,13 +541,13 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'swim-diving': { title: 'Swim (Diving)', description: 'Swimming and diving', icon: Waves },
   
   // Trains
-  'train-riders': { title: 'Train Riders (Hobos, Freight)', description: 'Train riding content', icon: Train },
+  'train-riders': { title: 'Train Riders (Hobos, Freight)', description: 'Train riding', icon: Train },
   'trains-commercial': { title: 'Trains (Commercial)', description: 'Commercial trains', icon: Train },
   'trains-passenger': { title: 'Trains (Passenger, Coach)', description: 'Passenger trains', icon: Train },
   'trains-travel': { title: 'Trains (Travel, Crashes)', description: 'Train travel and accidents', icon: Train },
   
   // Travel
-  'travel': { title: 'Travel', description: 'Travel content and guides', icon: Plane },
+  'travel': { title: 'Travel', description: 'Travel and guides', icon: Plane },
   'travel-beaches': { title: 'Travel (Beaches)', description: 'Beach destinations', icon: Sun },
   'travel-cities': { title: 'Travel (Cities, Towns)', description: 'City travel', icon: Building },
   'travel-country-foods': { title: 'Travel (Country Foods)', description: 'Food travel', icon: Utensils },
@@ -575,7 +575,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'wealth': { title: 'Wealth, Riches, Luxury', description: 'Luxury lifestyle', icon: Crown },
   
   // Weapons
-  'weapons': { title: 'Weapons (Civilian Guns, Knives)', description: 'Weapons content', icon: Target },
+  'weapons': { title: 'Weapons (Civilian Guns, Knives)', description: 'Weapons', icon: Target },
   
   // Weather & Disasters
   'weather-disasters': { title: 'Weather & Disasters', description: 'Weather and disaster coverage', icon: Cloud },
@@ -595,7 +595,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'workout-male': { title: 'Workout Male', description: 'Men workouts', icon: Dumbbell },
   
   // World History
-  'world-history': { title: 'World History', description: 'Historical content', icon: Globe },
+  'world-history': { title: 'World History', description: 'Historical', icon: Globe },
   
   // Yachts
   'yachts': { title: 'Yachts, Luxury Yachts', description: 'Luxury yachts', icon: Sailboat },
@@ -608,12 +608,12 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Sound Effects & Audio
   'sound-effects': { title: 'Sound Effects', description: 'Sound effects for projects', icon: Volume2 },
-  'asmr': { title: 'ASMR', description: 'Relaxing ASMR content', icon: Headphones },
+  'asmr': { title: 'ASMR', description: 'Relaxing ASMR', icon: Headphones },
   
   // Police Department Categories
-  'police-department': { title: 'Police Department', description: 'Police department content', icon: Shield },
+  'police-department': { title: 'Police Department', description: 'Police department', icon: Shield },
   'police-fails': { title: 'Police Fails', description: 'Police fails and funny moments', icon: Siren },
-  'police-trainings': { title: 'Police Department (Trainings)', description: 'Police training content', icon: Shield },
+  'police-trainings': { title: 'Police Department (Trainings)', description: 'Police training', icon: Shield },
   'police-personnel': { title: 'Police Department (Personnel)', description: 'Police personnel and officers', icon: Users },
   'police-equipment': { title: 'Police Department (Equipment)', description: 'Police equipment and gear', icon: Shield },
   'police-weapons': { title: 'Police Department (Weapons)', description: 'Police weapons and armory', icon: Target },
@@ -623,7 +623,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'police-shootings': { title: 'Police Department (Shootings)', description: 'Police shooting incidents', icon: Target },
   
   // Fire Department Categories
-  'fire-department': { title: 'Fire Department', description: 'Fire department content', icon: Flame },
+  'fire-department': { title: 'Fire Department', description: 'Fire department', icon: Flame },
   'fire-department-fails': { title: 'Fire Department Fails', description: 'Fire department fails and funny moments', icon: Flame },
   'fire-trucks': { title: 'Fire Trucks', description: 'Fire trucks and emergency vehicles', icon: Truck },
   'fire-personnel-training': { title: 'Fire Personnel Training', description: 'Firefighter training and personnel', icon: Flame },
@@ -632,7 +632,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'fire-land-fires': { title: 'Fire Department (Land Fires)', description: 'Land and wildfire response', icon: Flame },
   
   // Military Marines
-  'military-marines': { title: 'Military: Marines', description: 'US Marine Corps content', icon: Shield },
+  'military-marines': { title: 'Military: Marines', description: 'US Marine Corps', icon: Shield },
   'marine-training': { title: 'Military (Marine Training)', description: 'Marine Corps training', icon: Target },
   'marine-boot-camp': { title: 'Military (Marine Boot Camp)', description: 'Marine boot camp', icon: Shield },
   'marine-ships': { title: 'Military (Marine Ships)', description: 'Marine Corps ships', icon: Ship },
@@ -642,7 +642,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'marine-duties': { title: 'Military (Marine Duties)', description: 'Marine duties and operations', icon: Shield },
   
   // Military Army
-  'military-army': { title: 'Military: Army', description: 'US Army content', icon: Shield },
+  'military-army': { title: 'Military: Army', description: 'US Army', icon: Shield },
   'army-training': { title: 'Military (Army Training)', description: 'Army training exercises', icon: Target },
   'army-boot-camp': { title: 'Military (Army Boot Camp)', description: 'Army boot camp training', icon: Shield },
   'army-ships': { title: 'Military (Army Ships)', description: 'Army watercraft', icon: Ship },
@@ -652,7 +652,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'army-duties': { title: 'Military (Army Duties)', description: 'Army duties and operations', icon: Shield },
   
   // Military Navy
-  'military-navy': { title: 'Military: Navy', description: 'US Navy content', icon: Anchor },
+  'military-navy': { title: 'Military: Navy', description: 'US Navy', icon: Anchor },
   'navy-training': { title: 'Military (Navy Training)', description: 'Navy training exercises', icon: Target },
   'navy-boot-camp': { title: 'Military (Navy Boot Camp)', description: 'Navy boot camp training', icon: Anchor },
   'navy-ships': { title: 'Military (Navy Ships)', description: 'Navy ships and vessels', icon: Ship },
@@ -662,7 +662,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'navy-duties': { title: 'Military (Navy Duties)', description: 'Navy duties and operations', icon: Anchor },
   
   // Military Coast Guard
-  'military-coast-guard': { title: 'Military: Coast Guard', description: 'US Coast Guard content', icon: Anchor },
+  'military-coast-guard': { title: 'Military: Coast Guard', description: 'US Coast Guard', icon: Anchor },
   'coast-guard-training': { title: 'Military (Coast Guard Training)', description: 'Coast Guard training', icon: Target },
   'coast-guard-boot-camp': { title: 'Military (Coast Guard Boot Camp)', description: 'Coast Guard boot camp', icon: Anchor },
   'coast-guard-ships': { title: 'Military (Coast Guard Ships)', description: 'Coast Guard vessels', icon: Ship },
@@ -672,7 +672,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'coast-guard-duties': { title: 'Military (Coast Guard Duties)', description: 'Coast Guard duties', icon: Anchor },
   
   // Military Airforce
-  'military-airforce': { title: 'Military: Airforce', description: 'US Air Force content', icon: Plane },
+  'military-airforce': { title: 'Military: Airforce', description: 'US Air Force', icon: Plane },
   'airforce-training': { title: 'Military (Airforce Training)', description: 'Air Force training', icon: Target },
   'airforce-boot-camp': { title: 'Military (Airforce Boot Camp)', description: 'Air Force boot camp', icon: Plane },
   'airforce-planes': { title: 'Military (Airforce Planes)', description: 'Air Force aircraft', icon: Plane },
@@ -686,14 +686,14 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'military-weapons-drones': { title: 'Military Weapons Drones', description: 'Military drone weapons systems', icon: Plane },
   
   // Physical Fitness Categories
-  'physical-fitness': { title: 'Physical Fitness', description: 'Workout videos, weightlifting, yoga, and fitness content', icon: Dumbbell },
-  'fitness-weight-lifting': { title: 'Weight Lifting', description: 'Weight lifting videos, pranks, and amazing content', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
-  'fitness-weightlifting-female': { title: 'Weightlifting Female', description: 'Female weightlifting content and inspiration', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
-  'fitness-weightlifting-male': { title: 'Weightlifting Male', description: 'Male weightlifting content and training', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
+  'physical-fitness': { title: 'Physical Fitness', description: 'Workout videos, weightlifting, yoga, and fitness', icon: Dumbbell },
+  'fitness-weight-lifting': { title: 'Weight Lifting', description: 'Weight lifting videos, pranks, and amazing feats', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
+  'fitness-weightlifting-female': { title: 'Weightlifting Female', description: 'Female weightlifting and inspiration', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
+  'fitness-weightlifting-male': { title: 'Weightlifting Male', description: 'Male weightlifting and training', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
   'fitness-workers': { title: 'Workers', description: 'Amazing workers, great things and physical feats', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
-  'fitness-workout': { title: 'Workout', description: 'Workout videos, weightlifting and fitness content', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
+  'fitness-workout': { title: 'Workout', description: 'Workout videos, weightlifting and fitness', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
   'fitness-workout-female': { title: 'Workout Female', description: 'Female workout routines and fitness inspiration', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
-  'fitness-workout-fitness': { title: 'Workout Fitness', description: 'General workout and fitness training content', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
+  'fitness-workout-fitness': { title: 'Workout Fitness', description: 'General workout and fitness training', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
   'fitness-workout-male': { title: 'Workout Male', description: 'Male workout routines and fitness training', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
   'fitness-yoga-workout': { title: 'Yoga Workout', description: 'Yoga workout routines and flexibility training', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
   'fitness-calisthenics': { title: 'Calisthenics Workout', description: 'Bodyweight exercises and calisthenics training', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },
@@ -703,7 +703,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
 export const getCategoryInfo = (key: string): CategoryInfo => {
   return allCategoryMappings[key] || {
     title: key.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-    description: `Explore content about ${key.replace(/-/g, ' ')}`,
+    description: `Explore ${key.replace(/-/g, ' ')}`,
     icon: Video
   };
 };

@@ -4,7 +4,7 @@ import { SubcategoryMapping } from './types';
 export const educationSubcategories: SubcategoryMapping = {
   'education-science': {
     title: 'Science Education',
-    description: 'Educational content about various scientific disciplines',
+    description: 'Various scientific disciplines',
     icon: GraduationCap,
     parent: {
       route: '/education',
@@ -13,7 +13,7 @@ export const educationSubcategories: SubcategoryMapping = {
   },
   'education-math': {
     title: 'Mathematics',
-    description: 'Educational content about mathematics and numerical concepts',
+    description: 'Mathematics and numerical concepts',
     icon: GraduationCap,
     parent: {
       route: '/education',
@@ -22,7 +22,7 @@ export const educationSubcategories: SubcategoryMapping = {
   },
   'education-history': {
     title: 'History',
-    description: 'Educational content about historical events and time periods',
+    description: 'Historical events and time periods',
     icon: GraduationCap,
     parent: {
       route: '/education',
@@ -31,7 +31,7 @@ export const educationSubcategories: SubcategoryMapping = {
   },
   'education-medicine': {
     title: 'Medicine & Medication',
-    description: 'Educational content about medicine, pharmaceuticals, and healthcare',
+    description: 'Medicine, pharmaceuticals, and healthcare',
     icon: Stethoscope,
     parent: {
       route: '/education',
@@ -40,7 +40,7 @@ export const educationSubcategories: SubcategoryMapping = {
   },
   'education-religion': {
     title: 'Religion',
-    description: 'Educational content about religious studies and theology',
+    description: 'Religious studies and theology',
     icon: BookOpen,
     parent: {
       route: '/education',
@@ -49,7 +49,7 @@ export const educationSubcategories: SubcategoryMapping = {
   },
   'education-nursing': {
     title: 'Nursing & Healthcare',
-    description: 'Educational content about nursing (RN, LVN) and healthcare aides',
+    description: 'Nursing (RN, LVN) and healthcare aides',
     icon: HeartPulse,
     parent: {
       route: '/education',
@@ -58,7 +58,7 @@ export const educationSubcategories: SubcategoryMapping = {
   },
   'education-learn': {
     title: 'Learning Techniques',
-    description: 'Educational content about mastering learning techniques and grasping concepts',
+    description: 'Mastering learning techniques and grasping concepts',
     icon: School,
     parent: {
       route: '/education',

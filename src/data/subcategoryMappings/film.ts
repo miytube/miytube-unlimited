@@ -157,7 +157,7 @@ export const filmSubcategories: SubcategoryMapping = {
   },
   'film-animation-cartoons': {
     title: 'Cartoons',
-    description: 'Traditional cartoon and animated content',
+    description: 'Traditional cartoons and animation',
     icon: Clapperboard,
     parent: {
       route: '/film-animation',
