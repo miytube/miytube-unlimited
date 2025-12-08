@@ -3,7 +3,7 @@ import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { Music } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CategoryDropdown } from '@/components/categories/CategoryDropdown';
 import { contentTypes } from '@/data/contentTypes';
 import { useUploadHandler } from '@/hooks/useUploadHandler';
@@ -13,8 +13,12 @@ import { supabase } from '@/integrations/supabase/client';
 const MusicUpload = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { handleUpload } = useUploadHandler();
   const musicContentType = contentTypes.music;
+  
+  // Get genre from URL params to pre-populate subcategory
+  const genreFromUrl = searchParams.get('genre') || '';
   
   const onMusicUpload = async (
     files: File[], 
@@ -176,6 +180,7 @@ const MusicUpload = () => {
           id="music-upload-input"
           uploadDestination={musicContentType.destination}
           categories={musicContentType.categories}
+          defaultSubcategory={genreFromUrl}
         />
       </div>
     </Layout>

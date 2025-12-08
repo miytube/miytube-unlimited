@@ -20,6 +20,7 @@ interface FileUploaderProps {
   uploadDestination?: string;
   categories?: Array<{id: string, name: string, subcategories?: Array<{id: string, name: string}>}>;
   showUrlImport?: boolean;
+  defaultSubcategory?: string;
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({
@@ -34,7 +35,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   id,
   uploadDestination,
   categories = [],
-  showUrlImport = true
+  showUrlImport = true,
+  defaultSubcategory = ''
 }) => {
   const [importedUrl, setImportedUrl] = useState<string | null>(null);
   const [isYouTubeImport, setIsYouTubeImport] = useState(false);
@@ -60,6 +62,13 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       setSelectedCategory(categories[0].id);
     }
   }, [categories, acceptedTypes, selectedCategory, setSelectedCategory]);
+
+  // Set default subcategory from URL params (e.g., for music genre pages)
+  useEffect(() => {
+    if (defaultSubcategory && !selectedSubcategory) {
+      setSelectedSubcategory(defaultSubcategory);
+    }
+  }, [defaultSubcategory, selectedSubcategory, setSelectedSubcategory]);
   
   const {
     isDragging,
