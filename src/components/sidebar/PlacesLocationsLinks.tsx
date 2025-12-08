@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Plane, House, Utensils, Pizza, Map, Building, Sailboat, Waves } from 'lucide-react';
+import { Plane, Utensils, Pizza, Map, Sailboat, Waves } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const PlacesLocationsLinks: React.FC = () => {
@@ -36,12 +36,6 @@ export const PlacesLocationsLinks: React.FC = () => {
       subItems: [
         { id: 'airport-fails', label: 'Airport Fails', path: '/airports/fails' }
       ]
-    },
-    { 
-      id: 'real-estate', 
-      icon: House, 
-      label: 'Real Estate', 
-      path: '/real-estate' 
     },
     { 
       id: 'restaurants', 
