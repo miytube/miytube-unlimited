@@ -107,19 +107,39 @@ export const filterVideosByMusicGenre = (
 ): UploadedVideo[] => {
   const genreLower = genre.toLowerCase().trim();
   
+  // Handle hyphenated genre names (e.g., "funk-rock" should match "funk rock")
+  const genreWords = genreLower.split('-').filter(w => w.length > 0);
+  const genreSpaced = genreWords.join(' ');
+  
   return videos.filter(video => {
     const categoryLower = video.category?.toLowerCase().trim() || '';
     const subcategoryLower = video.subcategory?.toLowerCase().trim() || '';
     const tags = video.tags?.map(t => t.toLowerCase().trim()) || [];
     
-    // Exact match on subcategory or category equals the genre
-    return (
-      categoryLower === genreLower ||
-      subcategoryLower === genreLower ||
-      categoryLower === `music-${genreLower}` ||
-      subcategoryLower === `music-${genreLower}` ||
-      tags.includes(genreLower) ||
-      tags.includes(`music-${genreLower}`)
-    );
+    // Check if this is a music video (category starts with 'music' or equals 'music')
+    const isMusicVideo = categoryLower === 'music' || categoryLower.startsWith('music-') || categoryLower.startsWith('music ');
+    
+    // Exact match on category or subcategory equals the genre
+    if (categoryLower === genreLower || subcategoryLower === genreLower) return true;
+    
+    // Match music-{genre} pattern
+    if (categoryLower === `music-${genreLower}` || subcategoryLower === `music-${genreLower}`) return true;
+    
+    // Match "music {genre}" pattern (space separated)
+    if (categoryLower === `music ${genreLower}` || subcategoryLower === `music ${genreLower}`) return true;
+    
+    // Match spaced version (e.g., "funk rock" for "funk-rock")
+    if (categoryLower === genreSpaced || subcategoryLower === genreSpaced) return true;
+    if (categoryLower === `music-${genreSpaced}` || subcategoryLower === `music-${genreSpaced}`) return true;
+    if (categoryLower === `music ${genreSpaced}` || subcategoryLower === `music ${genreSpaced}`) return true;
+    
+    // For music videos, check if subcategory matches genre
+    if (isMusicVideo && subcategoryLower === genreLower) return true;
+    if (isMusicVideo && subcategoryLower === genreSpaced) return true;
+    
+    // Check tags for exact match
+    if (tags.includes(genreLower) || tags.includes(`music-${genreLower}`) || tags.includes(genreSpaced)) return true;
+    
+    return false;
   });
 };
