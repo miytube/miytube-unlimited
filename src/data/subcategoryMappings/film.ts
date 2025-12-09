@@ -156,7 +156,25 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  '/film/westerns': {
+    title: 'Westerns',
+    description: 'Classic and modern Western films featuring cowboys, outlaws, and frontier adventures',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
   'film-spaghetti-westerns': {
+    title: 'Spaghetti Westerns',
+    description: 'Italian-produced Western films known for stylized violence and iconic soundtracks',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  '/film/spaghetti-westerns': {
     title: 'Spaghetti Westerns',
     description: 'Italian-produced Western films known for stylized violence and iconic soundtracks',
     icon: Flame,
@@ -174,7 +192,25 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  '/film/modern-westerns': {
+    title: 'Modern Westerns',
+    description: 'Contemporary Western films with modern settings and themes',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
   'film-western-comedies': {
+    title: 'Western Comedies',
+    description: 'Humorous Western films blending frontier settings with comedy',
+    icon: Laugh,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  '/film/western-comedies': {
     title: 'Western Comedies',
     description: 'Humorous Western films blending frontier settings with comedy',
     icon: Laugh,
