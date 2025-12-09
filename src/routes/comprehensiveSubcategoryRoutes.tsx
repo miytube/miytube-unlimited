@@ -245,6 +245,23 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="fails" path="/fails" element={<GenericSubcategoryPage />} />,
   <Route key="fails-expensive" path="/fails/expensive" element={<GenericSubcategoryPage />} />,
   <Route key="fails-people" path="/fails/people" element={<GenericSubcategoryPage />} />,
+  
+  // Crazy & Amazing routes
+  <Route key="crazy" path="/crazy" element={<GenericSubcategoryPage />} />,
+  <Route key="crazy-amazing" path="/crazy/amazing" element={<GenericSubcategoryPage />} />,
+  <Route key="crazy-wouldnt-believe" path="/crazy/wouldnt-believe" element={<GenericSubcategoryPage />} />,
+  
+  // Comedians routes
+  <Route key="comedians" path="/comedians" element={<GenericSubcategoryPage />} />,
+  <Route key="comedians-interviews" path="/comedians/interviews" element={<GenericSubcategoryPage />} />,
+  <Route key="comedians-specials" path="/comedians/specials" element={<GenericSubcategoryPage />} />,
+  
+  // Additional comedy routes
+  <Route key="comedy-pranks" path="/comedy/pranks" element={<GenericSubcategoryPage />} />,
+  <Route key="comedy-jokes" path="/comedy/jokes" element={<GenericSubcategoryPage />} />,
+  <Route key="funny-pranks" path="/funny/pranks" element={<GenericSubcategoryPage />} />,
+  <Route key="bloopers-screwup" path="/bloopers/screwup" element={<GenericSubcategoryPage />} />,
+  <Route key="bloopers-fails" path="/bloopers/fails" element={<GenericSubcategoryPage />} />,
 
   // Music routes
   <Route key="music" path="/music" element={<GenericSubcategoryPage />} />,
@@ -555,6 +572,8 @@ export const comprehensiveSubcategoryRoutes = [
 
   // Radio routes
   <Route key="radio" path="/radio" element={<GenericSubcategoryPage />} />,
+  <Route key="radio-music" path="/radio/music" element={<GenericSubcategoryPage />} />,
+  <Route key="radio-podcast" path="/radio/podcast" element={<GenericSubcategoryPage />} />,
   <Route key="radio-rc" path="/radio/rc" element={<GenericSubcategoryPage />} />,
   <Route key="radio-shows" path="/radio/shows" element={<GenericSubcategoryPage />} />,
 
@@ -567,4 +586,26 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="drones" path="/drones" element={<GenericSubcategoryPage />} />,
   <Route key="drones-civilian" path="/drones/civilian" element={<GenericSubcategoryPage />} />,
   <Route key="drones-recreational" path="/drones/recreational" element={<GenericSubcategoryPage />} />,
+
+  // Animation routes (separate from film-animation)
+  <Route key="animation" path="/animation" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-action" path="/animation/action" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-fantasy" path="/animation/fantasy" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-adventure" path="/animation/adventure" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-cartoons" path="/animation/cartoons" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-comedy" path="/animation/comedy" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-drama" path="/animation/drama" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-musical" path="/animation/musical" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-parody" path="/animation/parody" element={<GenericSubcategoryPage />} />,
+  <Route key="animation-short" path="/animation/short" element={<GenericSubcategoryPage />} />,
+
+  // Additional Film routes
+  <Route key="film-action-crime" path="/film/action-crime" element={<GenericSubcategoryPage />} />,
+  <Route key="film-comedy-drama" path="/film/comedy-drama" element={<GenericSubcategoryPage />} />,
+  <Route key="film-crime-drama" path="/film/crime-drama" element={<GenericSubcategoryPage />} />,
+  <Route key="film-clips" path="/film/clips" element={<GenericSubcategoryPage />} />,
+
+  // Additional Entertainment routes
+  <Route key="entertainment-podcast" path="/entertainment/podcast" element={<GenericSubcategoryPage />} />,
+  <Route key="entertainment-hollywood" path="/entertainment/hollywood" element={<GenericSubcategoryPage />} />,
 ];
