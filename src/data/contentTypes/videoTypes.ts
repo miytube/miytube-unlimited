@@ -27,6 +27,17 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'math', name: 'Mathematics' },
         { id: 'history', name: 'History' },
       ]},
+      { id: 'film', name: 'Film & Movies', subcategories: [
+        { id: 'westerns', name: 'Westerns' },
+        { id: 'spaghetti-westerns', name: 'Spaghetti Westerns' },
+        { id: 'modern-westerns', name: 'Modern Westerns' },
+        { id: 'western-comedies', name: 'Western Comedies' },
+        { id: 'action', name: 'Action' },
+        { id: 'drama', name: 'Drama' },
+        { id: 'comedy', name: 'Comedy' },
+        { id: 'romance', name: 'Romance' },
+        { id: 'horror', name: 'Horror' },
+      ]},
     ],
     destination: "Your Videos on Home Page and Selected Category"
   },
