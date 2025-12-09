@@ -24,6 +24,7 @@ export const filmRoutes = [
   <Route key="film-war-action-thriller" path="/film/war-action-thriller" element={<GenericSubcategoryPage />} />,
   <Route key="film-westerns-action-drama" path="/film/westerns-action-drama" element={<GenericSubcategoryPage />} />,
   <Route key="film-westerns-crime-thriller" path="/film/westerns-crime-thriller" element={<GenericSubcategoryPage />} />,
+  <Route key="film-westerns" path="/film/westerns" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-action-thriller" path="/film/movies-action-thriller" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-clips" path="/film/movies-clips" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-created" path="/film/movies-created" element={<GenericSubcategoryPage />} />,
