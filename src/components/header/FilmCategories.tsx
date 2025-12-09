@@ -108,6 +108,24 @@ export const FilmCategories: React.FC = () => {
                       <span>Western Comedies</span>
                     </Link>
                   </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/film/neo-westerns" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Flame className="h-4 w-4" />
+                      <span>Neo-Westerns</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/film/acid-westerns" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Flame className="h-4 w-4" />
+                      <span>Acid Westerns</span>
+                    </Link>
+                  </NavigationMenuLink>
                 </div>
               </div>
               

@@ -219,6 +219,42 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  'film-neo-westerns': {
+    title: 'Neo-Westerns',
+    description: 'Contemporary films using Western themes in modern or unconventional settings',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  '/film/neo-westerns': {
+    title: 'Neo-Westerns',
+    description: 'Contemporary films using Western themes in modern or unconventional settings',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-acid-westerns': {
+    title: 'Acid Westerns',
+    description: 'Psychedelic and surreal Western films with unconventional narratives and visuals',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  '/film/acid-westerns': {
+    title: 'Acid Westerns',
+    description: 'Psychedelic and surreal Western films with unconventional narratives and visuals',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
   'film-movies-action-thriller': {
     title: 'Film, Movies (Action, Thriller)',
     description: 'Action and thriller movies',
