@@ -2379,4 +2379,426 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Award,
     parent: { route: '/moments', name: 'Moments' }
   },
+
+  // ============ ADDITIONAL MISSING MAPPINGS ============
+  
+  // Entertainment Auditions
+  '/entertainment/auditions': {
+    title: 'Auditions & Contests',
+    description: 'Entertainment auditions and contests',
+    icon: Star,
+    parent: { route: '/entertainment', name: 'Entertainment' }
+  },
+
+  // Beaches & Lagoons
+  '/beaches': {
+    title: 'Beaches & Lagoons',
+    description: 'Beach destinations and lagoons',
+    icon: Palmtree,
+    parent: { route: '/travel-events', name: 'Travel & Events' }
+  },
+  '/beaches/tropical': {
+    title: 'Tropical Beaches',
+    description: 'Tropical beach destinations',
+    icon: Palmtree,
+    parent: { route: '/beaches', name: 'Beaches & Lagoons' }
+  },
+  '/beaches/surfing': {
+    title: 'Surfing Spots',
+    description: 'Best surfing beach spots',
+    icon: Palmtree,
+    parent: { route: '/beaches', name: 'Beaches & Lagoons' }
+  },
+  '/beaches/resorts': {
+    title: 'Beach Resorts',
+    description: 'Beach resort destinations',
+    icon: Palmtree,
+    parent: { route: '/beaches', name: 'Beaches & Lagoons' }
+  },
+
+  // Airports additional
+  '/airports/security': {
+    title: 'Airport Security',
+    description: 'Airport security content',
+    icon: Plane,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+  '/airports/lounges': {
+    title: 'Airport Lounges',
+    description: 'Airport lounge reviews',
+    icon: Plane,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+
+  // Restaurants additional
+  '/restaurants/fine-dining': {
+    title: 'Fine Dining',
+    description: 'Fine dining restaurants',
+    icon: Utensils,
+    parent: { route: '/restaurants', name: 'Restaurants' }
+  },
+  '/restaurants/fast-food': {
+    title: 'Fast Food',
+    description: 'Fast food restaurants',
+    icon: Utensils,
+    parent: { route: '/restaurants', name: 'Restaurants' }
+  },
+  '/restaurants/reviews': {
+    title: 'Restaurant Reviews',
+    description: 'Restaurant reviews and ratings',
+    icon: Utensils,
+    parent: { route: '/restaurants', name: 'Restaurants' }
+  },
+  '/restaurants/celebrity-chefs': {
+    title: 'Celebrity Chefs',
+    description: 'Celebrity chef restaurants',
+    icon: Utensils,
+    parent: { route: '/restaurants', name: 'Restaurants' }
+  },
+
+  // Education additional
+  '/education/medicine': {
+    title: 'Medicine & Medication',
+    description: 'Medical education content',
+    icon: GraduationCap,
+    parent: { route: '/education', name: 'Education' }
+  },
+  '/education/religion': {
+    title: 'Religion',
+    description: 'Religious education content',
+    icon: GraduationCap,
+    parent: { route: '/education', name: 'Education' }
+  },
+  '/education/nursing': {
+    title: 'RN Nursing & LVN',
+    description: 'Nursing education content',
+    icon: GraduationCap,
+    parent: { route: '/education', name: 'Education' }
+  },
+  '/education/learn': {
+    title: 'Learning Techniques',
+    description: 'Learning methods and techniques',
+    icon: GraduationCap,
+    parent: { route: '/education', name: 'Education' }
+  },
+
+  // Models additional
+  '/models/fashion': {
+    title: 'Fashion Models',
+    description: 'Fashion model content',
+    icon: Star,
+    parent: { route: '/models', name: 'Models' }
+  },
+  '/models/seasonal': {
+    title: 'Seasonal Modeling',
+    description: 'Seasonal fashion modeling',
+    icon: Shirt,
+    parent: { route: '/models', name: 'Models' }
+  },
+
+  // Music Country & Folk
+  '/music/country': {
+    title: 'Country & Western',
+    description: 'Country and western music',
+    icon: Music,
+    parent: { route: '/music', name: 'Music' }
+  },
+  '/music/folk': {
+    title: 'Folk (Ballads, Chorus)',
+    description: 'Folk music and ballads',
+    icon: Music,
+    parent: { route: '/music', name: 'Music' }
+  },
+  '/music/spanish': {
+    title: 'Spanish & Mexican',
+    description: 'Spanish and Mexican music',
+    icon: Disc,
+    parent: { route: '/music/international', name: 'International Music' }
+  },
+  '/music/international': {
+    title: 'International Music',
+    description: 'Music from around the world',
+    icon: Disc,
+    parent: { route: '/music', name: 'Music' }
+  },
+  '/music/lyrics': {
+    title: 'Music Lyrics',
+    description: 'Song lyrics and annotations',
+    icon: Headphones,
+    parent: { route: '/music', name: 'Music' }
+  },
+  '/music/instruments': {
+    title: 'Musical Instruments',
+    description: 'Musical instruments and players',
+    icon: Guitar,
+    parent: { route: '/music', name: 'Music' }
+  },
+  '/music-artists': {
+    title: 'Music Artists',
+    description: 'Music artists and performers',
+    icon: Mic,
+    parent: { route: '/music', name: 'Music' }
+  },
+
+  // Sports parent categories
+  '/sports/nba': {
+    title: 'NBA Basketball',
+    description: 'NBA basketball content',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/nfl': {
+    title: 'NFL Football',
+    description: 'NFL football content',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/mlb': {
+    title: 'MLB Baseball',
+    description: 'MLB baseball content',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/nhl': {
+    title: 'NHL Hockey',
+    description: 'NHL hockey content',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/wnba': {
+    title: 'WNBA Basketball',
+    description: 'WNBA basketball content',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/college': {
+    title: 'College Sports',
+    description: 'NCAA college sports content',
+    icon: Medal,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/mma': {
+    title: 'MMA & Fighting',
+    description: 'Mixed martial arts and fighting',
+    icon: Dumbbell,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/racing': {
+    title: 'Racing Sports',
+    description: 'Racing and motorsports',
+    icon: Timer,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/soccer': {
+    title: 'Soccer & Football',
+    description: 'Soccer and international football',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/tennis': {
+    title: 'Tennis',
+    description: 'Professional tennis content',
+    icon: Target,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/golf': {
+    title: 'Golf',
+    description: 'Golf and PGA content',
+    icon: Target,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/olympics': {
+    title: 'Olympics',
+    description: 'Olympic games content',
+    icon: Medal,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/volleyball': {
+    title: 'Volleyball',
+    description: 'Volleyball content',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/water': {
+    title: 'Water Sports',
+    description: 'Water sports and aquatics',
+    icon: Waves,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/other': {
+    title: 'Other Sports',
+    description: 'Various sports content',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/boxing': {
+    title: 'Boxing',
+    description: 'Boxing matches and content',
+    icon: Dumbbell,
+    parent: { route: '/sports/mma', name: 'MMA & Fighting' }
+  },
+  '/sports/nascar': {
+    title: 'NASCAR Racing',
+    description: 'NASCAR racing content',
+    icon: Timer,
+    parent: { route: '/sports/racing', name: 'Racing Sports' }
+  },
+  '/sports/motorcycle-racing': {
+    title: 'Motorcycle Superbike',
+    description: 'Motorcycle racing content',
+    icon: Timer,
+    parent: { route: '/sports/racing', name: 'Racing Sports' }
+  },
+  '/sports/horse-racing': {
+    title: 'Horse Racing',
+    description: 'Horse racing content',
+    icon: Timer,
+    parent: { route: '/sports/racing', name: 'Racing Sports' }
+  },
+  '/sports/swimming': {
+    title: 'Swimming',
+    description: 'Swimming competitions',
+    icon: Waves,
+    parent: { route: '/sports/water', name: 'Water Sports' }
+  },
+  '/meditation/guided': {
+    title: 'Guided Meditation',
+    description: 'Guided meditation sessions',
+    icon: Brain,
+    parent: { route: '/meditation', name: 'Meditation' }
+  },
+  '/meditation/sleep': {
+    title: 'Sleep Meditation',
+    description: 'Meditation for better sleep',
+    icon: Brain,
+    parent: { route: '/meditation', name: 'Meditation' }
+  },
+
+  // Parent category pages
+  '/animation': {
+    title: 'Animation',
+    description: 'Animated films and content',
+    icon: Film,
+    parent: { route: '/film-animation', name: 'Film & Animation' }
+  },
+  '/tv-shows': {
+    title: 'TV Shows',
+    description: 'Television shows and series',
+    icon: Tv,
+    parent: { route: '/entertainment', name: 'Entertainment' }
+  },
+  '/radio': {
+    title: 'Radio',
+    description: 'Radio content and shows',
+    icon: Radio,
+    parent: { route: '/entertainment', name: 'Entertainment' }
+  },
+  '/comedians': {
+    title: 'Comedians',
+    description: 'Comedian profiles and performances',
+    icon: Smile,
+    parent: { route: '/comedy', name: 'Comedy' }
+  },
+  '/funny': {
+    title: 'Funny Videos',
+    description: 'Funny and humorous content',
+    icon: Laugh,
+    parent: { route: '/comedy', name: 'Comedy' }
+  },
+  '/bloopers': {
+    title: 'Bloopers',
+    description: 'Blooper reels and outtakes',
+    icon: PartyPopper,
+    parent: { route: '/comedy', name: 'Comedy' }
+  },
+  '/fails': {
+    title: 'Fails',
+    description: 'Fail compilations',
+    icon: Zap,
+    parent: { route: '/comedy', name: 'Comedy' }
+  },
+  '/crazy': {
+    title: 'Crazy & Amazing',
+    description: 'Crazy and amazing content',
+    icon: Zap,
+    parent: { route: '/comedy', name: 'Comedy' }
+  },
+  '/magic-tricks': {
+    title: 'Magic Tricks',
+    description: 'Magic tricks and illusions',
+    icon: Wand2,
+    parent: { route: '/gaming', name: 'Gaming & Hobbies' }
+  },
+  '/game-challenges': {
+    title: 'Game Challenges',
+    description: 'Game challenges and competitions',
+    icon: Target,
+    parent: { route: '/gaming', name: 'Gaming & Hobbies' }
+  },
+  '/riddles': {
+    title: 'Riddles & Puzzles',
+    description: 'Brain teasers and puzzles',
+    icon: Puzzle,
+    parent: { route: '/gaming', name: 'Gaming & Hobbies' }
+  },
+  '/dances': {
+    title: 'Dances',
+    description: 'Dance performances and styles',
+    icon: Trophy,
+    parent: { route: '/gaming', name: 'Gaming & Hobbies' }
+  },
+  '/martial-arts': {
+    title: 'Martial Arts',
+    description: 'Martial arts training and content',
+    icon: Activity,
+    parent: { route: '/physical-fitness', name: 'Fitness' }
+  },
+  '/health': {
+    title: 'Health',
+    description: 'Health and wellness content',
+    icon: Heart,
+    parent: { route: '/physical-fitness', name: 'Fitness' }
+  },
+  '/success': {
+    title: 'Success & Achievement',
+    description: 'Success and motivation content',
+    icon: Activity,
+    parent: { route: '/physical-fitness', name: 'Fitness' }
+  },
+  '/home-electrical': {
+    title: 'Home Electrical',
+    description: 'Home electrical tutorials',
+    icon: Zap,
+    parent: { route: '/how-to-style', name: 'How To' }
+  },
+  '/documentaries': {
+    title: 'Documentaries',
+    description: 'Documentary films and series',
+    icon: BookOpen,
+    parent: { route: '/how-to-style', name: 'How To' }
+  },
+  '/machines': {
+    title: 'Machines',
+    description: 'Machine and engineering content',
+    icon: Hammer,
+    parent: { route: '/how-to-style', name: 'How To' }
+  },
+  '/workers': {
+    title: 'Workers',
+    description: 'Workers and workplace content',
+    icon: Briefcase,
+    parent: { route: '/people-blogs', name: 'People' }
+  },
+  '/moments': {
+    title: 'Moments',
+    description: 'Memorable moments and highlights',
+    icon: Award,
+    parent: { route: '/people-blogs', name: 'People' }
+  },
+  '/pictures': {
+    title: 'Pictures & Photos',
+    description: 'Photography and pictures',
+    icon: Image,
+    parent: { route: '/models', name: 'Models' }
+  },
 };
