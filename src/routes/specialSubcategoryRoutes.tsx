@@ -73,4 +73,9 @@ export const specialSubcategoryRoutes = [
   <Route key="reality-tv-competition" path="/reality-tv/competition" element={<GenericSubcategoryPage />} />,
   <Route key="reality-tv-dating" path="/reality-tv/dating" element={<GenericSubcategoryPage />} />,
   <Route key="reality-tv-documentary" path="/reality-tv/documentary" element={<GenericSubcategoryPage />} />,
+  
+  /* Game Shows Routes */
+  <Route key="game-shows-trivia" path="/game-shows/trivia" element={<GenericSubcategoryPage />} />,
+  <Route key="game-shows-physical-challenges" path="/game-shows/physical-challenges" element={<GenericSubcategoryPage />} />,
+  <Route key="game-shows-word-games" path="/game-shows/word-games" element={<GenericSubcategoryPage />} />,
 ];
