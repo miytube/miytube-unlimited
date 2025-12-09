@@ -33,6 +33,7 @@ export const specialSubcategoryRoutes = [
   <Route key="pets-animals-fish" path="/pets-animals/fish" element={<GenericSubcategoryPage />} />,
   <Route key="pets-animals-mammals" path="/pets-animals/mammals" element={<GenericSubcategoryPage />} />,
   <Route key="pets-animals-marine-mammals" path="/pets-animals/marine-mammals" element={<GenericSubcategoryPage />} />,
+  <Route key="pets-animals-jellyfish" path="/pets-animals/jellyfish" element={<GenericSubcategoryPage />} />,
   <Route key="pets-animals-reptiles" path="/pets-animals/reptiles" element={<GenericSubcategoryPage />} />,
   <Route key="pets-animals-rodents" path="/pets-animals/rodents" element={<GenericSubcategoryPage />} />,
   <Route key="pets-animals-cephalopods" path="/pets-animals/cephalopods" element={<GenericSubcategoryPage />} />,
