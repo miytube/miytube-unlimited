@@ -169,7 +169,7 @@ const dataUrlToFile = (dataUrl: string, fileName: string, fileType: string): Fil
 
 // Supabase cloud backup helpers
 const saveVideoToSupabase = async (video: {
-  id: string;
+  localId: string; // Local IndexedDB ID for logging
   title: string;
   description: string;
   category?: string;
@@ -185,8 +185,8 @@ const saveVideoToSupabase = async (video: {
   fileSize?: number;
   fileType?: string;
 }): Promise<void> => {
+  // Don't pass 'id' - let Supabase generate UUID automatically
   const { error } = await supabase.from('uploaded_videos').insert({
-    id: video.id,
     title: video.title,
     description: video.description,
     category: video.category,
@@ -206,7 +206,7 @@ const saveVideoToSupabase = async (video: {
   if (error) {
     console.error('Error saving video to Supabase:', error);
   } else {
-    console.log('Saved video to Supabase cloud backup:', video.id);
+    console.log('Saved video to Supabase cloud backup:', video.localId);
   }
 };
 
@@ -481,7 +481,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       
       // Save to Supabase cloud backup
       await saveVideoToSupabase({
-        id: videoId,
+        localId: videoId,
         title: newVideo.title,
         description: newVideo.description,
         category,
@@ -547,7 +547,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       
       // Save to Supabase cloud backup
       await saveVideoToSupabase({
-        id: videoId,
+        localId: videoId,
         title: newVideo.title,
         description: newVideo.description,
         category,
@@ -650,7 +650,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     
     // Save to Supabase cloud backup
     await saveVideoToSupabase({
-      id: videoId,
+      localId: videoId,
       title: newVideo.title,
       description: newVideo.description,
       category,
