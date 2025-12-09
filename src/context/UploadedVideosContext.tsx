@@ -2,15 +2,16 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { shouldUseCloudStorage, uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
 import { useUploadProgress } from './UploadProgressContext';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface UploadedVideo {
   id: string;
   file: File | null;
   fileDataUrl?: string;
-  cloudUrl?: string; // URL for cloud-stored videos
+  cloudUrl?: string;
   isCloudStored?: boolean;
-  isYouTubeEmbed?: boolean; // Flag for YouTube embedded videos
-  youtubeId?: string; // YouTube video ID for embeds
+  isYouTubeEmbed?: boolean;
+  youtubeId?: string;
   title: string;
   description: string;
   thumbnail: string;
@@ -166,23 +167,143 @@ const dataUrlToFile = (dataUrl: string, fileName: string, fileType: string): Fil
   return new File([u8arr], fileName, { type: fileType });
 };
 
+// Supabase cloud backup helpers
+const saveVideoToSupabase = async (video: {
+  id: string;
+  title: string;
+  description: string;
+  category?: string;
+  subcategory?: string;
+  tags: string[];
+  duration: string;
+  thumbnail: string;
+  cloudUrl?: string;
+  isCloudStored?: boolean;
+  isYouTubeEmbed?: boolean;
+  youtubeId?: string;
+  fileName?: string;
+  fileSize?: number;
+  fileType?: string;
+}): Promise<void> => {
+  const { error } = await supabase.from('uploaded_videos').insert({
+    id: video.id,
+    title: video.title,
+    description: video.description,
+    category: video.category,
+    subcategory: video.subcategory,
+    tags: video.tags,
+    duration: video.duration,
+    thumbnail_url: video.thumbnail,
+    cloud_url: video.cloudUrl,
+    is_cloud_stored: video.isCloudStored || false,
+    is_youtube_embed: video.isYouTubeEmbed || false,
+    youtube_video_id: video.youtubeId,
+    file_name: video.fileName,
+    file_size: video.fileSize,
+    file_type: video.fileType,
+  });
+  
+  if (error) {
+    console.error('Error saving video to Supabase:', error);
+  } else {
+    console.log('Saved video to Supabase cloud backup:', video.id);
+  }
+};
+
+const loadVideosFromSupabase = async (): Promise<UploadedVideo[]> => {
+  const { data, error } = await supabase
+    .from('uploaded_videos')
+    .select('*')
+    .order('created_at', { ascending: false });
+  
+  if (error) {
+    console.error('Error loading videos from Supabase:', error);
+    return [];
+  }
+  
+  return (data || []).map(v => ({
+    id: v.id,
+    file: null,
+    fileDataUrl: '',
+    cloudUrl: v.cloud_url || undefined,
+    isCloudStored: v.is_cloud_stored || false,
+    isYouTubeEmbed: v.is_youtube_embed || false,
+    youtubeId: v.youtube_video_id || undefined,
+    title: v.title,
+    description: v.description || '',
+    thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
+    timestamp: new Date(v.created_at).toLocaleDateString(),
+    views: String(v.views || 0),
+    duration: v.duration || '0:00',
+    category: v.category || undefined,
+    subcategory: v.subcategory || undefined,
+    tags: v.tags || [],
+  }));
+};
+
+const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<void> => {
+  const supabaseUpdates: Record<string, unknown> = {};
+  if (updates.title !== undefined) supabaseUpdates.title = updates.title;
+  if (updates.description !== undefined) supabaseUpdates.description = updates.description;
+  if (updates.category !== undefined) supabaseUpdates.category = updates.category;
+  if (updates.subcategory !== undefined) supabaseUpdates.subcategory = updates.subcategory;
+  if (updates.tags !== undefined) supabaseUpdates.tags = updates.tags;
+  if (updates.thumbnail !== undefined) supabaseUpdates.thumbnail_url = updates.thumbnail;
+  
+  if (Object.keys(supabaseUpdates).length > 0) {
+    const { error } = await supabase
+      .from('uploaded_videos')
+      .update(supabaseUpdates)
+      .eq('id', id);
+    
+    if (error) {
+      console.error('Error updating video in Supabase:', error);
+    } else {
+      console.log('Updated video in Supabase:', id);
+    }
+  }
+};
+
+const deleteVideoFromSupabase = async (id: string): Promise<void> => {
+  const { error } = await supabase
+    .from('uploaded_videos')
+    .delete()
+    .eq('id', id);
+  
+  if (error) {
+    console.error('Error deleting video from Supabase:', error);
+  } else {
+    console.log('Deleted video from Supabase:', id);
+  }
+};
+
 export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ children }) => {
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { startUpload, completeUpload, failUpload } = useUploadProgress();
 
-  // Load videos from IndexedDB on mount
+  // Load videos from both IndexedDB (local) and Supabase (cloud)
   useEffect(() => {
     const loadStoredVideos = async () => {
-      console.log('Starting to load videos from IndexedDB...');
+      console.log('Starting to load videos from storage...');
       try {
         // Clear old localStorage data (migration cleanup)
         localStorage.removeItem('miytube_uploaded_videos');
         
-        const storedVideos = await getAllVideosFromDB();
-        console.log('Raw stored videos from IndexedDB:', storedVideos.length, storedVideos);
+        // Load from both sources in parallel
+        const [localVideos, cloudVideos] = await Promise.all([
+          getAllVideosFromDB(),
+          loadVideosFromSupabase()
+        ]);
         
-        const videos: UploadedVideo[] = storedVideos.map(sv => ({
+        console.log('Local IndexedDB videos:', localVideos.length);
+        console.log('Cloud Supabase videos:', cloudVideos.length);
+        
+        // Create a map of cloud videos by ID for deduplication
+        const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
+        
+        // Process local videos
+        const localVideoList: UploadedVideo[] = localVideos.map(sv => ({
           id: sv.id,
           file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
           fileDataUrl: sv.fileDataUrl,
@@ -200,10 +321,31 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           subcategory: sv.subcategory,
           tags: sv.tags || [],
         }));
-        setUploadedVideos(videos);
-        console.log('Loaded videos from IndexedDB:', videos.length, 'cloud:', videos.filter(v => v.isCloudStored).length, 'youtube:', videos.filter(v => v.isYouTubeEmbed).length);
+        
+        // Merge: local videos take priority (they have file data), add cloud-only videos
+        const mergedVideos: UploadedVideo[] = [...localVideoList];
+        const localIds = new Set(localVideoList.map(v => v.id));
+        
+        // Add cloud videos that aren't in local storage
+        for (const cloudVideo of cloudVideos) {
+          if (!localIds.has(cloudVideo.id)) {
+            mergedVideos.push(cloudVideo);
+          }
+        }
+        
+        // Sort by most recent first (assuming IDs contain timestamps)
+        mergedVideos.sort((a, b) => {
+          const aTime = parseInt(a.id.replace('upload-', '')) || 0;
+          const bTime = parseInt(b.id.replace('upload-', '')) || 0;
+          return bTime - aTime;
+        });
+        
+        setUploadedVideos(mergedVideos);
+        console.log('Total videos loaded:', mergedVideos.length, 
+          'local:', localVideoList.length, 
+          'cloud-only:', mergedVideos.length - localVideoList.length);
       } catch (error) {
-        console.error('Error loading videos from IndexedDB:', error);
+        console.error('Error loading videos:', error);
       }
       setIsLoaded(true);
     };
@@ -311,7 +453,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         tags,
       };
       
-      // Save metadata to IndexedDB
+      // Save to IndexedDB
       try {
         await saveVideoToDB({
           id: videoId,
@@ -335,8 +477,23 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         console.log("Saved YouTube embed to IndexedDB:", videoId);
       } catch (error) {
         console.error("Error saving YouTube embed to IndexedDB:", error);
-        throw new Error("Failed to save YouTube video.");
       }
+      
+      // Save to Supabase cloud backup
+      await saveVideoToSupabase({
+        id: videoId,
+        title: newVideo.title,
+        description: newVideo.description,
+        category,
+        subcategory,
+        tags,
+        duration: newVideo.duration,
+        thumbnail: youtubeThumbnail,
+        cloudUrl: newVideo.cloudUrl,
+        isCloudStored: false,
+        isYouTubeEmbed: true,
+        youtubeId,
+      });
       
       setUploadedVideos(prev => [newVideo, ...prev]);
       return;
@@ -364,7 +521,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         tags,
       };
       
-      // Save metadata to IndexedDB
+      // Save to IndexedDB
       try {
         await saveVideoToDB({
           id: videoId,
@@ -386,8 +543,21 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         console.log("Saved URL import to IndexedDB:", videoId);
       } catch (error) {
         console.error("Error saving URL import to IndexedDB:", error);
-        throw new Error("Failed to save imported video.");
       }
+      
+      // Save to Supabase cloud backup
+      await saveVideoToSupabase({
+        id: videoId,
+        title: newVideo.title,
+        description: newVideo.description,
+        category,
+        subcategory,
+        tags,
+        duration: newVideo.duration,
+        thumbnail: newVideo.thumbnail,
+        cloudUrl: importUrl,
+        isCloudStored: true,
+      });
       
       setUploadedVideos(prev => [newVideo, ...prev]);
       return;
@@ -409,7 +579,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     if (useCloud) {
       // Upload to Supabase Storage for large files
       const fileSizeMB = Math.round(file.size / (1024 * 1024));
-      const estimatedMinutes = Math.ceil(fileSizeMB / 10); // ~10MB/s estimate
+      const estimatedMinutes = Math.ceil(fileSizeMB / 10);
       
       startUpload(file.name, fileSizeMB, estimatedMinutes);
       
@@ -450,7 +620,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
     };
     
-    // Save metadata to IndexedDB (cloud videos just store URL, not file data)
+    // Save to IndexedDB
     try {
       await saveVideoToDB({
         id: videoId,
@@ -472,12 +642,28 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       console.log("Saved video metadata to IndexedDB:", videoId);
     } catch (error) {
       console.error("Error saving video to IndexedDB:", error);
-      // If cloud upload succeeded but IndexedDB failed, try to clean up
       if (useCloud && cloudUrl) {
         await deleteVideoFromCloud(cloudUrl).catch(() => {});
       }
       throw new Error("Failed to save video metadata.");
     }
+    
+    // Save to Supabase cloud backup
+    await saveVideoToSupabase({
+      id: videoId,
+      title: newVideo.title,
+      description: newVideo.description,
+      category,
+      subcategory,
+      tags,
+      duration,
+      thumbnail,
+      cloudUrl: useCloud ? cloudUrl : undefined,
+      isCloudStored: useCloud,
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.type,
+    });
     
     console.log("Adding new video:", videoId, newVideo.title, "category:", category, useCloud ? "(cloud)" : "(local)");
     setUploadedVideos(prev => [newVideo, ...prev]);
@@ -512,6 +698,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           subcategory: videoToUpdate.subcategory,
           tags: videoToUpdate.tags,
         }).catch(err => console.error('Error updating video in IndexedDB:', err));
+        
+        // Update in Supabase
+        updateVideoInSupabase(id, updates as Record<string, unknown>);
       }
       
       return updated;
@@ -520,7 +709,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
 
   const deleteUploadedVideo = async (id: string) => {
-    // Find video to check if it's cloud stored
     const videoToDelete = uploadedVideos.find(v => v.id === id);
     
     setUploadedVideos(prev => prev.filter(video => video.id !== id));
@@ -532,8 +720,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         console.log("Deleted video from cloud storage:", id);
       }
       
+      // Delete from IndexedDB
       await deleteVideoFromDB(id);
       console.log("Deleted video from IndexedDB:", id);
+      
+      // Delete from Supabase
+      await deleteVideoFromSupabase(id);
     } catch (error) {
       console.error("Error deleting video:", error);
     }
@@ -568,7 +760,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       const vidCategory = video.category?.toLowerCase().trim() || '';
       const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
       
-      // If subcategory is specified, require exact or fuzzy match on both
       if (subcategory) {
         const subLower = subcategory.toLowerCase().trim();
         const categoryMatches = vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
@@ -576,7 +767,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         return categoryMatches && subcategoryMatches;
       }
       
-      // Exact category match or fuzzy match for typos
       return vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
     });
   };
