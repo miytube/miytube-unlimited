@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, Clapperboard, Drama, Laugh, Heart, Sword, Castle } from 'lucide-react';
+import { Film, Clapperboard, Drama, Laugh, Heart, Sword, Castle, Flame } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,7 +18,7 @@ export const FilmCategories: React.FC = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Film</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid grid-cols-2 gap-3 p-4 w-[500px]">
+            <div className="grid grid-cols-3 gap-3 p-4 w-[650px]">
               <div>
                 <h3 className="font-medium text-sm mb-2 text-muted-foreground">Film</h3>
                 <div className="space-y-1.5">
@@ -70,6 +70,48 @@ export const FilmCategories: React.FC = () => {
               </div>
               
               <div>
+                <h3 className="font-medium text-sm mb-2 text-muted-foreground">Westerns</h3>
+                <div className="space-y-1.5">
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/film/westerns" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Flame className="h-4 w-4" />
+                      <span>All Westerns</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/film/spaghetti-westerns" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Flame className="h-4 w-4" />
+                      <span>Spaghetti Westerns</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/film/modern-westerns" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Flame className="h-4 w-4" />
+                      <span>Modern Westerns</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/film/western-comedies" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Laugh className="h-4 w-4" />
+                      <span>Western Comedies</span>
+                    </Link>
+                  </NavigationMenuLink>
+                </div>
+              </div>
+              
+              <div>
                 <h3 className="font-medium text-sm mb-2 text-muted-foreground">Film & Animation</h3>
                 <div className="space-y-1.5">
                   <NavigationMenuLink asChild>
@@ -96,7 +138,7 @@ export const FilmCategories: React.FC = () => {
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
                       <Castle className="h-4 w-4" />
-                      <span>Fantasy & Drama Animation</span>
+                      <span>Fantasy & Drama</span>
                     </Link>
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
@@ -113,7 +155,7 @@ export const FilmCategories: React.FC = () => {
                       to="/film-animation" 
                       className="flex items-center justify-center gap-2 p-2 bg-primary/10 hover:bg-primary/20 rounded-md text-sm mt-2"
                     >
-                      <span>View all Animation categories</span>
+                      <span>View all Animation</span>
                     </Link>
                   </NavigationMenuLink>
                 </div>
