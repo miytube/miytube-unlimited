@@ -147,6 +147,15 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  'film-westerns': {
+    title: 'Westerns',
+    description: 'Classic and modern Western films featuring cowboys, outlaws, and frontier adventures',
+    icon: Flame,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
   'film-movies-action-thriller': {
     title: 'Film, Movies (Action, Thriller)',
     description: 'Action and thriller movies',
