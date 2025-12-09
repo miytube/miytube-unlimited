@@ -60,29 +60,31 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
         </div>
         
         <div 
-          className={`overflow-hidden transition-all duration-200 ease-out ${
+          className={`overflow-hidden transition-all duration-300 ease-out ${
             isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="pl-8 space-y-1 mt-1">
+          <div className="pl-8 space-y-0.5 mt-1">
             <Link
               to={item.path}
-              className={`block px-3 py-1.5 text-sm rounded-md hover:bg-secondary/60 transition-colors ${
+              className={`block px-3 py-1.5 text-sm rounded-md hover:bg-secondary/60 transition-all duration-200 ${
                 location.pathname === item.path ? 'text-primary font-medium' : 'text-muted-foreground'
-              }`}
+              } ${isExpanded ? 'animate-slide-in-item' : ''}`}
+              style={{ animationDelay: '0ms' }}
             >
               All {item.label}
             </Link>
-            {item.subItems!.map(subItem => {
+            {item.subItems!.map((subItem, index) => {
               const isSubActive = location.pathname === subItem.path || location.pathname.startsWith(`${subItem.path}/`);
               
               return (
                 <Link
                   key={subItem.id}
                   to={subItem.path}
-                  className={`block px-3 py-1.5 text-sm rounded-md hover:bg-secondary/60 transition-colors ${
+                  className={`block px-3 py-1.5 text-sm rounded-md hover:bg-secondary/60 transition-all duration-200 ${
                     isSubActive ? 'text-primary font-medium' : 'text-muted-foreground'
-                  }`}
+                  } ${isExpanded ? 'animate-slide-in-item' : ''}`}
+                  style={{ animationDelay: `${(index + 1) * 30}ms` }}
                 >
                   {subItem.label}
                 </Link>
