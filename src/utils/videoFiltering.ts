@@ -14,14 +14,25 @@ const getSimilarity = (str1: string, str2: string): number => {
   const s1 = str1.toLowerCase().trim();
   const s2 = str2.toLowerCase().trim();
   if (s1 === s2) return 1;
-  if (s1.includes(s2) || s2.includes(s1)) return 0.9;
   
-  // Simple character overlap ratio
-  const chars1 = new Set(s1.split(''));
-  const chars2 = new Set(s2.split(''));
-  const intersection = [...chars1].filter(c => chars2.has(c)).length;
-  const union = new Set([...chars1, ...chars2]).size;
-  return intersection / union;
+  // Only allow includes match if strings are very similar in length (within 3 chars)
+  // This prevents "pryor" from matching "late night" just because of character overlap
+  if (Math.abs(s1.length - s2.length) <= 3 && (s1.includes(s2) || s2.includes(s1))) return 0.9;
+  
+  // Levenshtein-based similarity for typo detection only
+  const maxLen = Math.max(s1.length, s2.length);
+  if (maxLen === 0) return 1;
+  
+  // Simple edit distance approximation - only high similarity for near-identical strings
+  let matches = 0;
+  const minLen = Math.min(s1.length, s2.length);
+  for (let i = 0; i < minLen; i++) {
+    if (s1[i] === s2[i]) matches++;
+  }
+  
+  // Penalize length difference more heavily
+  const lengthPenalty = Math.abs(s1.length - s2.length) / maxLen;
+  return (matches / maxLen) - lengthPenalty;
 };
 
 /**
