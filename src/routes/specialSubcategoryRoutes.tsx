@@ -68,4 +68,9 @@ export const specialSubcategoryRoutes = [
   <Route key="talk-shows-morning" path="/talk-shows/morning" element={<GenericSubcategoryPage />} />,
   <Route key="talk-shows-evening" path="/talk-shows/evening" element={<GenericSubcategoryPage />} />,
   <Route key="talk-shows-interviews" path="/talk-shows/interviews" element={<GenericSubcategoryPage />} />,
+  
+  /* Reality TV Routes */
+  <Route key="reality-tv-competition" path="/reality-tv/competition" element={<GenericSubcategoryPage />} />,
+  <Route key="reality-tv-dating" path="/reality-tv/dating" element={<GenericSubcategoryPage />} />,
+  <Route key="reality-tv-documentary" path="/reality-tv/documentary" element={<GenericSubcategoryPage />} />,
 ];
