@@ -57,4 +57,10 @@ export const specialSubcategoryRoutes = [
   <Route key="lakes-rivers-rivers" path="/lakes-rivers/rivers" element={<GenericSubcategoryPage />} />,
   <Route key="lakes-rivers-seas" path="/lakes-rivers/seas" element={<GenericSubcategoryPage />} />,
   <Route key="lakes-rivers-waterfalls" path="/lakes-rivers/waterfalls" element={<GenericSubcategoryPage />} />,
+  
+  /* Plants Routes */
+  <Route key="plants-herbs" path="/plants/herbs" element={<GenericSubcategoryPage />} />,
+  <Route key="plants-vegetables" path="/plants/vegetables" element={<GenericSubcategoryPage />} />,
+  <Route key="plants-flowers" path="/plants/flowers" element={<GenericSubcategoryPage />} />,
+  <Route key="plants-trees" path="/plants/trees" element={<GenericSubcategoryPage />} />,
 ];
