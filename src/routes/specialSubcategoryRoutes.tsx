@@ -78,4 +78,9 @@ export const specialSubcategoryRoutes = [
   <Route key="game-shows-trivia" path="/game-shows/trivia" element={<GenericSubcategoryPage />} />,
   <Route key="game-shows-physical-challenges" path="/game-shows/physical-challenges" element={<GenericSubcategoryPage />} />,
   <Route key="game-shows-word-games" path="/game-shows/word-games" element={<GenericSubcategoryPage />} />,
+  
+  /* Awards Shows Routes */
+  <Route key="awards-shows-music" path="/awards-shows/music" element={<GenericSubcategoryPage />} />,
+  <Route key="awards-shows-film" path="/awards-shows/film" element={<GenericSubcategoryPage />} />,
+  <Route key="awards-shows-tv" path="/awards-shows/tv" element={<GenericSubcategoryPage />} />,
 ];
