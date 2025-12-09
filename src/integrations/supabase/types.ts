@@ -169,6 +169,75 @@ export type Database = {
         }
         Relationships: []
       }
+      uploaded_videos: {
+        Row: {
+          category: string | null
+          cloud_url: string | null
+          created_at: string
+          description: string | null
+          duration: string | null
+          file_name: string | null
+          file_size: number | null
+          file_type: string | null
+          id: string
+          is_cloud_stored: boolean | null
+          is_youtube_embed: boolean | null
+          subcategory: string | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          user_id: string | null
+          video_url: string | null
+          views: number | null
+          youtube_video_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          cloud_url?: string | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          is_cloud_stored?: boolean | null
+          is_youtube_embed?: boolean | null
+          subcategory?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          user_id?: string | null
+          video_url?: string | null
+          views?: number | null
+          youtube_video_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          cloud_url?: string | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          is_cloud_stored?: boolean | null
+          is_youtube_embed?: boolean | null
+          subcategory?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string | null
+          video_url?: string | null
+          views?: number | null
+          youtube_video_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
