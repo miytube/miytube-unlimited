@@ -11,14 +11,19 @@ export const LifestyleRelationshipsLinks: React.FC = () => {
       label: 'Relationships', 
       path: '/relationships',
       subItems: [
-        { id: 'relationships-divorce', label: 'Divorce', path: '/relationships/divorce' },
+        { id: 'relationships-dating', label: 'Dating', path: '/relationships/dating' },
         { id: 'relationships-love', label: 'Love', path: '/relationships/love' },
         { id: 'relationships-marriage', label: 'Marriage', path: '/relationships/marriage' },
-        { id: 'relationships-dating', label: 'Dating', path: '/relationships/dating' },
+        { id: 'relationships-divorce', label: 'Divorce', path: '/relationships/divorce' },
         { id: 'relationships-breakups', label: 'Breakups', path: '/relationships/breakups' },
         { id: 'relationships-attraction', label: 'Attraction & Flirting', path: '/relationships/attraction' },
         { id: 'relationships-single', label: 'Dating & Single', path: '/relationships/single' },
-        { id: 'relationships-intimacy', label: 'Intimacy', path: '/relationships/intimacy' }
+        { id: 'relationships-intimacy', label: 'Intimacy', path: '/relationships/intimacy' },
+        { id: 'relationships-long-distance', label: 'Long Distance', path: '/relationships/long-distance' },
+        { id: 'relationships-communication', label: 'Communication', path: '/relationships/communication' },
+        { id: 'relationships-family-dynamics', label: 'Family Dynamics', path: '/relationships/family-dynamics' },
+        { id: 'relationships-trust', label: 'Trust & Loyalty', path: '/relationships/trust' },
+        { id: 'relationships-conflict', label: 'Conflict Resolution', path: '/relationships/conflict' }
       ]
     },
     { 
