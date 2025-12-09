@@ -33,6 +33,7 @@ import { plantsSubcategories } from './plants';
 import { talkShowsSubcategories } from './talkShows';
 import { realityTVSubcategories } from './realityTV';
 import { gameShowsSubcategories } from './gameShows';
+import { awardsShowsSubcategories } from './awardsShows';
 
 // Merge all subcategory mappings
 export const subcategoryMappings: SubcategoryMapping = {
@@ -69,6 +70,7 @@ export const subcategoryMappings: SubcategoryMapping = {
   ...talkShowsSubcategories,
   ...realityTVSubcategories,
   ...gameShowsSubcategories,
+  ...awardsShowsSubcategories,
 };
 
 // Re-export types

@@ -46,6 +46,7 @@ import Plants from "@/pages/Plants";
 import TalkShows from "@/pages/TalkShows";
 import RealityTV from "@/pages/RealityTV";
 import GameShows from "@/pages/GameShows";
+import AwardsShows from "@/pages/AwardsShows";
 import GenericCategoryPage from "@/components/GenericCategoryPage";
 
 export const mainRoutes = [
@@ -114,6 +115,7 @@ export const mainRoutes = [
   <Route key="talk-shows" path="/talk-shows" element={<TalkShows />} />,
   <Route key="reality-tv" path="/reality-tv" element={<RealityTV />} />,
   <Route key="game-shows" path="/game-shows" element={<GameShows />} />,
+  <Route key="awards-shows" path="/awards-shows" element={<AwardsShows />} />,
   
   // New category pages with fixed icon imports
   <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={Shield} />} />,
