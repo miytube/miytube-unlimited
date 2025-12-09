@@ -174,11 +174,14 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   // Load videos from IndexedDB on mount
   useEffect(() => {
     const loadStoredVideos = async () => {
+      console.log('Starting to load videos from IndexedDB...');
       try {
         // Clear old localStorage data (migration cleanup)
         localStorage.removeItem('miytube_uploaded_videos');
         
         const storedVideos = await getAllVideosFromDB();
+        console.log('Raw stored videos from IndexedDB:', storedVideos.length, storedVideos);
+        
         const videos: UploadedVideo[] = storedVideos.map(sv => ({
           id: sv.id,
           file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
