@@ -32,6 +32,8 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'spaghetti-westerns', name: 'Spaghetti Westerns' },
         { id: 'modern-westerns', name: 'Modern Westerns' },
         { id: 'western-comedies', name: 'Western Comedies' },
+        { id: 'neo-westerns', name: 'Neo-Westerns' },
+        { id: 'acid-westerns', name: 'Acid Westerns' },
         { id: 'action', name: 'Action' },
         { id: 'drama', name: 'Drama' },
         { id: 'comedy', name: 'Comedy' },

@@ -28,6 +28,8 @@ export const filmRoutes = [
   <Route key="film-spaghetti-westerns" path="/film/spaghetti-westerns" element={<GenericSubcategoryPage />} />,
   <Route key="film-modern-westerns" path="/film/modern-westerns" element={<GenericSubcategoryPage />} />,
   <Route key="film-western-comedies" path="/film/western-comedies" element={<GenericSubcategoryPage />} />,
+  <Route key="film-neo-westerns" path="/film/neo-westerns" element={<GenericSubcategoryPage />} />,
+  <Route key="film-acid-westerns" path="/film/acid-westerns" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-action-thriller" path="/film/movies-action-thriller" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-clips" path="/film/movies-clips" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-created" path="/film/movies-created" element={<GenericSubcategoryPage />} />,

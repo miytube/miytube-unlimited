@@ -25,6 +25,8 @@ export const FilmAnimationLinks: React.FC = () => {
         { id: 'film-spaghetti-westerns', label: 'Spaghetti Westerns', path: '/film/spaghetti-westerns' },
         { id: 'film-modern-westerns', label: 'Modern Westerns', path: '/film/modern-westerns' },
         { id: 'film-western-comedies', label: 'Western Comedies', path: '/film/western-comedies' },
+        { id: 'film-neo-westerns', label: 'Neo-Westerns', path: '/film/neo-westerns' },
+        { id: 'film-acid-westerns', label: 'Acid Westerns', path: '/film/acid-westerns' },
       ]
     },
   ];
