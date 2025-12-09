@@ -64,4 +64,34 @@ export const relationshipsSubcategories: SubcategoryMapping = {
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
   },
+  'relationships-long-distance': {
+    title: 'Long Distance',
+    description: 'Managing and thriving in long distance relationships',
+    icon: Heart,
+    parent: { route: '/relationships', name: 'Relationships' }
+  },
+  'relationships-communication': {
+    title: 'Communication',
+    description: 'Effective communication skills for healthy relationships',
+    icon: Heart,
+    parent: { route: '/relationships', name: 'Relationships' }
+  },
+  'relationships-family-dynamics': {
+    title: 'Family Dynamics',
+    description: 'Navigating family relationships and dynamics',
+    icon: Heart,
+    parent: { route: '/relationships', name: 'Relationships' }
+  },
+  'relationships-trust': {
+    title: 'Trust & Loyalty',
+    description: 'Building and maintaining trust in relationships',
+    icon: Heart,
+    parent: { route: '/relationships', name: 'Relationships' }
+  },
+  'relationships-conflict': {
+    title: 'Conflict Resolution',
+    description: 'Resolving disagreements and maintaining harmony',
+    icon: Heart,
+    parent: { route: '/relationships', name: 'Relationships' }
+  },
 };
