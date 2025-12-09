@@ -68,7 +68,19 @@ export const sidebarSubcategoryRoutes = [
   <Route key="people-daily" path="/people-blogs/daily" element={<GenericSubcategoryPage />} />,
   
   // Relationships subcategories
+  <Route key="relationships-dating" path="/relationships/dating" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-love" path="/relationships/love" element={<GenericSubcategoryPage />} />,
   <Route key="relationships-marriage" path="/relationships/marriage" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-divorce" path="/relationships/divorce" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-breakups" path="/relationships/breakups" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-attraction" path="/relationships/attraction" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-single" path="/relationships/single" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-intimacy" path="/relationships/intimacy" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-long-distance" path="/relationships/long-distance" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-communication" path="/relationships/communication" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-family-dynamics" path="/relationships/family-dynamics" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-trust" path="/relationships/trust" element={<GenericSubcategoryPage />} />,
+  <Route key="relationships-conflict" path="/relationships/conflict" element={<GenericSubcategoryPage />} />,
   
   // Nonprofits subcategories
   <Route key="nonprofits-charity" path="/nonprofits/charity" element={<GenericSubcategoryPage />} />,
