@@ -30,6 +30,15 @@ export const entertainmentSubcategories: SubcategoryMapping = {
       name: 'Entertainment'
     }
   },
+  '/entertainment/late-night': {
+    title: 'Late Night Shows',
+    description: 'Late night talk shows and hosts',
+    icon: Tv,
+    parent: {
+      route: '/entertainment',
+      name: 'Entertainment'
+    }
+  },
   'entertainment-hollywood': {
     title: 'Hollywood & Celebrities',
     description: 'Hollywood, celebrity culture, and entertainment news',

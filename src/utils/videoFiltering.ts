@@ -113,16 +113,31 @@ export const filterVideosBySubcategory = (
   // Extract core keywords from mapping key
   const keyWords = keyLower.split(/[-\/]/).filter(w => w.length > 2);
   
+  // Handle alternate formats: "late-night" -> "late night", "latenight"
+  const lastSegmentSpaced = lastSegment.replace(/-/g, ' ');
+  const lastSegmentNoHyphens = lastSegment.replace(/-/g, '');
+  
   return videos.filter(video => {
     const vidCategory = video.category?.toLowerCase().trim() || '';
     const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
     const vidTags = video.tags?.map(t => t.toLowerCase().trim()) || [];
     
+    // Normalize video fields for comparison (remove hyphens/spaces)
+    const vidCategoryNorm = vidCategory.replace(/[\s-]/g, '');
+    const vidSubcategoryNorm = vidSubcategory.replace(/[\s-]/g, '');
+    
     // Exact match on subcategory (e.g., video.subcategory === "luxury")
     if (vidSubcategory === lastSegment) return true;
     
+    // Match spaced version (e.g., "late night" for "late-night")
+    if (vidSubcategory === lastSegmentSpaced) return true;
+    
+    // Match normalized versions (e.g., "latenight" matches "late-night")
+    if (vidSubcategoryNorm === lastSegmentNoHyphens) return true;
+    
     // Fuzzy match on subcategory (for typos like "commerical" vs "commercial")
     if (isFuzzyMatch(vidSubcategory, lastSegment)) return true;
+    if (isFuzzyMatch(vidSubcategory, lastSegmentSpaced)) return true;
     
     // Match when video category matches parent and subcategory matches last segment
     // e.g., video.category="real-estate", video.subcategory="luxury", key="real-estate/luxury"
@@ -130,13 +145,17 @@ export const filterVideosBySubcategory = (
       const normalizedParent = parentSegment.replace(/[\s-]/g, '');
       const normalizedVidCategory = vidCategory.replace(/[\s-]/g, '');
       if ((normalizedVidCategory === normalizedParent || isFuzzyMatch(normalizedVidCategory, normalizedParent)) && 
-          (vidSubcategory === lastSegment || isFuzzyMatch(vidSubcategory, lastSegment))) {
+          (vidSubcategoryNorm === lastSegmentNoHyphens || isFuzzyMatch(vidSubcategory, lastSegment) || isFuzzyMatch(vidSubcategory, lastSegmentSpaced))) {
         return true;
       }
     }
     
     // Exact match on title
     if (vidCategory === titleLower || vidSubcategory === titleLower) return true;
+    
+    // Match title without "shows" suffix (e.g., "late night" matches "late night shows")
+    const titleWithoutShows = titleLower.replace(/\s*shows?\s*$/i, '').trim();
+    if (vidSubcategory === titleWithoutShows || vidSubcategoryNorm === titleWithoutShows.replace(/[\s-]/g, '')) return true;
     
     // Fuzzy match on title
     if (isFuzzyMatch(vidCategory, titleLower) || isFuzzyMatch(vidSubcategory, titleLower)) return true;
@@ -150,8 +169,9 @@ export const filterVideosBySubcategory = (
     const titleWords = titleLower.split(' ').filter(w => w.length > 2);
     const combinedText = `${vidCategory} ${vidSubcategory}`;
     
-    // All title words must be present
-    if (titleWords.length >= 2 && titleWords.every(word => combinedText.includes(word))) return true;
+    // All title words must be present (excluding common words like "shows")
+    const meaningfulTitleWords = titleWords.filter(w => !['show', 'shows', 'video', 'videos'].includes(w));
+    if (meaningfulTitleWords.length >= 2 && meaningfulTitleWords.every(word => combinedText.includes(word))) return true;
     
     // Check if key matches exactly
     if (vidCategory === keyLower || vidSubcategory === keyLower) return true;
@@ -161,6 +181,7 @@ export const filterVideosBySubcategory = (
     
     // Check tags for exact match or fuzzy match
     if (vidTags.includes(titleLower) || vidTags.includes(keyLower) || vidTags.includes(lastSegment)) return true;
+    if (vidTags.includes(lastSegmentSpaced) || vidTags.includes(titleWithoutShows)) return true;
     if (vidTags.some(tag => isFuzzyMatch(tag, lastSegment) || isFuzzyMatch(tag, titleLower))) return true;
     
     // Check if tag contains all key words
