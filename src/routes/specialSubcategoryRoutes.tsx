@@ -83,4 +83,9 @@ export const specialSubcategoryRoutes = [
   <Route key="awards-shows-music" path="/awards-shows/music" element={<GenericSubcategoryPage />} />,
   <Route key="awards-shows-film" path="/awards-shows/film" element={<GenericSubcategoryPage />} />,
   <Route key="awards-shows-tv" path="/awards-shows/tv" element={<GenericSubcategoryPage />} />,
+  
+  /* News Shows Routes */
+  <Route key="news-shows-morning-news" path="/news-shows/morning-news" element={<GenericSubcategoryPage />} />,
+  <Route key="news-shows-evening-news" path="/news-shows/evening-news" element={<GenericSubcategoryPage />} />,
+  <Route key="news-shows-breaking-news" path="/news-shows/breaking-news" element={<GenericSubcategoryPage />} />,
 ];
