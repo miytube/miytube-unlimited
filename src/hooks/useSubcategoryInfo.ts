@@ -44,6 +44,15 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     parentRoute = mapping.parent.route;
     parentName = mapping.parent.name;
   }
+  // Check subcategoryMappings with path key (without leading slash) - for animals and similar mappings
+  else if (subcategoryMappings[pathKey]) {
+    const mapping = subcategoryMappings[pathKey];
+    pageTitle = mapping.title;
+    pageDescription = mapping.description;
+    IconComponent = mapping.icon;
+    parentRoute = mapping.parent.route;
+    parentName = mapping.parent.name;
+  }
   // Then check subcategoryMappings for nested routes with key format like "category-subcategory"
   else if (subcategoryMappings[mappingKey]) {
     const mapping = subcategoryMappings[mappingKey];
