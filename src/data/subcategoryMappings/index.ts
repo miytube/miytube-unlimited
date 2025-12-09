@@ -30,6 +30,7 @@ import { newCategorySubcategories } from './newCategories';
 import { animalsSubcategories } from './animals';
 import { lakesRiversSubcategories } from './lakesRivers';
 import { plantsSubcategories } from './plants';
+import { talkShowsSubcategories } from './talkShows';
 
 // Merge all subcategory mappings
 export const subcategoryMappings: SubcategoryMapping = {
@@ -63,6 +64,7 @@ export const subcategoryMappings: SubcategoryMapping = {
   ...animalsSubcategories,
   ...lakesRiversSubcategories,
   ...plantsSubcategories,
+  ...talkShowsSubcategories,
 };
 
 // Re-export types

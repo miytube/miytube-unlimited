@@ -63,4 +63,9 @@ export const specialSubcategoryRoutes = [
   <Route key="plants-vegetables" path="/plants/vegetables" element={<GenericSubcategoryPage />} />,
   <Route key="plants-flowers" path="/plants/flowers" element={<GenericSubcategoryPage />} />,
   <Route key="plants-trees" path="/plants/trees" element={<GenericSubcategoryPage />} />,
+  
+  /* Talk Shows Routes */
+  <Route key="talk-shows-morning" path="/talk-shows/morning" element={<GenericSubcategoryPage />} />,
+  <Route key="talk-shows-evening" path="/talk-shows/evening" element={<GenericSubcategoryPage />} />,
+  <Route key="talk-shows-interviews" path="/talk-shows/interviews" element={<GenericSubcategoryPage />} />,
 ];
