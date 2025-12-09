@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { Upload as UploadIcon } from 'lucide-react';
@@ -9,12 +9,16 @@ import { useUploadHandler } from '@/hooks/useUploadHandler';
 import { contentTypes } from '@/data/contentTypes';
 import { ContentType } from '@/types/upload';
 import { useToast } from '@/hooks/use-toast';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useNavigate } from 'react-router-dom';
 
 const Upload = () => {
   const [selectedContentType, setSelectedContentType] = useState<string>("video");
-  const [key, setKey] = useState<number>(Date.now()); // Add a key to force re-render of FileUploader
+  const [key, setKey] = useState<number>(Date.now());
   const { handleUpload } = useUploadHandler();
   const { toast } = useToast();
+  const { addUploadedVideo } = useUploadedVideos();
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const currentContentType = contentTypes[selectedContentType];
@@ -33,11 +37,60 @@ const Upload = () => {
     );
   };
 
+  const onUrlImport = async (
+    url: string,
+    title: string,
+    description: string,
+    category?: string,
+    subcategory?: string,
+    tags?: string[],
+    isYouTube?: boolean,
+    youtubeId?: string
+  ) => {
+    try {
+      toast({
+        title: "Importing video...",
+        description: isYouTube ? "Adding YouTube video to your library" : "Adding video from URL",
+      });
+
+      // Create a placeholder file for URL imports
+      const placeholderFile = new File([], 'url-import.mp4', { type: 'video/mp4' });
+
+      await addUploadedVideo(
+        placeholderFile,
+        title || (isYouTube ? 'YouTube Video' : 'Imported Video'),
+        description || '',
+        category || currentContentType.id,
+        subcategory,
+        tags,
+        url,
+        isYouTube,
+        youtubeId
+      );
+
+      toast({
+        title: "Success!",
+        description: isYouTube ? "YouTube video added to your library" : "Video imported successfully",
+      });
+
+      // Reset the uploader
+      setKey(Date.now());
+
+      // Navigate to home or the destination
+      navigate('/');
+    } catch (error) {
+      console.error('URL import error:', error);
+      toast({
+        title: "Import failed",
+        description: "Could not import the video. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleContentTypeChange = (contentType: ContentType) => {
-    // Reset the FileUploader component by changing its key
     setKey(Date.now());
     
-    // Show a toast to inform the user about the content type change
     toast({
       title: `Content type changed to ${contentType.name}`,
       description: `Select files to upload: ${contentType.supportedFormats.join(', ')}`,
@@ -63,7 +116,7 @@ const Upload = () => {
         />
         
         <FileUploader
-          key={key} // Add a key to force re-render when content type changes
+          key={key}
           icon={currentContentType.icon}
           title={`Upload ${currentContentType.name}`}
           description={currentContentType.description}
@@ -71,7 +124,8 @@ const Upload = () => {
           supportedFormats={currentContentType.supportedFormats}
           maxSize={currentContentType.maxSize}
           onUpload={onUpload}
-          id={`${currentContentType.id}-upload-input-${key}`} // Add key to ensure unique ID
+          onUrlImport={onUrlImport}
+          id={`${currentContentType.id}-upload-input-${key}`}
           uploadDestination={currentContentType.destination}
           categories={currentContentType.categories}
         />
