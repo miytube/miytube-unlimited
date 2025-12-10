@@ -49,6 +49,9 @@ import GameShows from "@/pages/GameShows";
 import AwardsShows from "@/pages/AwardsShows";
 import NewsShows from "@/pages/NewsShows";
 import GenericCategoryPage from "@/components/GenericCategoryPage";
+import Trains from "@/pages/Trains";
+import Swimming from "@/pages/Swimming";
+import Floods from "@/pages/Floods";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -118,6 +121,11 @@ export const mainRoutes = [
   <Route key="game-shows" path="/game-shows" element={<GameShows />} />,
   <Route key="awards-shows" path="/awards-shows" element={<AwardsShows />} />,
   <Route key="news-shows" path="/news-shows" element={<NewsShows />} />,
+  
+  // New landing pages for Trains, Swimming, and Floods
+  <Route key="trains" path="/trains" element={<Trains />} />,
+  <Route key="swim" path="/swim" element={<Swimming />} />,
+  <Route key="floods" path="/floods" element={<Floods />} />,
   
   // New category pages with fixed icon imports
   <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={Shield} />} />,
