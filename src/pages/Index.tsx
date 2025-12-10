@@ -1,5 +1,5 @@
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { Layout } from '@/components/Layout';
@@ -12,6 +12,15 @@ import { Button } from '@/components/ui/button';
 const Index = () => {
   const { uploadedVideos } = useUploadedVideos();
   const [currentPage, setCurrentPage] = useState(1);
+  const prevVideoCountRef = useRef(uploadedVideos.length);
+
+  // Reset to page 1 when new videos are added
+  useEffect(() => {
+    if (uploadedVideos.length > prevVideoCountRef.current) {
+      setCurrentPage(1);
+    }
+    prevVideoCountRef.current = uploadedVideos.length;
+  }, [uploadedVideos.length]);
   const videosPerPage = 20;
 
   // ALL uploaded videos appear on home page (newest first) - including shorts
