@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/Layout';
 import { Film, Upload, Plus } from 'lucide-react';
 import { ShortCard } from '@/components/ShortCard';
@@ -16,6 +16,16 @@ const Shorts = () => {
   const [newCategory, setNewCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const shortsPerPage = 20;
+  const uploadedShorts = getVideosByCategory('shorts');
+  const prevShortsCount = useRef(uploadedShorts.length);
+
+  // Reset to page 1 when new shorts are added
+  useEffect(() => {
+    if (uploadedShorts.length > prevShortsCount.current) {
+      setCurrentPage(1);
+    }
+    prevShortsCount.current = uploadedShorts.length;
+  }, [uploadedShorts.length]);
   const [categories, setCategories] = useState([
     { id: 'trending', name: 'Trending', subcategories: [
       { id: 'challenge', name: 'Challenge' },
@@ -65,9 +75,7 @@ const Shorts = () => {
     }
   };
   
-  // Get ALL uploaded shorts - use flexible matching
-  const uploadedShorts = getVideosByCategory('shorts');
-  
+  // Format uploaded shorts for ShortCard - newest first
   // Format uploaded shorts for ShortCard - newest first
   const allShorts = [...uploadedShorts].reverse().map(video => ({
     id: video.id,

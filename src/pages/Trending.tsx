@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/Layout';
 import { TrendingUp, ArrowRight, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -41,6 +41,34 @@ const Trending: React.FC = () => {
   const videosPerPage = 20;
   const { uploadedVideos, addUploadedVideo, getVideosByCategory } = useUploadedVideos();
   const { toast } = useToast();
+  
+  const prevVideoCount = useRef(uploadedVideos.length);
+  const musicVideosRaw = getVideosByCategory('music');
+  const podcastVideosRaw = getVideosByCategory('podcasts');
+  const prevMusicCount = useRef(musicVideosRaw.length);
+  const prevPodcastCount = useRef(podcastVideosRaw.length);
+
+  // Reset to page 1 when new content is added
+  useEffect(() => {
+    if (uploadedVideos.length > prevVideoCount.current) {
+      setCurrentPage(1);
+    }
+    prevVideoCount.current = uploadedVideos.length;
+  }, [uploadedVideos.length]);
+
+  useEffect(() => {
+    if (musicVideosRaw.length > prevMusicCount.current) {
+      setMusicPage(1);
+    }
+    prevMusicCount.current = musicVideosRaw.length;
+  }, [musicVideosRaw.length]);
+
+  useEffect(() => {
+    if (podcastVideosRaw.length > prevPodcastCount.current) {
+      setPodcastPage(1);
+    }
+    prevPodcastCount.current = podcastVideosRaw.length;
+  }, [podcastVideosRaw.length]);
 
   // ALL uploaded videos appear on trending page (newest first) - including shorts
   const trendingVideos = [...uploadedVideos].reverse().map(video => ({
@@ -59,7 +87,7 @@ const Trending: React.FC = () => {
   const displayVideos = trendingVideos.slice(startIndex, endIndex);
 
   // Get uploaded music with pagination
-  const musicVideos = getVideosByCategory('music').map(video => ({
+  const musicVideos = musicVideosRaw.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
@@ -71,7 +99,7 @@ const Trending: React.FC = () => {
   const displayMusic = musicVideos.slice(musicStartIndex, musicStartIndex + videosPerPage);
 
   // Get uploaded podcasts with pagination
-  const podcastVideos = getVideosByCategory('podcasts').map(video => ({
+  const podcastVideos = podcastVideosRaw.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ShortCard } from '@/components/ShortCard';
 import { TrendingUp } from 'lucide-react';
@@ -12,6 +12,15 @@ export const TrendingShortVideosSection: React.FC = () => {
   
   // Get uploaded shorts only
   const uploadedShorts = getVideosByCategory('shorts');
+  const prevShortsCount = useRef(uploadedShorts.length);
+
+  // Reset to page 1 when new shorts are added
+  useEffect(() => {
+    if (uploadedShorts.length > prevShortsCount.current) {
+      setCurrentPage(1);
+    }
+    prevShortsCount.current = uploadedShorts.length;
+  }, [uploadedShorts.length]);
   
   // Format for ShortCard
   const allShorts = uploadedShorts.map(video => ({
