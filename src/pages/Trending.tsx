@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { TrendingUp, ArrowRight, Upload, ChevronLeft, ChevronRight } from 'lucide-react';
+import { TrendingUp, ArrowRight, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
@@ -9,7 +8,7 @@ import { TrendingShortVideosSection } from '@/components/video/TrendingShortVide
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button';
+import { Pagination, PageInfo } from '@/components/Pagination';
 
 interface TrendingCategoryProps {
   title: string;
@@ -93,73 +92,6 @@ const Trending: React.FC = () => {
     });
   };
 
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const goToMusicPage = (page: number) => {
-    setMusicPage(page);
-  };
-
-  const goToPodcastPage = (page: number) => {
-    setPodcastPage(page);
-  };
-
-  const renderPageNumbers = (total: number, current: number, goTo: (page: number) => void) => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    
-    let startPage = Math.max(1, current - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(total, startPage + maxVisiblePages - 1);
-    
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <Button
-          key={i}
-          variant={current === i ? "default" : "outline"}
-          size="sm"
-          onClick={() => goTo(i)}
-          className="min-w-[40px]"
-        >
-          {i}
-        </Button>
-      );
-    }
-    
-    return pages;
-  };
-
-  const PaginationControls = ({ totalPages, currentPage, goToPage }: { totalPages: number; currentPage: number; goToPage: (page: number) => void }) => (
-    <div className="flex items-center justify-center gap-2 mt-6">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => goToPage(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
-        <ChevronLeft className="h-4 w-4" />
-        Previous
-      </Button>
-      
-      {renderPageNumbers(totalPages, currentPage, goToPage)}
-      
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => goToPage(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      >
-        Next
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-    </div>
-  );
-
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
@@ -236,11 +168,12 @@ const Trending: React.FC = () => {
                 <TrendingUp className="h-6 w-6 text-primary" />
                 Trending Videos
               </h2>
-              {totalPages > 1 && (
-                <span className="text-muted-foreground text-sm">
-                  Page {currentPage} of {totalPages} ({trendingVideos.length} videos)
-                </span>
-              )}
+              <PageInfo 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                totalItems={trendingVideos.length} 
+                itemLabel="videos" 
+              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayVideos.map(video => (
@@ -248,9 +181,11 @@ const Trending: React.FC = () => {
               ))}
             </div>
             
-            {totalPages > 1 && (
-              <PaginationControls totalPages={totalPages} currentPage={currentPage} goToPage={goToPage} />
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
         )}
 
@@ -263,11 +198,12 @@ const Trending: React.FC = () => {
                 <TrendingUp className="h-6 w-6 text-primary" />
                 Trending Music
               </h2>
-              {musicTotalPages > 1 && (
-                <span className="text-muted-foreground text-sm">
-                  Page {musicPage} of {musicTotalPages} ({musicVideos.length} music)
-                </span>
-              )}
+              <PageInfo 
+                currentPage={musicPage} 
+                totalPages={musicTotalPages} 
+                totalItems={musicVideos.length} 
+                itemLabel="music" 
+              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayMusic.map(item => (
@@ -281,9 +217,12 @@ const Trending: React.FC = () => {
                 />
               ))}
             </div>
-            {musicTotalPages > 1 && (
-              <PaginationControls totalPages={musicTotalPages} currentPage={musicPage} goToPage={goToMusicPage} />
-            )}
+            <Pagination
+              currentPage={musicPage}
+              totalPages={musicTotalPages}
+              onPageChange={setMusicPage}
+              scrollToTop={false}
+            />
           </div>
         )}
 
@@ -294,11 +233,12 @@ const Trending: React.FC = () => {
                 <TrendingUp className="h-6 w-6 text-primary" />
                 Trending Podcasts
               </h2>
-              {podcastTotalPages > 1 && (
-                <span className="text-muted-foreground text-sm">
-                  Page {podcastPage} of {podcastTotalPages} ({podcastVideos.length} podcasts)
-                </span>
-              )}
+              <PageInfo 
+                currentPage={podcastPage} 
+                totalPages={podcastTotalPages} 
+                totalItems={podcastVideos.length} 
+                itemLabel="podcasts" 
+              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayPodcasts.map(item => (
@@ -312,9 +252,12 @@ const Trending: React.FC = () => {
                 />
               ))}
             </div>
-            {podcastTotalPages > 1 && (
-              <PaginationControls totalPages={podcastTotalPages} currentPage={podcastPage} goToPage={goToPodcastPage} />
-            )}
+            <Pagination
+              currentPage={podcastPage}
+              totalPages={podcastTotalPages}
+              onPageChange={setPodcastPage}
+              scrollToTop={false}
+            />
           </div>
         )}
 

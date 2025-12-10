@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
@@ -6,13 +5,14 @@ import { Layout } from '@/components/Layout';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { TrendingUp } from 'lucide-react';
+import { Pagination, PageInfo } from '@/components/Pagination';
 
 const Index = () => {
   const { uploadedVideos } = useUploadedVideos();
   const [currentPage, setCurrentPage] = useState(1);
   const prevVideoCountRef = useRef(uploadedVideos.length);
+  const videosPerPage = 20;
 
   // Reset to page 1 when new videos are added
   useEffect(() => {
@@ -21,7 +21,6 @@ const Index = () => {
     }
     prevVideoCountRef.current = uploadedVideos.length;
   }, [uploadedVideos.length]);
-  const videosPerPage = 20;
 
   // ALL uploaded videos appear on home page (newest first) - including shorts
   const allVideos = useMemo(() => {
@@ -66,39 +65,6 @@ const Index = () => {
       .slice(0, 8);
   }, [uploadedVideos]);
 
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <Button
-          key={i}
-          variant={currentPage === i ? "default" : "outline"}
-          size="sm"
-          onClick={() => goToPage(i)}
-          className="min-w-[40px]"
-        >
-          {i}
-        </Button>
-      );
-    }
-    
-    return pages;
-  };
-
   return (
     <Layout>
       <div className="py-4 w-full">
@@ -114,11 +80,12 @@ const Index = () => {
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-medium">Recommended</h2>
-              {totalPages > 1 && (
-                <span className="text-muted-foreground text-sm">
-                  Page {currentPage} of {totalPages} ({allVideos.length} videos)
-                </span>
-              )}
+              <PageInfo 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                totalItems={allVideos.length} 
+                itemLabel="videos" 
+              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {displayVideos.map((video) => (
@@ -126,31 +93,11 @@ const Index = () => {
               ))}
             </div>
             
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => goToPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-                
-                {renderPageNumbers()}
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => goToPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
         )}
 

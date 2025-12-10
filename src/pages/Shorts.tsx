@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Film, Upload, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Film, Upload, Plus } from 'lucide-react';
 import { ShortCard } from '@/components/ShortCard';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { Link } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { Pagination, PageInfo } from '@/components/Pagination';
 
 const Shorts = () => {
   const { toast } = useToast();
@@ -85,39 +85,6 @@ const Shorts = () => {
   const totalPages = Math.ceil(allShorts.length / shortsPerPage);
   const startIndex = (currentPage - 1) * shortsPerPage;
   const shortsToDisplay = allShorts.slice(startIndex, startIndex + shortsPerPage);
-
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-    
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-    
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <Button
-          key={i}
-          variant={currentPage === i ? "default" : "outline"}
-          size="sm"
-          onClick={() => goToPage(i)}
-          className="min-w-[40px]"
-        >
-          {i}
-        </Button>
-      );
-    }
-    
-    return pages;
-  };
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach(file => {
@@ -208,11 +175,12 @@ const Shorts = () => {
         <div className="mt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold">Your Shorts</h2>
-            {totalPages > 1 && (
-              <span className="text-muted-foreground text-sm">
-                Page {currentPage} of {totalPages} ({allShorts.length} shorts)
-              </span>
-            )}
+            <PageInfo 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              totalItems={allShorts.length} 
+              itemLabel="shorts" 
+            />
           </div>
           {shortsToDisplay.length > 0 ? (
             <>
@@ -233,31 +201,11 @@ const Shorts = () => {
                 ))}
               </div>
               
-              {totalPages > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-6">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => goToPage(currentPage - 1)}
-                    disabled={currentPage === 1}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                    Previous
-                  </Button>
-                  
-                  {renderPageNumbers()}
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => goToPage(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                  >
-                    Next
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
             </>
           ) : (
             <div className="text-center py-12 text-muted-foreground border-2 border-dashed border-muted rounded-lg">
