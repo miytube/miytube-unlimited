@@ -1,6 +1,7 @@
 
 import { Route } from 'react-router-dom';
 import FilmAnimation from '@/pages/FilmAnimation';
+import FilmHorror from '@/pages/FilmHorror';
 import GenericSubcategoryPage from '@/pages/categories/GenericSubcategoryPage';
 
 export const filmRoutes = [
@@ -51,4 +52,12 @@ export const filmRoutes = [
   <Route key="film-animation-short-film" path="/film-animation/short-film" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-clips-trailers" path="/film-animation/clips-trailers" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-horror" path="/film-animation/horror" element={<GenericSubcategoryPage />} />,
+  
+  // Film Horror landing page and subcategories
+  <Route key="film-horror" path="/film/horror" element={<FilmHorror />} />,
+  <Route key="film-horror-terror" path="/film/horror-terror" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-fear" path="/film/horror-fear" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-fright" path="/film/horror-fright" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-dread" path="/film/horror-dread" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-slasher" path="/film/horror-slasher" element={<GenericSubcategoryPage />} />,
 ];
