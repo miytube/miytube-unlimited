@@ -620,4 +620,24 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports/boxing', name: 'Boxing' }
   },
+  
+  // Racing Track subcategories
+  'racing-track': {
+    title: 'Racing Track',
+    description: 'Racing track events and motorsports footage',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  'racing-track-accidents': {
+    title: 'Racing Track Accidents',
+    description: 'Racing accidents and crash footage',
+    icon: Trophy,
+    parent: { route: '/racing-track', name: 'Racing Track' }
+  },
+  'racing-track-crashes': {
+    title: 'Racing Track Crashes',
+    description: 'Motorsport crashes and incidents',
+    icon: Trophy,
+    parent: { route: '/racing-track', name: 'Racing Track' }
+  },
 };

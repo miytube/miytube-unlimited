@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Car, Truck, Ship, Plane } from 'lucide-react';
+import { Car, Truck, Ship, Train } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const TransportVehiclesLinks: React.FC = () => {
@@ -15,6 +15,19 @@ export const TransportVehiclesLinks: React.FC = () => {
         { id: 'expensive-cars', label: 'Expensive Cars', path: '/autos-vehicles/expensive-cars' },
         { id: 'car-repairs', label: 'Car Repairs', path: '/autos-vehicles/car-repairs' },
         { id: 'car-hacks', label: 'Car Hacks', path: '/autos-vehicles/car-hacks' }
+      ]
+    },
+    { 
+      id: 'trains', 
+      icon: Train, 
+      label: 'Trains', 
+      path: '/trains',
+      subItems: [
+        { id: 'trains-railroad', label: 'Railroad', path: '/trains/railroad' },
+        { id: 'trains-railway', label: 'Railway', path: '/trains/railway' },
+        { id: 'trains-steam', label: 'Steam Trains', path: '/trains/steam' },
+        { id: 'trains-freight', label: 'Freight Trains', path: '/trains/freight' },
+        { id: 'trains-passenger', label: 'Passenger Trains', path: '/trains/passenger' }
       ]
     },
     { 

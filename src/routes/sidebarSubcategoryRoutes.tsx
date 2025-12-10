@@ -150,4 +150,42 @@ export const sidebarSubcategoryRoutes = [
   // Blog subcategories
   <Route key="blog-latest" path="/blog/latest" element={<GenericSubcategoryPage />} />,
   <Route key="blog-featured" path="/blog/featured" element={<GenericSubcategoryPage />} />,
+  
+  // Trains subcategories
+  <Route key="trains" path="/trains" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-railroad" path="/trains/railroad" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-railway" path="/trains/railway" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-steam" path="/trains/steam" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-freight" path="/trains/freight" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-passenger" path="/trains/passenger" element={<GenericSubcategoryPage />} />,
+  
+  // Swimming subcategories
+  <Route key="swim" path="/swim" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-diving" path="/swim/diving" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-plunge" path="/swim/plunge" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-plummet" path="/swim/plummet" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-jump" path="/swim/jump" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-freestyle" path="/swim/freestyle" element={<GenericSubcategoryPage />} />,
+  
+  // Floods subcategories
+  <Route key="floods" path="/floods" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-flash-flood" path="/floods/flash-flood" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-deluge" path="/floods/deluge" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-downpour" path="/floods/downpour" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-drown" path="/floods/drown" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-engulf" path="/floods/engulf" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-stream" path="/floods/stream" element={<GenericSubcategoryPage />} />,
+  
+  // Film Horror subcategories
+  <Route key="film-horror" path="/film/horror" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-terror" path="/film/horror/terror" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-fear" path="/film/horror/fear" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-fright" path="/film/horror/fright" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-dread" path="/film/horror/dread" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-slasher" path="/film/horror/slasher" element={<GenericSubcategoryPage />} />,
+  
+  // Racing Track subcategories
+  <Route key="racing-track" path="/racing-track" element={<GenericSubcategoryPage />} />,
+  <Route key="racing-track-accidents" path="/racing-track/accidents" element={<GenericSubcategoryPage />} />,
+  <Route key="racing-track-crashes" path="/racing-track/crashes" element={<GenericSubcategoryPage />} />,
 ];

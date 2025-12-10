@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Film, Flame, Laugh } from 'lucide-react';
+import { Film, Flame, Laugh, Ghost } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const FilmAnimationLinks: React.FC = () => {
@@ -14,6 +14,19 @@ export const FilmAnimationLinks: React.FC = () => {
         { id: 'film-movies', label: 'Film & Movies', path: '/film' },
         { id: 'film-animation-movies', label: 'Animation Movies', path: '/film-animation/movies' },
         { id: 'film-animation-cartoons', label: 'Cartoons', path: '/film-animation/cartoons' },
+      ]
+    },
+    { 
+      id: 'film-horror',
+      icon: Ghost, 
+      label: 'Horror', 
+      path: '/film/horror',
+      subItems: [
+        { id: 'film-horror-terror', label: 'Terror', path: '/film/horror/terror' },
+        { id: 'film-horror-fear', label: 'Fear', path: '/film/horror/fear' },
+        { id: 'film-horror-fright', label: 'Fright', path: '/film/horror/fright' },
+        { id: 'film-horror-dread', label: 'Dread', path: '/film/horror/dread' },
+        { id: 'film-horror-slasher', label: 'Slasher', path: '/film/horror/slasher' },
       ]
     },
     { 

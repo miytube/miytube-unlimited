@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Cloud, Waves, Ship, Anchor, Zap } from 'lucide-react';
+import { Cloud, Waves, Ship, Anchor, Zap, Droplets } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EnvironmentWeatherLinks: React.FC = () => {
@@ -26,9 +26,22 @@ export const EnvironmentWeatherLinks: React.FC = () => {
         { id: 'avalanche', label: 'Avalanche', path: '/disasters/avalanche' },
         { id: 'earthquakes', label: 'Earthquakes', path: '/disasters/earthquakes' },
         { id: 'fires', label: 'Fires', path: '/disasters/fires' },
-        { id: 'floods', label: 'Floods', path: '/disasters/floods' },
         { id: 'landslides', label: 'Landslides', path: '/disasters/landslides' },
         { id: 'tsunami', label: 'Tsunami', path: '/disasters/tsunami' }
+      ]
+    },
+    { 
+      id: 'floods', 
+      icon: Droplets, 
+      label: 'Floods', 
+      path: '/floods',
+      subItems: [
+        { id: 'floods-flash-flood', label: 'Flash Floods', path: '/floods/flash-flood' },
+        { id: 'floods-deluge', label: 'Deluge', path: '/floods/deluge' },
+        { id: 'floods-downpour', label: 'Downpour', path: '/floods/downpour' },
+        { id: 'floods-drown', label: 'Drowning Hazards', path: '/floods/drown' },
+        { id: 'floods-engulf', label: 'Engulfing Waters', path: '/floods/engulf' },
+        { id: 'floods-stream', label: 'Stream Flooding', path: '/floods/stream' }
       ]
     },
     { 

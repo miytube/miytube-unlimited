@@ -1,4 +1,4 @@
-import { Film, Clapperboard, Drama, Laugh, Skull, Heart, FlaskConical, Sword, Compass, Castle, Bookmark, Bomb, Scale, Medal, Flame, Flower, Scissors, Music, Popcorn, FileText, Ghost } from 'lucide-react';
+import { Film, Clapperboard, Drama, Laugh, Skull, Heart, FlaskConical, Sword, Compass, Castle, Bookmark, Bomb, Scale, Medal, Flame, Flower, Scissors, Music, Popcorn, FileText, Ghost, AlertTriangle } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const filmSubcategories: SubcategoryMapping = {
@@ -399,6 +399,62 @@ export const filmSubcategories: SubcategoryMapping = {
     parent: {
       route: '/film-animation',
       name: 'Film & Animation'
+    }
+  },
+  
+  // Horror Film subcategories
+  'film-horror': {
+    title: 'Horror Films',
+    description: 'Horror movies featuring terror, fear, and fright',
+    icon: Ghost,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  'film-horror-terror': {
+    title: 'Terror',
+    description: 'Terror films with intense psychological fear',
+    icon: AlertTriangle,
+    parent: {
+      route: '/film-horror',
+      name: 'Horror Films'
+    }
+  },
+  'film-horror-fear': {
+    title: 'Fear',
+    description: 'Fear-inducing horror movies',
+    icon: Ghost,
+    parent: {
+      route: '/film-horror',
+      name: 'Horror Films'
+    }
+  },
+  'film-horror-fright': {
+    title: 'Fright',
+    description: 'Frightening and shocking horror content',
+    icon: Ghost,
+    parent: {
+      route: '/film-horror',
+      name: 'Horror Films'
+    }
+  },
+  'film-horror-dread': {
+    title: 'Dread',
+    description: 'Films featuring suspense and dread',
+    icon: Skull,
+    parent: {
+      route: '/film-horror',
+      name: 'Horror Films'
+    }
+  },
+  'film-horror-slasher': {
+    title: 'Slasher',
+    description: 'Slasher horror films',
+    icon: Skull,
+    parent: {
+      route: '/film-horror',
+      name: 'Horror Films'
     }
   },
 };
