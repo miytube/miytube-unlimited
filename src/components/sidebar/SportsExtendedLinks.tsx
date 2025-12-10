@@ -171,6 +171,19 @@ export const SportsExtendedLinks: React.FC = () => {
       ]
     },
     { 
+      id: 'swim', 
+      icon: Waves, 
+      label: 'Swim', 
+      path: '/swim',
+      subItems: [
+        { id: 'swim-diving', label: 'Diving', path: '/swim/diving' },
+        { id: 'swim-plunge', label: 'Plunge', path: '/swim/plunge' },
+        { id: 'swim-plummet', label: 'Plummet', path: '/swim/plummet' },
+        { id: 'swim-jump', label: 'Jump', path: '/swim/jump' },
+        { id: 'swim-freestyle', label: 'Freestyle Swimming', path: '/swim/freestyle' }
+      ]
+    },
+    { 
       id: 'sports-misc', 
       icon: Trophy, 
       label: 'Other Sports', 
