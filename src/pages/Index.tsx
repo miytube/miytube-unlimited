@@ -1,19 +1,22 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { Layout } from '@/components/Layout';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const { uploadedVideos } = useUploadedVideos();
+  const [currentPage, setCurrentPage] = useState(1);
+  const videosPerPage = 20;
 
   // ALL uploaded videos appear on home page (newest first) - including shorts
   const allVideos = useMemo(() => {
-    return uploadedVideos.map(video => ({
+    return [...uploadedVideos].reverse().map(video => ({
       id: video.id,
       title: video.title,
       thumbnail: video.thumbnail,
@@ -28,10 +31,10 @@ const Index = () => {
     }));
   }, [uploadedVideos]);
 
-  // All uploaded videos appear first on home page (newest first) - 20 per page
-  const recommendedVideos = useMemo(() => {
-    return [...allVideos].reverse().slice(0, 20);
-  }, [allVideos]);
+  const totalPages = Math.ceil(allVideos.length / videosPerPage);
+  const startIndex = (currentPage - 1) * videosPerPage;
+  const endIndex = startIndex + videosPerPage;
+  const displayVideos = allVideos.slice(startIndex, endIndex);
 
   // Trending section - regular videos only (non-shorts), newest first
   const trendingVideos = useMemo(() => {
@@ -54,6 +57,39 @@ const Index = () => {
       .slice(0, 8);
   }, [uploadedVideos]);
 
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <Button
+          key={i}
+          variant={currentPage === i ? "default" : "outline"}
+          size="sm"
+          onClick={() => goToPage(i)}
+          className="min-w-[40px]"
+        >
+          {i}
+        </Button>
+      );
+    }
+    
+    return pages;
+  };
+
   return (
     <Layout>
       <div className="py-4 w-full">
@@ -65,14 +101,47 @@ const Index = () => {
           <h1 className="text-3xl font-bold mb-4">Home</h1>
         </div>
 
-        {recommendedVideos.length > 0 && (
+        {displayVideos.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-xl font-medium mb-4">Recommended</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-medium">Recommended</h2>
+              {totalPages > 1 && (
+                <span className="text-muted-foreground text-sm">
+                  Page {currentPage} of {totalPages} ({allVideos.length} videos)
+                </span>
+              )}
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {recommendedVideos.map((video) => (
+              {displayVideos.map((video) => (
                 <VideoCard key={video.id} {...video} />
               ))}
             </div>
+            
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+                
+                {renderPageNumbers()}
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
@@ -98,7 +167,7 @@ const Index = () => {
         <ShortVideosSection />
         <TrendingShortVideosSection />
 
-        {recommendedVideos.length === 0 && (
+        {allVideos.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">
             <p>No videos uploaded yet. Upload videos to see them here!</p>
             <Link to="/upload" className="text-primary hover:underline mt-2 inline-block">
