@@ -37,6 +37,8 @@ const TrendingCategory: React.FC<TrendingCategoryProps> = ({ title, linkTo, chil
 const Trending: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'videos' | 'music' | 'podcasts'>('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [musicPage, setMusicPage] = useState(1);
+  const [podcastPage, setPodcastPage] = useState(1);
   const videosPerPage = 20;
   const { uploadedVideos, addUploadedVideo, getVideosByCategory } = useUploadedVideos();
   const { toast } = useToast();
@@ -57,7 +59,7 @@ const Trending: React.FC = () => {
   const endIndex = startIndex + videosPerPage;
   const displayVideos = trendingVideos.slice(startIndex, endIndex);
 
-  // Get uploaded music
+  // Get uploaded music with pagination
   const musicVideos = getVideosByCategory('music').map(video => ({
     id: video.id,
     title: video.title,
@@ -65,8 +67,11 @@ const Trending: React.FC = () => {
     creator: 'Your Channel',
     views: video.views,
   }));
+  const musicTotalPages = Math.ceil(musicVideos.length / videosPerPage);
+  const musicStartIndex = (musicPage - 1) * videosPerPage;
+  const displayMusic = musicVideos.slice(musicStartIndex, musicStartIndex + videosPerPage);
 
-  // Get uploaded podcasts
+  // Get uploaded podcasts with pagination
   const podcastVideos = getVideosByCategory('podcasts').map(video => ({
     id: video.id,
     title: video.title,
@@ -74,6 +79,9 @@ const Trending: React.FC = () => {
     creator: 'Your Channel',
     views: video.views,
   }));
+  const podcastTotalPages = Math.ceil(podcastVideos.length / videosPerPage);
+  const podcastStartIndex = (podcastPage - 1) * videosPerPage;
+  const displayPodcasts = podcastVideos.slice(podcastStartIndex, podcastStartIndex + videosPerPage);
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach(file => {
@@ -90,12 +98,20 @@ const Trending: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const renderPageNumbers = () => {
+  const goToMusicPage = (page: number) => {
+    setMusicPage(page);
+  };
+
+  const goToPodcastPage = (page: number) => {
+    setPodcastPage(page);
+  };
+
+  const renderPageNumbers = (total: number, current: number, goTo: (page: number) => void) => {
     const pages = [];
     const maxVisiblePages = 5;
     
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    let startPage = Math.max(1, current - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(total, startPage + maxVisiblePages - 1);
     
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
@@ -105,9 +121,9 @@ const Trending: React.FC = () => {
       pages.push(
         <Button
           key={i}
-          variant={currentPage === i ? "default" : "outline"}
+          variant={current === i ? "default" : "outline"}
           size="sm"
-          onClick={() => goToPage(i)}
+          onClick={() => goTo(i)}
           className="min-w-[40px]"
         >
           {i}
@@ -117,6 +133,32 @@ const Trending: React.FC = () => {
     
     return pages;
   };
+
+  const PaginationControls = ({ totalPages, currentPage, goToPage }: { totalPages: number; currentPage: number; goToPage: (page: number) => void }) => (
+    <div className="flex items-center justify-center gap-2 mt-6">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <ChevronLeft className="h-4 w-4" />
+        Previous
+      </Button>
+      
+      {renderPageNumbers(totalPages, currentPage, goToPage)}
+      
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => goToPage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        Next
+        <ChevronRight className="h-4 w-4" />
+      </Button>
+    </div>
+  );
 
   return (
     <Layout>
@@ -207,29 +249,7 @@ const Trending: React.FC = () => {
             </div>
             
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => goToPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  Previous
-                </Button>
-                
-                {renderPageNumbers()}
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => goToPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
+              <PaginationControls totalPages={totalPages} currentPage={currentPage} goToPage={goToPage} />
             )}
           </div>
         )}
@@ -237,9 +257,20 @@ const Trending: React.FC = () => {
         {(activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
 
         {(activeTab === 'all' || activeTab === 'music') && musicVideos.length > 0 && (
-          <TrendingCategory title="Trending Music" linkTo="/music">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {musicVideos.slice(0, 8).map(item => (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold flex items-center gap-2">
+                <TrendingUp className="h-6 w-6 text-primary" />
+                Trending Music
+              </h2>
+              {musicTotalPages > 1 && (
+                <span className="text-muted-foreground text-sm">
+                  Page {musicPage} of {musicTotalPages} ({musicVideos.length} music)
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {displayMusic.map(item => (
                 <ShortCard
                   key={item.id}
                   id={item.id}
@@ -250,13 +281,27 @@ const Trending: React.FC = () => {
                 />
               ))}
             </div>
-          </TrendingCategory>
+            {musicTotalPages > 1 && (
+              <PaginationControls totalPages={musicTotalPages} currentPage={musicPage} goToPage={goToMusicPage} />
+            )}
+          </div>
         )}
 
         {(activeTab === 'all' || activeTab === 'podcasts') && podcastVideos.length > 0 && (
-          <TrendingCategory title="Trending Podcasts" linkTo="/podcasts">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {podcastVideos.slice(0, 8).map(item => (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold flex items-center gap-2">
+                <TrendingUp className="h-6 w-6 text-primary" />
+                Trending Podcasts
+              </h2>
+              {podcastTotalPages > 1 && (
+                <span className="text-muted-foreground text-sm">
+                  Page {podcastPage} of {podcastTotalPages} ({podcastVideos.length} podcasts)
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {displayPodcasts.map(item => (
                 <ShortCard
                   key={item.id}
                   id={item.id}
@@ -267,7 +312,10 @@ const Trending: React.FC = () => {
                 />
               ))}
             </div>
-          </TrendingCategory>
+            {podcastTotalPages > 1 && (
+              <PaginationControls totalPages={podcastTotalPages} currentPage={podcastPage} goToPage={goToPodcastPage} />
+            )}
+          </div>
         )}
 
         {trendingVideos.length === 0 && musicVideos.length === 0 && podcastVideos.length === 0 && (
