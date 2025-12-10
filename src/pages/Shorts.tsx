@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Film, Upload, Plus } from 'lucide-react';
+import { Film, Upload, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ShortCard } from '@/components/ShortCard';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,8 @@ const Shorts = () => {
   const { toast } = useToast();
   const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
   const [newCategory, setNewCategory] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const shortsPerPage = 20;
   const [categories, setCategories] = useState([
     { id: 'trending', name: 'Trending', subcategories: [
       { id: 'challenge', name: 'Challenge' },
@@ -66,8 +68,8 @@ const Shorts = () => {
   // Get ALL uploaded shorts - use flexible matching
   const uploadedShorts = getVideosByCategory('shorts');
   
-  // Format uploaded shorts for ShortCard - newest first, 20 per page
-  const allShorts = [...uploadedShorts].reverse().slice(0, 20).map(video => ({
+  // Format uploaded shorts for ShortCard - newest first
+  const allShorts = [...uploadedShorts].reverse().map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
@@ -78,6 +80,44 @@ const Shorts = () => {
     subcategory: video.subcategory,
     tags: video.tags,
   }));
+
+  // Pagination logic
+  const totalPages = Math.ceil(allShorts.length / shortsPerPage);
+  const startIndex = (currentPage - 1) * shortsPerPage;
+  const shortsToDisplay = allShorts.slice(startIndex, startIndex + shortsPerPage);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <Button
+          key={i}
+          variant={currentPage === i ? "default" : "outline"}
+          size="sm"
+          onClick={() => goToPage(i)}
+          className="min-w-[40px]"
+        >
+          {i}
+        </Button>
+      );
+    }
+    
+    return pages;
+  };
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach(file => {
@@ -98,7 +138,7 @@ const Shorts = () => {
             <h1 className="text-3xl font-bold">Shorts</h1>
           </div>
           <button 
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
             onClick={() => {
               document.getElementById('shorts-upload-input')?.click();
             }}
@@ -166,24 +206,59 @@ const Shorts = () => {
         />
         
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold mb-6">Your Shorts</h2>
-          {allShorts.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {allShorts.map((short) => (
-                <ShortCard
-                  key={short.id}
-                  id={short.id}
-                  title={short.title}
-                  thumbnail={short.thumbnail}
-                  creator={short.creator}
-                  views={short.views}
-                  description={short.description}
-                  category={short.category}
-                  subcategory={short.subcategory}
-                  tags={short.tags}
-                />
-              ))}
-            </div>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold">Your Shorts</h2>
+            {totalPages > 1 && (
+              <span className="text-muted-foreground text-sm">
+                Page {currentPage} of {totalPages} ({allShorts.length} shorts)
+              </span>
+            )}
+          </div>
+          {shortsToDisplay.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {shortsToDisplay.map((short) => (
+                  <ShortCard
+                    key={short.id}
+                    id={short.id}
+                    title={short.title}
+                    thumbnail={short.thumbnail}
+                    creator={short.creator}
+                    views={short.views}
+                    description={short.description}
+                    category={short.category}
+                    subcategory={short.subcategory}
+                    tags={short.tags}
+                  />
+                ))}
+              </div>
+              
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 mt-6">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => goToPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                  
+                  {renderPageNumbers()}
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => goToPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-12 text-muted-foreground border-2 border-dashed border-muted rounded-lg">
               <p>No shorts uploaded yet. Use the uploader above to add your first short!</p>
