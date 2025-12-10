@@ -28,6 +28,7 @@ import { HowToEducationLinks } from './sidebar/HowToEducationLinks';
 import { PeopleWorkersLinks } from './sidebar/PeopleWorkersLinks';
 import { DocumentMediaLinks } from './sidebar/DocumentMediaLinks';
 import { EducationInformationLinks } from './sidebar/EducationInformationLinks';
+import { LifestyleRelationshipsLinks } from './sidebar/LifestyleRelationshipsLinks';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -126,6 +127,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               <Separator className="my-3" />
               
               {/* Lifestyle & People */}
+              <LifestyleRelationshipsLinks />
               <PeopleWorkersLinks />
               <FitnessHealthLinks />
               <ModelsPhotosLinks />
