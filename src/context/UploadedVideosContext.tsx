@@ -45,6 +45,7 @@ interface StoredVideo {
 
 interface UploadedVideosContextType {
   uploadedVideos: UploadedVideo[];
+  isLoading: boolean;
   addUploadedVideo: (
     file: File, 
     title: string, 
@@ -779,6 +780,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     <UploadedVideosContext.Provider
       value={{
         uploadedVideos,
+        isLoading: !isLoaded,
         addUploadedVideo,
         updateUploadedVideo,
         deleteUploadedVideo,

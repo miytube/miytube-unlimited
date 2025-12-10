@@ -7,9 +7,10 @@ import { TrendingShortVideosSection } from '@/components/video/TrendingShortVide
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { TrendingUp } from 'lucide-react';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { VideoGridSkeleton } from '@/components/skeletons';
 
 const Index = () => {
-  const { uploadedVideos } = useUploadedVideos();
+  const { uploadedVideos, isLoading } = useUploadedVideos();
   const [currentPage, setCurrentPage] = useState(1);
   const prevVideoCountRef = useRef(uploadedVideos.length);
   const videosPerPage = 20;
@@ -76,7 +77,17 @@ const Index = () => {
           <h1 className="text-3xl font-bold mb-4">Home</h1>
         </div>
 
-        {displayVideos.length > 0 && (
+        {/* Loading State */}
+        {isLoading && (
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-medium">Recommended</h2>
+            </div>
+            <VideoGridSkeleton count={8} />
+          </div>
+        )}
+
+        {!isLoading && displayVideos.length > 0 && (
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-medium">Recommended</h2>
@@ -102,7 +113,7 @@ const Index = () => {
         )}
 
         {/* Trending Videos Section - Regular videos only */}
-        {trendingVideos.length > 0 && (
+        {!isLoading && trendingVideos.length > 0 && (
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp className="h-5 w-5 text-primary" />
@@ -120,10 +131,14 @@ const Index = () => {
         )}
 
         {/* Shorts sections positioned together */}
-        <ShortVideosSection />
-        <TrendingShortVideosSection />
+        {!isLoading && (
+          <>
+            <ShortVideosSection />
+            <TrendingShortVideosSection />
+          </>
+        )}
 
-        {allVideos.length === 0 && (
+        {!isLoading && allVideos.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">
             <p>No videos uploaded yet. Upload videos to see them here!</p>
             <Link to="/upload" className="text-primary hover:underline mt-2 inline-block">

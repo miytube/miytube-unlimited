@@ -9,10 +9,11 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { ShortGridSkeleton } from '@/components/skeletons';
 
 const Shorts = () => {
   const { toast } = useToast();
-  const { uploadedVideos, getVideosByCategory, addUploadedVideo } = useUploadedVideos();
+  const { uploadedVideos, getVideosByCategory, addUploadedVideo, isLoading } = useUploadedVideos();
   const [newCategory, setNewCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const shortsPerPage = 20;
@@ -183,14 +184,19 @@ const Shorts = () => {
         <div className="mt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold">Your Shorts</h2>
-            <PageInfo 
-              currentPage={currentPage} 
-              totalPages={totalPages} 
-              totalItems={allShorts.length} 
-              itemLabel="shorts" 
-            />
+            {!isLoading && (
+              <PageInfo 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                totalItems={allShorts.length} 
+                itemLabel="shorts" 
+              />
+            )}
           </div>
-          {shortsToDisplay.length > 0 ? (
+          
+          {isLoading ? (
+            <ShortGridSkeleton count={8} />
+          ) : shortsToDisplay.length > 0 ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {shortsToDisplay.map((short) => (

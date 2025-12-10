@@ -9,6 +9,7 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { VideoGridSkeleton, ShortGridSkeleton } from '@/components/skeletons';
 
 interface TrendingCategoryProps {
   title: string;
@@ -39,7 +40,7 @@ const Trending: React.FC = () => {
   const [musicPage, setMusicPage] = useState(1);
   const [podcastPage, setPodcastPage] = useState(1);
   const videosPerPage = 20;
-  const { uploadedVideos, addUploadedVideo, getVideosByCategory } = useUploadedVideos();
+  const { uploadedVideos, addUploadedVideo, getVideosByCategory, isLoading } = useUploadedVideos();
   const { toast } = useToast();
   
   const prevVideoCount = useRef(uploadedVideos.length);
@@ -189,7 +190,20 @@ const Trending: React.FC = () => {
           />
         </div>
 
-        {(activeTab === 'all' || activeTab === 'videos') && displayVideos.length > 0 && (
+        {/* Loading State */}
+        {isLoading && (activeTab === 'all' || activeTab === 'videos') && (
+          <div className="mb-10">
+            <div className="flex items-center mb-4">
+              <h2 className="text-2xl font-semibold flex items-center gap-2">
+                <TrendingUp className="h-6 w-6 text-primary" />
+                Trending Videos
+              </h2>
+            </div>
+            <VideoGridSkeleton count={8} />
+          </div>
+        )}
+
+        {!isLoading && (activeTab === 'all' || activeTab === 'videos') && displayVideos.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-semibold flex items-center gap-2">
@@ -217,9 +231,21 @@ const Trending: React.FC = () => {
           </div>
         )}
 
-        {(activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
+        {!isLoading && (activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
 
-        {(activeTab === 'all' || activeTab === 'music') && musicVideos.length > 0 && (
+        {isLoading && (activeTab === 'all' || activeTab === 'music') && (
+          <div className="mb-10">
+            <div className="flex items-center mb-4">
+              <h2 className="text-2xl font-semibold flex items-center gap-2">
+                <TrendingUp className="h-6 w-6 text-primary" />
+                Trending Music
+              </h2>
+            </div>
+            <ShortGridSkeleton count={8} />
+          </div>
+        )}
+
+        {!isLoading && (activeTab === 'all' || activeTab === 'music') && musicVideos.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-semibold flex items-center gap-2">
@@ -254,7 +280,7 @@ const Trending: React.FC = () => {
           </div>
         )}
 
-        {(activeTab === 'all' || activeTab === 'podcasts') && podcastVideos.length > 0 && (
+        {!isLoading && (activeTab === 'all' || activeTab === 'podcasts') && podcastVideos.length > 0 && (
           <div className="mb-10">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-semibold flex items-center gap-2">
@@ -289,7 +315,7 @@ const Trending: React.FC = () => {
           </div>
         )}
 
-        {trendingVideos.length === 0 && musicVideos.length === 0 && podcastVideos.length === 0 && (
+        {!isLoading && trendingVideos.length === 0 && musicVideos.length === 0 && podcastVideos.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">
             <p>No trending content yet. Upload videos to see them here!</p>
           </div>
