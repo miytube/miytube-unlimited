@@ -26,7 +26,10 @@ export const useSubcategoryInfo = (): SubcategoryData => {
   const lastSegment = pathParts[pathParts.length - 1];
   
   // Generate a key from the category and subcategory (for nested routes)
-  const mappingKey = subcategory ? `${category}-${subcategory}` : (category || pathKey);
+  // If route params exist, use them; otherwise convert path slashes to hyphens
+  const mappingKey = subcategory 
+    ? `${category}-${subcategory}` 
+    : (category || pathKey.replace(/\//g, '-'));
   
   // Default values in case the category is not in our mapping
   let pageTitle = pathKey.split('/').pop()?.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || pathKey;
