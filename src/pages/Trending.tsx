@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { TrendingUp, ArrowRight, Upload } from 'lucide-react';
+import { TrendingUp, ArrowRight, Upload, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
@@ -9,6 +9,7 @@ import { TrendingShortVideosSection } from '@/components/video/TrendingShortVide
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 
 interface TrendingCategoryProps {
   title: string;
@@ -35,11 +36,13 @@ const TrendingCategory: React.FC<TrendingCategoryProps> = ({ title, linkTo, chil
 
 const Trending: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'videos' | 'music' | 'podcasts'>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const videosPerPage = 20;
   const { uploadedVideos, addUploadedVideo, getVideosByCategory } = useUploadedVideos();
   const { toast } = useToast();
 
   // ALL uploaded videos appear on trending page (newest first) - including shorts
-  const trendingVideos = uploadedVideos.map(video => ({
+  const trendingVideos = [...uploadedVideos].reverse().map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
@@ -48,6 +51,11 @@ const Trending: React.FC = () => {
     timestamp: video.timestamp,
     duration: video.duration,
   }));
+
+  const totalPages = Math.ceil(trendingVideos.length / videosPerPage);
+  const startIndex = (currentPage - 1) * videosPerPage;
+  const endIndex = startIndex + videosPerPage;
+  const displayVideos = trendingVideos.slice(startIndex, endIndex);
 
   // Get uploaded music
   const musicVideos = getVideosByCategory('music').map(video => ({
@@ -75,6 +83,39 @@ const Trending: React.FC = () => {
       title: "Video uploaded to Trending",
       description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
     });
+  };
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <Button
+          key={i}
+          variant={currentPage === i ? "default" : "outline"}
+          size="sm"
+          onClick={() => goToPage(i)}
+          className="min-w-[40px]"
+        >
+          {i}
+        </Button>
+      );
+    }
+    
+    return pages;
   };
 
   return (
@@ -146,14 +187,51 @@ const Trending: React.FC = () => {
           />
         </div>
 
-        {(activeTab === 'all' || activeTab === 'videos') && trendingVideos.length > 0 && (
-          <TrendingCategory title="Trending Videos" linkTo="/videos/trending">
+        {(activeTab === 'all' || activeTab === 'videos') && displayVideos.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold flex items-center gap-2">
+                <TrendingUp className="h-6 w-6 text-primary" />
+                Trending Videos
+              </h2>
+              {totalPages > 1 && (
+                <span className="text-muted-foreground text-sm">
+                  Page {currentPage} of {totalPages} ({trendingVideos.length} videos)
+                </span>
+              )}
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {trendingVideos.slice(0, 20).map(video => (
+              {displayVideos.map(video => (
                 <VideoCard key={video.id} {...video} />
               ))}
             </div>
-          </TrendingCategory>
+            
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Previous
+                </Button>
+                
+                {renderPageNumbers()}
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </div>
         )}
 
         {(activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
