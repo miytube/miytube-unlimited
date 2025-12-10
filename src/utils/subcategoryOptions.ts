@@ -138,6 +138,57 @@ export const subcategoryOptionsByCategory: Record<string, Array<{ id: string; na
     { id: 'crossfit', name: 'CrossFit' },
     { id: 'pilates', name: 'Pilates' },
   ],
+  'trains': [
+    { id: 'railroad', name: 'Railroad' },
+    { id: 'railway', name: 'Railway' },
+    { id: 'steam-trains', name: 'Steam Trains' },
+    { id: 'freight-trains', name: 'Freight Trains' },
+    { id: 'passenger-trains', name: 'Passenger Trains' },
+  ],
+  'swimming': [
+    { id: 'diving', name: 'Diving' },
+    { id: 'plunge', name: 'Plunge' },
+    { id: 'plummet', name: 'Plummet' },
+    { id: 'jump', name: 'Jump' },
+    { id: 'freestyle-swimming', name: 'Freestyle Swimming' },
+  ],
+  'swim': [
+    { id: 'diving', name: 'Diving' },
+    { id: 'plunge', name: 'Plunge' },
+    { id: 'plummet', name: 'Plummet' },
+    { id: 'jump', name: 'Jump' },
+    { id: 'freestyle-swimming', name: 'Freestyle Swimming' },
+  ],
+  'floods': [
+    { id: 'flash-floods', name: 'Flash Floods' },
+    { id: 'deluge', name: 'Deluge' },
+    { id: 'downpour', name: 'Downpour' },
+    { id: 'drowning-hazards', name: 'Drowning Hazards' },
+    { id: 'engulfing-waters', name: 'Engulfing Waters' },
+    { id: 'stream-flooding', name: 'Stream Flooding' },
+  ],
+  'film-horror': [
+    { id: 'terror', name: 'Terror' },
+    { id: 'fear', name: 'Fear' },
+    { id: 'fright', name: 'Fright' },
+    { id: 'dread', name: 'Dread' },
+    { id: 'slasher', name: 'Slasher' },
+  ],
+  'horror': [
+    { id: 'terror', name: 'Terror' },
+    { id: 'fear', name: 'Fear' },
+    { id: 'fright', name: 'Fright' },
+    { id: 'dread', name: 'Dread' },
+    { id: 'slasher', name: 'Slasher' },
+  ],
+  'racing-track': [
+    { id: 'accidents', name: 'Accidents' },
+    { id: 'crashes', name: 'Crashes' },
+  ],
+  'racing': [
+    { id: 'accidents', name: 'Accidents' },
+    { id: 'crashes', name: 'Crashes' },
+  ],
 };
 
 // Get subcategory options for a given category ID
