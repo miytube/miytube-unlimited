@@ -25,6 +25,38 @@ export const AnimalsNatureLinks: React.FC = () => {
       ]
     },
     { 
+      id: 'mammals', 
+      icon: Dog, 
+      label: 'Mammals', 
+      path: '/mammals',
+      subItems: [
+        { id: 'mammals-primates', label: 'Primates', path: '/mammals/primates' },
+        { id: 'mammals-carnivores', label: 'Carnivores', path: '/mammals/carnivores' },
+        { id: 'mammals-rodents', label: 'Rodents', path: '/mammals/rodents' },
+        { id: 'mammals-marine', label: 'Marine Mammals', path: '/mammals/marine-mammals' },
+        { id: 'mammals-marsupials', label: 'Marsupials', path: '/mammals/marsupials' },
+        { id: 'mammals-bats', label: 'Bats', path: '/mammals/bats' },
+        { id: 'mammals-elephants', label: 'Elephants', path: '/mammals/elephants' },
+        { id: 'mammals-ungulates', label: 'Ungulates', path: '/mammals/ungulates' }
+      ]
+    },
+    { 
+      id: 'non-mammals', 
+      icon: Fish, 
+      label: 'Non-Mammals', 
+      path: '/non-mammals',
+      subItems: [
+        { id: 'non-mammals-fish', label: 'Fish', path: '/non-mammals/fish' },
+        { id: 'non-mammals-birds', label: 'Birds', path: '/non-mammals/birds' },
+        { id: 'non-mammals-reptiles', label: 'Reptiles', path: '/non-mammals/reptiles' },
+        { id: 'non-mammals-amphibians', label: 'Amphibians', path: '/non-mammals/amphibians' },
+        { id: 'non-mammals-arthropods', label: 'Arthropods', path: '/non-mammals/arthropods' },
+        { id: 'non-mammals-mollusks', label: 'Mollusks', path: '/non-mammals/mollusks' },
+        { id: 'non-mammals-echinoderms', label: 'Echinoderms', path: '/non-mammals/echinoderms' },
+        { id: 'non-mammals-invertebrates', label: 'Other Invertebrates', path: '/non-mammals/invertebrates' }
+      ]
+    },
+    { 
       id: 'plants', 
       icon: Leaf, 
       label: 'Plants', 
