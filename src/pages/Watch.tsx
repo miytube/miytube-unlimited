@@ -197,6 +197,9 @@ const Watch = () => {
       </Layout>
     );
   }
+
+  // Check if video source is missing
+  const hasVideoSource = video.file || (isYouTubeVideo && youtubeVideoId);
   
   return (
     <Layout>
@@ -205,7 +208,15 @@ const Watch = () => {
           {/* Main Video Section */}
           <div className="flex-1 max-w-4xl space-y-6">
             <div className="bg-card rounded-lg overflow-hidden shadow-md">
-              {isYouTubeVideo && youtubeVideoId ? (
+              {!hasVideoSource ? (
+                <div className="aspect-video bg-muted flex flex-col items-center justify-center text-center p-8">
+                  <Film className="h-16 w-16 text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Video file unavailable</h3>
+                  <p className="text-sm text-muted-foreground max-w-md">
+                    The video file for "{video.title}" was not saved properly. Please re-upload the video to watch it.
+                  </p>
+                </div>
+              ) : isYouTubeVideo && youtubeVideoId ? (
                 <YouTubeEmbed videoId={youtubeVideoId} title={video.title} />
               ) : (
                 <VideoPlayer videoFile={video.file} title={video.title} />
