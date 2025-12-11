@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Droplets, Upload } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -7,6 +8,7 @@ import { useUploadedVideos } from "@/context/UploadedVideosContext";
 import { filterVideosByCategory } from "@/utils/videoFiltering";
 import { VideoCard } from "@/components/VideoCard";
 import { VideoGridSkeleton } from "@/components/skeletons";
+import { Pagination, PageInfo } from "@/components/Pagination";
 
 const subcategories = [
   { id: 'flash-flood', name: 'Flash Floods', path: '/floods/flash-flood', description: 'Flash flood events and sudden water surges' },
@@ -17,9 +19,16 @@ const subcategories = [
   { id: 'stream', name: 'Stream Flooding', path: '/floods/stream', description: 'Stream and river overflow events' },
 ];
 
+const VIDEOS_PER_PAGE = 20;
+
 const Floods = () => {
   const { uploadedVideos, isLoading } = useUploadedVideos();
+  const [currentPage, setCurrentPage] = useState(1);
+  
   const floodVideos = filterVideosByCategory(uploadedVideos, 'floods');
+  const totalPages = Math.ceil(floodVideos.length / VIDEOS_PER_PAGE);
+  const startIndex = (currentPage - 1) * VIDEOS_PER_PAGE;
+  const displayVideos = floodVideos.slice(startIndex, startIndex + VIDEOS_PER_PAGE);
 
   return (
     <Layout>
@@ -57,24 +66,41 @@ const Floods = () => {
         </div>
 
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Flood Videos</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold">Flood Videos</h2>
+            {floodVideos.length > VIDEOS_PER_PAGE && (
+              <PageInfo
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={floodVideos.length}
+                itemLabel="videos"
+              />
+            )}
+          </div>
           {isLoading ? (
             <VideoGridSkeleton count={8} />
-          ) : floodVideos.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {floodVideos.slice(0, 20).map((video) => (
-                <VideoCard
-                  key={video.id}
-                  id={video.id}
-                  title={video.title}
-                  thumbnail={video.thumbnail || '/placeholder.svg'}
-                  channelName="MiyTube"
-                  views={`${video.views || 0} views`}
-                  timestamp={video.timestamp || ''}
-                  duration={video.duration || '0:00'}
-                />
-              ))}
-            </div>
+          ) : displayVideos.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {displayVideos.map((video) => (
+                  <VideoCard
+                    key={video.id}
+                    id={video.id}
+                    title={video.title}
+                    thumbnail={video.thumbnail || '/placeholder.svg'}
+                    channelName="MiyTube"
+                    views={`${video.views || 0} views`}
+                    timestamp={video.timestamp || ''}
+                    duration={video.duration || '0:00'}
+                  />
+                ))}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </>
           ) : (
             <div className="text-center py-12 bg-muted/30 rounded-lg">
               <Droplets className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
