@@ -73,6 +73,16 @@ export const subcategoryRoutes = [
   <Route key="disasters-fires" path="/disasters/fires" element={<GenericSubcategoryPage />} />,
   <Route key="disasters-hurricanes" path="/disasters/hurricanes" element={<GenericSubcategoryPage />} />,
   <Route key="disasters-volcano" path="/disasters/volcano" element={<GenericSubcategoryPage />} />,
+  <Route key="disasters-landslides" path="/disasters/landslides" element={<GenericSubcategoryPage />} />,
+  <Route key="disasters-tsunami" path="/disasters/tsunami" element={<GenericSubcategoryPage />} />,
+  
+  /* Floods Routes */
+  <Route key="floods-flash-flood" path="/floods/flash-flood" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-deluge" path="/floods/deluge" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-downpour" path="/floods/downpour" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-drown" path="/floods/drown" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-engulf" path="/floods/engulf" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-stream" path="/floods/stream" element={<GenericSubcategoryPage />} />,
   
   /* Education Routes */
   <Route key="education-anatomy" path="/education/anatomy" element={<GenericSubcategoryPage />} />,

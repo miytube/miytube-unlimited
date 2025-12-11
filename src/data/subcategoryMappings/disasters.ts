@@ -1,5 +1,5 @@
 
-import { Zap } from 'lucide-react';
+import { Zap, Mountain, Waves } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const disastersSubcategories: SubcategoryMapping = {
@@ -32,6 +32,18 @@ export const disastersSubcategories: SubcategoryMapping = {
     title: 'Volcanic Eruptions',
     description: 'Volcanic activity, eruptions and geological impact',
     icon: Zap,
+    parent: { route: '/disasters', name: 'Disasters' }
+  },
+  'disasters-landslides': {
+    title: 'Landslides',
+    description: 'Landslide events, mudslides, and geological hazards',
+    icon: Mountain,
+    parent: { route: '/disasters', name: 'Disasters' }
+  },
+  'disasters-tsunami': {
+    title: 'Tsunami',
+    description: 'Tsunami events, coastal disasters and wave footage',
+    icon: Waves,
     parent: { route: '/disasters', name: 'Disasters' }
   },
 };
