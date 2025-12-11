@@ -7,6 +7,7 @@ import { relaxationContentTypes } from './relaxationTypes';
 import { entertainmentContentTypes } from './entertainmentTypes';
 import { environmentContentTypes } from './environmentTypes';
 import { mediaContentTypes } from './mediaTypes';
+import { speechContentTypes } from './speechTypes';
 import { ContentType } from '@/types/upload';
 
 // Merge all content types into a single object
@@ -19,6 +20,7 @@ export const contentTypes: Record<string, ContentType> = {
   ...entertainmentContentTypes,
   ...environmentContentTypes,
   ...mediaContentTypes,
+  ...speechContentTypes,
 };
 
 // Re-export individual type categories for selective imports
@@ -30,5 +32,6 @@ export {
   relaxationContentTypes,
   entertainmentContentTypes,
   environmentContentTypes,
-  mediaContentTypes
+  mediaContentTypes,
+  speechContentTypes
 };
