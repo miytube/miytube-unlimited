@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
-import { Mic, MessageSquare, BookOpen, Heart, Users, Quote } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { VideoCard } from '@/components/VideoCard';
 import { Pagination } from '@/components/Pagination';
@@ -12,13 +11,27 @@ const Speeches = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const videosPerPage = 20;
 
-  const subcategories = [
-    { id: 'commencement', name: 'Commencement Speech', description: 'Graduation and commencement addresses', path: '/speeches/commencement', icon: BookOpen },
-    { id: 'eulogy', name: 'Eulogy & Memorial', description: 'Memorial speeches and tributes', path: '/speeches/eulogy', icon: Heart },
-    { id: 'informative', name: 'Informative Speech', description: 'Educational and informative presentations', path: '/speeches/informative', icon: MessageSquare },
-    { id: 'motivational', name: 'Motivational Speech', description: 'Inspirational and motivational talks', path: '/speeches/motivational', icon: Mic },
-    { id: 'persuasive', name: 'Persuasive & Protest', description: 'Persuasive speeches and protest addresses', path: '/speeches/persuasive', icon: Users },
-    { id: 'quotes-poems', name: 'Quotes, Poems, Statements', description: 'Famous quotes, poetry, and statements', path: '/speeches/quotes-poems', icon: Quote },
+  const speechCategories = [
+    {
+      name: 'Speech',
+      path: '/speeches',
+      subcategories: [
+        { name: 'Commencement Speech', path: '/speeches/commencement', examples: 'Graduation addresses, university ceremonies' },
+        { name: 'Eulogy & Memorial', path: '/speeches/eulogy', examples: 'Memorial tributes, funeral speeches' },
+        { name: 'Informative Speech', path: '/speeches/informative', examples: 'Educational presentations, lectures' },
+        { name: 'Motivational Speech', path: '/speeches/motivational', examples: 'Inspirational talks, TED-style speeches' },
+        { name: 'Persuasive & Protest', path: '/speeches/persuasive', examples: 'Political speeches, activist addresses' },
+      ]
+    },
+    {
+      name: 'Quotes, Poems & Statements',
+      path: '/speeches/quotes-poems',
+      subcategories: [
+        { name: 'Famous Quotes', path: '/speeches/quotes-poems', examples: 'Historical quotes, memorable sayings' },
+        { name: 'Poetry Readings', path: '/speeches/quotes-poems', examples: 'Spoken word, poetry performances' },
+        { name: 'Public Statements', path: '/speeches/quotes-poems', examples: 'Official announcements, declarations' },
+      ]
+    }
   ];
 
   const filteredVideos = filterVideosByCategory(uploadedVideos, 'speeches');
@@ -39,17 +52,28 @@ const Speeches = () => {
           <p className="text-muted-foreground">Explore commencement addresses, eulogies, motivational talks, and more</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-          {subcategories.map((sub) => (
-            <Link
-              key={sub.id}
-              to={sub.path}
-              className="p-4 bg-card rounded-lg border hover:border-primary transition-colors"
-            >
-              <sub.icon className="h-6 w-6 mb-2 text-primary" />
-              <h3 className="font-semibold">{sub.name}</h3>
-              <p className="text-xs text-muted-foreground">{sub.description}</p>
-            </Link>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {speechCategories.map((category) => (
+            <div key={category.name} className="bg-card rounded-lg border p-6">
+              <Link to={category.path}>
+                <h2 className="text-xl font-bold mb-4 hover:text-primary transition-colors">
+                  {category.name}
+                </h2>
+              </Link>
+              <ul className="space-y-3">
+                {category.subcategories.map((sub) => (
+                  <li key={sub.name}>
+                    <Link 
+                      to={sub.path}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      {sub.name}
+                    </Link>
+                    <p className="text-sm text-muted-foreground">{sub.examples}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
 
