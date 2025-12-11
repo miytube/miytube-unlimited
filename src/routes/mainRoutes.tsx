@@ -53,6 +53,9 @@ import Trains from "@/pages/Trains";
 import Swimming from "@/pages/Swimming";
 import Floods from "@/pages/Floods";
 import LakesRivers from "@/pages/LakesRivers";
+import Mammals from "@/pages/Mammals";
+import NonMammals from "@/pages/NonMammals";
+import Speeches from "@/pages/Speeches";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -128,6 +131,35 @@ export const mainRoutes = [
   <Route key="swim" path="/swim" element={<Swimming />} />,
   <Route key="floods" path="/floods" element={<Floods />} />,
   <Route key="lakes-rivers" path="/lakes-rivers" element={<LakesRivers />} />,
+  
+  // Mammals, Non-Mammals, and Speeches categories
+  <Route key="mammals" path="/mammals" element={<Mammals />} />,
+  <Route key="mammals-primates" path="/mammals/primates" element={<Mammals />} />,
+  <Route key="mammals-carnivores" path="/mammals/carnivores" element={<Mammals />} />,
+  <Route key="mammals-rodents" path="/mammals/rodents" element={<Mammals />} />,
+  <Route key="mammals-marine" path="/mammals/marine-mammals" element={<Mammals />} />,
+  <Route key="mammals-marsupials" path="/mammals/marsupials" element={<Mammals />} />,
+  <Route key="mammals-bats" path="/mammals/bats" element={<Mammals />} />,
+  <Route key="mammals-elephants" path="/mammals/elephants" element={<Mammals />} />,
+  <Route key="mammals-ungulates" path="/mammals/ungulates" element={<Mammals />} />,
+  
+  <Route key="non-mammals" path="/non-mammals" element={<NonMammals />} />,
+  <Route key="non-mammals-fish" path="/non-mammals/fish" element={<NonMammals />} />,
+  <Route key="non-mammals-birds" path="/non-mammals/birds" element={<NonMammals />} />,
+  <Route key="non-mammals-reptiles" path="/non-mammals/reptiles" element={<NonMammals />} />,
+  <Route key="non-mammals-amphibians" path="/non-mammals/amphibians" element={<NonMammals />} />,
+  <Route key="non-mammals-arthropods" path="/non-mammals/arthropods" element={<NonMammals />} />,
+  <Route key="non-mammals-mollusks" path="/non-mammals/mollusks" element={<NonMammals />} />,
+  <Route key="non-mammals-echinoderms" path="/non-mammals/echinoderms" element={<NonMammals />} />,
+  <Route key="non-mammals-invertebrates" path="/non-mammals/invertebrates" element={<NonMammals />} />,
+  
+  <Route key="speeches" path="/speeches" element={<Speeches />} />,
+  <Route key="speeches-commencement" path="/speeches/commencement" element={<Speeches />} />,
+  <Route key="speeches-eulogy" path="/speeches/eulogy" element={<Speeches />} />,
+  <Route key="speeches-informative" path="/speeches/informative" element={<Speeches />} />,
+  <Route key="speeches-motivational" path="/speeches/motivational" element={<Speeches />} />,
+  <Route key="speeches-persuasive" path="/speeches/persuasive" element={<Speeches />} />,
+  <Route key="speeches-quotes-poems" path="/speeches/quotes-poems" element={<Speeches />} />,
   
   // New category pages with fixed icon imports
   <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={Shield} />} />,
