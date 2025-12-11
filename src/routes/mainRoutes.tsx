@@ -49,6 +49,7 @@ import GameShows from "@/pages/GameShows";
 import AwardsShows from "@/pages/AwardsShows";
 import NewsShows from "@/pages/NewsShows";
 import GenericCategoryPage from "@/components/GenericCategoryPage";
+import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 import Trains from "@/pages/Trains";
 import Swimming from "@/pages/Swimming";
 import Floods from "@/pages/Floods";
@@ -134,32 +135,32 @@ export const mainRoutes = [
   
   // Mammals, Non-Mammals, and Speeches categories
   <Route key="mammals" path="/mammals" element={<Mammals />} />,
-  <Route key="mammals-primates" path="/mammals/primates" element={<Mammals />} />,
-  <Route key="mammals-carnivores" path="/mammals/carnivores" element={<Mammals />} />,
-  <Route key="mammals-rodents" path="/mammals/rodents" element={<Mammals />} />,
-  <Route key="mammals-marine" path="/mammals/marine-mammals" element={<Mammals />} />,
-  <Route key="mammals-marsupials" path="/mammals/marsupials" element={<Mammals />} />,
-  <Route key="mammals-bats" path="/mammals/bats" element={<Mammals />} />,
-  <Route key="mammals-elephants" path="/mammals/elephants" element={<Mammals />} />,
-  <Route key="mammals-ungulates" path="/mammals/ungulates" element={<Mammals />} />,
+  <Route key="mammals-primates" path="/mammals/primates" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-carnivores" path="/mammals/carnivores" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-rodents" path="/mammals/rodents" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-marine" path="/mammals/marine-mammals" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-marsupials" path="/mammals/marsupials" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-bats" path="/mammals/bats" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-elephants" path="/mammals/elephants" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-ungulates" path="/mammals/ungulates" element={<GenericSubcategoryPage />} />,
   
   <Route key="non-mammals" path="/non-mammals" element={<NonMammals />} />,
-  <Route key="non-mammals-fish" path="/non-mammals/fish" element={<NonMammals />} />,
-  <Route key="non-mammals-birds" path="/non-mammals/birds" element={<NonMammals />} />,
-  <Route key="non-mammals-reptiles" path="/non-mammals/reptiles" element={<NonMammals />} />,
-  <Route key="non-mammals-amphibians" path="/non-mammals/amphibians" element={<NonMammals />} />,
-  <Route key="non-mammals-arthropods" path="/non-mammals/arthropods" element={<NonMammals />} />,
-  <Route key="non-mammals-mollusks" path="/non-mammals/mollusks" element={<NonMammals />} />,
-  <Route key="non-mammals-echinoderms" path="/non-mammals/echinoderms" element={<NonMammals />} />,
-  <Route key="non-mammals-invertebrates" path="/non-mammals/invertebrates" element={<NonMammals />} />,
+  <Route key="non-mammals-fish" path="/non-mammals/fish" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-birds" path="/non-mammals/birds" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-reptiles" path="/non-mammals/reptiles" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-amphibians" path="/non-mammals/amphibians" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-arthropods" path="/non-mammals/arthropods" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-mollusks" path="/non-mammals/mollusks" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-echinoderms" path="/non-mammals/echinoderms" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-invertebrates" path="/non-mammals/invertebrates" element={<GenericSubcategoryPage />} />,
   
   <Route key="speeches" path="/speeches" element={<Speeches />} />,
-  <Route key="speeches-commencement" path="/speeches/commencement" element={<Speeches />} />,
-  <Route key="speeches-eulogy" path="/speeches/eulogy" element={<Speeches />} />,
-  <Route key="speeches-informative" path="/speeches/informative" element={<Speeches />} />,
-  <Route key="speeches-motivational" path="/speeches/motivational" element={<Speeches />} />,
-  <Route key="speeches-persuasive" path="/speeches/persuasive" element={<Speeches />} />,
-  <Route key="speeches-quotes-poems" path="/speeches/quotes-poems" element={<Speeches />} />,
+  <Route key="speeches-commencement" path="/speeches/commencement" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-eulogy" path="/speeches/eulogy" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-informative" path="/speeches/informative" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-motivational" path="/speeches/motivational" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-persuasive" path="/speeches/persuasive" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-quotes-poems" path="/speeches/quotes-poems" element={<GenericSubcategoryPage />} />,
   
   // New category pages with fixed icon imports
   <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={Shield} />} />,
