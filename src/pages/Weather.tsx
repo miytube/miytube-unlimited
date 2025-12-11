@@ -41,9 +41,41 @@ const Weather = () => {
 
         <div>
           <h2 className="text-2xl font-semibold mb-4">Weather Categories</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <Link to="/weather/forecast" className="block">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
+                <div className="text-center">
+                  <Cloud size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">Forecast</div>
+                </div>
+              </div>
+            </Link>
+            <Link to="/weather/storms" className="block">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
+                <div className="text-center">
+                  <Cloud size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">Storms & Hurricanes</div>
+                </div>
+              </div>
+            </Link>
+            <Link to="/weather/climate" className="block">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
+                <div className="text-center">
+                  <Cloud size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">Climate Change</div>
+                </div>
+              </div>
+            </Link>
+            <Link to="/weather/extreme" className="block">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
+                <div className="text-center">
+                  <Cloud size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">Extreme Weather</div>
+                </div>
+              </div>
+            </Link>
             <Link to="/weather/rain" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Cloud size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Rain</div>
@@ -51,7 +83,7 @@ const Weather = () => {
               </div>
             </Link>
             <Link to="/weather/thunderstorm" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Cloud size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Thunderstorm</div>
@@ -59,7 +91,7 @@ const Weather = () => {
               </div>
             </Link>
             <Link to="/weather/wind" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Cloud size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Wind</div>
@@ -67,26 +99,18 @@ const Weather = () => {
               </div>
             </Link>
             <Link to="/weather/snow" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Cloud size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Snow</div>
                 </div>
               </div>
             </Link>
-            <Link to="/weather/forecast" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
-                <div className="text-center">
-                  <Cloud size={32} className="mx-auto mb-2 text-primary" />
-                  <div className="font-medium">Forecast</div>
-                </div>
-              </div>
-            </Link>
             <Link to="/weather/ambient" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Cloud size={32} className="mx-auto mb-2 text-primary" />
-                  <div className="font-medium">Ambient</div>
+                  <div className="font-medium">Ambient Weather</div>
                 </div>
               </div>
             </Link>

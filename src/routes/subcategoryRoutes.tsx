@@ -151,4 +151,15 @@ export const subcategoryRoutes = [
   <Route key="speeches-motivational" path="/speeches/motivational" element={<GenericSubcategoryPage />} />,
   <Route key="speeches-persuasive" path="/speeches/persuasive" element={<GenericSubcategoryPage />} />,
   <Route key="speeches-quotes-poems" path="/speeches/quotes-poems" element={<GenericSubcategoryPage />} />,
+  
+  /* Weather Routes */
+  <Route key="weather-forecast" path="/weather/forecast" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-storms" path="/weather/storms" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-climate" path="/weather/climate" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-extreme" path="/weather/extreme" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-rain" path="/weather/rain" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-thunderstorm" path="/weather/thunderstorm" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-wind" path="/weather/wind" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-snow" path="/weather/snow" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-ambient" path="/weather/ambient" element={<GenericSubcategoryPage />} />,
 ];
