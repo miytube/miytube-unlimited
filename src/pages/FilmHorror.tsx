@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Skull, Ghost, Eye, Brain, Axe } from 'lucide-react';
@@ -7,6 +7,7 @@ import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { VideoGridSkeleton } from '@/components/skeletons';
+import { Pagination, PageInfo } from '@/components/Pagination';
 
 const horrorSubcategories = [
   { path: '/film/horror-terror', label: 'Terror', icon: Skull, description: 'Intense terror and psychological horror films' },
@@ -16,11 +17,16 @@ const horrorSubcategories = [
   { path: '/film/horror-slasher', label: 'Slasher', icon: Axe, description: 'Classic and modern slasher films' },
 ];
 
+const VIDEOS_PER_PAGE = 20;
+
 const FilmHorror: React.FC = () => {
   const { uploadedVideos, isLoading } = useUploadedVideos();
+  const [currentPage, setCurrentPage] = useState(1);
   
   const horrorVideos = filterVideosByCategory(uploadedVideos, 'horror', ['film horror', 'terror', 'fear', 'fright', 'dread', 'slasher']);
-  const displayVideos = horrorVideos.slice(0, 20);
+  const totalPages = Math.ceil(horrorVideos.length / VIDEOS_PER_PAGE);
+  const startIndex = (currentPage - 1) * VIDEOS_PER_PAGE;
+  const displayVideos = horrorVideos.slice(startIndex, startIndex + VIDEOS_PER_PAGE);
 
   return (
     <Layout>
@@ -55,24 +61,41 @@ const FilmHorror: React.FC = () => {
 
         {/* Video Content Section */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Horror Videos</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">Horror Videos</h2>
+            {horrorVideos.length > VIDEOS_PER_PAGE && (
+              <PageInfo
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={horrorVideos.length}
+                itemLabel="videos"
+              />
+            )}
+          </div>
           {isLoading ? (
             <VideoGridSkeleton count={20} />
           ) : displayVideos.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {displayVideos.map((video) => (
-                <VideoCard
-                  key={video.id}
-                  id={video.id}
-                  title={video.title}
-                  thumbnail={video.thumbnail}
-                  duration={video.duration}
-                  views={video.views}
-                  channelName="MiyTube Creator"
-                  timestamp={new Date().toISOString()}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {displayVideos.map((video) => (
+                  <VideoCard
+                    key={video.id}
+                    id={video.id}
+                    title={video.title}
+                    thumbnail={video.thumbnail}
+                    duration={video.duration}
+                    views={video.views}
+                    channelName="MiyTube Creator"
+                    timestamp={new Date().toISOString()}
+                  />
+                ))}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </>
           ) : (
             <div className="text-center py-12 text-muted-foreground">
               <Skull className="h-12 w-12 mx-auto mb-4 opacity-50" />
