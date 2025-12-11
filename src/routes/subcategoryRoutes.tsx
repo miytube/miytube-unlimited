@@ -133,4 +133,12 @@ export const subcategoryRoutes = [
   
   /* Film & Movies Routes */
   <Route key="film-movies-clips" path="/film-movies/clips" element={<GenericSubcategoryPage />} />,
+  
+  /* Speeches Routes */
+  <Route key="speeches-commencement" path="/speeches/commencement" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-eulogy" path="/speeches/eulogy" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-informative" path="/speeches/informative" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-motivational" path="/speeches/motivational" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-persuasive" path="/speeches/persuasive" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-quotes-poems" path="/speeches/quotes-poems" element={<GenericSubcategoryPage />} />,
 ];
