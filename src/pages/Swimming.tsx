@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Waves, Upload } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -7,6 +8,7 @@ import { useUploadedVideos } from "@/context/UploadedVideosContext";
 import { filterVideosByCategory } from "@/utils/videoFiltering";
 import { VideoCard } from "@/components/VideoCard";
 import { VideoGridSkeleton } from "@/components/skeletons";
+import { Pagination, PageInfo } from "@/components/Pagination";
 
 const subcategories = [
   { id: 'diving', name: 'Diving', path: '/swim/diving', description: 'Diving competitions and techniques' },
@@ -16,9 +18,16 @@ const subcategories = [
   { id: 'freestyle', name: 'Freestyle Swimming', path: '/swim/freestyle', description: 'Freestyle swimming techniques and races' },
 ];
 
+const VIDEOS_PER_PAGE = 20;
+
 const Swimming = () => {
   const { uploadedVideos, isLoading } = useUploadedVideos();
+  const [currentPage, setCurrentPage] = useState(1);
+  
   const swimVideos = filterVideosByCategory(uploadedVideos, 'swim');
+  const totalPages = Math.ceil(swimVideos.length / VIDEOS_PER_PAGE);
+  const startIndex = (currentPage - 1) * VIDEOS_PER_PAGE;
+  const displayVideos = swimVideos.slice(startIndex, startIndex + VIDEOS_PER_PAGE);
 
   return (
     <Layout>
@@ -56,24 +65,41 @@ const Swimming = () => {
         </div>
 
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Swimming Videos</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold">Swimming Videos</h2>
+            {swimVideos.length > VIDEOS_PER_PAGE && (
+              <PageInfo
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={swimVideos.length}
+                itemLabel="videos"
+              />
+            )}
+          </div>
           {isLoading ? (
             <VideoGridSkeleton count={8} />
-          ) : swimVideos.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {swimVideos.slice(0, 20).map((video) => (
-                <VideoCard
-                  key={video.id}
-                  id={video.id}
-                  title={video.title}
-                  thumbnail={video.thumbnail || '/placeholder.svg'}
-                  channelName="MiyTube"
-                  views={`${video.views || 0} views`}
-                  timestamp={video.timestamp || ''}
-                  duration={video.duration || '0:00'}
-                />
-              ))}
-            </div>
+          ) : displayVideos.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {displayVideos.map((video) => (
+                  <VideoCard
+                    key={video.id}
+                    id={video.id}
+                    title={video.title}
+                    thumbnail={video.thumbnail || '/placeholder.svg'}
+                    channelName="MiyTube"
+                    views={`${video.views || 0} views`}
+                    timestamp={video.timestamp || ''}
+                    duration={video.duration || '0:00'}
+                  />
+                ))}
+              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </>
           ) : (
             <div className="text-center py-12 bg-muted/30 rounded-lg">
               <Waves className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
