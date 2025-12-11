@@ -52,6 +52,7 @@ import GenericCategoryPage from "@/components/GenericCategoryPage";
 import Trains from "@/pages/Trains";
 import Swimming from "@/pages/Swimming";
 import Floods from "@/pages/Floods";
+import LakesRivers from "@/pages/LakesRivers";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -126,6 +127,7 @@ export const mainRoutes = [
   <Route key="trains" path="/trains" element={<Trains />} />,
   <Route key="swim" path="/swim" element={<Swimming />} />,
   <Route key="floods" path="/floods" element={<Floods />} />,
+  <Route key="lakes-rivers" path="/lakes-rivers" element={<LakesRivers />} />,
   
   // New category pages with fixed icon imports
   <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={Shield} />} />,
