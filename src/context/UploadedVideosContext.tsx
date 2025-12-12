@@ -334,10 +334,28 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           }
         }
         
-        // Sort by most recent first (assuming IDs contain timestamps)
+        // Sort by most recent first using timestamp or ID
         mergedVideos.sort((a, b) => {
-          const aTime = parseInt(a.id.replace('upload-', '')) || 0;
-          const bTime = parseInt(b.id.replace('upload-', '')) || 0;
+          // Try to extract timestamp from ID for local uploads (upload-{timestamp} format)
+          const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
+          const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
+          
+          // If both have ID timestamps, compare them
+          if (aIdTime && bIdTime) {
+            return bIdTime - aIdTime;
+          }
+          
+          // For cloud videos (UUID format), parse the timestamp string
+          const parseTimestamp = (ts: string): number => {
+            if (ts === 'Just now') return Date.now();
+            // Try to parse date strings like "12/12/2024"
+            const parsed = Date.parse(ts);
+            return isNaN(parsed) ? 0 : parsed;
+          };
+          
+          const aTime = aIdTime || parseTimestamp(a.timestamp);
+          const bTime = bIdTime || parseTimestamp(b.timestamp);
+          
           return bTime - aTime;
         });
         
