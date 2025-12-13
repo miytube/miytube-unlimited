@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
-import { Plane, Users, Briefcase, PlaneTakeoff, CheckSquare } from 'lucide-react';
+import { Plane, Users, Briefcase, PlaneTakeoff, CheckSquare, Sofa, ShieldCheck, Luggage } from 'lucide-react';
 
 const Airports = () => {
   const subcategories = [
     { name: 'Passenger', path: '/airports/passenger', icon: Users, description: 'Airport passenger experiences' },
     { name: 'Bag Checks', path: '/airports/bag-checks', icon: Briefcase, description: 'Security and baggage screening' },
     { name: 'Flights', path: '/airports/flights', icon: PlaneTakeoff, description: 'Flight departures and arrivals' },
-    { name: 'Check In Lines', path: '/airports/check-in-lines', icon: CheckSquare, description: 'Check-in processes and queues' }
+    { name: 'Check In Lines', path: '/airports/check-in-lines', icon: CheckSquare, description: 'Check-in processes and queues' },
+    { name: 'Lounges', path: '/airports/lounges', icon: Sofa, description: 'Airport lounges and waiting areas' },
+    { name: 'Security', path: '/airports/security', icon: ShieldCheck, description: 'Security checkpoints and procedures' },
+    { name: 'Baggage Claim', path: '/airports/baggage-claim', icon: Luggage, description: 'Luggage retrieval areas' }
   ];
 
   return (

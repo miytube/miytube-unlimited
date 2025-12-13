@@ -183,4 +183,7 @@ export const subcategoryRoutes = [
   <Route key="airports-bag-checks" path="/airports/bag-checks" element={<GenericSubcategoryPage />} />,
   <Route key="airports-flights" path="/airports/flights" element={<GenericSubcategoryPage />} />,
   <Route key="airports-check-in-lines" path="/airports/check-in-lines" element={<GenericSubcategoryPage />} />,
+  <Route key="airports-lounges" path="/airports/lounges" element={<GenericSubcategoryPage />} />,
+  <Route key="airports-security" path="/airports/security" element={<GenericSubcategoryPage />} />,
+  <Route key="airports-baggage-claim" path="/airports/baggage-claim" element={<GenericSubcategoryPage />} />,
 ];
