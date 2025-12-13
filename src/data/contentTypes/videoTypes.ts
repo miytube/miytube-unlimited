@@ -40,6 +40,13 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'romance', name: 'Romance' },
         { id: 'horror', name: 'Horror' },
       ]},
+      { id: 'royal-security-guards', name: 'Royal Security Guards', subcategories: [
+        { id: 'british', name: 'British' },
+        { id: 'elite-military', name: 'Elite Military' },
+        { id: 'palace-guards', name: 'Palace Guards' },
+        { id: 'honor-guards', name: 'Honor Guards' },
+        { id: 'ceremonial-units', name: 'Ceremonial Units' },
+      ]},
     ],
     destination: "Your Videos on Home Page and Selected Category"
   },
