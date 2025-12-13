@@ -177,4 +177,10 @@ export const subcategoryRoutes = [
   <Route key="royal-guards-palace-guards" path="/royal-security-guards/palace-guards" element={<GenericSubcategoryPage />} />,
   <Route key="royal-guards-honor-guards" path="/royal-security-guards/honor-guards" element={<GenericSubcategoryPage />} />,
   <Route key="royal-guards-ceremonial-units" path="/royal-security-guards/ceremonial-units" element={<GenericSubcategoryPage />} />,
+  
+  /* Airports Routes */
+  <Route key="airports-passenger" path="/airports/passenger" element={<GenericSubcategoryPage />} />,
+  <Route key="airports-bag-checks" path="/airports/bag-checks" element={<GenericSubcategoryPage />} />,
+  <Route key="airports-flights" path="/airports/flights" element={<GenericSubcategoryPage />} />,
+  <Route key="airports-check-in-lines" path="/airports/check-in-lines" element={<GenericSubcategoryPage />} />,
 ];
