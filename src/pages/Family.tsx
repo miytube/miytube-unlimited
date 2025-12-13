@@ -1,13 +1,16 @@
 
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
-import { TreePine, History, Dna } from 'lucide-react';
+import { TreePine, History, Dna, Heart, Users, Search } from 'lucide-react';
 
 const Family = () => {
   const subcategories = [
     { name: 'Roots', path: '/family/roots', icon: TreePine, description: 'Ancestry and genealogy' },
     { name: 'History', path: '/family/history', icon: History, description: 'Family heritage and stories' },
-    { name: 'DNA', path: '/family/dna', icon: Dna, description: 'Genetic ancestry discoveries' }
+    { name: 'DNA', path: '/family/dna', icon: Dna, description: 'Genetic ancestry discoveries' },
+    { name: 'Traditions', path: '/family/traditions', icon: Heart, description: 'Cultural customs and celebrations' },
+    { name: 'Reunions', path: '/family/reunions', icon: Users, description: 'Family gatherings and events' },
+    { name: 'Genealogy Tools', path: '/family/genealogy-tools', icon: Search, description: 'Research resources and tools' }
   ];
 
   return (

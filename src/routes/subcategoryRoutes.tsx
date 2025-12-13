@@ -167,6 +167,9 @@ export const subcategoryRoutes = [
   <Route key="family-roots" path="/family/roots" element={<GenericSubcategoryPage />} />,
   <Route key="family-history" path="/family/history" element={<GenericSubcategoryPage />} />,
   <Route key="family-dna" path="/family/dna" element={<GenericSubcategoryPage />} />,
+  <Route key="family-traditions" path="/family/traditions" element={<GenericSubcategoryPage />} />,
+  <Route key="family-reunions" path="/family/reunions" element={<GenericSubcategoryPage />} />,
+  <Route key="family-genealogy-tools" path="/family/genealogy-tools" element={<GenericSubcategoryPage />} />,
   
   /* Royal Security Guards Routes */
   <Route key="royal-guards-british" path="/royal-security-guards/british" element={<GenericSubcategoryPage />} />,
