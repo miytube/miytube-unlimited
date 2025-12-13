@@ -174,4 +174,7 @@ export const subcategoryRoutes = [
   /* Royal Security Guards Routes */
   <Route key="royal-guards-british" path="/royal-security-guards/british" element={<GenericSubcategoryPage />} />,
   <Route key="royal-guards-elite-military" path="/royal-security-guards/elite-military" element={<GenericSubcategoryPage />} />,
+  <Route key="royal-guards-palace-guards" path="/royal-security-guards/palace-guards" element={<GenericSubcategoryPage />} />,
+  <Route key="royal-guards-honor-guards" path="/royal-security-guards/honor-guards" element={<GenericSubcategoryPage />} />,
+  <Route key="royal-guards-ceremonial-units" path="/royal-security-guards/ceremonial-units" element={<GenericSubcategoryPage />} />,
 ];
