@@ -26,10 +26,10 @@ export const AviationTransportLinks: React.FC = () => {
       label: 'Airports', 
       path: '/airports',
       subItems: [
-        { id: 'airports-improvements', label: 'Improvements & Construction', path: '/airports/improvements' },
-        { id: 'airports-fails', label: 'Airport Fails', path: '/airports/fails' },
-        { id: 'airports-security', label: 'Airport Security', path: '/airports/security' },
-        { id: 'airports-lounges', label: 'Airport Lounges', path: '/airports/lounges' }
+        { id: 'airports-passenger', label: 'Passenger', path: '/airports/passenger' },
+        { id: 'airports-bag-checks', label: 'Bag Checks', path: '/airports/bag-checks' },
+        { id: 'airports-flights', label: 'Flights', path: '/airports/flights' },
+        { id: 'airports-check-in-lines', label: 'Check In Lines', path: '/airports/check-in-lines' }
       ]
     },
     { 

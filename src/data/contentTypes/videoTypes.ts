@@ -47,6 +47,12 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'honor-guards', name: 'Honor Guards' },
         { id: 'ceremonial-units', name: 'Ceremonial Units' },
       ]},
+      { id: 'airports', name: 'Airports', subcategories: [
+        { id: 'passenger', name: 'Passenger' },
+        { id: 'bag-checks', name: 'Bag Checks' },
+        { id: 'flights', name: 'Flights' },
+        { id: 'check-in-lines', name: 'Check In Lines' },
+      ]},
     ],
     destination: "Your Videos on Home Page and Selected Category"
   },
