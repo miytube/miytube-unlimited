@@ -1,12 +1,15 @@
 
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
-import { Crown, Sword } from 'lucide-react';
+import { Crown, Sword, Castle, Medal, Flag } from 'lucide-react';
 
 const RoyalSecurityGuards = () => {
   const subcategories = [
     { name: 'British', path: '/royal-security-guards/british', icon: Crown, description: 'British Royal Guard traditions' },
-    { name: 'Elite Military', path: '/royal-security-guards/elite-military', icon: Sword, description: 'Elite military security forces' }
+    { name: 'Elite Military', path: '/royal-security-guards/elite-military', icon: Sword, description: 'Elite military security forces' },
+    { name: 'Palace Guards', path: '/royal-security-guards/palace-guards', icon: Castle, description: 'Royal palace security forces' },
+    { name: 'Honor Guards', path: '/royal-security-guards/honor-guards', icon: Medal, description: 'Military honor guard ceremonies' },
+    { name: 'Ceremonial Units', path: '/royal-security-guards/ceremonial-units', icon: Flag, description: 'Ceremonial military units' }
   ];
 
   return (
