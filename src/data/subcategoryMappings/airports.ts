@@ -1,4 +1,4 @@
-import { Plane, Briefcase, PlaneTakeoff, Users } from 'lucide-react';
+import { Plane, Briefcase, PlaneTakeoff, Users, Sofa, ShieldCheck, Luggage } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const airportsSubcategories: SubcategoryMapping = {
@@ -24,6 +24,24 @@ export const airportsSubcategories: SubcategoryMapping = {
     title: 'Check In Lines',
     description: 'Airport check-in processes and queue experiences',
     icon: Plane,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+  'airports/lounges': {
+    title: 'Lounges',
+    description: 'Airport lounges and premium waiting areas',
+    icon: Sofa,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+  'airports/security': {
+    title: 'Security',
+    description: 'Airport security checkpoints and procedures',
+    icon: ShieldCheck,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+  'airports/baggage-claim': {
+    title: 'Baggage Claim',
+    description: 'Baggage claim areas and luggage retrieval',
+    icon: Luggage,
     parent: { route: '/airports', name: 'Airports' }
   }
 };

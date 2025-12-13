@@ -52,6 +52,9 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'bag-checks', name: 'Bag Checks' },
         { id: 'flights', name: 'Flights' },
         { id: 'check-in-lines', name: 'Check In Lines' },
+        { id: 'lounges', name: 'Lounges' },
+        { id: 'security', name: 'Security' },
+        { id: 'baggage-claim', name: 'Baggage Claim' },
       ]},
     ],
     destination: "Your Videos on Home Page and Selected Category"
