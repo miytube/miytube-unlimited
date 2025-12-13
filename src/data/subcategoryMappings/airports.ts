@@ -1,4 +1,4 @@
-import { Plane, Briefcase, PlaneTakeoff, Users, Sofa, ShieldCheck, Luggage } from 'lucide-react';
+import { Plane, Briefcase, PlaneTakeoff, Users, Sofa, ShieldCheck, Luggage, FileCheck, Globe, Building2 } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const airportsSubcategories: SubcategoryMapping = {
@@ -42,6 +42,24 @@ export const airportsSubcategories: SubcategoryMapping = {
     title: 'Baggage Claim',
     description: 'Baggage claim areas and luggage retrieval',
     icon: Luggage,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+  'airports/customs': {
+    title: 'Customs',
+    description: 'Airport customs and declaration procedures',
+    icon: FileCheck,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+  'airports/immigration': {
+    title: 'Immigration',
+    description: 'Immigration checkpoints and passport control',
+    icon: Globe,
+    parent: { route: '/airports', name: 'Airports' }
+  },
+  'airports/terminals': {
+    title: 'Terminals',
+    description: 'Airport terminals and gate areas',
+    icon: Building2,
     parent: { route: '/airports', name: 'Airports' }
   }
 };
