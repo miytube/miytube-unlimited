@@ -57,6 +57,8 @@ import LakesRivers from "@/pages/LakesRivers";
 import Mammals from "@/pages/Mammals";
 import NonMammals from "@/pages/NonMammals";
 import Speeches from "@/pages/Speeches";
+import Family from "@/pages/Family";
+import RoyalSecurityGuards from "@/pages/RoyalSecurityGuards";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -168,6 +170,10 @@ export const mainRoutes = [
   <Route key="beaches" path="/beaches" element={<GenericCategoryPage title="Beaches & Lagoons" description="Explore beautiful beaches and lagoons around the world" Icon={Waves} />} />,
   <Route key="shipping-ports" path="/shipping-ports" element={<GenericCategoryPage title="Shipping Ports" description="Explore content about shipping ports and maritime logistics" Icon={Anchor} />} />,
   <Route key="music-artists" path="/music-artists" element={<GenericCategoryPage title="Music Artists" description="Explore content about music artists, their works and careers" Icon={Mic} />} />,
+  
+  // Family and Royal Security Guards routes
+  <Route key="family" path="/family" element={<Family />} />,
+  <Route key="royal-security-guards" path="/royal-security-guards" element={<RoyalSecurityGuards />} />,
   
   <Route key="not-found" path="*" element={<NotFound />} />,
 ];

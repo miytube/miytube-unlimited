@@ -42,6 +42,8 @@ import { mammalsSubcategories } from './mammals';
 import { nonMammalsSubcategories } from './nonMammals';
 import { speechesSubcategories } from './speeches';
 import { weatherSubcategories } from './weather';
+import { familySubcategories } from './family';
+import { royalGuardsSubcategories } from './royalGuards';
 
 // Merge all subcategory mappings
 export const subcategoryMappings: SubcategoryMapping = {
@@ -87,6 +89,8 @@ export const subcategoryMappings: SubcategoryMapping = {
   ...nonMammalsSubcategories,
   ...speechesSubcategories,
   ...weatherSubcategories,
+  ...familySubcategories,
+  ...royalGuardsSubcategories,
 };
 
 // Re-export types

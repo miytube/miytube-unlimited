@@ -162,4 +162,13 @@ export const subcategoryRoutes = [
   <Route key="weather-wind" path="/weather/wind" element={<GenericSubcategoryPage />} />,
   <Route key="weather-snow" path="/weather/snow" element={<GenericSubcategoryPage />} />,
   <Route key="weather-ambient" path="/weather/ambient" element={<GenericSubcategoryPage />} />,
+  
+  /* Family Routes */
+  <Route key="family-roots" path="/family/roots" element={<GenericSubcategoryPage />} />,
+  <Route key="family-history" path="/family/history" element={<GenericSubcategoryPage />} />,
+  <Route key="family-dna" path="/family/dna" element={<GenericSubcategoryPage />} />,
+  
+  /* Royal Security Guards Routes */
+  <Route key="royal-guards-british" path="/royal-security-guards/british" element={<GenericSubcategoryPage />} />,
+  <Route key="royal-guards-elite-military" path="/royal-security-guards/elite-military" element={<GenericSubcategoryPage />} />,
 ];

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Users, HeartHandshake, Dog, Star, Heart } from 'lucide-react';
+import { Users, HeartHandshake, Dog, Star, Heart, TreePine, Shield } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const PeopleSocietyLinks: React.FC = () => {
@@ -69,6 +69,27 @@ export const PeopleSocietyLinks: React.FC = () => {
         { id: 'models-runway', label: 'Runway Shows', path: '/models/runway' },
         { id: 'models-photoshoots', label: 'Photoshoots', path: '/models/photoshoots' },
         { id: 'models-interviews', label: 'Model Interviews', path: '/models/interviews' }
+      ]
+    },
+    { 
+      id: 'family', 
+      icon: TreePine, 
+      label: 'Family', 
+      path: '/family',
+      subItems: [
+        { id: 'family-roots', label: 'Roots', path: '/family/roots' },
+        { id: 'family-history', label: 'History', path: '/family/history' },
+        { id: 'family-dna', label: 'DNA', path: '/family/dna' }
+      ]
+    },
+    { 
+      id: 'royal-security-guards', 
+      icon: Shield, 
+      label: 'Royal Security Guards', 
+      path: '/royal-security-guards',
+      subItems: [
+        { id: 'royal-guards-british', label: 'British', path: '/royal-security-guards/british' },
+        { id: 'royal-guards-elite-military', label: 'Elite Military', path: '/royal-security-guards/elite-military' }
       ]
     },
   ];
