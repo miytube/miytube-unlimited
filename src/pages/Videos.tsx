@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
@@ -6,17 +6,30 @@ import { Film, Upload, Tv, ListVideo, Clock, Lock, User, Megaphone, Star, Eye, H
 import { Button } from '@/components/ui/button';
 import { Link, useParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { Pagination, PageInfo } from '@/components/Pagination';
 
 const Videos = () => {
   const { category } = useParams();
   const { uploadedVideos, getVideosByCategory, refreshVideos } = useUploadedVideos();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const videosPerPage = 20;
+  const prevVideoCount = useRef(uploadedVideos.length);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await refreshVideos();
+    setCurrentPage(1);
     setIsRefreshing(false);
   };
+
+  // Reset to page 1 when new videos are added
+  useEffect(() => {
+    if (uploadedVideos.length > prevVideoCount.current) {
+      setCurrentPage(1);
+    }
+    prevVideoCount.current = uploadedVideos.length;
+  }, [uploadedVideos.length]);
   
   // Debug: Log all video categories to understand what's stored
   console.log('All uploaded videos:', uploadedVideos.map(v => ({ id: v.id, title: v.title, category: v.category, subcategory: v.subcategory })));
@@ -65,9 +78,12 @@ const Videos = () => {
     { id: 'responded', name: 'Responded', icon: <Reply size={18} /> },
   ];
 
-  // Newest first, 20 per page
-  const videosToShow = [...displayedRegularVideos].reverse().slice(0, 20);
-  const shortsToShow = [...displayedShortVideos].reverse().slice(0, 20);
+  // Newest first with pagination
+  const allVideosToShow = [...displayedRegularVideos].reverse();
+  const totalPages = Math.ceil(allVideosToShow.length / videosPerPage);
+  const startIndex = (currentPage - 1) * videosPerPage;
+  const videosToShow = allVideosToShow.slice(startIndex, startIndex + videosPerPage);
+  const shortsToShow = [...displayedShortVideos].reverse().slice(0, 8);
 
   return (
     <Layout>
@@ -148,24 +164,40 @@ const Videos = () => {
             {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Videos` : 'All Videos'}
           </h2>
           {videosToShow.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {videosToShow.map((video) => (
-                <VideoCard
-                  key={video.id}
-                  id={video.id}
-                  title={video.title}
-                  thumbnail={video.thumbnail}
-                  channelName="Your Channel"
-                  views={video.views}
-                  timestamp={video.timestamp}
-                  duration={video.duration}
-                  description={video.description}
-                  category={video.category}
-                  subcategory={video.subcategory}
-                  tags={video.tags}
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {videosToShow.map((video) => (
+                  <VideoCard
+                    key={video.id}
+                    id={video.id}
+                    title={video.title}
+                    thumbnail={video.thumbnail}
+                    channelName="Your Channel"
+                    views={video.views}
+                    timestamp={video.timestamp}
+                    duration={video.duration}
+                    description={video.description}
+                    category={video.category}
+                    subcategory={video.subcategory}
+                    tags={video.tags}
+                  />
+                ))}
+              </div>
+              
+              <div className="flex items-center justify-between mt-4">
+                <PageInfo 
+                  currentPage={currentPage} 
+                  totalPages={totalPages} 
+                  totalItems={allVideosToShow.length} 
+                  itemLabel="videos" 
                 />
-              ))}
-            </div>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
+            </>
           ) : (
             <div className="p-6 bg-muted/20 rounded-lg text-center">
               <p className="text-muted-foreground mb-4">
