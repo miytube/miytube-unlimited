@@ -119,20 +119,6 @@ const Index = () => {
                 <VideoCard key={video.id} {...video} />
               ))}
             </div>
-            
-            <div className="flex items-center justify-between mt-4">
-              <PageInfo 
-                currentPage={currentPage} 
-                totalPages={totalPages} 
-                totalItems={allVideos.length} 
-                itemLabel="videos" 
-              />
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
           </div>
         )}
 
@@ -151,6 +137,23 @@ const Index = () => {
                 <VideoCard key={video.id} {...video} />
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Page counter below trending section */}
+        {!isLoading && displayVideos.length > 0 && (
+          <div className="flex items-center justify-between mb-6">
+            <PageInfo 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              totalItems={allVideos.length} 
+              itemLabel="videos" 
+            />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
         )}
 
