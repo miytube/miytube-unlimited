@@ -113,12 +113,6 @@ const Index = () => {
           <div className="mb-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-medium">Recommended</h2>
-              <PageInfo 
-                currentPage={currentPage} 
-                totalPages={totalPages} 
-                totalItems={allVideos.length} 
-                itemLabel="videos" 
-              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {displayVideos.map((video) => (
@@ -126,11 +120,19 @@ const Index = () => {
               ))}
             </div>
             
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+            <div className="flex items-center justify-between mt-4">
+              <PageInfo 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                totalItems={allVideos.length} 
+                itemLabel="videos" 
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </div>
         )}
 
