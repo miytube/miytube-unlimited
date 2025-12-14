@@ -5,9 +5,10 @@ import { SidebarMainLinks } from './sidebar/SidebarMainLinks';
 import { SidebarFooter } from './sidebar/SidebarFooter';
 import { SidebarSearch } from './sidebar/SidebarSearch';
 import { Separator } from './ui/separator';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 
 // Comprehensive sidebar components
 import { AITechnologyLinks } from './sidebar/AITechnologyLinks';
@@ -41,6 +42,33 @@ interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+interface CollapsibleGroupProps {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+const CollapsibleGroup: React.FC<CollapsibleGroupProps> = ({ title, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <CollapsibleTrigger asChild>
+        <Button
+          variant="ghost"
+          className="w-full justify-between px-2 py-1.5 h-auto text-xs font-semibold text-muted-foreground uppercase tracking-wide hover:text-foreground"
+        >
+          {title}
+          <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        </Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="space-y-1">
+        {children}
+      </CollapsibleContent>
+    </Collapsible>
+  );
+};
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
@@ -109,64 +137,82 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               <Separator className="my-3" />
               
               {/* Entertainment & Media */}
-              <EntertainmentMediaLinks />
-              <FilmAnimationLinks />
-              <HollywoodLinks />
-              <ComedyFunnyLinks />
-              <MusicFullLinks />
-              <GamingHobbiesLinks />
-              <SportsExtendedLinks />
+              <CollapsibleGroup title="Entertainment & Media" defaultOpen={true}>
+                <EntertainmentMediaLinks />
+                <FilmAnimationLinks />
+                <HollywoodLinks />
+                <ComedyFunnyLinks />
+                <MusicFullLinks />
+                <GamingHobbiesLinks />
+                <SportsExtendedLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Technology & Science */}
-              <AITechnologyLinks />
+              <CollapsibleGroup title="Technology & Science">
+                <AITechnologyLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Education & Information */}
-              <EducationInformationLinks />
-              <KidsEducationLinks />
-              <HowToEducationLinks />
-              <DocumentMediaLinks />
-              <HistoryArtifactsLinks />
+              <CollapsibleGroup title="Education & Learning">
+                <EducationInformationLinks />
+                <KidsEducationLinks />
+                <HowToEducationLinks />
+                <DocumentMediaLinks />
+                <HistoryArtifactsLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Business & Finance */}
-              <BusinessFinanceLinks />
-              <RealEstateLinks />
+              <CollapsibleGroup title="Business & Finance">
+                <BusinessFinanceLinks />
+                <RealEstateLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Government & Politics */}
-              <GovernmentPoliticsLinks />
-              <CrimeJusticeLinks />
+              <CollapsibleGroup title="Government & Law">
+                <GovernmentPoliticsLinks />
+                <CrimeJusticeLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Lifestyle & People */}
-              <LifestyleRelationshipsLinks />
-              <PeopleWorkersLinks />
-              <FitnessHealthLinks />
-              <ModelsPhotosLinks />
+              <CollapsibleGroup title="Lifestyle & People">
+                <LifestyleRelationshipsLinks />
+                <PeopleWorkersLinks />
+                <FitnessHealthLinks />
+                <ModelsPhotosLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Food & Drinks */}
-              <FoodDrinksLinks />
+              <CollapsibleGroup title="Food & Drinks">
+                <FoodDrinksLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Animals & Nature */}
-              <AnimalsNatureLinks />
-              <EnvironmentWeatherLinks />
+              <CollapsibleGroup title="Animals & Nature">
+                <AnimalsNatureLinks />
+                <EnvironmentWeatherLinks />
+              </CollapsibleGroup>
               
               <Separator className="my-3" />
               
               {/* Travel & Transport */}
-              <TravelPlacesLinks />
-              <AviationTransportLinks />
+              <CollapsibleGroup title="Travel & Transport">
+                <TravelPlacesLinks />
+                <AviationTransportLinks />
+              </CollapsibleGroup>
               
               <SidebarFooter />
             </>
