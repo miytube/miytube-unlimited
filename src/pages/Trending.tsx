@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/Layout';
-import { TrendingUp, ArrowRight, Upload } from 'lucide-react';
+import { TrendingUp, ArrowRight, Upload, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
@@ -40,7 +41,14 @@ const Trending: React.FC = () => {
   const [musicPage, setMusicPage] = useState(1);
   const [podcastPage, setPodcastPage] = useState(1);
   const videosPerPage = 20;
-  const { uploadedVideos, addUploadedVideo, getVideosByCategory, isLoading } = useUploadedVideos();
+  const { uploadedVideos, addUploadedVideo, getVideosByCategory, isLoading, refreshVideos } = useUploadedVideos();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refreshVideos();
+    setIsRefreshing(false);
+  };
   const { toast } = useToast();
   
   const prevVideoCount = useRef(uploadedVideos.length);
@@ -132,9 +140,21 @@ const Trending: React.FC = () => {
             <TrendingUp className="h-8 w-8 text-primary" />
             Trending Now
           </h1>
-          <p className="text-muted-foreground mt-2">
-            Discover what's popular across MiyTube - updated hourly
-          </p>
+          <div className="flex items-center gap-4 mt-2">
+            <p className="text-muted-foreground">
+              Discover what's popular across MiyTube - updated hourly
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            </Button>
+          </div>
 
           <div className="flex border-b mt-6">
             <button
