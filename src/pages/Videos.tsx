@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
-import { Film, Upload, Tv, ListVideo, Clock, Lock, User, Megaphone, Star, Eye, Heart, ThumbsUp, MessageSquare, Reply } from 'lucide-react';
+import { Film, Upload, Tv, ListVideo, Clock, Lock, User, Megaphone, Star, Eye, Heart, ThumbsUp, MessageSquare, Reply, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Link, useParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 
 const Videos = () => {
   const { category } = useParams();
-  const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
+  const { uploadedVideos, getVideosByCategory, refreshVideos } = useUploadedVideos();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refreshVideos();
+    setIsRefreshing(false);
+  };
   
   // Debug: Log all video categories to understand what's stored
   console.log('All uploaded videos:', uploadedVideos.map(v => ({ id: v.id, title: v.title, category: v.category, subcategory: v.subcategory })));
@@ -78,10 +86,22 @@ const Videos = () => {
               ? `Browse our collection of ${category.toLowerCase()} videos` 
               : 'Discover and enjoy a wide variety of videos in our library'}
           </p>
-          <Link to="/upload/video" className="ml-auto flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
-            <Upload size={18} />
-            <span>Upload Video</span>
-          </Link>
+          <div className="ml-auto flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            </Button>
+            <Link to="/upload/video" className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">
+              <Upload size={18} />
+              <span>Upload Video</span>
+            </Link>
+          </div>
         </div>
         
         {!category && (
