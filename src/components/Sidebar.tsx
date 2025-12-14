@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
-// New comprehensive sidebar components
+// Comprehensive sidebar components
 import { AITechnologyLinks } from './sidebar/AITechnologyLinks';
 import { AviationTransportLinks } from './sidebar/AviationTransportLinks';
 import { AnimalsNatureLinks } from './sidebar/AnimalsNatureLinks';
@@ -29,6 +29,13 @@ import { PeopleWorkersLinks } from './sidebar/PeopleWorkersLinks';
 import { DocumentMediaLinks } from './sidebar/DocumentMediaLinks';
 import { EducationInformationLinks } from './sidebar/EducationInformationLinks';
 import { LifestyleRelationshipsLinks } from './sidebar/LifestyleRelationshipsLinks';
+import { FilmAnimationLinks } from './sidebar/FilmAnimationLinks';
+import { SportsExtendedLinks } from './sidebar/SportsExtendedLinks';
+import { HollywoodLinks } from './sidebar/HollywoodLinks';
+import { RealEstateLinks } from './sidebar/RealEstateLinks';
+import { GovernmentPoliticsLinks } from './sidebar/GovernmentPoliticsLinks';
+import { HistoryArtifactsLinks } from './sidebar/HistoryArtifactsLinks';
+import { KidsEducationLinks } from './sidebar/KidsEducationLinks';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -103,9 +110,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               
               {/* Entertainment & Media */}
               <EntertainmentMediaLinks />
+              <FilmAnimationLinks />
+              <HollywoodLinks />
               <ComedyFunnyLinks />
               <MusicFullLinks />
               <GamingHobbiesLinks />
+              <SportsExtendedLinks />
               
               <Separator className="my-3" />
               
@@ -116,13 +126,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               
               {/* Education & Information */}
               <EducationInformationLinks />
+              <KidsEducationLinks />
               <HowToEducationLinks />
               <DocumentMediaLinks />
+              <HistoryArtifactsLinks />
               
               <Separator className="my-3" />
               
               {/* Business & Finance */}
               <BusinessFinanceLinks />
+              <RealEstateLinks />
+              
+              <Separator className="my-3" />
+              
+              {/* Government & Politics */}
+              <GovernmentPoliticsLinks />
+              <CrimeJusticeLinks />
               
               <Separator className="my-3" />
               
@@ -145,14 +164,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               
               <Separator className="my-3" />
               
-              {/* Travel & Places */}
+              {/* Travel & Transport */}
               <TravelPlacesLinks />
               <AviationTransportLinks />
-              
-              <Separator className="my-3" />
-              
-              {/* Crime & Justice */}
-              <CrimeJusticeLinks />
               
               <SidebarFooter />
             </>
