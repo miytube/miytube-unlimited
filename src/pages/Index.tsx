@@ -5,15 +5,24 @@ import { Layout } from '@/components/Layout';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, RefreshCw } from 'lucide-react';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton } from '@/components/skeletons';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
-  const { uploadedVideos, isLoading } = useUploadedVideos();
+  const { uploadedVideos, isLoading, refreshVideos } = useUploadedVideos();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const prevVideoCountRef = useRef(uploadedVideos.length);
   const videosPerPage = 20;
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refreshVideos();
+    setCurrentPage(1);
+    setIsRefreshing(false);
+  };
 
   // Reset to page 1 when new videos are added
   useEffect(() => {
@@ -75,7 +84,19 @@ const Index = () => {
           <p className="text-sm text-muted-foreground mb-2">
             <span className="font-semibold text-primary">MiyTube</span> / Home
           </p>
-          <h1 className="text-3xl font-bold mb-4">Home</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Home</h1>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleRefresh}
+              disabled={isRefreshing || isLoading}
+              className="gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
         </div>
 
         {/* Loading State */}
