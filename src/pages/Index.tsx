@@ -24,8 +24,9 @@ const Index = () => {
   }, [uploadedVideos.length]);
 
   // ALL uploaded videos appear on home page (newest first) - including shorts
+  // Videos are already sorted newest-first in context, no need to reverse
   const allVideos = useMemo(() => {
-    return [...uploadedVideos].reverse().map(video => ({
+    return uploadedVideos.map(video => ({
       id: video.id,
       title: video.title,
       thumbnail: video.thumbnail,
@@ -46,9 +47,11 @@ const Index = () => {
   const displayVideos = allVideos.slice(startIndex, endIndex);
 
   // Trending section - regular videos only (non-shorts), newest first
+  // Videos are already sorted newest-first in context, no need to reverse
   const trendingVideos = useMemo(() => {
     return uploadedVideos
       .filter(video => video.category?.toLowerCase() !== 'shorts')
+      .slice(0, 8)
       .map(video => ({
         id: video.id,
         title: video.title,
@@ -61,9 +64,7 @@ const Index = () => {
         category: video.category,
         subcategory: video.subcategory,
         tags: video.tags,
-      }))
-      .reverse()
-      .slice(0, 8);
+      }));
   }, [uploadedVideos]);
 
   return (
