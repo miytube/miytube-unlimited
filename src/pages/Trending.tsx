@@ -225,17 +225,11 @@ const Trending: React.FC = () => {
 
         {!isLoading && (activeTab === 'all' || activeTab === 'videos') && displayVideos.length > 0 && (
           <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center mb-4">
               <h2 className="text-2xl font-semibold flex items-center gap-2">
                 <TrendingUp className="h-6 w-6 text-primary" />
                 Trending Videos
               </h2>
-              <PageInfo 
-                currentPage={currentPage} 
-                totalPages={totalPages} 
-                totalItems={trendingVideos.length} 
-                itemLabel="videos" 
-              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayVideos.map(video => (
@@ -243,11 +237,19 @@ const Trending: React.FC = () => {
               ))}
             </div>
             
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+            <div className="flex items-center justify-between mt-4">
+              <PageInfo 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                totalItems={trendingVideos.length} 
+                itemLabel="videos" 
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </div>
         )}
 
@@ -267,17 +269,11 @@ const Trending: React.FC = () => {
 
         {!isLoading && (activeTab === 'all' || activeTab === 'music') && musicVideos.length > 0 && (
           <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center mb-4">
               <h2 className="text-2xl font-semibold flex items-center gap-2">
                 <TrendingUp className="h-6 w-6 text-primary" />
                 Trending Music
               </h2>
-              <PageInfo 
-                currentPage={musicPage} 
-                totalPages={musicTotalPages} 
-                totalItems={musicVideos.length} 
-                itemLabel="music" 
-              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayMusic.map(item => (
@@ -291,28 +287,30 @@ const Trending: React.FC = () => {
                 />
               ))}
             </div>
-            <Pagination
-              currentPage={musicPage}
-              totalPages={musicTotalPages}
-              onPageChange={setMusicPage}
-              scrollToTop={false}
-            />
+            <div className="flex items-center justify-between mt-4">
+              <PageInfo 
+                currentPage={musicPage} 
+                totalPages={musicTotalPages} 
+                totalItems={musicVideos.length} 
+                itemLabel="music" 
+              />
+              <Pagination
+                currentPage={musicPage}
+                totalPages={musicTotalPages}
+                onPageChange={setMusicPage}
+                scrollToTop={false}
+              />
+            </div>
           </div>
         )}
 
         {!isLoading && (activeTab === 'all' || activeTab === 'podcasts') && podcastVideos.length > 0 && (
           <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center mb-4">
               <h2 className="text-2xl font-semibold flex items-center gap-2">
                 <TrendingUp className="h-6 w-6 text-primary" />
                 Trending Podcasts
               </h2>
-              <PageInfo 
-                currentPage={podcastPage} 
-                totalPages={podcastTotalPages} 
-                totalItems={podcastVideos.length} 
-                itemLabel="podcasts" 
-              />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayPodcasts.map(item => (
@@ -326,12 +324,20 @@ const Trending: React.FC = () => {
                 />
               ))}
             </div>
-            <Pagination
-              currentPage={podcastPage}
-              totalPages={podcastTotalPages}
-              onPageChange={setPodcastPage}
-              scrollToTop={false}
-            />
+            <div className="flex items-center justify-between mt-4">
+              <PageInfo 
+                currentPage={podcastPage} 
+                totalPages={podcastTotalPages} 
+                totalItems={podcastVideos.length} 
+                itemLabel="podcasts" 
+              />
+              <Pagination
+                currentPage={podcastPage}
+                totalPages={podcastTotalPages}
+                onPageChange={setPodcastPage}
+                scrollToTop={false}
+              />
+            </div>
           </div>
         )}
 
