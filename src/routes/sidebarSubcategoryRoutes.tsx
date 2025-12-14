@@ -158,6 +158,9 @@ export const sidebarSubcategoryRoutes = [
   <Route key="trains-steam" path="/trains/steam" element={<GenericSubcategoryPage />} />,
   <Route key="trains-freight" path="/trains/freight" element={<GenericSubcategoryPage />} />,
   <Route key="trains-passenger" path="/trains/passenger" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-crashes" path="/trains/crashes" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-commercial" path="/trains/commercial" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-riders" path="/trains/riders" element={<GenericSubcategoryPage />} />,
   
   // Swimming subcategories
   <Route key="swim" path="/swim" element={<GenericSubcategoryPage />} />,

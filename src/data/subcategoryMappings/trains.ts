@@ -38,4 +38,22 @@ export const trainsSubcategories: SubcategoryMapping = {
     icon: Train,
     parent: { route: '/trains', name: 'Trains' }
   },
+  'trains-crashes': {
+    title: 'Train Crashes & Accidents',
+    description: 'Train accidents, derailments, and crashes',
+    icon: Train,
+    parent: { route: '/trains', name: 'Trains' }
+  },
+  'trains-commercial': {
+    title: 'Commercial Trains',
+    description: 'Commercial and industrial train operations',
+    icon: Train,
+    parent: { route: '/trains', name: 'Trains' }
+  },
+  'trains-riders': {
+    title: 'Train Riders & Hobos',
+    description: 'Train hopping and train riders',
+    icon: Train,
+    parent: { route: '/trains', name: 'Trains' }
+  },
 };
