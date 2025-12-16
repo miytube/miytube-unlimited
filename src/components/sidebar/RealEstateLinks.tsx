@@ -12,6 +12,8 @@ const realEstateLinks = [
       { id: 'real-estate-residential', label: 'Residential Property', path: '/real-estate/residential' },
       { id: 'real-estate-commercial', label: 'Commercial Property', path: '/real-estate/commercial' },
       { id: 'real-estate-luxury', label: 'Luxury & Million Dollar', path: '/real-estate/luxury' },
+      { id: 'real-estate-mistakes', label: 'Mistakes', path: '/real-estate/mistakes' },
+      { id: 'real-estate-fails', label: 'Fails', path: '/real-estate/fails' },
     ]
   },
 ];
