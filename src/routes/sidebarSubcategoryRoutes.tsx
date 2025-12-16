@@ -191,4 +191,24 @@ export const sidebarSubcategoryRoutes = [
   <Route key="racing-track" path="/racing-track" element={<GenericSubcategoryPage />} />,
   <Route key="racing-track-accidents" path="/racing-track/accidents" element={<GenericSubcategoryPage />} />,
   <Route key="racing-track-crashes" path="/racing-track/crashes" element={<GenericSubcategoryPage />} />,
+  
+  // Crime subcategories
+  <Route key="crime-shootouts" path="/crime/shootouts" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-gangs" path="/crime/gangs" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-fraud" path="/crime/fraud" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-works" path="/crime/works" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-enterprises" path="/crime/enterprises" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-gangsters" path="/crime/gangsters" element={<GenericSubcategoryPage />} />,
+  
+  // People subcategories
+  <Route key="people-kindness" path="/people/kindness" element={<GenericSubcategoryPage />} />,
+  <Route key="people-giving" path="/people/giving" element={<GenericSubcategoryPage />} />,
+  <Route key="people-help" path="/people/help" element={<GenericSubcategoryPage />} />,
+  
+  // Real Estate subcategories
+  <Route key="real-estate-residential" path="/real-estate/residential" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-commercial" path="/real-estate/commercial" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-luxury" path="/real-estate/luxury" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-mistakes" path="/real-estate/mistakes" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-fails" path="/real-estate/fails" element={<GenericSubcategoryPage />} />,
 ];
