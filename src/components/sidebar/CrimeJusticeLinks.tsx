@@ -23,10 +23,11 @@ export const CrimeJusticeLinks: React.FC = () => {
       label: 'Crime', 
       path: '/crime',
       subItems: [
+        { id: 'crime-shootouts', label: 'Shoot-outs', path: '/crime/shootouts' },
+        { id: 'crime-gangs', label: 'Gangs', path: '/crime/gangs' },
         { id: 'crime-fraud', label: 'Fraud & Scammers', path: '/crime/fraud' },
         { id: 'crime-works', label: 'How Crime Works', path: '/crime/works' },
         { id: 'crime-enterprises', label: 'Criminal Enterprises', path: '/crime/enterprises' },
-        { id: 'crime-gangs', label: 'Criminal Gangs', path: '/crime/gangs' },
         { id: 'crime-gangsters', label: 'Gangsters', path: '/crime/gangsters' }
       ]
     },

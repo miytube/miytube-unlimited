@@ -6,6 +6,17 @@ import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 export const PeopleSocietyLinks: React.FC = () => {
   const peopleAndSocietyLinks = [
     { 
+      id: 'people', 
+      icon: HeartHandshake, 
+      label: 'People', 
+      path: '/people',
+      subItems: [
+        { id: 'people-kindness', label: 'Kindness', path: '/people/kindness' },
+        { id: 'people-giving', label: 'Giving', path: '/people/giving' },
+        { id: 'people-help', label: 'Help', path: '/people/help' }
+      ]
+    },
+    { 
       id: 'people-blogs', 
       icon: Users, 
       label: 'People & Blogs', 

@@ -499,8 +499,14 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: AlertTriangle,
     parent: { route: '/crime', name: 'Crime' }
   },
+  '/crime/shootouts': {
+    title: 'Shoot-outs',
+    description: 'Crime shootouts and gun violence',
+    icon: AlertTriangle,
+    parent: { route: '/crime', name: 'Crime' }
+  },
   '/crime/gangs': {
-    title: 'Criminal Gangs',
+    title: 'Gangs',
     description: 'Gang activity and crime',
     icon: AlertTriangle,
     parent: { route: '/crime', name: 'Crime' }
@@ -510,6 +516,36 @@ export const newCategorySubcategories: SubcategoryMapping = {
     description: 'Famous gangsters and criminals',
     icon: AlertTriangle,
     parent: { route: '/crime', name: 'Crime' }
+  },
+  '/people/kindness': {
+    title: 'Kindness',
+    description: 'Acts of kindness and compassion',
+    icon: HeartHandshake,
+    parent: { route: '/people', name: 'People' }
+  },
+  '/people/giving': {
+    title: 'Giving',
+    description: 'Generous giving and charity',
+    icon: HeartHandshake,
+    parent: { route: '/people', name: 'People' }
+  },
+  '/people/help': {
+    title: 'Help',
+    description: 'People helping others',
+    icon: HeartHandshake,
+    parent: { route: '/people', name: 'People' }
+  },
+  '/real-estate/mistakes': {
+    title: 'Real Estate Mistakes',
+    description: 'Real estate mistakes and lessons',
+    icon: Building2,
+    parent: { route: '/real-estate', name: 'Real Estate' }
+  },
+  '/real-estate/fails': {
+    title: 'Real Estate Fails',
+    description: 'Real estate fails and blunders',
+    icon: Building2,
+    parent: { route: '/real-estate', name: 'Real Estate' }
   },
   '/police/chases': {
     title: 'Police Chases',
