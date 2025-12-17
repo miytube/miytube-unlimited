@@ -25,6 +25,7 @@ import Educational from "@/pages/Educational";
 import Channel from "@/pages/Channel";
 import Auth from "@/pages/Auth";
 import Admin from "@/pages/Admin";
+import Monetization from "@/pages/Monetization";
 
 // New pages to fix 404s
 import HowToStyle from "@/pages/HowToStyle";
@@ -87,6 +88,7 @@ export const mainRoutes = [
   <Route key="channel-id" path="/channel/:id" element={<Channel />} />,
   <Route key="auth" path="/auth" element={<Auth />} />,
   <Route key="admin" path="/admin" element={<Admin />} />,
+  <Route key="monetization" path="/monetization" element={<Monetization />} />,
   
   // New routes to fix 404s
   <Route key="how-to-style" path="/how-to-style" element={<HowToStyle />} />,
