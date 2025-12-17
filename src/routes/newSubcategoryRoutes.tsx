@@ -101,6 +101,8 @@ export const newSubcategoryRoutes = [
   <Route key="real-estate-residential" path="/real-estate/residential" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-commercial" path="/real-estate/commercial" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-luxury" path="/real-estate/luxury" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-mistakes" path="/real-estate/mistakes" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-fails" path="/real-estate/fails" element={<GenericSubcategoryPage />} />,
 
   // Engineering Disasters routes
   <Route key="engineering-disasters-civil" path="/engineering-disasters/civil" element={<GenericSubcategoryPage />} />,
