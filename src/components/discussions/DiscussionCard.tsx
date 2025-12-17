@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { MessageCircle, ThumbsUp } from 'lucide-react';
+import { SocialShareButtons } from './SocialShareButtons';
 
 export interface Discussion {
   id: number;
@@ -20,9 +20,16 @@ interface DiscussionCardProps {
 export const DiscussionCard: React.FC<DiscussionCardProps> = ({ discussion }) => {
   return (
     <div className="bg-card p-6 rounded-lg shadow-md">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-xs px-2 py-1 bg-secondary rounded-full">{discussion.category}</span>
-        <span className="text-xs text-muted-foreground">{discussion.timestamp}</span>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <span className="text-xs px-2 py-1 bg-secondary rounded-full">{discussion.category}</span>
+          <span className="text-xs text-muted-foreground">{discussion.timestamp}</span>
+        </div>
+        <SocialShareButtons 
+          title={discussion.title} 
+          content={discussion.content}
+          url={`${window.location.origin}/talk-at-cha?discussion=${discussion.id}`}
+        />
       </div>
       <h3 className="text-lg font-medium mb-2">{discussion.title}</h3>
       <p className="text-muted-foreground mb-4">{discussion.content}</p>
