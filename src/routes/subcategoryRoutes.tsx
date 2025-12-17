@@ -108,6 +108,13 @@ export const subcategoryRoutes = [
   <Route key="courts-police-gangs" path="/courts-police/gangs" element={<GenericSubcategoryPage />} />,
   <Route key="courts-police-crime" path="/courts-police/crime" element={<GenericSubcategoryPage />} />,
   <Route key="courts-police-enterprises" path="/courts-police/enterprises" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-shootouts" path="/crime/shootouts" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-gangs" path="/crime/gangs" element={<GenericSubcategoryPage />} />,
+  
+  /* People Routes */
+  <Route key="people-kindness" path="/people/kindness" element={<GenericSubcategoryPage />} />,
+  <Route key="people-giving" path="/people/giving" element={<GenericSubcategoryPage />} />,
+  <Route key="people-help" path="/people/help" element={<GenericSubcategoryPage />} />,
 
   /* Documents & Media Routes */
   <Route key="documents-word" path="/documents/word" element={<GenericSubcategoryPage />} />,
