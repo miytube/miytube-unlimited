@@ -111,14 +111,30 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
 
 export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, links }) => {
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
   
   return (
     <div className="border-t pt-4 mt-4">
-      <h3 className="text-xs font-semibold text-muted-foreground mb-2 px-3">{title}</h3>
-      <div className="space-y-1">
-        {links.map(link => (
-          <CollapsibleNavLink key={link.id} item={link} location={location} />
-        ))}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between w-full px-3 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <span>{title}</span>
+        <ChevronDown 
+          size={14} 
+          className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+      <div 
+        className={`overflow-hidden transition-all duration-300 ease-out ${
+          isOpen ? 'max-h-[2000px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="space-y-1">
+          {links.map(link => (
+            <CollapsibleNavLink key={link.id} item={link} location={location} />
+          ))}
+        </div>
       </div>
     </div>
   );
