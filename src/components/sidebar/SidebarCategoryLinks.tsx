@@ -111,7 +111,7 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
 
 export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, links }) => {
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   
   return (
     <div className="border-t pt-4 mt-4">
