@@ -10,7 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, Users, Video, BarChart3, Settings, Trash2 } from 'lucide-react';
+import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper } from 'lucide-react';
+import { BreakingNewsManager } from '@/components/admin/BreakingNewsManager';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -234,6 +235,10 @@ const Admin = () => {
               <Settings className="h-4 w-4" />
               Settings
             </TabsTrigger>
+            <TabsTrigger value="news" className="flex items-center gap-2">
+              <Newspaper className="h-4 w-4" />
+              Breaking News
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="users" className="mt-6">
@@ -313,6 +318,10 @@ const Admin = () => {
                 <p className="text-muted-foreground">Platform settings coming soon...</p>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="news" className="mt-6">
+            <BreakingNewsManager />
           </TabsContent>
         </Tabs>
       </div>
