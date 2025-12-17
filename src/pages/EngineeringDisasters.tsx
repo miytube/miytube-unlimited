@@ -1,12 +1,14 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
-import { Wrench, Building, Zap, FlaskConical, ChevronRight, Upload } from 'lucide-react';
+import { Wrench, Building, Zap, FlaskConical, ChevronRight, Upload, Play, Eye, Clock } from 'lucide-react';
 import { VideoCard } from '@/components/VideoCard';
 import { Pagination } from '@/components/Pagination';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
+import { engineeringDisastersCaseStudies } from '@/data/engineeringDisastersCaseStudies';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const EngineeringDisasters = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -24,6 +26,12 @@ const EngineeringDisasters = () => {
   const totalPages = Math.ceil(filteredVideos.length / videosPerPage);
   const startIndex = (currentPage - 1) * videosPerPage;
   const displayedVideos = filteredVideos.slice(startIndex, startIndex + videosPerPage);
+
+  const formatViews = (views: number) => {
+    if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
+    if (views >= 1000) return `${(views / 1000).toFixed(0)}K`;
+    return views.toString();
+  };
 
   return (
     <Layout>
@@ -66,9 +74,11 @@ const EngineeringDisasters = () => {
         ))}
       </div>
 
-      {displayedVideos.length > 0 ? (
+      {/* User Uploaded Videos */}
+      {displayedVideos.length > 0 && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <h2 className="text-2xl font-bold mb-4">Uploaded Videos</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
             {displayedVideos.map((video) => (
               <VideoCard
                 key={video.id}
@@ -83,20 +93,48 @@ const EngineeringDisasters = () => {
             ))}
           </div>
           {totalPages > 1 && (
-            <div className="mt-6">
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           )}
         </>
-      ) : (
-        <div className="text-center py-12 text-muted-foreground">
-          <p>No engineering disaster videos yet. Be the first to upload!</p>
-        </div>
       )}
+
+      {/* Famous Case Studies */}
+      <h2 className="text-2xl font-bold mb-4">Famous Case Studies</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {engineeringDisastersCaseStudies.map((video) => (
+          <Card key={video.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
+            <div className="relative aspect-video">
+              <img
+                src={video.thumbnailUrl}
+                alt={video.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <Play className="h-12 w-12 text-white" />
+              </div>
+              <Badge className="absolute bottom-2 right-2 bg-black/80 text-white">
+                <Clock className="h-3 w-3 mr-1" />
+                {video.duration}
+              </Badge>
+            </div>
+            <CardContent className="p-3">
+              <h3 className="font-medium line-clamp-2 mb-1">{video.title}</h3>
+              <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{video.description}</p>
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <Badge variant="outline" className="capitalize">{video.subcategory}</Badge>
+                <span className="flex items-center gap-1">
+                  <Eye className="h-3 w-3" />
+                  {formatViews(video.views)}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </Layout>
   );
 };
