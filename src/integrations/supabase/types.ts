@@ -184,6 +184,54 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_applications: {
+        Row: {
+          admin_notes: string | null
+          channel_name: string
+          content_category: string
+          created_at: string
+          id: string
+          reason: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          subscriber_count: number
+          updated_at: string
+          user_id: string
+          watch_hours: number
+        }
+        Insert: {
+          admin_notes?: string | null
+          channel_name: string
+          content_category: string
+          created_at?: string
+          id?: string
+          reason: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          subscriber_count?: number
+          updated_at?: string
+          user_id: string
+          watch_hours?: number
+        }
+        Update: {
+          admin_notes?: string | null
+          channel_name?: string
+          content_category?: string
+          created_at?: string
+          id?: string
+          reason?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          subscriber_count?: number
+          updated_at?: string
+          user_id?: string
+          watch_hours?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

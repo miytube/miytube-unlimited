@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
+import PartnerApplicationForm from '@/components/partner/PartnerApplicationForm';
 
 const Monetization = () => {
   return (
@@ -9,29 +9,8 @@ const Monetization = () => {
         <h1 className="text-3xl font-bold mb-6">MiyTube Monetization</h1>
         
         <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-card p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Partner Program</h2>
-            <p className="text-muted-foreground mb-4">
-              Join the MiyTube Partner Program and earn revenue from your content through various monetization features.
-            </p>
-            <ul className="space-y-2 mb-4">
-              <li className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>Ad revenue sharing</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>Channel memberships</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>Super Chat & Super Stickers</span>
-              </li>
-            </ul>
-            <button className="px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
-              Apply Now
-            </button>
-          </div>
+          {/* Partner Application Form */}
+          <PartnerApplicationForm />
           
           <div className="bg-card p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">Eligibility Requirements</h2>
