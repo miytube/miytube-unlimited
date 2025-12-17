@@ -15,7 +15,6 @@ export const EntertainmentMediaLinks: React.FC = () => {
         { id: 'entertainment-actors', label: 'Actors & Actresses', path: '/entertainment/actors' },
         { id: 'entertainment-late-night', label: 'Late Night Shows', path: '/entertainment/late-night' },
         { id: 'entertainment-podcast', label: 'Film & Entertainment Podcasts', path: '/entertainment/podcast' },
-        { id: 'entertainment-hollywood', label: 'Hollywood & Celebrities', path: '/entertainment/hollywood' },
         { id: 'entertainment-auditions', label: 'Auditions & Contests', path: '/entertainment/auditions' }
       ]
     },
