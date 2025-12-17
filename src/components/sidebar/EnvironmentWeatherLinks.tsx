@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Cloud, Waves, Ship, Anchor, Zap, Droplets } from 'lucide-react';
+import { Cloud, Waves, Ship, Anchor, Zap, Droplets, Wrench } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EnvironmentWeatherLinks: React.FC = () => {
@@ -28,6 +28,18 @@ export const EnvironmentWeatherLinks: React.FC = () => {
         { id: 'fires', label: 'Fires', path: '/disasters/fires' },
         { id: 'landslides', label: 'Landslides', path: '/disasters/landslides' },
         { id: 'tsunami', label: 'Tsunami', path: '/disasters/tsunami' }
+      ]
+    },
+    { 
+      id: 'engineering-disasters', 
+      icon: Wrench, 
+      label: 'Engineering Disasters', 
+      path: '/engineering-disasters',
+      subItems: [
+        { id: 'engineering-civil', label: 'Civil', path: '/engineering-disasters/civil' },
+        { id: 'engineering-mechanical', label: 'Mechanical', path: '/engineering-disasters/mechanical' },
+        { id: 'engineering-electrical', label: 'Electrical', path: '/engineering-disasters/electrical' },
+        { id: 'engineering-chemical', label: 'Chemical', path: '/engineering-disasters/chemical' }
       ]
     },
     { 
