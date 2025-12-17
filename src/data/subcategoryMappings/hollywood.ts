@@ -1,4 +1,4 @@
-import { Film, User, Newspaper, Mic } from 'lucide-react';
+import { Film, User, Newspaper, Mic, Star } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const hollywoodSubcategories: SubcategoryMapping = {
@@ -24,6 +24,24 @@ export const hollywoodSubcategories: SubcategoryMapping = {
     title: 'Actors & Actress: Interviews & Work',
     description: 'Interviews and work highlights from Hollywood stars',
     icon: Mic,
+    parent: {
+      route: '/hollywood',
+      name: 'Hollywood'
+    }
+  },
+  'hollywood-celebrities-actors': {
+    title: 'Celebrity Actors',
+    description: 'Famous celebrity actors and their careers',
+    icon: Star,
+    parent: {
+      route: '/hollywood',
+      name: 'Hollywood'
+    }
+  },
+  'hollywood-celebrities-news': {
+    title: 'Celebrity News',
+    description: 'Latest news about celebrities and entertainment',
+    icon: Newspaper,
     parent: {
       route: '/hollywood',
       name: 'Hollywood'

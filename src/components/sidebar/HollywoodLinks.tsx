@@ -17,6 +17,8 @@ export const HollywoodLinks: React.FC = () => {
         { id: 'hollywood-bios', label: 'Bios & History', path: '/hollywood/bios' },
         { id: 'hollywood-news', label: 'News & Gossip', path: '/hollywood/news' },
         { id: 'hollywood-interviews', label: 'Interviews & Work', path: '/hollywood/interviews' },
+        { id: 'hollywood-celebrities-actors', label: 'Celebrity Actors', path: '/hollywood/celebrities/actors' },
+        { id: 'hollywood-celebrities-news', label: 'Celebrity News', path: '/hollywood/celebrities/news' },
       ]
     },
   ];

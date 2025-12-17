@@ -755,18 +755,6 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: BadgeCheck,
     parent: { route: '/ideology', name: 'Ideology & Lifestyles' }
   },
-  '/celebrities/actors': {
-    title: 'Actors & Actresses',
-    description: 'Celebrity actors and actresses',
-    icon: Users,
-    parent: { route: '/celebrities', name: 'Celebrities' }
-  },
-  '/celebrities/news': {
-    title: 'Celebrity News',
-    description: 'Latest celebrity news',
-    icon: Users,
-    parent: { route: '/celebrities', name: 'Celebrities' }
-  },
 
   // ============ FOOD & DRINKS ============
   '/foods/tuna': {
