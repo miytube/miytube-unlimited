@@ -13,6 +13,7 @@ import Shorts from "@/pages/Shorts";
 import Sports from "@/pages/Sports";
 import Weather from "@/pages/Weather";
 import Disasters from "@/pages/Disasters";
+import EngineeringDisasters from "@/pages/EngineeringDisasters";
 import LatestVideos from "@/pages/videos/LatestVideos";
 import PrivateVideos from "@/pages/videos/PrivateVideos";
 import PersonalVideos from "@/pages/videos/PersonalVideos";
@@ -59,6 +60,7 @@ export const categoryRoutes = [
   <Route key="sports" path="/sports" element={<Sports />} />,
   <Route key="weather" path="/weather" element={<Weather />} />,
   <Route key="disasters" path="/disasters" element={<Disasters />} />,
+  <Route key="engineering-disasters" path="/engineering-disasters" element={<EngineeringDisasters />} />,
   <Route key="courts" path="/courts" element={<CategoryPage category="Courts" icon="Gavel" />} />,
   <Route key="courts-police" path="/courts-police" element={<CategoryPage category="Courts & Police" icon="Gavel" />} />,
   <Route key="science-tech" path="/science-tech" element={<CategoryPage category="Science & Technology" icon="Microscope" />} />,
