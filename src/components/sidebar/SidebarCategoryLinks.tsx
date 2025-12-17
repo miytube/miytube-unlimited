@@ -111,12 +111,22 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
 
 export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, links }) => {
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(true);
+  const storageKey = `sidebar-category-${title.toLowerCase().replace(/\s+/g, '-')}`;
+  const [isOpen, setIsOpen] = useState(() => {
+    const saved = localStorage.getItem(storageKey);
+    return saved !== null ? saved === 'true' : true;
+  });
+  
+  const handleToggle = () => {
+    const newState = !isOpen;
+    setIsOpen(newState);
+    localStorage.setItem(storageKey, String(newState));
+  };
   
   return (
     <div className="border-t pt-4 mt-4">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className="flex items-center justify-between w-full px-3 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
       >
         <span>{title}</span>
