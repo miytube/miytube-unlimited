@@ -39,6 +39,23 @@ const VideoUpload = () => {
       { id: 'math', name: 'Mathematics' },
       { id: 'history', name: 'History' },
     ] },
+    { id: 'military', name: 'Military', icon: <Film size={20} />, description: 'Military content, documentaries, and armed forces videos.', subcategories: [
+      { id: 'army', name: 'Army' },
+      { id: 'coast-guard', name: 'Coast Guard' },
+      { id: 'conduct', name: 'Conduct & Policy' },
+      { id: 'marines', name: 'Marines' },
+      { id: 'navy', name: 'Navy' },
+      { id: 'pilots', name: 'Pilots' },
+      { id: 'reserves', name: 'Reserves' },
+      { id: 'weapons', name: 'Weapons & Guns' },
+      { id: 'aircrafts', name: 'Military Aircrafts' },
+      { id: 'documentary', name: 'Military Documentary' },
+      { id: 'ships', name: 'Military Ships' },
+      { id: 'submarines', name: 'Submarines' },
+      { id: 'war', name: 'Military War' },
+      { id: 'drones', name: 'Weapons Drones' },
+      { id: 'personnel', name: 'Personnel' },
+    ] },
   ]);
   
   const handleAddCategory = () => {
