@@ -93,6 +93,24 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  'film-gangsters': {
+    title: 'Gangster Films',
+    description: 'Gangster films with crime and drama',
+    icon: Skull,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
+  '/film/gangsters': {
+    title: 'Gangster Films',
+    description: 'Gangster films with crime and drama',
+    icon: Skull,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
   'film-mystery-fiction': {
     title: 'Film (Mystery, Fiction)',
     description: 'Mystery and fiction films',
