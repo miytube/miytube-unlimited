@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Upload, RefreshCw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { uploadVideoToCloud } from '@/utils/cloudVideoUpload';
 
 interface MusicVideoToUpdate {
   id: string;
@@ -30,17 +31,31 @@ export const UpdateMusicVideoDialog: React.FC<UpdateMusicVideoDialogProps> = ({ 
     }
   };
 
-  const fileToDataUrl = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+  const uploadThumbnailToCloud = async (thumbnailBlob: Blob): Promise<string> => {
+    const filePath = `thumbnails/${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
+    
+    const { data, error } = await supabase.storage
+      .from('thumbnails')
+      .upload(filePath, thumbnailBlob, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'image/jpeg',
+      });
+
+    if (error) {
+      console.error('Thumbnail upload error:', error);
+      return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('thumbnails')
+      .getPublicUrl(filePath);
+
+    return urlData.publicUrl;
   };
 
   const generateThumbnail = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const videoEl = document.createElement('video');
       videoEl.preload = 'metadata';
       videoEl.muted = true;
@@ -50,24 +65,31 @@ export const UpdateMusicVideoDialog: React.FC<UpdateMusicVideoDialogProps> = ({ 
         videoEl.currentTime = Math.min(1, videoEl.duration / 4);
       };
 
-      videoEl.onseeked = () => {
+      videoEl.onseeked = async () => {
         const canvas = document.createElement('canvas');
-        canvas.width = videoEl.videoWidth;
-        canvas.height = videoEl.videoHeight;
+        canvas.width = videoEl.videoWidth || 640;
+        canvas.height = videoEl.videoHeight || 360;
         const ctx = canvas.getContext('2d');
         if (ctx) {
           ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
           URL.revokeObjectURL(videoEl.src);
-          resolve(dataUrl);
+          
+          canvas.toBlob(async (blob) => {
+            if (blob) {
+              const thumbnailUrl = await uploadThumbnailToCloud(blob);
+              resolve(thumbnailUrl);
+            } else {
+              resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+            }
+          }, 'image/jpeg', 0.8);
         } else {
-          reject(new Error('Could not get canvas context'));
+          resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
         }
       };
 
       videoEl.onerror = () => {
         URL.revokeObjectURL(videoEl.src);
-        reject(new Error('Video load error'));
+        resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
       };
 
       videoEl.src = URL.createObjectURL(file);
@@ -79,21 +101,21 @@ export const UpdateMusicVideoDialog: React.FC<UpdateMusicVideoDialogProps> = ({ 
 
     setIsUploading(true);
     try {
-      const videoDataUrl = await fileToDataUrl(selectedFile);
+      // Upload video to cloud storage
+      console.log('Uploading video to cloud storage...');
+      const videoUrl = await uploadVideoToCloud(selectedFile);
+      console.log('Video uploaded:', videoUrl);
       
+      // Generate and upload thumbnail
       let thumbnailUrl: string | null = null;
       if (selectedFile.type.startsWith('video/')) {
-        try {
-          thumbnailUrl = await generateThumbnail(selectedFile);
-        } catch (err) {
-          console.error('Thumbnail generation failed:', err);
-        }
+        thumbnailUrl = await generateThumbnail(selectedFile);
       }
 
       const { error } = await supabase
         .from('music_videos')
         .update({
-          video_url: videoDataUrl,
+          video_url: videoUrl,
           thumbnail_url: thumbnailUrl || undefined,
         })
         .eq('id', video.id);

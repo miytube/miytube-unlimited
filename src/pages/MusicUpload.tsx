@@ -9,6 +9,7 @@ import { contentTypes } from '@/data/contentTypes';
 import { useUploadHandler } from '@/hooks/useUploadHandler';
 import { MusicUploadRequirements } from '@/components/music/UploadRequirements';
 import { supabase } from '@/integrations/supabase/client';
+import { uploadVideoToCloud } from '@/utils/cloudVideoUpload';
 
 const MusicUpload = () => {
   const { toast } = useToast();
@@ -17,8 +18,72 @@ const MusicUpload = () => {
   const { handleUpload } = useUploadHandler();
   const musicContentType = contentTypes.music;
   
-  // Get genre from URL params to pre-populate subcategory
   const genreFromUrl = searchParams.get('genre') || '';
+
+  const uploadThumbnailToCloud = async (thumbnailBlob: Blob): Promise<string> => {
+    const filePath = `thumbnails/${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
+    
+    const { data, error } = await supabase.storage
+      .from('thumbnails')
+      .upload(filePath, thumbnailBlob, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'image/jpeg',
+      });
+
+    if (error) {
+      console.error('Thumbnail upload error:', error);
+      return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('thumbnails')
+      .getPublicUrl(filePath);
+
+    return urlData.publicUrl;
+  };
+
+  const generateThumbnail = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.muted = true;
+      video.playsInline = true;
+
+      video.onloadeddata = () => {
+        video.currentTime = Math.min(1, video.duration / 4);
+      };
+
+      video.onseeked = async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 360;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(video.src);
+          
+          canvas.toBlob(async (blob) => {
+            if (blob) {
+              const thumbnailUrl = await uploadThumbnailToCloud(blob);
+              resolve(thumbnailUrl);
+            } else {
+              resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+            }
+          }, 'image/jpeg', 0.8);
+        } else {
+          resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+        }
+      };
+
+      video.onerror = () => {
+        URL.revokeObjectURL(video.src);
+        resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+      };
+
+      video.src = URL.createObjectURL(file);
+    });
+  };
   
   const onMusicUpload = async (
     files: File[], 
@@ -28,7 +93,6 @@ const MusicUpload = () => {
     subcategory?: string, 
     tags?: string[]
   ) => {
-    // First, use the existing upload handler for IndexedDB storage
     handleUpload(
       "Music", 
       files, 
@@ -41,25 +105,30 @@ const MusicUpload = () => {
       tags
     );
 
-    // Generate a thumbnail and video data URL from video if possible
     let thumbnailUrl: string | null = null;
-    let videoDataUrl: string | null = null;
+    let videoUrl: string | null = null;
     const file = files[0];
     
     if (file) {
-      // Convert file to data URL for playback
-      videoDataUrl = await fileToDataUrl(file);
-      
-      if (file.type.startsWith('video/')) {
-        try {
+      try {
+        console.log('Uploading music video to cloud storage...');
+        videoUrl = await uploadVideoToCloud(file);
+        console.log('Music video uploaded:', videoUrl);
+        
+        if (file.type.startsWith('video/')) {
           thumbnailUrl = await generateThumbnail(file);
-        } catch (err) {
-          console.error('Thumbnail generation failed:', err);
         }
+      } catch (err) {
+        console.error('Upload failed:', err);
+        toast({
+          title: "Upload Error",
+          description: "Failed to upload music file to cloud storage.",
+          variant: "destructive",
+        });
+        return;
       }
     }
 
-    // Save to database for analytics tracking
     try {
       const { data: insertedVideo, error: insertError } = await supabase
         .from('music_videos')
@@ -70,8 +139,7 @@ const MusicUpload = () => {
           subcategory,
           tags,
           thumbnail_url: thumbnailUrl,
-          video_url: videoDataUrl,
-          // Traffic source - mark as organic upload
+          video_url: videoUrl,
           traffic_organic: 1,
         })
         .select()
@@ -80,7 +148,6 @@ const MusicUpload = () => {
       if (insertError) {
         console.error('Error saving to database:', insertError);
       } else if (insertedVideo) {
-        // Trigger AI analysis
         console.log('Triggering AI analysis for:', insertedVideo.id);
         
         const { error: analysisError } = await supabase.functions.invoke('analyze-music-video', {
@@ -104,52 +171,6 @@ const MusicUpload = () => {
     } catch (err) {
       console.error('Database error:', err);
     }
-  };
-
-  // Convert file to data URL
-  const fileToDataUrl = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
-  // Generate thumbnail from video file
-  const generateThumbnail = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
-      video.muted = true;
-      video.playsInline = true;
-
-      video.onloadeddata = () => {
-        video.currentTime = Math.min(1, video.duration / 4);
-      };
-
-      video.onseeked = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          URL.revokeObjectURL(video.src);
-          resolve(dataUrl);
-        } else {
-          reject(new Error('Could not get canvas context'));
-        }
-      };
-
-      video.onerror = () => {
-        URL.revokeObjectURL(video.src);
-        reject(new Error('Video load error'));
-      };
-
-      video.src = URL.createObjectURL(file);
-    });
   };
 
   return (
