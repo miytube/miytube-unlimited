@@ -72,6 +72,19 @@ export const CrimeJusticeLinks: React.FC = () => {
         { id: 'drugs-documentary', label: 'Drug Documentaries', path: '/drugs/documentary' }
       ]
     },
+    { 
+      id: 'military', 
+      icon: Shield, 
+      label: 'Military', 
+      path: '/military',
+      subItems: [
+        { id: 'military-army', label: 'Army', path: '/military/army' },
+        { id: 'military-airforce', label: 'Air Force', path: '/military/airforce' },
+        { id: 'military-navy', label: 'Navy', path: '/military/navy' },
+        { id: 'military-coast-guard', label: 'Coast Guard', path: '/military/coast-guard' },
+        { id: 'military-marines', label: 'Marines', path: '/military/marines' }
+      ]
+    },
   ];
 
   return <SidebarCategoryLinks title="CRIME & JUSTICE" links={crimeJusticeLinks} />;
