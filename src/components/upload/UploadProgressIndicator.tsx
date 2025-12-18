@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { useUploadProgress } from '@/context/UploadProgressContext';
-import { Upload, Clock, HardDrive } from 'lucide-react';
+import { Upload, Clock, HardDrive, CheckCircle2, XCircle, Cloud } from 'lucide-react';
 
 export const UploadProgressIndicator: React.FC = () => {
   const { uploadProgress } = useUploadProgress();
@@ -9,7 +9,14 @@ export const UploadProgressIndicator: React.FC = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
 
   useEffect(() => {
-    if (!uploadProgress?.isUploading) {
+    if (!uploadProgress || uploadProgress.status === 'complete' || uploadProgress.status === 'failed') {
+      if (uploadProgress?.status === 'complete') {
+        setEstimatedProgress(100);
+      }
+      return;
+    }
+
+    if (!uploadProgress.isUploading) {
       setEstimatedProgress(0);
       setElapsedTime(0);
       return;
@@ -30,7 +37,7 @@ export const UploadProgressIndicator: React.FC = () => {
     return () => clearInterval(interval);
   }, [uploadProgress]);
 
-  if (!uploadProgress?.isUploading) {
+  if (!uploadProgress) {
     return null;
   }
 
@@ -43,11 +50,48 @@ export const UploadProgressIndicator: React.FC = () => {
 
   const remainingTime = Math.max(0, (uploadProgress.estimatedMinutes * 60) - elapsedTime);
 
+  const getStatusIcon = () => {
+    switch (uploadProgress.status) {
+      case 'complete':
+        return <CheckCircle2 className="h-5 w-5 text-green-500" />;
+      case 'failed':
+        return <XCircle className="h-5 w-5 text-destructive" />;
+      default:
+        return <Upload className="h-5 w-5 text-primary animate-pulse" />;
+    }
+  };
+
+  const getStatusText = () => {
+    switch (uploadProgress.status) {
+      case 'processing':
+        return 'Processing Video...';
+      case 'uploading':
+        return 'Uploading to Cloud...';
+      case 'complete':
+        return 'Cloud Backup Complete!';
+      case 'failed':
+        return 'Upload Failed';
+      default:
+        return 'Preparing...';
+    }
+  };
+
+  const getStatusColor = () => {
+    switch (uploadProgress.status) {
+      case 'complete':
+        return 'border-green-500/50 bg-green-500/5';
+      case 'failed':
+        return 'border-destructive/50 bg-destructive/5';
+      default:
+        return 'border-border';
+    }
+  };
+
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-80 bg-card border border-border rounded-lg shadow-lg p-4">
+    <div className={`fixed bottom-4 right-4 z-50 w-80 bg-card border rounded-lg shadow-lg p-4 ${getStatusColor()}`}>
       <div className="flex items-center gap-2 mb-3">
-        <Upload className="h-5 w-5 text-primary animate-pulse" />
-        <span className="font-semibold text-foreground">Uploading Large Video</span>
+        {getStatusIcon()}
+        <span className="font-semibold text-foreground">{getStatusText()}</span>
       </div>
       
       <div className="space-y-3">
@@ -55,26 +99,46 @@ export const UploadProgressIndicator: React.FC = () => {
           {uploadProgress.fileName}
         </div>
         
-        <Progress value={estimatedProgress} className="h-2" />
+        <Progress 
+          value={uploadProgress.status === 'complete' ? 100 : estimatedProgress} 
+          className={`h-2 ${uploadProgress.status === 'complete' ? '[&>div]:bg-green-500' : ''}`} 
+        />
         
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <HardDrive className="h-3 w-3" />
-            <span>{uploadProgress.fileSizeMB} MB</span>
+        {uploadProgress.status === 'uploading' && (
+          <>
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <div className="flex items-center gap-1">
+                <HardDrive className="h-3 w-3" />
+                <span>{uploadProgress.fileSizeMB} MB</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                <span>~{formatTime(remainingTime)} remaining</span>
+              </div>
+            </div>
+            
+            <div className="text-xs text-muted-foreground">
+              Elapsed: {formatTime(elapsedTime)} | Est. total: ~{uploadProgress.estimatedMinutes} min
+            </div>
+            
+            <p className="text-xs text-amber-500 font-medium">
+              ⚠️ Please keep this page open until upload completes.
+            </p>
+          </>
+        )}
+
+        {uploadProgress.status === 'complete' && (
+          <div className="flex items-center gap-2 text-sm text-green-600">
+            <Cloud className="h-4 w-4" />
+            <span>Video saved to cloud storage</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            <span>~{formatTime(remainingTime)} remaining</span>
-          </div>
-        </div>
-        
-        <div className="text-xs text-muted-foreground">
-          Elapsed: {formatTime(elapsedTime)} | Est. total: ~{uploadProgress.estimatedMinutes} min
-        </div>
-        
-        <p className="text-xs text-amber-500">
-          Please keep this page open until upload completes.
-        </p>
+        )}
+
+        {uploadProgress.status === 'failed' && uploadProgress.errorMessage && (
+          <p className="text-xs text-destructive">
+            {uploadProgress.errorMessage}
+          </p>
+        )}
       </div>
     </div>
   );

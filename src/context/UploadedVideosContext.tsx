@@ -628,11 +628,18 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       }
 
       // ALSO upload to cloud storage so videos remain available across refresh/devices
+      const fileSizeMB = Math.round(file.size / (1024 * 1024));
+      const estimatedMinutes = Math.max(1, Math.ceil(fileSizeMB / 10));
+      
+      startUpload(file.name, fileSizeMB, estimatedMinutes);
+      
       try {
         cloudUrl = await uploadVideoToCloud(file);
         console.log("Uploaded to cloud storage (backup):", cloudUrl);
+        completeUpload();
       } catch (error) {
         console.warn("Cloud backup upload failed (video will only be available locally):", error);
+        failUpload(error instanceof Error ? error.message : 'Cloud backup failed');
       }
     }
     
