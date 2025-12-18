@@ -8,6 +8,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="ai" path="/ai" element={<GenericSubcategoryPage />} />,
   <Route key="ai-chatbots" path="/ai/chatbots" element={<GenericSubcategoryPage />} />,
   <Route key="ai-agents" path="/ai/agents" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-agents-software" path="/ai-agents-software" element={<GenericSubcategoryPage />} />,
   <Route key="ai-humanoid" path="/ai/humanoid" element={<GenericSubcategoryPage />} />,
   <Route key="ai-hr" path="/ai/hr" element={<GenericSubcategoryPage />} />,
   <Route key="ai-robots" path="/ai/robots" element={<GenericSubcategoryPage />} />,
