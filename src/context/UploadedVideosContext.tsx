@@ -270,11 +270,11 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
 };
 
 const deleteVideoFromSupabase = async (id: string): Promise<void> => {
-  const { error } = await supabase
-    .from('uploaded_videos')
-    .delete()
-    .eq('id', id);
-  
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+  const query = supabase.from('uploaded_videos').delete();
+  const { error } = isUUID ? await query.eq('id', id) : await query.eq('local_id', id);
+
   if (error) {
     console.error('Error deleting video from Supabase:', error);
   } else {
