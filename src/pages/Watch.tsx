@@ -131,17 +131,34 @@ const Watch = () => {
         } else {
           // Try to find video directly in Supabase by local_id or UUID
           try {
-            const { data: cloudVideo } = await supabase
+            // Check if videoId looks like a UUID (for direct UUID lookups)
+            const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(videoId);
+            
+            let cloudVideo = null;
+            
+            // First try to find by local_id
+            const { data: byLocalId } = await supabase
               .from('uploaded_videos')
               .select('*')
-              .or(`local_id.eq.${videoId},id.eq.${videoId}`)
-              .limit(1)
+              .eq('local_id', videoId)
               .maybeSingle();
+            
+            if (byLocalId) {
+              cloudVideo = byLocalId;
+            } else if (isUUID) {
+              // Only try UUID lookup if videoId is a valid UUID format
+              const { data: byUUID } = await supabase
+                .from('uploaded_videos')
+                .select('*')
+                .eq('id', videoId)
+                .maybeSingle();
+              cloudVideo = byUUID;
+            }
             
             if (cloudVideo) {
               const videoSource = cloudVideo.cloud_url || cloudVideo.video_url;
               setVideo({
-                id: cloudVideo.id,
+                id: cloudVideo.local_id || cloudVideo.id,
                 title: cloudVideo.title,
                 description: cloudVideo.description || '',
                 channelName: 'Your Channel',
