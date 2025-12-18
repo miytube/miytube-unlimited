@@ -129,14 +129,14 @@ const Watch = () => {
           });
           setLoading(false);
         } else {
-          // Try to find video directly in Supabase (handles mismatched IDs)
+          // Try to find video directly in Supabase by local_id or UUID
           try {
             const { data: cloudVideo } = await supabase
               .from('uploaded_videos')
               .select('*')
-              .or(`id.eq.${videoId},title.ilike.%${videoId.replace('upload-', '')}%`)
+              .or(`local_id.eq.${videoId},id.eq.${videoId}`)
               .limit(1)
-              .single();
+              .maybeSingle();
             
             if (cloudVideo) {
               const videoSource = cloudVideo.cloud_url || cloudVideo.video_url;

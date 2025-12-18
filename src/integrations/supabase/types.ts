@@ -278,6 +278,7 @@ export type Database = {
           id: string
           is_cloud_stored: boolean | null
           is_youtube_embed: boolean | null
+          local_id: string | null
           subcategory: string | null
           tags: string[] | null
           thumbnail_url: string | null
@@ -300,6 +301,7 @@ export type Database = {
           id?: string
           is_cloud_stored?: boolean | null
           is_youtube_embed?: boolean | null
+          local_id?: string | null
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_url?: string | null
@@ -322,6 +324,7 @@ export type Database = {
           id?: string
           is_cloud_stored?: boolean | null
           is_youtube_embed?: boolean | null
+          local_id?: string | null
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_url?: string | null
