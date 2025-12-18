@@ -79,15 +79,20 @@ export const CrimeJusticeLinks: React.FC = () => {
       path: '/military',
       subItems: [
         { id: 'military-army', label: 'Army', path: '/military/army' },
-        { id: 'military-airforce', label: 'Air Force', path: '/military/airforce' },
-        { id: 'military-navy', label: 'Navy', path: '/military/navy' },
         { id: 'military-coast-guard', label: 'Coast Guard', path: '/military/coast-guard' },
+        { id: 'military-conduct', label: 'Conduct & Policy', path: '/military/conduct' },
         { id: 'military-marines', label: 'Marines', path: '/military/marines' },
-        { id: 'military-special-forces', label: 'Special Forces', path: '/military/special-forces' },
-        { id: 'military-veterans', label: 'Veterans', path: '/military/veterans' },
-        { id: 'military-history', label: 'Military History', path: '/military/history' },
-        { id: 'military-equipment', label: 'Equipment & Weapons', path: '/military/equipment' },
-        { id: 'military-training', label: 'Training & Boot Camp', path: '/military/training' }
+        { id: 'military-navy', label: 'Navy', path: '/military/navy' },
+        { id: 'military-pilots', label: 'Pilots', path: '/military/pilots' },
+        { id: 'military-reserves', label: 'Reserves', path: '/military/reserves' },
+        { id: 'military-weapons', label: 'Weapons & Guns', path: '/military/weapons' },
+        { id: 'military-aircrafts', label: 'Military Aircrafts', path: '/military/aircrafts' },
+        { id: 'military-documentary', label: 'Military Documentary', path: '/military/documentary' },
+        { id: 'military-ships', label: 'Military Ships', path: '/military/ships' },
+        { id: 'military-submarines', label: 'Submarines', path: '/military/submarines' },
+        { id: 'military-war', label: 'Military War', path: '/military/war' },
+        { id: 'military-drones', label: 'Weapons Drones', path: '/military/drones' },
+        { id: 'military-personnel', label: 'Personnel', path: '/military/personnel' }
       ]
     },
   ];
