@@ -71,6 +71,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // AI Categories
   'ai-agents': { title: 'AI (AI Agents, Software Systems)', description: 'AI agents and systems', icon: Code },
+  'ai-agents-software': { title: 'AI Agents & Software', description: 'AI agents and software systems', icon: Code },
   'ai-chatgpt': { title: 'AI (ChatGPT, Gemini, Microsoft)', description: 'AI assistants and chatbots', icon: Terminal },
   'artificial-intelligence': { title: 'Artificial Intelligence (Bots)', description: 'AI and robotics content', icon: Cog },
   'ai-hr': { title: 'Artificial Intelligence H/R', description: 'AI in human resources', icon: Users },
