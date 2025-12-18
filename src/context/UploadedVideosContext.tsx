@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { shouldUseCloudStorage, uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
+import { uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
 import { useUploadProgress } from './UploadProgressContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -378,6 +378,33 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     await loadStoredVideos();
   };
 
+  // Upload thumbnail to cloud storage and return URL
+  const uploadThumbnailToCloud = async (thumbnailBlob: Blob, fileName: string): Promise<string> => {
+    const fileExt = 'jpg';
+    const filePath = `thumbnails/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+    
+    const { data, error } = await supabase.storage
+      .from('thumbnails')
+      .upload(filePath, thumbnailBlob, {
+        cacheControl: '3600',
+        upsert: false,
+        contentType: 'image/jpeg',
+      });
+
+    if (error) {
+      console.error('Thumbnail upload error:', error);
+      // Return a default thumbnail URL on failure
+      return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('thumbnails')
+      .getPublicUrl(filePath);
+
+    console.log('Thumbnail uploaded to cloud:', urlData.publicUrl);
+    return urlData.publicUrl;
+  };
+
   const generateThumbnail = async (file: File): Promise<string> => {
     return new Promise((resolve) => {
       if (file.type.startsWith('video/')) {
@@ -390,16 +417,24 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           video.currentTime = Math.min(1, video.duration * 0.1);
         };
         
-        video.onseeked = () => {
+        video.onseeked = async () => {
           const canvas = document.createElement('canvas');
           canvas.width = video.videoWidth || 640;
           canvas.height = video.videoHeight || 360;
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const thumbnailUrl = canvas.toDataURL('image/jpeg', 0.8);
             URL.revokeObjectURL(video.src);
-            resolve(thumbnailUrl);
+            
+            // Convert canvas to blob and upload to cloud storage
+            canvas.toBlob(async (blob) => {
+              if (blob) {
+                const thumbnailUrl = await uploadThumbnailToCloud(blob, file.name);
+                resolve(thumbnailUrl);
+              } else {
+                resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+              }
+            }, 'image/jpeg', 0.8);
           } else {
             resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
           }
@@ -589,67 +624,40 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       return;
     }
 
-    const useCloud = shouldUseCloudStorage(file);
     const fileSizeMB = (file.size / (1024 * 1024)).toFixed(0);
     
-    console.log(`Uploading video: ${file.name} (${fileSizeMB}MB) - ${useCloud ? 'Cloud storage' : 'Browser storage'}`);
+    console.log(`Uploading video: ${file.name} (${fileSizeMB}MB) - Always using cloud storage`);
 
-    const [thumbnail, duration] = await Promise.all([
-      generateThumbnail(file),
-      getVideoDuration(file),
-    ]);
+    // Get duration first (fast operation)
+    const duration = await getVideoDuration(file);
     
-    let fileDataUrl = '';
+    // Upload video to cloud storage (always - never store base64)
+    const fileSizeMBNum = Math.round(file.size / (1024 * 1024));
+    const estimatedMinutes = Math.max(1, Math.ceil(fileSizeMBNum / 10));
+    
+    startUpload(file.name, fileSizeMBNum, estimatedMinutes);
+    
     let cloudUrl = '';
-    
-    if (useCloud) {
-      // Upload to Supabase Storage for large files
-      const fileSizeMB = Math.round(file.size / (1024 * 1024));
-      const estimatedMinutes = Math.ceil(fileSizeMB / 10);
-      
-      startUpload(file.name, fileSizeMB, estimatedMinutes);
-      
-      try {
-        cloudUrl = await uploadVideoToCloud(file);
-        console.log("Uploaded to cloud storage:", cloudUrl);
-        completeUpload();
-      } catch (error) {
-        console.error("Cloud upload error:", error);
-        failUpload(error instanceof Error ? error.message : 'Unknown error');
-        throw new Error(`Failed to upload large video: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      }
-    } else {
-      // Convert file to data URL for browser storage (fast local playback)
-      try {
-        fileDataUrl = await fileToDataUrl(file);
-      } catch (error) {
-        console.error("Error converting file to data URL:", error);
-        throw new Error("Failed to process video file. The file may be too large.");
-      }
-
-      // ALSO upload to cloud storage so videos remain available across refresh/devices
-      const fileSizeMB = Math.round(file.size / (1024 * 1024));
-      const estimatedMinutes = Math.max(1, Math.ceil(fileSizeMB / 10));
-      
-      startUpload(file.name, fileSizeMB, estimatedMinutes);
-      
-      try {
-        cloudUrl = await uploadVideoToCloud(file);
-        console.log("Uploaded to cloud storage (backup):", cloudUrl);
-        completeUpload();
-      } catch (error) {
-        console.warn("Cloud backup upload failed (video will only be available locally):", error);
-        failUpload(error instanceof Error ? error.message : 'Cloud backup failed');
-      }
+    try {
+      cloudUrl = await uploadVideoToCloud(file);
+      console.log("Uploaded video to cloud storage:", cloudUrl);
+      completeUpload();
+    } catch (error) {
+      console.error("Cloud upload error:", error);
+      failUpload(error instanceof Error ? error.message : 'Unknown error');
+      throw new Error(`Failed to upload video: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
+    
+    // Generate and upload thumbnail to cloud storage (after video is uploaded)
+    const thumbnail = await generateThumbnail(file);
     
     const videoId = `upload-${Date.now()}`;
     const newVideo: UploadedVideo = {
       id: videoId,
-      file: useCloud ? null : file,
-      fileDataUrl: useCloud ? '' : fileDataUrl,
-      cloudUrl: cloudUrl || undefined,
-      isCloudStored: useCloud,
+      file: null,
+      fileDataUrl: '', // Never store base64
+      cloudUrl: cloudUrl,
+      isCloudStored: true, // Always cloud stored
       title: title || file.name,
       description: description || '',
       thumbnail,
@@ -661,13 +669,13 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
     };
     
-    // Save to IndexedDB
+    // Save to IndexedDB (metadata only, no base64)
     try {
        await saveVideoToDB({
          id: videoId,
-         fileDataUrl: useCloud ? '' : fileDataUrl,
-         cloudUrl: cloudUrl || undefined,
-         isCloudStored: useCloud,
+         fileDataUrl: '', // Never store base64
+         cloudUrl: cloudUrl,
+         isCloudStored: true,
          fileName: file.name,
         fileType: file.type,
         title: newVideo.title,
@@ -683,7 +691,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       console.log("Saved video metadata to IndexedDB:", videoId);
     } catch (error) {
       console.error("Error saving video to IndexedDB:", error);
-      if (useCloud && cloudUrl) {
+      if (cloudUrl) {
         await deleteVideoFromCloud(cloudUrl).catch(() => {});
       }
       throw new Error("Failed to save video metadata.");
@@ -699,14 +707,14 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
       duration,
       thumbnail,
-       cloudUrl: cloudUrl || undefined,
-       isCloudStored: useCloud,
+      cloudUrl: cloudUrl,
+      isCloudStored: true,
       fileName: file.name,
       fileSize: file.size,
       fileType: file.type,
     });
     
-    console.log("Adding new video:", videoId, newVideo.title, "category:", category, useCloud ? "(cloud)" : "(local)");
+    console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");
     setUploadedVideos(prev => [newVideo, ...prev]);
   };
 
