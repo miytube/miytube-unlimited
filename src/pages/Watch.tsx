@@ -129,6 +129,41 @@ const Watch = () => {
           });
           setLoading(false);
         } else {
+          // Try to find video directly in Supabase (handles mismatched IDs)
+          try {
+            const { data: cloudVideo } = await supabase
+              .from('uploaded_videos')
+              .select('*')
+              .or(`id.eq.${videoId},title.ilike.%${videoId.replace('upload-', '')}%`)
+              .limit(1)
+              .single();
+            
+            if (cloudVideo) {
+              const videoSource = cloudVideo.cloud_url || cloudVideo.video_url;
+              setVideo({
+                id: cloudVideo.id,
+                title: cloudVideo.title,
+                description: cloudVideo.description || '',
+                channelName: 'Your Channel',
+                channelAvatar: 'https://ui-avatars.com/api/?name=Your+Channel&background=random',
+                views: `${cloudVideo.views || 0} views`,
+                timestamp: new Date(cloudVideo.created_at).toLocaleDateString(),
+                likes: '0',
+                subscribers: '0',
+                file: videoSource,
+                tags: cloudVideo.tags || [],
+                category: cloudVideo.category,
+                subcategory: cloudVideo.subcategory,
+                isYouTubeEmbed: cloudVideo.is_youtube_embed,
+                youtubeId: cloudVideo.youtube_video_id
+              });
+              setLoading(false);
+              return;
+            }
+          } catch (err) {
+            console.log('Video not found in Supabase:', err);
+          }
+          
           const fetchedVideo = getVideoById(videoId);
           console.log("Found mock video:", fetchedVideo);
           if (fetchedVideo) {
