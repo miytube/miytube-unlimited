@@ -3,6 +3,7 @@ import { ThumbsUp, ThumbsDown, Share, Download, Flag, Pencil, Trash2 } from 'luc
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import WatchlistButton from '@/components/WatchlistButton';
 
 interface VideoInfoProps {
   title: string;
@@ -229,6 +230,10 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
             <Download size={18} />
             <span className="text-sm font-medium">Download</span>
           </button>
+          
+          {videoId && (
+            <WatchlistButton videoId={videoId} videoType="video" variant="full" size="sm" />
+          )}
           
           <button className="p-2 rounded-full hover:bg-secondary transition-colors">
             <Flag size={18} />
