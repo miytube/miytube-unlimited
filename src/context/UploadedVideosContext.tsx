@@ -188,7 +188,9 @@ const saveVideoToSupabase = async (video: {
   fileType?: string;
 }): Promise<void> => {
   // Don't pass 'id' - let Supabase generate UUID automatically
+  // Store local_id to maintain URL compatibility
   const { error } = await supabase.from('uploaded_videos').insert({
+    local_id: video.localId, // Store the local ID for URL lookups
     title: video.title,
     description: video.description,
     category: video.category,
@@ -208,7 +210,7 @@ const saveVideoToSupabase = async (video: {
   if (error) {
     console.error('Error saving video to Supabase:', error);
   } else {
-    console.log('Saved video to Supabase cloud backup:', video.localId);
+    console.log('Saved video to Supabase cloud backup with local_id:', video.localId);
   }
 };
 
@@ -224,7 +226,8 @@ const loadVideosFromSupabase = async (): Promise<UploadedVideo[]> => {
   }
   
   return (data || []).map(v => ({
-    id: v.id,
+    // Use local_id as the ID if available, otherwise fall back to UUID
+    id: v.local_id || v.id,
     file: null,
     fileDataUrl: '',
     cloudUrl: v.cloud_url || undefined,
