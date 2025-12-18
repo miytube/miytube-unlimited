@@ -619,12 +619,20 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         throw new Error(`Failed to upload large video: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else {
-      // Convert file to data URL for browser storage
+      // Convert file to data URL for browser storage (fast local playback)
       try {
         fileDataUrl = await fileToDataUrl(file);
       } catch (error) {
         console.error("Error converting file to data URL:", error);
         throw new Error("Failed to process video file. The file may be too large.");
+      }
+
+      // ALSO upload to cloud storage so videos remain available across refresh/devices
+      try {
+        cloudUrl = await uploadVideoToCloud(file);
+        console.log("Uploaded to cloud storage (backup):", cloudUrl);
+      } catch (error) {
+        console.warn("Cloud backup upload failed (video will only be available locally):", error);
       }
     }
     
@@ -633,7 +641,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       id: videoId,
       file: useCloud ? null : file,
       fileDataUrl: useCloud ? '' : fileDataUrl,
-      cloudUrl: useCloud ? cloudUrl : undefined,
+      cloudUrl: cloudUrl || undefined,
       isCloudStored: useCloud,
       title: title || file.name,
       description: description || '',
@@ -648,12 +656,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     
     // Save to IndexedDB
     try {
-      await saveVideoToDB({
-        id: videoId,
-        fileDataUrl: useCloud ? '' : fileDataUrl,
-        cloudUrl: useCloud ? cloudUrl : undefined,
-        isCloudStored: useCloud,
-        fileName: file.name,
+       await saveVideoToDB({
+         id: videoId,
+         fileDataUrl: useCloud ? '' : fileDataUrl,
+         cloudUrl: cloudUrl || undefined,
+         isCloudStored: useCloud,
+         fileName: file.name,
         fileType: file.type,
         title: newVideo.title,
         description: newVideo.description,
@@ -684,8 +692,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
       duration,
       thumbnail,
-      cloudUrl: useCloud ? cloudUrl : undefined,
-      isCloudStored: useCloud,
+       cloudUrl: cloudUrl || undefined,
+       isCloudStored: useCloud,
       fileName: file.name,
       fileSize: file.size,
       fileType: file.type,

@@ -107,10 +107,8 @@ const Watch = () => {
             setYoutubeVideoId(null);
           }
           
-          // For cloud-stored videos, use cloudUrl; for local videos, use file or fileDataUrl
-          const videoSource = uploadedVideo.isCloudStored 
-            ? uploadedVideo.cloudUrl 
-            : (uploadedVideo.file || uploadedVideo.fileDataUrl);
+          // Prefer cloud URL if available; otherwise fall back to local file/data URL
+          const videoSource = uploadedVideo.cloudUrl || uploadedVideo.file || uploadedVideo.fileDataUrl;
           
           setVideo({
             id: uploadedVideo.id,
