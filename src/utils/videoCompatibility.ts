@@ -99,29 +99,30 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
       return;
     }
 
-    // Try to actually load and play a snippet to verify codec compatibility
+    // Try to actually load AND DECODE the video to verify codec compatibility
+    // Just loading metadata isn't enough - we need to decode actual frames
     const video = document.createElement('video');
     const url = URL.createObjectURL(file);
+    let hasResolved = false;
     
     // Set a timeout for slow files
     const timeout = setTimeout(() => {
+      if (hasResolved) return;
+      hasResolved = true;
       cleanup();
-      // If we timeout but canPlayType said maybe/probably, allow it
-      if (canPlayResult === 'probably' || canPlayResult === 'maybe') {
-        result.isCompatible = true;
-        result.canPlay = true;
-        resolve(result);
-      } else {
-        result.errorMessage = 'Could not verify video compatibility. The file may not play correctly.';
-        resolve(result);
-      }
-    }, 10000);
+      // If we timeout, be cautious and warn the user
+      result.errorMessage = 'Could not verify video compatibility within time limit. The file may not play correctly. Consider converting to MP4 (H.264/AAC).';
+      resolve(result);
+    }, 15000);
 
     const cleanup = () => {
       clearTimeout(timeout);
       video.removeEventListener('loadedmetadata', onLoadedMetadata);
-      video.removeEventListener('canplay', onCanPlay);
+      video.removeEventListener('canplaythrough', onCanPlayThrough);
+      video.removeEventListener('playing', onPlaying);
       video.removeEventListener('error', onError);
+      video.pause();
+      video.src = '';
       URL.revokeObjectURL(url);
     };
 
@@ -129,9 +130,24 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
       result.details.duration = video.duration;
       result.details.width = video.videoWidth;
       result.details.height = video.videoHeight;
+      
+      // After metadata loads, try to actually play a bit to force decode
+      video.currentTime = 0;
+      video.muted = true;
+      video.play().catch(() => {
+        // Play failed, but error handler will catch the reason
+      });
     };
 
-    const onCanPlay = () => {
+    const onCanPlayThrough = () => {
+      // canplaythrough means browser thinks it can play without buffering
+      // But we still need to verify actual decoding works
+    };
+
+    const onPlaying = () => {
+      // Video is actually playing - codec decoding works!
+      if (hasResolved) return;
+      hasResolved = true;
       cleanup();
       result.isCompatible = true;
       result.canPlay = true;
@@ -139,6 +155,8 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
     };
 
     const onError = () => {
+      if (hasResolved) return;
+      hasResolved = true;
       cleanup();
       const error = video.error;
       
@@ -162,10 +180,11 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
     };
 
     video.addEventListener('loadedmetadata', onLoadedMetadata);
-    video.addEventListener('canplay', onCanPlay);
+    video.addEventListener('canplaythrough', onCanPlayThrough);
+    video.addEventListener('playing', onPlaying);
     video.addEventListener('error', onError);
     
-    video.preload = 'metadata';
+    video.preload = 'auto';
     video.src = url;
     video.load();
   });
