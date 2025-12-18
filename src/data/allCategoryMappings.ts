@@ -687,6 +687,17 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'military-weapons-drones': { title: 'Military Weapons Drones', description: 'Military drone weapons systems', icon: Plane },
   
   // New Military Subcategories
+  'military-conduct': { title: 'Conduct & Policy', description: 'Military conduct, policies, and regulations', icon: FileText, parent: { route: '/military', name: 'Military' } },
+  'military-pilots': { title: 'Pilots', description: 'Military pilots and aviation personnel', icon: Plane, parent: { route: '/military', name: 'Military' } },
+  'military-reserves': { title: 'Reserves', description: 'Military reserve forces and personnel', icon: Users, parent: { route: '/military', name: 'Military' } },
+  'military-weapons': { title: 'Weapons & Guns', description: 'Military weapons, firearms, and ammunition', icon: Target, parent: { route: '/military', name: 'Military' } },
+  'military-aircrafts': { title: 'Military Aircrafts', description: 'Fighter jets, bombers, and military aircraft', icon: Plane, parent: { route: '/military', name: 'Military' } },
+  'military-documentary': { title: 'Military Documentary', description: 'War documentaries and military history films', icon: Film, parent: { route: '/military', name: 'Military' } },
+  'military-ships': { title: 'Military Ships', description: 'Aircraft carriers, destroyers, and naval vessels', icon: Ship, parent: { route: '/military', name: 'Military' } },
+  'military-submarines': { title: 'Submarines', description: 'Military submarines and underwater operations', icon: Anchor, parent: { route: '/military', name: 'Military' } },
+  'military-war': { title: 'Military War', description: 'Combat footage, war coverage, and military operations', icon: Shield, parent: { route: '/military', name: 'Military' } },
+  'military-drones': { title: 'Weapons Drones', description: 'Military drones and unmanned aerial vehicles', icon: Plane, parent: { route: '/military', name: 'Military' } },
+  'military-personnel': { title: 'Personnel', description: 'Military personnel, soldiers, and service members', icon: Users, parent: { route: '/military', name: 'Military' } },
   'military-special-forces': { title: 'Special Forces', description: 'Elite military units, special operations, and tactical missions', icon: Target, parent: { route: '/military', name: 'Military' } },
   'military-veterans': { title: 'Veterans', description: 'Stories, support, and recognition of military veterans', icon: Medal, parent: { route: '/military', name: 'Military' } },
   'military-history': { title: 'Military History', description: 'Historical battles, wars, and military campaigns throughout history', icon: BookOpen, parent: { route: '/military', name: 'Military' } },
