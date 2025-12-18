@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from "@/components/Layout";
-import { Shield, Users, Plane, Anchor, Ship } from "lucide-react";
+import { Shield, Users, Plane, Anchor, Ship, Target, Medal, BookOpen, Crosshair, Dumbbell } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const militaryBranches = [
@@ -33,6 +33,36 @@ const militaryBranches = [
     path: '/military/marines', 
     icon: Users, 
     description: 'Amphibious operations and rapid response' 
+  },
+  { 
+    name: 'Special Forces', 
+    path: '/military/special-forces', 
+    icon: Target, 
+    description: 'Elite units and special operations' 
+  },
+  { 
+    name: 'Veterans', 
+    path: '/military/veterans', 
+    icon: Medal, 
+    description: 'Stories and support for military veterans' 
+  },
+  { 
+    name: 'Military History', 
+    path: '/military/history', 
+    icon: BookOpen, 
+    description: 'Historical battles and campaigns' 
+  },
+  { 
+    name: 'Equipment & Weapons', 
+    path: '/military/equipment', 
+    icon: Crosshair, 
+    description: 'Military equipment and defense technology' 
+  },
+  { 
+    name: 'Training & Boot Camp', 
+    path: '/military/training', 
+    icon: Dumbbell, 
+    description: 'Training programs and fitness regimens' 
   }
 ];
 

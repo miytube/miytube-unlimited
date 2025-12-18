@@ -686,6 +686,13 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   // Military Weapons Drones (shared across branches)
   'military-weapons-drones': { title: 'Military Weapons Drones', description: 'Military drone weapons systems', icon: Plane },
   
+  // New Military Subcategories
+  'military-special-forces': { title: 'Special Forces', description: 'Elite military units, special operations, and tactical missions', icon: Target, parent: { route: '/military', name: 'Military' } },
+  'military-veterans': { title: 'Veterans', description: 'Stories, support, and recognition of military veterans', icon: Medal, parent: { route: '/military', name: 'Military' } },
+  'military-history': { title: 'Military History', description: 'Historical battles, wars, and military campaigns throughout history', icon: BookOpen, parent: { route: '/military', name: 'Military' } },
+  'military-equipment': { title: 'Equipment & Weapons', description: 'Military equipment, weapons systems, and defense technology', icon: Crosshair, parent: { route: '/military', name: 'Military' } },
+  'military-training': { title: 'Training & Boot Camp', description: 'Military training programs, boot camps, and fitness regimens', icon: Dumbbell, parent: { route: '/military', name: 'Military' } },
+
   // Physical Fitness Categories
   'physical-fitness': { title: 'Physical Fitness', description: 'Workout videos, weightlifting, yoga, and fitness', icon: Dumbbell },
   'fitness-weight-lifting': { title: 'Weight Lifting', description: 'Weight lifting videos, pranks, and amazing feats', icon: Dumbbell, parent: { route: '/physical-fitness', name: 'Physical Fitness' } },

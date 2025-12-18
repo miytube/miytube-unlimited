@@ -82,7 +82,12 @@ export const CrimeJusticeLinks: React.FC = () => {
         { id: 'military-airforce', label: 'Air Force', path: '/military/airforce' },
         { id: 'military-navy', label: 'Navy', path: '/military/navy' },
         { id: 'military-coast-guard', label: 'Coast Guard', path: '/military/coast-guard' },
-        { id: 'military-marines', label: 'Marines', path: '/military/marines' }
+        { id: 'military-marines', label: 'Marines', path: '/military/marines' },
+        { id: 'military-special-forces', label: 'Special Forces', path: '/military/special-forces' },
+        { id: 'military-veterans', label: 'Veterans', path: '/military/veterans' },
+        { id: 'military-history', label: 'Military History', path: '/military/history' },
+        { id: 'military-equipment', label: 'Equipment & Weapons', path: '/military/equipment' },
+        { id: 'military-training', label: 'Training & Boot Camp', path: '/military/training' }
       ]
     },
   ];
