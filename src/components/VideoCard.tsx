@@ -21,6 +21,7 @@ import {
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useToast } from '@/hooks/use-toast';
+import WatchlistButton from '@/components/WatchlistButton';
 
 interface VideoCardProps {
   id: string;
@@ -98,6 +99,9 @@ export const VideoCard: React.FC<VideoCardProps> = ({
           <span className="absolute bottom-2 right-2 px-1 py-0.5 text-xs bg-black/70 text-white rounded">
             {duration}
           </span>
+          <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            <WatchlistButton videoId={id} videoType="video" />
+          </div>
         </div>
         <div className="mt-2">
           <h3 className="font-medium text-sm line-clamp-2 pr-8">{title}</h3>
