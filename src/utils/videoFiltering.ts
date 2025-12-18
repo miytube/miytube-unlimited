@@ -137,8 +137,24 @@ export const filterVideosBySubcategory = (
     const vidCategoryNorm = vidCategory.replace(/[\s-]/g, '');
     const vidSubcategoryNorm = vidSubcategory.replace(/[\s-]/g, '');
     
+    // Handle comma-separated subcategories (e.g., "gangster,-crime,-drama")
+    const subcategoryParts = vidSubcategory.split(',').map(p => p.replace(/^-/, '').trim());
+    const firstSubcategoryPart = subcategoryParts[0] || '';
+    
+    // Normalize singular/plural forms
+    const normalizeWordForms = (str: string) => {
+      return str.replace(/s$/, ''); // Remove trailing 's' for comparison
+    };
+    
+    const lastSegmentBase = normalizeWordForms(lastSegment);
+    const firstPartBase = normalizeWordForms(firstSubcategoryPart);
+    
     // Exact match on subcategory (e.g., video.subcategory === "luxury")
     if (vidSubcategory === lastSegment) return true;
+    
+    // Match first part of comma-separated subcategory (e.g., "gangster" from "gangster,-crime,-drama")
+    if (firstSubcategoryPart === lastSegment || firstSubcategoryPart === lastSegmentSpaced) return true;
+    if (firstPartBase === lastSegmentBase) return true;
     
     // Match spaced version (e.g., "late night" for "late-night")
     if (vidSubcategory === lastSegmentSpaced) return true;
@@ -149,6 +165,7 @@ export const filterVideosBySubcategory = (
     // Fuzzy match on subcategory (for typos like "commerical" vs "commercial")
     if (isFuzzyMatch(vidSubcategory, lastSegment)) return true;
     if (isFuzzyMatch(vidSubcategory, lastSegmentSpaced)) return true;
+    if (isFuzzyMatch(firstSubcategoryPart, lastSegment)) return true;
     
     // Match when video category matches parent and subcategory matches last segment
     // e.g., video.category="real-estate", video.subcategory="luxury", key="real-estate/luxury"
@@ -156,7 +173,7 @@ export const filterVideosBySubcategory = (
       const normalizedParent = parentSegment.replace(/[\s-]/g, '');
       const normalizedVidCategory = vidCategory.replace(/[\s-]/g, '');
       if ((normalizedVidCategory === normalizedParent || isFuzzyMatch(normalizedVidCategory, normalizedParent)) && 
-          (vidSubcategoryNorm === lastSegmentNoHyphens || isFuzzyMatch(vidSubcategory, lastSegment) || isFuzzyMatch(vidSubcategory, lastSegmentSpaced))) {
+          (vidSubcategoryNorm === lastSegmentNoHyphens || isFuzzyMatch(vidSubcategory, lastSegment) || isFuzzyMatch(vidSubcategory, lastSegmentSpaced) || firstPartBase === lastSegmentBase)) {
         return true;
       }
     }
@@ -181,8 +198,11 @@ export const filterVideosBySubcategory = (
     const combinedText = `${vidCategory} ${vidSubcategory}`;
     
     // All title words must be present (excluding common words like "shows")
-    const meaningfulTitleWords = titleWords.filter(w => !['show', 'shows', 'video', 'videos'].includes(w));
-    if (meaningfulTitleWords.length >= 2 && meaningfulTitleWords.every(word => combinedText.includes(word))) return true;
+    const meaningfulTitleWords = titleWords.filter(w => !['show', 'shows', 'video', 'videos', 'films', 'film'].includes(w));
+    if (meaningfulTitleWords.length >= 1 && meaningfulTitleWords.every(word => {
+      const wordBase = normalizeWordForms(word);
+      return combinedText.includes(word) || combinedText.includes(wordBase) || subcategoryParts.some(p => normalizeWordForms(p) === wordBase);
+    })) return true;
     
     // Check if key matches exactly
     if (vidCategory === keyLower || vidSubcategory === keyLower) return true;
