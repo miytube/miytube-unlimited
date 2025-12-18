@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from "./use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
 import { checkVideoCompatibility, getFormatRecommendation } from '@/utils/videoCompatibility';
