@@ -4,11 +4,16 @@ import { Route } from "react-router-dom";
 import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 
 export const comprehensiveSubcategoryRoutes = [
-  // AI & Technology routes
+  // AI & Technology routes (nested and flat for search)
   <Route key="ai" path="/ai" element={<GenericSubcategoryPage />} />,
   <Route key="ai-chatbots" path="/ai/chatbots" element={<GenericSubcategoryPage />} />,
   <Route key="ai-agents" path="/ai/agents" element={<GenericSubcategoryPage />} />,
   <Route key="ai-agents-software" path="/ai-agents-software" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-chatgpt-gemini" path="/ai-chatgpt-gemini" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-bots-automation" path="/ai-bots-automation" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-human-resources" path="/ai-human-resources" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-humanoids" path="/ai-humanoids" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-robotics" path="/ai-robotics" element={<GenericSubcategoryPage />} />,
   <Route key="ai-humanoid" path="/ai/humanoid" element={<GenericSubcategoryPage />} />,
   <Route key="ai-hr" path="/ai/hr" element={<GenericSubcategoryPage />} />,
   <Route key="ai-robots" path="/ai/robots" element={<GenericSubcategoryPage />} />,
@@ -18,12 +23,17 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="science-tech-inventions" path="/science-tech/inventions" element={<GenericSubcategoryPage />} />,
   <Route key="science-tech-gadgets" path="/science-tech/gadgets" element={<GenericSubcategoryPage />} />,
   <Route key="science-tech-experiments" path="/science-tech/experiments" element={<GenericSubcategoryPage />} />,
+  <Route key="science-technology" path="/science-technology" element={<GenericSubcategoryPage />} />,
+  <Route key="science-tech-inventions-flat" path="/science-tech-inventions" element={<GenericSubcategoryPage />} />,
+  <Route key="science-tech-gadgets-flat" path="/science-tech-gadgets" element={<GenericSubcategoryPage />} />,
   <Route key="cell-phone" path="/cell-phone" element={<GenericSubcategoryPage />} />,
   <Route key="cell-phone-tricks" path="/cell-phone/tricks" element={<GenericSubcategoryPage />} />,
   <Route key="cell-phone-tips" path="/cell-phone/tips" element={<GenericSubcategoryPage />} />,
+  <Route key="cell-phone-tricks-flat" path="/cell-phone-tricks" element={<GenericSubcategoryPage />} />,
   <Route key="internet" path="/internet" element={<GenericSubcategoryPage />} />,
   <Route key="internet-programming" path="/internet/programming" element={<GenericSubcategoryPage />} />,
   <Route key="internet-web" path="/internet/web" element={<GenericSubcategoryPage />} />,
+  <Route key="internet-programming-flat" path="/internet-programming" element={<GenericSubcategoryPage />} />,
   <Route key="space" path="/space" element={<GenericSubcategoryPage />} />,
   <Route key="space-craft" path="/space/craft" element={<GenericSubcategoryPage />} />,
   <Route key="space-universe" path="/space/universe" element={<GenericSubcategoryPage />} />,
@@ -609,4 +619,153 @@ export const comprehensiveSubcategoryRoutes = [
   // Additional Entertainment routes
   <Route key="entertainment-podcast" path="/entertainment/podcast" element={<GenericSubcategoryPage />} />,
   <Route key="entertainment-hollywood" path="/entertainment/hollywood" element={<GenericSubcategoryPage />} />,
+
+  // Flat routes for SidebarSearch compatibility
+  // Aviation flat routes
+  <Route key="airplanes-airships-flat" path="/airplanes-airships" element={<GenericSubcategoryPage />} />,
+  <Route key="cargo-planes" path="/cargo-planes" element={<GenericSubcategoryPage />} />,
+  <Route key="commercial-jumbo-jets" path="/commercial-jumbo-jets" element={<GenericSubcategoryPage />} />,
+  <Route key="land-water-planes" path="/land-water-planes" element={<GenericSubcategoryPage />} />,
+  <Route key="pilots-captains" path="/pilots-captains" element={<GenericSubcategoryPage />} />,
+  <Route key="single-engine-planes" path="/single-engine-planes" element={<GenericSubcategoryPage />} />,
+  <Route key="aircraft-fleet" path="/aircraft-fleet" element={<GenericSubcategoryPage />} />,
+  <Route key="airport-improvements" path="/airport-improvements" element={<GenericSubcategoryPage />} />,
+  <Route key="airport-fails" path="/airport-fails" element={<GenericSubcategoryPage />} />,
+  <Route key="helicopters-commercial-flat" path="/helicopters-commercial" element={<GenericSubcategoryPage />} />,
+  <Route key="helicopters-private-flat" path="/helicopters-private" element={<GenericSubcategoryPage />} />,
+  
+  // Animals flat routes
+  <Route key="amphibians" path="/amphibians" element={<GenericSubcategoryPage />} />,
+  <Route key="insects-spiders" path="/insects-spiders" element={<GenericSubcategoryPage />} />,
+  <Route key="birds-raptors" path="/birds-raptors" element={<GenericSubcategoryPage />} />,
+  <Route key="crabs-lobsters" path="/crabs-lobsters" element={<GenericSubcategoryPage />} />,
+  <Route key="fish" path="/fish" element={<GenericSubcategoryPage />} />,
+  <Route key="marine-mammals" path="/marine-mammals" element={<GenericSubcategoryPage />} />,
+  <Route key="jellyfish-siphonophores" path="/jellyfish-siphonophores" element={<GenericSubcategoryPage />} />,
+  <Route key="reptiles-snakes" path="/reptiles-snakes" element={<GenericSubcategoryPage />} />,
+  <Route key="rodents" path="/rodents" element={<GenericSubcategoryPage />} />,
+  <Route key="octopus-cephalopods" path="/octopus-cephalopods" element={<GenericSubcategoryPage />} />,
+  <Route key="plants-flowers" path="/plants-flowers" element={<GenericSubcategoryPage />} />,
+  <Route key="lakes" path="/lakes" element={<GenericSubcategoryPage />} />,
+  <Route key="rivers" path="/rivers" element={<GenericSubcategoryPage />} />,
+  <Route key="seas" path="/seas" element={<GenericSubcategoryPage />} />,
+  
+  // Crime & Justice flat routes
+  <Route key="courts-indictment" path="/courts-indictment" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-sentencing" path="/courts-sentencing" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police" path="/courts-police" element={<GenericSubcategoryPage />} />,
+  <Route key="supreme-courts" path="/supreme-courts" element={<GenericSubcategoryPage />} />,
+  <Route key="crime-fraud-scammers" path="/crime-fraud-scammers" element={<GenericSubcategoryPage />} />,
+  <Route key="criminal-enterprises" path="/criminal-enterprises" element={<GenericSubcategoryPage />} />,
+  <Route key="criminal-gangs" path="/criminal-gangs" element={<GenericSubcategoryPage />} />,
+  <Route key="criminal-gangsters" path="/criminal-gangsters" element={<GenericSubcategoryPage />} />,
+  <Route key="police-chases" path="/police-chases" element={<GenericSubcategoryPage />} />,
+  <Route key="police-sheriff" path="/police-sheriff" element={<GenericSubcategoryPage />} />,
+  <Route key="police-stops" path="/police-stops" element={<GenericSubcategoryPage />} />,
+  <Route key="jails-prisons" path="/jails-prisons" element={<GenericSubcategoryPage />} />,
+  <Route key="attorney-information" path="/attorney-information" element={<GenericSubcategoryPage />} />,
+  
+  // Business & Finance flat routes
+  <Route key="stocks-commodities" path="/stocks-commodities" element={<GenericSubcategoryPage />} />,
+  <Route key="bitcoin-cryptocurrency" path="/bitcoin-cryptocurrency" element={<GenericSubcategoryPage />} />,
+  <Route key="business-development" path="/business-development" element={<GenericSubcategoryPage />} />,
+  <Route key="business-leaders" path="/business-leaders" element={<GenericSubcategoryPage />} />,
+  <Route key="money-taxes" path="/money-taxes" element={<GenericSubcategoryPage />} />,
+  <Route key="business-services" path="/business-services" element={<GenericSubcategoryPage />} />,
+  <Route key="farmers-farming" path="/farmers-farming" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-commercial" path="/real-estate-commercial" element={<GenericSubcategoryPage />} />,
+  <Route key="luxury-real-estate" path="/luxury-real-estate" element={<GenericSubcategoryPage />} />,
+  <Route key="food-products-business" path="/food-products-business" element={<GenericSubcategoryPage />} />,
+  
+  // Entertainment flat routes
+  <Route key="oscars-golden-globes" path="/oscars-golden-globes" element={<GenericSubcategoryPage />} />,
+  <Route key="actors-actresses" path="/actors-actresses" element={<GenericSubcategoryPage />} />,
+  <Route key="late-night-shows" path="/late-night-shows" element={<GenericSubcategoryPage />} />,
+  <Route key="entertainment-podcasts" path="/entertainment-podcasts" element={<GenericSubcategoryPage />} />,
+  <Route key="hollywood-celebrities" path="/hollywood-celebrities" element={<GenericSubcategoryPage />} />,
+  <Route key="auditions-contests" path="/auditions-contests" element={<GenericSubcategoryPage />} />,
+  <Route key="tv-news-shows" path="/tv-news-shows" element={<GenericSubcategoryPage />} />,
+  <Route key="radio-shows" path="/radio-shows" element={<GenericSubcategoryPage />} />,
+  
+  // Comedy flat routes
+  <Route key="comedians-interviews" path="/comedians-interviews" element={<GenericSubcategoryPage />} />,
+  <Route key="funny-pranks" path="/funny-pranks" element={<GenericSubcategoryPage />} />,
+  <Route key="comedy-roasts" path="/comedy-roasts" element={<GenericSubcategoryPage />} />,
+  <Route key="snl" path="/snl" element={<GenericSubcategoryPage />} />,
+  <Route key="stand-up-comedy" path="/stand-up-comedy" element={<GenericSubcategoryPage />} />,
+  <Route key="comedy-jokes-pranks" path="/comedy-jokes-pranks" element={<GenericSubcategoryPage />} />,
+  <Route key="comedy-sitcoms" path="/comedy-sitcoms" element={<GenericSubcategoryPage />} />,
+  <Route key="bloopers" path="/bloopers" element={<GenericSubcategoryPage />} />,
+  <Route key="funny-short-videos" path="/funny-short-videos" element={<GenericSubcategoryPage />} />,
+  <Route key="funny-weird" path="/funny-weird" element={<GenericSubcategoryPage />} />,
+  
+  // Music flat routes
+  <Route key="rock-soul" path="/rock-soul" element={<GenericSubcategoryPage />} />,
+  <Route key="blues" path="/blues" element={<GenericSubcategoryPage />} />,
+  <Route key="classical-opera" path="/classical-opera" element={<GenericSubcategoryPage />} />,
+  <Route key="country-western" path="/country-western" element={<GenericSubcategoryPage />} />,
+  <Route key="folk-music" path="/folk-music" element={<GenericSubcategoryPage />} />,
+  <Route key="funk-hard-rock" path="/funk-hard-rock" element={<GenericSubcategoryPage />} />,
+  <Route key="hip-hop-rap" path="/hip-hop-rap" element={<GenericSubcategoryPage />} />,
+  <Route key="heavy-metal" path="/heavy-metal" element={<GenericSubcategoryPage />} />,
+  <Route key="pop-rnb" path="/pop-rnb" element={<GenericSubcategoryPage />} />,
+  <Route key="reggaeton" path="/reggaeton" element={<GenericSubcategoryPage />} />,
+  <Route key="salsa" path="/salsa" element={<GenericSubcategoryPage />} />,
+  <Route key="christian-music" path="/christian-music" element={<GenericSubcategoryPage />} />,
+  <Route key="music-artists" path="/music-artists" element={<GenericSubcategoryPage />} />,
+  <Route key="music-lyrics" path="/music-lyrics" element={<GenericSubcategoryPage />} />,
+  
+  // Gaming flat routes
+  <Route key="arcade-games" path="/arcade-games" element={<GenericSubcategoryPage />} />,
+  <Route key="casino-slots" path="/casino-slots" element={<GenericSubcategoryPage />} />,
+  <Route key="dominos" path="/dominos" element={<GenericSubcategoryPage />} />,
+  <Route key="lottery" path="/lottery" element={<GenericSubcategoryPage />} />,
+  <Route key="xbox-playstation" path="/xbox-playstation" element={<GenericSubcategoryPage />} />,
+  <Route key="card-games" path="/card-games" element={<GenericSubcategoryPage />} />,
+  <Route key="magic-tricks" path="/magic-tricks" element={<GenericSubcategoryPage />} />,
+  <Route key="game-challenges" path="/game-challenges" element={<GenericSubcategoryPage />} />,
+  
+  // Fitness flat routes
+  <Route key="calisthenics" path="/calisthenics" element={<GenericSubcategoryPage />} />,
+  <Route key="weight-lifting" path="/weight-lifting" element={<GenericSubcategoryPage />} />,
+  <Route key="yoga-workout" path="/yoga-workout" element={<GenericSubcategoryPage />} />,
+  <Route key="workout-female" path="/workout-female" element={<GenericSubcategoryPage />} />,
+  <Route key="workout-male" path="/workout-male" element={<GenericSubcategoryPage />} />,
+  <Route key="martial-arts" path="/martial-arts" element={<GenericSubcategoryPage />} />,
+  <Route key="swimming-diving" path="/swimming-diving" element={<GenericSubcategoryPage />} />,
+  
+  // Sports flat routes
+  <Route key="nba-basketball" path="/nba-basketball" element={<GenericSubcategoryPage />} />,
+  <Route key="nfl-football" path="/nfl-football" element={<GenericSubcategoryPage />} />,
+  <Route key="mlb-baseball" path="/mlb-baseball" element={<GenericSubcategoryPage />} />,
+  <Route key="nhl-hockey" path="/nhl-hockey" element={<GenericSubcategoryPage />} />,
+  <Route key="soccer-mls" path="/soccer-mls" element={<GenericSubcategoryPage />} />,
+  <Route key="mma-ufc" path="/mma-ufc" element={<GenericSubcategoryPage />} />,
+  <Route key="tennis" path="/tennis" element={<GenericSubcategoryPage />} />,
+  <Route key="golf" path="/golf" element={<GenericSubcategoryPage />} />,
+  <Route key="olympics" path="/olympics" element={<GenericSubcategoryPage />} />,
+  <Route key="nascar-racing" path="/nascar-racing" element={<GenericSubcategoryPage />} />,
+  <Route key="formula-one" path="/formula-one" element={<GenericSubcategoryPage />} />,
+  
+  // Travel flat routes
+  <Route key="beaches" path="/beaches" element={<GenericSubcategoryPage />} />,
+  <Route key="cities-towns" path="/cities-towns" element={<GenericSubcategoryPage />} />,
+  <Route key="hotels" path="/hotels" element={<GenericSubcategoryPage />} />,
+  <Route key="night-clubs" path="/night-clubs" element={<GenericSubcategoryPage />} />,
+  <Route key="street-food" path="/street-food" element={<GenericSubcategoryPage />} />,
+  
+  // Film flat routes
+  <Route key="action-movies" path="/action-movies" element={<GenericSubcategoryPage />} />,
+  <Route key="comedy-movies" path="/comedy-movies" element={<GenericSubcategoryPage />} />,
+  <Route key="drama-movies" path="/drama-movies" element={<GenericSubcategoryPage />} />,
+  <Route key="documentary-films" path="/documentary-films" element={<GenericSubcategoryPage />} />,
+  <Route key="cartoons" path="/cartoons" element={<GenericSubcategoryPage />} />,
+  
+  // Education flat routes
+  <Route key="kids-education" path="/kids-education" element={<GenericSubcategoryPage />} />,
+  <Route key="history" path="/history" element={<GenericSubcategoryPage />} />,
+  <Route key="science" path="/science" element={<GenericSubcategoryPage />} />,
+  
+  // News flat routes
+  <Route key="politics" path="/politics" element={<GenericSubcategoryPage />} />,
 ];
