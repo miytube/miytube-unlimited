@@ -768,4 +768,90 @@ export const comprehensiveSubcategoryRoutes = [
   
   // News flat routes
   <Route key="politics" path="/politics" element={<GenericSubcategoryPage />} />,
+
+  // ========== NESTED SPORTS ROUTES (for sidebar links) ==========
+  // College sports nested routes
+  <Route key="sports-college-nested" path="/sports/college" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-football-nested" path="/sports/college/football" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-basketball-nested" path="/sports/college/basketball" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-baseball-nested" path="/sports/college/baseball" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-women-basketball-nested" path="/sports/college/women-basketball" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-swimming-nested" path="/sports/college/swimming" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-track-nested" path="/sports/college/track" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-bowl-nested" path="/sports/college/bowl" element={<GenericSubcategoryPage />} />,
+
+  // NBA nested routes
+  <Route key="sports-nba-east-playoffs" path="/sports/nba/east-playoffs" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-nba-west-playoffs" path="/sports/nba/west-playoffs" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-nba-players" path="/sports/nba/players" element={<GenericSubcategoryPage />} />,
+
+  // NFL nested routes
+  <Route key="sports-nfl-superbowl-nested" path="/sports/nfl/superbowl" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-nfl-players" path="/sports/nfl/players" element={<GenericSubcategoryPage />} />,
+
+  // MLB nested routes
+  <Route key="sports-mlb-al-playoffs" path="/sports/mlb/al-playoffs" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-mlb-nl-playoffs" path="/sports/mlb/nl-playoffs" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-mlb-world-series" path="/sports/mlb/world-series" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-mlb-players" path="/sports/mlb/players" element={<GenericSubcategoryPage />} />,
+
+  // NHL nested routes
+  <Route key="sports-nhl-allstar-nested" path="/sports/nhl/allstar" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-nhl-east" path="/sports/nhl/east" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-nhl-west" path="/sports/nhl/west" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-nhl-playoffs-nested" path="/sports/nhl/playoffs" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-nhl-players" path="/sports/nhl/players" element={<GenericSubcategoryPage />} />,
+
+  // WNBA nested routes
+  <Route key="sports-wnba-players" path="/sports/wnba/players" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-wnba-playoffs-nested" path="/sports/wnba/playoffs" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-wnba-championship" path="/sports/wnba/championship" element={<GenericSubcategoryPage />} />,
+
+  // MMA nested routes
+  <Route key="sports-mma-ufc" path="/sports/mma/ufc" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-mma-women" path="/sports/mma/women" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-boxing-interviews-nested" path="/sports/boxing/interviews" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-wrestling" path="/sports/wrestling" element={<GenericSubcategoryPage />} />,
+
+  // Racing routes
+  <Route key="sports-racing" path="/sports/racing" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-motorcycle-racing" path="/sports/motorcycle-racing" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-racing-track" path="/sports/racing-track" element={<GenericSubcategoryPage />} />,
+
+  // Tennis nested routes
+  <Route key="sports-tennis" path="/sports/tennis" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-tennis-men-nested" path="/sports/tennis/men" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-tennis-women-nested" path="/sports/tennis/women" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-tennis-men-finals" path="/sports/tennis/men-finals" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-tennis-women-finals" path="/sports/tennis/women-finals" element={<GenericSubcategoryPage />} />,
+
+  // Golf nested routes
+  <Route key="sports-golf" path="/sports/golf" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-ryder-cup" path="/sports/ryder-cup" element={<GenericSubcategoryPage />} />,
+
+  // Olympics nested routes
+  <Route key="sports-olympics-track" path="/sports/olympics/track" element={<GenericSubcategoryPage />} />,
+
+  // Volleyball nested routes
+  <Route key="sports-volleyball-amateur" path="/sports/volleyball/amateur" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-volleyball-beach" path="/sports/volleyball/beach" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-volleyball-pro" path="/sports/volleyball/pro" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-volleyball-tournament" path="/sports/volleyball/tournament" element={<GenericSubcategoryPage />} />,
+
+  // Water sports nested routes
+  <Route key="sports-water" path="/sports/water" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-swimming" path="/sports/swimming" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-diving" path="/sports/diving" element={<GenericSubcategoryPage />} />,
+
+  // Swim nested routes
+  <Route key="swim-diving" path="/swim/diving" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-plunge" path="/swim/plunge" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-plummet" path="/swim/plummet" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-jump" path="/swim/jump" element={<GenericSubcategoryPage />} />,
+  <Route key="swim-freestyle" path="/swim/freestyle" element={<GenericSubcategoryPage />} />,
+
+  // Other sports nested routes
+  <Route key="sports-other" path="/sports/other" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-horses" path="/sports/horses" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-fans" path="/sports/fans" element={<GenericSubcategoryPage />} />,
 ];
