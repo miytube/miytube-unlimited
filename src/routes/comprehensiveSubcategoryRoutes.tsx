@@ -854,4 +854,117 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="sports-other" path="/sports/other" element={<GenericSubcategoryPage />} />,
   <Route key="sports-horses" path="/sports/horses" element={<GenericSubcategoryPage />} />,
   <Route key="sports-fans" path="/sports/fans" element={<GenericSubcategoryPage />} />,
+
+  // ========== ADDITIONAL MISSING SIDEBAR ROUTES ==========
+  
+  // News & Politics nested routes
+  <Route key="news" path="/news" element={<GenericSubcategoryPage />} />,
+  <Route key="news-breaking" path="/news/breaking" element={<GenericSubcategoryPage />} />,
+  <Route key="news-politics" path="/news/politics" element={<GenericSubcategoryPage />} />,
+  <Route key="news-world" path="/news/world" element={<GenericSubcategoryPage />} />,
+  <Route key="news-local" path="/news/local" element={<GenericSubcategoryPage />} />,
+  <Route key="news-shows" path="/news/shows" element={<GenericSubcategoryPage />} />,
+  <Route key="news-podcasts" path="/news/podcasts" element={<GenericSubcategoryPage />} />,
+  
+  // Senate & House nested routes
+  <Route key="senate" path="/senate" element={<GenericSubcategoryPage />} />,
+  <Route key="senate-house" path="/senate/house" element={<GenericSubcategoryPage />} />,
+  <Route key="senate-sessions" path="/senate/sessions" element={<GenericSubcategoryPage />} />,
+  
+  // Protesters nested routes
+  <Route key="protesters-demonstrators" path="/protesters/demonstrators" element={<GenericSubcategoryPage />} />,
+  <Route key="protesters-rallies" path="/protesters/rallies" element={<GenericSubcategoryPage />} />,
+  
+  // Speeches nested routes (additional)
+  <Route key="speeches-arguments" path="/speeches/arguments" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-commencement" path="/speeches/commencement" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-eulogy" path="/speeches/eulogy" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-informative" path="/speeches/informative" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-motivational" path="/speeches/motivational" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-persuasive" path="/speeches/persuasive" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-motivation" path="/speeches/motivation" element={<GenericSubcategoryPage />} />,
+  
+  // Journalist nested routes
+  <Route key="journalist" path="/journalist" element={<GenericSubcategoryPage />} />,
+  <Route key="journalist-correspondent" path="/journalist/correspondent" element={<GenericSubcategoryPage />} />,
+  
+  // Mammals nested routes
+  <Route key="mammals-primates" path="/mammals/primates" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-carnivores" path="/mammals/carnivores" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-rodents" path="/mammals/rodents" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-marine-mammals" path="/mammals/marine-mammals" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-marsupials" path="/mammals/marsupials" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-bats" path="/mammals/bats" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-elephants" path="/mammals/elephants" element={<GenericSubcategoryPage />} />,
+  <Route key="mammals-ungulates" path="/mammals/ungulates" element={<GenericSubcategoryPage />} />,
+  
+  // Non-Mammals nested routes
+  <Route key="non-mammals" path="/non-mammals" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-fish" path="/non-mammals/fish" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-birds" path="/non-mammals/birds" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-reptiles" path="/non-mammals/reptiles" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-amphibians" path="/non-mammals/amphibians" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-arthropods" path="/non-mammals/arthropods" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-mollusks" path="/non-mammals/mollusks" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-echinoderms" path="/non-mammals/echinoderms" element={<GenericSubcategoryPage />} />,
+  <Route key="non-mammals-invertebrates" path="/non-mammals/invertebrates" element={<GenericSubcategoryPage />} />,
+  
+  // Travel & Events additional nested routes
+  <Route key="travel-country-foods" path="/travel/country-foods" element={<GenericSubcategoryPage />} />,
+  <Route key="travel-hotels-expensive" path="/travel/hotels-expensive" element={<GenericSubcategoryPage />} />,
+  <Route key="travel-hotels-unique" path="/travel/hotels-unique" element={<GenericSubcategoryPage />} />,
+  <Route key="travel-nightlife" path="/travel/nightlife" element={<GenericSubcategoryPage />} />,
+  
+  // Beaches nested routes
+  <Route key="beaches-tropical" path="/beaches/tropical" element={<GenericSubcategoryPage />} />,
+  <Route key="beaches-surfing" path="/beaches/surfing" element={<GenericSubcategoryPage />} />,
+  <Route key="beaches-resorts" path="/beaches/resorts" element={<GenericSubcategoryPage />} />,
+  
+  // Airports additional nested routes
+  <Route key="airports-security" path="/airports/security" element={<GenericSubcategoryPage />} />,
+  <Route key="airports-lounges" path="/airports/lounges" element={<GenericSubcategoryPage />} />,
+  
+  // Restaurants additional nested routes
+  <Route key="restaurants-reviews" path="/restaurants/reviews" element={<GenericSubcategoryPage />} />,
+  <Route key="restaurants-celebrity-chefs" path="/restaurants/celebrity-chefs" element={<GenericSubcategoryPage />} />,
+  
+  // Hollywood nested routes (from sidebar)
+  <Route key="hollywood-bios" path="/hollywood/bios" element={<GenericSubcategoryPage />} />,
+  <Route key="hollywood-news" path="/hollywood/news" element={<GenericSubcategoryPage />} />,
+  <Route key="hollywood-interviews" path="/hollywood/interviews" element={<GenericSubcategoryPage />} />,
+  
+  // Music additional nested routes
+  <Route key="music-hiphop" path="/music/hiphop" element={<GenericSubcategoryPage />} />,
+  <Route key="music-heavy-metal" path="/music/heavy-metal" element={<GenericSubcategoryPage />} />,
+  <Route key="music-rnb" path="/music/rnb" element={<GenericSubcategoryPage />} />,
+  <Route key="music-history" path="/music/history" element={<GenericSubcategoryPage />} />,
+  <Route key="music-international" path="/music/international" element={<GenericSubcategoryPage />} />,
+  <Route key="music-mandopop" path="/music/mandopop" element={<GenericSubcategoryPage />} />,
+  <Route key="music-latin" path="/music/latin" element={<GenericSubcategoryPage />} />,
+  <Route key="music-lyrics" path="/music/lyrics" element={<GenericSubcategoryPage />} />,
+  <Route key="music-lyrics-mandopop" path="/music/lyrics/mandopop" element={<GenericSubcategoryPage />} />,
+  <Route key="music-lyrics-spanish" path="/music/lyrics/spanish" element={<GenericSubcategoryPage />} />,
+  <Route key="music-artists-challenges" path="/music-artists/challenges" element={<GenericSubcategoryPage />} />,
+  <Route key="music-instruments-nested" path="/music/instruments" element={<GenericSubcategoryPage />} />,
+  <Route key="music-instruments-players" path="/music/instruments/players" element={<GenericSubcategoryPage />} />,
+  
+  // Stocks nested routes
+  <Route key="stocks-news" path="/stocks/news" element={<GenericSubcategoryPage />} />,
+  <Route key="stocks-crypto" path="/stocks/crypto" element={<GenericSubcategoryPage />} />,
+  
+  // Cryptocurrency routes
+  <Route key="cryptocurrency" path="/cryptocurrency" element={<GenericSubcategoryPage />} />,
+  <Route key="cryptocurrency-bitcoin" path="/cryptocurrency/bitcoin" element={<GenericSubcategoryPage />} />,
+  <Route key="cryptocurrency-ethereum" path="/cryptocurrency/ethereum" element={<GenericSubcategoryPage />} />,
+  <Route key="cryptocurrency-news" path="/cryptocurrency/news" element={<GenericSubcategoryPage />} />,
+  <Route key="cryptocurrency-trading" path="/cryptocurrency/trading" element={<GenericSubcategoryPage />} />,
+  
+  // AI routes (additional)
+  <Route key="ai-news" path="/ai/news" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-tutorials" path="/ai/tutorials" element={<GenericSubcategoryPage />} />,
+  <Route key="ai-products" path="/ai/products" element={<GenericSubcategoryPage />} />,
+  
+  // Radio additional routes
+  <Route key="radio-news" path="/radio/news" element={<GenericSubcategoryPage />} />,
 ];
+

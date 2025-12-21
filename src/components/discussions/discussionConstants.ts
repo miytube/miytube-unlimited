@@ -65,4 +65,10 @@ export const CATEGORIES = [
   'Health',
   'Culture',
   'Education',
+  'News',
+  'Stocks',
+  'Cryptocurrencies',
+  'Artificial Intelligence',
+  'Business',
+  'Entertainment',
 ];
