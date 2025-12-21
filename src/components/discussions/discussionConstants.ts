@@ -67,6 +67,7 @@ export const CATEGORIES = [
   'Education',
   'Entertainment',
   'Health',
+  'Money',
   'News',
   'Politics',
   'Stocks',
