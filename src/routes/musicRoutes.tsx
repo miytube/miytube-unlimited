@@ -13,7 +13,8 @@ const musicGenres = [
   'soundtracks', 'parody', 'pop', 'rap-reggaeton', 'relaxation', 'salsa',
   'soul-train', 'garage', 'artists-interviews', 'artists-news', 'challenges',
   'christian', 'r-and-b', 'rock', 'spanish', 'chinese', 'soul', 'jazz', 'playlists',
-  'hiphop', 'electronic', 'indie', 'reggae', 'latin', 'punk', 'metal'
+  'hiphop', 'electronic', 'indie', 'reggae', 'latin', 'punk', 'metal',
+  'grunge', 'rock-grunge', 'alternative-grunge', 'classic-grunge', 'post-grunge'
 ];
 
 export const musicRoutes = [
