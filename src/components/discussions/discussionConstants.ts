@@ -83,36 +83,6 @@ export const INITIAL_DISCUSSIONS: Discussion[] = [
     likes: 89,
     timestamp: '1 day ago',
   },
-  {
-    id: 9,
-    category: 'Music',
-    title: 'The grunge revival - is it happening?',
-    author: 'SeattleSound',
-    content: 'Seeing so many new bands with that classic grunge sound. Nirvana, Pearl Jam vibes are back. What new grunge bands are you listening to?',
-    replies: 26,
-    likes: 58,
-    timestamp: '5 hours ago',
-  },
-  {
-    id: 10,
-    category: 'Music',
-    title: 'Best alternative rock albums of the decade',
-    author: 'AltRocker',
-    content: 'From Radiohead to Arctic Monkeys, alternative rock keeps evolving. What are your top picks for must-listen albums?',
-    replies: 52,
-    likes: 94,
-    timestamp: '12 hours ago',
-  },
-  {
-    id: 11,
-    category: 'Music',
-    title: 'Classic rock vs modern rock - the endless debate',
-    author: 'RockLegend',
-    content: 'Led Zeppelin or Foo Fighters? Can modern rock ever match the classics? Let\'s discuss the evolution of rock music.',
-    replies: 67,
-    likes: 112,
-    timestamp: '1 day ago',
-  },
 ];
 
 // Updated categories to focus on world events and personal impact
