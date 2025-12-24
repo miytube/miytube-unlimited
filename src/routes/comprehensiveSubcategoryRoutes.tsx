@@ -966,5 +966,32 @@ export const comprehensiveSubcategoryRoutes = [
   
   // Radio additional routes
   <Route key="radio-news" path="/radio/news" element={<GenericSubcategoryPage />} />,
+  
+  // Missing travel routes from sidebar
+  <Route key="travel-country-foods" path="/travel/country-foods" element={<GenericSubcategoryPage />} />,
+  <Route key="travel-hotels-expensive" path="/travel/hotels-expensive" element={<GenericSubcategoryPage />} />,
+  <Route key="travel-hotels-unique" path="/travel/hotels-unique" element={<GenericSubcategoryPage />} />,
+  <Route key="travel-nightlife" path="/travel/nightlife" element={<GenericSubcategoryPage />} />,
+  
+  // Missing film routes from sidebar
+  <Route key="film-action-crime" path="/film/action-crime" element={<GenericSubcategoryPage />} />,
+  <Route key="film-comedy-drama" path="/film/comedy-drama" element={<GenericSubcategoryPage />} />,
+  <Route key="film-crime-drama" path="/film/crime-drama" element={<GenericSubcategoryPage />} />,
+  <Route key="film-clips" path="/film/clips" element={<GenericSubcategoryPage />} />,
+  
+  // Missing entertainment routes from sidebar
+  <Route key="entertainment-podcast" path="/entertainment/podcast" element={<GenericSubcategoryPage />} />,
+  
+  // Missing music routes from sidebar (grunge categories)
+  <Route key="music-grunge-nested" path="/music/grunge" element={<GenericSubcategoryPage />} />,
+  <Route key="music-rock-grunge" path="/music/rock-grunge" element={<GenericSubcategoryPage />} />,
+  <Route key="music-alternative-grunge" path="/music/alternative-grunge" element={<GenericSubcategoryPage />} />,
+  <Route key="music-classic-grunge" path="/music/classic-grunge" element={<GenericSubcategoryPage />} />,
+  <Route key="music-post-grunge" path="/music/post-grunge" element={<GenericSubcategoryPage />} />,
+  <Route key="music-funk-nested" path="/music/funk" element={<GenericSubcategoryPage />} />,
+  <Route key="music-rap-nested" path="/music/rap" element={<GenericSubcategoryPage />} />,
+  
+  // Missing travel-events route
+  <Route key="travel-events" path="/travel-events" element={<GenericSubcategoryPage />} />,
 ];
 
