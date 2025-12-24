@@ -19,6 +19,16 @@ export const musicContentTypes: Record<string, ContentType> = {
       { id: 'rock', name: 'Rock', subcategories: [
         { id: 'alt-rock', name: 'Alternative Rock' },
         { id: 'classic-rock', name: 'Classic Rock' },
+        { id: 'grunge', name: 'Grunge' },
+        { id: 'hard-rock', name: 'Hard Rock' },
+        { id: 'punk-rock', name: 'Punk Rock' },
+        { id: 'progressive-rock', name: 'Progressive Rock' },
+      ]},
+      { id: 'alternative', name: 'Alternative', subcategories: [
+        { id: 'indie-alternative', name: 'Indie Alternative' },
+        { id: 'post-punk', name: 'Post-Punk' },
+        { id: 'shoegaze', name: 'Shoegaze' },
+        { id: 'new-wave', name: 'New Wave' },
       ]},
       { id: 'hiphop', name: 'Hip Hop', subcategories: [
         { id: 'trap', name: 'Trap' },
