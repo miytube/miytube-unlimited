@@ -42,6 +42,33 @@ export const MusicDropdown: React.FC = () => {
                   </NavigationMenuLink>
                   <NavigationMenuLink asChild>
                     <Link 
+                      to="/music/grunge" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Headphones className="h-4 w-4" />
+                      <span>Grunge</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/music/rock-grunge" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Headphones className="h-4 w-4" />
+                      <span>Rock Grunge</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
+                      to="/music/alternative-grunge" 
+                      className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
+                    >
+                      <Headphones className="h-4 w-4" />
+                      <span>Alternative Grunge</span>
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link 
                       to="/music/classical" 
                       className="flex items-center gap-2 p-2 hover:bg-accent rounded-md text-sm"
                     >
