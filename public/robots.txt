@@ -4,12 +4,16 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Sitemap Index (recommended - splits into separate sitemaps)
+Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-index
+
+# Individual Sitemaps
+Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-static
+Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-videos
+Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-music
+
 # Static sitemap (fallback)
 Sitemap: https://miytube.com/sitemap.xml
-
-# Dynamic sitemap (auto-updates with new videos)
-Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap
 
 # Disallow admin and private pages
 Disallow: /admin
