@@ -5,3 +5,15 @@ verify_jwt = false
 
 [functions.sitemap]
 verify_jwt = false
+
+[functions.sitemap-index]
+verify_jwt = false
+
+[functions.sitemap-static]
+verify_jwt = false
+
+[functions.sitemap-videos]
+verify_jwt = false
+
+[functions.sitemap-music]
+verify_jwt = false
