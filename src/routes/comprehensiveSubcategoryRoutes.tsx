@@ -993,5 +993,117 @@ export const comprehensiveSubcategoryRoutes = [
   
   // Missing travel-events route
   <Route key="travel-events" path="/travel-events" element={<GenericSubcategoryPage />} />,
+  
+  // ========== FITNESS & HEALTH MISSING ROUTES ==========
+  // Fitness nested routes from sidebar
+  <Route key="fitness" path="/fitness" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-calisthenics" path="/fitness/calisthenics" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-weightlifting-prank" path="/fitness/weightlifting-prank" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-weightlifting-female" path="/fitness/weightlifting-female" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-weightlifting-male" path="/fitness/weightlifting-male" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workout" path="/fitness/workout" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workout-female" path="/fitness/workout-female" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-workout-male" path="/fitness/workout-male" element={<GenericSubcategoryPage />} />,
+  <Route key="fitness-yoga" path="/fitness/yoga" element={<GenericSubcategoryPage />} />,
+  
+  // Martial Arts nested routes from sidebar
+  <Route key="martial-arts-training" path="/martial-arts/training" element={<GenericSubcategoryPage />} />,
+  
+  // Health nested routes from sidebar
+  <Route key="health" path="/health" element={<GenericSubcategoryPage />} />,
+  <Route key="health-reproductive" path="/health/reproductive" element={<GenericSubcategoryPage />} />,
+  <Route key="health-mental" path="/health/mental" element={<GenericSubcategoryPage />} />,
+  
+  // Meditation nested routes from sidebar
+  <Route key="meditation-guided" path="/meditation/guided" element={<GenericSubcategoryPage />} />,
+  <Route key="meditation-sleep" path="/meditation/sleep" element={<GenericSubcategoryPage />} />,
+  
+  // Success nested routes from sidebar
+  <Route key="success" path="/success" element={<GenericSubcategoryPage />} />,
+  <Route key="success-achieve" path="/success/achieve" element={<GenericSubcategoryPage />} />,
+  <Route key="success-motivation" path="/success/motivation" element={<GenericSubcategoryPage />} />,
+  
+  // ========== GAMING & HOBBIES MISSING ROUTES ==========
+  <Route key="gaming-xbox" path="/gaming/xbox" element={<GenericSubcategoryPage />} />,
+  <Route key="magic-tricks-card" path="/magic-tricks/card" element={<GenericSubcategoryPage />} />,
+  <Route key="game-challenges" path="/game-challenges" element={<GenericSubcategoryPage />} />,
+  <Route key="game-challenges-toys" path="/game-challenges/toys" element={<GenericSubcategoryPage />} />,
+  <Route key="game-challenges-experiments" path="/game-challenges/experiments" element={<GenericSubcategoryPage />} />,
+  <Route key="riddles-conundrum" path="/riddles/conundrum" element={<GenericSubcategoryPage />} />,
+  
+  // ========== TRANSPORT & VEHICLES MISSING ROUTES ==========
+  <Route key="autos-vehicles" path="/autos-vehicles" element={<GenericSubcategoryPage />} />,
+  <Route key="autos-vehicles-supercars" path="/autos-vehicles/supercars" element={<GenericSubcategoryPage />} />,
+  <Route key="autos-vehicles-expensive-cars" path="/autos-vehicles/expensive-cars" element={<GenericSubcategoryPage />} />,
+  <Route key="autos-vehicles-car-repairs" path="/autos-vehicles/car-repairs" element={<GenericSubcategoryPage />} />,
+  <Route key="autos-vehicles-car-hacks" path="/autos-vehicles/car-hacks" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-railroad" path="/trains/railroad" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-railway" path="/trains/railway" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-steam" path="/trains/steam" element={<GenericSubcategoryPage />} />,
+  <Route key="trains-freight" path="/trains/freight" element={<GenericSubcategoryPage />} />,
+  <Route key="shipping-cargo-ships" path="/shipping/cargo-ships" element={<GenericSubcategoryPage />} />,
+  <Route key="shipping-oil-tankers" path="/shipping/oil-tankers" element={<GenericSubcategoryPage />} />,
+  <Route key="boats-all" path="/boats/all" element={<GenericSubcategoryPage />} />,
+  <Route key="boats-sailboats" path="/boats/sailboats" element={<GenericSubcategoryPage />} />,
+  <Route key="boats-speedboats" path="/boats/speedboats" element={<GenericSubcategoryPage />} />,
+  
+  // ========== ENVIRONMENT & WEATHER MISSING ROUTES ==========
+  <Route key="weather-forecast" path="/weather/forecast" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-climate" path="/weather/climate" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-extreme" path="/weather/extreme" element={<GenericSubcategoryPage />} />,
+  <Route key="disasters-landslides" path="/disasters/landslides" element={<GenericSubcategoryPage />} />,
+  <Route key="engineering-disasters-civil" path="/engineering-disasters/civil" element={<GenericSubcategoryPage />} />,
+  <Route key="engineering-disasters-mechanical" path="/engineering-disasters/mechanical" element={<GenericSubcategoryPage />} />,
+  <Route key="engineering-disasters-electrical" path="/engineering-disasters/electrical" element={<GenericSubcategoryPage />} />,
+  <Route key="engineering-disasters-chemical" path="/engineering-disasters/chemical" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-flash-flood" path="/floods/flash-flood" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-deluge" path="/floods/deluge" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-downpour" path="/floods/downpour" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-drown" path="/floods/drown" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-engulf" path="/floods/engulf" element={<GenericSubcategoryPage />} />,
+  <Route key="floods-stream" path="/floods/stream" element={<GenericSubcategoryPage />} />,
+  <Route key="oceans-marine-life" path="/oceans/marine-life" element={<GenericSubcategoryPage />} />,
+  <Route key="oceans-deep-sea" path="/oceans/deep-sea" element={<GenericSubcategoryPage />} />,
+  <Route key="oceans-coral-reefs" path="/oceans/coral-reefs" element={<GenericSubcategoryPage />} />,
+  <Route key="oceans-exploration" path="/oceans/exploration" element={<GenericSubcategoryPage />} />,
+  <Route key="shipping-ports" path="/shipping-ports" element={<GenericSubcategoryPage />} />,
+  <Route key="shipping-ports-cargo" path="/shipping-ports/cargo" element={<GenericSubcategoryPage />} />,
+  <Route key="shipping-ports-cruise" path="/shipping-ports/cruise" element={<GenericSubcategoryPage />} />,
+  <Route key="shipping-ports-history" path="/shipping-ports/history" element={<GenericSubcategoryPage />} />,
+  
+  // ========== FOOD & DRINKS MISSING ROUTES ==========
+  <Route key="foods-tuna" path="/foods/tuna" element={<GenericSubcategoryPage />} />,
+  <Route key="foods-weight-gain" path="/foods/weight-gain" element={<GenericSubcategoryPage />} />,
+  
+  // ========== BEACHES MISSING ROUTES ==========
+  <Route key="beaches" path="/beaches" element={<GenericSubcategoryPage />} />,
+  
+  // ========== FILM & ANIMATION MISSING ROUTES ==========
+  <Route key="film-animation-movies" path="/film-animation/movies" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror" path="/film/horror" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-terror" path="/film/horror/terror" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-fear" path="/film/horror/fear" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-fright" path="/film/horror/fright" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-dread" path="/film/horror/dread" element={<GenericSubcategoryPage />} />,
+  <Route key="film-horror-slasher" path="/film/horror/slasher" element={<GenericSubcategoryPage />} />,
+  <Route key="film-spaghetti-westerns" path="/film/spaghetti-westerns" element={<GenericSubcategoryPage />} />,
+  <Route key="film-modern-westerns" path="/film/modern-westerns" element={<GenericSubcategoryPage />} />,
+  <Route key="film-western-comedies" path="/film/western-comedies" element={<GenericSubcategoryPage />} />,
+  <Route key="film-neo-westerns" path="/film/neo-westerns" element={<GenericSubcategoryPage />} />,
+  <Route key="film-acid-westerns" path="/film/acid-westerns" element={<GenericSubcategoryPage />} />,
+  
+  // ========== SWIM MAIN ROUTE ==========
+  <Route key="swim" path="/swim" element={<GenericSubcategoryPage />} />,
+  
+  // ========== SPORTS MISSING ROUTES ==========
+  <Route key="sports-mma" path="/sports/mma" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-volleyball" path="/sports/volleyball" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-kickboxing" path="/sports/kickboxing" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-pga" path="/sports/pga" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-arenas" path="/sports/arenas" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-comedy" path="/sports/comedy" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-interviews" path="/sports/interviews" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-weightlifting" path="/sports/weightlifting" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-track-field" path="/sports/track-field" element={<GenericSubcategoryPage />} />,
 ];
 
