@@ -98,6 +98,29 @@ const staticRoutes = [
 
 const DOMAIN = 'https://miytube.com'
 
+// Escape XML special characters
+function escapeXml(text: string): string {
+  if (!text) return ''
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
+// Parse duration string (e.g., "3:45" or "1:23:45") to seconds
+function parseDurationToSeconds(duration: string | null): number | null {
+  if (!duration) return null
+  const parts = duration.split(':').map(Number)
+  if (parts.length === 2) {
+    return parts[0] * 60 + parts[1]
+  } else if (parts.length === 3) {
+    return parts[0] * 3600 + parts[1] * 60 + parts[2]
+  }
+  return null
+}
+
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -105,26 +128,26 @@ Deno.serve(async (req) => {
   }
 
   try {
-    console.log('Generating dynamic sitemap...')
+    console.log('Generating dynamic video sitemap...')
     
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
     const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    // Fetch all uploaded videos
+    // Fetch all uploaded videos with full details
     const { data: videos, error: videosError } = await supabase
       .from('uploaded_videos')
-      .select('id, title, updated_at, category')
+      .select('id, title, description, thumbnail_url, video_url, cloud_url, duration, category, tags, created_at, updated_at, views')
       .order('created_at', { ascending: false })
 
     if (videosError) {
       console.error('Error fetching videos:', videosError)
     }
 
-    // Fetch all music videos
+    // Fetch all music videos with full details
     const { data: musicVideos, error: musicError } = await supabase
       .from('music_videos')
-      .select('id, title, updated_at, category')
+      .select('id, title, description, thumbnail_url, video_url, duration, category, tags, created_at, updated_at, views')
       .order('created_at', { ascending: false })
 
     if (musicError) {
@@ -133,12 +156,13 @@ Deno.serve(async (req) => {
 
     const today = new Date().toISOString().split('T')[0]
 
-    // Generate XML
+    // Generate XML with video sitemap namespace
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 `
 
-    // Add static routes
+    // Add static routes (without video extension)
     for (const route of staticRoutes) {
       xml += `  <url>
     <loc>${DOMAIN}${route.path}</loc>
@@ -149,35 +173,76 @@ Deno.serve(async (req) => {
 `
     }
 
-    // Add dynamic video pages
+    // Add dynamic video pages with video sitemap extension
     if (videos && videos.length > 0) {
       for (const video of videos) {
         const lastmod = video.updated_at 
           ? new Date(video.updated_at).toISOString().split('T')[0] 
           : today
         
+        const publicationDate = video.created_at
+          ? new Date(video.created_at).toISOString()
+          : new Date().toISOString()
+
+        const thumbnailUrl = video.thumbnail_url || `${DOMAIN}/placeholder.svg`
+        const contentUrl = video.cloud_url || video.video_url || ''
+        const durationSeconds = parseDurationToSeconds(video.duration)
+        const description = video.description || video.title || 'Video on MiyTube'
+        const tags = video.tags || []
+        const viewCount = video.views || 0
+        
         xml += `  <url>
     <loc>${DOMAIN}/watch/${video.id}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>${escapeXml(thumbnailUrl)}</video:thumbnail_loc>
+      <video:title>${escapeXml(video.title)}</video:title>
+      <video:description>${escapeXml(description.substring(0, 2048))}</video:description>
+      <video:player_loc>${DOMAIN}/watch/${video.id}</video:player_loc>
+${contentUrl ? `      <video:content_loc>${escapeXml(contentUrl)}</video:content_loc>\n` : ''}${durationSeconds ? `      <video:duration>${durationSeconds}</video:duration>\n` : ''}      <video:publication_date>${publicationDate}</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
+${viewCount > 0 ? `      <video:view_count>${viewCount}</video:view_count>\n` : ''}${video.category ? `      <video:category>${escapeXml(video.category)}</video:category>\n` : ''}${tags.length > 0 ? tags.slice(0, 32).map(tag => `      <video:tag>${escapeXml(tag)}</video:tag>`).join('\n') + '\n' : ''}    </video:video>
   </url>
 `
       }
     }
 
-    // Add dynamic music video pages
+    // Add dynamic music video pages with video sitemap extension
     if (musicVideos && musicVideos.length > 0) {
       for (const video of musicVideos) {
         const lastmod = video.updated_at 
           ? new Date(video.updated_at).toISOString().split('T')[0] 
           : today
         
+        const publicationDate = video.created_at
+          ? new Date(video.created_at).toISOString()
+          : new Date().toISOString()
+
+        const thumbnailUrl = video.thumbnail_url || `${DOMAIN}/placeholder.svg`
+        const contentUrl = video.video_url || ''
+        const durationSeconds = parseDurationToSeconds(video.duration)
+        const description = video.description || video.title || 'Music video on MiyTube'
+        const tags = video.tags || []
+        const viewCount = video.views || 0
+        
         xml += `  <url>
     <loc>${DOMAIN}/music/watch/${video.id}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+    <video:video>
+      <video:thumbnail_loc>${escapeXml(thumbnailUrl)}</video:thumbnail_loc>
+      <video:title>${escapeXml(video.title)}</video:title>
+      <video:description>${escapeXml(description.substring(0, 2048))}</video:description>
+      <video:player_loc>${DOMAIN}/music/watch/${video.id}</video:player_loc>
+${contentUrl ? `      <video:content_loc>${escapeXml(contentUrl)}</video:content_loc>\n` : ''}${durationSeconds ? `      <video:duration>${durationSeconds}</video:duration>\n` : ''}      <video:publication_date>${publicationDate}</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
+${viewCount > 0 ? `      <video:view_count>${viewCount}</video:view_count>\n` : ''}      <video:category>Music</video:category>
+${tags.length > 0 ? tags.slice(0, 32).map(tag => `      <video:tag>${escapeXml(tag)}</video:tag>`).join('\n') + '\n' : ''}    </video:video>
   </url>
 `
       }
@@ -185,7 +250,7 @@ Deno.serve(async (req) => {
 
     xml += `</urlset>`
 
-    console.log(`Sitemap generated with ${staticRoutes.length} static routes, ${videos?.length || 0} videos, ${musicVideos?.length || 0} music videos`)
+    console.log(`Video sitemap generated with ${staticRoutes.length} static routes, ${videos?.length || 0} videos, ${musicVideos?.length || 0} music videos`)
 
     return new Response(xml, {
       headers: {
