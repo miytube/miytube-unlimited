@@ -2,3 +2,6 @@ project_id = "dfwbddmckfzfocpruvtj"
 
 [functions.analyze-music-video]
 verify_jwt = false
+
+[functions.sitemap]
+verify_jwt = false
