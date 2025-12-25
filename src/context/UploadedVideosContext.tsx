@@ -3,6 +3,9 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
 import { useUploadProgress } from './UploadProgressContext';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
+
+type DuplicateCheckResult = { isDuplicate: false } | { isDuplicate: true; reason: 'session' | 'location' };
 
 export interface UploadedVideo {
   id: string;
@@ -201,7 +204,7 @@ const saveVideoToSupabase = async (video: {
   fileName?: string;
   fileSize?: number;
   fileType?: string;
-}): Promise<void> => {
+}): Promise<DuplicateCheckResult> => {
   // Get client IP for duplicate detection
   const uploaderIp = await getClientIp();
   
@@ -214,7 +217,7 @@ const saveVideoToSupabase = async (video: {
   
   if (existingById) {
     console.log('Video already exists in Supabase with local_id:', video.localId);
-    return;
+    return { isDuplicate: true, reason: 'session' };
   }
   
   // Check if same title was uploaded from same IP (same location duplicate check)
@@ -228,7 +231,7 @@ const saveVideoToSupabase = async (video: {
     
     if (existingByIpTitle) {
       console.log('Duplicate detected: Same title from same IP address. Title:', video.title, 'IP:', uploaderIp);
-      return;
+      return { isDuplicate: true, reason: 'location' };
     }
   }
   
@@ -258,6 +261,8 @@ const saveVideoToSupabase = async (video: {
   } else {
     console.log('Saved video to Supabase cloud backup with local_id:', video.localId, 'from IP:', uploaderIp);
   }
+  
+  return { isDuplicate: false };
 };
 
 const loadVideosFromSupabase = async (): Promise<UploadedVideo[]> => {
@@ -601,7 +606,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       }
       
       // Save to Supabase cloud backup
-      await saveVideoToSupabase({
+      const duplicateResult = await saveVideoToSupabase({
         localId: videoId,
         title: newVideo.title,
         description: newVideo.description,
@@ -615,6 +620,17 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         isYouTubeEmbed: true,
         youtubeId,
       });
+      
+      if (duplicateResult.isDuplicate) {
+        toast({
+          title: "Duplicate Video Detected",
+          description: duplicateResult.reason === 'location' 
+            ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+            : "This video has already been uploaded.",
+          variant: "destructive",
+        });
+        return;
+      }
       
       setUploadedVideos(prev => [newVideo, ...prev]);
       return;
@@ -667,7 +683,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       }
       
       // Save to Supabase cloud backup
-      await saveVideoToSupabase({
+      const duplicateResult = await saveVideoToSupabase({
         localId: videoId,
         title: newVideo.title,
         description: newVideo.description,
@@ -679,6 +695,17 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         cloudUrl: importUrl,
         isCloudStored: true,
       });
+      
+      if (duplicateResult.isDuplicate) {
+        toast({
+          title: "Duplicate Video Detected",
+          description: duplicateResult.reason === 'location' 
+            ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+            : "This video has already been uploaded.",
+          variant: "destructive",
+        });
+        return;
+      }
       
       setUploadedVideos(prev => [newVideo, ...prev]);
       return;
@@ -758,7 +785,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     }
     
     // Save to Supabase cloud backup
-    await saveVideoToSupabase({
+    const duplicateResult = await saveVideoToSupabase({
       localId: videoId,
       title: newVideo.title,
       description: newVideo.description,
@@ -773,6 +800,21 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       fileSize: file.size,
       fileType: file.type,
     });
+    
+    if (duplicateResult.isDuplicate) {
+      toast({
+        title: "Duplicate Video Detected",
+        description: duplicateResult.reason === 'location' 
+          ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+          : "This video has already been uploaded.",
+        variant: "destructive",
+      });
+      // Clean up the already uploaded cloud video
+      if (cloudUrl) {
+        await deleteVideoFromCloud(cloudUrl).catch(() => {});
+      }
+      return;
+    }
     
     console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");
     setUploadedVideos(prev => [newVideo, ...prev]);
