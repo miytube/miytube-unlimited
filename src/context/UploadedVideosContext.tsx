@@ -187,6 +187,18 @@ const saveVideoToSupabase = async (video: {
   fileSize?: number;
   fileType?: string;
 }): Promise<void> => {
+  // Check if a video with this local_id already exists to prevent duplicates
+  const { data: existing } = await supabase
+    .from('uploaded_videos')
+    .select('id')
+    .eq('local_id', video.localId)
+    .maybeSingle();
+  
+  if (existing) {
+    console.log('Video already exists in Supabase with local_id:', video.localId);
+    return;
+  }
+  
   // Don't pass 'id' - let Supabase generate UUID automatically
   // Store local_id to maintain URL compatibility
   const { error } = await supabase.from('uploaded_videos').insert({
