@@ -5,7 +5,11 @@ User-agent: *
 Allow: /
 
 # Sitemap location
+# Static sitemap (fallback)
 Sitemap: https://miytube.com/sitemap.xml
+
+# Dynamic sitemap (auto-updates with new videos)
+Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap
 
 # Disallow admin and private pages
 Disallow: /admin
