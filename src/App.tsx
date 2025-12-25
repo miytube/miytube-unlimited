@@ -7,6 +7,7 @@ import { UploadedVideosProvider } from "./context/UploadedVideosContext";
 import { UploadProgressProvider } from "./context/UploadProgressContext";
 import { AuthProvider } from "./hooks/useAuth";
 import AppRoutes from "./routes";
+import { AnalyticsTracker } from "./components/AnalyticsTracker";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
+              <AnalyticsTracker />
               <AppRoutes />
             </BrowserRouter>
           </UploadedVideosProvider>

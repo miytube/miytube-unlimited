@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      active_sessions: {
+        Row: {
+          created_at: string
+          current_page: string | null
+          id: string
+          last_active_at: string
+          session_id: string
+          user_id: string | null
+          visitor_ip: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_page?: string | null
+          id?: string
+          last_active_at?: string
+          session_id: string
+          user_id?: string | null
+          visitor_ip?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_page?: string | null
+          id?: string
+          last_active_at?: string
+          session_id?: string
+          user_id?: string | null
+          visitor_ip?: string | null
+        }
+        Relationships: []
+      }
       breaking_news: {
         Row: {
           category: string | null
@@ -181,6 +211,39 @@ export type Database = {
           video_url?: string | null
           views?: number
           watch_time_seconds?: number
+        }
+        Relationships: []
+      }
+      page_views: {
+        Row: {
+          created_at: string
+          id: string
+          page_path: string
+          referrer: string | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+          visitor_ip: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          page_path: string
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          visitor_ip?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          page_path?: string
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          visitor_ip?: string | null
         }
         Relationships: []
       }

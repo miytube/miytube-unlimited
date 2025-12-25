@@ -10,10 +10,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench } from 'lucide-react';
+import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity } from 'lucide-react';
 import { BreakingNewsManager } from '@/components/admin/BreakingNewsManager';
 import PartnerApplicationsManager from '@/components/admin/PartnerApplicationsManager';
 import { RepairMissingFilesManager } from '@/components/admin/RepairMissingFilesManager';
+import { AnalyticsDashboard } from '@/components/admin/AnalyticsDashboard';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -249,6 +250,10 @@ const Admin = () => {
               <Wrench className="h-4 w-4" />
               Repair Files
             </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Analytics
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="users" className="mt-6">
@@ -340,6 +345,18 @@ const Admin = () => {
 
           <TabsContent value="repair" className="mt-6">
             <RepairMissingFilesManager />
+          </TabsContent>
+
+          <TabsContent value="analytics" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Site Analytics</CardTitle>
+                <CardDescription>Real-time visitor tracking and page view statistics</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AnalyticsDashboard />
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
