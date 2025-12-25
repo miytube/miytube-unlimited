@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Pages -->
+  <url><loc>https://your-domain.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://your-domain.com/videos</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://your-domain.com/shorts</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://your-domain.com/trending</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://your-domain.com/search</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/upload</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/upload/video</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/upload/music</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://your-domain.com/contact</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://your-domain.com/terms</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://your-domain.com/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://your-domain.com/copyright</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://your-domain.com/advertising</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://your-domain.com/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/long-videos</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/news</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/talk-at-cha</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/educational</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/monetization</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://your-domain.com/watchlist</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
+  
+  <!-- Video Categories -->
+  <url><loc>https://your-domain.com/videos/latest</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/videos/featured</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/videos/most-viewed</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/videos/favorited</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/videos/liked</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/videos/commented</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/videos/promoted</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  
+  <!-- Music -->
+  <url><loc>https://your-domain.com/music</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://your-domain.com/music/rock</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/pop</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/hip-hop</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/rap</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/r-and-b</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/soul</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/country</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/blues</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/jazz</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/classical</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/folk</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/funk</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/metal</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/alternative</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/spanish</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/chinese</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/christian</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/christmas</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/soundtracks</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/relaxation</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/grunge</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/indie</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/reggae</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/latin</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/electronic</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/salsa</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music/reggaeton</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/music-meditation</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/musical-instruments</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Sports -->
+  <url><loc>https://your-domain.com/sports</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://your-domain.com/sports/boxing</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/boxing/professional</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/boxing/training</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/nba</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/sports/nfl</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/sports/mlb</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/sports/nhl</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/sports/mls</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/mma</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/tennis</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/golf</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/olympics</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/volleyball</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/wrestling</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/college</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/college/football</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/college/basketball</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/wnba</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sports/racing</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/water</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/sports/swimming</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/swimming</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/swim</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  
+  <!-- Gaming -->
+  <url><loc>https://your-domain.com/gaming</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/gaming/arcade</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/gaming/casino</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/gaming/console</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/gaming/cards</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/gaming/challenges</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/gaming/xbox</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/magic-tricks</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/riddles</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/toys</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Film & Animation -->
+  <url><loc>https://your-domain.com/film</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/film-animation</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/film/romance</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/action</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/comedy</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/drama</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/thriller</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/horror</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/documentary</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/gangsters</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/westerns</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/mystery</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film/war</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film-animation/action</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film-animation/cartoons</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film-animation/comedy</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/film-animation/adventure</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Entertainment -->
+  <url><loc>https://your-domain.com/entertainment</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/hollywood</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/hollywood/bios</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/hollywood/news</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/hollywood/interviews</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/talk-shows</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/reality-tv</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/game-shows</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/awards-shows</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/news-shows</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  
+  <!-- Comedy -->
+  <url><loc>https://your-domain.com/comedy</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/comedy/standup</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/comedy/roasts</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/comedy/snl</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/comedy/sitcom</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/comedy/pranks</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/pranks</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/funny</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/bloopers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/fails</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/comedians</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Audio -->
+  <url><loc>https://your-domain.com/audio</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/podcasts</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/audiobooks</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/sound-effects</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/asmr</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/nature-sounds</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Meditation & Fitness -->
+  <url><loc>https://your-domain.com/meditation</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/meditation/guided</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/meditation/sleep</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/physical-fitness</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/physical-fitness/calisthenics</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/physical-fitness/weight-lifting</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/physical-fitness/workout</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/physical-fitness/yoga</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/fitness/calisthenics</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/fitness/workout-female</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/fitness/workout-male</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/fitness/yoga</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/martial-arts</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/martial-arts/self-defense</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/martial-arts/mma</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Health -->
+  <url><loc>https://your-domain.com/health</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/health/mental</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/health/reproductive</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Business & Finance -->
+  <url><loc>https://your-domain.com/business</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/business/crypto</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/business/cryptocurrency</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/business/leadership</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/business/finance</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/business/services</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/business/farming</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/stocks</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/real-estate</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/real-estate/residential</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/real-estate/commercial</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/real-estate/luxury</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Military -->
+  <url><loc>https://your-domain.com/military</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/military/army</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/airforce</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/navy</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/coast-guard</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/marines</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/special-forces</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/veterans</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/history</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/equipment</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/training</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/pilots</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/aircrafts</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/ships</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/submarines</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/war</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/military/drones</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Crime & Justice -->
+  <url><loc>https://your-domain.com/courts</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/courts/indictment</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/courts/sentencing</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/courts/supreme</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/crime</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/crime/fraud</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/crime/gangs</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/police</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/police/chases</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/police/stops</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/jails</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/attorneys</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Weather & Disasters -->
+  <url><loc>https://your-domain.com/weather</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/weather/storms</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/weather/lightning</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/weather/forecast</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/disasters</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/disasters/avalanche</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/disasters/earthquakes</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/disasters/fires</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/disasters/hurricanes</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/disasters/volcano</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/disasters/floods</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/disasters/tornado</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/disasters/tsunami</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/floods</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/floods/flash-flood</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/engineering-disasters</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  
+  <!-- Animals & Nature -->
+  <url><loc>https://your-domain.com/pets-animals</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/pets-animals/amphibians</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/pets-animals/birds</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/pets-animals/fish</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/pets-animals/mammals</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/pets-animals/reptiles</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/mammals</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/mammals/primates</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/mammals/carnivores</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/non-mammals</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/plants</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/plants/herbs</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/plants/vegetables</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/fungi</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/oceans</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/oceans/marine-life</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/lakes-rivers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Travel & Places -->
+  <url><loc>https://your-domain.com/travel</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/travel/beaches</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/travel/cities</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/travel/hotels</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/travel-events</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/beaches</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Transport & Vehicles -->
+  <url><loc>https://your-domain.com/autos-vehicles</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/cars</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/cars/repairs</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/cars/racing</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/cars/drifting</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/cars/supercars</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/cars/expensive</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/motorcycles</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/trucks</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/trains</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/trains/commercial</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/trains/passenger</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/boats</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/boats/cruise</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/boats/yachts</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/shipping</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/shipping/ports</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/airplanes</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/airplanes/commercial</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/airplanes/cargo</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/airports</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/airports/passenger</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/airports/security</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/helicopters</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/drones</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Food & Drinks -->
+  <url><loc>https://your-domain.com/foods</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/foods/cooking</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/foods/seafood</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/foods/healthy</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/drinks</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/drinks/alcohol</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/restaurants</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  
+  <!-- Education & How-To -->
+  <url><loc>https://your-domain.com/education</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/education/anatomy</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/education/geography</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/education/medicine</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/education/religion</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/howto</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/howto/building</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/howto/cleaning</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/howto/electrical</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/how-to-style</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/kids</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/kids/education</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/kids/cartoons</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/kids-education</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/kids-education/alphabets</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- People & Lifestyle -->
+  <url><loc>https://your-domain.com/people</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/people-blogs</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/relationships</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/relationships/dating</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/family</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/family/roots</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/models</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/models/fashion</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/cosmetics</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/hair-beauty</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/babies</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/celebrities</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  
+  <!-- Speeches & Quotes -->
+  <url><loc>https://your-domain.com/speeches</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/speeches/commencement</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/speeches/motivational</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/quotes-poems</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Science & Technology -->
+  <url><loc>https://your-domain.com/science-tech</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://your-domain.com/science-tech/knowledge</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/science-tech/inventions</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/science-tech/gadgets</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/science-tech/experiments</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/ai</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/ai/chatbots</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/ai/robots</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/space</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/space/craft</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/space/universe</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/internet</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/cell-phone</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/experiments</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  
+  <!-- Other Categories -->
+  <url><loc>https://your-domain.com/documents</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/nonprofits</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/royal-security-guards</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/royal-security-guards/british</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/fire-department</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/success</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/dances</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/crazy</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/extreme</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/history</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/pictures</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/workers</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/advertising</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://your-domain.com/tv-shows</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://your-domain.com/animation</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+</urlset>
