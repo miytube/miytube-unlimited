@@ -225,7 +225,18 @@ const loadVideosFromSupabase = async (): Promise<UploadedVideo[]> => {
     return [];
   }
   
-  return (data || []).map(v => ({
+  // Deduplicate by local_id - keep only the first (most recent) entry for each local_id
+  const seenLocalIds = new Set<string>();
+  const uniqueData = (data || []).filter(v => {
+    const key = v.local_id || v.id;
+    if (seenLocalIds.has(key)) {
+      return false;
+    }
+    seenLocalIds.add(key);
+    return true;
+  });
+  
+  return uniqueData.map(v => ({
     // Use local_id as the ID if available, otherwise fall back to UUID
     id: v.local_id || v.id,
     file: null,
