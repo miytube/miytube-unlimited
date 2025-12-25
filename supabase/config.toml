@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.sitemap-music]
 verify_jwt = false
+
+[functions.get-client-ip]
+verify_jwt = false

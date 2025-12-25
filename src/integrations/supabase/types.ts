@@ -284,6 +284,7 @@ export type Database = {
           thumbnail_url: string | null
           title: string
           updated_at: string
+          uploader_ip: string | null
           user_id: string | null
           video_url: string | null
           views: number | null
@@ -307,6 +308,7 @@ export type Database = {
           thumbnail_url?: string | null
           title: string
           updated_at?: string
+          uploader_ip?: string | null
           user_id?: string | null
           video_url?: string | null
           views?: number | null
@@ -330,6 +332,7 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
+          uploader_ip?: string | null
           user_id?: string | null
           video_url?: string | null
           views?: number | null

@@ -169,6 +169,21 @@ const dataUrlToFile = (dataUrl: string, fileName: string, fileType: string): Fil
   return new File([u8arr], fileName, { type: fileType });
 };
 
+// Get client IP address for duplicate detection
+const getClientIp = async (): Promise<string> => {
+  try {
+    const { data, error } = await supabase.functions.invoke('get-client-ip');
+    if (error) {
+      console.error('Error getting client IP:', error);
+      return 'unknown';
+    }
+    return data?.ip || 'unknown';
+  } catch (err) {
+    console.error('Failed to get client IP:', err);
+    return 'unknown';
+  }
+};
+
 // Supabase cloud backup helpers
 const saveVideoToSupabase = async (video: {
   localId: string; // Local IndexedDB ID for logging
@@ -187,16 +202,34 @@ const saveVideoToSupabase = async (video: {
   fileSize?: number;
   fileType?: string;
 }): Promise<void> => {
-  // Check if a video with this local_id already exists to prevent duplicates
-  const { data: existing } = await supabase
+  // Get client IP for duplicate detection
+  const uploaderIp = await getClientIp();
+  
+  // Check if a video with this local_id already exists to prevent duplicates from same session
+  const { data: existingById } = await supabase
     .from('uploaded_videos')
     .select('id')
     .eq('local_id', video.localId)
     .maybeSingle();
   
-  if (existing) {
+  if (existingById) {
     console.log('Video already exists in Supabase with local_id:', video.localId);
     return;
+  }
+  
+  // Check if same title was uploaded from same IP (same location duplicate check)
+  if (uploaderIp !== 'unknown') {
+    const { data: existingByIpTitle } = await supabase
+      .from('uploaded_videos')
+      .select('id, title')
+      .eq('uploader_ip', uploaderIp)
+      .eq('title', video.title)
+      .maybeSingle();
+    
+    if (existingByIpTitle) {
+      console.log('Duplicate detected: Same title from same IP address. Title:', video.title, 'IP:', uploaderIp);
+      return;
+    }
   }
   
   // Don't pass 'id' - let Supabase generate UUID automatically
@@ -217,12 +250,13 @@ const saveVideoToSupabase = async (video: {
     file_name: video.fileName,
     file_size: video.fileSize,
     file_type: video.fileType,
+    uploader_ip: uploaderIp,
   });
   
   if (error) {
     console.error('Error saving video to Supabase:', error);
   } else {
-    console.log('Saved video to Supabase cloud backup with local_id:', video.localId);
+    console.log('Saved video to Supabase cloud backup with local_id:', video.localId, 'from IP:', uploaderIp);
   }
 };
 
