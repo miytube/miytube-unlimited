@@ -3,6 +3,9 @@ import { Input } from '@/components/ui/input';
 import { TagInput } from './TagInput';
 import { CategoryCombobox } from './CategoryCombobox';
 import { getSubcategoryOptionsForCategory } from '@/utils/subcategoryOptions';
+import { useAIAutoTag } from '@/hooks/useAIAutoTag';
+import { Button } from '@/components/ui/button';
+import { Sparkles, Loader2 } from 'lucide-react';
 
 interface Category {
   id: string;
@@ -43,9 +46,20 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   defaultDescription,
   defaultCategory
 }) => {
-  // Track custom categories added by user
   const [customCategories, setCustomCategories] = useState<Category[]>([]);
   const [customSubcategories, setCustomSubcategories] = useState<Array<{id: string, name: string}>>([]);
+  const { analyzeContent, isAnalyzing } = useAIAutoTag();
+
+  const handleAIAutoTag = async () => {
+    if (!videoTitle.trim()) return;
+    const result = await analyzeContent(videoTitle, videoDescription);
+    if (result) {
+      if (result.suggestedTags?.length) setTags([...new Set([...tags, ...result.suggestedTags])]);
+      if (result.suggestedCategory) setSelectedCategory(result.suggestedCategory.toLowerCase().replace(/\s+/g, '-'));
+      if (result.suggestedSubcategory) setSelectedSubcategory(result.suggestedSubcategory.toLowerCase().replace(/\s+/g, '-'));
+      if (result.improvedDescription && !videoDescription.trim()) setVideoDescription(result.improvedDescription);
+    }
+  };
 
   // Set default values when props change
   useEffect(() => {
@@ -167,6 +181,22 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
       </div>
       
       <TagInput tags={tags} setTags={setTags} />
+
+      {/* AI Auto-Tag Button */}
+      <Button
+        type="button"
+        variant="outline"
+        onClick={handleAIAutoTag}
+        disabled={isAnalyzing || !videoTitle.trim()}
+        className="w-full flex items-center gap-2"
+      >
+        {isAnalyzing ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <Sparkles className="h-4 w-4 text-primary" />
+        )}
+        {isAnalyzing ? 'AI Analyzing...' : 'AI Auto-Tag & Categorize'}
+      </Button>
     </div>
   );
 };
