@@ -27,6 +27,7 @@ import Auth from "@/pages/Auth";
 import Admin from "@/pages/Admin";
 import Monetization from "@/pages/Monetization";
 import Watchlist from "@/pages/Watchlist";
+import BreakingNews from "@/pages/BreakingNews";
 
 // New pages to fix 404s
 import HowToStyle from "@/pages/HowToStyle";
@@ -91,6 +92,7 @@ export const mainRoutes = [
   <Route key="admin" path="/admin" element={<Admin />} />,
   <Route key="monetization" path="/monetization" element={<Monetization />} />,
   <Route key="watchlist" path="/watchlist" element={<Watchlist />} />,
+  <Route key="breaking-news" path="/breaking-news" element={<BreakingNews />} />,
   
   // New routes to fix 404s
   <Route key="how-to-style" path="/how-to-style" element={<HowToStyle />} />,
