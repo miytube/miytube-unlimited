@@ -106,6 +106,9 @@ const BreakingNews = () => {
   return (
     <Layout>
       <div className="py-4 w-full max-w-4xl mx-auto">
+        {/* Breaking News Rotator */}
+        <BreakingNewsRotator />
+
         {/* Page Header */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground mb-2">
