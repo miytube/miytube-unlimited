@@ -10,8 +10,9 @@ import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useToast } from '@/hooks/use-toast';
-import { Film } from 'lucide-react';
+import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAIRecommendations } from '@/hooks/useAIRecommendations';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,6 +47,13 @@ const Watch = () => {
   const actualVideoId = videoId || musicVideoId;
   const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts' && v.id !== actualVideoId);
   const shortVideos = uploadedVideos.filter(v => v.category === 'shorts');
+
+  // AI Recommendations
+  const { recommendations: aiRecommendations, isLoading: aiLoading } = useAIRecommendations(
+    actualVideoId || undefined,
+    video?.category,
+    video?.tags
+  );
   
   useEffect(() => {
     const fetchVideo = async () => {
@@ -383,8 +391,45 @@ const Watch = () => {
               </div>
             )}
 
+            {/* AI Recommendations */}
+            {aiRecommendations.length > 0 && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <h3 className="text-sm font-semibold">AI Recommended</h3>
+                </div>
+                {aiRecommendations.slice(0, 5).map((rec) => (
+                  <Link
+                    key={rec.id}
+                    to={`/watch?v=${rec.id}`}
+                    className="flex gap-2 group hover:bg-muted/50 rounded-lg p-1 transition-colors"
+                  >
+                    <div className="relative w-40 h-24 flex-shrink-0 rounded overflow-hidden bg-muted">
+                      <img
+                        src={rec.thumbnail_url || rec.cloud_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80'}
+                        alt={rec.title}
+                        className="w-full h-full object-cover"
+                      />
+                      {rec.duration && (
+                        <span className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 rounded">
+                          {rec.duration}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-medium line-clamp-2 group-hover:text-primary">
+                        {rec.title}
+                      </h4>
+                      <p className="text-xs text-muted-foreground mt-1">{rec.category || 'MiyTube'}</p>
+                      <p className="text-xs text-muted-foreground">{rec.views || 0} views</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+
             {/* Empty State */}
-            {regularVideos.length === 0 && shortVideos.length === 0 && (
+            {regularVideos.length === 0 && shortVideos.length === 0 && aiRecommendations.length === 0 && (
               <div className="text-center p-4 bg-muted/20 rounded-lg">
                 <p className="text-sm text-muted-foreground">No other videos uploaded yet</p>
               </div>
