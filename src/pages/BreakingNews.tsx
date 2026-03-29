@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import BreakingNewsRotator from '@/components/news/BreakingNewsRotator';
+
 
 interface BreakingNewsItem {
   id: string;
@@ -23,6 +23,17 @@ interface BreakingNewsItem {
   priority: number | null;
   created_at: string;
 }
+const isVideoUrl = (url: string) => {
+  return /youtube\.com|youtu\.be|vimeo\.com|dailymotion\.com|twitch\.tv/.test(url);
+};
+
+const getEmbedUrl = (url: string) => {
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  return url;
+};
 
 const BreakingNews = () => {
   const [searchParams] = useSearchParams();
@@ -116,9 +127,6 @@ const BreakingNews = () => {
             </div>
           </div>
         </div>
-
-        {/* Live News Rotator */}
-        <BreakingNewsRotator />
 
         {/* News Feed */}
         {loading ? (
@@ -215,6 +223,44 @@ const BreakingNews = () => {
                     <div className="px-5 pb-5 animate-fade-in">
                       <Separator className="mb-4" />
 
+                      {/* Embedded Video/Article */}
+                      {item.source_url && (
+                        <div className="mb-4">
+                          {isVideoUrl(item.source_url) ? (
+                            <div className="aspect-video rounded-lg overflow-hidden bg-black">
+                              <iframe
+                                src={getEmbedUrl(item.source_url)}
+                                className="w-full h-full"
+                                allowFullScreen
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                title={item.title}
+                              />
+                            </div>
+                          ) : (
+                            <div className="rounded-lg border overflow-hidden bg-background">
+                              <iframe
+                                src={item.source_url}
+                                className="w-full h-[500px]"
+                                title={item.title}
+                                sandbox="allow-scripts allow-same-origin allow-popups"
+                              />
+                              <div className="px-4 py-2 bg-muted/50 border-t flex items-center justify-between">
+                                <span className="text-xs text-muted-foreground truncate">{item.source_url}</span>
+                                <a
+                                  href={item.source_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium flex-shrink-0 ml-2"
+                                >
+                                  <ExternalLink className="h-3 w-3" />
+                                  Open in new tab
+                                </a>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
                       {item.content && (
                         <p className="text-foreground leading-relaxed mb-4 whitespace-pre-line">{item.content}</p>
                       )}
@@ -225,17 +271,6 @@ const BreakingNews = () => {
                           <span className="text-sm text-muted-foreground">
                             Source: <span className="font-medium text-foreground">{item.source}</span>
                           </span>
-                        )}
-                        {item.source_url && (
-                          <a
-                            href={item.source_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-medium"
-                          >
-                            <ExternalLink className="h-3.5 w-3.5" />
-                            Read full story
-                          </a>
                         )}
                         <span className="text-xs text-muted-foreground ml-auto">
                           {new Date(item.created_at).toLocaleString()}
