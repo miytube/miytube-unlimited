@@ -54,8 +54,12 @@ export const BreakingNewsTicker = () => {
 
   if (dismissed || news.length === 0) return null;
 
-  const handleClick = (id: string) => {
-    navigate(`/breaking-news?id=${id}`);
+  const handleClick = (item: BreakingNews) => {
+    if (item.source_url) {
+      window.open(item.source_url, '_blank', 'noopener,noreferrer');
+    } else {
+      navigate(`/breaking-news?id=${item.id}`);
+    }
   };
 
   return (
@@ -76,7 +80,7 @@ export const BreakingNewsTicker = () => {
             {news.map((item) => (
               <button
                 key={`a-${item.id}`}
-                onClick={() => handleClick(item.id)}
+                onClick={() => handleClick(item)}
                 className="inline-flex items-center gap-1 px-3 text-sm font-medium hover:underline cursor-pointer transition-opacity hover:opacity-80"
               >
                 {item.title}
@@ -89,7 +93,7 @@ export const BreakingNewsTicker = () => {
             {news.map((item) => (
               <button
                 key={`b-${item.id}`}
-                onClick={() => handleClick(item.id)}
+                onClick={() => handleClick(item)}
                 className="inline-flex items-center gap-1 px-3 text-sm font-medium hover:underline cursor-pointer transition-opacity hover:opacity-80"
               >
                 {item.title}

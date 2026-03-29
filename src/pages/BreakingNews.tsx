@@ -181,7 +181,20 @@ const BreakingNews = () => {
                           </span>
                         </div>
                         <h2 className={`font-bold leading-snug ${idx === 0 ? 'text-xl' : 'text-lg'}`}>
-                          {item.title}
+                          {item.source_url ? (
+                            <a
+                              href={item.source_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="hover:text-primary hover:underline transition-colors"
+                            >
+                              {item.title}
+                              <ExternalLink className="inline-block h-4 w-4 ml-1.5 opacity-50" />
+                            </a>
+                          ) : (
+                            item.title
+                          )}
                         </h2>
                         {!isExpanded && item.content && (
                           <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{item.content}</p>
