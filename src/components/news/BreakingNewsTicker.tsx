@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { AlertTriangle, X } from 'lucide-react';
 
@@ -14,9 +15,9 @@ interface BreakingNews {
 }
 
 export const BreakingNewsTicker = () => {
+  const navigate = useNavigate();
   const [news, setNews] = useState<BreakingNews[]>([]);
   const [dismissed, setDismissed] = useState(false);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBreakingNews();
