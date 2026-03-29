@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import BreakingNewsRotator from '@/components/news/BreakingNewsRotator';
 
 interface BreakingNewsItem {
   id: string;
@@ -115,6 +116,9 @@ const BreakingNews = () => {
             </div>
           </div>
         </div>
+
+        {/* Live News Rotator */}
+        <BreakingNewsRotator />
 
         {/* News Feed */}
         {loading ? (
