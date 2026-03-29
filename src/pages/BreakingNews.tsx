@@ -117,6 +117,9 @@ const BreakingNews = () => {
           </div>
         </div>
 
+        {/* Live News Rotator */}
+        <BreakingNewsRotator />
+
         {/* News Feed */}
         {loading ? (
           <div className="space-y-4">
