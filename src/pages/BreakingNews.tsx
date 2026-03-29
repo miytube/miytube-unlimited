@@ -23,6 +23,17 @@ interface BreakingNewsItem {
   priority: number | null;
   created_at: string;
 }
+const isVideoUrl = (url: string) => {
+  return /youtube\.com|youtu\.be|vimeo\.com|dailymotion\.com|twitch\.tv/.test(url);
+};
+
+const getEmbedUrl = (url: string) => {
+  const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+  return url;
+};
 
 const BreakingNews = () => {
   const [searchParams] = useSearchParams();
