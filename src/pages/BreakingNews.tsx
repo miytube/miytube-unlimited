@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Layout } from '@/components/Layout';
 import { AlertTriangle, ExternalLink, Clock, Tag, MessageSquare, Share2, ChevronDown, ChevronUp } from 'lucide-react';
+import BreakingNewsRotator from '@/components/news/BreakingNewsRotator';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -105,6 +106,9 @@ const BreakingNews = () => {
   return (
     <Layout>
       <div className="py-4 w-full max-w-4xl mx-auto">
+        {/* Breaking News Rotator */}
+        <BreakingNewsRotator />
+
         {/* Page Header */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground mb-2">
