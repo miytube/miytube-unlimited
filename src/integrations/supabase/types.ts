@@ -44,6 +44,114 @@ export type Database = {
         }
         Relationships: []
       }
+      ad_campaigns: {
+        Row: {
+          ad_format: Database["public"]["Enums"]["ad_format"]
+          age_range_max: number | null
+          age_range_min: number | null
+          amount_spent: number
+          business_name: string
+          business_website: string | null
+          call_to_action: string | null
+          campaign_name: string
+          clicks: number
+          cost_per_view: number | null
+          created_at: string
+          ctr: number | null
+          daily_budget: number
+          description: string | null
+          destination_url: string
+          end_date: string | null
+          headline: string
+          id: string
+          impressions: number
+          media_url: string | null
+          payment_method: string | null
+          payment_reference: string | null
+          payment_status: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["ad_campaign_status"]
+          target_audience: string | null
+          target_categories: string[] | null
+          target_locations: string[] | null
+          thumbnail_url: string | null
+          total_budget: number
+          updated_at: string
+          user_id: string
+          views: number
+        }
+        Insert: {
+          ad_format?: Database["public"]["Enums"]["ad_format"]
+          age_range_max?: number | null
+          age_range_min?: number | null
+          amount_spent?: number
+          business_name: string
+          business_website?: string | null
+          call_to_action?: string | null
+          campaign_name: string
+          clicks?: number
+          cost_per_view?: number | null
+          created_at?: string
+          ctr?: number | null
+          daily_budget?: number
+          description?: string | null
+          destination_url: string
+          end_date?: string | null
+          headline: string
+          id?: string
+          impressions?: number
+          media_url?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
+          start_date?: string
+          status?: Database["public"]["Enums"]["ad_campaign_status"]
+          target_audience?: string | null
+          target_categories?: string[] | null
+          target_locations?: string[] | null
+          thumbnail_url?: string | null
+          total_budget?: number
+          updated_at?: string
+          user_id: string
+          views?: number
+        }
+        Update: {
+          ad_format?: Database["public"]["Enums"]["ad_format"]
+          age_range_max?: number | null
+          age_range_min?: number | null
+          amount_spent?: number
+          business_name?: string
+          business_website?: string | null
+          call_to_action?: string | null
+          campaign_name?: string
+          clicks?: number
+          cost_per_view?: number | null
+          created_at?: string
+          ctr?: number | null
+          daily_budget?: number
+          description?: string | null
+          destination_url?: string
+          end_date?: string | null
+          headline?: string
+          id?: string
+          impressions?: number
+          media_url?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          payment_status?: string | null
+          start_date?: string
+          status?: Database["public"]["Enums"]["ad_campaign_status"]
+          target_audience?: string | null
+          target_categories?: string[] | null
+          target_locations?: string[] | null
+          thumbnail_url?: string | null
+          total_budget?: number
+          updated_at?: string
+          user_id?: string
+          views?: number
+        }
+        Relationships: []
+      }
       breaking_news: {
         Row: {
           category: string | null
@@ -587,6 +695,20 @@ export type Database = {
       }
     }
     Enums: {
+      ad_campaign_status:
+        | "draft"
+        | "pending_payment"
+        | "active"
+        | "paused"
+        | "completed"
+        | "rejected"
+      ad_format:
+        | "skippable_instream"
+        | "non_skippable_instream"
+        | "bumper"
+        | "discovery"
+        | "banner"
+        | "overlay"
       app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
@@ -715,6 +837,22 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      ad_campaign_status: [
+        "draft",
+        "pending_payment",
+        "active",
+        "paused",
+        "completed",
+        "rejected",
+      ],
+      ad_format: [
+        "skippable_instream",
+        "non_skippable_instream",
+        "bumper",
+        "discovery",
+        "banner",
+        "overlay",
+      ],
       app_role: ["admin", "moderator", "user"],
     },
   },
