@@ -196,3 +196,17 @@
 .page-exit-active {
   @apply opacity-0 transition-opacity duration-300;
 }
+
+/* Breaking news ticker */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker-scroll 30s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
