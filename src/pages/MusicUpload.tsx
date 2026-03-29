@@ -130,6 +130,7 @@ const MusicUpload = () => {
     }
 
     try {
+      const { data: { user } } = await supabase.auth.getUser();
       const { data: insertedVideo, error: insertError } = await supabase
         .from('music_videos')
         .insert({
@@ -141,6 +142,7 @@ const MusicUpload = () => {
           thumbnail_url: thumbnailUrl,
           video_url: videoUrl,
           traffic_organic: 1,
+          user_id: user?.id,
         })
         .select()
         .single();
