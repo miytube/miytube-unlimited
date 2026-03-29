@@ -269,17 +269,6 @@ const BreakingNews = () => {
                         <p className="text-foreground leading-relaxed mb-4 whitespace-pre-line">{item.content}</p>
                       )}
 
-                      {/* Source info */}
-                      <div className="flex items-center gap-4 mb-4 flex-wrap">
-                        {item.source && (
-                          <span className="text-sm text-muted-foreground">
-                            Source: <span className="font-medium text-foreground">{item.source}</span>
-                          </span>
-                        )}
-                        <span className="text-xs text-muted-foreground ml-auto">
-                          {new Date(item.created_at).toLocaleString()}
-                        </span>
-                      </div>
 
                       <Separator className="mb-4" />
 
