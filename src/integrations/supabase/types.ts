@@ -504,7 +504,78 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      uploaded_videos_public: {
+        Row: {
+          category: string | null
+          cloud_url: string | null
+          created_at: string | null
+          description: string | null
+          duration: string | null
+          file_name: string | null
+          file_size: number | null
+          file_type: string | null
+          id: string | null
+          is_cloud_stored: boolean | null
+          is_youtube_embed: boolean | null
+          local_id: string | null
+          subcategory: string | null
+          tags: string[] | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+          video_url: string | null
+          views: number | null
+          youtube_video_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          cloud_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string | null
+          is_cloud_stored?: boolean | null
+          is_youtube_embed?: boolean | null
+          local_id?: string | null
+          subcategory?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          video_url?: string | null
+          views?: number | null
+          youtube_video_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          cloud_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          file_name?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string | null
+          is_cloud_stored?: boolean | null
+          is_youtube_embed?: boolean | null
+          local_id?: string | null
+          subcategory?: string | null
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          video_url?: string | null
+          views?: number | null
+          youtube_video_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
