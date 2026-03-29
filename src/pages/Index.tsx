@@ -9,7 +9,7 @@ import { TrendingUp, RefreshCw } from 'lucide-react';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
-import { BreakingNewsBanner } from '@/components/news/BreakingNewsBanner';
+import { BreakingNewsTicker } from '@/components/news/BreakingNewsTicker';
 
 const Index = () => {
   const { uploadedVideos, isLoading, refreshVideos } = useUploadedVideos();
@@ -79,8 +79,8 @@ const Index = () => {
 
   return (
     <Layout>
-      {/* Breaking News Banner */}
-      <BreakingNewsBanner />
+      {/* Breaking News Ticker */}
+      <BreakingNewsTicker />
       
       <div className="py-4 w-full">
         {/* Page Header */}
