@@ -85,7 +85,7 @@ ${contentUrl ? `      <video:content_loc>${escapeXml(contentUrl)}</video:content
       <video:family_friendly>yes</video:family_friendly>
       <video:live>no</video:live>
 ${viewCount > 0 ? `      <video:view_count>${viewCount}</video:view_count>\n` : ''}      <video:category>Music</video:category>
-${tags.length > 0 ? tags.slice(0, 32).map(tag => `      <video:tag>${escapeXml(tag)}</video:tag>`).join('\n') + '\n' : ''}    </video:video>
+${tags.length > 0 ? tags.slice(0, 32).map((tag: string) => `      <video:tag>${escapeXml(tag)}</video:tag>`).join('\n') + '\n' : ''}    </video:video>
   </url>
 `
       }
