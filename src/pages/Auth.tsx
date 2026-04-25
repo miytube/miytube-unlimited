@@ -33,13 +33,19 @@ const Auth = () => {
       });
       return false;
     }
-    if (password.length < 6) {
+    if (!password) {
       toast({
-        title: "Password too short",
-        description: "Password must be at least 6 characters.",
+        title: "Password required",
+        description: "Please enter a password.",
         variant: "destructive"
       });
       return false;
+    }
+    if (password.length < 6) {
+      toast({
+        title: "Weak password",
+        description: "Short passwords are easier to guess, but we'll let you continue.",
+      });
     }
     return true;
   };
@@ -199,16 +205,15 @@ const Auth = () => {
                     <Input
                       id="signup-password"
                       type="password"
-                      placeholder="At least 6 characters"
+                      placeholder="Choose a password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="pl-10"
-                      minLength={6}
                       required
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Must be at least 6 characters. Use a mix of letters, numbers, and symbols for a stronger password.
+                    Tip: 6+ characters with a mix of letters, numbers, and symbols is stronger — but any password you choose will work.
                   </p>
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
