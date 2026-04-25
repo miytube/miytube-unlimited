@@ -25,6 +25,8 @@ import Educational from "@/pages/Educational";
 import Channel from "@/pages/Channel";
 import Auth from "@/pages/Auth";
 import Account from "@/pages/Account";
+import ForgotPassword from "@/pages/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword";
 import Admin from "@/pages/Admin";
 import Monetization from "@/pages/Monetization";
 import Watchlist from "@/pages/Watchlist";
@@ -90,6 +92,8 @@ export const mainRoutes = [
   <Route key="channel" path="/channel" element={<Channel />} />,
   <Route key="channel-id" path="/channel/:id" element={<Channel />} />,
   <Route key="auth" path="/auth" element={<Auth />} />,
+  <Route key="forgot-password" path="/forgot-password" element={<ForgotPassword />} />,
+  <Route key="reset-password" path="/reset-password" element={<ResetPassword />} />,
   <Route key="account" path="/account" element={<Account />} />,
   <Route key="admin" path="/admin" element={<Admin />} />,
   <Route key="monetization" path="/monetization" element={<Monetization />} />,
