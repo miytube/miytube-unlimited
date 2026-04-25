@@ -6,6 +6,14 @@ import { getSubcategoryOptionsForCategory } from '@/utils/subcategoryOptions';
 import { useAIAutoTag } from '@/hooks/useAIAutoTag';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { QUALITY_LABELS, type VideoQuality } from '@/utils/videoTranscoder';
 
 interface Category {
   id: string;
