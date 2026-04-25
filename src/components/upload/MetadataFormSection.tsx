@@ -3,6 +3,7 @@ import React from 'react';
 import { VideoMetadataForm } from './VideoMetadataForm';
 import { UploadActions } from './UploadActions';
 import { FilePreview } from './FilePreview';
+import type { VideoQuality } from '@/utils/videoTranscoder';
 
 interface MetadataFormSectionProps {
   uploadedFiles: File[];
