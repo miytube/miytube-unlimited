@@ -21,7 +21,12 @@ const MusicUpload = () => {
   const genreFromUrl = searchParams.get('genre') || '';
 
   const uploadThumbnailToCloud = async (thumbnailBlob: Blob): Promise<string> => {
-    const filePath = `thumbnails/${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
+    const { data: authData } = await supabase.auth.getUser();
+    const userId = authData?.user?.id;
+    if (!userId) {
+      return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+    }
+    const filePath = `${userId}/${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
     
     const { data, error } = await supabase.storage
       .from('thumbnails')
