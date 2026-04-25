@@ -285,7 +285,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         uploadedFiles={hasContent ? (uploadedFiles.length > 0 ? uploadedFiles : [new File([], 'url-import')]) : []}
         uploadError={uploadError}
         uploadDestination={uploadDestination}
-        uploading={uploading}
+        uploading={uploading || isTranscoding}
         videoTitle={videoTitle}
         setVideoTitle={setVideoTitle}
         videoDescription={videoDescription}
@@ -300,6 +300,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         defaultTitle={videoTitle}
         defaultDescription={videoDescription}
         defaultCategory={selectedCategory}
+        videoQuality={videoQuality}
+        setVideoQuality={setVideoQuality}
+        showQualitySelector={acceptedTypes.includes('video') && uploadedFiles.some((f) => f.type.startsWith('video/'))}
         handleUploadClick={handleUploadClick}
       />
     </div>
