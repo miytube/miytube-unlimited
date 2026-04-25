@@ -196,6 +196,29 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
       
       <TagInput tags={tags} setTags={setTags} />
 
+      {showQualitySelector && setVideoQuality && (
+        <div>
+          <label htmlFor="video-quality" className="block text-sm font-medium mb-2">
+            Upload Quality
+          </label>
+          <Select value={videoQuality} onValueChange={(v) => setVideoQuality(v as VideoQuality)}>
+            <SelectTrigger id="video-quality" className="w-full">
+              <SelectValue placeholder="Choose upload quality" />
+            </SelectTrigger>
+            <SelectContent>
+              {(Object.keys(QUALITY_LABELS) as VideoQuality[]).map((q) => (
+                <SelectItem key={q} value={q}>
+                  {QUALITY_LABELS[q]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-muted-foreground mt-1">
+            Lower quality re-encodes the video in your browser before upload — much faster for large files.
+          </p>
+        </div>
+      )}
+
       {/* AI Auto-Tag Button */}
       <Button
         type="button"
