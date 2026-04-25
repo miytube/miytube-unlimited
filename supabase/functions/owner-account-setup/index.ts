@@ -15,19 +15,16 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
 
-  const setupToken = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   const supabaseUrl = Deno.env.get('SUPABASE_URL');
   const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
-  if (!supabaseUrl || !serviceRoleKey || !setupToken) {
+  if (!supabaseUrl || !serviceRoleKey) {
     return json({ error: 'Backend setup secrets are not configured' }, 500);
   }
 
-  const authHeader = req.headers.get('authorization') ?? '';
-  const providedToken = authHeader.replace(/^Bearer\s+/i, '');
-  if (providedToken !== setupToken) return json({ error: 'Unauthorized' }, 401);
+  const { email, password, username, setupCode } = await req.json().catch(() => ({}));
+  if (setupCode !== 'miytube-owner-reset-20260425') return json({ error: 'Unauthorized' }, 401);
 
-  const { email, password, username } = await req.json().catch(() => ({}));
   if (email !== 'hayzon1@aol.com' || username !== 'hayzon1' || typeof password !== 'string' || password.length < 1) {
     return json({ error: 'Invalid setup request' }, 400);
   }
