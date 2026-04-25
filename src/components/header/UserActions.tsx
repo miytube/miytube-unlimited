@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, User, LogIn, LogOut, Shield } from 'lucide-react';
+import { Bell, User, LogIn, LogOut, Shield, Settings } from 'lucide-react';
 import { UploadDropdown } from './UploadDropdown';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
@@ -49,6 +49,12 @@ export const UserActions: React.FC = () => {
               <Link to="/channel" className="flex items-center gap-2">
                 <User size={16} />
                 My Channel
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/account" className="flex items-center gap-2">
+                <Settings size={16} />
+                Account Settings
               </Link>
             </DropdownMenuItem>
             {isAdmin && (

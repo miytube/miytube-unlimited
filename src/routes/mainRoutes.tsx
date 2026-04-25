@@ -24,6 +24,7 @@ import TalkAtCha from "@/pages/TalkAtCha";
 import Educational from "@/pages/Educational";
 import Channel from "@/pages/Channel";
 import Auth from "@/pages/Auth";
+import Account from "@/pages/Account";
 import Admin from "@/pages/Admin";
 import Monetization from "@/pages/Monetization";
 import Watchlist from "@/pages/Watchlist";
@@ -89,6 +90,7 @@ export const mainRoutes = [
   <Route key="channel" path="/channel" element={<Channel />} />,
   <Route key="channel-id" path="/channel/:id" element={<Channel />} />,
   <Route key="auth" path="/auth" element={<Auth />} />,
+  <Route key="account" path="/account" element={<Account />} />,
   <Route key="admin" path="/admin" element={<Admin />} />,
   <Route key="monetization" path="/monetization" element={<Monetization />} />,
   <Route key="watchlist" path="/watchlist" element={<Watchlist />} />,
