@@ -6,6 +6,8 @@ import { FileInputSection } from './FileInputSection';
 import { MetadataFormSection } from './MetadataFormSection';
 import { UrlImportSection } from './UrlImportSection';
 import { triggerFileInputChangeEvent } from '@/utils/fileUploadUtils';
+import { transcodeVideoFile, type VideoQuality } from '@/utils/videoTranscoder';
+import { useToast } from '@/hooks/use-toast';
 
 interface FileUploaderProps {
   icon: React.ElementType;
