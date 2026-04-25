@@ -150,7 +150,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     }
   };
 
-  const handleUploadClick = () => {
+  const handleUploadClick = async () => {
     // Handle URL import
     if (importedUrl && onUrlImport) {
       console.log("Importing from URL:", {
@@ -182,21 +182,61 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     
     // Handle file upload
     if (uploadedFiles.length > 0 && onUpload) {
-      console.log("Uploading files with metadata:", {
-        files: uploadedFiles,
+      let filesToUpload = uploadedFiles;
+
+      // Transcode video files if a non-original quality was chosen
+      if (videoQuality !== 'original') {
+        const hasVideo = uploadedFiles.some((f) => f.type.startsWith('video/'));
+        if (hasVideo) {
+          setIsTranscoding(true);
+          toast({
+            title: `Re-encoding to ${videoQuality}p`,
+            description: 'Compressing your video in the browser before upload. This may take a moment for long videos.',
+          });
+          try {
+            filesToUpload = await Promise.all(
+              uploadedFiles.map((f) =>
+                f.type.startsWith('video/')
+                  ? transcodeVideoFile(f, { quality: videoQuality })
+                  : Promise.resolve(f)
+              )
+            );
+            const before = uploadedFiles.reduce((s, f) => s + f.size, 0);
+            const after = filesToUpload.reduce((s, f) => s + f.size, 0);
+            toast({
+              title: 'Compression complete',
+              description: `Reduced upload size from ${(before / 1024 / 1024).toFixed(1)}MB to ${(after / 1024 / 1024).toFixed(1)}MB.`,
+            });
+          } catch (err) {
+            console.error('Transcoding failed:', err);
+            toast({
+              title: 'Re-encoding failed',
+              description: 'Uploading the original file instead.',
+              variant: 'destructive',
+            });
+            filesToUpload = uploadedFiles;
+          } finally {
+            setIsTranscoding(false);
+          }
+        }
+      }
+
+      console.log('Uploading files with metadata:', {
+        files: filesToUpload,
         title: videoTitle,
         description: videoDescription,
         category: selectedCategory,
         subcategory: selectedSubcategory,
-        tags: tags
+        tags: tags,
+        quality: videoQuality,
       });
-      
+
       onUpload(
-        uploadedFiles, 
-        videoTitle, 
-        videoDescription, 
-        selectedCategory, 
-        selectedSubcategory, 
+        filesToUpload,
+        videoTitle,
+        videoDescription,
+        selectedCategory,
+        selectedSubcategory,
         tags
       );
     }
