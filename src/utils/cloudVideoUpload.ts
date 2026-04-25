@@ -10,13 +10,20 @@ export const uploadVideoToCloud = async (
   file: File,
   onProgress?: (progress: number) => void
 ): Promise<string> => {
+  // Require authenticated user; storage policies enforce folder-based ownership
+  const { data: authData } = await supabase.auth.getUser();
+  const userId = authData?.user?.id;
+  if (!userId) {
+    throw new Error('You must be signed in to upload videos.');
+  }
+
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-  const filePath = `uploads/${fileName}`;
+  const filePath = `${userId}/${fileName}`;
   
   const fileSizeMB = (file.size / (1024 * 1024)).toFixed(0);
   const fileSizeGB = (file.size / (1024 * 1024 * 1024)).toFixed(2);
-  const estimatedMinutes = Math.ceil(file.size / (1024 * 1024) / 10); // Rough estimate at 10MB/s
+  const estimatedMinutes = Math.ceil(file.size / (1024 * 1024) / 10);
   
   console.log(`Starting cloud upload: ${file.name} (${fileSizeMB}MB / ${fileSizeGB}GB) to path: ${filePath}`);
   console.log(`Estimated upload time: ${estimatedMinutes} minutes (depends on your connection speed)`);
