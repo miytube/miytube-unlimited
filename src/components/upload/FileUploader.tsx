@@ -43,6 +43,9 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const [importedUrl, setImportedUrl] = useState<string | null>(null);
   const [isYouTubeImport, setIsYouTubeImport] = useState(false);
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
+  const [videoQuality, setVideoQuality] = useState<VideoQuality>('original');
+  const [isTranscoding, setIsTranscoding] = useState(false);
+  const { toast } = useToast();
   
   const {
     videoTitle,
