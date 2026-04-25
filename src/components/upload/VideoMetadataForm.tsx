@@ -6,6 +6,14 @@ import { getSubcategoryOptionsForCategory } from '@/utils/subcategoryOptions';
 import { useAIAutoTag } from '@/hooks/useAIAutoTag';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { QUALITY_LABELS, type VideoQuality } from '@/utils/videoTranscoder';
 
 interface Category {
   id: string;
@@ -28,6 +36,9 @@ interface VideoMetadataFormProps {
   defaultTitle?: string;
   defaultDescription?: string;
   defaultCategory?: string;
+  videoQuality?: VideoQuality;
+  setVideoQuality?: (q: VideoQuality) => void;
+  showQualitySelector?: boolean;
 }
 
 export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
@@ -44,7 +55,10 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   categories,
   defaultTitle,
   defaultDescription,
-  defaultCategory
+  defaultCategory,
+  videoQuality = 'original',
+  setVideoQuality,
+  showQualitySelector = false,
 }) => {
   const [customCategories, setCustomCategories] = useState<Category[]>([]);
   const [customSubcategories, setCustomSubcategories] = useState<Array<{id: string, name: string}>>([]);
@@ -181,6 +195,29 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
       </div>
       
       <TagInput tags={tags} setTags={setTags} />
+
+      {showQualitySelector && setVideoQuality && (
+        <div>
+          <label htmlFor="video-quality" className="block text-sm font-medium mb-2">
+            Upload Quality
+          </label>
+          <Select value={videoQuality} onValueChange={(v) => setVideoQuality(v as VideoQuality)}>
+            <SelectTrigger id="video-quality" className="w-full">
+              <SelectValue placeholder="Choose upload quality" />
+            </SelectTrigger>
+            <SelectContent>
+              {(Object.keys(QUALITY_LABELS) as VideoQuality[]).map((q) => (
+                <SelectItem key={q} value={q}>
+                  {QUALITY_LABELS[q]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-muted-foreground mt-1">
+            Lower quality re-encodes the video in your browser before upload — much faster for large files.
+          </p>
+        </div>
+      )}
 
       {/* AI Auto-Tag Button */}
       <Button

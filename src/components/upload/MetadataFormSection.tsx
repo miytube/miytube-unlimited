@@ -3,6 +3,7 @@ import React from 'react';
 import { VideoMetadataForm } from './VideoMetadataForm';
 import { UploadActions } from './UploadActions';
 import { FilePreview } from './FilePreview';
+import type { VideoQuality } from '@/utils/videoTranscoder';
 
 interface MetadataFormSectionProps {
   uploadedFiles: File[];
@@ -23,6 +24,9 @@ interface MetadataFormSectionProps {
   defaultTitle?: string;
   defaultDescription?: string;
   defaultCategory?: string;
+  videoQuality?: VideoQuality;
+  setVideoQuality?: (q: VideoQuality) => void;
+  showQualitySelector?: boolean;
   handleUploadClick: () => void;
 }
 
@@ -45,6 +49,9 @@ export const MetadataFormSection: React.FC<MetadataFormSectionProps> = ({
   defaultTitle,
   defaultDescription,
   defaultCategory,
+  videoQuality,
+  setVideoQuality,
+  showQualitySelector,
   handleUploadClick
 }) => {
   if (uploadedFiles.length === 0) return null;
@@ -75,6 +82,9 @@ export const MetadataFormSection: React.FC<MetadataFormSectionProps> = ({
           defaultTitle={defaultTitle}
           defaultDescription={defaultDescription}
           defaultCategory={defaultCategory}
+          videoQuality={videoQuality}
+          setVideoQuality={setVideoQuality}
+          showQualitySelector={showQualitySelector}
         />
         
         <UploadActions
