@@ -22,7 +22,6 @@ export type Database = {
           last_active_at: string
           session_id: string
           user_id: string | null
-          visitor_ip: string | null
         }
         Insert: {
           created_at?: string
@@ -31,7 +30,6 @@ export type Database = {
           last_active_at?: string
           session_id: string
           user_id?: string | null
-          visitor_ip?: string | null
         }
         Update: {
           created_at?: string
@@ -40,7 +38,6 @@ export type Database = {
           last_active_at?: string
           session_id?: string
           user_id?: string | null
-          visitor_ip?: string | null
         }
         Relationships: []
       }
@@ -331,7 +328,6 @@ export type Database = {
           session_id: string | null
           user_agent: string | null
           user_id: string | null
-          visitor_ip: string | null
         }
         Insert: {
           created_at?: string
@@ -341,7 +337,6 @@ export type Database = {
           session_id?: string | null
           user_agent?: string | null
           user_id?: string | null
-          visitor_ip?: string | null
         }
         Update: {
           created_at?: string
@@ -351,7 +346,6 @@ export type Database = {
           session_id?: string | null
           user_agent?: string | null
           user_id?: string | null
-          visitor_ip?: string | null
         }
         Relationships: []
       }
