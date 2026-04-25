@@ -59,6 +59,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
   videoQuality = 'original',
   setVideoQuality,
   showQualitySelector = false,
+}) => {
   const [customCategories, setCustomCategories] = useState<Category[]>([]);
   const [customSubcategories, setCustomSubcategories] = useState<Array<{id: string, name: string}>>([]);
   const { analyzeContent, isAnalyzing } = useAIAutoTag();
