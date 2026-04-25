@@ -24,6 +24,9 @@ interface MetadataFormSectionProps {
   defaultTitle?: string;
   defaultDescription?: string;
   defaultCategory?: string;
+  videoQuality?: VideoQuality;
+  setVideoQuality?: (q: VideoQuality) => void;
+  showQualitySelector?: boolean;
   handleUploadClick: () => void;
 }
 
