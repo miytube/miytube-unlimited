@@ -199,13 +199,17 @@ const Auth = () => {
                     <Input
                       id="signup-password"
                       type="password"
-                      placeholder="••••••••"
+                      placeholder="At least 6 characters"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="pl-10"
+                      minLength={6}
                       required
                     />
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    Must be at least 6 characters. Use a mix of letters, numbers, and symbols for a stronger password.
+                  </p>
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Creating account..." : "Create Account"}
