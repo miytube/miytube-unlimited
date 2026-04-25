@@ -49,6 +49,9 @@ export const MetadataFormSection: React.FC<MetadataFormSectionProps> = ({
   defaultTitle,
   defaultDescription,
   defaultCategory,
+  videoQuality,
+  setVideoQuality,
+  showQualitySelector,
   handleUploadClick
 }) => {
   if (uploadedFiles.length === 0) return null;
@@ -79,6 +82,9 @@ export const MetadataFormSection: React.FC<MetadataFormSectionProps> = ({
           defaultTitle={defaultTitle}
           defaultDescription={defaultDescription}
           defaultCategory={defaultCategory}
+          videoQuality={videoQuality}
+          setVideoQuality={setVideoQuality}
+          showQualitySelector={showQualitySelector}
         />
         
         <UploadActions
