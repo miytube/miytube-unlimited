@@ -1,14 +1,93 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
-import { MessageCircle, Upload, ChevronRight } from 'lucide-react';
+import { MessageCircle, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
 import VideoContent from '@/components/subcategory/VideoContent';
+import { FileUploader } from '@/components/upload/FileUploader';
+import { useToast } from '@/hooks/use-toast';
+
+const CATEGORY_ID = 'podcasts';
+const SUBCATEGORY_ID = 'gossip';
+const SUBCATEGORY_NAME = 'Gossip';
+
+const podcastCategories = [
+  {
+    id: CATEGORY_ID,
+    name: 'Podcasts',
+    subcategories: [
+      { id: 'news', name: 'News' },
+      { id: 'gossip', name: 'Gossip' },
+    ],
+  },
+];
 
 const PodcastGossip = () => {
-  const { uploadedVideos } = useUploadedVideos();
-  const videos = filterVideosBySubcategory(uploadedVideos, 'Gossip', 'podcasts-gossip');
+  const { uploadedVideos, addUploadedVideo } = useUploadedVideos();
+  const { toast } = useToast();
+  const videos = filterVideosBySubcategory(uploadedVideos, SUBCATEGORY_NAME, 'podcasts-gossip');
+
+  const handleUpload = async (
+    files: File[],
+    title: string,
+    description: string,
+    category?: string,
+    subcategory?: string,
+    tags?: string[]
+  ) => {
+    try {
+      for (const file of files) {
+        await addUploadedVideo(
+          file,
+          title || file.name,
+          description || '',
+          category || CATEGORY_ID,
+          subcategory || SUBCATEGORY_ID,
+          tags
+        );
+      }
+      toast({ title: 'Upload complete', description: 'Your podcast is now available in Gossip.' });
+    } catch (err) {
+      toast({
+        title: 'Upload failed',
+        description: err instanceof Error ? err.message : 'Unknown error',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleUrlImport = async (
+    url: string,
+    title: string,
+    description: string,
+    category?: string,
+    subcategory?: string,
+    tags?: string[],
+    isYouTube?: boolean,
+    youtubeId?: string
+  ) => {
+    try {
+      await addUploadedVideo(
+        new File([], title || 'Imported Podcast', { type: 'video/mp4' }),
+        title || (isYouTube ? 'YouTube Podcast' : 'Imported Podcast'),
+        description || '',
+        category || CATEGORY_ID,
+        subcategory || SUBCATEGORY_ID,
+        tags,
+        url,
+        isYouTube,
+        youtubeId
+      );
+      toast({ title: 'Import complete', description: 'Podcast added to Gossip.' });
+    } catch (err) {
+      toast({
+        title: 'Import failed',
+        description: err instanceof Error ? err.message : 'Unknown error',
+        variant: 'destructive',
+      });
+    }
+  };
 
   return (
     <Layout>
@@ -28,19 +107,28 @@ const PodcastGossip = () => {
           <p className="text-muted-foreground ml-2">
             Celebrity buzz, pop culture chatter, and entertainment rumors
           </p>
-          <Link
-            to="/upload"
-            className="ml-auto flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
-          >
-            <Upload size={18} />
-            <span>Upload</span>
-          </Link>
         </div>
+
+        <FileUploader
+          icon={MessageCircle}
+          title="Upload Gossip Podcast"
+          description="Upload a podcast video or import from a URL. It will be tagged automatically as a Gossip Podcast."
+          acceptedTypes="video/*,audio/*"
+          supportedFormats={['MP4', 'MOV', 'WebM', 'MP3', 'WAV', 'M4A']}
+          maxSize="10GB"
+          onUpload={handleUpload}
+          onUrlImport={handleUrlImport}
+          id="podcast-gossip-upload"
+          uploadDestination="Gossip Podcasts"
+          categories={podcastCategories}
+          showUrlImport={true}
+          defaultSubcategory={SUBCATEGORY_ID}
+        />
 
         {videos.length > 0 ? (
           <VideoContent
             title="Gossip Podcasts"
-            videos={videos.map(v => ({
+            videos={videos.map((v) => ({
               id: v.id,
               title: v.title,
               thumbnail: v.thumbnail,
@@ -54,14 +142,7 @@ const PodcastGossip = () => {
           <div className="text-center py-12 bg-card rounded-lg mb-8">
             <MessageCircle className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-xl font-semibold mb-2">No Gossip Podcasts Yet</h3>
-            <p className="text-muted-foreground mb-4">Be the first to upload a gossip podcast!</p>
-            <Link
-              to="/upload"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
-            >
-              <Upload size={18} />
-              <span>Upload Gossip Podcast</span>
-            </Link>
+            <p className="text-muted-foreground">Upload above to be the first!</p>
           </div>
         )}
 
