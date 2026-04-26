@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { GraduationCap, Scissors, Microscope, Newspaper } from 'lucide-react';
+import { GraduationCap, Scissors, Microscope } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EducationInformationLinks: React.FC = () => {
@@ -45,18 +45,6 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'ai', label: 'Artificial Intelligence', path: '/science-tech/ai' },
         { id: 'humanoid-robots', label: 'Humanoid Robots', path: '/science-tech/humanoid-robots' },
         { id: 'robots', label: 'Robots', path: '/science-tech/robots' }
-      ]
-    },
-    { 
-      id: 'news-politics', 
-      icon: Newspaper, 
-      label: 'News & Politics', 
-      path: '/news',
-      subItems: [
-        { id: 'news-breaking', label: 'Breaking News', path: '/news/breaking' },
-        { id: 'news-politics', label: 'Politics', path: '/news/politics' },
-        { id: 'news-world', label: 'World News', path: '/news/world' },
-        { id: 'news-local', label: 'Local News', path: '/news/local' }
       ]
     },
   ];
