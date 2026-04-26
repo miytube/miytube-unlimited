@@ -17,12 +17,16 @@ import { hollywoodRoutes } from "./hollywoodRoutes";
 import { militaryRoutes } from "./militaryRoutes";
 import { filmRoutes } from "./filmRoutes";
 import { comprehensiveSubcategoryRoutes } from "./comprehensiveSubcategoryRoutes";
+import { newsRoutes } from "./newsRoutes";
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Main Routes */}
       {mainRoutes}
+
+      {/* News & Politics dedicated subcategory pages (must come before generic) */}
+      {newsRoutes}
       
       {/* Media Type Routes */}
       {mediaRoutes}
