@@ -12,6 +12,7 @@ import { allCategoryRoutes } from "./allCategoryRoutes";
 import { musicRoutes } from "./musicRoutes";
 import { gamingRoutes } from "./gamingRoutes";
 import { audioRoutes } from "./audioRoutes";
+import { podcastRoutes } from "./podcastRoutes";
 import { hollywoodRoutes } from "./hollywoodRoutes";
 import { militaryRoutes } from "./militaryRoutes";
 import { filmRoutes } from "./filmRoutes";
@@ -40,6 +41,9 @@ const AppRoutes = () => {
       
       {/* Audio Routes */}
       {audioRoutes}
+      
+      {/* Podcast Routes */}
+      {podcastRoutes}
       
       {/* Subcategory Routes */}
       {subcategoryRoutes}

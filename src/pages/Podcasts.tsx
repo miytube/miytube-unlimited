@@ -42,10 +42,18 @@ const Podcasts = () => {
           <h2 className="text-2xl font-semibold mb-4">Popular Categories</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <Link to="/podcasts/news" className="block">
-              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-card/80 transition-colors">
                 <div className="text-center">
                   <Music size={32} className="mx-auto mb-2 text-primary" />
-                  <div className="font-medium">News & Politics</div>
+                  <div className="font-medium">News</div>
+                </div>
+              </div>
+            </Link>
+            <Link to="/podcasts/gossip" className="block">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-card/80 transition-colors">
+                <div className="text-center">
+                  <Music size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">Gossip</div>
                 </div>
               </div>
             </Link>
