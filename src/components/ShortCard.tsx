@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useToast } from '@/hooks/use-toast';
 
