@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import WatchlistButton from '@/components/WatchlistButton';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 
 interface VideoInfoProps {
   title: string;
@@ -136,6 +137,11 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
         }
         
         setUserLikeStatus(currentAction);
+
+        // Track like as an engagement event (only when liking, not disliking)
+        if (isLike && videoId) {
+          trackEngagement(videoId, 'like');
+        }
       }
     } catch (error) {
       console.error('Error updating like:', error);
@@ -221,7 +227,23 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
             </button>
           </div>
           
-          <button className="flex items-center gap-1 px-4 py-1.5 bg-secondary rounded-full hover:bg-secondary/80 transition-colors">
+          <button
+            onClick={async () => {
+              const url = window.location.href;
+              try {
+                if (navigator.share) {
+                  await navigator.share({ title, url });
+                } else {
+                  await navigator.clipboard.writeText(url);
+                  toast({ title: 'Link copied', description: 'Share link copied to clipboard.' });
+                }
+                if (videoId) trackEngagement(videoId, 'share');
+              } catch {
+                /* user cancelled */
+              }
+            }}
+            className="flex items-center gap-1 px-4 py-1.5 bg-secondary rounded-full hover:bg-secondary/80 transition-colors"
+          >
             <Share size={18} />
             <span className="text-sm font-medium">Share</span>
           </button>

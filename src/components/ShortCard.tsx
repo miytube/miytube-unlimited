@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -81,6 +82,7 @@ export const ShortCard: React.FC<ShortCardProps> = ({
       <Link 
         to={`/shorts/${id}`} 
         className="flex flex-col flex-1"
+        onClick={() => trackEngagement(id, 'click')}
       >
         {/* Fixed aspect ratio container */}
         <div className="relative aspect-[9/16] bg-muted overflow-hidden">
