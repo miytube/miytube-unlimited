@@ -137,6 +137,11 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
         }
         
         setUserLikeStatus(currentAction);
+
+        // Track like as an engagement event (only when liking, not disliking)
+        if (isLike && videoId) {
+          trackEngagement(videoId, 'like');
+        }
       }
     } catch (error) {
       console.error('Error updating like:', error);
