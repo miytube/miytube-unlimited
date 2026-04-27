@@ -266,10 +266,10 @@ const saveVideoToSupabase = async (video: {
   
   if (error) {
     console.error('Error saving video to Supabase:', error);
-  } else {
-    console.log('Saved video to Supabase cloud backup with local_id:', video.localId, 'from IP:', uploaderIp);
+    throw new Error(`Upload saved to storage, but failed to publish to the video feed: ${error.message}`);
   }
-  
+
+  console.log('Saved video to Supabase cloud backup with local_id:', video.localId, 'from IP:', uploaderIp);
   return { isDuplicate: false };
 };
 
