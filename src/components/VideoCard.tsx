@@ -84,7 +84,11 @@ export const VideoCard: React.FC<VideoCardProps> = ({
 
   return (
     <article className="w-full group relative">
-      <Link to={`/watch?v=${id}`} className="block">
+      <Link
+        to={`/watch?v=${id}`}
+        className="block"
+        onClick={() => trackEngagement(id, 'click')}
+      >
         <div className="relative aspect-video rounded-lg overflow-hidden">
           <div className={`absolute inset-0 ${!imageLoaded ? 'lazy-image-loading' : ''}`}>
             <img
