@@ -140,10 +140,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         preload="metadata"
         poster={videoFile ? undefined : 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80'}
         controls={false}
+        muted={isMuted}
         onLoadedData={handleVideoLoaded}
         onLoadedMetadata={handleVideoLoaded}
         onError={handleVideoError}
-        crossOrigin="anonymous"
       />
 
       <VideoPlayerControls
