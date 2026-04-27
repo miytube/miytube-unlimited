@@ -101,7 +101,7 @@ const NotFound = () => {
             <Link to="/film-animation/cartoons" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
               Cartoons
             </Link>
-            <Link to="/film-movies/clips" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
+            <Link to="/film/movies-clips" className="p-2 bg-card rounded-lg hover:bg-secondary transition-colors text-center text-sm">
               Movie Clips
             </Link>
           </div>
