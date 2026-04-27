@@ -82,6 +82,7 @@ export const ShortCard: React.FC<ShortCardProps> = ({
       <Link 
         to={`/shorts/${id}`} 
         className="flex flex-col flex-1"
+        onClick={() => trackEngagement(id, 'click')}
       >
         {/* Fixed aspect ratio container */}
         <div className="relative aspect-[9/16] bg-muted overflow-hidden">
