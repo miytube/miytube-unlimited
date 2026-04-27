@@ -203,6 +203,18 @@ const Watch = () => {
     fetchVideo();
   }, [videoId, musicVideoId, videoType, getVideoById, uploadedVideos]);
 
+  // Record a view event once per page load
+  useEffect(() => {
+    const id = videoId || musicVideoId;
+    if (!id || !video) return;
+    trackEngagement(
+      video.id || id,
+      'view',
+      isMusicVideo ? 'music_videos' : 'uploaded_videos'
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [video?.id]);
+
   const handleEditSave = (updates: {
     title: string;
     description: string;
