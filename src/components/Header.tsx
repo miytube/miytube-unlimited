@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Logo } from './header/Logo';
-import { NavigationLinks } from './header/NavigationLinks';
 import { UserActions } from './header/UserActions';
 
 export const Header = () => {
@@ -9,7 +8,6 @@ export const Header = () => {
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b w-full">
       <div className="mx-auto flex items-center justify-between px-4 h-16">
         <Logo />
-        <NavigationLinks />
         <UserActions />
       </div>
     </header>
