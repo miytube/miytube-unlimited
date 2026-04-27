@@ -1,15 +1,33 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { VideoCard } from '@/components/VideoCard';
 import { Layout } from '@/components/Layout';
-import { ShortVideosSection } from '@/components/video/ShortVideosSection';
-import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { TrendingUp, RefreshCw } from 'lucide-react';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
-import { BreakingNewsTicker } from '@/components/news/BreakingNewsTicker';
+
+const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration }: {
+  id: string;
+  title: string;
+  thumbnail: string;
+  channelName: string;
+  views: string;
+  timestamp: string;
+  duration: string;
+}) => (
+  <article className="w-full">
+    <Link to={`/watch?v=${id}`} className="block group">
+      <div className="relative aspect-video overflow-hidden rounded-lg bg-muted">
+        <img src={thumbnail} alt={title} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
+        <span className="absolute bottom-2 right-2 rounded bg-foreground/80 px-1.5 py-0.5 text-xs text-background">{duration}</span>
+      </div>
+      <h3 className="mt-2 line-clamp-2 text-sm font-medium">{title}</h3>
+      <p className="mt-1 text-sm text-muted-foreground">{channelName}</p>
+      <p className="text-xs text-muted-foreground">{views} views • {timestamp}</p>
+    </Link>
+  </article>
+);
 
 const Index = () => {
   const { uploadedVideos, isLoading, refreshVideos } = useUploadedVideos();
@@ -79,9 +97,6 @@ const Index = () => {
 
   return (
     <Layout>
-      {/* Breaking News Ticker */}
-      <BreakingNewsTicker />
-      
       <div className="py-4 w-full">
         {/* Page Header */}
         <div className="mb-6">
@@ -120,7 +135,7 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {displayVideos.map((video) => (
-                <VideoCard key={video.id} {...video} />
+                <SimpleVideoCard key={video.id} {...video} />
               ))}
             </div>
           </div>
@@ -138,7 +153,7 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {trendingVideos.map((video) => (
-                <VideoCard key={video.id} {...video} />
+                <SimpleVideoCard key={video.id} {...video} />
               ))}
             </div>
           </div>
@@ -159,14 +174,6 @@ const Index = () => {
               onPageChange={setCurrentPage}
             />
           </div>
-        )}
-
-        {/* Shorts sections positioned together */}
-        {!isLoading && (
-          <>
-            <ShortVideosSection />
-            <TrendingShortVideosSection />
-          </>
         )}
 
         {!isLoading && allVideos.length === 0 && (

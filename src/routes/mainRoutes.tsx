@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import { Shield, Flame, Waves, Anchor, Mic, Plane } from 'lucide-react';
 
 import Index from "@/pages/Index";
@@ -10,7 +10,6 @@ import VideoUpload from "@/pages/VideoUpload";
 import MusicUpload from "@/pages/MusicUpload";
 import Shorts from "@/pages/Shorts";
 import Trending from "@/pages/Trending";
-import NotFound from "@/pages/NotFound";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Terms from "@/pages/Terms";
@@ -187,5 +186,8 @@ export const mainRoutes = [
   <Route key="family" path="/family" element={<Family />} />,
   <Route key="royal-security-guards" path="/royal-security-guards" element={<RoyalSecurityGuards />} />,
   
-  <Route key="not-found" path="*" element={<NotFound />} />,
+  <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,
+  <Route key="subcategory-fallback" path="/:category/:subcategory" element={<GenericSubcategoryPage />} />,
+  <Route key="deep-subcategory-fallback" path="/:category/:subcategory/:topic" element={<GenericSubcategoryPage />} />,
+  <Route key="deep-route-fallback" path="*" element={<Navigate to="/" replace />} />,
 ];
