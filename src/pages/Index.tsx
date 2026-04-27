@@ -6,6 +6,7 @@ import { TrendingUp, RefreshCw } from 'lucide-react';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
+import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration }: {
   id: string;
@@ -158,6 +159,9 @@ const Index = () => {
             </div>
           </div>
         )}
+
+        {/* Shorts Section - below Trending */}
+        {!isLoading && <ShortVideosSection />}
 
         {/* Page counter below trending section */}
         {!isLoading && displayVideos.length > 0 && (
