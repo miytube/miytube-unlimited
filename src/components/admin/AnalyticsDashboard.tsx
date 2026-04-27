@@ -292,6 +292,9 @@ export const AnalyticsDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Content engagement: views, clicks, likes, shares */}
+      <ContentEngagementSection />
     </div>
   );
 };
