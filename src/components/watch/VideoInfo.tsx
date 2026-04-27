@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import WatchlistButton from '@/components/WatchlistButton';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 
 interface VideoInfoProps {
   title: string;
