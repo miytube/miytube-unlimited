@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAIRecommendations } from '@/hooks/useAIRecommendations';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 import {
   AlertDialog,
   AlertDialogAction,
