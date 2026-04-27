@@ -101,6 +101,7 @@ export const mainRoutes = [
   
   // New routes to fix 404s
   <Route key="how-to-style" path="/how-to-style" element={<HowToStyle />} />,
+  <Route key="dance" path="/dance" element={<GenericSubcategoryPage />} />,
   <Route key="shipping" path="/shipping" element={<Shipping />} />,
   <Route key="autos-vehicles" path="/autos-vehicles" element={<AutosVehicles />} />,
   <Route key="boats" path="/boats" element={<Boats />} />,
