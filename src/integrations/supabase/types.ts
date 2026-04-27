@@ -667,6 +667,36 @@ export type Database = {
         }
         Relationships: []
       }
+      video_engagement_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          session_id: string | null
+          user_id: string | null
+          video_id: string
+          video_table: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          session_id?: string | null
+          user_id?: string | null
+          video_id: string
+          video_table?: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          session_id?: string | null
+          user_id?: string | null
+          video_id?: string
+          video_table?: string
+        }
+        Relationships: []
+      }
       video_likes: {
         Row: {
           created_at: string
