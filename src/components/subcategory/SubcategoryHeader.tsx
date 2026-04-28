@@ -22,7 +22,9 @@ const SubcategoryHeader: React.FC<SubcategoryHeaderProps> = ({
     <>
       {/* MiyTube Breadcrumb */}
       <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
-        <span className="font-semibold text-primary">MiyTube</span>
+        <Link to="/" className="font-semibold text-primary hover:underline">
+          MiyTube
+        </Link>
         <ChevronRight size={14} />
         <Link to={parentRoute} className="hover:text-primary">
           {parentName}
