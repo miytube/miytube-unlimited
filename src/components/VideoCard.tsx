@@ -85,7 +85,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   return (
     <article className="w-full group relative">
       <Link
-        to={`/watch?v=${id}`}
+        to={category?.toLowerCase() === 'shorts' ? `/shorts/${id}` : `/watch?v=${id}`}
         className="block"
         onClick={() => trackEngagement(id, 'click')}
       >
