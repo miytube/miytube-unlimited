@@ -86,9 +86,7 @@ export const filterVideosByCategory = (
         return (
           vidCategory === keywordLower ||
           vidSubcategory === keywordLower ||
-          vidTags.includes(keywordLower) ||
-          isFuzzyMatch(vidCategory, keywordLower) ||
-          isFuzzyMatch(vidSubcategory, keywordLower)
+          vidTags.includes(keywordLower)
         );
       });
     }
