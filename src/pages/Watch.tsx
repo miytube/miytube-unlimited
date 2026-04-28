@@ -358,7 +358,7 @@ const Watch = () => {
                   {shortVideos.slice(0, 4).map((short) => (
                     <Link 
                       key={short.id} 
-                      to={`/shorts/watch?v=${short.id}`}
+                      to={`/shorts/${short.id}`}
                       className="relative aspect-[9/16] rounded overflow-hidden bg-muted group"
                     >
                       <img 
