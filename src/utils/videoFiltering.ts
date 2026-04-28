@@ -69,15 +69,12 @@ export const filterVideosByCategory = (
     // Exact match on category
     if (vidCategory === categoryLower) return true;
     
-    // Fuzzy match on category (for typos)
-    if (isFuzzyMatch(vidCategory, categoryLower)) return true;
-    
     // Check if category starts with the parent category name
     // e.g., "business-cryptocurrency" starts with "business"
     if (vidCategory.startsWith(categoryLower + '-') || vidCategory.startsWith(categoryLower + ' ')) return true;
     
-    // Check subcategory exact match or fuzzy match
-    if (vidSubcategory === categoryLower || isFuzzyMatch(vidSubcategory, categoryLower)) return true;
+    // Check subcategory exact match
+    if (vidSubcategory === categoryLower) return true;
     
     // Check tags for exact match only
     if (vidTags.includes(categoryLower)) return true;
@@ -89,9 +86,7 @@ export const filterVideosByCategory = (
         return (
           vidCategory === keywordLower ||
           vidSubcategory === keywordLower ||
-          vidTags.includes(keywordLower) ||
-          isFuzzyMatch(vidCategory, keywordLower) ||
-          isFuzzyMatch(vidSubcategory, keywordLower)
+          vidTags.includes(keywordLower)
         );
       });
     }
