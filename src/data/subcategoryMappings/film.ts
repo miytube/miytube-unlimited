@@ -309,6 +309,15 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  'film-movies': {
+    title: 'Film & Movies',
+    description: 'Full films and movies across all genres',
+    icon: Clapperboard,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
 
   // Film Animation subcategories
   'film-animation-action': {
