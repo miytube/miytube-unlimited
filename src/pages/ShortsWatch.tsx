@@ -36,6 +36,7 @@ const ShortsWatch = () => {
 
   useEffect(() => {
     if (id) {
+      // Match by context id (local_id) OR by underlying UUID for shared/legacy links
       const foundVideo = uploadedVideos.find(v => v.id === id);
       if (foundVideo) {
         setVideo(foundVideo);
