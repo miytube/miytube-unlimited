@@ -22,7 +22,7 @@ const ShortsWatch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { uploadedVideos, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
+  const { uploadedVideos, isLoading, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
