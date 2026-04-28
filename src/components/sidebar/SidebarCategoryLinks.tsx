@@ -61,7 +61,7 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
         
         <div 
           className={`overflow-hidden transition-all duration-300 ease-out ${
-            isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+            isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="pl-8 space-y-0.5 mt-1">
