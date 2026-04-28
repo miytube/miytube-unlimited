@@ -30,6 +30,7 @@ const filmCategories = [
   { path: '/film/romance-comedy-drama', label: 'Film (romance, comedy, drama)', icon: Heart },
   { path: '/film/scientific', label: 'Film (scientific)', icon: FlaskConical },
   { path: '/film/war-action-thriller', label: 'Film (war films, action, thriller)', icon: Sword },
+  { path: '/film/movie-trailers', label: 'Film & Movie Trailers', icon: Popcorn },
   { path: '/film/westerns-action-drama', label: 'Film (westerns, action, drama)', icon: Flame },
   { path: '/film/westerns-crime-thriller', label: 'Film (westerns, crime, thriller)', icon: Flame },
   { path: '/film/movies-action-thriller', label: 'Film, Movies (action, thriller)', icon: Bomb },
