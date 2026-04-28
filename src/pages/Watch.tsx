@@ -242,7 +242,13 @@ const Watch = () => {
       navigate('/');
     }
   };
-  
+
+  // Redirect to /shorts/:id if the loaded video is a short (handles legacy/shared /watch?v= links)
+  useEffect(() => {
+    if (video && !isMusicVideo && video.category?.toLowerCase() === 'shorts') {
+      navigate(`/shorts/${video.id}`, { replace: true });
+    }
+  }, [video, isMusicVideo, navigate]);
 
   const isUserUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
   
@@ -358,7 +364,7 @@ const Watch = () => {
                   {shortVideos.slice(0, 4).map((short) => (
                     <Link 
                       key={short.id} 
-                      to={`/shorts/watch?v=${short.id}`}
+                      to={`/shorts/${short.id}`}
                       className="relative aspect-[9/16] rounded overflow-hidden bg-muted group"
                     >
                       <img 
