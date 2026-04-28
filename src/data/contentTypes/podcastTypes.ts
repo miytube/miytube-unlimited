@@ -8,8 +8,8 @@ export const podcastContentTypes: Record<string, ContentType> = {
     name: "Podcasts",
     icon: Mic,
     description: "Upload your podcast episodes, interviews, and talk shows.",
-    acceptedTypes: "audio/*,.mp3,.wav,.ogg,.aac",
-    supportedFormats: ['MP3', 'WAV', 'OGG', 'AAC', 'M4A'],
+    acceptedTypes: "audio/*,video/*,.mp3,.wav,.ogg,.aac,.m4a,.mp4,.mov,.webm",
+    supportedFormats: ["MP3", "WAV", "OGG", "AAC", "M4A", "MP4", "MOV", "WebM"],
     maxSize: "500MB",
     categories: [
       { id: 'news', name: 'News & Politics', subcategories: [

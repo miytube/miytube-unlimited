@@ -8,8 +8,8 @@ export const relaxationContentTypes: Record<string, ContentType> = {
     name: "Meditation",
     icon: Music,
     description: "Upload meditation guides, mindfulness sessions, and relaxation audio.",
-    acceptedTypes: "audio/*,.mp3,.wav,.ogg,.aac",
-    supportedFormats: ['MP3', 'WAV', 'OGG', 'AAC', 'M4A'],
+    acceptedTypes: "audio/*,video/*,.mp3,.wav,.ogg,.aac,.m4a,.mp4,.mov,.webm",
+    supportedFormats: ["MP3", "WAV", "OGG", "AAC", "M4A", "MP4", "MOV", "WebM"],
     maxSize: "500MB",
     categories: [
       { id: 'guided', name: 'Guided Meditation', subcategories: [
@@ -37,8 +37,8 @@ export const relaxationContentTypes: Record<string, ContentType> = {
     name: "Nature Sounds",
     icon: Music,
     description: "Upload recordings of nature sounds, ambient environments, and natural phenomena.",
-    acceptedTypes: "audio/*,.mp3,.wav,.ogg,.aac",
-    supportedFormats: ['MP3', 'WAV', 'OGG', 'AAC', 'M4A'],
+    acceptedTypes: "audio/*,video/*,.mp3,.wav,.ogg,.aac,.m4a,.mp4,.mov,.webm",
+    supportedFormats: ["MP3", "WAV", "OGG", "AAC", "M4A", "MP4", "MOV", "WebM"],
     maxSize: "500MB",
     categories: [
       { id: 'forests', name: 'Forests', subcategories: [
