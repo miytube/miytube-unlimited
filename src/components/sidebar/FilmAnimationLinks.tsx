@@ -40,7 +40,6 @@ export const FilmAnimationLinks: React.FC = () => {
         { id: 'film-western-comedies', label: 'Western Comedies', path: '/film/western-comedies' },
         { id: 'film-neo-westerns', label: 'Neo-Westerns', path: '/film/neo-westerns' },
         { id: 'film-acid-westerns', label: 'Acid Westerns', path: '/film/acid-westerns' },
-        { id: 'film-movie-trailers', label: 'Film & Movie Trailers', path: '/film/movie-trailers' },
       ]
     },
   ];
