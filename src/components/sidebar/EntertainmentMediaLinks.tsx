@@ -35,7 +35,8 @@ export const EntertainmentMediaLinks: React.FC = () => {
         { id: 'film-gangsters', label: 'Gangsters, Crime, Drama', path: '/film/gangsters' },
         { id: 'film-mystery', label: 'Mystery & Fiction', path: '/film/mystery' },
         { id: 'film-scientific', label: 'Scientific', path: '/film/scientific' },
-        { id: 'film-war', label: 'War Films', path: '/film/war' },
+       { id: 'film-war', label: 'War Films', path: '/film/war' },
+       { id: 'film-movie-trailers', label: 'Film & Movie Trailers', path: '/film/movie-trailers' },
         { id: 'film-westerns', label: 'Westerns', path: '/film/westerns' },
         { id: 'film-clips', label: 'Film Clips & Trailers', path: '/film/clips' }
       ]
