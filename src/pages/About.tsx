@@ -41,20 +41,8 @@ const About = () => {
             <h2 className="text-2xl font-semibold mb-3">Leadership Team</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
               <div className="bg-card p-4 rounded-lg border">
-                <h3 className="font-medium">Alex Chen</h3>
-                <p className="text-sm text-muted-foreground">Chief Executive Officer</p>
-              </div>
-              <div className="bg-card p-4 rounded-lg border">
-                <h3 className="font-medium">Jordan Smith</h3>
-                <p className="text-sm text-muted-foreground">Chief Technology Officer</p>
-              </div>
-              <div className="bg-card p-4 rounded-lg border">
-                <h3 className="font-medium">Morgan Lee</h3>
-                <p className="text-sm text-muted-foreground">Chief Content Officer</p>
-              </div>
-              <div className="bg-card p-4 rounded-lg border">
-                <h3 className="font-medium">Taylor Jones</h3>
-                <p className="text-sm text-muted-foreground">Chief Operations Officer</p>
+                <h3 className="font-medium">Mark Hayes</h3>
+                <p className="text-sm text-muted-foreground">Owner & Chief Executive Officer</p>
               </div>
             </div>
           </section>
