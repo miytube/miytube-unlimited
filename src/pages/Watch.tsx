@@ -242,7 +242,13 @@ const Watch = () => {
       navigate('/');
     }
   };
-  
+
+  // Redirect to /shorts/:id if the loaded video is a short (handles legacy/shared /watch?v= links)
+  useEffect(() => {
+    if (video && !isMusicVideo && video.category?.toLowerCase() === 'shorts') {
+      navigate(`/shorts/${video.id}`, { replace: true });
+    }
+  }, [video, isMusicVideo, navigate]);
 
   const isUserUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
   
