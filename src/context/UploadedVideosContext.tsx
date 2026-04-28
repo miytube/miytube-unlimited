@@ -375,25 +375,29 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       // Create a map of cloud videos by ID for deduplication
       const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
       
-      // Process local videos
-      const localVideoList: UploadedVideo[] = localVideos.map(sv => ({
-        id: sv.id,
-        file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
-        fileDataUrl: sv.fileDataUrl,
-        cloudUrl: sv.cloudUrl,
-        isCloudStored: sv.isCloudStored,
-        isYouTubeEmbed: sv.isYouTubeEmbed,
-        youtubeId: sv.youtubeId,
-        title: sv.title,
-        description: sv.description,
-        thumbnail: sv.thumbnail,
-        timestamp: sv.timestamp,
-        views: sv.views,
-        duration: sv.duration,
-        category: sv.category,
-        subcategory: sv.subcategory,
-        tags: sv.tags || [],
-      }));
+      // Process local videos, but trust cloud metadata for routing/category fixes.
+      const localVideoList: UploadedVideo[] = localVideos.map(sv => {
+        const cloudVideo = cloudVideoMap.get(sv.id);
+
+        return {
+          id: sv.id,
+          file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
+          fileDataUrl: sv.fileDataUrl,
+          cloudUrl: cloudVideo?.cloudUrl || sv.cloudUrl,
+          isCloudStored: cloudVideo?.isCloudStored ?? sv.isCloudStored,
+          isYouTubeEmbed: cloudVideo?.isYouTubeEmbed ?? sv.isYouTubeEmbed,
+          youtubeId: cloudVideo?.youtubeId || sv.youtubeId,
+          title: cloudVideo?.title || sv.title,
+          description: cloudVideo?.description ?? sv.description,
+          thumbnail: cloudVideo?.thumbnail || sv.thumbnail,
+          timestamp: cloudVideo?.timestamp || sv.timestamp,
+          views: cloudVideo?.views || sv.views,
+          duration: cloudVideo?.duration || sv.duration,
+          category: cloudVideo?.category ?? sv.category,
+          subcategory: cloudVideo?.subcategory ?? sv.subcategory,
+          tags: cloudVideo?.tags?.length ? cloudVideo.tags : (sv.tags || []),
+        };
+      });
       
       // Merge: local videos take priority (they have file data), add cloud-only videos
       const mergedVideos: UploadedVideo[] = [...localVideoList];
