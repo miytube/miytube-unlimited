@@ -8,8 +8,8 @@ export const bookContentTypes: Record<string, ContentType> = {
     name: "Audiobooks",
     icon: Book,
     description: "Upload audiobooks, narrations, and spoken word content.",
-    acceptedTypes: "audio/*,.mp3,.wav,.ogg,.aac",
-    supportedFormats: ['MP3', 'WAV', 'OGG', 'AAC', 'M4A'],
+    acceptedTypes: "audio/*,video/*,.mp3,.wav,.ogg,.aac,.m4a,.mp4,.mov,.webm",
+    supportedFormats: ["MP3", "WAV", "OGG", "AAC", "M4A", "MP4", "MOV", "WebM"],
     maxSize: "1GB",
     categories: [
       { id: 'fiction', name: 'Fiction', subcategories: [
