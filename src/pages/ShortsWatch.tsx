@@ -114,6 +114,15 @@ const ShortsWatch = () => {
   };
 
   if (!video) {
+    if (isLoading) {
+      return (
+        <Layout>
+          <div className="flex justify-center items-center h-[calc(100vh-80px)]">
+            <p className="text-muted-foreground">Loading short…</p>
+          </div>
+        </Layout>
+      );
+    }
     return (
       <Layout>
         <div className="flex justify-center items-center h-[calc(100vh-80px)]">
