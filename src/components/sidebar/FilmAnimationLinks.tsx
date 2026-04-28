@@ -14,14 +14,7 @@ export const FilmAnimationLinks: React.FC = () => {
         { id: 'film-movies', label: 'Film & Movies', path: '/film' },
         { id: 'film-animation-movies', label: 'Animation Movies', path: '/film-animation/movies' },
         { id: 'film-animation-cartoons', label: 'Cartoons', path: '/film-animation/cartoons' },
-        { id: 'film-movie-trailers', label: 'Film & Movie Trailers', path: '/film/movie-trailers' },
       ]
-    },
-    {
-      id: 'film-movie-trailers-top',
-      icon: Popcorn,
-      label: 'Film & Movie Trailers',
-      path: '/film/movie-trailers',
     },
     { 
       id: 'film-horror',
@@ -47,6 +40,7 @@ export const FilmAnimationLinks: React.FC = () => {
         { id: 'film-western-comedies', label: 'Western Comedies', path: '/film/western-comedies' },
         { id: 'film-neo-westerns', label: 'Neo-Westerns', path: '/film/neo-westerns' },
         { id: 'film-acid-westerns', label: 'Acid Westerns', path: '/film/acid-westerns' },
+        { id: 'film-movie-trailers', label: 'Film & Movie Trailers', path: '/film/movie-trailers' },
       ]
     },
   ];
