@@ -300,6 +300,15 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  'film-movie-trailers': {
+    title: 'Film & Movie Trailers',
+    description: 'Official film and movie trailers, teasers, and previews',
+    icon: Popcorn,
+    parent: {
+      route: '/film-animation',
+      name: 'Film & Animation'
+    }
+  },
 
   // Film Animation subcategories
   'film-animation-action': {
