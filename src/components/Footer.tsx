@@ -17,19 +17,19 @@ export const Footer = () => {
               Your platform for unlimited video content. Upload, share, and discover with no restrictions.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.facebook.com/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on Facebook" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://x.com/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on X" className="text-muted-foreground hover:text-primary transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.instagram.com/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on Instagram" className="text-muted-foreground hover:text-primary transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.youtube.com/@miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on YouTube" className="text-muted-foreground hover:text-primary transition-colors">
                 <Youtube size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="https://www.linkedin.com/company/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on LinkedIn" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin size={20} />
               </a>
             </div>
