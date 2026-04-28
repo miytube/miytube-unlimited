@@ -8,7 +8,7 @@ import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 
-const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration }: {
+const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
   title: string;
   thumbnail: string;
@@ -16,9 +16,10 @@ const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, 
   views: string;
   timestamp: string;
   duration: string;
+  category?: string;
 }) => (
   <article className="w-full">
-    <Link to={`/watch?v=${id}`} className="block group">
+    <Link to={category?.toLowerCase() === 'shorts' ? `/shorts/${id}` : `/watch?v=${id}`} className="block group">
       <div className="relative aspect-video overflow-hidden rounded-lg bg-muted">
         <img src={thumbnail} alt={title} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
         <span className="absolute bottom-2 right-2 rounded bg-foreground/80 px-1.5 py-0.5 text-xs text-background">{duration}</span>

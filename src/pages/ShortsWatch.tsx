@@ -22,7 +22,7 @@ const ShortsWatch = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { uploadedVideos, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
+  const { uploadedVideos, isLoading, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -36,6 +36,7 @@ const ShortsWatch = () => {
 
   useEffect(() => {
     if (id) {
+      // Match by context id (local_id) OR by underlying UUID for shared/legacy links
       const foundVideo = uploadedVideos.find(v => v.id === id);
       if (foundVideo) {
         setVideo(foundVideo);
@@ -114,6 +115,15 @@ const ShortsWatch = () => {
   };
 
   if (!video) {
+    if (isLoading) {
+      return (
+        <Layout>
+          <div className="flex justify-center items-center h-[calc(100vh-80px)]">
+            <p className="text-muted-foreground">Loading short…</p>
+          </div>
+        </Layout>
+      );
+    }
     return (
       <Layout>
         <div className="flex justify-center items-center h-[calc(100vh-80px)]">
