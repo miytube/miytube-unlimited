@@ -205,12 +205,13 @@ export const filterVideosBySubcategory = (
     // Check if all key words are present in category or subcategory
     if (keyWords.length >= 2 && keyWords.every(word => combinedText.includes(word))) return true;
     
-    // Check tags for exact match or fuzzy match
-    if (vidTags.includes(titleLower) || vidTags.includes(keyLower) || vidTags.includes(lastSegment)) return true;
-    if (vidTags.includes(lastSegmentSpaced) || vidTags.includes(titleWithoutShows)) return true;
-    if (vidTags.some(tag => isFuzzyMatch(tag, lastSegment) || isFuzzyMatch(tag, titleLower))) return true;
+    // Check tags for exact match against full key/title only (avoid generic single-word
+    // matches like "playoffs" leaking NBA videos into NHL playoffs page)
+    if (vidTags.includes(titleLower) || vidTags.includes(keyLower)) return true;
+    if (vidTags.includes(titleWithoutShows)) return true;
+    if (vidTags.some(tag => isFuzzyMatch(tag, titleLower) || isFuzzyMatch(tag, keyLower))) return true;
     
-    // Check if tag contains all key words
+    // Check if tag contains ALL key words (requires full context, e.g. "nhl" + "playoffs")
     if (vidTags.some(tag => keyWords.length >= 2 && keyWords.every(word => tag.includes(word)))) return true;
     
     return false;
