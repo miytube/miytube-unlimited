@@ -49,6 +49,19 @@ const isFuzzyMatch = (input: string, target: string, threshold = 0.75): boolean 
   return getSimilarity(inputLower, targetLower) >= threshold;
 };
 
+const sportsLeaguePatterns = [
+  { league: 'nba', pattern: /(^|[\s\-/])nba($|[\s\-/])/ },
+  { league: 'wnba', pattern: /(^|[\s\-/])wnba($|[\s\-/])/ },
+  { league: 'nhl', pattern: /(^|[\s\-/])nhl($|[\s\-/])/ },
+  { league: 'mlb', pattern: /(^|[\s\-/])mlb($|[\s\-/])/ },
+  { league: 'nfl', pattern: /(^|[\s\-/])nfl($|[\s\-/])/ },
+];
+
+const detectSportsLeague = (text: string): string | undefined => {
+  const normalized = text.toLowerCase().replace(/_/g, '-');
+  return sportsLeaguePatterns.find(({ pattern }) => pattern.test(normalized))?.league;
+};
+
 /**
  * Filter videos by exact category match or keyword-based matching for parent categories.
  * For parent categories (like "Business", "Cars"), we match if the video's category
@@ -127,6 +140,13 @@ export const filterVideosBySubcategory = (
     const vidCategory = video.category?.toLowerCase().trim() || '';
     const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
     const vidTags = video.tags?.map(t => t.toLowerCase().trim()) || [];
+    const requestedLeague = detectSportsLeague(`${keyLower} ${titleLower}`);
+    const videoLeague = detectSportsLeague(`${vidCategory} ${vidSubcategory} ${vidTags.join(' ')}`);
+
+    // Keep sports league playoff pages isolated from each other. This prevents NBA
+    // East/West playoff games from appearing on NHL playoff pages just because they
+    // share generic terms like "playoffs" or "game highlights".
+    if (requestedLeague && videoLeague && requestedLeague !== videoLeague) return false;
     
     // Normalize video fields for comparison (remove hyphens/spaces)
     const vidCategoryNorm = vidCategory.replace(/[\s-]/g, '');
