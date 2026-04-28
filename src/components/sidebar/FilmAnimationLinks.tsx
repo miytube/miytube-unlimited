@@ -14,6 +14,7 @@ export const FilmAnimationLinks: React.FC = () => {
         { id: 'film-movies', label: 'Film & Movies', path: '/film' },
         { id: 'film-animation-movies', label: 'Animation Movies', path: '/film-animation/movies' },
         { id: 'film-animation-cartoons', label: 'Cartoons', path: '/film-animation/cartoons' },
+        { id: 'film-movie-trailers', label: 'Film & Movie Trailers', path: '/film/movie-trailers' },
       ]
     },
     { 

@@ -35,6 +35,7 @@ export const filmRoutes = [
   <Route key="film-movies-action-thriller" path="/film/movies-action-thriller" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-clips" path="/film/movies-clips" element={<GenericSubcategoryPage />} />,
   <Route key="film-movies-created" path="/film/movies-created" element={<GenericSubcategoryPage />} />,
+  <Route key="film-movie-trailers" path="/film/movie-trailers" element={<GenericSubcategoryPage />} />,
   
   // Main Film page (redirect to film-animation)
   <Route key="film-main" path="/film" element={<FilmAnimation />} />,
