@@ -91,7 +91,31 @@ Deno.serve(async (req) => {
 
     if (action === 'list') {
       const { items, isTruncated, nextToken } = await s3List(body.prefix ?? '', body.continuation_token);
-      const videos = items.filter((i) => VIDEO_EXT.test(i.key));
+      // Filter: only videos, skip .mob.mp4 (30s preview clips)
+      let videos = items.filter((i) => VIDEO_EXT.test(i.key) && !/\.mob\.(mp4|mov|m4v|webm)$/i.test(i.key));
+
+      // Deduplicate variants: keep only the highest quality per base name
+      // Quality rank: 1080 > 720 > 480 > 360 > (no suffix / other)
+      const qualityRank = (key: string): number => {
+        if (/\.1080p?\.(mp4|mov|m4v|webm)$/i.test(key)) return 5;
+        if (/\.720p?\.(mp4|mov|m4v|webm)$/i.test(key)) return 4;
+        if (/\.480p?\.(mp4|mov|m4v|webm)$/i.test(key)) return 3;
+        if (/\.360p?\.(mp4|mov|m4v|webm)$/i.test(key)) return 2;
+        return 1;
+      };
+      const baseKey = (key: string): string =>
+        key.replace(/\.(1080p?|720p?|480p?|360p?|240p?)\.(mp4|mov|m4v|webm)$/i, '.$2');
+
+      const bestByBase = new Map<string, typeof videos[number]>();
+      for (const v of videos) {
+        const base = baseKey(v.key);
+        const existing = bestByBase.get(base);
+        if (!existing || qualityRank(v.key) > qualityRank(existing.key)) {
+          bestByBase.set(base, v);
+        }
+      }
+      videos = Array.from(bestByBase.values());
+
       return new Response(JSON.stringify({ items: videos, isTruncated, nextToken }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
