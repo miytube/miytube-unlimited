@@ -144,6 +144,11 @@ const Index = () => {
           </div>
         )}
 
+        {/* Ad slot — between Recommended and Trending */}
+        {!isLoading && displayVideos.length > 0 && (
+          <AdSlot label="Home recommended ad" className="mb-6" />
+        )}
+
         {/* Trending Videos Section - Regular videos only */}
         {!isLoading && trendingVideos.length > 0 && (
           <div className="mb-6">
