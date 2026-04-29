@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { isLikelyBot } from '@/utils/botDetection';
 
 const generateSessionId = (): string => {
   const stored = sessionStorage.getItem('analytics_session_id');
