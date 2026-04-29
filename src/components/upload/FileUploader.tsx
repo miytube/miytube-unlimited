@@ -85,7 +85,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     fileInputRef,
     setIsDragging,
     handleFileSelect: originalHandleFileSelect,
-    handleBrowseClick
+    handleBrowseClick,
+    clearUploadedFiles,
   } = useFileUpload({ 
     supportedFormats, 
     maxSize,
@@ -94,6 +95,25 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     },
     id 
   });
+
+  const handleReset = () => {
+    clearUploadedFiles();
+    setImportedUrl(null);
+    setIsYouTubeImport(false);
+    setYoutubeVideoId(null);
+    setVideoTitle('');
+    setVideoDescription('');
+    setSelectedSubcategory(defaultSubcategory || '');
+    setTags([]);
+    setVideoQuality('original');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    toast({
+      title: 'Uploader reset',
+      description: 'Cleared previous file and metadata. Ready for a new upload.',
+    });
+  };
   
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
