@@ -137,9 +137,13 @@ export const S3ImportManager = () => {
             onChange={(e) => setPrefix(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && load()}
           />
-          <Button onClick={() => load()} disabled={loading}>
+          <Button onClick={() => load()} disabled={loading || importing}>
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
             <span className="ml-2">Load</span>
+          </Button>
+          <Button onClick={importAll} disabled={loading || importing} variant="secondary">
+            {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <DownloadCloud className="h-4 w-4" />}
+            <span className="ml-2">Import All</span>
           </Button>
         </div>
 
