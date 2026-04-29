@@ -226,7 +226,8 @@ const Admin = () => {
         </div>
 
         <Tabs defaultValue="users" className="w-full">
-          <TabsList>
+          <div className="w-full overflow-x-auto pb-2">
+          <TabsList className="inline-flex w-max">
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               User Management
