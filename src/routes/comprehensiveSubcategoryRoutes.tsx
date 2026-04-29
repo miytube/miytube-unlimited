@@ -4,15 +4,28 @@ import { Route } from "react-router-dom";
 import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 import NFLFootballPage from "@/pages/categories/sports/NFLFootballPage";
 import AFLFootballPage from "@/pages/categories/sports/AFLFootballPage";
+import NFLGamesPage from "@/pages/categories/sports/nfl/NFLGamesPage";
+import NFLEastPlayoffsPage from "@/pages/categories/sports/nfl/NFLEastPlayoffsPage";
+import NFLWestPlayoffsPage from "@/pages/categories/sports/nfl/NFLWestPlayoffsPage";
+import SuperbowlGamePage from "@/pages/categories/sports/nfl/SuperbowlGamePage";
+import NFLPlayersCoachesPage from "@/pages/categories/sports/nfl/NFLPlayersCoachesPage";
+import AFLPlayersCoachesPage from "@/pages/categories/sports/nfl/AFLPlayersCoachesPage";
 
 export const comprehensiveSubcategoryRoutes = [
-  // Dedicated NFL & AFL hub pages (must come before generic /sports/:category)
+  // Dedicated NFL hub + sub-watch pages (must come before generic /sports/:category)
   <Route key="sports-nfl-hub" path="/sports/nfl" element={<NFLFootballPage />} />,
   <Route key="sports-nfl-football-hub" path="/sports/nfl-football" element={<NFLFootballPage />} />,
+  <Route key="sports-nfl-games" path="/sports/nfl/games" element={<NFLGamesPage />} />,
+  <Route key="sports-nfl-east-playoffs" path="/sports/nfl/east-playoffs" element={<NFLEastPlayoffsPage />} />,
+  <Route key="sports-nfl-west-playoffs" path="/sports/nfl/west-playoffs" element={<NFLWestPlayoffsPage />} />,
+  <Route key="sports-nfl-superbowl" path="/sports/nfl/superbowl" element={<SuperbowlGamePage />} />,
+  <Route key="sports-nfl-players" path="/sports/nfl/players" element={<NFLPlayersCoachesPage />} />,
+  <Route key="sports-nfl-afl-players" path="/sports/nfl/afl-players" element={<AFLPlayersCoachesPage />} />,
+  // Legacy AFL hub pages
   <Route key="sports-afl-hub" path="/sports/afl" element={<AFLFootballPage />} />,
   <Route key="sports-afl-football-hub" path="/sports/afl-football" element={<AFLFootballPage />} />,
   <Route key="sports-afl-grand-final" path="/sports/afl/grand-final" element={<GenericSubcategoryPage />} />,
-  <Route key="sports-afl-players" path="/sports/afl/players" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-afl-players" path="/sports/afl/players" element={<AFLPlayersCoachesPage />} />,
   // AI & Technology routes (nested and flat for search)
   <Route key="ai" path="/ai" element={<GenericSubcategoryPage />} />,
   <Route key="ai-chatbots" path="/ai/chatbots" element={<GenericSubcategoryPage />} />,
