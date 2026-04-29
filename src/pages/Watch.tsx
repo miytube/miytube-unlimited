@@ -292,6 +292,15 @@ const Watch = () => {
         duration={(video as any).duration}
         tags={video.tags}
       />
+      <BreadcrumbStructuredData
+        items={[
+          { name: 'Home', path: '/' },
+          ...(video.category
+            ? [{ name: video.category, path: `/${String(video.category).toLowerCase().replace(/\s+/g, '-')}` }]
+            : []),
+          { name: video.title, path: `/watch/${actualVideoId || video.id}` },
+        ]}
+      />
       <div className="py-6 animate-fade-in">
         <div className="flex gap-6 max-w-[1400px] mx-auto px-2 sm:px-4">
           {/* Main Video Section */}
