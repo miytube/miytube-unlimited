@@ -66,6 +66,17 @@ export const useAnalyticsTracking = () => {
       if (lastPathRef.current === location.pathname) return;
       lastPathRef.current = location.pathname;
 
+      // Send page_view to Google Analytics (GA4) on each SPA route change
+      // @ts-ignore
+      if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+        // @ts-ignore
+        (window as any).gtag('event', 'page_view', {
+          page_path: location.pathname + location.search,
+          page_location: window.location.href,
+          page_title: document.title,
+        });
+      }
+
       // Record page view (no IP captured client-side anymore)
       await supabase.from('page_views').insert({
         page_path: location.pathname,
