@@ -20,8 +20,14 @@ const GenericSubcategoryPage = () => {
     IconComponent,
     parentRoute,
     parentName,
-    mappingKey
+    mappingKey,
+    isKnown
   } = useSubcategoryInfo();
+
+  // Unknown path — don't auto-render a category page (e.g. /myiadmin/signin)
+  if (!isKnown) {
+    return <NotFound />;
+  }
   
   // Filter videos for this subcategory using strict matching
   const subcategoryVideos = filterVideosBySubcategory(uploadedVideos, pageTitle, mappingKey);
