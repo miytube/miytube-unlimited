@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { isLikelyBot } from '@/utils/botDetection';
 
 const generateSessionId = (): string => {
   const stored = sessionStorage.getItem('analytics_session_id');
@@ -22,8 +23,13 @@ export const useAnalyticsTracking = () => {
   const { user } = useAuth();
   const sessionIdRef = useRef<string>(generateSessionId());
   const lastPathRef = useRef<string>('');
+  const isBotRef = useRef<boolean>(isLikelyBot());
 
   useEffect(() => {
+    // Skip all analytics for bots/crawlers — keeps quality signals clean
+    // for AdSense (high bounce rate from bots reduces ad fill rate).
+    if (isBotRef.current) return;
+
     const sessionId = sessionIdRef.current;
 
     // Helper: a per-call PostgREST request with x-session-id header so RLS

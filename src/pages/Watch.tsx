@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAIRecommendations } from '@/hooks/useAIRecommendations';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import {
   AlertDialog,
@@ -316,7 +317,10 @@ const Watch = () => {
             />
             
             <VideoDescription description={video.description} />
-            
+
+            {/* Ad slot — below video description */}
+            <AdSlot label="Watch below-description ad" />
+
             {actualVideoId && <VideoComments videoId={actualVideoId} />}
             
             
@@ -324,6 +328,9 @@ const Watch = () => {
 
           {/* Right Sidebar */}
           <div className="w-80 hidden lg:block space-y-4">
+            {/* Ad slot — top of recommendations sidebar */}
+            <AdSlot label="Watch sidebar ad" format="vertical" className="!my-0" />
+
             <h3 className="text-sm font-semibold">Up Next</h3>
             
             {/* First Video */}

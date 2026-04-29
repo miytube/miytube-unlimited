@@ -7,6 +7,7 @@ import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
@@ -143,6 +144,11 @@ const Index = () => {
           </div>
         )}
 
+        {/* Ad slot — between Recommended and Trending */}
+        {!isLoading && displayVideos.length > 0 && (
+          <AdSlot label="Home recommended ad" className="mb-6" />
+        )}
+
         {/* Trending Videos Section - Regular videos only */}
         {!isLoading && trendingVideos.length > 0 && (
           <div className="mb-6">
@@ -163,6 +169,11 @@ const Index = () => {
 
         {/* Shorts Section - below Trending */}
         {!isLoading && <ShortVideosSection />}
+
+        {/* Ad slot — below Shorts, above pagination */}
+        {!isLoading && allVideos.length > 0 && (
+          <AdSlot label="Home below-shorts ad" className="mb-6" />
+        )}
 
         {/* Page counter below trending section */}
         {!isLoading && displayVideos.length > 0 && (
