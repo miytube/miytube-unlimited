@@ -11,6 +11,7 @@ interface SubcategoryData {
   parentRoute: string;
   parentName: string;
   mappingKey: string;
+  isKnown: boolean;
 }
 
 export const useSubcategoryInfo = (): SubcategoryData => {
@@ -37,6 +38,7 @@ export const useSubcategoryInfo = (): SubcategoryData => {
   let IconComponent: LucideIcon = Film;
   let parentRoute = '/';
   let parentName = 'Home';
+  let isKnown = false;
   
   // First check subcategoryMappings with full path (including leading slash) - this is the primary format
   if (subcategoryMappings[fullPath]) {
@@ -46,6 +48,7 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent = mapping.icon;
     parentRoute = mapping.parent.route;
     parentName = mapping.parent.name;
+    isKnown = true;
   }
   // Check subcategoryMappings with path key (without leading slash) - for animals and similar mappings
   else if (subcategoryMappings[pathKey]) {
@@ -55,6 +58,7 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent = mapping.icon;
     parentRoute = mapping.parent.route;
     parentName = mapping.parent.name;
+    isKnown = true;
   }
   // Then check subcategoryMappings for nested routes with key format like "category-subcategory"
   else if (subcategoryMappings[mappingKey]) {
@@ -64,6 +68,7 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent = mapping.icon;
     parentRoute = mapping.parent.route;
     parentName = mapping.parent.name;
+    isKnown = true;
   }
   // Check allCategoryMappings with full path
   else if (allCategoryMappings[fullPath]) {
@@ -73,6 +78,7 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent = mapping.icon;
     parentRoute = mapping.parent?.route || '/';
     parentName = mapping.parent?.name || 'Home';
+    isKnown = true;
   }
   // Check allCategoryMappings for the last segment (for nested routes like /gaming/game-challenges)
   else if (allCategoryMappings[lastSegment]) {
@@ -82,6 +88,7 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent = mapping.icon;
     parentRoute = mapping.parent?.route || '/';
     parentName = mapping.parent?.name || 'Home';
+    isKnown = true;
   }
   // Then check allCategoryMappings for direct path routes (without leading slash)
   else if (allCategoryMappings[pathKey]) {
@@ -91,14 +98,9 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent = mapping.icon;
     parentRoute = mapping.parent?.route || '/';
     parentName = mapping.parent?.name || 'Home';
+    isKnown = true;
   }
-  // Finally, use the getCategoryInfo helper as fallback
-  else {
-    const info = getCategoryInfo(pathKey);
-    pageTitle = info.title;
-    pageDescription = info.description;
-    IconComponent = info.icon;
-  }
+  // Unknown path - leave isKnown false; consumers should render NotFound
   
   return {
     pageTitle,
@@ -106,6 +108,7 @@ export const useSubcategoryInfo = (): SubcategoryData => {
     IconComponent,
     parentRoute,
     parentName,
-    mappingKey: pathKey
+    mappingKey: pathKey,
+    isKnown,
   };
 };

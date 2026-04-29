@@ -9,6 +9,7 @@ import AboutSection from '@/components/subcategory/AboutSection';
 import { Link } from 'react-router-dom';
 import { Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
+import NotFound from '@/pages/NotFound';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -20,8 +21,14 @@ const GenericSubcategoryPage = () => {
     IconComponent,
     parentRoute,
     parentName,
-    mappingKey
+    mappingKey,
+    isKnown
   } = useSubcategoryInfo();
+
+  // Unknown path — don't auto-render a category page (e.g. /myiadmin/signin)
+  if (!isKnown) {
+    return <NotFound />;
+  }
   
   // Filter videos for this subcategory using strict matching
   const subcategoryVideos = filterVideosBySubcategory(uploadedVideos, pageTitle, mappingKey);
