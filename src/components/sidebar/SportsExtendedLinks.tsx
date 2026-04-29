@@ -19,21 +19,15 @@ export const SportsExtendedLinks: React.FC = () => {
     { 
       id: 'sports-nfl', 
       icon: Trophy, 
-      label: 'NFL Football', 
+      label: 'NFL', 
       path: '/sports/nfl',
       subItems: [
-        { id: 'sports-nfl-superbowl', label: 'Super Bowl', path: '/sports/nfl/superbowl' },
+        { id: 'sports-nfl-games', label: 'NFL Games', path: '/sports/nfl/games' },
+        { id: 'sports-nfl-east-playoffs', label: 'AFL East Playoffs', path: '/sports/nfl/east-playoffs' },
+        { id: 'sports-nfl-west-playoffs', label: 'NFL West Playoffs', path: '/sports/nfl/west-playoffs' },
+        { id: 'sports-nfl-superbowl', label: 'Superbowl Game', path: '/sports/nfl/superbowl' },
+        { id: 'sports-nfl-afl-players', label: 'AFL Players & Coaches', path: '/sports/nfl/afl-players' },
         { id: 'sports-nfl-players', label: 'NFL Players & Coaches', path: '/sports/nfl/players' }
-      ]
-    },
-    { 
-      id: 'sports-afl', 
-      icon: Trophy, 
-      label: 'AFL Football', 
-      path: '/sports/afl',
-      subItems: [
-        { id: 'sports-afl-grand-final', label: 'Grand Final', path: '/sports/afl/grand-final' },
-        { id: 'sports-afl-players', label: 'AFL Players & Coaches', path: '/sports/afl/players' }
       ]
     },
     { 
