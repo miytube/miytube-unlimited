@@ -9,6 +9,7 @@ import AboutSection from '@/components/subcategory/AboutSection';
 import { Link } from 'react-router-dom';
 import { Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
+import NotFound from '@/pages/NotFound';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos } = useUploadedVideos();
