@@ -16,6 +16,7 @@ import { useAIRecommendations } from '@/hooks/useAIRecommendations';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
+import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
 import {
   AlertDialog,
   AlertDialogAction,
