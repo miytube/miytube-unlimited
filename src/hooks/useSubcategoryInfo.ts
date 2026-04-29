@@ -11,6 +11,7 @@ interface SubcategoryData {
   parentRoute: string;
   parentName: string;
   mappingKey: string;
+  isKnown: boolean;
 }
 
 export const useSubcategoryInfo = (): SubcategoryData => {
