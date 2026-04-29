@@ -170,6 +170,11 @@ const Index = () => {
         {/* Shorts Section - below Trending */}
         {!isLoading && <ShortVideosSection />}
 
+        {/* Ad slot — below Shorts, above pagination */}
+        {!isLoading && allVideos.length > 0 && (
+          <AdSlot label="Home below-shorts ad" className="mb-6" />
+        )}
+
         {/* Page counter below trending section */}
         {!isLoading && displayVideos.length > 0 && (
           <div className="flex items-center justify-between mb-6">
