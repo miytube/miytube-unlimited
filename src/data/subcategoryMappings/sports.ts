@@ -447,6 +447,26 @@ export const sportsSubcategories: SubcategoryMapping = {
     parent: { route: '/sports', name: 'Sports' }
   },
 
+  // AFL (Australian Football League)
+  'sports-afl-football': {
+    title: 'AFL Football',
+    description: 'Australian Football League games and highlights',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  'sports-afl-grand-final': {
+    title: 'AFL Grand Final',
+    description: 'AFL Grand Final games and historic moments',
+    icon: Trophy,
+    parent: { route: '/sports/afl', name: 'AFL Football' }
+  },
+  'sports-afl-players': {
+    title: 'AFL Players & Coaches',
+    description: 'AFL players, coaches, and teams',
+    icon: Trophy,
+    parent: { route: '/sports/afl', name: 'AFL Football' }
+  },
+
   // Olympics
   'sports-olympics-track': {
     title: 'Olympics Track & Field',
