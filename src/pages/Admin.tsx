@@ -10,11 +10,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity } from 'lucide-react';
+import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity, Cloud } from 'lucide-react';
 import { BreakingNewsManager } from '@/components/admin/BreakingNewsManager';
 import PartnerApplicationsManager from '@/components/admin/PartnerApplicationsManager';
 import { RepairMissingFilesManager } from '@/components/admin/RepairMissingFilesManager';
 import { AnalyticsDashboard } from '@/components/admin/AnalyticsDashboard';
+import { S3ImportManager } from '@/components/admin/S3ImportManager';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -254,6 +255,10 @@ const Admin = () => {
               <Activity className="h-4 w-4" />
               Analytics
             </TabsTrigger>
+            <TabsTrigger value="s3" className="flex items-center gap-2">
+              <Cloud className="h-4 w-4" />
+              S3 Import
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="users" className="mt-6">
@@ -357,6 +362,10 @@ const Admin = () => {
                 <AnalyticsDashboard />
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="s3" className="mt-6">
+            <S3ImportManager />
           </TabsContent>
         </Tabs>
       </div>
