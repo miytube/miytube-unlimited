@@ -8,6 +8,8 @@ import { UrlImportSection } from './UrlImportSection';
 import { triggerFileInputChangeEvent } from '@/utils/fileUploadUtils';
 import { transcodeVideoFile, type VideoQuality } from '@/utils/videoTranscoder';
 import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import { RotateCcw } from 'lucide-react';
 
 interface FileUploaderProps {
   icon: React.ElementType;
@@ -83,7 +85,8 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     fileInputRef,
     setIsDragging,
     handleFileSelect: originalHandleFileSelect,
-    handleBrowseClick
+    handleBrowseClick,
+    clearUploadedFiles,
   } = useFileUpload({ 
     supportedFormats, 
     maxSize,
@@ -92,6 +95,25 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     },
     id 
   });
+
+  const handleReset = () => {
+    clearUploadedFiles();
+    setImportedUrl(null);
+    setIsYouTubeImport(false);
+    setYoutubeVideoId(null);
+    setVideoTitle('');
+    setVideoDescription('');
+    setSelectedSubcategory(defaultSubcategory || '');
+    setTags([]);
+    setVideoQuality('original');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    toast({
+      title: 'Uploader reset',
+      description: 'Cleared previous file and metadata. Ready for a new upload.',
+    });
+  };
   
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -246,7 +268,21 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
   return (
     <div className="bg-card p-6 rounded-lg shadow-md mb-8 w-full max-w-3xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+      <div className="flex items-start justify-between mb-4 gap-3">
+        <h2 className="text-xl font-semibold">{title}</h2>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleReset}
+          disabled={uploading || isTranscoding}
+          className="shrink-0"
+          title="Clear current file and metadata"
+        >
+          <RotateCcw className="h-4 w-4 mr-1.5" />
+          Reset
+        </Button>
+      </div>
       <p className="text-muted-foreground mb-6">{description}</p>
       
       <FileInputSection
