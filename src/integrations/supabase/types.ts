@@ -149,6 +149,48 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_posts: {
+        Row: {
+          content: string
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          is_published: boolean
+          slug: string
+          title: string
+          updated_at: string
+          user_id: string
+          views: number
+        }
+        Insert: {
+          content: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          is_published?: boolean
+          slug: string
+          title: string
+          updated_at?: string
+          user_id: string
+          views?: number
+        }
+        Update: {
+          content?: string
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          is_published?: boolean
+          slug?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          views?: number
+        }
+        Relationships: []
+      }
       breaking_news: {
         Row: {
           category: string | null
@@ -225,6 +267,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      documents: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          downloads: number
+          file_name: string
+          file_size: number | null
+          file_type: string | null
+          file_url: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          downloads?: number
+          file_name: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url: string
+          id?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          downloads?: number
+          file_name?: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       email_send_log: {
         Row: {
@@ -481,6 +568,48 @@ export type Database = {
           updated_at?: string
           user_id?: string
           watch_hours?: number
+        }
+        Relationships: []
+      }
+      pictures: {
+        Row: {
+          created_at: string
+          description: string | null
+          height: number | null
+          id: string
+          image_url: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+          views: number
+          width: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          height?: number | null
+          id?: string
+          image_url: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+          views?: number
+          width?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          height?: number | null
+          id?: string
+          image_url?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          views?: number
+          width?: number | null
         }
         Relationships: []
       }
