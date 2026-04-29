@@ -268,7 +268,21 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
   return (
     <div className="bg-card p-6 rounded-lg shadow-md mb-8 w-full max-w-3xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+      <div className="flex items-start justify-between mb-4 gap-3">
+        <h2 className="text-xl font-semibold">{title}</h2>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleReset}
+          disabled={uploading || isTranscoding}
+          className="shrink-0"
+          title="Clear current file and metadata"
+        >
+          <RotateCcw className="h-4 w-4 mr-1.5" />
+          Reset
+        </Button>
+      </div>
       <p className="text-muted-foreground mb-6">{description}</p>
       
       <FileInputSection
