@@ -101,6 +101,7 @@ const Index = () => {
 
   return (
     <Layout>
+      <OrganizationStructuredData />
       <div className="py-4 w-full">
         {/* Page Header */}
         <div className="mb-6">
