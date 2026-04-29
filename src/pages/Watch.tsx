@@ -15,6 +15,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAIRecommendations } from '@/hooks/useAIRecommendations';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
+import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -281,6 +282,15 @@ const Watch = () => {
   
   return (
     <Layout>
+      <VideoStructuredData
+        videoId={actualVideoId || video.id}
+        title={video.title}
+        description={video.description}
+        thumbnailUrl={(video as any).thumbnail}
+        contentUrl={typeof video.file === 'string' ? video.file : undefined}
+        duration={(video as any).duration}
+        tags={video.tags}
+      />
       <div className="py-6 animate-fade-in">
         <div className="flex gap-6 max-w-[1400px] mx-auto px-2 sm:px-4">
           {/* Main Video Section */}
