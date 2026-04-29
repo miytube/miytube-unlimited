@@ -8,6 +8,8 @@ import { UrlImportSection } from './UrlImportSection';
 import { triggerFileInputChangeEvent } from '@/utils/fileUploadUtils';
 import { transcodeVideoFile, type VideoQuality } from '@/utils/videoTranscoder';
 import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import { RotateCcw } from 'lucide-react';
 
 interface FileUploaderProps {
   icon: React.ElementType;
