@@ -76,6 +76,50 @@ export const S3ImportManager = () => {
     }
   };
 
+  const importAll = async () => {
+    setImporting(true);
+    let totalImported = 0, totalSkipped = 0, totalFailed = 0, totalScanned = 0;
+    try {
+      let token: string | undefined = undefined;
+      do {
+        const { data: listData, error: listErr } = await supabase.functions.invoke('s3-import', {
+          body: { action: 'list', prefix, continuation_token: token },
+        });
+        if (listErr) throw listErr;
+        const pageItems: S3Item[] = listData.items ?? [];
+        totalScanned += pageItems.length;
+
+        // Import in chunks of 25 to avoid edge function timeouts
+        const chunkSize = 25;
+        for (let i = 0; i < pageItems.length; i += chunkSize) {
+          const chunk = pageItems.slice(i, i + chunkSize).map((it) => it.key);
+          const { data: impData, error: impErr } = await supabase.functions.invoke('s3-import', {
+            body: { action: 'import', keys: chunk },
+          });
+          if (impErr) throw impErr;
+          totalImported += impData.results.filter((r: any) => r.status === 'imported').length;
+          totalSkipped += impData.results.filter((r: any) => r.status === 'skipped').length;
+          totalFailed += impData.results.filter((r: any) => r.status === 'error').length;
+          toast({
+            title: 'Importing...',
+            description: `${totalImported} imported · ${totalSkipped} skipped · ${totalFailed} failed (of ${totalScanned} scanned)`,
+          });
+        }
+        token = listData.nextToken;
+      } while (token);
+
+      toast({
+        title: 'Import All complete',
+        description: `${totalImported} imported, ${totalSkipped} skipped, ${totalFailed} failed`,
+      });
+      await load();
+    } catch (e: any) {
+      toast({ title: 'Import All failed', description: e.message, variant: 'destructive' });
+    } finally {
+      setImporting(false);
+    }
+  };
+
   return (
     <Card>
       <CardHeader>
