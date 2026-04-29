@@ -16,6 +16,7 @@ import { useAIRecommendations } from '@/hooks/useAIRecommendations';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
+import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -290,6 +291,15 @@ const Watch = () => {
         contentUrl={typeof video.file === 'string' ? video.file : undefined}
         duration={(video as any).duration}
         tags={video.tags}
+      />
+      <BreadcrumbStructuredData
+        items={[
+          { name: 'Home', path: '/' },
+          ...(video.category
+            ? [{ name: video.category, path: `/${String(video.category).toLowerCase().replace(/\s+/g, '-')}` }]
+            : []),
+          { name: video.title, path: `/watch/${actualVideoId || video.id}` },
+        ]}
       />
       <div className="py-6 animate-fade-in">
         <div className="flex gap-6 max-w-[1400px] mx-auto px-2 sm:px-4">

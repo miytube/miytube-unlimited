@@ -8,6 +8,7 @@ import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
@@ -100,6 +101,7 @@ const Index = () => {
 
   return (
     <Layout>
+      <OrganizationStructuredData />
       <div className="py-4 w-full">
         {/* Page Header */}
         <div className="mb-6">
