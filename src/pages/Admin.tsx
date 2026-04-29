@@ -363,6 +363,10 @@ const Admin = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="s3" className="mt-6">
+            <S3ImportManager />
+          </TabsContent>
         </Tabs>
       </div>
     </Layout>
