@@ -119,32 +119,16 @@ const Admin = () => {
   };
 
   const updateUserRole = async (userId: string, newRole: AppRole) => {
-    // Delete any existing role rows for this user, then insert the new role.
-    // This handles users who have no role row yet, and users who have multiple.
-    const { error: delError } = await supabase
-      .from('user_roles')
-      .delete()
-      .eq('user_id', userId);
+    const { data, error } = await supabase.functions.invoke('admin-set-role', {
+      body: { target_user_id: userId, role: newRole },
+    });
 
-    if (delError) {
-      console.error('Role delete error:', delError);
+    if (error || (data && data.error)) {
+      const msg = error?.message || data?.error || 'Unknown error';
+      console.error('Role update error:', msg);
       toast({
         title: "Error",
-        description: `Failed to update user role: ${delError.message}`,
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const { error: insError } = await supabase
-      .from('user_roles')
-      .insert({ user_id: userId, role: newRole });
-
-    if (insError) {
-      console.error('Role insert error:', insError);
-      toast({
-        title: "Error",
-        description: `Failed to update user role: ${insError.message}`,
+        description: `Failed to update user role: ${msg}`,
         variant: "destructive"
       });
     } else {
