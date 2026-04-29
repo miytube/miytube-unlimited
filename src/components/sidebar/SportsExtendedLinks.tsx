@@ -27,6 +27,16 @@ export const SportsExtendedLinks: React.FC = () => {
       ]
     },
     { 
+      id: 'sports-afl', 
+      icon: Trophy, 
+      label: 'AFL Football', 
+      path: '/sports/afl',
+      subItems: [
+        { id: 'sports-afl-grand-final', label: 'Grand Final', path: '/sports/afl/grand-final' },
+        { id: 'sports-afl-players', label: 'AFL Players & Coaches', path: '/sports/afl/players' }
+      ]
+    },
+    { 
       id: 'sports-mlb', 
       icon: Trophy, 
       label: 'MLB Baseball', 
