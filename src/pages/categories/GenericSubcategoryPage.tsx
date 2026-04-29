@@ -9,7 +9,7 @@ import AboutSection from '@/components/subcategory/AboutSection';
 import { Link } from 'react-router-dom';
 import { Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
-import NotFound from '@/pages/NotFound';
+import { Navigate } from 'react-router-dom';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -25,9 +25,9 @@ const GenericSubcategoryPage = () => {
     isKnown
   } = useSubcategoryInfo();
 
-  // Unknown path — don't auto-render a category page (e.g. /myiadmin/signin)
+  // Unknown path — silently redirect to home instead of showing 404
   if (!isKnown) {
-    return <NotFound />;
+    return <Navigate to="/" replace />;
   }
   
   // Filter videos for this subcategory using strict matching
