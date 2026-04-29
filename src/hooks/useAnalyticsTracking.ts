@@ -23,8 +23,13 @@ export const useAnalyticsTracking = () => {
   const { user } = useAuth();
   const sessionIdRef = useRef<string>(generateSessionId());
   const lastPathRef = useRef<string>('');
+  const isBotRef = useRef<boolean>(isLikelyBot());
 
   useEffect(() => {
+    // Skip all analytics for bots/crawlers — keeps quality signals clean
+    // for AdSense (high bounce rate from bots reduces ad fill rate).
+    if (isBotRef.current) return;
+
     const sessionId = sessionIdRef.current;
 
     // Helper: a per-call PostgREST request with x-session-id header so RLS
