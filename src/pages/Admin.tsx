@@ -261,6 +261,7 @@ const Admin = () => {
               S3 Import
             </TabsTrigger>
           </TabsList>
+          </div>
 
           <TabsContent value="users" className="mt-6">
             <Card>
