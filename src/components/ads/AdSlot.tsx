@@ -47,13 +47,13 @@ export const AdSlot = ({
 
   return (
     <div
-      className={`my-4 w-full overflow-hidden rounded-md bg-muted/20 ${className}`}
+      className={`w-full overflow-hidden rounded-md ${className}`}
       aria-label={label || 'Advertisement'}
     >
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'block', minHeight: 90 }}
+        style={{ display: 'block' }}
         data-ad-client={PUBLISHER_ID}
         data-ad-slot={slot}
         data-ad-format={format}
