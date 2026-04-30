@@ -130,12 +130,15 @@ const Audio = () => {
       toast({ title: 'Title and file are required', variant: 'destructive' });
       return;
     }
-    if (!file.type.startsWith('audio/')) {
-      toast({ title: 'Only audio files allowed', description: 'mp3, wav, m4a, ogg, etc.', variant: 'destructive' });
+    const isAudio = file.type.startsWith('audio/');
+    const isVideo = file.type.startsWith('video/') || /\.(mp4|mov|webm|m4v|mkv)$/i.test(file.name);
+    if (!isAudio && !isVideo) {
+      toast({ title: 'Unsupported file', description: 'Upload audio (mp3, wav, m4a, ogg) or video (mp4, mov, webm).', variant: 'destructive' });
       return;
     }
-    if (file.size > 100 * 1024 * 1024) {
-      toast({ title: 'File too large', description: 'Max 100MB', variant: 'destructive' });
+    const maxSize = isVideo ? 500 * 1024 * 1024 : 100 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast({ title: 'File too large', description: isVideo ? 'Max 500MB for video' : 'Max 100MB for audio', variant: 'destructive' });
       return;
     }
 
