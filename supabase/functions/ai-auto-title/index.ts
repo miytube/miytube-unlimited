@@ -144,10 +144,21 @@ Deno.serve(async (req) => {
     if (error) throw error;
 
     const results: any[] = [];
+    const startTime = Date.now();
+    const MAX_RUNTIME_MS = 110_000; // stop before 150s edge timeout
+
     for (const row of (rows as VideoRow[]) || []) {
-      const imgSrc = row.thumbnail_url || row.cloud_url || row.video_url;
+      // Stop if we're approaching the timeout — return what we have so far
+      if (Date.now() - startTime > MAX_RUNTIME_MS) {
+        results.push({ id: row.id, status: "skipped", reason: "batch timeout - run another batch" });
+        break;
+      }
+
+      // Only use image URLs (thumbnails). Skip if only a video file is available —
+      // downloading multi-MB videos to send to vision API causes 504 timeouts.
+      const imgSrc = row.thumbnail_url;
       if (!imgSrc) {
-        results.push({ id: row.id, status: "skipped", reason: "no media url" });
+        results.push({ id: row.id, status: "skipped", reason: "no thumbnail" });
         continue;
       }
       try {

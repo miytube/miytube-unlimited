@@ -22,7 +22,7 @@ interface RunResult {
 
 export const AIAutoTitleManager = () => {
   const { toast } = useToast();
-  const [batchSize, setBatchSize] = useState(10);
+  const [batchSize, setBatchSize] = useState(5);
   const [running, setRunning] = useState(false);
   const [continuous, setContinuous] = useState(false);
   const [remaining, setRemaining] = useState<number | null>(null);
