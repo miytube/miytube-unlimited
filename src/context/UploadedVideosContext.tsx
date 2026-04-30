@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
 import { useUploadProgress } from './UploadProgressContext';
