@@ -467,6 +467,14 @@ export const sportsSubcategories: SubcategoryMapping = {
     parent: { route: '/sports/afl', name: 'AFL Football' }
   },
 
+  // Street Fighting
+  'sports-street-fighting': {
+    title: 'Street Fighting',
+    description: 'Street fighting clips, brawls, and unsanctioned bouts',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+
   // Olympics
   'sports-olympics-track': {
     title: 'Olympics Track & Field',

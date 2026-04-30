@@ -202,7 +202,8 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-weightlifting', label: 'Weightlifting Olympics', path: '/sports/weightlifting' },
         { id: 'sports-news', label: 'Sports News & Podcasts', path: '/sports/news' },
         { id: 'sports-personalities', label: 'Sports Personalities', path: '/sports/personalities' },
-        { id: 'sports-fans', label: 'Fan Challenges', path: '/sports/fans' }
+        { id: 'sports-fans', label: 'Fan Challenges', path: '/sports/fans' },
+        { id: 'sports-street-fighting', label: 'Street Fighting', path: '/sports/street-fighting' }
       ]
     },
   ];
