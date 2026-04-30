@@ -408,88 +408,80 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const [isLoaded, setIsLoaded] = useState(false);
   const { startUpload, completeUpload, failUpload } = useUploadProgress();
 
+  const mergeAndSort = (localVideos: StoredVideo[], cloudVideos: UploadedVideo[]): UploadedVideo[] => {
+    const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
+    
+    const localVideoList: UploadedVideo[] = localVideos.map(sv => {
+      const cloudVideo = cloudVideoMap.get(sv.id);
+      return {
+        id: sv.id,
+        file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
+        fileDataUrl: sv.fileDataUrl,
+        cloudUrl: cloudVideo?.cloudUrl || sv.cloudUrl,
+        isCloudStored: cloudVideo?.isCloudStored ?? sv.isCloudStored,
+        isYouTubeEmbed: cloudVideo?.isYouTubeEmbed ?? sv.isYouTubeEmbed,
+        youtubeId: cloudVideo?.youtubeId || sv.youtubeId,
+        title: cloudVideo?.title || sv.title,
+        description: cloudVideo?.description ?? sv.description,
+        thumbnail: cloudVideo?.thumbnail || sv.thumbnail,
+        timestamp: cloudVideo?.timestamp || sv.timestamp,
+        views: cloudVideo?.views || sv.views,
+        duration: cloudVideo?.duration || sv.duration,
+        category: cloudVideo?.category ?? sv.category,
+        subcategory: cloudVideo?.subcategory ?? sv.subcategory,
+        tags: cloudVideo?.tags?.length ? cloudVideo.tags : (sv.tags || []),
+      };
+    });
+    
+    const merged: UploadedVideo[] = [...localVideoList];
+    const localIds = new Set(localVideoList.map(v => v.id));
+    for (const cv of cloudVideos) {
+      if (!localIds.has(cv.id)) merged.push(cv);
+    }
+    
+    merged.sort((a, b) => {
+      const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
+      const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
+      if (aIdTime && bIdTime) return bIdTime - aIdTime;
+      const parseTimestamp = (ts: string): number => {
+        if (ts === 'Just now') return Date.now();
+        const parsed = Date.parse(ts);
+        return isNaN(parsed) ? 0 : parsed;
+      };
+      return (bIdTime || parseTimestamp(b.timestamp)) - (aIdTime || parseTimestamp(a.timestamp));
+    });
+    
+    return merged;
+  };
+
   const loadStoredVideos = async () => {
     console.log('Starting to load videos from storage...');
     try {
-      // Clear old localStorage data (migration cleanup)
       localStorage.removeItem('miytube_uploaded_videos');
       
-      // Load from both sources in parallel
-      const [localVideos, cloudVideos] = await Promise.all([
+      // Load first batch + local in parallel for fast initial render
+      const [localVideos, { firstBatch, loadRemaining }] = await Promise.all([
         getAllVideosFromDB(),
         loadVideosFromSupabase()
       ]);
       
       console.log('Local IndexedDB videos:', localVideos.length);
-      console.log('Cloud Supabase videos:', cloudVideos.length);
+      console.log('First batch cloud videos:', firstBatch.length);
       
-      // Create a map of cloud videos by ID for deduplication
-      const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
+      // Render immediately with first batch
+      const initialMerged = mergeAndSort(localVideos, firstBatch);
+      setUploadedVideos(initialMerged);
+      setIsLoaded(true);
+      console.log('Initial render with:', initialMerged.length, 'videos');
       
-      // Process local videos, but trust cloud metadata for routing/category fixes.
-      const localVideoList: UploadedVideo[] = localVideos.map(sv => {
-        const cloudVideo = cloudVideoMap.get(sv.id);
-
-        return {
-          id: sv.id,
-          file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
-          fileDataUrl: sv.fileDataUrl,
-          cloudUrl: cloudVideo?.cloudUrl || sv.cloudUrl,
-          isCloudStored: cloudVideo?.isCloudStored ?? sv.isCloudStored,
-          isYouTubeEmbed: cloudVideo?.isYouTubeEmbed ?? sv.isYouTubeEmbed,
-          youtubeId: cloudVideo?.youtubeId || sv.youtubeId,
-          title: cloudVideo?.title || sv.title,
-          description: cloudVideo?.description ?? sv.description,
-          thumbnail: cloudVideo?.thumbnail || sv.thumbnail,
-          timestamp: cloudVideo?.timestamp || sv.timestamp,
-          views: cloudVideo?.views || sv.views,
-          duration: cloudVideo?.duration || sv.duration,
-          category: cloudVideo?.category ?? sv.category,
-          subcategory: cloudVideo?.subcategory ?? sv.subcategory,
-          tags: cloudVideo?.tags?.length ? cloudVideo.tags : (sv.tags || []),
-        };
-      });
-      
-      // Merge: local videos take priority (they have file data), add cloud-only videos
-      const mergedVideos: UploadedVideo[] = [...localVideoList];
-      const localIds = new Set(localVideoList.map(v => v.id));
-      
-      // Add cloud videos that aren't in local storage
-      for (const cloudVideo of cloudVideos) {
-        if (!localIds.has(cloudVideo.id)) {
-          mergedVideos.push(cloudVideo);
-        }
+      // Load remaining in background
+      const remaining = await loadRemaining();
+      if (remaining.length > 0) {
+        const allCloud = [...firstBatch, ...remaining];
+        const fullMerged = mergeAndSort(localVideos, allCloud);
+        setUploadedVideos(fullMerged);
+        console.log('Full load complete:', fullMerged.length, 'total videos');
       }
-      
-      // Sort by most recent first using timestamp or ID
-      mergedVideos.sort((a, b) => {
-        // Try to extract timestamp from ID for local uploads (upload-{timestamp} format)
-        const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
-        const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
-        
-        // If both have ID timestamps, compare them
-        if (aIdTime && bIdTime) {
-          return bIdTime - aIdTime;
-        }
-        
-        // For cloud videos (UUID format), parse the timestamp string
-        const parseTimestamp = (ts: string): number => {
-          if (ts === 'Just now') return Date.now();
-          // Try to parse date strings like "12/12/2024"
-          const parsed = Date.parse(ts);
-          return isNaN(parsed) ? 0 : parsed;
-        };
-        
-        const aTime = aIdTime || parseTimestamp(a.timestamp);
-        const bTime = bIdTime || parseTimestamp(b.timestamp);
-        
-        return bTime - aTime;
-      });
-      
-      setUploadedVideos(mergedVideos);
-      console.log('Total videos loaded:', mergedVideos.length, 
-        'local:', localVideoList.length, 
-        'cloud-only:', mergedVideos.length - localVideoList.length);
     } catch (error) {
       console.error('Error loading videos:', error);
     }
