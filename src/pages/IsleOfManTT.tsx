@@ -32,8 +32,21 @@ const IsleOfManTT = () => {
 
         {videos.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {videos.map((video) => (
-              <VideoCard key={video.id} video={video} />
+            {[...videos].reverse().slice(0, 20).map((video) => (
+              <VideoCard 
+                key={video.id}
+                id={video.id}
+                title={video.title}
+                thumbnail={video.thumbnail}
+                channelName="Your Channel"
+                views={video.views}
+                timestamp={video.timestamp}
+                duration={video.duration}
+                description={video.description}
+                category={video.category}
+                subcategory={video.subcategory}
+                tags={video.tags}
+              />
             ))}
           </div>
         ) : (
