@@ -66,6 +66,7 @@ import Family from "@/pages/Family";
 import RoyalSecurityGuards from "@/pages/RoyalSecurityGuards";
 import BadWeather from "@/pages/BadWeather";
 import AudioMusicVideos from "@/pages/AudioMusicVideos";
+import IsleOfManTT from "@/pages/IsleOfManTT";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -195,6 +196,9 @@ export const mainRoutes = [
 
   // Audio Music Videos
   <Route key="audio-music-videos" path="/audio-music-videos" element={<AudioMusicVideos />} />,
+
+  // Isle of Man TT Motorcycle Racing
+  <Route key="isle-of-man-tt" path="/isle-of-man-tt" element={<IsleOfManTT />} />,
 
 
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,
