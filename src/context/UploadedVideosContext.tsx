@@ -273,65 +273,98 @@ const saveVideoToSupabase = async (video: {
   return { isDuplicate: false };
 };
 
-const loadVideosFromSupabase = async (): Promise<UploadedVideo[]> => {
-  const PAGE_SIZE = 1000;
-  let allData: any[] = [];
-  let from = 0;
-  let hasMore = true;
+const mapSupabaseRow = (v: any): UploadedVideo => ({
+  id: v.local_id || v.id,
+  file: null,
+  fileDataUrl: '',
+  cloudUrl: v.cloud_url || undefined,
+  isCloudStored: v.is_cloud_stored || false,
+  isYouTubeEmbed: v.is_youtube_embed || false,
+  youtubeId: v.youtube_video_id || undefined,
+  title: v.title,
+  description: v.description || '',
+  thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
+  timestamp: new Date(v.created_at).toLocaleDateString(),
+  views: String(v.views || 0),
+  duration: v.duration || '0:00',
+  category: v.category || undefined,
+  subcategory: v.subcategory || undefined,
+  tags: v.tags || [],
+});
 
-  while (hasMore) {
-    const { data, error } = await supabase
-      .from('uploaded_videos')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(from, from + PAGE_SIZE - 1);
-
-    if (error) {
-      console.error('Error loading videos from Supabase:', error);
-      break;
-    }
-
-    if (data && data.length > 0) {
-      allData = allData.concat(data);
-      from += PAGE_SIZE;
-      hasMore = data.length === PAGE_SIZE;
-    } else {
-      hasMore = false;
-    }
-  }
-
-  console.log('Total rows fetched from Supabase:', allData.length);
-  
-  // Deduplicate by local_id - keep only the first (most recent) entry for each local_id
-  const seenLocalIds = new Set<string>();
-  const uniqueData = allData.filter(v => {
+const deduplicateRows = (rows: any[]): any[] => {
+  const seen = new Set<string>();
+  return rows.filter(v => {
     const key = v.local_id || v.id;
-    if (seenLocalIds.has(key)) {
-      return false;
-    }
-    seenLocalIds.add(key);
+    if (seen.has(key)) return false;
+    seen.add(key);
     return true;
   });
-  
-  return uniqueData.map(v => ({
-    // Use local_id as the ID if available, otherwise fall back to UUID
-    id: v.local_id || v.id,
-    file: null,
-    fileDataUrl: '',
-    cloudUrl: v.cloud_url || undefined,
-    isCloudStored: v.is_cloud_stored || false,
-    isYouTubeEmbed: v.is_youtube_embed || false,
-    youtubeId: v.youtube_video_id || undefined,
-    title: v.title,
-    description: v.description || '',
-    thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
-    timestamp: new Date(v.created_at).toLocaleDateString(),
-    views: String(v.views || 0),
-    duration: v.duration || '0:00',
-    category: v.category || undefined,
-    subcategory: v.subcategory || undefined,
-    tags: v.tags || [],
-  }));
+};
+
+// Load first batch quickly, returns { firstBatch, loadRemaining }
+const loadVideosFromSupabase = async (): Promise<{ firstBatch: UploadedVideo[]; loadRemaining: () => Promise<UploadedVideo[]> }> => {
+  const PAGE_SIZE = 1000;
+
+  const { data, error } = await supabase
+    .from('uploaded_videos')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .range(0, PAGE_SIZE - 1);
+
+  if (error) {
+    console.error('Error loading videos from Supabase:', error);
+    return { firstBatch: [], loadRemaining: async () => [] };
+  }
+
+  const firstRows = deduplicateRows(data || []);
+  const firstBatch = firstRows.map(mapSupabaseRow);
+  const hasMore = (data || []).length === PAGE_SIZE;
+
+  console.log('First batch loaded:', firstBatch.length, 'videos');
+
+  const loadRemaining = async (): Promise<UploadedVideo[]> => {
+    if (!hasMore) return [];
+
+    let allRemaining: any[] = [];
+    let from = PAGE_SIZE;
+    let keepGoing = true;
+
+    while (keepGoing) {
+      const { data: pageData, error: pageError } = await supabase
+        .from('uploaded_videos')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .range(from, from + PAGE_SIZE - 1);
+
+      if (pageError) {
+        console.error('Error loading remaining videos:', pageError);
+        break;
+      }
+
+      if (pageData && pageData.length > 0) {
+        allRemaining = allRemaining.concat(pageData);
+        from += PAGE_SIZE;
+        keepGoing = pageData.length === PAGE_SIZE;
+      } else {
+        keepGoing = false;
+      }
+    }
+
+    // Deduplicate remaining against first batch keys
+    const existingKeys = new Set(firstRows.map((v: any) => v.local_id || v.id));
+    const uniqueRemaining = allRemaining.filter(v => {
+      const key = v.local_id || v.id;
+      if (existingKeys.has(key)) return false;
+      existingKeys.add(key);
+      return true;
+    });
+
+    console.log('Remaining batches loaded:', uniqueRemaining.length, 'additional videos');
+    return uniqueRemaining.map(mapSupabaseRow);
+  };
+
+  return { firstBatch, loadRemaining };
 };
 
 const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<void> => {
