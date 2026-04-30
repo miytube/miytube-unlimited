@@ -197,6 +197,9 @@ export const mainRoutes = [
   // Audio Music Videos
   <Route key="audio-music-videos" path="/audio-music-videos" element={<AudioMusicVideos />} />,
 
+  // Isle of Man TT Motorcycle Racing
+  <Route key="isle-of-man-tt" path="/isle-of-man-tt" element={<IsleOfManTT />} />,
+
 
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,
   <Route key="subcategory-fallback" path="/:category/:subcategory" element={<GenericSubcategoryPage />} />,
