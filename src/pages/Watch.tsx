@@ -305,6 +305,28 @@ const Watch = () => {
         <div className="flex gap-6 max-w-[1400px] mx-auto px-2 sm:px-4">
           {/* Main Video Section */}
           <div className="flex-1 max-w-4xl space-y-6">
+            {/* Subcategory breadcrumb above video */}
+            {(video.subcategory || video.category) && (
+              <div className="text-sm text-muted-foreground">
+                {video.category && (
+                  <Link 
+                    to={`/${String(video.category).toLowerCase().replace(/\s+/g, '-')}`} 
+                    className="hover:text-primary transition-colors"
+                  >
+                    {video.category}
+                  </Link>
+                )}
+                {video.category && video.subcategory && <span className="mx-1">/</span>}
+                {video.subcategory && (
+                  <Link 
+                    to={`/${String(video.category || '').toLowerCase().replace(/\s+/g, '-')}/${String(video.subcategory).toLowerCase().replace(/\s+/g, '-')}`} 
+                    className="font-medium text-foreground hover:text-primary transition-colors"
+                  >
+                    {video.subcategory}
+                  </Link>
+                )}
+              </div>
+            )}
             <div className="bg-card rounded-lg overflow-hidden shadow-md">
               {!hasVideoSource ? (
                 <div className="aspect-video bg-muted flex flex-col items-center justify-center text-center p-8">
