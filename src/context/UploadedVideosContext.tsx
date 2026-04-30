@@ -274,19 +274,37 @@ const saveVideoToSupabase = async (video: {
 };
 
 const loadVideosFromSupabase = async (): Promise<UploadedVideo[]> => {
-  const { data, error } = await supabase
-    .from('uploaded_videos')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error loading videos from Supabase:', error);
-    return [];
+  const PAGE_SIZE = 1000;
+  let allData: any[] = [];
+  let from = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const { data, error } = await supabase
+      .from('uploaded_videos')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) {
+      console.error('Error loading videos from Supabase:', error);
+      break;
+    }
+
+    if (data && data.length > 0) {
+      allData = allData.concat(data);
+      from += PAGE_SIZE;
+      hasMore = data.length === PAGE_SIZE;
+    } else {
+      hasMore = false;
+    }
   }
+
+  console.log('Total rows fetched from Supabase:', allData.length);
   
   // Deduplicate by local_id - keep only the first (most recent) entry for each local_id
   const seenLocalIds = new Set<string>();
-  const uniqueData = (data || []).filter(v => {
+  const uniqueData = allData.filter(v => {
     const key = v.local_id || v.id;
     if (seenLocalIds.has(key)) {
       return false;
