@@ -273,65 +273,98 @@ const saveVideoToSupabase = async (video: {
   return { isDuplicate: false };
 };
 
-const loadVideosFromSupabase = async (): Promise<UploadedVideo[]> => {
-  const PAGE_SIZE = 1000;
-  let allData: any[] = [];
-  let from = 0;
-  let hasMore = true;
+const mapSupabaseRow = (v: any): UploadedVideo => ({
+  id: v.local_id || v.id,
+  file: null,
+  fileDataUrl: '',
+  cloudUrl: v.cloud_url || undefined,
+  isCloudStored: v.is_cloud_stored || false,
+  isYouTubeEmbed: v.is_youtube_embed || false,
+  youtubeId: v.youtube_video_id || undefined,
+  title: v.title,
+  description: v.description || '',
+  thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
+  timestamp: new Date(v.created_at).toLocaleDateString(),
+  views: String(v.views || 0),
+  duration: v.duration || '0:00',
+  category: v.category || undefined,
+  subcategory: v.subcategory || undefined,
+  tags: v.tags || [],
+});
 
-  while (hasMore) {
-    const { data, error } = await supabase
-      .from('uploaded_videos')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(from, from + PAGE_SIZE - 1);
-
-    if (error) {
-      console.error('Error loading videos from Supabase:', error);
-      break;
-    }
-
-    if (data && data.length > 0) {
-      allData = allData.concat(data);
-      from += PAGE_SIZE;
-      hasMore = data.length === PAGE_SIZE;
-    } else {
-      hasMore = false;
-    }
-  }
-
-  console.log('Total rows fetched from Supabase:', allData.length);
-  
-  // Deduplicate by local_id - keep only the first (most recent) entry for each local_id
-  const seenLocalIds = new Set<string>();
-  const uniqueData = allData.filter(v => {
+const deduplicateRows = (rows: any[]): any[] => {
+  const seen = new Set<string>();
+  return rows.filter(v => {
     const key = v.local_id || v.id;
-    if (seenLocalIds.has(key)) {
-      return false;
-    }
-    seenLocalIds.add(key);
+    if (seen.has(key)) return false;
+    seen.add(key);
     return true;
   });
-  
-  return uniqueData.map(v => ({
-    // Use local_id as the ID if available, otherwise fall back to UUID
-    id: v.local_id || v.id,
-    file: null,
-    fileDataUrl: '',
-    cloudUrl: v.cloud_url || undefined,
-    isCloudStored: v.is_cloud_stored || false,
-    isYouTubeEmbed: v.is_youtube_embed || false,
-    youtubeId: v.youtube_video_id || undefined,
-    title: v.title,
-    description: v.description || '',
-    thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
-    timestamp: new Date(v.created_at).toLocaleDateString(),
-    views: String(v.views || 0),
-    duration: v.duration || '0:00',
-    category: v.category || undefined,
-    subcategory: v.subcategory || undefined,
-    tags: v.tags || [],
-  }));
+};
+
+// Load first batch quickly, returns { firstBatch, loadRemaining }
+const loadVideosFromSupabase = async (): Promise<{ firstBatch: UploadedVideo[]; loadRemaining: () => Promise<UploadedVideo[]> }> => {
+  const PAGE_SIZE = 1000;
+
+  const { data, error } = await supabase
+    .from('uploaded_videos')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .range(0, PAGE_SIZE - 1);
+
+  if (error) {
+    console.error('Error loading videos from Supabase:', error);
+    return { firstBatch: [], loadRemaining: async () => [] };
+  }
+
+  const firstRows = deduplicateRows(data || []);
+  const firstBatch = firstRows.map(mapSupabaseRow);
+  const hasMore = (data || []).length === PAGE_SIZE;
+
+  console.log('First batch loaded:', firstBatch.length, 'videos');
+
+  const loadRemaining = async (): Promise<UploadedVideo[]> => {
+    if (!hasMore) return [];
+
+    let allRemaining: any[] = [];
+    let from = PAGE_SIZE;
+    let keepGoing = true;
+
+    while (keepGoing) {
+      const { data: pageData, error: pageError } = await supabase
+        .from('uploaded_videos')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .range(from, from + PAGE_SIZE - 1);
+
+      if (pageError) {
+        console.error('Error loading remaining videos:', pageError);
+        break;
+      }
+
+      if (pageData && pageData.length > 0) {
+        allRemaining = allRemaining.concat(pageData);
+        from += PAGE_SIZE;
+        keepGoing = pageData.length === PAGE_SIZE;
+      } else {
+        keepGoing = false;
+      }
+    }
+
+    // Deduplicate remaining against first batch keys
+    const existingKeys = new Set(firstRows.map((v: any) => v.local_id || v.id));
+    const uniqueRemaining = allRemaining.filter(v => {
+      const key = v.local_id || v.id;
+      if (existingKeys.has(key)) return false;
+      existingKeys.add(key);
+      return true;
+    });
+
+    console.log('Remaining batches loaded:', uniqueRemaining.length, 'additional videos');
+    return uniqueRemaining.map(mapSupabaseRow);
+  };
+
+  return { firstBatch, loadRemaining };
 };
 
 const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<void> => {
@@ -375,88 +408,80 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const [isLoaded, setIsLoaded] = useState(false);
   const { startUpload, completeUpload, failUpload } = useUploadProgress();
 
+  const mergeAndSort = (localVideos: StoredVideo[], cloudVideos: UploadedVideo[]): UploadedVideo[] => {
+    const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
+    
+    const localVideoList: UploadedVideo[] = localVideos.map(sv => {
+      const cloudVideo = cloudVideoMap.get(sv.id);
+      return {
+        id: sv.id,
+        file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
+        fileDataUrl: sv.fileDataUrl,
+        cloudUrl: cloudVideo?.cloudUrl || sv.cloudUrl,
+        isCloudStored: cloudVideo?.isCloudStored ?? sv.isCloudStored,
+        isYouTubeEmbed: cloudVideo?.isYouTubeEmbed ?? sv.isYouTubeEmbed,
+        youtubeId: cloudVideo?.youtubeId || sv.youtubeId,
+        title: cloudVideo?.title || sv.title,
+        description: cloudVideo?.description ?? sv.description,
+        thumbnail: cloudVideo?.thumbnail || sv.thumbnail,
+        timestamp: cloudVideo?.timestamp || sv.timestamp,
+        views: cloudVideo?.views || sv.views,
+        duration: cloudVideo?.duration || sv.duration,
+        category: cloudVideo?.category ?? sv.category,
+        subcategory: cloudVideo?.subcategory ?? sv.subcategory,
+        tags: cloudVideo?.tags?.length ? cloudVideo.tags : (sv.tags || []),
+      };
+    });
+    
+    const merged: UploadedVideo[] = [...localVideoList];
+    const localIds = new Set(localVideoList.map(v => v.id));
+    for (const cv of cloudVideos) {
+      if (!localIds.has(cv.id)) merged.push(cv);
+    }
+    
+    merged.sort((a, b) => {
+      const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
+      const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
+      if (aIdTime && bIdTime) return bIdTime - aIdTime;
+      const parseTimestamp = (ts: string): number => {
+        if (ts === 'Just now') return Date.now();
+        const parsed = Date.parse(ts);
+        return isNaN(parsed) ? 0 : parsed;
+      };
+      return (bIdTime || parseTimestamp(b.timestamp)) - (aIdTime || parseTimestamp(a.timestamp));
+    });
+    
+    return merged;
+  };
+
   const loadStoredVideos = async () => {
     console.log('Starting to load videos from storage...');
     try {
-      // Clear old localStorage data (migration cleanup)
       localStorage.removeItem('miytube_uploaded_videos');
       
-      // Load from both sources in parallel
-      const [localVideos, cloudVideos] = await Promise.all([
+      // Load first batch + local in parallel for fast initial render
+      const [localVideos, { firstBatch, loadRemaining }] = await Promise.all([
         getAllVideosFromDB(),
         loadVideosFromSupabase()
       ]);
       
       console.log('Local IndexedDB videos:', localVideos.length);
-      console.log('Cloud Supabase videos:', cloudVideos.length);
+      console.log('First batch cloud videos:', firstBatch.length);
       
-      // Create a map of cloud videos by ID for deduplication
-      const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
+      // Render immediately with first batch
+      const initialMerged = mergeAndSort(localVideos, firstBatch);
+      setUploadedVideos(initialMerged);
+      setIsLoaded(true);
+      console.log('Initial render with:', initialMerged.length, 'videos');
       
-      // Process local videos, but trust cloud metadata for routing/category fixes.
-      const localVideoList: UploadedVideo[] = localVideos.map(sv => {
-        const cloudVideo = cloudVideoMap.get(sv.id);
-
-        return {
-          id: sv.id,
-          file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
-          fileDataUrl: sv.fileDataUrl,
-          cloudUrl: cloudVideo?.cloudUrl || sv.cloudUrl,
-          isCloudStored: cloudVideo?.isCloudStored ?? sv.isCloudStored,
-          isYouTubeEmbed: cloudVideo?.isYouTubeEmbed ?? sv.isYouTubeEmbed,
-          youtubeId: cloudVideo?.youtubeId || sv.youtubeId,
-          title: cloudVideo?.title || sv.title,
-          description: cloudVideo?.description ?? sv.description,
-          thumbnail: cloudVideo?.thumbnail || sv.thumbnail,
-          timestamp: cloudVideo?.timestamp || sv.timestamp,
-          views: cloudVideo?.views || sv.views,
-          duration: cloudVideo?.duration || sv.duration,
-          category: cloudVideo?.category ?? sv.category,
-          subcategory: cloudVideo?.subcategory ?? sv.subcategory,
-          tags: cloudVideo?.tags?.length ? cloudVideo.tags : (sv.tags || []),
-        };
-      });
-      
-      // Merge: local videos take priority (they have file data), add cloud-only videos
-      const mergedVideos: UploadedVideo[] = [...localVideoList];
-      const localIds = new Set(localVideoList.map(v => v.id));
-      
-      // Add cloud videos that aren't in local storage
-      for (const cloudVideo of cloudVideos) {
-        if (!localIds.has(cloudVideo.id)) {
-          mergedVideos.push(cloudVideo);
-        }
+      // Load remaining in background
+      const remaining = await loadRemaining();
+      if (remaining.length > 0) {
+        const allCloud = [...firstBatch, ...remaining];
+        const fullMerged = mergeAndSort(localVideos, allCloud);
+        setUploadedVideos(fullMerged);
+        console.log('Full load complete:', fullMerged.length, 'total videos');
       }
-      
-      // Sort by most recent first using timestamp or ID
-      mergedVideos.sort((a, b) => {
-        // Try to extract timestamp from ID for local uploads (upload-{timestamp} format)
-        const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
-        const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
-        
-        // If both have ID timestamps, compare them
-        if (aIdTime && bIdTime) {
-          return bIdTime - aIdTime;
-        }
-        
-        // For cloud videos (UUID format), parse the timestamp string
-        const parseTimestamp = (ts: string): number => {
-          if (ts === 'Just now') return Date.now();
-          // Try to parse date strings like "12/12/2024"
-          const parsed = Date.parse(ts);
-          return isNaN(parsed) ? 0 : parsed;
-        };
-        
-        const aTime = aIdTime || parseTimestamp(a.timestamp);
-        const bTime = bIdTime || parseTimestamp(b.timestamp);
-        
-        return bTime - aTime;
-      });
-      
-      setUploadedVideos(mergedVideos);
-      console.log('Total videos loaded:', mergedVideos.length, 
-        'local:', localVideoList.length, 
-        'cloud-only:', mergedVideos.length - localVideoList.length);
     } catch (error) {
       console.error('Error loading videos:', error);
     }
