@@ -223,4 +223,7 @@ export const sidebarSubcategoryRoutes = [
   <Route key="real-estate-luxury" path="/real-estate/luxury" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-mistakes" path="/real-estate/mistakes" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-fails" path="/real-estate/fails" element={<GenericSubcategoryPage />} />,
+
+  // Sports - Street Fighting
+  <Route key="sports-street-fighting" path="/sports/street-fighting" element={<GenericSubcategoryPage />} />,
 ];
