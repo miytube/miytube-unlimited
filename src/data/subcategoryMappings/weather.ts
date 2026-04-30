@@ -57,4 +57,53 @@ export const weatherSubcategories: SubcategoryMapping = {
     icon: Sun,
     parent: { route: '/weather', name: 'Weather' }
   },
+  'weather-hail': {
+    title: 'Hail Storms',
+    description: 'Hail storms, hailstone footage, and severe weather',
+    icon: CloudLightning,
+    parent: { route: '/weather', name: 'Weather' }
+  },
+  // Bad Weather category
+  'bad-weather-hurricanes': {
+    title: 'Hurricanes',
+    description: 'Hurricane footage, tropical cyclones, and severe storm systems',
+    icon: Wind,
+    parent: { route: '/bad-weather', name: 'Bad Weather' }
+  },
+  'bad-weather-snow-storms': {
+    title: 'Snow Storms',
+    description: 'Blizzards, snow storms, and heavy snowfall events',
+    icon: CloudSnow,
+    parent: { route: '/bad-weather', name: 'Bad Weather' }
+  },
+  'bad-weather-tornados': {
+    title: 'Tornados',
+    description: 'Tornado footage, twisters, and funnel cloud events',
+    icon: Wind,
+    parent: { route: '/bad-weather', name: 'Bad Weather' }
+  },
+  'bad-weather-tsunami': {
+    title: 'Tsunami',
+    description: 'Tsunami events, coastal disasters, and giant wave footage',
+    icon: CloudRain,
+    parent: { route: '/bad-weather', name: 'Bad Weather' }
+  },
+  'bad-weather-avalanches': {
+    title: 'Avalanches',
+    description: 'Avalanche events, snow slides, and mountain hazards',
+    icon: CloudSnow,
+    parent: { route: '/bad-weather', name: 'Bad Weather' }
+  },
+  'bad-weather-mudslides': {
+    title: 'Mudslides',
+    description: 'Mudslide events, landslides, and debris flow disasters',
+    icon: CloudRain,
+    parent: { route: '/bad-weather', name: 'Bad Weather' }
+  },
+  'bad-weather-black-ice': {
+    title: 'Black Ice',
+    description: 'Black ice conditions, icy roads, and winter driving hazards',
+    icon: CloudSnow,
+    parent: { route: '/bad-weather', name: 'Bad Weather' }
+  },
 };
