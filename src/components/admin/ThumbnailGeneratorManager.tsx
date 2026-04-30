@@ -125,6 +125,7 @@ export const ThumbnailGeneratorManager = () => {
   };
 
   const runBatch = async (): Promise<{ updated: number; errors: number; processed: number }> => {
+    console.log('[thumb-gen] fetching batch, size=', batchSize);
     const { data, error } = await supabase
       .from('uploaded_videos')
       .select('id, title, cloud_url, video_url')
@@ -132,20 +133,30 @@ export const ThumbnailGeneratorManager = () => {
       .is('thumbnail_url', null)
       .order('created_at', { ascending: false })
       .limit(batchSize);
-    if (error) throw error;
+    if (error) {
+      console.error('[thumb-gen] select error', error);
+      throw error;
+    }
 
     const rows = (data || []) as VideoRow[];
+    console.log('[thumb-gen] got rows:', rows.length, rows.map(r => r.id));
+    if (rows.length === 0) {
+      setRecent((prev) => [{ id: 'batch', status: 'skipped' as const, reason: 'select returned 0 rows (check RLS / filters)' }, ...prev].slice(0, 60));
+    }
     let u = 0; let e = 0;
     const results: Result[] = [];
     for (const r of rows) {
+      console.log('[thumb-gen] processing', r.id, r.cloud_url || r.video_url);
       const res = await processOne(r);
+      console.log('[thumb-gen] result for', r.id, res);
       results.push(res);
       if (res.status === 'updated') u++;
       else if (res.status === 'error') e++;
+      // Update UI as we go so user sees progress
+      setRecent((prev) => [res, ...prev].slice(0, 60));
+      if (res.status === 'updated') setUpdated((n) => n + 1);
+      else if (res.status === 'error') setErrors((n) => n + 1);
     }
-    setRecent((prev) => [...results, ...prev].slice(0, 60));
-    setUpdated((n) => n + u);
-    setErrors((n) => n + e);
     return { updated: u, errors: e, processed: rows.length };
   };
 
