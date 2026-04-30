@@ -263,6 +263,10 @@ const Admin = () => {
               <Cloud className="h-4 w-4" />
               S3 Import
             </TabsTrigger>
+            <TabsTrigger value="thumbs" className="flex items-center gap-2">
+              <ImageIcon className="h-4 w-4" />
+              Thumbnails
+            </TabsTrigger>
             <TabsTrigger value="ai-titles" className="flex items-center gap-2">
               <Sparkles className="h-4 w-4" />
               AI Auto-Title
@@ -375,6 +379,10 @@ const Admin = () => {
 
           <TabsContent value="s3" className="mt-6">
             <S3ImportManager />
+          </TabsContent>
+
+          <TabsContent value="thumbs" className="mt-6">
+            <ThumbnailGeneratorManager />
           </TabsContent>
 
           <TabsContent value="ai-titles" className="mt-6">
