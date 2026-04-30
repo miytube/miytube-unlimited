@@ -10,13 +10,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity, Cloud, Sparkles } from 'lucide-react';
+import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity, Cloud, Sparkles, Image as ImageIcon } from 'lucide-react';
 import { BreakingNewsManager } from '@/components/admin/BreakingNewsManager';
 import PartnerApplicationsManager from '@/components/admin/PartnerApplicationsManager';
 import { RepairMissingFilesManager } from '@/components/admin/RepairMissingFilesManager';
 import { AnalyticsDashboard } from '@/components/admin/AnalyticsDashboard';
 import { S3ImportManager } from '@/components/admin/S3ImportManager';
 import { AIAutoTitleManager } from '@/components/admin/AIAutoTitleManager';
+import { ThumbnailGeneratorManager } from '@/components/admin/ThumbnailGeneratorManager';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -262,6 +263,10 @@ const Admin = () => {
               <Cloud className="h-4 w-4" />
               S3 Import
             </TabsTrigger>
+            <TabsTrigger value="thumbs" className="flex items-center gap-2">
+              <ImageIcon className="h-4 w-4" />
+              Thumbnails
+            </TabsTrigger>
             <TabsTrigger value="ai-titles" className="flex items-center gap-2">
               <Sparkles className="h-4 w-4" />
               AI Auto-Title
@@ -374,6 +379,10 @@ const Admin = () => {
 
           <TabsContent value="s3" className="mt-6">
             <S3ImportManager />
+          </TabsContent>
+
+          <TabsContent value="thumbs" className="mt-6">
+            <ThumbnailGeneratorManager />
           </TabsContent>
 
           <TabsContent value="ai-titles" className="mt-6">
