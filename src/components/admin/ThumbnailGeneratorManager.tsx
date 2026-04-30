@@ -141,7 +141,7 @@ export const ThumbnailGeneratorManager = () => {
     const rows = (data || []) as VideoRow[];
     console.log('[thumb-gen] got rows:', rows.length, rows.map(r => r.id));
     if (rows.length === 0) {
-      setRecent((prev) => [{ id: 'batch', status: 'skipped', reason: 'select returned 0 rows (check RLS / filters)' }, ...prev].slice(0, 60));
+      setRecent((prev) => [{ id: 'batch', status: 'skipped' as const, reason: 'select returned 0 rows (check RLS / filters)' }, ...prev].slice(0, 60));
     }
     let u = 0; let e = 0;
     const results: Result[] = [];
