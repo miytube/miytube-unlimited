@@ -120,6 +120,18 @@ export const sidebarSubcategoryRoutes = [
   <Route key="weather-storms" path="/weather/storms" element={<GenericSubcategoryPage />} />,
   <Route key="weather-climate" path="/weather/climate" element={<GenericSubcategoryPage />} />,
   <Route key="weather-extreme" path="/weather/extreme" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-snow" path="/weather/snow" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-rain" path="/weather/rain" element={<GenericSubcategoryPage />} />,
+  <Route key="weather-hail" path="/weather/hail" element={<GenericSubcategoryPage />} />,
+
+  // Bad Weather landing + subcategories
+  <Route key="bad-weather-hurricanes" path="/bad-weather/hurricanes" element={<GenericSubcategoryPage />} />,
+  <Route key="bad-weather-snow-storms" path="/bad-weather/snow-storms" element={<GenericSubcategoryPage />} />,
+  <Route key="bad-weather-tornados" path="/bad-weather/tornados" element={<GenericSubcategoryPage />} />,
+  <Route key="bad-weather-tsunami" path="/bad-weather/tsunami" element={<GenericSubcategoryPage />} />,
+  <Route key="bad-weather-avalanches" path="/bad-weather/avalanches" element={<GenericSubcategoryPage />} />,
+  <Route key="bad-weather-mudslides" path="/bad-weather/mudslides" element={<GenericSubcategoryPage />} />,
+  <Route key="bad-weather-black-ice" path="/bad-weather/black-ice" element={<GenericSubcategoryPage />} />,
   
   // Disasters subcategories (new)
   <Route key="disasters-floods" path="/disasters/floods" element={<GenericSubcategoryPage />} />,
