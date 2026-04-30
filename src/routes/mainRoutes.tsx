@@ -65,6 +65,7 @@ import Speeches from "@/pages/Speeches";
 import Family from "@/pages/Family";
 import RoyalSecurityGuards from "@/pages/RoyalSecurityGuards";
 import BadWeather from "@/pages/BadWeather";
+import AudioMusicVideos from "@/pages/AudioMusicVideos";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -191,7 +192,11 @@ export const mainRoutes = [
 
   // Bad Weather landing page
   <Route key="bad-weather" path="/bad-weather" element={<BadWeather />} />,
-  
+
+  // Audio Music Videos
+  <Route key="audio-music-videos" path="/audio-music-videos" element={<AudioMusicVideos />} />,
+
+
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,
   <Route key="subcategory-fallback" path="/:category/:subcategory" element={<GenericSubcategoryPage />} />,
   <Route key="deep-subcategory-fallback" path="/:category/:subcategory/:topic" element={<GenericSubcategoryPage />} />,

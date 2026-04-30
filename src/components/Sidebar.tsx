@@ -21,6 +21,7 @@ import { EnvironmentWeatherLinks } from './sidebar/EnvironmentWeatherLinks';
 import { EntertainmentMediaLinks } from './sidebar/EntertainmentMediaLinks';
 import { ComedyFunnyLinks } from './sidebar/ComedyFunnyLinks';
 import { MusicFullLinks } from './sidebar/MusicFullLinks';
+import { AudioMusicVideosLinks } from './sidebar/AudioMusicVideosLinks';
 import { GamingHobbiesLinks } from './sidebar/GamingHobbiesLinks';
 import { FitnessHealthLinks } from './sidebar/FitnessHealthLinks';
 import { ModelsPhotosLinks } from './sidebar/ModelsPhotosLinks';
@@ -143,6 +144,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <HollywoodLinks />
                 <ComedyFunnyLinks />
                 <MusicFullLinks />
+                <AudioMusicVideosLinks />
                 <GamingHobbiesLinks />
                 <SportsExtendedLinks />
               </CollapsibleGroup>
