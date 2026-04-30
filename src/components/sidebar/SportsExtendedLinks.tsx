@@ -106,7 +106,8 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-nhra', label: 'NHRA Drag Racing', path: '/sports/nhra' },
         { id: 'sports-motorcycle-racing', label: 'Motorcycle Superbike', path: '/sports/motorcycle-racing' },
         { id: 'sports-horse-racing', label: 'Horse Racing', path: '/sports/horse-racing' },
-        { id: 'sports-racing-track', label: 'Racing Track Accidents', path: '/sports/racing-track' }
+        { id: 'sports-racing-track', label: 'Racing Track Accidents', path: '/sports/racing-track' },
+        { id: 'sports-isle-of-man-tt', label: 'Isle of Man TT', path: '/sports/isle-of-man-tt' }
       ]
     },
     { 
