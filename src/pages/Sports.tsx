@@ -61,6 +61,7 @@ const Sports = () => {
     { id: 'sports-nascar', name: 'Sports Nascar Racing' },
     { id: 'sports-nhra', name: 'Sports NHRA Drag Racing' },
     { id: 'sports-motorcycles', name: 'Sports Motorcycles (superbike...)' },
+    { id: 'sports-isle-of-man-tt', name: 'Sports Isle of Man TT (motorcycle racing)' },
     
     // Golf
     { id: 'sports-golf-ryder-cup', name: 'Sports Golf (ryder cup)' },
