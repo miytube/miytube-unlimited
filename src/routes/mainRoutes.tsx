@@ -64,6 +64,7 @@ import NonMammals from "@/pages/NonMammals";
 import Speeches from "@/pages/Speeches";
 import Family from "@/pages/Family";
 import RoyalSecurityGuards from "@/pages/RoyalSecurityGuards";
+import BadWeather from "@/pages/BadWeather";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
@@ -187,6 +188,9 @@ export const mainRoutes = [
   // Family and Royal Security Guards routes
   <Route key="family" path="/family" element={<Family />} />,
   <Route key="royal-security-guards" path="/royal-security-guards" element={<RoyalSecurityGuards />} />,
+
+  // Bad Weather landing page
+  <Route key="bad-weather" path="/bad-weather" element={<BadWeather />} />,
   
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,
   <Route key="subcategory-fallback" path="/:category/:subcategory" element={<GenericSubcategoryPage />} />,
