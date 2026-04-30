@@ -37,6 +37,17 @@ function looksLikeFilename(title: string): boolean {
   return false;
 }
 
+function isSupportedImageUrl(url: string | null): url is string {
+  if (!url) return false;
+  if (/^data:image\/(png|jpe?g|webp|gif);base64,/i.test(url)) return true;
+  try {
+    const parsed = new URL(url);
+    return /\.(png|jpe?g|webp|gif)$/i.test(parsed.pathname);
+  } catch {
+    return false;
+  }
+}
+
 async function fetchAsBase64(url: string): Promise<string | null> {
   try {
     const r = await fetch(url, { method: "GET" });
@@ -154,11 +165,14 @@ Deno.serve(async (req) => {
         break;
       }
 
-      // Only use image URLs (thumbnails). Skip if only a video file is available —
-      // downloading multi-MB videos to send to vision API causes 504 timeouts.
-      const imgSrc = row.thumbnail_url;
+      // Only use supported image URLs. Never send .mp4/.mov/etc. to the AI gateway.
+      const imgSrc = isSupportedImageUrl(row.thumbnail_url) ? row.thumbnail_url : null;
       if (!imgSrc) {
-        results.push({ id: row.id, status: "skipped", reason: "no thumbnail" });
+        results.push({
+          id: row.id,
+          status: "skipped",
+          reason: row.thumbnail_url ? "thumbnail is not a supported image" : "no thumbnail",
+        });
         continue;
       }
       try {
