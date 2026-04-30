@@ -272,6 +272,12 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  'sports-isle-of-man-tt': {
+    title: 'Isle of Man TT',
+    description: 'Isle of Man Tourist Trophy motorcycle road racing',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
 
   // Golf
   'sports-golf-ryder-cup': {
