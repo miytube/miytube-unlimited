@@ -224,8 +224,8 @@ const Audio = () => {
                   </Select>
                 </div>
                 <div>
-                  <Label>Audio file (mp3, wav, m4a — max 100MB) *</Label>
-                  <Input type="file" accept="audio/*" onChange={(e) => setFile(e.target.files?.[0] || null)} required />
+                  <Label>Audio or Video file (mp3, wav, m4a, mp4, mov, webm — audio max 100MB, video max 500MB) *</Label>
+                  <Input type="file" accept="audio/*,video/*,.mp4,.mov,.webm,.m4v,.mkv" onChange={(e) => setFile(e.target.files?.[0] || null)} required />
                 </div>
                 <Button type="submit" disabled={uploading} className="w-full">
                   {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
