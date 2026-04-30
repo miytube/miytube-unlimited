@@ -66,6 +66,7 @@ import Family from "@/pages/Family";
 import RoyalSecurityGuards from "@/pages/RoyalSecurityGuards";
 import BadWeather from "@/pages/BadWeather";
 import AudioMusicVideos from "@/pages/AudioMusicVideos";
+import IsleOfManTT from "@/pages/IsleOfManTT";
 
 export const mainRoutes = [
   <Route key="index" path="/" element={<Index />} />,
