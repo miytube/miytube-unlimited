@@ -62,7 +62,17 @@ export const FeaturedDiscussionVideo = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4 pt-0 space-y-3">
-        <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
+        <div
+          className="relative aspect-video rounded-lg overflow-hidden bg-black"
+          onPointerDown={() => {
+            // Fire once per session to count "play intent"
+            const key = `disc_play_${video.id}`;
+            if (!sessionStorage.getItem(key)) {
+              sessionStorage.setItem(key, '1');
+              trackEngagement(video.id, 'play', 'featured_discussion_video');
+            }
+          }}
+        >
           {isYouTube ? (
             <iframe
               ref={iframeRef}
@@ -80,6 +90,7 @@ export const FeaturedDiscussionVideo = () => {
               controls
               muted={isMuted}
               className="w-full h-full object-contain"
+              onPlay={() => trackEngagement(video.id, 'play', 'featured_discussion_video')}
             />
           )}
           <Button
