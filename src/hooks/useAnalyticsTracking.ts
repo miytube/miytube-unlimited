@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
@@ -24,11 +24,35 @@ export const useAnalyticsTracking = () => {
   const sessionIdRef = useRef<string>(generateSessionId());
   const lastPathRef = useRef<string>('');
   const isBotRef = useRef<boolean>(isLikelyBot());
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Check if current user is admin — skip all tracking for admins
+  useEffect(() => {
+    if (!user?.id) {
+      setIsAdmin(false);
+      return;
+    }
+    supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle()
+      .then(({ data }) => setIsAdmin(!!data));
+  }, [user?.id]);
 
   useEffect(() => {
     // Skip all analytics for bots/crawlers — keeps quality signals clean
     // for AdSense (high bounce rate from bots reduces ad fill rate).
     if (isBotRef.current) return;
+
+    // Skip tracking for admin users so owner visits don't inflate stats
+    if (isAdmin) {
+      // Also disable GA4 property so no hits leak through
+      (window as any)['ga-disable-G-SNLTDDVSNH'] = true;
+      return;
+    }
+    (window as any)['ga-disable-G-SNLTDDVSNH'] = false;
 
     const sessionId = sessionIdRef.current;
 
@@ -123,5 +147,5 @@ export const useAnalyticsTracking = () => {
       clearInterval(heartbeat);
       window.removeEventListener('beforeunload', cleanup);
     };
-  }, [location.pathname, user?.id]);
+  }, [location.pathname, user?.id, isAdmin]);
 };
