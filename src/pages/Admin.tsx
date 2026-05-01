@@ -39,7 +39,7 @@ interface VideoStats {
 }
 
 const Admin = () => {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, loading, rolesLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [users, setUsers] = useState<UserWithRole[]>([]);
@@ -47,9 +47,12 @@ const Admin = () => {
   const [loadingUsers, setLoadingUsers] = useState(true);
 
   useEffect(() => {
-    if (!loading && !user) {
+    // Wait until both auth session and roles have finished loading
+    if (loading || rolesLoading) return;
+
+    if (!user) {
       navigate('/auth');
-    } else if (!loading && !isAdmin) {
+    } else if (!isAdmin) {
       toast({
         title: "Access Denied",
         description: "You don't have admin privileges.",
@@ -57,7 +60,7 @@ const Admin = () => {
       });
       navigate('/');
     }
-  }, [user, isAdmin, loading, navigate, toast]);
+  }, [user, isAdmin, loading, rolesLoading, navigate, toast]);
 
   useEffect(() => {
     if (isAdmin) {

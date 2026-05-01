@@ -8,6 +8,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  rolesLoading: boolean;
   roles: AppRole[];
   isAdmin: boolean;
   isModerator: boolean;
@@ -23,6 +24,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState<AppRole[]>([]);
+  const [rolesLoading, setRolesLoading] = useState(true);
 
   const fetchUserRoles = async (userId: string) => {
     const { data, error } = await supabase
@@ -47,11 +49,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         // Defer role fetching with setTimeout to prevent deadlock
         if (session?.user) {
+          setRolesLoading(true);
           setTimeout(() => {
-            fetchUserRoles(session.user.id).then(setRoles);
+            fetchUserRoles(session.user.id).then((r) => {
+              setRoles(r);
+              setRolesLoading(false);
+            });
           }, 0);
         } else {
           setRoles([]);
+          setRolesLoading(false);
         }
         
         setLoading(false);
@@ -64,7 +71,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        fetchUserRoles(session.user.id).then(setRoles);
+        setRolesLoading(true);
+        fetchUserRoles(session.user.id).then((r) => {
+          setRoles(r);
+          setRolesLoading(false);
+        });
+      } else {
+        setRolesLoading(false);
       }
       
       setLoading(false);
@@ -116,6 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       user,
       session,
       loading,
+      rolesLoading,
       roles,
       isAdmin,
       isModerator,
