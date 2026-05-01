@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { title, description, fileName, fileType } = await req.json();
+    const { title, description, fileName, fileType, allowedCategories, allowedSubcategories } = await req.json();
 
     if (!title || typeof title !== 'string') {
       return new Response(JSON.stringify({ error: 'Title is required' }), {
@@ -25,6 +25,12 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
+    const categoryList: string[] = Array.isArray(allowedCategories) && allowedCategories.length
+      ? allowedCategories
+      : ['music','comedy','sports','education','gaming','news','entertainment','science','technology','travel','film','fitness','food','animals','fashion','art','documentary','how-to'];
+
+    const subcategoryList: string[] = Array.isArray(allowedSubcategories) ? allowedSubcategories : [];
+
     const prompt = `Analyze this uploaded video and suggest metadata. Return ONLY valid JSON.
 
 Title: "${title}"
@@ -32,11 +38,16 @@ Description: "${description || 'No description provided'}"
 File name: "${fileName || 'unknown'}"
 File type: "${fileType || 'video'}"
 
+CRITICAL RULES:
+- "suggestedCategory" MUST be EXACTLY one of these ids (lower-hyphen, no other values allowed): ${categoryList.join(', ')}
+- "suggestedSubcategory" MUST be EXACTLY one of these ids, or empty string "" if none fit: ${subcategoryList.length ? subcategoryList.join(', ') : '(none provided — return empty string)'}
+- Do NOT invent new category or subcategory names. If nothing fits, use "entertainment" for category and "" for subcategory.
+
 Return JSON with:
 {
   "suggestedTags": ["tag1", "tag2", ...up to 10 relevant tags],
-  "suggestedCategory": "best matching category from: Music, Comedy, Sports, Education, Gaming, News, Entertainment, Science, Technology, Travel, Film, Fitness, Food, Animals, Fashion, Art, Documentary, How-To",
-  "suggestedSubcategory": "more specific subcategory",
+  "suggestedCategory": "<one id from the allowed category list>",
+  "suggestedSubcategory": "<one id from the allowed subcategory list, or empty string>",
   "improvedDescription": "A better SEO-optimized description if the original is empty or weak, otherwise return the original",
   "contentType": "video|short|music|podcast|documentary",
   "language": "detected language",
@@ -53,7 +64,7 @@ Return JSON with:
       body: JSON.stringify({
         model: 'google/gemini-3-flash-preview',
         messages: [
-          { role: 'system', content: 'You are an expert video content classifier and SEO specialist. Always return valid JSON only.' },
+          { role: 'system', content: 'You are an expert video content classifier. You MUST only output category and subcategory ids that exactly match the allowed lists provided by the user. Never invent ids. Always return valid JSON only.' },
           { role: 'user', content: prompt }
         ],
       }),
@@ -78,7 +89,7 @@ Return JSON with:
     const aiResponse = await response.json();
     const content = aiResponse.choices?.[0]?.message?.content || '';
 
-    let result;
+    let result: any;
     try {
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -89,7 +100,7 @@ Return JSON with:
     } catch {
       result = {
         suggestedTags: [],
-        suggestedCategory: 'Entertainment',
+        suggestedCategory: 'entertainment',
         suggestedSubcategory: '',
         improvedDescription: description || '',
         contentType: 'video',
@@ -98,6 +109,22 @@ Return JSON with:
         ageRating: 'G',
       };
     }
+
+    // Server-side validation: drop any value that isn't in the allowed list
+    const normalize = (v: string) => (v || '').toString().toLowerCase().trim()
+      .replace(/^\/+|\/+$/g, '')
+      .replace(/[\/\s_]+/g, '-')
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9-]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    const catNorm = normalize(result.suggestedCategory || '');
+    const subNorm = normalize(result.suggestedSubcategory || '');
+    result.suggestedCategory = categoryList.includes(catNorm) ? catNorm : '';
+    result.suggestedSubcategory = subcategoryList.length === 0
+      ? ''
+      : (subcategoryList.includes(subNorm) ? subNorm : '');
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
