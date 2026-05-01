@@ -13,6 +13,7 @@ export const SportsExtendedLinks: React.FC = () => {
       subItems: [
         { id: 'sports-nba-east', label: 'NBA East Playoffs', path: '/sports/nba/east-playoffs' },
         { id: 'sports-nba-west', label: 'NBA West Playoffs', path: '/sports/nba/west-playoffs' },
+        { id: 'sports-nba-season', label: 'NBA Basketball Season', path: '/sports/nba/season' },
         { id: 'sports-nba-players', label: 'NBA Players & Coaches', path: '/sports/nba/players' }
       ]
     },
