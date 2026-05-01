@@ -376,8 +376,8 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
   const supabaseUpdates: Record<string, unknown> = {};
   if (updates.title !== undefined) supabaseUpdates.title = updates.title;
   if (updates.description !== undefined) supabaseUpdates.description = updates.description;
-  if (updates.category !== undefined) supabaseUpdates.category = updates.category;
-  if (updates.subcategory !== undefined) supabaseUpdates.subcategory = updates.subcategory;
+  if (updates.category !== undefined) supabaseUpdates.category = normalizeCategoryValue(updates.category as string);
+  if (updates.subcategory !== undefined) supabaseUpdates.subcategory = normalizeCategoryValue(updates.subcategory as string);
   if (updates.tags !== undefined) supabaseUpdates.tags = updates.tags;
   if (updates.thumbnail !== undefined) supabaseUpdates.thumbnail_url = updates.thumbnail;
   
