@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 
-type EventType = 'view' | 'click' | 'like' | 'share';
-type VideoTable = 'uploaded_videos' | 'music_videos';
+type EventType = 'view' | 'click' | 'like' | 'share' | 'play';
+type VideoTable = 'uploaded_videos' | 'music_videos' | 'featured_discussion_video';
 
 const getSessionId = (): string => {
   const stored = sessionStorage.getItem('analytics_session_id');
