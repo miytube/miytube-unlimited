@@ -877,6 +877,9 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="sports-other" path="/sports/other" element={<GenericSubcategoryPage />} />,
   <Route key="sports-horses" path="/sports/horses" element={<GenericSubcategoryPage />} />,
   <Route key="sports-fans" path="/sports/fans" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-sky-diving" path="/sports/sky-diving" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-extreme-sky-diving" path="/sports/extreme-sky-diving" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-extreme-sports" path="/sports/extreme-sports" element={<GenericSubcategoryPage />} />,
 
   // ========== ADDITIONAL MISSING SIDEBAR ROUTES ==========
   

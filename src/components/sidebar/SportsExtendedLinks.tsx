@@ -205,7 +205,10 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-news', label: 'Sports News & Podcasts', path: '/sports/news' },
         { id: 'sports-personalities', label: 'Sports Personalities', path: '/sports/personalities' },
         { id: 'sports-fans', label: 'Fan Challenges', path: '/sports/fans' },
-        { id: 'sports-street-fighting', label: 'Street Fighting', path: '/sports/street-fighting' }
+        { id: 'sports-street-fighting', label: 'Street Fighting', path: '/sports/street-fighting' },
+        { id: 'sports-sky-diving', label: 'Sky Diving', path: '/sports/sky-diving' },
+        { id: 'sports-extreme-sky-diving', label: 'Extreme-Sky Diving', path: '/sports/extreme-sky-diving' },
+        { id: 'sports-extreme-sports', label: 'Extreme-Sports', path: '/sports/extreme-sports' }
       ]
     },
   ];
