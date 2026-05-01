@@ -47,7 +47,12 @@ export const useAnalyticsTracking = () => {
     if (isBotRef.current) return;
 
     // Skip tracking for admin users so owner visits don't inflate stats
-    if (isAdmin) return;
+    if (isAdmin) {
+      // Also disable GA4 property so no hits leak through
+      (window as any)['ga-disable-G-SNLTDDVSNH'] = true;
+      return;
+    }
+    (window as any)['ga-disable-G-SNLTDDVSNH'] = false;
 
     const sessionId = sessionIdRef.current;
 
