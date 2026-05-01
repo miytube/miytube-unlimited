@@ -17,6 +17,7 @@ import { sidebarSubcategoryRoutes } from "./sidebarSubcategoryRoutes";
 import { specialSubcategoryRoutes } from "./specialSubcategoryRoutes";
 import { newSubcategoryRoutes } from "./newSubcategoryRoutes";
 import { comprehensiveSubcategoryRoutes } from "./comprehensiveSubcategoryRoutes";
+import { customCategoryRoutes } from "./customCategoryRoutes";
 
 const AppRoutes = () => {
   return (
@@ -39,6 +40,7 @@ const AppRoutes = () => {
       {specialSubcategoryRoutes}
       {newSubcategoryRoutes}
       {comprehensiveSubcategoryRoutes}
+      {customCategoryRoutes}
     </Routes>
   );
 };

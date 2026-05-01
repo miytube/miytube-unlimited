@@ -38,6 +38,7 @@ import { RealEstateLinks } from './sidebar/RealEstateLinks';
 import { GovernmentPoliticsLinks } from './sidebar/GovernmentPoliticsLinks';
 import { HistoryArtifactsLinks } from './sidebar/HistoryArtifactsLinks';
 import { KidsEducationLinks } from './sidebar/KidsEducationLinks';
+import { CustomCategoriesLinks } from './sidebar/CustomCategoriesLinks';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -136,7 +137,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           {!effectiveCollapsed && (
             <>
               <Separator className="my-3" />
-              
+
+              {/* Custom Categories (admin-created) */}
+              <CollapsibleGroup title="Custom Categories" defaultOpen={true}>
+                <CustomCategoriesLinks />
+              </CollapsibleGroup>
+
+              <Separator className="my-3" />
+
               {/* Entertainment & Media */}
               <CollapsibleGroup title="Entertainment & Media" defaultOpen={true}>
                 <EntertainmentMediaLinks />
