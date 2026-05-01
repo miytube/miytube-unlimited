@@ -24,11 +24,30 @@ export const useAnalyticsTracking = () => {
   const sessionIdRef = useRef<string>(generateSessionId());
   const lastPathRef = useRef<string>('');
   const isBotRef = useRef<boolean>(isLikelyBot());
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Check if current user is admin — skip all tracking for admins
+  useEffect(() => {
+    if (!user?.id) {
+      setIsAdmin(false);
+      return;
+    }
+    supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle()
+      .then(({ data }) => setIsAdmin(!!data));
+  }, [user?.id]);
 
   useEffect(() => {
     // Skip all analytics for bots/crawlers — keeps quality signals clean
     // for AdSense (high bounce rate from bots reduces ad fill rate).
     if (isBotRef.current) return;
+
+    // Skip tracking for admin users so owner visits don't inflate stats
+    if (isAdmin) return;
 
     const sessionId = sessionIdRef.current;
 
