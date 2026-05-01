@@ -82,4 +82,10 @@ export const carsSubcategories: SubcategoryMapping = {
     icon: Car,
     parent: { route: '/cars', name: 'Cars' }
   },
+  'cars-towed': {
+    title: 'Car got Towed',
+    description: 'Towed cars, towing incidents, and vehicle impound stories',
+    icon: Car,
+    parent: { route: '/cars', name: 'Cars' }
+  },
 };
