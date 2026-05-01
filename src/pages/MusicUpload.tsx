@@ -136,13 +136,14 @@ const MusicUpload = () => {
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
+      const { normalizeCategoryValue } = await import('@/utils/normalizeCategory');
       const { data: insertedVideo, error: insertError } = await supabase
         .from('music_videos')
         .insert({
           title,
           description,
-          category,
-          subcategory,
+          category: normalizeCategoryValue(category),
+          subcategory: normalizeCategoryValue(subcategory),
           tags,
           thumbnail_url: thumbnailUrl,
           video_url: videoUrl,
