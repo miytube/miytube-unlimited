@@ -441,6 +441,11 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     }
     
     merged.sort((a, b) => {
+      // Prefer precise ISO created_at when available (cloud videos)
+      const aCreated = a.createdAt ? Date.parse(a.createdAt) : 0;
+      const bCreated = b.createdAt ? Date.parse(b.createdAt) : 0;
+      if (aCreated || bCreated) return bCreated - aCreated;
+      // Fallback to local upload-<timestamp> id
       const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
       const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
       if (aIdTime && bIdTime) return bIdTime - aIdTime;
