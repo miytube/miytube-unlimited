@@ -285,6 +285,7 @@ const mapSupabaseRow = (v: any): UploadedVideo => ({
   description: v.description || '',
   thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
   timestamp: new Date(v.created_at).toLocaleDateString(),
+  createdAt: v.created_at,
   views: String(v.views || 0),
   duration: v.duration || '0:00',
   category: v.category || undefined,
