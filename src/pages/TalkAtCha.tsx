@@ -6,6 +6,7 @@ import { NewDiscussionForm, NewPostFormData } from '@/components/discussions/New
 import { DiscussionControls } from '@/components/discussions/DiscussionControls';
 import { DiscussionList } from '@/components/discussions/DiscussionList';
 import { TalkAtChaHeader } from '@/components/discussions/TalkAtChaHeader';
+import { FeaturedDiscussionVideo } from '@/components/discussions/FeaturedDiscussionVideo';
 import { INITIAL_DISCUSSIONS, CATEGORIES } from '@/components/discussions/discussionConstants';
 
 const TalkAtCha = () => {
@@ -54,28 +55,38 @@ const TalkAtCha = () => {
       <div className="py-6 animate-fade-in">
         <TalkAtChaHeader />
         
-        <DiscussionControls 
-          categories={CATEGORIES}
-          category={category}
-          newPostVisible={newPostVisible}
-          onCategoryChange={setCategory}
-          onNewPostToggle={() => setNewPostVisible(!newPostVisible)}
-        />
-        
-        {newPostVisible && (
-          <NewDiscussionForm 
-            categories={CATEGORIES}
-            newPost={newPost}
-            onCancel={() => setNewPostVisible(false)}
-            onSubmit={handleNewPost}
-            onPostChange={setNewPost}
-          />
-        )}
-        
-        <DiscussionList 
-          discussions={filteredDiscussions}
-          onCreateClick={() => setNewPostVisible(true)}
-        />
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Main discussions column */}
+          <div className="flex-1 min-w-0">
+            <DiscussionControls 
+              categories={CATEGORIES}
+              category={category}
+              newPostVisible={newPostVisible}
+              onCategoryChange={setCategory}
+              onNewPostToggle={() => setNewPostVisible(!newPostVisible)}
+            />
+            
+            {newPostVisible && (
+              <NewDiscussionForm 
+                categories={CATEGORIES}
+                newPost={newPost}
+                onCancel={() => setNewPostVisible(false)}
+                onSubmit={handleNewPost}
+                onPostChange={setNewPost}
+              />
+            )}
+            
+            <DiscussionList 
+              discussions={filteredDiscussions}
+              onCreateClick={() => setNewPostVisible(true)}
+            />
+          </div>
+
+          {/* Featured video sidebar */}
+          <div className="w-full lg:w-80 shrink-0">
+            <FeaturedDiscussionVideo />
+          </div>
+        </div>
       </div>
     </Layout>
   );
