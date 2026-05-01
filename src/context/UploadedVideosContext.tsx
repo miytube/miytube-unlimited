@@ -430,6 +430,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         description: cloudVideo?.description ?? sv.description,
         thumbnail: cloudVideo?.thumbnail || sv.thumbnail,
         timestamp: cloudVideo?.timestamp || sv.timestamp,
+        createdAt: cloudVideo?.createdAt,
         views: cloudVideo?.views || sv.views,
         duration: cloudVideo?.duration || sv.duration,
         category: cloudVideo?.category ?? sv.category,
