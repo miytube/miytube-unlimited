@@ -136,9 +136,23 @@ export const filterVideosBySubcategory = (
   const lastSegmentSpaced = lastSegment.replace(/-/g, ' ');
   const lastSegmentNoHyphens = lastSegment.replace(/-/g, '');
   
+  // Build alternate forms of the mapping key to match path-style subcategory values
+  // e.g. key "animation/cartoons" should match subcategory "/animation/cartoons" or "animation-cartoons"
+  const keyWithSlash = keyLower.startsWith('/') ? keyLower : `/${keyLower}`;
+  const keyHyphenated = keyLower.replace(/\//g, '-');
+
   return videos.filter(video => {
-    const vidCategory = video.category?.toLowerCase().trim() || '';
-    const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
+    const vidCategoryRaw = video.category?.toLowerCase().trim() || '';
+    const vidSubcategoryRaw = video.subcategory?.toLowerCase().trim() || '';
+    // Strip leading slash so "/animation/cartoons" matches "animation/cartoons"
+    const vidCategory = vidCategoryRaw.replace(/^\/+/, '');
+    const vidSubcategory = vidSubcategoryRaw.replace(/^\/+/, '');
+
+    // Match full-path subcategory keys directly (e.g. video.subcategory = "/animation/cartoons" and key = "animation/cartoons")
+    if (vidSubcategory === keyLower || vidSubcategoryRaw === keyWithSlash) return true;
+    // Match hyphenated equivalent (e.g. "animation-cartoons")
+    if (vidSubcategory === keyHyphenated || vidSubcategory.replace(/\//g, '-') === keyHyphenated) return true;
+
     const vidTags = video.tags?.map(t => t.toLowerCase().trim()) || [];
     const requestedLeague = detectSportsLeague(`${keyLower} ${titleLower}`);
     const videoLeague = detectSportsLeague(`${vidCategory} ${vidSubcategory} ${vidTags.join(' ')}`);
