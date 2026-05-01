@@ -66,25 +66,16 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
 
   const handleAIAutoTag = async () => {
     if (!videoTitle.trim()) return;
-    const allowedCategoryIds = allCategories.map(c => c.id);
-    const allowedSubcategoryIds = allSubcategories.map(s => s.id);
     const result = await analyzeContent(
       videoTitle,
       videoDescription,
       undefined,
       undefined,
-      allowedCategoryIds,
-      allowedSubcategoryIds,
+      selectedCategory ? [selectedCategory] : [],
+      selectedSubcategory ? [selectedSubcategory] : [],
     );
     if (result) {
       if (result.suggestedTags?.length) setTags([...new Set([...tags, ...result.suggestedTags])]);
-      // Only apply category/subcategory if it matches a real id in our dropdowns
-      if (result.suggestedCategory && allowedCategoryIds.includes(result.suggestedCategory)) {
-        setSelectedCategory(result.suggestedCategory);
-      }
-      if (result.suggestedSubcategory && allowedSubcategoryIds.includes(result.suggestedSubcategory)) {
-        setSelectedSubcategory(result.suggestedSubcategory);
-      }
       if (result.improvedDescription && !videoDescription.trim()) setVideoDescription(result.improvedDescription);
     }
   };
@@ -233,7 +224,6 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
         </div>
       )}
 
-      {/* AI Auto-Tag Button */}
       <Button
         type="button"
         variant="outline"
@@ -246,7 +236,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
         ) : (
           <Sparkles className="h-4 w-4 text-primary" />
         )}
-        {isAnalyzing ? 'AI Analyzing...' : 'AI Auto-Tag & Categorize'}
+        {isAnalyzing ? 'AI Analyzing...' : 'AI Auto-Tag'}
       </Button>
     </div>
   );

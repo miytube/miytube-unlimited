@@ -47,7 +47,7 @@ export const useAIAutoTag = () => {
       setSuggestions(data);
       toast({
         title: "AI Suggestions Ready",
-        description: `Found ${data.suggestedTags?.length || 0} tags and category: ${data.suggestedCategory}`,
+        description: `Found ${data.suggestedTags?.length || 0} tags. Your selected category stays unchanged.`,
       });
       return data;
     } catch (err) {
