@@ -15,6 +15,9 @@ interface FeaturedVideo {
 export const FeaturedDiscussionVideo = () => {
   const [video, setVideo] = useState<FeaturedVideo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const fetchFeatured = async () => {
