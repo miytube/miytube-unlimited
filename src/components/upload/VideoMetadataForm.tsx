@@ -66,11 +66,25 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
 
   const handleAIAutoTag = async () => {
     if (!videoTitle.trim()) return;
-    const result = await analyzeContent(videoTitle, videoDescription);
+    const allowedCategoryIds = allCategories.map(c => c.id);
+    const allowedSubcategoryIds = allSubcategories.map(s => s.id);
+    const result = await analyzeContent(
+      videoTitle,
+      videoDescription,
+      undefined,
+      undefined,
+      allowedCategoryIds,
+      allowedSubcategoryIds,
+    );
     if (result) {
       if (result.suggestedTags?.length) setTags([...new Set([...tags, ...result.suggestedTags])]);
-      if (result.suggestedCategory) setSelectedCategory(result.suggestedCategory.toLowerCase().replace(/\s+/g, '-'));
-      if (result.suggestedSubcategory) setSelectedSubcategory(result.suggestedSubcategory.toLowerCase().replace(/\s+/g, '-'));
+      // Only apply category/subcategory if it matches a real id in our dropdowns
+      if (result.suggestedCategory && allowedCategoryIds.includes(result.suggestedCategory)) {
+        setSelectedCategory(result.suggestedCategory);
+      }
+      if (result.suggestedSubcategory && allowedSubcategoryIds.includes(result.suggestedSubcategory)) {
+        setSelectedSubcategory(result.suggestedSubcategory);
+      }
       if (result.improvedDescription && !videoDescription.trim()) setVideoDescription(result.improvedDescription);
     }
   };
