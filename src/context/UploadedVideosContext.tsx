@@ -3,6 +3,7 @@ import { uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUplo
 import { useUploadProgress } from './UploadProgressContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 
 type DuplicateCheckResult = { isDuplicate: false } | { isDuplicate: true; reason: 'session' | 'location' };
 
