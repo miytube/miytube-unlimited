@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { MessageSquare, Volume2, VolumeX } from 'lucide-react';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 
 interface FeaturedVideo {
   id: string;
