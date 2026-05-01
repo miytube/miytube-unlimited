@@ -18,6 +18,7 @@ export interface UploadedVideo {
   description: string;
   thumbnail: string;
   timestamp: string;
+  createdAt?: string;
   views: string;
   duration: string;
   category?: string;
