@@ -148,28 +148,56 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   };
 
   const handleUrlImport = (url: string, isYouTube?: boolean, youtubeId?: string) => {
-    setImportedUrl(url);
-    setIsYouTubeImport(isYouTube || false);
-    setYoutubeVideoId(youtubeId || null);
-    
-    // Extract title from URL if no title set
-    if (!videoTitle) {
+    // Derive a title
+    let derivedTitle = videoTitle;
+    if (!derivedTitle) {
       if (isYouTube) {
-        setVideoTitle('YouTube Video');
+        derivedTitle = youtubeId ? `YouTube Video (${youtubeId})` : 'YouTube Video';
       } else {
         try {
           const urlObj = new URL(url);
-          const pathParts = urlObj.pathname.split('/');
-          const filename = pathParts[pathParts.length - 1];
-          if (filename) {
-            const nameWithoutExt = filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
-            setVideoTitle(decodeURIComponent(nameWithoutExt));
-          }
+          const filename = urlObj.pathname.split('/').pop() || '';
+          const nameWithoutExt = filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+          derivedTitle = decodeURIComponent(nameWithoutExt) || 'Imported Video';
         } catch {
-          // Ignore URL parsing errors
+          derivedTitle = 'Imported Video';
         }
       }
+      setVideoTitle(derivedTitle);
     }
+
+    // Save immediately if a URL import handler is wired up — true one-click import
+    if (onUrlImport) {
+      const categoryToUse = selectedCategory || categories[0]?.id;
+      const subcategoryToUse = selectedSubcategory || undefined;
+
+      onUrlImport(
+        url,
+        derivedTitle,
+        videoDescription,
+        categoryToUse,
+        subcategoryToUse,
+        tags,
+        isYouTube,
+        youtubeId || undefined
+      );
+
+      toast({
+        title: isYouTube ? 'YouTube video imported' : 'Video imported',
+        description: 'Added to your library.',
+      });
+
+      // Reset URL staging state
+      setImportedUrl(null);
+      setIsYouTubeImport(false);
+      setYoutubeVideoId(null);
+      return;
+    }
+
+    // Fallback: stage the URL for the main Upload button (legacy flow)
+    setImportedUrl(url);
+    setIsYouTubeImport(isYouTube || false);
+    setYoutubeVideoId(youtubeId || null);
   };
 
   const handleUploadClick = async () => {
