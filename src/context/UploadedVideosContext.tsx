@@ -215,7 +215,10 @@ const saveVideoToSupabase = async (video: {
   if (!userId) {
     throw new Error('You must be signed in to save uploaded videos.');
   }
-  
+
+  // Normalize category/subcategory to canonical lower-hyphen form before insert
+  const normalizedCategory = normalizeCategoryValue(video.category);
+  const normalizedSubcategory = normalizeCategoryValue(video.subcategory);
   // Check if a video with this local_id already exists to prevent duplicates from same session
   const { data: existingById } = await supabase
     .from('uploaded_videos')
