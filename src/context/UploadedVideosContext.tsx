@@ -446,20 +446,22 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     }
     
     merged.sort((a, b) => {
-      // Prefer precise ISO created_at when available (cloud videos)
-      const aCreated = a.createdAt ? Date.parse(a.createdAt) : 0;
-      const bCreated = b.createdAt ? Date.parse(b.createdAt) : 0;
-      if (aCreated || bCreated) return bCreated - aCreated;
-      // Fallback to local upload-<timestamp> id
-      const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
-      const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
-      if (aIdTime && bIdTime) return bIdTime - aIdTime;
-      const parseTimestamp = (ts: string): number => {
-        if (ts === 'Just now') return Date.now();
-        const parsed = Date.parse(ts);
+      // Resolve a sortable timestamp for each video, preferring ISO created_at,
+      // then the local upload-<timestamp> id, then the human timestamp string.
+      const resolveTime = (v: UploadedVideo): number => {
+        if (v.createdAt) {
+          const t = Date.parse(v.createdAt);
+          if (!isNaN(t)) return t;
+        }
+        if (v.id?.startsWith('upload-')) {
+          const t = parseInt(v.id.replace('upload-', ''), 10);
+          if (!isNaN(t)) return t;
+        }
+        if (v.timestamp === 'Just now') return Date.now();
+        const parsed = Date.parse(v.timestamp);
         return isNaN(parsed) ? 0 : parsed;
       };
-      return (bIdTime || parseTimestamp(b.timestamp)) - (aIdTime || parseTimestamp(a.timestamp));
+      return resolveTime(b) - resolveTime(a);
     });
     
     return merged;
