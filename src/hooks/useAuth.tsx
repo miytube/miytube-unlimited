@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState<AppRole[]>([]);
+  const [rolesLoading, setRolesLoading] = useState(true);
 
   const fetchUserRoles = async (userId: string) => {
     const { data, error } = await supabase
