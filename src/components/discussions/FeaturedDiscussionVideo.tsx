@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import { Play, MessageSquare } from 'lucide-react';
+import { MessageSquare, Volume2, VolumeX } from 'lucide-react';
 
 interface FeaturedVideo {
   id: string;
