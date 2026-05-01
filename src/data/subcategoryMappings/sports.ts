@@ -430,6 +430,12 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  'sports-nba-season': {
+    title: 'NBA Basketball Season',
+    description: 'NBA regular season games, standings, and highlights',
+    icon: Trophy,
+    parent: { route: '/sports/nba', name: 'NBA Basketball' }
+  },
 
   // News
   'sports-news-podcasts': {
