@@ -393,6 +393,9 @@ const Admin = () => {
           <TabsContent value="ai-titles" className="mt-6">
             <AIAutoTitleManager />
           </TabsContent>
+          <TabsContent value="discussion-video" className="mt-6">
+            <FeaturedDiscussionManager />
+          </TabsContent>
         </Tabs>
       </div>
     </Layout>
