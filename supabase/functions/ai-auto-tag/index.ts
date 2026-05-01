@@ -27,7 +27,7 @@ serve(async (req) => {
 
     const categoryList: string[] = Array.isArray(allowedCategories) && allowedCategories.length
       ? allowedCategories
-      : ['music','comedy','sports','education','gaming','news','entertainment','science','technology','travel','film','fitness','food','animals','fashion','art','documentary','how-to'];
+      : [];
 
     const subcategoryList: string[] = Array.isArray(allowedSubcategories) ? allowedSubcategories : [];
 
@@ -39,9 +39,10 @@ File name: "${fileName || 'unknown'}"
 File type: "${fileType || 'video'}"
 
 CRITICAL RULES:
-- "suggestedCategory" MUST be EXACTLY one of these ids (lower-hyphen, no other values allowed): ${categoryList.join(', ')}
-- "suggestedSubcategory" MUST be EXACTLY one of these ids, or empty string "" if none fit: ${subcategoryList.length ? subcategoryList.join(', ') : '(none provided — return empty string)'}
-- Do NOT invent new category or subcategory names. If nothing fits, use "entertainment" for category and "" for subcategory.
+- Do not move the upload to a different category or subcategory.
+- "suggestedCategory" MUST be EXACTLY the current selected category id, or empty string if none was provided: ${categoryList.length ? categoryList.join(', ') : '(none provided — return empty string)'}
+- "suggestedSubcategory" MUST be EXACTLY the current selected subcategory id, or empty string if none was provided: ${subcategoryList.length ? subcategoryList.join(', ') : '(none provided — return empty string)'}
+- Do NOT invent new category or subcategory names.
 
 Return JSON with:
 {
@@ -64,7 +65,7 @@ Return JSON with:
       body: JSON.stringify({
         model: 'google/gemini-3-flash-preview',
         messages: [
-          { role: 'system', content: 'You are an expert video content classifier. You MUST only output category and subcategory ids that exactly match the allowed lists provided by the user. Never invent ids. Always return valid JSON only.' },
+          { role: 'system', content: 'You are an expert video metadata assistant. Generate useful tags and descriptions, but never recategorize uploads. Category and subcategory must stay exactly as provided by the user. Always return valid JSON only.' },
           { role: 'user', content: prompt }
         ],
       }),
@@ -100,7 +101,7 @@ Return JSON with:
     } catch {
       result = {
         suggestedTags: [],
-        suggestedCategory: 'entertainment',
+        suggestedCategory: '',
         suggestedSubcategory: '',
         improvedDescription: description || '',
         contentType: 'video',
