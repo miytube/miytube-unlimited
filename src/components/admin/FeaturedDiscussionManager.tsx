@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { Save, Trash2, Video } from 'lucide-react';
+import { Save, Trash2, Video, Play, Eye, Users } from 'lucide-react';
 
 export const FeaturedDiscussionManager = () => {
   const { toast } = useToast();
