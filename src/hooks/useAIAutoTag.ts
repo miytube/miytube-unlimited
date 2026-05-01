@@ -22,14 +22,16 @@ export const useAIAutoTag = () => {
     title: string,
     description: string,
     fileName?: string,
-    fileType?: string
+    fileType?: string,
+    allowedCategories?: string[],
+    allowedSubcategories?: string[]
   ): Promise<AITagSuggestions | null> => {
     if (!title.trim()) return null;
 
     setIsAnalyzing(true);
     try {
       const { data, error } = await supabase.functions.invoke('ai-auto-tag', {
-        body: { title, description, fileName, fileType },
+        body: { title, description, fileName, fileType, allowedCategories, allowedSubcategories },
       });
 
       if (error) {
