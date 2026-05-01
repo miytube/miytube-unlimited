@@ -3,6 +3,24 @@ import { Trophy } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const sportsSubcategories: SubcategoryMapping = {
+  'sports-sky-diving': {
+    title: 'Sky Diving',
+    description: 'Sky diving jumps, free fall, and parachuting videos',
+    icon: Trophy,
+    parent: { route: '/sports/other', name: 'Other Sports' }
+  },
+  'sports-extreme-sky-diving': {
+    title: 'Extreme-Sky Diving',
+    description: 'Extreme sky diving stunts, wingsuits, and high-altitude jumps',
+    icon: Trophy,
+    parent: { route: '/sports/other', name: 'Other Sports' }
+  },
+  'sports-extreme-sports': {
+    title: 'Extreme-Sports',
+    description: 'Extreme sports highlights and adrenaline-filled action',
+    icon: Trophy,
+    parent: { route: '/sports/other', name: 'Other Sports' }
+  },
   // Main Sports Categories
   'sports-arenas': {
     title: 'Sports Arenas & Stadiums',
