@@ -120,6 +120,25 @@ export const FeaturedDiscussionManager = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {currentId && (
+          <div className="grid grid-cols-3 gap-3 p-3 rounded-lg bg-muted/50 border">
+            <div className="flex flex-col items-center text-center">
+              <Play className="h-4 w-4 text-primary mb-1" />
+              <div className="text-2xl font-bold">{stats.plays}</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Total Plays</div>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <Eye className="h-4 w-4 text-primary mb-1" />
+              <div className="text-2xl font-bold">{stats.uniqueSessions}</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Unique Sessions</div>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <Users className="h-4 w-4 text-primary mb-1" />
+              <div className="text-2xl font-bold">{stats.uniqueUsers}</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wide">Logged-in Viewers</div>
+            </div>
+          </div>
+        )}
         <div>
           <label className="text-sm font-medium">Video URL *</label>
           <Input
