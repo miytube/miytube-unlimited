@@ -14,7 +14,7 @@ const FeaturedVideos = () => {
       video.category?.toLowerCase() !== 'shorts' &&
       (video.tags?.some(t => t.toLowerCase() === 'featured') || video.category?.toLowerCase() === 'featured')
     )
-    .reverse()
+    
     .slice(0, 20);
 
   return (

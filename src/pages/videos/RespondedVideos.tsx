@@ -14,7 +14,7 @@ const RespondedVideos = () => {
       video.category?.toLowerCase() !== 'shorts' &&
       (video.tags?.some(t => t.toLowerCase() === 'responded') || video.category?.toLowerCase() === 'responded')
     )
-    .reverse()
+    
     .slice(0, 20);
 
   return (

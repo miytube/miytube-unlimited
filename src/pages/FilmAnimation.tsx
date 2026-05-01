@@ -142,7 +142,7 @@ const FilmAnimation: React.FC = () => {
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">Film & Animation Videos</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {[...categoryVideos].reverse().slice(0, 20).map((video) => (
+              {categoryVideos.slice(0, 20).map((video) => (
                 <VideoCard 
                   key={video.id} 
                   id={video.id}

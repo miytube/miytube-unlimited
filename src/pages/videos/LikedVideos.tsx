@@ -14,7 +14,7 @@ const LikedVideos = () => {
       video.category?.toLowerCase() !== 'shorts' &&
       (video.tags?.some(t => t.toLowerCase() === 'liked') || video.category?.toLowerCase() === 'liked')
     )
-    .reverse()
+    
     .slice(0, 20);
 
   return (

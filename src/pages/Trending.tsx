@@ -80,7 +80,7 @@ const Trending: React.FC = () => {
   }, [podcastVideosRaw.length]);
 
   // ALL uploaded videos appear on trending page (newest first) - including shorts
-  const trendingVideos = [...uploadedVideos].reverse().map(video => ({
+  const trendingVideos = uploadedVideos.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,

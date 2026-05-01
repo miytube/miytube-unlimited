@@ -78,7 +78,7 @@ const Shorts = () => {
   
   // Format uploaded shorts for ShortCard - newest first
   // Format uploaded shorts for ShortCard - newest first
-  const allShorts = [...uploadedShorts].reverse().map(video => ({
+  const allShorts = uploadedShorts.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,

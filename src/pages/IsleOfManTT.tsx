@@ -32,7 +32,7 @@ const IsleOfManTT = () => {
 
         {videos.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {[...videos].reverse().slice(0, 20).map((video) => (
+            {videos.slice(0, 20).map((video) => (
               <VideoCard 
                 key={video.id}
                 id={video.id}
