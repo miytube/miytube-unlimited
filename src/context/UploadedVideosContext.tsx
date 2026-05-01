@@ -18,6 +18,7 @@ export interface UploadedVideo {
   description: string;
   thumbnail: string;
   timestamp: string;
+  createdAt?: string;
   views: string;
   duration: string;
   category?: string;
@@ -284,6 +285,7 @@ const mapSupabaseRow = (v: any): UploadedVideo => ({
   description: v.description || '',
   thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
   timestamp: new Date(v.created_at).toLocaleDateString(),
+  createdAt: v.created_at,
   views: String(v.views || 0),
   duration: v.duration || '0:00',
   category: v.category || undefined,
@@ -439,6 +441,11 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     }
     
     merged.sort((a, b) => {
+      // Prefer precise ISO created_at when available (cloud videos)
+      const aCreated = a.createdAt ? Date.parse(a.createdAt) : 0;
+      const bCreated = b.createdAt ? Date.parse(b.createdAt) : 0;
+      if (aCreated || bCreated) return bCreated - aCreated;
+      // Fallback to local upload-<timestamp> id
       const aIdTime = a.id.startsWith('upload-') ? parseInt(a.id.replace('upload-', '')) : 0;
       const bIdTime = b.id.startsWith('upload-') ? parseInt(b.id.replace('upload-', '')) : 0;
       if (aIdTime && bIdTime) return bIdTime - aIdTime;
