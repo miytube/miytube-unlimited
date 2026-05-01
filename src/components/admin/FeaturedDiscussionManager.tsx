@@ -20,10 +20,30 @@ export const FeaturedDiscussionManager = () => {
     description: '',
     thumbnail_url: '',
   });
+  const [stats, setStats] = useState({ plays: 0, uniqueSessions: 0, uniqueUsers: 0 });
 
   useEffect(() => {
     fetchCurrent();
   }, []);
+
+  useEffect(() => {
+    if (currentId) fetchStats(currentId);
+  }, [currentId]);
+
+  const fetchStats = async (videoId: string) => {
+    const { data } = await supabase
+      .from('video_engagement_events')
+      .select('session_id, user_id')
+      .eq('video_table', 'featured_discussion_video')
+      .eq('video_id', videoId)
+      .eq('event_type', 'play');
+
+    if (data) {
+      const sessions = new Set(data.map((d) => d.session_id).filter(Boolean));
+      const users = new Set(data.map((d) => d.user_id).filter(Boolean));
+      setStats({ plays: data.length, uniqueSessions: sessions.size, uniqueUsers: users.size });
+    }
+  };
 
   const fetchCurrent = async () => {
     const { data } = await supabase
