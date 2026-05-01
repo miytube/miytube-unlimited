@@ -165,6 +165,35 @@ const Watch = () => {
                 .eq('id', videoId)
                 .maybeSingle();
               cloudVideo = byUUID;
+
+              // Fallback: try music_videos table for UUIDs that come from search
+              if (!cloudVideo) {
+                const { data: musicByUUID } = await supabase
+                  .from('music_videos')
+                  .select('*')
+                  .eq('id', videoId)
+                  .maybeSingle();
+                if (musicByUUID) {
+                  setIsMusicVideo(true);
+                  setVideo({
+                    id: musicByUUID.id,
+                    title: musicByUUID.title,
+                    description: musicByUUID.description || '',
+                    channelName: 'Music Channel',
+                    channelAvatar: 'https://ui-avatars.com/api/?name=Music&background=random',
+                    views: `${musicByUUID.views || 0} views`,
+                    timestamp: new Date(musicByUUID.created_at).toLocaleDateString(),
+                    likes: (musicByUUID.likes || 0).toString(),
+                    subscribers: '0',
+                    file: musicByUUID.video_url,
+                    tags: musicByUUID.tags || [],
+                    category: musicByUUID.category,
+                    subcategory: musicByUUID.subcategory,
+                  });
+                  setLoading(false);
+                  return;
+                }
+              }
             }
             
             if (cloudVideo) {
