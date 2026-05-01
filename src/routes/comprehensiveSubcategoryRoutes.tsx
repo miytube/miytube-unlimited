@@ -758,6 +758,7 @@ export const comprehensiveSubcategoryRoutes = [
   
   // Sports flat routes
   <Route key="nba-basketball" path="/nba-basketball" element={<GenericSubcategoryPage />} />,
+  <Route key="nba-season" path="/sports/nba/season" element={<GenericSubcategoryPage />} />,
   <Route key="nfl-football" path="/nfl-football" element={<GenericSubcategoryPage />} />,
   <Route key="mlb-baseball" path="/mlb-baseball" element={<GenericSubcategoryPage />} />,
   <Route key="nhl-hockey" path="/nhl-hockey" element={<GenericSubcategoryPage />} />,
