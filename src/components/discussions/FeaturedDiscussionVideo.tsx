@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
-import { Play, MessageSquare } from 'lucide-react';
+import { MessageSquare, Volume2, VolumeX } from 'lucide-react';
 
 interface FeaturedVideo {
   id: string;
@@ -14,6 +15,9 @@ interface FeaturedVideo {
 export const FeaturedDiscussionVideo = () => {
   const [video, setVideo] = useState<FeaturedVideo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -57,10 +61,11 @@ export const FeaturedDiscussionVideo = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4 pt-0 space-y-3">
-        <div className="aspect-video rounded-lg overflow-hidden bg-black">
+        <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
           {isYouTube ? (
             <iframe
-              src={`https://www.youtube.com/embed/${getYouTubeId(video.video_url)}`}
+              ref={iframeRef}
+              src={`https://www.youtube.com/embed/${getYouTubeId(video.video_url)}?enablejsapi=1&mute=${isMuted ? 1 : 0}`}
               className="w-full h-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -68,12 +73,35 @@ export const FeaturedDiscussionVideo = () => {
             />
           ) : (
             <video
+              ref={videoRef}
               src={video.video_url}
               poster={video.thumbnail_url || undefined}
               controls
+              muted={isMuted}
               className="w-full h-full object-contain"
             />
           )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute bottom-2 right-2 h-8 w-8 bg-black/60 hover:bg-black/80 text-white rounded-full z-10"
+            onClick={() => {
+              const newMuted = !isMuted;
+              setIsMuted(newMuted);
+              if (videoRef.current) {
+                videoRef.current.muted = newMuted;
+              }
+              if (iframeRef.current) {
+                iframeRef.current.contentWindow?.postMessage(
+                  JSON.stringify({ event: 'command', func: newMuted ? 'mute' : 'unMute' }),
+                  '*'
+                );
+              }
+            }}
+            aria-label={isMuted ? 'Unmute' : 'Mute'}
+          >
+            {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+          </Button>
         </div>
         <h3 className="font-semibold text-sm leading-tight">{video.title}</h3>
         {video.description && (
