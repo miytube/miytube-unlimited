@@ -79,11 +79,11 @@ const Videos = () => {
   ];
 
   // Newest first with pagination
-  const allVideosToShow = [...displayedRegularVideos].reverse();
+  const allVideosToShow = displayedRegularVideos;
   const totalPages = Math.ceil(allVideosToShow.length / videosPerPage);
   const startIndex = (currentPage - 1) * videosPerPage;
   const videosToShow = allVideosToShow.slice(startIndex, startIndex + videosPerPage);
-  const shortsToShow = [...displayedShortVideos].reverse().slice(0, 8);
+  const shortsToShow = displayedShortVideos.slice(0, 8);
 
   return (
     <Layout>

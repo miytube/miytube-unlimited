@@ -15,7 +15,7 @@ const FavoritedVideos = () => {
       (video.tags?.some(t => t.toLowerCase() === 'favorited' || t.toLowerCase() === 'favorite') || 
        video.category?.toLowerCase() === 'favorited')
     )
-    .reverse()
+    
     .slice(0, 20);
 
   return (

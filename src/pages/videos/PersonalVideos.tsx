@@ -14,7 +14,7 @@ const PersonalVideos = () => {
       video.category?.toLowerCase() !== 'shorts' &&
       (video.tags?.some(t => t.toLowerCase() === 'personal') || video.category?.toLowerCase() === 'personal')
     )
-    .reverse()
+    
     .slice(0, 20);
 
   return (

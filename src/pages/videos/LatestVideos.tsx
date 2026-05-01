@@ -11,7 +11,7 @@ const LatestVideos = () => {
   // Latest videos - sorted by newest first
   const latestVideos = [...uploadedVideos]
     .filter(video => video.category?.toLowerCase() !== 'shorts')
-    .reverse()
+    
     .slice(0, 20);
 
   return (

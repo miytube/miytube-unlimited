@@ -14,7 +14,7 @@ const PromotedVideos = () => {
       video.category?.toLowerCase() !== 'shorts' &&
       (video.tags?.some(t => t.toLowerCase() === 'promoted') || video.category?.toLowerCase() === 'promoted')
     )
-    .reverse()
+    
     .slice(0, 20);
 
   return (

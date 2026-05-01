@@ -14,7 +14,7 @@ const CommentedVideos = () => {
       video.category?.toLowerCase() !== 'shorts' &&
       (video.tags?.some(t => t.toLowerCase() === 'commented') || video.category?.toLowerCase() === 'commented')
     )
-    .reverse()
+    
     .slice(0, 20);
 
   return (
