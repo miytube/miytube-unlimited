@@ -87,6 +87,12 @@ export const subcategoryOptionsByCategory: Record<string, Array<{ id: string; na
     { id: 'rnb', name: 'R&B' },
   ],
   'gaming': [
+    { id: 'arcade-games', name: 'Arcade Games' },
+    { id: 'casino-slots', name: 'Casino Slots' },
+    { id: 'dominos', name: 'Dominoes & Domino Fails' },
+    { id: 'lottery', name: 'Lottery & Prize & Raffle' },
+    { id: 'xbox-playstation', name: 'Xbox & PlayStation' },
+    { id: 'gaming-cards', name: 'Gaming Cards' },
     { id: 'fps', name: 'FPS Games' },
     { id: 'rpg', name: 'RPG Games' },
     { id: 'strategy', name: 'Strategy Games' },
