@@ -696,14 +696,15 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       });
       
       if (duplicateResult.isDuplicate) {
+        const duplicateMessage = duplicateResult.reason === 'location' 
+          ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+          : "This video has already been uploaded.";
         toast({
           title: "Duplicate Video Detected",
-          description: duplicateResult.reason === 'location' 
-            ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
-            : "This video has already been uploaded.",
+          description: duplicateMessage,
           variant: "destructive",
         });
-        return;
+        throw new Error(duplicateMessage);
       }
       
       setUploadedVideos(prev => [newVideo, ...prev]);
@@ -771,14 +772,15 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       });
       
       if (duplicateResult.isDuplicate) {
+        const duplicateMessage = duplicateResult.reason === 'location' 
+          ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+          : "This video has already been uploaded.";
         toast({
           title: "Duplicate Video Detected",
-          description: duplicateResult.reason === 'location' 
-            ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
-            : "This video has already been uploaded.",
+          description: duplicateMessage,
           variant: "destructive",
         });
-        return;
+        throw new Error(duplicateMessage);
       }
       
       setUploadedVideos(prev => [newVideo, ...prev]);
