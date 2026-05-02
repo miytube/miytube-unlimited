@@ -122,6 +122,7 @@ export const UploadedAudioGrid: React.FC = () => {
           );
         })}
       </div>
+      )}
 
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-6">
