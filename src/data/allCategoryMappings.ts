@@ -44,7 +44,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'game-toys': { title: 'Game Toys (Rockets, Missiles)', description: 'Gaming toys and RC toys', icon: Rocket, parent: { route: '/gaming', name: 'Gaming' } },
   'arcade-games': { title: 'Gaming (Arcade, Games)', description: 'Arcade and retro gaming', icon: Gamepad2, parent: { route: '/gaming', name: 'Gaming' } },
   'casino-slots': { title: 'Gaming (Casino Slots)', description: 'Casino slot machine games', icon: Dice1, parent: { route: '/gaming', name: 'Gaming' } },
-  'dominos': { title: 'Gaming (Dominos, Dominos Falls)', description: 'Domino games and setups', icon: Dice1, parent: { route: '/gaming', name: 'Gaming' } },
+  'dominos': { title: 'Gaming (Dominoes, Dominoes Falls)', description: 'Domino games and setups', icon: Dice1, parent: { route: '/gaming', name: 'Gaming' } },
   'lottery': { title: 'Gaming (Lottery, Prize, Raffle)', description: 'Lottery and prize games', icon: Ticket, parent: { route: '/gaming', name: 'Gaming' } },
   'xbox-playstation': { title: 'Gaming (Xbox, PlayStation 5)', description: 'Console gaming on Xbox and PlayStation', icon: Gamepad2, parent: { route: '/gaming', name: 'Gaming' } },
   'gaming-cards': { title: 'Gaming Cards', description: 'Card games and trading cards', icon: CreditCard, parent: { route: '/gaming', name: 'Gaming' } },
