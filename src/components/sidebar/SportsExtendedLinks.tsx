@@ -195,20 +195,20 @@ export const SportsExtendedLinks: React.FC = () => {
       label: 'Other Sports', 
       path: '/sports/other',
       subItems: [
-        { id: 'sports-fishing', label: 'Fishing', path: '/sports/fishing' },
-        { id: 'sports-cycling', label: 'Road & Mountain Biking', path: '/sports/cycling' },
-        { id: 'sports-horses', label: 'Horses & Equestrian', path: '/sports/horses' },
         { id: 'sports-arenas', label: 'Arenas & Stadiums', path: '/sports/arenas' },
+        { id: 'sports-extreme-sky-diving', label: 'Extreme-Sky Diving', path: '/sports/extreme-sky-diving' },
+        { id: 'sports-extreme-sports', label: 'Extreme-Sports', path: '/sports/extreme-sports' },
+        { id: 'sports-fans', label: 'Fan Challenges', path: '/sports/fans' },
+        { id: 'sports-fishing', label: 'Fishing', path: '/sports/fishing' },
+        { id: 'sports-horses', label: 'Horses & Equestrian', path: '/sports/horses' },
+        { id: 'sports-cycling', label: 'Road & Mountain Biking', path: '/sports/cycling' },
+        { id: 'sports-sky-diving', label: 'Sky Diving', path: '/sports/sky-diving' },
         { id: 'sports-comedy', label: 'Sports Comedy & Bloopers', path: '/sports/comedy' },
         { id: 'sports-interviews', label: 'Sports Interviews', path: '/sports/interviews' },
-        { id: 'sports-weightlifting', label: 'Weightlifting Olympics', path: '/sports/weightlifting' },
         { id: 'sports-news', label: 'Sports News & Podcasts', path: '/sports/news' },
         { id: 'sports-personalities', label: 'Sports Personalities', path: '/sports/personalities' },
-        { id: 'sports-fans', label: 'Fan Challenges', path: '/sports/fans' },
         { id: 'sports-street-fighting', label: 'Street Fighting', path: '/sports/street-fighting' },
-        { id: 'sports-sky-diving', label: 'Sky Diving', path: '/sports/sky-diving' },
-        { id: 'sports-extreme-sky-diving', label: 'Extreme-Sky Diving', path: '/sports/extreme-sky-diving' },
-        { id: 'sports-extreme-sports', label: 'Extreme-Sports', path: '/sports/extreme-sports' }
+        { id: 'sports-weightlifting', label: 'Weightlifting Olympics', path: '/sports/weightlifting' }
       ]
     },
   ];
