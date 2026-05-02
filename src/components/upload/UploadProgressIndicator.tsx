@@ -67,8 +67,10 @@ export const UploadProgressIndicator: React.FC = () => {
         return 'Processing Video...';
       case 'uploading':
         return 'Uploading to Cloud...';
+      case 'publishing':
+        return 'Publishing to Shorts...';
       case 'complete':
-        return 'Cloud Backup Complete!';
+        return 'Video Published!';
       case 'failed':
         return 'Upload Failed';
       default:
@@ -127,10 +129,16 @@ export const UploadProgressIndicator: React.FC = () => {
           </>
         )}
 
+        {uploadProgress.status === 'publishing' && (
+          <p className="text-xs text-primary font-medium">
+            Saving the video record now. Please keep this page open until the final published message appears.
+          </p>
+        )}
+
         {uploadProgress.status === 'complete' && (
           <div className="flex items-center gap-2 text-sm text-green-600">
             <Cloud className="h-4 w-4" />
-            <span>Video saved to cloud storage</span>
+            <span>Video saved and published to the feed</span>
           </div>
         )}
 
