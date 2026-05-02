@@ -27,6 +27,20 @@ export const AnalyticsDashboard = () => {
   });
   const [loading, setLoading] = useState(true);
 
+  const [excludeMe, setExcludeMe] = useState<boolean>(
+    typeof window !== 'undefined' &&
+      localStorage.getItem('analytics_exclude_me') === 'true'
+  );
+
+  const toggleExcludeMe = (checked: boolean) => {
+    setExcludeMe(checked);
+    if (checked) {
+      localStorage.setItem('analytics_exclude_me', 'true');
+    } else {
+      localStorage.removeItem('analytics_exclude_me');
+    }
+  };
+
   const fetchAnalytics = async () => {
     try {
       // Get active users count
