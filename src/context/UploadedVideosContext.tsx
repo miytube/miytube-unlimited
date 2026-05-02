@@ -815,11 +815,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       throw new Error(`Failed to upload video: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
     
-    // Generate and upload thumbnail to cloud storage (after video is uploaded)
-    const thumbnail = await generateThumbnail(file);
-    
-    const videoId = `upload-${Date.now()}`;
-    const newVideo: UploadedVideo = {
+    try {
+      // Generate and upload thumbnail to cloud storage (after video is uploaded)
+      const thumbnail = await generateThumbnail(file);
+      
+      const videoId = `upload-${Date.now()}`;
+      const newVideo: UploadedVideo = {
       id: videoId,
       file: null,
       fileDataUrl: '', // Never store base64
@@ -836,8 +837,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
     };
     
-    // Save to IndexedDB (metadata only, no base64)
-    try {
+      // Save to IndexedDB (metadata only, no base64)
        await saveVideoToDB({
          id: videoId,
          fileDataUrl: '', // Never store base64
@@ -856,16 +856,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         tags,
       });
       console.log("Saved video metadata to IndexedDB:", videoId);
-    } catch (error) {
-      console.error("Error saving video to IndexedDB:", error);
-      if (cloudUrl) {
-        await deleteVideoFromCloud(cloudUrl).catch(() => {});
-      }
-      throw new Error("Failed to save video metadata.");
-    }
-    
-    // Save to Supabase cloud backup
-    const duplicateResult = await saveVideoToSupabase({
+      // Save to Supabase cloud backup
+      const duplicateResult = await saveVideoToSupabase({
       localId: videoId,
       title: newVideo.title,
       description: newVideo.description,
@@ -881,25 +873,30 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       fileType: file.type,
     });
     
-    if (duplicateResult.isDuplicate) {
-      const duplicateMessage = duplicateResult.reason === 'location' 
-        ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
-        : "This video has already been uploaded.";
-      toast({
-        title: "Duplicate Video Detected",
-        description: duplicateMessage,
-        variant: "destructive",
-      });
-      // Clean up the already uploaded cloud video
-      if (cloudUrl) {
-        await deleteVideoFromCloud(cloudUrl).catch(() => {});
+      if (duplicateResult.isDuplicate) {
+        const duplicateMessage = duplicateResult.reason === 'location' 
+          ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+          : "This video has already been uploaded.";
+        toast({
+          title: "Duplicate Video Detected",
+          description: duplicateMessage,
+          variant: "destructive",
+        });
+        // Clean up the already uploaded cloud video
+        if (cloudUrl) {
+          await deleteVideoFromCloud(cloudUrl).catch(() => {});
+        }
+        throw new Error(duplicateMessage);
       }
-      throw new Error(duplicateMessage);
+      
+      console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");
+      setUploadedVideos(prev => [newVideo, ...prev]);
+      completeUpload();
+    } catch (error) {
+      console.error("Video publish error:", error);
+      failUpload(error instanceof Error ? error.message : 'Unknown error');
+      throw error;
     }
-    
-    console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");
-    setUploadedVideos(prev => [newVideo, ...prev]);
-    completeUpload();
   };
 
   const updateUploadedVideo = async (
