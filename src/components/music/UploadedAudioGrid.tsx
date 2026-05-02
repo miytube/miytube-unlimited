@@ -28,8 +28,9 @@ export const UploadedAudioGrid: React.FC = () => {
       const { data, error } = await supabase
         .from('music_videos')
         .select('id, title, video_url, category, views, tags')
+        .contains('tags', ['audio-only'])
         .order('created_at', { ascending: false })
-        .limit(200);
+        .limit(500);
 
       if (error) {
         toast({ title: 'Could not load audio', description: error.message, variant: 'destructive' });
