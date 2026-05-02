@@ -804,7 +804,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     try {
       cloudUrl = await uploadVideoToCloud(file);
       console.log("Uploaded video to cloud storage:", cloudUrl);
-      completeUpload();
+      setUploadStatus('publishing');
     } catch (error) {
       console.error("Cloud upload error:", error);
       failUpload(error instanceof Error ? error.message : 'Unknown error');
@@ -895,6 +895,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     
     console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");
     setUploadedVideos(prev => [newVideo, ...prev]);
+    completeUpload();
   };
 
   const updateUploadedVideo = async (
