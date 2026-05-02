@@ -156,24 +156,15 @@ const Audio = () => {
 
     setUploading(true);
     try {
-      const ext = file.name.split('.').pop() || 'mp3';
-      const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-
-      // Upload to videos bucket (existing)
-      const { error: upErr } = await supabase.storage.from('videos').upload(path, file, {
-        contentType: file.type,
-        upsert: false,
-      });
-      if (upErr) throw upErr;
-
-      const { data: urlData } = supabase.storage.from('videos').getPublicUrl(path);
+      // Upload to AWS S3 via signed URL (same path as Shorts/Music uploaders)
+      const publicUrl = await uploadVideoToCloud(file);
 
       const { error: insErr } = await supabase.from('music_videos').insert({
         user_id: user.id,
         title: title.trim(),
         description: description.trim() || null,
         category,
-        video_url: urlData.publicUrl,
+        video_url: publicUrl,
         tags: ['audio-only'],
       });
       if (insErr) throw insErr;
