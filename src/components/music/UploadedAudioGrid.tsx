@@ -28,8 +28,9 @@ export const UploadedAudioGrid: React.FC = () => {
       const { data, error } = await supabase
         .from('music_videos')
         .select('id, title, video_url, category, views, tags')
+        .contains('tags', ['audio-only'])
         .order('created_at', { ascending: false })
-        .limit(200);
+        .limit(500);
 
       if (error) {
         toast({ title: 'Could not load audio', description: error.message, variant: 'destructive' });
@@ -78,13 +79,18 @@ export const UploadedAudioGrid: React.FC = () => {
     );
   }
 
-  if (tracks.length === 0) return null;
+  // Always render the section, even when empty, so the area is visible on the Music page
 
   return (
     <div className="mb-8">
       <h2 className="text-2xl font-semibold mb-6">Audio</h2>
       <audio ref={audioRef} onEnded={() => setPlayingId(null)} />
 
+      {tracks.length === 0 ? (
+        <div className="text-center py-8 bg-card rounded-lg text-muted-foreground">
+          No audio uploaded yet. Upload audio from the Audio page to see it here.
+        </div>
+      ) : (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {paginatedTracks.map((track) => {
           const isPlaying = playingId === track.id;
@@ -116,6 +122,7 @@ export const UploadedAudioGrid: React.FC = () => {
           );
         })}
       </div>
+      )}
 
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-6">
