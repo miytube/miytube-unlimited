@@ -8,11 +8,14 @@ const collator = new Intl.Collator(undefined, {
 });
 
 type WithName = { name?: string; label?: string; title?: string };
+type Sortable = string | WithName;
 
-const getKey = (item: WithName): string =>
-  String(item.name ?? item.label ?? item.title ?? '');
+const getKey = (item: Sortable): string => {
+  if (typeof item === 'string') return item;
+  return String(item.name ?? item.label ?? item.title ?? '');
+};
 
-export function sortByName<T extends WithName>(items: T[]): T[] {
+export function sortByName<T extends Sortable>(items: T[]): T[] {
   return [...items].sort((a, b) => collator.compare(getKey(a), getKey(b)));
 }
 
@@ -20,7 +23,7 @@ export function sortByName<T extends WithName>(items: T[]): T[] {
  * Sort alphabetically but keep certain items pinned at the top
  * (matched by name/label, case-insensitive).
  */
-export function sortByNamePinned<T extends WithName>(
+export function sortByNamePinned<T extends Sortable>(
   items: T[],
   pinned: string[] = []
 ): T[] {
