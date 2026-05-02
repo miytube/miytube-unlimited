@@ -109,9 +109,16 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
   );
 };
 
+const sortByLabel = <T extends { label: string }>(arr: T[]): T[] =>
+  [...arr].sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' }));
+
 export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, links }) => {
   const location = useLocation();
   const storageKey = `sidebar-category-${title.toLowerCase().replace(/\s+/g, '-')}`;
+  const sortedLinks = sortByLabel(links).map(link => ({
+    ...link,
+    subItems: link.subItems ? sortByLabel(link.subItems) : link.subItems,
+  }));
   const [isOpen, setIsOpen] = useState(() => {
     const saved = localStorage.getItem(storageKey);
     return saved !== null ? saved === 'true' : true;
@@ -141,7 +148,7 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
         }`}
       >
         <div className="space-y-1">
-          {links.map(link => (
+          {sortedLinks.map(link => (
             <CollapsibleNavLink key={link.id} item={link} location={location} />
           ))}
         </div>
