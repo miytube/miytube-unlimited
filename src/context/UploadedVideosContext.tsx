@@ -382,15 +382,16 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
   if (updates.thumbnail !== undefined) supabaseUpdates.thumbnail_url = updates.thumbnail;
   
   if (Object.keys(supabaseUpdates).length > 0) {
-    const { error } = await supabase
-      .from('uploaded_videos')
-      .update(supabaseUpdates)
-      .eq('id', id);
-    
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    const query = supabase.from('uploaded_videos').update(supabaseUpdates);
+    const { error, data } = isUUID
+      ? await query.eq('id', id).select('id')
+      : await query.eq('local_id', id).select('id');
+
     if (error) {
       console.error('Error updating video in Supabase:', error);
     } else {
-      console.log('Updated video in Supabase:', id);
+      console.log('Updated video in Supabase:', id, 'rows:', data?.length || 0);
     }
   }
 };
