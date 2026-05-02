@@ -86,6 +86,11 @@ export const UploadedAudioGrid: React.FC = () => {
       <h2 className="text-2xl font-semibold mb-6">Audio</h2>
       <audio ref={audioRef} onEnded={() => setPlayingId(null)} />
 
+      {tracks.length === 0 ? (
+        <div className="text-center py-8 bg-card rounded-lg text-muted-foreground">
+          No audio uploaded yet. Upload audio from the Audio page to see it here.
+        </div>
+      ) : (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {paginatedTracks.map((track) => {
           const isPlaying = playingId === track.id;
