@@ -696,14 +696,15 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       });
       
       if (duplicateResult.isDuplicate) {
+        const duplicateMessage = duplicateResult.reason === 'location' 
+          ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+          : "This video has already been uploaded.";
         toast({
           title: "Duplicate Video Detected",
-          description: duplicateResult.reason === 'location' 
-            ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
-            : "This video has already been uploaded.",
+          description: duplicateMessage,
           variant: "destructive",
         });
-        return;
+        throw new Error(duplicateMessage);
       }
       
       setUploadedVideos(prev => [newVideo, ...prev]);
@@ -771,14 +772,15 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       });
       
       if (duplicateResult.isDuplicate) {
+        const duplicateMessage = duplicateResult.reason === 'location' 
+          ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+          : "This video has already been uploaded.";
         toast({
           title: "Duplicate Video Detected",
-          description: duplicateResult.reason === 'location' 
-            ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
-            : "This video has already been uploaded.",
+          description: duplicateMessage,
           variant: "destructive",
         });
-        return;
+        throw new Error(duplicateMessage);
       }
       
       setUploadedVideos(prev => [newVideo, ...prev]);
@@ -876,18 +878,19 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     });
     
     if (duplicateResult.isDuplicate) {
+      const duplicateMessage = duplicateResult.reason === 'location' 
+        ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
+        : "This video has already been uploaded.";
       toast({
         title: "Duplicate Video Detected",
-        description: duplicateResult.reason === 'location' 
-          ? `A video with the title "${newVideo.title}" has already been uploaded from your location.`
-          : "This video has already been uploaded.",
+        description: duplicateMessage,
         variant: "destructive",
       });
       // Clean up the already uploaded cloud video
       if (cloudUrl) {
         await deleteVideoFromCloud(cloudUrl).catch(() => {});
       }
-      return;
+      throw new Error(duplicateMessage);
     }
     
     console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");

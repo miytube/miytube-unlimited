@@ -18,7 +18,7 @@ interface FileUploaderProps {
   acceptedTypes: string;
   supportedFormats: string[];
   maxSize?: string;
-  onUpload?: (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => void;
+  onUpload?: (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => void | Promise<void>;
   onUrlImport?: (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[], isYouTube?: boolean, youtubeId?: string) => void;
   id?: string;
   uploadDestination?: string;
@@ -47,6 +47,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
   const [videoQuality, setVideoQuality] = useState<VideoQuality>('original');
   const [isTranscoding, setIsTranscoding] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
   const { toast } = useToast();
   
   const {
@@ -233,6 +234,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     // Handle file upload
     if (uploadedFiles.length > 0 && onUpload) {
       let filesToUpload = uploadedFiles;
+      setIsPublishing(true);
 
       // Transcode video files if a non-original quality was chosen
       if (videoQuality !== 'original') {
@@ -281,14 +283,18 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         quality: videoQuality,
       });
 
-      onUpload(
-        filesToUpload,
-        videoTitle,
-        videoDescription,
-        selectedCategory,
-        selectedSubcategory,
-        tags
-      );
+      try {
+        await onUpload(
+          filesToUpload,
+          videoTitle,
+          videoDescription,
+          selectedCategory,
+          selectedSubcategory,
+          tags
+        );
+      } finally {
+        setIsPublishing(false);
+      }
     }
   };
 
@@ -349,7 +355,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         uploadedFiles={hasContent ? (uploadedFiles.length > 0 ? uploadedFiles : [new File([], 'url-import')]) : []}
         uploadError={uploadError}
         uploadDestination={uploadDestination}
-        uploading={uploading || isTranscoding}
+        uploading={uploading || isTranscoding || isPublishing}
         videoTitle={videoTitle}
         setVideoTitle={setVideoTitle}
         videoDescription={videoDescription}

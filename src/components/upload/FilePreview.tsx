@@ -62,7 +62,7 @@ export const FilePreview: React.FC<FilePreviewProps> = ({
       
       {uploadDestination && (
         <div className="text-xs text-muted-foreground mb-4 mt-2 bg-secondary/30 p-2 rounded">
-          <p>In a real application, files would appear in: <span className="font-medium">{uploadDestination}</span></p>
+          <p>Publish destination: <span className="font-medium">{uploadDestination}</span></p>
         </div>
       )}
     </>

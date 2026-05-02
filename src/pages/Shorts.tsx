@@ -96,14 +96,23 @@ const Shorts = () => {
   const startIndex = (currentPage - 1) * shortsPerPage;
   const shortsToDisplay = allShorts.slice(startIndex, startIndex + shortsPerPage);
 
-  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
-    files.forEach(file => {
-      addUploadedVideo(file, title || file.name, description || '', 'shorts', subcategory, tags);
-    });
-    toast({
-      title: "Short video uploaded",
-      description: `${files.length} ${files.length === 1 ? 'video' : 'videos'} uploaded successfully.`,
-    });
+  const handleUpload = async (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
+    try {
+      await Promise.all(
+        files.map(file => addUploadedVideo(file, title || file.name, description || '', 'shorts', subcategory, tags))
+      );
+      toast({
+        title: "Short video uploaded",
+        description: `${files.length} ${files.length === 1 ? 'video has' : 'videos have'} been published to Shorts.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Short video upload failed",
+        description: error instanceof Error ? error.message : 'The video was not published. Please try again.',
+        variant: "destructive",
+      });
+      throw error;
+    }
   };
 
   return (
