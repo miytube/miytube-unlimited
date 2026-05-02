@@ -183,8 +183,8 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
         console.log('File selected successfully');
 
         toast({
-          title: "⚠️ Not uploaded yet — file selected",
-          description: `${files.length} ${files.length === 1 ? 'file is' : 'files are'} staged. You MUST click the blue "Upload Video" button below to actually publish.`,
+          title: "File ready to publish",
+          description: `${files.length} ${files.length === 1 ? 'file is' : 'files are'} ready. Click the blue "Upload Video" button below to publish.`,
           duration: 8000,
         });
 

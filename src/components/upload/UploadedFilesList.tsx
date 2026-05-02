@@ -39,19 +39,19 @@ export const UploadedFilesList: React.FC<UploadedFilesListProps> = ({
                   <Play size={12} /> Play
                 </button>
               )}
-              <div className="text-xs bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded font-semibold">
-                NOT UPLOADED YET
+              <div className="text-xs bg-primary/10 text-primary px-2 py-1 rounded font-semibold">
+                READY TO PUBLISH
               </div>
             </div>
           </div>
         ))}
       </div>
-      <div className="mt-3 bg-destructive/10 border-2 border-destructive/40 p-3 rounded-md">
-        <p className="text-sm font-bold text-destructive mb-1">
-          ⚠️ Your file is NOT uploaded yet
+      <div className="mt-3 bg-primary/10 border-2 border-primary/30 p-3 rounded-md">
+        <p className="text-sm font-bold text-primary mb-1">
+          Your file is ready to publish
         </p>
         <p className="text-sm text-foreground">
-          Scroll down and click the blue <span className="font-bold">"Upload Video"</span> button to actually publish it. If you leave this page without clicking it, your video will be lost.
+          Click the blue <span className="font-bold">"Upload Video"</span> button to publish it.
         </p>
       </div>
     </div>

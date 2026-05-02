@@ -306,6 +306,15 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           selectedSubcategory,
           tags
         );
+        clearUploadedFiles();
+        setVideoTitle('');
+        setVideoDescription('');
+        setSelectedSubcategory(defaultSubcategory || '');
+        setTags([]);
+        setVideoQuality('original');
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       } finally {
         setIsPublishing(false);
       }
