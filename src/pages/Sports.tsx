@@ -198,6 +198,25 @@ const Sports = () => {
             ))}
           </div>
         </div>
+
+        {/* Other Sports Grid */}
+        <div className="mb-8">
+          <h2 className="text-xl font-medium mb-4">Other Sports</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {otherSportsCategories.map((category) => (
+              <Link
+                key={category.id}
+                to={`/${category.id}`}
+                className="bg-card p-3 rounded-lg border border-border hover:border-primary hover:bg-accent/50 transition-all flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                  <Trophy size={20} />
+                </div>
+                <span className="font-medium text-sm">{category.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
     </Layout>
   );
