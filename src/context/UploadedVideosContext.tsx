@@ -412,7 +412,7 @@ const deleteVideoFromSupabase = async (id: string): Promise<void> => {
 export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ children }) => {
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const { startUpload, completeUpload, failUpload } = useUploadProgress();
+  const { startUpload, setUploadStatus, completeUpload, failUpload } = useUploadProgress();
 
   const mergeAndSort = (localVideos: StoredVideo[], cloudVideos: UploadedVideo[]): UploadedVideo[] => {
     const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
