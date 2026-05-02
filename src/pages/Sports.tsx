@@ -143,6 +143,25 @@ const Sports = () => {
     { id: 'sports-high-school-baseball', name: 'Sports high school (baseball)' },
   ];
 
+  // Other Sports (alphabetized)
+  const otherSportsCategories = [
+    { id: 'sports-all-other', name: 'All other sports' },
+    { id: 'sports-arenas-stadiums', name: 'Arenas & stadiums' },
+    { id: 'sports-extreme-sky-diving', name: 'Extreme - sky diving' },
+    { id: 'sports-extreme', name: 'Extreme sports' },
+    { id: 'sports-fan-challenges', name: 'Fan challenges' },
+    { id: 'sports-fishing-other', name: 'Fishing' },
+    { id: 'sports-horse-equestrian', name: 'Horse & equestrian' },
+    { id: 'sports-road-mountain-biking', name: 'Road & mountain biking' },
+    { id: 'sports-sky-diving', name: 'Sky diving' },
+    { id: 'sports-comedy-bloopers', name: 'Sports comedy & bloopers' },
+    { id: 'sports-interviews-other', name: 'Sports interviews' },
+    { id: 'sports-news-podcasts-other', name: 'Sports news & podcasts' },
+    { id: 'sports-personalities-other', name: 'Sports personalities' },
+    { id: 'sports-street-fighting', name: 'Street fighting' },
+    { id: 'sports-weightlifting-olympics', name: 'Weightlifting Olympics' },
+  ];
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
