@@ -26,7 +26,8 @@ export const BusinessFinanceLinks: React.FC = () => {
       path: '/stocks',
       subItems: [
         { id: 'stocks-commodity', label: 'Commodity Trading', path: '/stocks/commodity' },
-        { id: 'stocks-cash', label: 'Money & Cash Currency', path: '/stocks/cash' }
+        { id: 'stocks-cash', label: 'Money & Cash Currency', path: '/stocks/cash' },
+        { id: 'stocks-corporate', label: 'Corporate Stocks', path: '/stocks/corporate' }
       ]
     },
     { 
