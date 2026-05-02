@@ -56,15 +56,20 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
     return intersection / union;
   };
 
-  // Filter and sort options based on input with fuzzy matching
-  const filteredOptions = options
-    .map(opt => ({
-      ...opt,
-      similarity: getSimilarity(opt.name, inputValue),
-      includes: opt.name.toLowerCase().includes(inputValue.toLowerCase())
-    }))
-    .filter(opt => opt.includes || (inputValue.length > 2 && opt.similarity > 0.5))
-    .sort((a, b) => b.similarity - a.similarity);
+  // Filter and sort options based on input with fuzzy matching.
+  // When the input is empty, fall back to alphabetical order.
+  const filteredOptions = inputValue.trim() === ''
+    ? [...options].sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+      )
+    : options
+        .map(opt => ({
+          ...opt,
+          similarity: getSimilarity(opt.name, inputValue),
+          includes: opt.name.toLowerCase().includes(inputValue.toLowerCase())
+        }))
+        .filter(opt => opt.includes || (inputValue.length > 2 && opt.similarity > 0.5))
+        .sort((a, b) => b.similarity - a.similarity);
 
   // Check if input matches any existing option exactly
   const exactMatch = options.some(
