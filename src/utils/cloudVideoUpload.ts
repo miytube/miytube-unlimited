@@ -50,7 +50,11 @@ export const uploadVideoToCloud = async (
         resolve(signed.public_url);
       } else {
         console.error("S3 upload failed:", xhr.status, xhr.responseText);
-        reject(new Error(`S3 upload failed with status ${xhr.status}. Check bucket CORS configuration.`));
+        const responseText = xhr.responseText || '';
+        const permissionHint = responseText.includes('s3:PutObject') || responseText.includes('AccessDenied')
+          ? 'The AWS S3 connector does not have write permission for this bucket. Reconnect it with write access or allow s3:PutObject on the bucket.'
+          : 'Check the AWS S3 bucket CORS and connector permissions.';
+        reject(new Error(`S3 upload failed with status ${xhr.status}. ${permissionHint}`));
       }
     };
 
@@ -70,7 +74,11 @@ export const uploadThumbnailToS3 = async (blob: Blob, fileName = "thumb.jpg"): P
     body: blob,
   });
   if (!resp.ok) {
-    throw new Error(`S3 thumbnail upload failed [${resp.status}]. Check bucket CORS.`);
+    const responseText = await resp.text().catch(() => '');
+    const permissionHint = responseText.includes('s3:PutObject') || responseText.includes('AccessDenied')
+      ? 'The AWS S3 connector does not have write permission for this bucket. Reconnect it with write access or allow s3:PutObject on the bucket.'
+      : 'Check bucket CORS and connector permissions.';
+    throw new Error(`S3 thumbnail upload failed [${resp.status}]. ${permissionHint}`);
   }
   return signed.public_url;
 };
