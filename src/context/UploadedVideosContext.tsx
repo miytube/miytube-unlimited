@@ -248,7 +248,7 @@ const saveVideoToSupabase = async (video: {
   
   // Don't pass 'id' - let the database generate UUID automatically
   // Store local_id to maintain URL compatibility
-  const { error } = await supabase.from('uploaded_videos').insert({
+  const { data: insertedVideo, error } = await supabase.from('uploaded_videos').insert({
     local_id: video.localId, // Store the local ID for URL lookups
     user_id: userId,
     title: video.title,
@@ -266,14 +266,18 @@ const saveVideoToSupabase = async (video: {
     file_size: video.fileSize,
     file_type: video.fileType,
     uploader_ip: uploaderIp,
-  });
+  }).select('id, local_id').single();
   
   if (error) {
     console.error('Error saving video to Supabase:', error);
     throw new Error(`Upload saved to storage, but failed to publish to the video feed: ${error.message}`);
   }
 
-  console.log('Saved video to Supabase cloud backup with local_id:', video.localId, 'from IP:', uploaderIp);
+  if (!insertedVideo?.id) {
+    throw new Error('Upload saved to storage, but the video feed did not confirm the publish. Please try again.');
+  }
+
+  console.log('Saved video to Supabase cloud backup with local_id:', insertedVideo.local_id, 'from IP:', uploaderIp);
   return { isDuplicate: false };
 };
 
