@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { sortByName } from '@/lib/sortByName';
 
 const DOC_CATEGORIES = ['All', 'Business', 'Education', 'Legal', 'Financial', 'Medical', 'Research', 'Templates', 'Guides', 'Reports', 'Presentations', 'Other'];
 
@@ -178,7 +179,7 @@ const Documents = () => {
         </div>
 
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {DOC_CATEGORIES.map((cat) => (
+          {sortByName(DOC_CATEGORIES).map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCat(cat)}

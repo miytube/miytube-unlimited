@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Award, Music, Film, Tv } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { sortByName } from '@/lib/sortByName';
 
 const subcategories = [
   {
@@ -37,7 +38,7 @@ const AwardsShows = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link key={sub.path} to={sub.path}>
               <Card className="hover:bg-accent/50 transition-colors cursor-pointer h-full">
                 <CardContent className="p-6 flex flex-col items-center text-center gap-4">

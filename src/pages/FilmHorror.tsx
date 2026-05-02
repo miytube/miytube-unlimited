@@ -8,6 +8,7 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { VideoGridSkeleton } from '@/components/skeletons';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { sortByName } from '@/lib/sortByName';
 
 const horrorSubcategories = [
   { path: '/film/horror-terror', label: 'Terror', icon: Skull, description: 'Intense terror and psychological horror films' },
@@ -42,7 +43,7 @@ const FilmHorror: React.FC = () => {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Horror Categories</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {horrorSubcategories.map((subcategory) => {
+            {sortByName(horrorSubcategories).map((subcategory) => {
               const IconComponent = subcategory.icon;
               return (
                 <Link key={subcategory.path} to={subcategory.path}>

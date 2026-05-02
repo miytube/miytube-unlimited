@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import miyTubeLogo from '@/assets/miytube-logo.png';
+import { sortByName } from '@/lib/sortByName';
 
 const AUDIO_CATEGORIES = [
   'All',
@@ -261,7 +262,7 @@ const Audio = () => {
         </div>
 
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {AUDIO_CATEGORIES.map((cat) => (
+          {sortByName(AUDIO_CATEGORIES).map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}

@@ -4,6 +4,7 @@ import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { Trophy, Upload } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { sortByName } from '@/lib/sortByName';
 
 const Sports = () => {
   const sportsCategories = [
@@ -184,7 +185,7 @@ const Sports = () => {
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Sports Categories</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {sportsCategories.map((category) => (
+            {sortByName(sportsCategories).map((category) => (
               <Link 
                 key={category.id} 
                 to={`/${category.id}`}
@@ -203,7 +204,7 @@ const Sports = () => {
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Other Sports</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {otherSportsCategories.map((category) => (
+            {sortByName(otherSportsCategories).map((category) => (
               <Link
                 key={category.id}
                 to={`/${category.id}`}

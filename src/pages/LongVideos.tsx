@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useNavigate } from 'react-router-dom';
+import { sortByName } from '@/lib/sortByName';
 
 const LongVideos = () => {
   const { toast } = useToast();
@@ -112,7 +113,7 @@ const LongVideos = () => {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {videoCategories.map((category, index) => (
+            {sortByName(videoCategories).map((category, index) => (
               <div key={index} className="bg-card p-4 rounded-lg shadow-sm flex items-center gap-3">
                 <span className="text-2xl">{category.icon}</span>
                 <span className="font-medium">{category.name}</span>

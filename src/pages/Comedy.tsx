@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
+import { sortByName } from '@/lib/sortByName';
 
 const Comedy = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -52,7 +53,7 @@ const Comedy = () => {
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Comedy Categories</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4">
-            {comedyCategories.map((category, index) => (
+            {sortByName(comedyCategories).map((category, index) => (
               <Link key={index} to={category.route} className="block">
                 <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                   <div className="text-center p-2">

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { ShortGridSkeleton } from '@/components/skeletons';
+import { sortByName } from '@/lib/sortByName';
 
 const Shorts = () => {
   const { toast } = useToast();
@@ -146,7 +147,7 @@ const Shorts = () => {
           </div>
           
           <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
+            {sortByName(categories).map((category) => (
               <Link 
                 key={category.id} 
                 to={`/${category.id === 'diy' ? 'how-to-style' : category.id === 'cooking' ? 'foods' : category.id}`}

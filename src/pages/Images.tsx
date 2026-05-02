@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { sortByName } from '@/lib/sortByName';
 
 const imageSamples = [
   {
@@ -140,7 +141,7 @@ const Images = () => {
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {categories.map((category) => (
+            {sortByName(categories).map((category) => (
               <div key={category} className="aspect-square rounded-lg overflow-hidden relative group bg-muted">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 text-white font-medium">{category}</div>

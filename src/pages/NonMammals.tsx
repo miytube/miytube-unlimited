@@ -6,6 +6,7 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { VideoCard } from '@/components/VideoCard';
 import { Pagination } from '@/components/Pagination';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
+import { sortByName } from '@/lib/sortByName';
 
 const NonMammals = () => {
   const { uploadedVideos, isLoading } = useUploadedVideos();
@@ -41,7 +42,7 @@ const NonMammals = () => {
           <p className="text-muted-foreground mb-6">Explore videos about fish, birds, reptiles, and other non-mammal species</p>
           
           <div className="bg-card rounded-lg border p-6 space-y-3">
-            {subcategories.map((sub) => (
+            {sortByName(subcategories).map((sub) => (
               <Link
                 key={sub.id}
                 to={sub.path}

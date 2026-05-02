@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Music, Mic, BookOpen, Volume2, Moon, Headphones, MessageSquare, GraduationCap, Gamepad2, TreePine, Laugh, Users } from 'lucide-react';
+import { sortByName } from '@/lib/sortByName';
 
 interface MusicCategoriesProps {
   categories: string[];
@@ -28,7 +29,7 @@ export const MusicCategories: React.FC<MusicCategoriesProps> = ({ categories }) 
     <div>
       <h2 className="text-2xl font-semibold mb-4">Popular Categories</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {categories.map((category) => {
+        {sortByName(categories).map((category) => {
           const config = categoryConfig[category] || { route: `/${category.toLowerCase().replace(/\s+/g, '-')}`, icon: Music };
           const IconComponent = config.icon;
           

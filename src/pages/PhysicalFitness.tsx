@@ -6,6 +6,7 @@ import { Dumbbell, Upload, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
+import { sortByName } from '@/lib/sortByName';
 
 const subcategories = [
   { name: 'Weight Lifting', route: '/physical-fitness/weight-lifting' },
@@ -59,7 +60,7 @@ const PhysicalFitness = () => {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Browse by Category</h2>
           <div className="flex flex-wrap gap-2">
-            {subcategories.map((sub) => (
+            {sortByName(subcategories).map((sub) => (
               <Link
                 key={sub.route}
                 to={sub.route}

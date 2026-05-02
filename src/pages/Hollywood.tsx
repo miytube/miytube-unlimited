@@ -3,6 +3,7 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Film, User, Newspaper, Mic } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { sortByName } from '@/lib/sortByName';
 
 const Hollywood = () => {
   const subcategories = [
@@ -42,7 +43,7 @@ const Hollywood = () => {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link
               key={sub.path}
               to={sub.path}

@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { TreePine, History, Dna, Heart, Users, Search } from 'lucide-react';
+import { sortByName } from '@/lib/sortByName';
 
 const Family = () => {
   const subcategories = [
@@ -22,7 +23,7 @@ const Family = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link
               key={sub.path}
               to={sub.path}
