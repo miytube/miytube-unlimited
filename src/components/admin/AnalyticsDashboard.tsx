@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { Users, Eye, Activity, TrendingUp, Globe, Clock } from 'lucide-react';
+import { Users, Eye, Activity, TrendingUp, Globe, Clock, ShieldOff } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { ContentEngagementSection } from './ContentEngagementSection';
 
 interface AnalyticsData {
