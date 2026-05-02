@@ -104,7 +104,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = 'You have a file selected but not uploaded yet. Leaving will discard it.';
+      e.returnValue = 'You have a file selected and ready to publish. Leaving will discard it.';
       return e.returnValue;
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
