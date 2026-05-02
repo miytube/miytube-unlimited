@@ -20,7 +20,8 @@ import { AIAutoTitleManager } from '@/components/admin/AIAutoTitleManager';
 import { ThumbnailGeneratorManager } from '@/components/admin/ThumbnailGeneratorManager';
 import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussionManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
-import { FolderTree } from 'lucide-react';
+import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
+import { FolderTree, Database } from 'lucide-react';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -285,6 +286,10 @@ const Admin = () => {
               <FolderTree className="h-4 w-4" />
               Custom Categories
             </TabsTrigger>
+            <TabsTrigger value="video-audit" className="flex items-center gap-2">
+              <Database className="h-4 w-4" />
+              Video Audit
+            </TabsTrigger>
           </TabsList>
           </div>
 
@@ -407,6 +412,9 @@ const Admin = () => {
           </TabsContent>
           <TabsContent value="custom-categories" className="mt-6">
             <CustomCategoriesManager />
+          </TabsContent>
+          <TabsContent value="video-audit" className="mt-6">
+            <VideoAuditManager />
           </TabsContent>
         </Tabs>
       </div>
