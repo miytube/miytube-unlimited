@@ -56,6 +56,8 @@ const Audio = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const tracksPerPage = 25;
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Upload state
