@@ -20,10 +20,11 @@ export const UploadActions: React.FC<UploadActionsProps> = ({
   
   const getButtonContent = () => {
     if (cloudUploadInProgress) {
+      const label = uploadProgress?.status === 'publishing' ? 'Publishing Video...' : 'Cloud Upload in Progress...';
       return (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
-          <span>Cloud Backup in Progress...</span>
+          <span>{label}</span>
         </>
       );
     }
