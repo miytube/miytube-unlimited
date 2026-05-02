@@ -143,6 +143,25 @@ const Sports = () => {
     { id: 'sports-high-school-baseball', name: 'Sports high school (baseball)' },
   ];
 
+  // Other Sports (alphabetized)
+  const otherSportsCategories = [
+    { id: 'sports-all-other', name: 'All other sports' },
+    { id: 'sports-arenas-stadiums', name: 'Arenas & stadiums' },
+    { id: 'sports-extreme-sky-diving', name: 'Extreme - sky diving' },
+    { id: 'sports-extreme', name: 'Extreme sports' },
+    { id: 'sports-fan-challenges', name: 'Fan challenges' },
+    { id: 'sports-fishing-other', name: 'Fishing' },
+    { id: 'sports-horse-equestrian', name: 'Horse & equestrian' },
+    { id: 'sports-road-mountain-biking', name: 'Road & mountain biking' },
+    { id: 'sports-sky-diving', name: 'Sky diving' },
+    { id: 'sports-comedy-bloopers', name: 'Sports comedy & bloopers' },
+    { id: 'sports-interviews-other', name: 'Sports interviews' },
+    { id: 'sports-news-podcasts-other', name: 'Sports news & podcasts' },
+    { id: 'sports-personalities-other', name: 'Sports personalities' },
+    { id: 'sports-street-fighting', name: 'Street fighting' },
+    { id: 'sports-weightlifting-olympics', name: 'Weightlifting Olympics' },
+  ];
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
@@ -168,6 +187,25 @@ const Sports = () => {
             {sportsCategories.map((category) => (
               <Link 
                 key={category.id} 
+                to={`/${category.id}`}
+                className="bg-card p-3 rounded-lg border border-border hover:border-primary hover:bg-accent/50 transition-all flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                  <Trophy size={20} />
+                </div>
+                <span className="font-medium text-sm">{category.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Other Sports Grid */}
+        <div className="mb-8">
+          <h2 className="text-xl font-medium mb-4">Other Sports</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {otherSportsCategories.map((category) => (
+              <Link
+                key={category.id}
                 to={`/${category.id}`}
                 className="bg-card p-3 rounded-lg border border-border hover:border-primary hover:bg-accent/50 transition-all flex items-center gap-3"
               >
