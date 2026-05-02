@@ -108,6 +108,12 @@ const Audio = () => {
     return matchesCat && matchesSearch;
   });
 
+  const totalPages = Math.ceil(filteredTracks.length / tracksPerPage);
+  const startIndex = (currentPage - 1) * tracksPerPage;
+  const paginatedTracks = filteredTracks.slice(startIndex, startIndex + tracksPerPage);
+
+  useEffect(() => { setCurrentPage(1); }, [activeCategory, searchTerm]);
+
   const togglePlay = (track: AudioTrack) => {
     if (playingId === track.id) {
       audioRef.current?.pause();
