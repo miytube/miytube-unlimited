@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Trophy, Heart, Film } from 'lucide-react';
+import { sortByName } from '@/lib/sortByName';
 
 const RealityTV = () => {
   const subcategories = [
@@ -18,7 +19,7 @@ const RealityTV = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subcategories.map((subcategory) => (
+          {sortByName(subcategories).map((subcategory) => (
             <Link
               key={subcategory.path}
               to={subcategory.path}

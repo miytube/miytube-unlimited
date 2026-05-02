@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { VideoCard } from '@/components/VideoCard';
+import { sortByName } from '@/lib/sortByName';
 import {
   Collapsible,
   CollapsibleContent,
@@ -95,7 +96,7 @@ const FilmAnimation: React.FC = () => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4 bg-card/50 rounded-b-lg border-x border-b">
-                {filmCategories.map((category) => (
+                {sortByName(filmCategories).map((category) => (
                   <Link
                     key={category.path}
                     to={category.path}
@@ -122,7 +123,7 @@ const FilmAnimation: React.FC = () => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4 bg-card/50 rounded-b-lg border-x border-b">
-                {animationCategories.map((category) => (
+                {sortByName(animationCategories).map((category) => (
                   <Link
                     key={category.path}
                     to={category.path}

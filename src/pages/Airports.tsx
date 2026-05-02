@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Plane, Users, Briefcase, PlaneTakeoff, CheckSquare, Sofa, ShieldCheck, Luggage, FileCheck, Globe, Building2 } from 'lucide-react';
+import { sortByName } from '@/lib/sortByName';
 
 const Airports = () => {
   const subcategories = [
@@ -28,7 +29,7 @@ const Airports = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link
               key={sub.path}
               to={sub.path}

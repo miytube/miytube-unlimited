@@ -5,6 +5,7 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { VideoCard } from '@/components/VideoCard';
 import { Pagination } from '@/components/Pagination';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
+import { sortByName } from '@/lib/sortByName';
 
 const Speeches = () => {
   const { uploadedVideos, isLoading } = useUploadedVideos();
@@ -53,7 +54,7 @@ const Speeches = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          {speechCategories.map((category) => (
+          {sortByName(speechCategories).map((category) => (
             <div key={category.name} className="bg-card rounded-lg border p-6">
               <Link to={category.path}>
                 <h2 className="text-xl font-bold mb-4 hover:text-primary transition-colors">

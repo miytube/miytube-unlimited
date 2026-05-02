@@ -9,6 +9,7 @@ import { filterVideosByCategory } from "@/utils/videoFiltering";
 import { VideoCard } from "@/components/VideoCard";
 import { VideoGridSkeleton } from "@/components/skeletons";
 import { Pagination, PageInfo } from "@/components/Pagination";
+import { sortByName } from '@/lib/sortByName';
 
 const subcategories = [
   { id: 'railroad', name: 'Railroad', path: '/trains/railroad', description: 'Railroad trains and track footage' },
@@ -49,7 +50,7 @@ const Trains = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link key={sub.id} to={sub.path}>
               <Card className="hover:bg-accent transition-colors cursor-pointer h-full">
                 <CardContent className="p-6">

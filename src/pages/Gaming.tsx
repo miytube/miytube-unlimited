@@ -5,6 +5,7 @@ import { VideoCard } from '@/components/VideoCard';
 import { Gamepad2, Upload, Target, Zap, Trophy, Dice1, Sparkles, Ticket, CreditCard, Smartphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { sortByName } from '@/lib/sortByName';
 
 const Gaming = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -55,7 +56,7 @@ const Gaming = () => {
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Categories</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {gamingCategories.map((category) => (
+            {sortByName(gamingCategories).map((category) => (
               <Link 
                 key={category.id} 
                 to={category.path}

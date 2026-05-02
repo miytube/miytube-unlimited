@@ -3,6 +3,7 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { Tv, Sun, Moon, Mic } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { sortByName } from '@/lib/sortByName';
 
 const subcategories = [
   { name: 'Morning Shows', path: '/talk-shows/morning', icon: Sun, description: 'Morning talk shows and breakfast television programs' },
@@ -23,7 +24,7 @@ const TalkShows = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link
               key={sub.path}
               to={sub.path}

@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Crown, Sword, Castle, Medal, Flag } from 'lucide-react';
+import { sortByName } from '@/lib/sortByName';
 
 const RoyalSecurityGuards = () => {
   const subcategories = [
@@ -21,7 +22,7 @@ const RoyalSecurityGuards = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link
               key={sub.path}
               to={sub.path}

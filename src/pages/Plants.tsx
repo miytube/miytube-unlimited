@@ -6,6 +6,7 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { VideoCard } from '@/components/VideoCard';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { sortByName } from '@/lib/sortByName';
 
 const subcategories = [
   { name: 'Herbs', path: '/plants/herbs', icon: Leaf, description: 'Medicinal and culinary herbs' },
@@ -35,7 +36,7 @@ const Plants = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link
               key={sub.path}
               to={sub.path}

@@ -9,6 +9,7 @@ import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { engineeringDisastersCaseStudies } from '@/data/engineeringDisastersCaseStudies';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { sortByName } from '@/lib/sortByName';
 
 const EngineeringDisasters = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -61,7 +62,7 @@ const EngineeringDisasters = () => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {subcategories.map((sub) => (
+        {sortByName(subcategories).map((sub) => (
           <Link
             key={sub.path}
             to={sub.path}

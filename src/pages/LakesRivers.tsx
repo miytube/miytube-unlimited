@@ -6,6 +6,7 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { VideoCard } from '@/components/VideoCard';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { sortByName } from '@/lib/sortByName';
 
 const subcategories = [
   { name: 'Freshwater Lakes', path: '/lakes-rivers/freshwater-lakes', icon: Droplets, description: 'Beautiful freshwater lakes from around the world' },
@@ -38,7 +39,7 @@ const LakesRivers = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {subcategories.map((sub) => (
+          {sortByName(subcategories).map((sub) => (
             <Link
               key={sub.path}
               to={sub.path}
