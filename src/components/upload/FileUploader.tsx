@@ -97,6 +97,20 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
     id 
   });
 
+  // Warn user if they try to navigate away with staged but unpublished files
+  useEffect(() => {
+    const hasStagedWork = uploadedFiles.length > 0 && !isPublishing;
+    if (!hasStagedWork) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = 'You have a file selected but not uploaded yet. Leaving will discard it.';
+      return e.returnValue;
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [uploadedFiles.length, isPublishing]);
+
   const handleReset = () => {
     clearUploadedFiles();
     setImportedUrl(null);
