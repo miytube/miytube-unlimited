@@ -45,8 +45,10 @@ const Music = () => {
           </div>
         )}
         
+        <UploadedAudioGrid />
+
         <FeaturedMusicVideo />
-        
+
         <MusicCategories categories={musicCategories} />
       </div>
     </Layout>
