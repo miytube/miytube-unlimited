@@ -162,6 +162,24 @@ export const AnalyticsDashboard = () => {
 
   return (
     <div className="space-y-6">
+      {/* Owner exclusion toggle — keeps your own visits out of stats on this browser */}
+      <Card className="border-dashed">
+        <CardContent className="flex items-center justify-between gap-4 py-4">
+          <div className="flex items-center gap-3">
+            <ShieldOff className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <Label htmlFor="exclude-me" className="text-sm font-medium cursor-pointer">
+                Exclude my visits from analytics (this browser)
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                Applies even when signed out or in incognito. Set this on every browser/device you use to view the live site.
+              </p>
+            </div>
+          </div>
+          <Switch id="exclude-me" checked={excludeMe} onCheckedChange={toggleExcludeMe} />
+        </CardContent>
+      </Card>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
