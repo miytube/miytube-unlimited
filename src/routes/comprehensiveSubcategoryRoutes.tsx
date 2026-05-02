@@ -174,6 +174,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="stocks" path="/stocks" element={<GenericSubcategoryPage />} />,
   <Route key="stocks-commodity" path="/stocks/commodity" element={<GenericSubcategoryPage />} />,
   <Route key="stocks-cash" path="/stocks/cash" element={<GenericSubcategoryPage />} />,
+  <Route key="stocks-corporate" path="/stocks/corporate" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate" path="/real-estate" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-residential" path="/real-estate/residential" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-commercial" path="/real-estate/commercial" element={<GenericSubcategoryPage />} />,
