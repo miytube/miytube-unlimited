@@ -289,30 +289,57 @@ const Audio = () => {
             </p>
           </div>
         ) : (
-          <div className="space-y-2">
-            {filteredTracks.map((track) => (
-              <div key={track.id} className="flex items-center gap-4 p-3 bg-card rounded-lg hover:bg-accent/50 transition-colors">
-                <button
-                  onClick={() => togglePlay(track)}
-                  className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center flex-shrink-0 hover:scale-105 transition-transform"
-                >
-                  {playingId === track.id ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-0.5" />}
-                </button>
-                <div className="flex-grow min-w-0">
-                  <h3 className="font-semibold truncate">{track.title}</h3>
-                  {track.description && (
-                    <p className="text-sm text-muted-foreground truncate">{track.description}</p>
-                  )}
-                </div>
-                {track.category && (
-                  <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground hidden sm:inline">
-                    {track.category}
-                  </span>
-                )}
-                <span className="text-xs text-muted-foreground hidden md:inline">{track.views} plays</span>
-              </div>
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {paginatedTracks.map((track) => {
+                const isPlaying = playingId === track.id;
+                return (
+                  <div
+                    key={track.id}
+                    className="bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow group"
+                  >
+                    <button
+                      onClick={() => togglePlay(track)}
+                      className="relative aspect-square w-full bg-muted flex items-center justify-center overflow-hidden"
+                      aria-label={isPlaying ? `Pause ${track.title}` : `Play ${track.title}`}
+                    >
+                      <img
+                        src={miyTubeLogo}
+                        alt="MiyTube"
+                        className="w-3/4 h-3/4 object-contain opacity-80"
+                      />
+                      <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity ${isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                        <div className="h-14 w-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg">
+                          {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-0.5" />}
+                        </div>
+                      </div>
+                    </button>
+                    <div className="p-3">
+                      <h3 className="font-semibold text-sm truncate" title={track.title}>{track.title}</h3>
+                      <div className="flex items-center justify-between mt-1 text-xs text-muted-foreground">
+                        <span className="truncate">{track.category || 'Audio'}</span>
+                        <span className="flex-shrink-0 ml-2">{track.views} plays</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center justify-between mt-6">
+              <PageInfo
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredTracks.length}
+                itemLabel="tracks"
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </>
         )}
       </div>
     </Layout>
