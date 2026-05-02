@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { Users, Eye, Activity, TrendingUp, Globe, Clock } from 'lucide-react';
+import { Users, Eye, Activity, TrendingUp, Globe, Clock, ShieldOff } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { ContentEngagementSection } from './ContentEngagementSection';
 
 interface AnalyticsData {
@@ -24,6 +26,20 @@ export const AnalyticsDashboard = () => {
     hourlyViews: [],
   });
   const [loading, setLoading] = useState(true);
+
+  const [excludeMe, setExcludeMe] = useState<boolean>(
+    typeof window !== 'undefined' &&
+      localStorage.getItem('analytics_exclude_me') === 'true'
+  );
+
+  const toggleExcludeMe = (checked: boolean) => {
+    setExcludeMe(checked);
+    if (checked) {
+      localStorage.setItem('analytics_exclude_me', 'true');
+    } else {
+      localStorage.removeItem('analytics_exclude_me');
+    }
+  };
 
   const fetchAnalytics = async () => {
     try {
@@ -146,6 +162,24 @@ export const AnalyticsDashboard = () => {
 
   return (
     <div className="space-y-6">
+      {/* Owner exclusion toggle — keeps your own visits out of stats on this browser */}
+      <Card className="border-dashed">
+        <CardContent className="flex items-center justify-between gap-4 py-4">
+          <div className="flex items-center gap-3">
+            <ShieldOff className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <Label htmlFor="exclude-me" className="text-sm font-medium cursor-pointer">
+                Exclude my visits from analytics (this browser)
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                Applies even when signed out or in incognito. Set this on every browser/device you use to view the live site.
+              </p>
+            </div>
+          </div>
+          <Switch id="exclude-me" checked={excludeMe} onCheckedChange={toggleExcludeMe} />
+        </CardContent>
+      </Card>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">

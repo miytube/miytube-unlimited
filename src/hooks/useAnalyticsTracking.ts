@@ -26,8 +26,17 @@ export const useAnalyticsTracking = () => {
   const isBotRef = useRef<boolean>(isLikelyBot());
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // Check if current user is admin — skip all tracking for admins
+  // Check if current user is admin — skip all tracking for admins.
+  // Also honor a per-browser "exclude me" flag (localStorage) so the owner
+  // can opt out of tracking even when signed out / in incognito.
   useEffect(() => {
+    const browserExcluded =
+      typeof window !== 'undefined' &&
+      localStorage.getItem('analytics_exclude_me') === 'true';
+    if (browserExcluded) {
+      setIsAdmin(true);
+      return;
+    }
     if (!user?.id) {
       setIsAdmin(false);
       return;
