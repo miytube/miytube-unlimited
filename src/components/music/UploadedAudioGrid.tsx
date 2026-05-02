@@ -79,7 +79,7 @@ export const UploadedAudioGrid: React.FC = () => {
     );
   }
 
-  if (tracks.length === 0) return null;
+  // Always render the section, even when empty, so the area is visible on the Music page
 
   return (
     <div className="mb-8">
