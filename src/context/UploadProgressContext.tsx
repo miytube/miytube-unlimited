@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type UploadStatus = 'idle' | 'processing' | 'uploading' | 'complete' | 'failed';
+export type UploadStatus = 'idle' | 'processing' | 'uploading' | 'publishing' | 'complete' | 'failed';
 
 export interface UploadProgress {
   isUploading: boolean;
@@ -86,7 +86,7 @@ export const UploadProgressProvider: React.FC<{ children: ReactNode }> = ({ chil
   };
 
   const isUploadInProgress = () => {
-    return uploadProgress?.isUploading === true && uploadProgress?.status === 'uploading';
+    return uploadProgress?.isUploading === true && ['processing', 'uploading', 'publishing'].includes(uploadProgress.status);
   };
 
   return (
