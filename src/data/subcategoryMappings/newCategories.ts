@@ -651,6 +651,12 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: TrendingUp,
     parent: { route: '/stocks', name: 'Stocks & Money' }
   },
+  '/stocks/corporate': {
+    title: 'Corporate Stocks',
+    description: 'Corporate equities, public company shares, and stock market analysis',
+    icon: TrendingUp,
+    parent: { route: '/stocks', name: 'Stocks & Money' }
+  },
   '/real-estate/land': {
     title: 'Property & Land',
     description: 'Land and property sales',
