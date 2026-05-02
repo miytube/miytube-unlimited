@@ -18,23 +18,34 @@ const AudioMusicVideos: React.FC = () => {
   const { uploadedVideos } = useUploadedVideos();
 
   const filtered = useMemo(() => {
-    // Only music videos (audio-music designated content)
+    // Strict: only videos whose CATEGORY is music/audio (not just videos that mention music in their description).
+    const MUSIC_CATEGORIES = new Set([
+      'music', 'audio', 'audio-music-videos', 'audio-music', 'music-videos',
+      'pop', 'rock', 'hip-hop', 'hiphop', 'rap', 'r-and-b', 'rnb', 'soul',
+      'country', 'jazz', 'blues', 'classical', 'electronic', 'reggae', 'latin',
+      'metal', 'folk', 'indie', 'funk', 'punk', 'christian', 'salsa', 'mariachi',
+      'mandopop', 'spanish', 'soundtracks', 'parody',
+    ]);
+
     const musicVideos = uploadedVideos.filter((v) => {
-      const cat = (v.category || '').toLowerCase();
-      const sub = (v.subcategory || '').toLowerCase();
-      return cat.includes('music') || cat.includes('audio') || sub.includes('music');
+      const cat = (v.category || '').toLowerCase().trim();
+      const sub = (v.subcategory || '').toLowerCase().trim();
+      // Must be tagged as a music category — no fuzzy title/description matching
+      return MUSIC_CATEGORIES.has(cat) || MUSIC_CATEGORIES.has(sub) ||
+             cat === 'music' || sub === 'music' ||
+             cat.startsWith('music-') || sub.startsWith('music-');
     });
 
     if (!genre) return musicVideos;
 
-    const g = genre.toLowerCase();
+    const g = genre.toLowerCase().replace(/\s+/g, '-');
     return musicVideos.filter((v) => {
+      const cat = (v.category || '').toLowerCase();
       const sub = (v.subcategory || '').toLowerCase();
-      const title = (v.title || '').toLowerCase();
-      const desc = (v.description || '').toLowerCase();
-      return sub.includes(g) || title.includes(g) || desc.includes(g);
+      return cat === g || sub === g || cat === `music-${g}` || sub === `music-${g}`;
     });
   }, [uploadedVideos, genre]);
+
 
   // 5 columns × 5 rows = 25 videos max
   const videos = filtered.slice(0, 25);
