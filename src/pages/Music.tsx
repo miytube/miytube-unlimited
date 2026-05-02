@@ -5,6 +5,7 @@ import { MusicHeader } from '@/components/music/MusicHeader';
 import { FeaturedMusicVideo } from '@/components/music/FeaturedMusicVideo';
 import { MusicCategories } from '@/components/music/MusicCategories';
 import { MusicVideosNeedingUpdate } from '@/components/music/MusicVideosNeedingUpdate';
+import { UploadedAudioGrid } from '@/components/music/UploadedAudioGrid';
 import { musicCategories } from '@/components/music/musicData';
 import { VideoCard } from '@/components/VideoCard';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
