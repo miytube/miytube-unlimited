@@ -20,7 +20,8 @@ import { AIAutoTitleManager } from '@/components/admin/AIAutoTitleManager';
 import { ThumbnailGeneratorManager } from '@/components/admin/ThumbnailGeneratorManager';
 import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussionManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
-import { FolderTree } from 'lucide-react';
+import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
+import { FolderTree, Database } from 'lucide-react';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
