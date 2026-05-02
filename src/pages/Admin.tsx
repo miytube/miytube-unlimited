@@ -413,6 +413,9 @@ const Admin = () => {
           <TabsContent value="custom-categories" className="mt-6">
             <CustomCategoriesManager />
           </TabsContent>
+          <TabsContent value="video-audit" className="mt-6">
+            <VideoAuditManager />
+          </TabsContent>
         </Tabs>
       </div>
     </Layout>
