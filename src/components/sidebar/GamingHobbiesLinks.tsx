@@ -13,7 +13,7 @@ export const GamingHobbiesLinks: React.FC = () => {
       subItems: [
         { id: 'gaming-arcade', label: 'Arcade Games', path: '/gaming/arcade' },
         { id: 'gaming-casino', label: 'Casino Slots', path: '/gaming/casino' },
-        { id: 'gaming-dominos', label: 'Dominos & Domino Fails', path: '/gaming/dominos' },
+        { id: 'gaming-dominos', label: 'Dominoes & Domino Fails', path: '/gaming/dominos' },
         { id: 'gaming-lottery', label: 'Lottery & Prize & Raffle', path: '/gaming/lottery' },
         { id: 'gaming-xbox', label: 'Xbox & PlayStation 5', path: '/gaming/xbox' },
         { id: 'gaming-cards', label: 'Gaming Cards', path: '/gaming/cards' }

@@ -1926,7 +1926,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/gaming', name: 'Gaming' }
   },
   '/gaming/dominos': {
-    title: 'Dominos & Domino Fails',
+    title: 'Dominoes & Domino Fails',
     description: 'Domino games and fails',
     icon: Gamepad2,
     parent: { route: '/gaming', name: 'Gaming' }

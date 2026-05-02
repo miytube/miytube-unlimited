@@ -135,7 +135,7 @@ const allItems: SearchItem[] = [
   { label: 'Gaming', path: '/gaming', category: 'Gaming & Hobbies' },
   { label: 'Arcade Games', path: '/arcade-games', category: 'Gaming & Hobbies' },
   { label: 'Casino Slots', path: '/casino-slots', category: 'Gaming & Hobbies' },
-  { label: 'Dominos', path: '/dominos', category: 'Gaming & Hobbies' },
+  { label: 'Dominoes', path: '/dominos', category: 'Gaming & Hobbies' },
   { label: 'Lottery', path: '/lottery', category: 'Gaming & Hobbies' },
   { label: 'Xbox & PlayStation', path: '/xbox-playstation', category: 'Gaming & Hobbies' },
   { label: 'Card Games', path: '/card-games', category: 'Gaming & Hobbies' },
