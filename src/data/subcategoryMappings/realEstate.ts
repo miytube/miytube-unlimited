@@ -29,6 +29,24 @@ export const realEstateSubcategories: SubcategoryMapping = {
       name: 'Real Estate'
     }
   },
+  'real-estate-luxury-billion': {
+    title: 'Luxury & Billion Dollars',
+    description: 'Ultra-luxury estates and billion dollar real estate properties',
+    icon: Castle,
+    parent: {
+      route: '/real-estate',
+      name: 'Real Estate'
+    }
+  },
+  'luxury-billion': {
+    title: 'Luxury & Billion Dollars',
+    description: 'Ultra-luxury estates and billion dollar real estate properties',
+    icon: Castle,
+    parent: {
+      route: '/real-estate',
+      name: 'Real Estate'
+    }
+  },
   'residential': {
     title: 'Real Estate (Residential Property)',
     description: 'Residential homes, apartments, condos, and housing properties',

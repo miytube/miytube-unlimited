@@ -221,6 +221,7 @@ export const sidebarSubcategoryRoutes = [
   <Route key="real-estate-residential" path="/real-estate/residential" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-commercial" path="/real-estate/commercial" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-luxury" path="/real-estate/luxury" element={<GenericSubcategoryPage />} />,
+  <Route key="real-estate-luxury-billion" path="/real-estate/luxury-billion" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-mistakes" path="/real-estate/mistakes" element={<GenericSubcategoryPage />} />,
   <Route key="real-estate-fails" path="/real-estate/fails" element={<GenericSubcategoryPage />} />,
 
