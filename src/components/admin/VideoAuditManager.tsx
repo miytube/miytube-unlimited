@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -13,7 +14,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Copy, ExternalLink, Database, Cloud, AlertTriangle } from 'lucide-react';
+import { Search, Copy, ExternalLink, Database, Cloud, AlertTriangle, UploadCloud, Loader2 } from 'lucide-react';
 
 interface VideoRow {
   id: string;
@@ -46,10 +47,8 @@ const detectBackend = (cloudUrl: string | null): 'supabase' | 'aws_s3' | 'youtub
 
 const extractStorageKey = (cloudUrl: string | null): string => {
   if (!cloudUrl) return '—';
-  // Supabase: .../storage/v1/object/public/videos/<key>
   const supaMatch = cloudUrl.match(/\/storage\/v1\/object\/public\/videos\/(.+)$/);
   if (supaMatch) return supaMatch[1];
-  // AWS S3 path-style or virtual-hosted
   const s3Match = cloudUrl.match(/amazonaws\.com\/(?:[^/]+\/)?(.+?)(?:\?|$)/);
   if (s3Match) return s3Match[1];
   return cloudUrl.split('/').pop() || cloudUrl;
@@ -63,6 +62,10 @@ export const VideoAuditManager = () => {
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [backendFilter, setBackendFilter] = useState<'all' | 'supabase' | 'aws_s3' | 'missing'>('all');
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [migrating, setMigrating] = useState<Set<string>>(new Set());
+  const [bulkRunning, setBulkRunning] = useState(false);
+  const [deleteAfter, setDeleteAfter] = useState(true);
 
   const fetchVideos = async () => {
     setLoading(true);
@@ -88,6 +91,7 @@ export const VideoAuditManager = () => {
       if (error) throw error;
       setVideos((data || []) as VideoRow[]);
       setTotal(count || 0);
+      setSelected(new Set());
     } catch (err) {
       console.error('Video audit fetch failed:', err);
       toast({
@@ -131,6 +135,100 @@ export const VideoAuditManager = () => {
     toast({ title: 'Copied', description: text.slice(0, 80) });
   };
 
+  const migrate = async (ids: string[]) => {
+    if (ids.length === 0) return;
+    const { data, error } = await supabase.functions.invoke('migrate-video-to-s3', {
+      body: { videoIds: ids, table: 'uploaded_videos', deleteFromSupabase: deleteAfter },
+    });
+    if (error) throw new Error(error.message);
+    return data as { results: Array<{ id: string; status: string; message?: string; newUrl?: string }> };
+  };
+
+  const handleMigrateOne = async (id: string) => {
+    setMigrating((prev) => new Set(prev).add(id));
+    try {
+      const data = await migrate([id]);
+      const r = data?.results?.[0];
+      if (!r) throw new Error('No response');
+      if (r.status === 'migrated') {
+        toast({ title: 'Sent to AWS S3', description: r.newUrl?.slice(0, 80) });
+      } else {
+        toast({
+          title: r.status === 'skipped' ? 'Skipped' : 'Failed',
+          description: r.message || r.status,
+          variant: r.status === 'failed' ? 'destructive' : 'default',
+        });
+      }
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Migration failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setMigrating((prev) => {
+        const n = new Set(prev);
+        n.delete(id);
+        return n;
+      });
+    }
+  };
+
+  const handleMigrateBulk = async () => {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    setBulkRunning(true);
+    try {
+      // chunk into batches of 10 to avoid edge-function timeouts on large files
+      const chunks: string[][] = [];
+      for (let i = 0; i < ids.length; i += 10) chunks.push(ids.slice(i, i + 10));
+      let migrated = 0, failed = 0, skipped = 0;
+      for (const chunk of chunks) {
+        const data = await migrate(chunk);
+        for (const r of data?.results ?? []) {
+          if (r.status === 'migrated') migrated++;
+          else if (r.status === 'failed') failed++;
+          else skipped++;
+        }
+      }
+      toast({
+        title: 'Bulk migration complete',
+        description: `${migrated} migrated, ${skipped} skipped, ${failed} failed.`,
+        variant: failed > 0 ? 'destructive' : 'default',
+      });
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Bulk migration failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setBulkRunning(false);
+    }
+  };
+
+  const toggleRow = (id: string) => {
+    setSelected((prev) => {
+      const n = new Set(prev);
+      if (n.has(id)) n.delete(id);
+      else n.add(id);
+      return n;
+    });
+  };
+
+  const toggleAllSupabase = () => {
+    const supabaseIds = filtered.filter((v) => detectBackend(v.cloud_url) === 'supabase').map((v) => v.id);
+    const allSelected = supabaseIds.every((id) => selected.has(id));
+    setSelected((prev) => {
+      const n = new Set(prev);
+      if (allSelected) supabaseIds.forEach((id) => n.delete(id));
+      else supabaseIds.forEach((id) => n.add(id));
+      return n;
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -139,8 +237,8 @@ export const VideoAuditManager = () => {
           Video Storage Audit
         </CardTitle>
         <CardDescription>
-          Inspect every uploaded video: original filename, storage backend, and underlying storage key.
-          Use this to verify what's actually in your storage buckets vs. what users see on the site.
+          New uploads default to Supabase (lower cost). Use the "Send to AWS S3" buttons below to migrate
+          specific videos to AWS S3 on demand.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -185,11 +283,41 @@ export const VideoAuditManager = () => {
           </Button>
         </div>
 
+        {/* Bulk action bar */}
+        <div className="flex flex-wrap items-center gap-3 p-3 rounded-md border bg-muted/30">
+          <Button size="sm" variant="outline" onClick={toggleAllSupabase}>
+            Select all Supabase on page
+          </Button>
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <Checkbox
+              checked={deleteAfter}
+              onCheckedChange={(c) => setDeleteAfter(!!c)}
+            />
+            Delete from Supabase after migration
+          </label>
+          <div className="ml-auto flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">{selected.size} selected</span>
+            <Button
+              size="sm"
+              onClick={handleMigrateBulk}
+              disabled={selected.size === 0 || bulkRunning}
+            >
+              {bulkRunning ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <UploadCloud className="h-4 w-4 mr-1" />
+              )}
+              Send selected to AWS S3
+            </Button>
+          </div>
+        </div>
+
         {/* Table */}
         <div className="rounded-md border overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-10"></TableHead>
                 <TableHead className="min-w-[200px]">Title (shown)</TableHead>
                 <TableHead className="min-w-[200px]">Original filename</TableHead>
                 <TableHead>Backend</TableHead>
@@ -201,13 +329,13 @@ export const VideoAuditManager = () => {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8">
+                  <TableCell colSpan={7} className="text-center py-8">
                     Loading…
                   </TableCell>
                 </TableRow>
               ) : filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                  <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                     No videos match the current filter.
                   </TableCell>
                 </TableRow>
@@ -215,8 +343,17 @@ export const VideoAuditManager = () => {
                 filtered.map((v) => {
                   const backend = detectBackend(v.cloud_url);
                   const key = extractStorageKey(v.cloud_url);
+                  const canMigrate = backend === 'supabase';
+                  const isMigrating = migrating.has(v.id);
                   return (
                     <TableRow key={v.id}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selected.has(v.id)}
+                          onCheckedChange={() => toggleRow(v.id)}
+                          disabled={!canMigrate}
+                        />
+                      </TableCell>
                       <TableCell className="font-medium max-w-[260px] truncate" title={v.title}>
                         {v.title}
                       </TableCell>
@@ -248,6 +385,21 @@ export const VideoAuditManager = () => {
                       <TableCell className="whitespace-nowrap">{formatBytes(v.file_size)}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">
+                          {canMigrate && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleMigrateOne(v.id)}
+                              disabled={isMigrating}
+                              title="Send this video to AWS S3"
+                            >
+                              {isMigrating ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <UploadCloud className="h-4 w-4" />
+                              )}
+                            </Button>
+                          )}
                           {v.cloud_url && (
                             <>
                               <Button
