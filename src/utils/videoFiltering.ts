@@ -135,20 +135,26 @@ export const filterVideosBySubcategory = (
   const titleNoSep = titleLower.replace(/[-\s]/g, '');
 
   // Build the canonical accepted-value set for this page.
-  const accepted = new Set<string>([
+  // For multi-segment paths (e.g. hollywood/celebrities/news), the bare last
+  // segment ("news") and the page title ("Celebrity News") are too generic to
+  // accept on their own — they leak unrelated videos in. Require parent context
+  // for those via the parent+child rule below.
+  const isMultiSegment = keySegments.length > 1;
+  const acceptedBase = [
     keyLower,
     keyHyphenated,
     keyNoSep,
-    lastSegment,
-    lastSegmentSpaced,
-    lastSegmentNoSep,
-    titleLower,
-    titleNoSep,
     `${parentSegment}-${lastSegment}`,
     `${parentSegment}/${lastSegment}`,
-  ].filter(Boolean));
+  ];
+  if (!isMultiSegment) {
+    acceptedBase.push(lastSegment, lastSegmentSpaced, lastSegmentNoSep, titleLower, titleNoSep);
+  }
+  const accepted = new Set<string>(acceptedBase.filter(Boolean));
 
-  const acceptedFuzzyTargets = [keyLower, keyHyphenated, lastSegment, lastSegmentSpaced];
+  const acceptedFuzzyTargets = isMultiSegment
+    ? [keyLower, keyHyphenated]
+    : [keyLower, keyHyphenated, lastSegment, lastSegmentSpaced];
 
   const norm = (s: string) => s.toLowerCase().trim().replace(/^\/+/, '');
   const normNoSep = (s: string) => norm(s).replace(/[-\s/]/g, '');
@@ -186,10 +192,11 @@ export const filterVideosBySubcategory = (
       if (isFuzzyMatch(vidSubcategory, target) || isFuzzyMatch(vidCategory, target)) return true;
     }
 
-    // 4) Exact tag match against the FULL page key or title (not single words)
-    if (vidTags.includes(keyLower) || vidTags.includes(keyHyphenated) || vidTags.includes(titleLower)) {
-      return true;
-    }
+    // 4) Exact tag match against the FULL page key (and title only for single-segment pages).
+    //    Multi-segment pages skip the title-tag match because phrases like
+    //    "celebrity news" appear on tons of unrelated news videos.
+    if (vidTags.includes(keyLower) || vidTags.includes(keyHyphenated)) return true;
+    if (!isMultiSegment && vidTags.includes(titleLower)) return true;
 
     return false;
   });
