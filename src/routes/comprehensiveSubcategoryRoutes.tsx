@@ -156,6 +156,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="police-chases" path="/police/chases" element={<GenericSubcategoryPage />} />,
   <Route key="police-stops" path="/police/stops" element={<GenericSubcategoryPage />} />,
   <Route key="police-sheriff" path="/police/sheriff" element={<GenericSubcategoryPage />} />,
+  <Route key="police-shots-fired" path="/police/shots-fired" element={<GenericSubcategoryPage />} />,
   <Route key="jails" path="/jails" element={<GenericSubcategoryPage />} />,
   <Route key="jails-prisons" path="/jails/prisons" element={<GenericSubcategoryPage />} />,
   <Route key="jails-county" path="/jails/county" element={<GenericSubcategoryPage />} />,
