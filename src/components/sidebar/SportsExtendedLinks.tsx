@@ -62,6 +62,7 @@ export const SportsExtendedLinks: React.FC = () => {
       label: 'WNBA Basketball', 
       path: '/sports/wnba',
       subItems: [
+        { id: 'sports-wnba-games', label: 'WNBA Basketball Games', path: '/sports/wnba/games' },
         { id: 'sports-wnba-players', label: 'WNBA Players & Coaches', path: '/sports/wnba/players' },
         { id: 'sports-wnba-playoffs', label: 'WNBA Playoffs', path: '/sports/wnba/playoffs' },
         { id: 'sports-wnba-championship', label: 'WNBA Championship', path: '/sports/wnba/championship' }

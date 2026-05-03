@@ -829,6 +829,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="sports-nhl-players" path="/sports/nhl/players" element={<GenericSubcategoryPage />} />,
 
   // WNBA nested routes
+  <Route key="sports-wnba-games" path="/sports/wnba/games" element={<GenericSubcategoryPage />} />,
   <Route key="sports-wnba-players" path="/sports/wnba/players" element={<GenericSubcategoryPage />} />,
   <Route key="sports-wnba-playoffs-nested" path="/sports/wnba/playoffs" element={<GenericSubcategoryPage />} />,
   <Route key="sports-wnba-championship" path="/sports/wnba/championship" element={<GenericSubcategoryPage />} />,

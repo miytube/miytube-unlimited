@@ -592,6 +592,12 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  'sports-wnba-games': {
+    title: 'WNBA Basketball Games',
+    description: 'WNBA basketball games, matchups, and highlights',
+    icon: Trophy,
+    parent: { route: '/sports/wnba', name: 'WNBA Basketball' }
+  },
   'sports-wnba-basketball': {
     title: 'WNBA Basketball',
     description: 'WNBA basketball games and highlights',
