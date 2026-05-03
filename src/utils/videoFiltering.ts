@@ -192,10 +192,11 @@ export const filterVideosBySubcategory = (
       if (isFuzzyMatch(vidSubcategory, target) || isFuzzyMatch(vidCategory, target)) return true;
     }
 
-    // 4) Exact tag match against the FULL page key or title (not single words)
-    if (vidTags.includes(keyLower) || vidTags.includes(keyHyphenated) || vidTags.includes(titleLower)) {
-      return true;
-    }
+    // 4) Exact tag match against the FULL page key (and title only for single-segment pages).
+    //    Multi-segment pages skip the title-tag match because phrases like
+    //    "celebrity news" appear on tons of unrelated news videos.
+    if (vidTags.includes(keyLower) || vidTags.includes(keyHyphenated)) return true;
+    if (!isMultiSegment && vidTags.includes(titleLower)) return true;
 
     return false;
   });
