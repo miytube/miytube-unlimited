@@ -63,7 +63,7 @@ export const FileInputSection: React.FC<FileInputSectionProps> = ({
         disabled={uploading}
         id={id}
         ref={fileInputRef}
-        multiple={false}
+        multiple={true}
       />
     </>
   );
