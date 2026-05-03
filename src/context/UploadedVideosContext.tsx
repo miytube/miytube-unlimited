@@ -818,8 +818,21 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     console.log(`Uploading video: ${file.name} (${fileSizeMB}MB) - Always using cloud storage`);
 
     // Get duration first (fast operation)
-    const duration = await getVideoDuration(file);
-    
+    const { formatted: duration, seconds: durationSeconds } = await getVideoDuration(file);
+
+    // Enforce Shorts rule: ≤60 seconds. If it's longer, reclassify to 'video'
+    // and preserve any subcategory the user picked. This prevents long videos
+    // from showing up under /shorts.
+    let effectiveCategory = category;
+    if (effectiveCategory === 'shorts' && durationSeconds > 0 && durationSeconds > 60) {
+      console.warn(`Reclassifying long upload (${durationSeconds.toFixed(1)}s) from 'shorts' to 'video': ${title || file.name}`);
+      effectiveCategory = 'video';
+      toast({
+        title: 'Moved out of Shorts',
+        description: `"${title || file.name}" is ${Math.round(durationSeconds)}s long. Shorts must be 60s or less, so it was published as a regular video instead.`,
+      });
+    }
+
     // Upload video to cloud storage (always - never store base64)
     const fileSizeMBNum = Math.round(file.size / (1024 * 1024));
     const estimatedMinutes = Math.max(1, Math.ceil(fileSizeMBNum / 10));
@@ -854,7 +867,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       timestamp: 'Just now',
       views: '0',
       duration,
-      category,
+      category: effectiveCategory,
       subcategory,
       tags,
     };
@@ -873,7 +886,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         timestamp: newVideo.timestamp,
         views: newVideo.views,
         duration,
-        category,
+        category: effectiveCategory,
         subcategory,
         tags,
       });
@@ -883,7 +896,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       localId: videoId,
       title: newVideo.title,
       description: newVideo.description,
-      category,
+      category: effectiveCategory,
       subcategory,
       tags,
       duration,
