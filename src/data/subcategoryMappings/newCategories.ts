@@ -554,14 +554,20 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/police', name: 'Police' }
   },
   '/police/sheriff': {
-    title: 'Sheriff & Highway Patrol',
-    description: 'Sheriff and highway patrol',
+    title: 'Police, Sheriff & Highway Patrol',
+    description: 'Police, sheriff and highway patrol',
     icon: Shield,
     parent: { route: '/police', name: 'Police' }
   },
   '/police/stops': {
     title: 'Police Stops (What to Do)',
     description: 'How to handle police stops',
+    icon: Shield,
+    parent: { route: '/police', name: 'Police' }
+  },
+  '/police/shots-fired': {
+    title: 'Shots Fired',
+    description: 'Shots fired incidents and reports',
     icon: Shield,
     parent: { route: '/police', name: 'Police' }
   },
