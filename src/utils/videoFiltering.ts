@@ -7,46 +7,45 @@
 import { UploadedVideo } from '@/context/UploadedVideosContext';
 
 /**
- * Calculate similarity score between two strings using character overlap.
- * Returns a value between 0 and 1, where 1 is an exact match.
+ * True Levenshtein edit distance — used for tight typo tolerance only.
  */
-const getSimilarity = (str1: string, str2: string): number => {
-  const s1 = str1.toLowerCase().trim();
-  const s2 = str2.toLowerCase().trim();
-  if (s1 === s2) return 1;
-  
-  // Only allow includes match if strings are very similar in length (within 3 chars)
-  // This prevents "pryor" from matching "late night" just because of character overlap
-  if (Math.abs(s1.length - s2.length) <= 3 && (s1.includes(s2) || s2.includes(s1))) return 0.9;
-  
-  // Levenshtein-based similarity for typo detection only
-  const maxLen = Math.max(s1.length, s2.length);
-  if (maxLen === 0) return 1;
-  
-  // Simple edit distance approximation - only high similarity for near-identical strings
-  let matches = 0;
-  const minLen = Math.min(s1.length, s2.length);
-  for (let i = 0; i < minLen; i++) {
-    if (s1[i] === s2[i]) matches++;
+const editDistance = (a: string, b: string): number => {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const dp: number[] = new Array(n + 1);
+  for (let j = 0; j <= n; j++) dp[j] = j;
+  for (let i = 1; i <= m; i++) {
+    let prev = dp[0];
+    dp[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const tmp = dp[j];
+      if (a[i - 1] === b[j - 1]) {
+        dp[j] = prev;
+      } else {
+        dp[j] = 1 + Math.min(prev, dp[j], dp[j - 1]);
+      }
+      prev = tmp;
+    }
   }
-  
-  // Penalize length difference more heavily
-  const lengthPenalty = Math.abs(s1.length - s2.length) / maxLen;
-  return (matches / maxLen) - lengthPenalty;
+  return dp[n];
 };
 
 /**
- * Check if two strings are a fuzzy match (handles typos like "commerical" vs "commercial")
+ * Tight typo tolerance: allow 1 edit for words ≥6 chars, 2 edits for ≥10 chars.
+ * NEVER matches substrings or different-length strings beyond that budget.
  */
-const isFuzzyMatch = (input: string, target: string, threshold = 0.75): boolean => {
-  const inputLower = input.toLowerCase().trim();
-  const targetLower = target.toLowerCase().trim();
-  
-  // Exact match
-  if (inputLower === targetLower) return true;
-  
-  // Check similarity
-  return getSimilarity(inputLower, targetLower) >= threshold;
+const isFuzzyMatch = (input: string, target: string): boolean => {
+  const a = input.toLowerCase().trim();
+  const b = target.toLowerCase().trim();
+  if (!a || !b) return false;
+  if (a === b) return true;
+  // Length must be close
+  if (Math.abs(a.length - b.length) > 2) return false;
+  const longer = Math.max(a.length, b.length);
+  if (longer < 6) return false; // too short, would cause false positives
+  const budget = longer >= 10 ? 2 : 1;
+  return editDistance(a, b) <= budget;
 };
 
 const sportsLeaguePatterns = [
