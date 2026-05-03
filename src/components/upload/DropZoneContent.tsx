@@ -39,7 +39,7 @@ export const DropZoneContent: React.FC<DropZoneContentProps> = ({
         disabled={uploading}
         onClick={handleBrowseClick}
       >
-        {uploading ? 'Uploading...' : 'Browse Files'}
+        {uploading ? 'Uploading...' : 'Browse Files (select multiple)'}
       </Button>
       
       <p className="text-xs text-muted-foreground mb-4">
