@@ -28,7 +28,7 @@ export const DropZoneContent: React.FC<DropZoneContentProps> = ({
     <>
       <Icon size={48} className="mx-auto mb-4 text-muted-foreground" />
       <p className="text-muted-foreground mb-2">
-        {uploading ? 'Uploading...' : 'Drag and drop files here, or:'}
+        {uploading ? 'Uploading...' : 'Drag and drop one or more files here, or:'}
       </p>
       
       <Button 
@@ -39,7 +39,7 @@ export const DropZoneContent: React.FC<DropZoneContentProps> = ({
         disabled={uploading}
         onClick={handleBrowseClick}
       >
-        {uploading ? 'Uploading...' : 'Browse Files'}
+        {uploading ? 'Uploading...' : 'Browse Files (select multiple)'}
       </Button>
       
       <p className="text-xs text-muted-foreground mb-4">
