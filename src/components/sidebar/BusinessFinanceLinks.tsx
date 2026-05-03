@@ -39,6 +39,7 @@ export const BusinessFinanceLinks: React.FC = () => {
         { id: 'real-estate-residential', label: 'Residential Property', path: '/real-estate/residential' },
         { id: 'real-estate-commercial', label: 'Commercial Property', path: '/real-estate/commercial' },
         { id: 'real-estate-luxury', label: 'Luxury & Million Dollar', path: '/real-estate/luxury' },
+        { id: 'real-estate-luxury-billion', label: 'Luxury & Billion Dollars', path: '/real-estate/luxury-billion' },
         { id: 'real-estate-land', label: 'Property & Land', path: '/real-estate/land' }
       ]
     },
