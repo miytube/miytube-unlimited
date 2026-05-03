@@ -595,28 +595,50 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     });
   };
 
-  const getVideoDuration = (file: File): Promise<string> => {
+  const getVideoDuration = (file: File): Promise<{ formatted: string; seconds: number }> => {
     return new Promise((resolve) => {
-      if (file.type.startsWith('video/')) {
-        const video = document.createElement('video');
-        video.preload = 'metadata';
-        
-        video.onloadedmetadata = () => {
-          const duration = video.duration;
-          const minutes = Math.floor(duration / 60);
-          const seconds = Math.floor(duration % 60);
-          URL.revokeObjectURL(video.src);
-          resolve(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-        };
-        
-        video.onerror = () => {
-          resolve('0:00');
-        };
-        
-        video.src = URL.createObjectURL(file);
-      } else {
-        resolve('0:00');
+      if (!file.type.startsWith('video/')) {
+        resolve({ formatted: '0:00', seconds: 0 });
+        return;
       }
+
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.muted = true;
+      video.playsInline = true;
+      const url = URL.createObjectURL(file);
+
+      const finish = (seconds: number) => {
+        try { URL.revokeObjectURL(url); } catch {}
+        const safe = isFinite(seconds) && seconds > 0 ? seconds : 0;
+        const minutes = Math.floor(safe / 60);
+        const secs = Math.floor(safe % 60);
+        resolve({
+          formatted: safe > 0 ? `${minutes}:${secs < 10 ? '0' : ''}${secs}` : '0:00',
+          seconds: safe,
+        });
+      };
+
+      const tryReadDuration = () => {
+        // Some MP4s report Infinity until you seek to the end. This forces the browser
+        // to scan the file and report the real duration.
+        if (video.duration === Infinity || isNaN(video.duration)) {
+          video.currentTime = 1e10;
+          video.ontimeupdate = () => {
+            video.ontimeupdate = null;
+            video.currentTime = 0;
+            finish(video.duration);
+          };
+        } else {
+          finish(video.duration);
+        }
+      };
+
+      video.onloadedmetadata = tryReadDuration;
+      video.onerror = () => finish(0);
+      // Safety timeout
+      setTimeout(() => finish(video.duration || 0), 8000);
+      video.src = url;
     });
   };
 
