@@ -11,10 +11,22 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { ShortGridSkeleton } from '@/components/skeletons';
 import { sortByName } from '@/lib/sortByName';
+import { auditShortsDurations } from '@/utils/auditShortsDuration';
 
 const Shorts = () => {
   const { toast } = useToast();
-  const { uploadedVideos, getVideosByCategory, addUploadedVideo, isLoading } = useUploadedVideos();
+  const { uploadedVideos, getVideosByCategory, addUploadedVideo, isLoading, refreshVideos } = useUploadedVideos();
+
+  // One-time audit: re-measure durations on legacy shorts and reclassify
+  // anything longer than 60s back to regular videos.
+  useEffect(() => {
+    let cancelled = false;
+    auditShortsDurations().then(() => {
+      if (!cancelled) refreshVideos();
+    });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [newCategory, setNewCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const shortsPerPage = 20;
