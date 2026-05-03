@@ -595,28 +595,50 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     });
   };
 
-  const getVideoDuration = (file: File): Promise<string> => {
+  const getVideoDuration = (file: File): Promise<{ formatted: string; seconds: number }> => {
     return new Promise((resolve) => {
-      if (file.type.startsWith('video/')) {
-        const video = document.createElement('video');
-        video.preload = 'metadata';
-        
-        video.onloadedmetadata = () => {
-          const duration = video.duration;
-          const minutes = Math.floor(duration / 60);
-          const seconds = Math.floor(duration % 60);
-          URL.revokeObjectURL(video.src);
-          resolve(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-        };
-        
-        video.onerror = () => {
-          resolve('0:00');
-        };
-        
-        video.src = URL.createObjectURL(file);
-      } else {
-        resolve('0:00');
+      if (!file.type.startsWith('video/')) {
+        resolve({ formatted: '0:00', seconds: 0 });
+        return;
       }
+
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.muted = true;
+      video.playsInline = true;
+      const url = URL.createObjectURL(file);
+
+      const finish = (seconds: number) => {
+        try { URL.revokeObjectURL(url); } catch {}
+        const safe = isFinite(seconds) && seconds > 0 ? seconds : 0;
+        const minutes = Math.floor(safe / 60);
+        const secs = Math.floor(safe % 60);
+        resolve({
+          formatted: safe > 0 ? `${minutes}:${secs < 10 ? '0' : ''}${secs}` : '0:00',
+          seconds: safe,
+        });
+      };
+
+      const tryReadDuration = () => {
+        // Some MP4s report Infinity until you seek to the end. This forces the browser
+        // to scan the file and report the real duration.
+        if (video.duration === Infinity || isNaN(video.duration)) {
+          video.currentTime = 1e10;
+          video.ontimeupdate = () => {
+            video.ontimeupdate = null;
+            video.currentTime = 0;
+            finish(video.duration);
+          };
+        } else {
+          finish(video.duration);
+        }
+      };
+
+      video.onloadedmetadata = tryReadDuration;
+      video.onerror = () => finish(0);
+      // Safety timeout
+      setTimeout(() => finish(video.duration || 0), 8000);
+      video.src = url;
     });
   };
 
@@ -796,8 +818,21 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     console.log(`Uploading video: ${file.name} (${fileSizeMB}MB) - Always using cloud storage`);
 
     // Get duration first (fast operation)
-    const duration = await getVideoDuration(file);
-    
+    const { formatted: duration, seconds: durationSeconds } = await getVideoDuration(file);
+
+    // Enforce Shorts rule: ≤60 seconds. If it's longer, reclassify to 'video'
+    // and preserve any subcategory the user picked. This prevents long videos
+    // from showing up under /shorts.
+    let effectiveCategory = category;
+    if (effectiveCategory === 'shorts' && durationSeconds > 0 && durationSeconds > 60) {
+      console.warn(`Reclassifying long upload (${durationSeconds.toFixed(1)}s) from 'shorts' to 'video': ${title || file.name}`);
+      effectiveCategory = 'video';
+      toast({
+        title: 'Moved out of Shorts',
+        description: `"${title || file.name}" is ${Math.round(durationSeconds)}s long. Shorts must be 60s or less, so it was published as a regular video instead.`,
+      });
+    }
+
     // Upload video to cloud storage (always - never store base64)
     const fileSizeMBNum = Math.round(file.size / (1024 * 1024));
     const estimatedMinutes = Math.max(1, Math.ceil(fileSizeMBNum / 10));
@@ -832,7 +867,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       timestamp: 'Just now',
       views: '0',
       duration,
-      category,
+      category: effectiveCategory,
       subcategory,
       tags,
     };
@@ -851,7 +886,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         timestamp: newVideo.timestamp,
         views: newVideo.views,
         duration,
-        category,
+        category: effectiveCategory,
         subcategory,
         tags,
       });
@@ -861,7 +896,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       localId: videoId,
       title: newVideo.title,
       description: newVideo.description,
-      category,
+      category: effectiveCategory,
       subcategory,
       tags,
       duration,
@@ -970,34 +1005,45 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     }
   };
   
-  // Fuzzy matching helper for typos
-  const isFuzzyMatch = (input: string, target: string, threshold = 0.75): boolean => {
-    const s1 = input.toLowerCase().trim();
-    const s2 = target.toLowerCase().trim();
-    if (s1 === s2) return true;
-    if (s1.includes(s2) || s2.includes(s1)) return 0.9 >= threshold;
-    const chars1 = new Set(s1.split(''));
-    const chars2 = new Set(s2.split(''));
-    const intersection = [...chars1].filter(c => chars2.has(c)).length;
-    const union = new Set([...chars1, ...chars2]).size;
-    return (intersection / union) >= threshold;
+  // Tight typo tolerance (Levenshtein) — does NOT match substrings.
+  const isCloseTypo = (a: string, b: string): boolean => {
+    if (a === b) return true;
+    if (!a || !b) return false;
+    if (Math.abs(a.length - b.length) > 2) return false;
+    const longer = Math.max(a.length, b.length);
+    if (longer < 6) return false;
+    const budget = longer >= 10 ? 2 : 1;
+    const m = a.length, n = b.length;
+    const dp: number[] = new Array(n + 1);
+    for (let j = 0; j <= n; j++) dp[j] = j;
+    for (let i = 1; i <= m; i++) {
+      let prev = dp[0];
+      dp[0] = i;
+      for (let j = 1; j <= n; j++) {
+        const tmp = dp[j];
+        dp[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, dp[j], dp[j - 1]);
+        prev = tmp;
+      }
+    }
+    return dp[n] <= budget;
   };
 
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
     const categoryLower = category.toLowerCase().trim();
-    
+
     return uploadedVideos.filter(video => {
       const vidCategory = video.category?.toLowerCase().trim() || '';
       const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
-      
+
       if (subcategory) {
         const subLower = subcategory.toLowerCase().trim();
-        const categoryMatches = vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
-        const subcategoryMatches = vidSubcategory === subLower || isFuzzyMatch(vidSubcategory, subLower);
+        const categoryMatches = vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower);
+        const subcategoryMatches = vidSubcategory === subLower || isCloseTypo(vidSubcategory, subLower);
         return categoryMatches && subcategoryMatches;
       }
-      
-      return vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
+
+      // Exact match only — no substring matching, no tag fallback.
+      return vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower);
     });
   };
 

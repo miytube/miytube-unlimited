@@ -7,46 +7,45 @@
 import { UploadedVideo } from '@/context/UploadedVideosContext';
 
 /**
- * Calculate similarity score between two strings using character overlap.
- * Returns a value between 0 and 1, where 1 is an exact match.
+ * True Levenshtein edit distance — used for tight typo tolerance only.
  */
-const getSimilarity = (str1: string, str2: string): number => {
-  const s1 = str1.toLowerCase().trim();
-  const s2 = str2.toLowerCase().trim();
-  if (s1 === s2) return 1;
-  
-  // Only allow includes match if strings are very similar in length (within 3 chars)
-  // This prevents "pryor" from matching "late night" just because of character overlap
-  if (Math.abs(s1.length - s2.length) <= 3 && (s1.includes(s2) || s2.includes(s1))) return 0.9;
-  
-  // Levenshtein-based similarity for typo detection only
-  const maxLen = Math.max(s1.length, s2.length);
-  if (maxLen === 0) return 1;
-  
-  // Simple edit distance approximation - only high similarity for near-identical strings
-  let matches = 0;
-  const minLen = Math.min(s1.length, s2.length);
-  for (let i = 0; i < minLen; i++) {
-    if (s1[i] === s2[i]) matches++;
+const editDistance = (a: string, b: string): number => {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const dp: number[] = new Array(n + 1);
+  for (let j = 0; j <= n; j++) dp[j] = j;
+  for (let i = 1; i <= m; i++) {
+    let prev = dp[0];
+    dp[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const tmp = dp[j];
+      if (a[i - 1] === b[j - 1]) {
+        dp[j] = prev;
+      } else {
+        dp[j] = 1 + Math.min(prev, dp[j], dp[j - 1]);
+      }
+      prev = tmp;
+    }
   }
-  
-  // Penalize length difference more heavily
-  const lengthPenalty = Math.abs(s1.length - s2.length) / maxLen;
-  return (matches / maxLen) - lengthPenalty;
+  return dp[n];
 };
 
 /**
- * Check if two strings are a fuzzy match (handles typos like "commerical" vs "commercial")
+ * Tight typo tolerance: allow 1 edit for words ≥6 chars, 2 edits for ≥10 chars.
+ * NEVER matches substrings or different-length strings beyond that budget.
  */
-const isFuzzyMatch = (input: string, target: string, threshold = 0.75): boolean => {
-  const inputLower = input.toLowerCase().trim();
-  const targetLower = target.toLowerCase().trim();
-  
-  // Exact match
-  if (inputLower === targetLower) return true;
-  
-  // Check similarity
-  return getSimilarity(inputLower, targetLower) >= threshold;
+const isFuzzyMatch = (input: string, target: string): boolean => {
+  const a = input.toLowerCase().trim();
+  const b = target.toLowerCase().trim();
+  if (!a || !b) return false;
+  if (a === b) return true;
+  // Length must be close
+  if (Math.abs(a.length - b.length) > 2) return false;
+  const longer = Math.max(a.length, b.length);
+  if (longer < 6) return false; // too short, would cause false positives
+  const budget = longer >= 10 ? 2 : 1;
+  return editDistance(a, b) <= budget;
 };
 
 const sportsLeaguePatterns = [
@@ -109,8 +108,13 @@ export const filterVideosByCategory = (
 };
 
 /**
- * Filter videos by subcategory with strict matching plus fuzzy matching for typos.
- * Used for subcategory pages where we need exact matches but also catch common typos.
+ * Filter videos by subcategory with STRICT matching.
+ *
+ * A video matches only when its category/subcategory equals (or is a near-exact
+ * typo variant of) the page's mapping key — including hyphen/space/no-separator
+ * variants and the parent+child path form. Tag-based fallbacks, substring
+ * `includes()`, and single-word title matching were removed because they leaked
+ * videos across categories (e.g. cartoons appearing under Music/Rock).
  */
 export const filterVideosBySubcategory = (
   videos: UploadedVideo[],
@@ -119,135 +123,74 @@ export const filterVideosBySubcategory = (
 ): UploadedVideo[] => {
   const titleLower = pageTitle.toLowerCase().trim();
   const keyLower = mappingKey.toLowerCase().trim();
-  
-  // Handle path-based keys like "real-estate/luxury" -> extract segments
+
   const keySegments = keyLower.split('/');
   const lastSegment = keySegments[keySegments.length - 1];
   const parentSegment = keySegments.length > 1 ? keySegments[0] : '';
-  
-  // Also handle hyphen-separated keys like "real-estate-luxury"
-  const hyphenSegments = keyLower.split('-');
-  const lastHyphenSegment = hyphenSegments[hyphenSegments.length - 1];
-  
-  // Extract core keywords from mapping key
-  const keyWords = keyLower.split(/[-\/]/).filter(w => w.length > 2);
-  
-  // Handle alternate formats: "late-night" -> "late night", "latenight"
+
   const lastSegmentSpaced = lastSegment.replace(/-/g, ' ');
-  const lastSegmentNoHyphens = lastSegment.replace(/-/g, '');
-  
-  // Build alternate forms of the mapping key to match path-style subcategory values
-  // e.g. key "animation/cartoons" should match subcategory "/animation/cartoons" or "animation-cartoons"
-  const keyWithSlash = keyLower.startsWith('/') ? keyLower : `/${keyLower}`;
+  const lastSegmentNoSep = lastSegment.replace(/[-\s]/g, '');
   const keyHyphenated = keyLower.replace(/\//g, '-');
+  const keyNoSep = keyLower.replace(/[-\s/]/g, '');
+  const titleNoSep = titleLower.replace(/[-\s]/g, '');
+
+  // Build the canonical accepted-value set for this page.
+  const accepted = new Set<string>([
+    keyLower,
+    keyHyphenated,
+    keyNoSep,
+    lastSegment,
+    lastSegmentSpaced,
+    lastSegmentNoSep,
+    titleLower,
+    titleNoSep,
+    `${parentSegment}-${lastSegment}`,
+    `${parentSegment}/${lastSegment}`,
+  ].filter(Boolean));
+
+  const acceptedFuzzyTargets = [keyLower, keyHyphenated, lastSegment, lastSegmentSpaced];
+
+  const norm = (s: string) => s.toLowerCase().trim().replace(/^\/+/, '');
+  const normNoSep = (s: string) => norm(s).replace(/[-\s/]/g, '');
 
   return videos.filter(video => {
-    const vidCategoryRaw = video.category?.toLowerCase().trim() || '';
-    const vidSubcategoryRaw = video.subcategory?.toLowerCase().trim() || '';
-    // Strip leading slash so "/animation/cartoons" matches "animation/cartoons"
-    const vidCategory = vidCategoryRaw.replace(/^\/+/, '');
-    const vidSubcategory = vidSubcategoryRaw.replace(/^\/+/, '');
+    const vidCategory = norm(video.category || '');
+    const vidSubcategory = norm(video.subcategory || '');
+    const vidCategoryNoSep = normNoSep(video.category || '');
+    const vidSubcategoryNoSep = normNoSep(video.subcategory || '');
+    const vidTags = (video.tags || []).map(t => norm(t));
 
-    // Match full-path subcategory keys directly (e.g. video.subcategory = "/animation/cartoons" and key = "animation/cartoons")
-    if (vidSubcategory === keyLower || vidSubcategoryRaw === keyWithSlash) return true;
-    // Match hyphenated equivalent (e.g. "animation-cartoons")
-    if (vidSubcategory === keyHyphenated || vidSubcategory.replace(/\//g, '-') === keyHyphenated) return true;
-
-    const vidTags = video.tags?.map(t => t.toLowerCase().trim()) || [];
+    // Sports league isolation (NBA vs NHL etc.)
     const requestedLeague = detectSportsLeague(`${keyLower} ${titleLower}`);
     const videoLeague = detectSportsLeague(`${vidCategory} ${vidSubcategory} ${vidTags.join(' ')}`);
-
-    // Keep sports league playoff pages isolated from each other. This prevents NBA
-    // East/West playoff games from appearing on NHL playoff pages just because they
-    // share generic terms like "playoffs" or "game highlights".
     if (requestedLeague && videoLeague && requestedLeague !== videoLeague) return false;
-    
-    // Normalize video fields for comparison (remove hyphens/spaces)
-    const vidCategoryNorm = vidCategory.replace(/[\s-]/g, '');
-    const vidSubcategoryNorm = vidSubcategory.replace(/[\s-]/g, '');
-    
-    // Handle comma-separated subcategories (e.g., "gangster,-crime,-drama")
-    const subcategoryParts = vidSubcategory.split(',').map(p => p.replace(/^-/, '').trim());
-    const firstSubcategoryPart = subcategoryParts[0] || '';
-    
-    // Normalize singular/plural forms
-    const normalizeWordForms = (str: string) => {
-      return str.replace(/s$/, ''); // Remove trailing 's' for comparison
-    };
-    
-    const lastSegmentBase = normalizeWordForms(lastSegment);
-    const firstPartBase = normalizeWordForms(firstSubcategoryPart);
-    
-    // Exact match on subcategory (e.g., video.subcategory === "luxury")
-    if (vidSubcategory === lastSegment) return true;
-    
-    // Match first part of comma-separated subcategory (e.g., "gangster" from "gangster,-crime,-drama")
-    if (firstSubcategoryPart === lastSegment || firstSubcategoryPart === lastSegmentSpaced) return true;
-    if (firstPartBase === lastSegmentBase) return true;
-    
-    // Match spaced version (e.g., "late night" for "late-night")
-    if (vidSubcategory === lastSegmentSpaced) return true;
-    
-    // Match normalized versions (e.g., "latenight" matches "late-night")
-    if (vidSubcategoryNorm === lastSegmentNoHyphens) return true;
-    
-    // Fuzzy match on subcategory (for typos like "commerical" vs "commercial")
-    if (isFuzzyMatch(vidSubcategory, lastSegment)) return true;
-    if (isFuzzyMatch(vidSubcategory, lastSegmentSpaced)) return true;
-    if (isFuzzyMatch(firstSubcategoryPart, lastSegment)) return true;
-    
-    // Match when video category matches parent and subcategory matches last segment
-    // e.g., video.category="real-estate", video.subcategory="luxury", key="real-estate/luxury"
+
+    // 1) Exact match on category or subcategory (including normalized variants)
+    if (accepted.has(vidCategory) || accepted.has(vidSubcategory)) return true;
+    if (accepted.has(vidCategoryNoSep) || accepted.has(vidSubcategoryNoSep)) return true;
+
+    // 2) Parent + child match: video.category == parent AND video.subcategory == child
     if (parentSegment) {
-      const normalizedParent = parentSegment.replace(/[\s-]/g, '');
-      const normalizedVidCategory = vidCategory.replace(/[\s-]/g, '');
-      if ((normalizedVidCategory === normalizedParent || isFuzzyMatch(normalizedVidCategory, normalizedParent)) && 
-          (vidSubcategoryNorm === lastSegmentNoHyphens || isFuzzyMatch(vidSubcategory, lastSegment) || isFuzzyMatch(vidSubcategory, lastSegmentSpaced) || firstPartBase === lastSegmentBase)) {
-        return true;
-      }
+      const parentNoSep = parentSegment.replace(/[-\s]/g, '');
+      const parentMatches = vidCategory === parentSegment || vidCategoryNoSep === parentNoSep;
+      const childMatches =
+        vidSubcategory === lastSegment ||
+        vidSubcategory === lastSegmentSpaced ||
+        vidSubcategoryNoSep === lastSegmentNoSep;
+      if (parentMatches && childMatches) return true;
     }
-    
-    // Exact match on title
-    if (vidCategory === titleLower || vidSubcategory === titleLower) return true;
-    
-    // Match title without "shows" suffix (e.g., "late night" matches "late night shows")
-    const titleWithoutShows = titleLower.replace(/\s*shows?\s*$/i, '').trim();
-    if (vidSubcategory === titleWithoutShows || vidSubcategoryNorm === titleWithoutShows.replace(/[\s-]/g, '')) return true;
-    
-    // Fuzzy match on title
-    if (isFuzzyMatch(vidCategory, titleLower) || isFuzzyMatch(vidSubcategory, titleLower)) return true;
-    
-    // Match combined parent-subcategory pattern (e.g., "real-estate-luxury")
-    const combinedKey = `${parentSegment}-${lastSegment}`;
-    if (vidCategory === combinedKey || vidSubcategory === combinedKey) return true;
-    if (isFuzzyMatch(vidCategory, combinedKey) || isFuzzyMatch(vidSubcategory, combinedKey)) return true;
-    
-    // Check if category/subcategory contains the page title exactly
-    const titleWords = titleLower.split(' ').filter(w => w.length > 2);
-    const combinedText = `${vidCategory} ${vidSubcategory}`;
-    
-    // All title words must be present (excluding common words like "shows")
-    const meaningfulTitleWords = titleWords.filter(w => !['show', 'shows', 'video', 'videos', 'films', 'film'].includes(w));
-    if (meaningfulTitleWords.length >= 1 && meaningfulTitleWords.every(word => {
-      const wordBase = normalizeWordForms(word);
-      return combinedText.includes(word) || combinedText.includes(wordBase) || subcategoryParts.some(p => normalizeWordForms(p) === wordBase);
-    })) return true;
-    
-    // Check if key matches exactly
-    if (vidCategory === keyLower || vidSubcategory === keyLower) return true;
-    
-    // Check if all key words are present in category or subcategory
-    if (keyWords.length >= 2 && keyWords.every(word => combinedText.includes(word))) return true;
-    
-    // Check tags for exact match against full key/title only (avoid generic single-word
-    // matches like "playoffs" leaking NBA videos into NHL playoffs page)
-    if (vidTags.includes(titleLower) || vidTags.includes(keyLower)) return true;
-    if (vidTags.includes(titleWithoutShows)) return true;
-    if (vidTags.some(tag => isFuzzyMatch(tag, titleLower) || isFuzzyMatch(tag, keyLower))) return true;
-    
-    // Check if tag contains ALL key words (requires full context, e.g. "nhl" + "playoffs")
-    if (vidTags.some(tag => keyWords.length >= 2 && keyWords.every(word => tag.includes(word)))) return true;
-    
+
+    // 3) Tight typo tolerance ONLY against the page key/title — not against tags,
+    //    not against substrings, not against single words.
+    for (const target of acceptedFuzzyTargets) {
+      if (isFuzzyMatch(vidSubcategory, target) || isFuzzyMatch(vidCategory, target)) return true;
+    }
+
+    // 4) Exact tag match against the FULL page key or title (not single words)
+    if (vidTags.includes(keyLower) || vidTags.includes(keyHyphenated) || vidTags.includes(titleLower)) {
+      return true;
+    }
+
     return false;
   });
 };
