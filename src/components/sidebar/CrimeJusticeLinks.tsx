@@ -38,8 +38,9 @@ export const CrimeJusticeLinks: React.FC = () => {
       path: '/police',
       subItems: [
         { id: 'police-chases', label: 'Police Chases', path: '/police/chases' },
-        { id: 'police-sheriff', label: 'Sheriff & Highway Patrol', path: '/police/sheriff' },
-        { id: 'police-stops', label: 'Police Stops (What to Do)', path: '/police/stops' }
+        { id: 'police-sheriff', label: 'Police, Sheriff & Highway Patrol', path: '/police/sheriff' },
+        { id: 'police-stops', label: 'Police Stops (What to Do)', path: '/police/stops' },
+        { id: 'police-shots-fired', label: 'Shots Fired', path: '/police/shots-fired' }
       ]
     },
     { 
