@@ -3,6 +3,13 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
 
 const API_URL = "https://connector-gateway.lovable.dev";
 
+const sanitizeObjectFileName = (fileName: string): string => {
+  const trimmed = fileName.trim().replace(/[^a-zA-Z0-9._-]/g, "_");
+  const withoutTraversal = trimmed.replace(/\.{2,}/g, ".").replace(/^\.+/, "");
+  const safeName = withoutTraversal || "upload";
+  return safeName.slice(0, 180);
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -52,7 +59,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const safeName = sanitizeObjectFileName(fileName);
     const folder = kind === "thumbnail" ? "thumbnails" : "videos";
     const objectKey = `${folder}/${userId}/${Date.now()}-${Math.random()
       .toString(36)
