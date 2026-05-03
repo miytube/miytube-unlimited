@@ -202,6 +202,7 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-fishing', label: 'Fishing', path: '/sports/fishing' },
         { id: 'sports-horses', label: 'Horses & Equestrian', path: '/sports/horses' },
         { id: 'sports-cycling', label: 'Road & Mountain Biking', path: '/sports/cycling' },
+        { id: 'sports-rugby-watch', label: 'Rugby', path: '/sports/rugby-watch' },
         { id: 'sports-sky-diving', label: 'Sky Diving', path: '/sports/sky-diving' },
         { id: 'sports-comedy', label: 'Sports Comedy & Bloopers', path: '/sports/comedy' },
         { id: 'sports-interviews', label: 'Sports Interviews', path: '/sports/interviews' },
