@@ -253,54 +253,54 @@ export const filterVideosBySubcategory = (
 };
 
 /**
- * Filter videos by music genre with strict matching plus fuzzy matching for typos.
+ * Filter videos by music genre with STRICT matching.
+ * Requires the video to be a music-categorized upload AND the genre to match
+ * the category/subcategory/tag exactly (or as a hyphen/space variant).
+ * No fuzzy matching and no substring matching — short genre names like "rock"
+ * were leaking unrelated videos (cartoons, sports) via loose includes/fuzzy logic.
  */
 export const filterVideosByMusicGenre = (
   videos: UploadedVideo[],
   genre: string
 ): UploadedVideo[] => {
   const genreLower = genre.toLowerCase().trim();
-  
-  // Handle hyphenated genre names (e.g., "funk-rock" should match "funk rock")
-  const genreWords = genreLower.split('-').filter(w => w.length > 0);
-  const genreSpaced = genreWords.join(' ');
-  
+  if (!genreLower) return [];
+
+  // Build accepted genre variants (hyphen / space / no-separator)
+  const genreSpaced = genreLower.replace(/-/g, ' ');
+  const genreNoSep = genreLower.replace(/[-\s]/g, '');
+  const variants = new Set<string>([
+    genreLower,
+    genreSpaced,
+    genreNoSep,
+    `music-${genreLower}`,
+    `music ${genreLower}`,
+    `music-${genreSpaced}`,
+    `music ${genreSpaced}`,
+  ]);
+
+  const norm = (s: string) => s.toLowerCase().trim();
+  const normNoSep = (s: string) => norm(s).replace(/[-\s]/g, '');
+
   return videos.filter(video => {
-    const categoryLower = video.category?.toLowerCase().trim() || '';
-    const subcategoryLower = video.subcategory?.toLowerCase().trim() || '';
-    const tags = video.tags?.map(t => t.toLowerCase().trim()) || [];
-    
-    // Check if this is a music video (category starts with 'music' or equals 'music')
-    const isMusicVideo = categoryLower === 'music' || categoryLower.startsWith('music-') || categoryLower.startsWith('music ');
-    
-    // Exact match on category or subcategory equals the genre
-    if (categoryLower === genreLower || subcategoryLower === genreLower) return true;
-    
-    // Fuzzy match on genre (for typos)
-    if (isFuzzyMatch(categoryLower, genreLower) || isFuzzyMatch(subcategoryLower, genreLower)) return true;
-    
-    // Match music-{genre} pattern
-    if (categoryLower === `music-${genreLower}` || subcategoryLower === `music-${genreLower}`) return true;
-    
-    // Match "music {genre}" pattern (space separated)
-    if (categoryLower === `music ${genreLower}` || subcategoryLower === `music ${genreLower}`) return true;
-    
-    // Match spaced version (e.g., "funk rock" for "funk-rock")
-    if (categoryLower === genreSpaced || subcategoryLower === genreSpaced) return true;
-    if (categoryLower === `music-${genreSpaced}` || subcategoryLower === `music-${genreSpaced}`) return true;
-    if (categoryLower === `music ${genreSpaced}` || subcategoryLower === `music ${genreSpaced}`) return true;
-    
-    // For music videos, check if subcategory matches genre (exact or fuzzy)
-    if (isMusicVideo && (subcategoryLower === genreLower || isFuzzyMatch(subcategoryLower, genreLower))) return true;
-    if (isMusicVideo && (subcategoryLower === genreSpaced || isFuzzyMatch(subcategoryLower, genreSpaced))) return true;
-    
-    // Check tags for exact match or fuzzy match
-    if (tags.includes(genreLower) || tags.includes(`music-${genreLower}`) || tags.includes(genreSpaced)) return true;
-    if (tags.some(tag => isFuzzyMatch(tag, genreLower))) return true;
-    
-    // Check if category or subcategory contains the genre (for cases like "music-lyrics" matching "lyrics")
-    if (categoryLower.includes(genreLower) || subcategoryLower.includes(genreLower)) return true;
-    
+    const categoryLower = norm(video.category || '');
+    const subcategoryLower = norm(video.subcategory || '');
+
+    // MUST be a music video — prevents cartoons, sports, etc. from appearing
+    const isMusicVideo =
+      categoryLower === 'music' ||
+      categoryLower.startsWith('music-') ||
+      categoryLower.startsWith('music ');
+    if (!isMusicVideo) return false;
+
+    // Exact (or normalized) match on category/subcategory
+    if (variants.has(categoryLower) || variants.has(subcategoryLower)) return true;
+    if (variants.has(normNoSep(video.category || '')) || variants.has(normNoSep(video.subcategory || ''))) return true;
+
+    // Exact tag match only
+    const tags = (video.tags || []).map(t => norm(t));
+    if (tags.some(t => variants.has(t))) return true;
+
     return false;
   });
 };
