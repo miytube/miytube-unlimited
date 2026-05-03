@@ -112,6 +112,12 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  'sports-rugby-watch': {
+    title: 'Rugby',
+    description: 'Rugby matches, highlights, and tournaments',
+    icon: Trophy,
+    parent: { route: '/sports/other', name: 'Other Sports' }
+  },
   'sports-soccer': {
     title: 'Soccer & Football',
     description: 'Soccer and American football',

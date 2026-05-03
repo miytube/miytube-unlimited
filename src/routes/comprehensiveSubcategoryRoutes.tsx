@@ -490,6 +490,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="sports-race-car" path="/sports/race-car" element={<GenericSubcategoryPage />} />,
   <Route key="sports-cycling" path="/sports/cycling" element={<GenericSubcategoryPage />} />,
   <Route key="sports-rugby" path="/sports/rugby" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-rugby-watch" path="/sports/rugby-watch" element={<GenericSubcategoryPage />} />,
   <Route key="sports-soccer" path="/sports/soccer" element={<GenericSubcategoryPage />} />,
   <Route key="sports-surfing" path="/sports/surfing" element={<GenericSubcategoryPage />} />,
   <Route key="sports-tennis-men" path="/sports/tennis-men" element={<GenericSubcategoryPage />} />,
