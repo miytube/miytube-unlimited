@@ -1005,34 +1005,45 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     }
   };
   
-  // Fuzzy matching helper for typos
-  const isFuzzyMatch = (input: string, target: string, threshold = 0.75): boolean => {
-    const s1 = input.toLowerCase().trim();
-    const s2 = target.toLowerCase().trim();
-    if (s1 === s2) return true;
-    if (s1.includes(s2) || s2.includes(s1)) return 0.9 >= threshold;
-    const chars1 = new Set(s1.split(''));
-    const chars2 = new Set(s2.split(''));
-    const intersection = [...chars1].filter(c => chars2.has(c)).length;
-    const union = new Set([...chars1, ...chars2]).size;
-    return (intersection / union) >= threshold;
+  // Tight typo tolerance (Levenshtein) — does NOT match substrings.
+  const isCloseTypo = (a: string, b: string): boolean => {
+    if (a === b) return true;
+    if (!a || !b) return false;
+    if (Math.abs(a.length - b.length) > 2) return false;
+    const longer = Math.max(a.length, b.length);
+    if (longer < 6) return false;
+    const budget = longer >= 10 ? 2 : 1;
+    const m = a.length, n = b.length;
+    const dp: number[] = new Array(n + 1);
+    for (let j = 0; j <= n; j++) dp[j] = j;
+    for (let i = 1; i <= m; i++) {
+      let prev = dp[0];
+      dp[0] = i;
+      for (let j = 1; j <= n; j++) {
+        const tmp = dp[j];
+        dp[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, dp[j], dp[j - 1]);
+        prev = tmp;
+      }
+    }
+    return dp[n] <= budget;
   };
 
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
     const categoryLower = category.toLowerCase().trim();
-    
+
     return uploadedVideos.filter(video => {
       const vidCategory = video.category?.toLowerCase().trim() || '';
       const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
-      
+
       if (subcategory) {
         const subLower = subcategory.toLowerCase().trim();
-        const categoryMatches = vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
-        const subcategoryMatches = vidSubcategory === subLower || isFuzzyMatch(vidSubcategory, subLower);
+        const categoryMatches = vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower);
+        const subcategoryMatches = vidSubcategory === subLower || isCloseTypo(vidSubcategory, subLower);
         return categoryMatches && subcategoryMatches;
       }
-      
-      return vidCategory === categoryLower || isFuzzyMatch(vidCategory, categoryLower);
+
+      // Exact match only — no substring matching, no tag fallback.
+      return vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower);
     });
   };
 
