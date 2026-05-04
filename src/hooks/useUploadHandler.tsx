@@ -83,26 +83,37 @@ export const useUploadHandler = () => {
     
     // Store uploads in context - save ALL video/audio content types
     if (isVideoUpload || files.some(f => f.type.startsWith('audio/'))) {
-      try {
-        const isBatch = files.length > 1;
-        for (const file of files) {
-          // Use category from form, or fall back to contentTypeId
-          const uploadCategory = category || contentTypeId;
-          // For batch uploads, derive title per-file from filename so each video gets its own name.
-          // For single uploads, honor the user-entered title.
-          const fileBaseName = file.name.split('.').slice(0, -1).join('.') || file.name;
-          const perFileTitle = isBatch ? fileBaseName : (title || fileBaseName);
-          const perFileDescription = isBatch ? '' : (description || '');
+      const isBatch = files.length > 1;
+      let successCount = 0;
+      const failed: string[] = [];
+      for (const file of files) {
+        const uploadCategory = category || contentTypeId;
+        const fileBaseName = file.name.split('.').slice(0, -1).join('.') || file.name;
+        const perFileTitle = isBatch ? fileBaseName : (title || fileBaseName);
+        const perFileDescription = isBatch ? '' : (description || '');
+        try {
           await addUploadedVideo(file, perFileTitle, perFileDescription, uploadCategory, subcategory, tags);
+          successCount++;
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+          failed.push(file.name);
+          toast({
+            title: `Failed: ${file.name}`,
+            description: errorMessage,
+            variant: "destructive",
+          });
+          // Continue with the rest of the batch instead of aborting
         }
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+      }
+
+      if (successCount === 0) {
+        return; // Nothing succeeded; skip success redirect
+      }
+      if (failed.length > 0) {
         toast({
-          title: "Upload failed",
-          description: errorMessage,
-          variant: "destructive",
+          title: "Some files failed",
+          description: `${successCount} uploaded, ${failed.length} failed.`,
         });
-        return; // Don't continue with success flow
       }
     }
     
