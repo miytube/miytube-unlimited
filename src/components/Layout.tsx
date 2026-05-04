@@ -3,6 +3,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { Sidebar } from './Sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { QuickCreatePageWidget } from './admin/QuickCreatePageWidget';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </main>
         <Footer />
       </div>
+      <QuickCreatePageWidget />
     </div>
   );
 };
