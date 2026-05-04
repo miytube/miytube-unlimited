@@ -167,6 +167,8 @@ export const QuickCreatePageWidget: React.FC = () => {
     }
   };
 
+  if (!isAdmin) return null;
+
   const selectedNames = parentOptions
     .filter((o) => selectedSlugs.includes(o.slug))
     .map((o) => o.name);
