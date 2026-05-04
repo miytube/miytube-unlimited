@@ -666,7 +666,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     if (isYouTube && youtubeId) {
       console.log(`Adding YouTube embed: ${youtubeId}`);
       
-      const videoId = `upload-${Date.now()}`;
+      const videoId = createLocalVideoId();
       const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
       
       const newVideo: UploadedVideo = {
@@ -750,7 +750,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     if (importUrl) {
       console.log(`Importing video from URL: ${importUrl}`);
       
-      const videoId = `upload-${Date.now()}`;
+      const videoId = createLocalVideoId();
       const newVideo: UploadedVideo = {
         id: videoId,
         file: null,
@@ -863,7 +863,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       // Generate and upload thumbnail to cloud storage (after video is uploaded)
       const thumbnail = await generateThumbnail(file);
       
-      const videoId = `upload-${Date.now()}`;
+      const videoId = createLocalVideoId();
       const newVideo: UploadedVideo = {
       id: videoId,
       file: null,
