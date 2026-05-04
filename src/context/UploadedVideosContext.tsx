@@ -173,6 +173,13 @@ const dataUrlToFile = (dataUrl: string, fileName: string, fileType: string): Fil
   return new File([u8arr], fileName, { type: fileType });
 };
 
+const createLocalVideoId = (): string => {
+  const randomPart = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID().slice(0, 8)
+    : Math.random().toString(36).slice(2, 10);
+  return `upload-${Date.now()}-${randomPart}`;
+};
+
 // Get client IP address for duplicate detection
 const getClientIp = async (): Promise<string> => {
   try {
@@ -231,13 +238,15 @@ const saveVideoToSupabase = async (video: {
     return { isDuplicate: true, reason: 'session' };
   }
   
-  // Check if same title was uploaded from same IP (same location duplicate check)
-  if (uploaderIp !== 'unknown') {
+  // Check if the same file title + size was uploaded from the same IP.
+  // Title alone is too broad for back-to-back game/highlight uploads.
+  if (uploaderIp !== 'unknown' && video.fileSize) {
     const { data: existingByIpTitle } = await supabase
       .from('uploaded_videos')
-      .select('id, title')
+      .select('id, title, file_size')
       .eq('uploader_ip', uploaderIp)
       .eq('title', video.title)
+      .eq('file_size', video.fileSize)
       .maybeSingle();
     
     if (existingByIpTitle) {
