@@ -512,10 +512,17 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         initialVideosLoadPromise = null;
       }
 
-      // Render immediately with first batch
+      // Render immediately with first batch, then stream the rest in
       if (!initialVideosLoadPromise) {
-        initialVideosLoadPromise = loadVideosFromSupabase().then(({ firstBatch }) => {
+        initialVideosLoadPromise = loadVideosFromSupabase().then(({ firstBatch, loadRemaining }) => {
           console.log('First batch cloud videos:', firstBatch.length);
+          // Kick off background load of remaining videos
+          loadRemaining((chunk) => {
+            setUploadedVideos((prev) => mergeAndSort([], [
+              ...prev.filter(v => !v.file && !v.fileDataUrl).map(v => v) as UploadedVideo[],
+              ...chunk,
+            ]));
+          }).catch(err => console.error('Background video load failed:', err));
           return mergeAndSort([], firstBatch);
         });
       }
@@ -524,8 +531,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       setUploadedVideos(initialMerged);
       setIsLoaded(true);
       console.log('Initial render with:', initialMerged.length, 'videos');
-      
-      console.log('Initial page load complete without preloading the full library');
+
+      console.log('Initial page load complete');
     } catch (error) {
       console.error('Error loading videos:', error);
     }
