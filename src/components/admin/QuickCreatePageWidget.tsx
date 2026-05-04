@@ -45,8 +45,6 @@ export const QuickCreatePageWidget: React.FC = () => {
   const [busy, setBusy] = useState(false);
   const [createdUrls, setCreatedUrls] = useState<{ url: string; parent: string }[]>([]);
 
-  if (!isAdmin) return null;
-
   // Unified, alphabetized parent list: top-level hardcoded categories + custom categories
   const parentOptions = useMemo<ParentOption[]>(() => {
     const map = new Map<string, ParentOption>();
