@@ -849,27 +849,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         throw new Error(duplicateMessage);
       }
 
-      // Save locally only after the cloud record is accepted, so rejected duplicates
-      // cannot leave a stale watch URL pointing at a deleted storage object.
-       await saveVideoToDB({
-          id: videoId,
-          fileDataUrl: '', // Never store base64
-          cloudUrl: cloudUrl,
-          isCloudStored: true,
-          fileName: file.name,
-         fileType: file.type,
-         title: newVideo.title,
-         description: newVideo.description,
-         thumbnail,
-         timestamp: newVideo.timestamp,
-         views: newVideo.views,
-         duration,
-         category: effectiveCategory,
-         subcategory,
-         tags,
-       });
-       console.log("Saved video metadata to IndexedDB:", videoId);
-      
       console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");
       setUploadedVideos(prev => [newVideo, ...prev]);
       completeUpload();
@@ -930,10 +909,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         await deleteVideoFromCloud(videoToDelete.cloudUrl);
         console.log("Deleted video from cloud storage:", id);
       }
-      
-      // Delete from IndexedDB
-      await deleteVideoFromDB(id);
-      console.log("Deleted video from IndexedDB:", id);
       
       // Delete from Supabase
       await deleteVideoFromSupabase(id);
