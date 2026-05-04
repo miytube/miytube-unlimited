@@ -868,27 +868,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         video.id === id ? { ...video, ...updates } : video
       );
       
-      // Update in IndexedDB
       const videoToUpdate = updated.find(v => v.id === id);
       if (videoToUpdate) {
-        saveVideoToDB({
-          id: videoToUpdate.id,
-          fileDataUrl: videoToUpdate.fileDataUrl || '',
-          cloudUrl: videoToUpdate.cloudUrl,
-          isCloudStored: videoToUpdate.isCloudStored,
-          fileName: videoToUpdate.file?.name || 'video',
-          fileType: videoToUpdate.file?.type || 'video/mp4',
-          title: videoToUpdate.title,
-          description: videoToUpdate.description,
-          thumbnail: videoToUpdate.thumbnail,
-          timestamp: videoToUpdate.timestamp,
-          views: videoToUpdate.views,
-          duration: videoToUpdate.duration,
-          category: videoToUpdate.category,
-          subcategory: videoToUpdate.subcategory,
-          tags: videoToUpdate.tags,
-        }).catch(err => console.error('Error updating video in IndexedDB:', err));
-        
         // Update in Supabase
         updateVideoInSupabase(id, updates as Record<string, unknown>);
       }
