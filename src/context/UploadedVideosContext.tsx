@@ -173,6 +173,13 @@ const dataUrlToFile = (dataUrl: string, fileName: string, fileType: string): Fil
   return new File([u8arr], fileName, { type: fileType });
 };
 
+const createLocalVideoId = (): string => {
+  const randomPart = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+    ? crypto.randomUUID().slice(0, 8)
+    : Math.random().toString(36).slice(2, 10);
+  return `upload-${Date.now()}-${randomPart}`;
+};
+
 // Get client IP address for duplicate detection
 const getClientIp = async (): Promise<string> => {
   try {
@@ -231,13 +238,15 @@ const saveVideoToSupabase = async (video: {
     return { isDuplicate: true, reason: 'session' };
   }
   
-  // Check if same title was uploaded from same IP (same location duplicate check)
-  if (uploaderIp !== 'unknown') {
+  // Check if the same file title + size was uploaded from the same IP.
+  // Title alone is too broad for back-to-back game/highlight uploads.
+  if (uploaderIp !== 'unknown' && video.fileSize) {
     const { data: existingByIpTitle } = await supabase
       .from('uploaded_videos')
-      .select('id, title')
+      .select('id, title, file_size')
       .eq('uploader_ip', uploaderIp)
       .eq('title', video.title)
+      .eq('file_size', video.fileSize)
       .maybeSingle();
     
     if (existingByIpTitle) {
@@ -421,8 +430,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const mergeAndSort = (localVideos: StoredVideo[], cloudVideos: UploadedVideo[]): UploadedVideo[] => {
     const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
     
-    const localVideoList: UploadedVideo[] = localVideos.map(sv => {
+    const localVideoList: UploadedVideo[] = localVideos.flatMap(sv => {
       const cloudVideo = cloudVideoMap.get(sv.id);
+      if (sv.isCloudStored && !sv.isYouTubeEmbed && !cloudVideo) {
+        deleteVideoFromDB(sv.id).catch(err => console.error('Error clearing orphaned local video:', err));
+        return [];
+      }
       return {
         id: sv.id,
         file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
@@ -657,7 +670,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     if (isYouTube && youtubeId) {
       console.log(`Adding YouTube embed: ${youtubeId}`);
       
-      const videoId = `upload-${Date.now()}`;
+      const videoId = createLocalVideoId();
       const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
       
       const newVideo: UploadedVideo = {
@@ -741,7 +754,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     if (importUrl) {
       console.log(`Importing video from URL: ${importUrl}`);
       
-      const videoId = `upload-${Date.now()}`;
+      const videoId = createLocalVideoId();
       const newVideo: UploadedVideo = {
         id: videoId,
         file: null,
@@ -854,7 +867,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       // Generate and upload thumbnail to cloud storage (after video is uploaded)
       const thumbnail = await generateThumbnail(file);
       
-      const videoId = `upload-${Date.now()}`;
+      const videoId = createLocalVideoId();
       const newVideo: UploadedVideo = {
       id: videoId,
       file: null,
@@ -872,25 +885,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       tags,
     };
     
-      // Save to IndexedDB (metadata only, no base64)
-       await saveVideoToDB({
-         id: videoId,
-         fileDataUrl: '', // Never store base64
-         cloudUrl: cloudUrl,
-         isCloudStored: true,
-         fileName: file.name,
-        fileType: file.type,
-        title: newVideo.title,
-        description: newVideo.description,
-        thumbnail,
-        timestamp: newVideo.timestamp,
-        views: newVideo.views,
-        duration,
-        category: effectiveCategory,
-        subcategory,
-        tags,
-      });
-      console.log("Saved video metadata to IndexedDB:", videoId);
       // Save to Supabase cloud backup
       const duplicateResult = await saveVideoToSupabase({
       localId: videoId,
@@ -923,6 +917,27 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         }
         throw new Error(duplicateMessage);
       }
+
+      // Save locally only after the cloud record is accepted, so rejected duplicates
+      // cannot leave a stale watch URL pointing at a deleted storage object.
+       await saveVideoToDB({
+          id: videoId,
+          fileDataUrl: '', // Never store base64
+          cloudUrl: cloudUrl,
+          isCloudStored: true,
+          fileName: file.name,
+         fileType: file.type,
+         title: newVideo.title,
+         description: newVideo.description,
+         thumbnail,
+         timestamp: newVideo.timestamp,
+         views: newVideo.views,
+         duration,
+         category: effectiveCategory,
+         subcategory,
+         tags,
+       });
+       console.log("Saved video metadata to IndexedDB:", videoId);
       
       console.log("Adding new video:", videoId, newVideo.title, "category:", category, "(cloud)");
       setUploadedVideos(prev => [newVideo, ...prev]);
