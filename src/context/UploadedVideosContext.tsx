@@ -329,11 +329,11 @@ const loadVideosFromSupabase = async (): Promise<{
   firstRowKeys: Set<string>;
   loadRemaining: (onChunk: (chunk: UploadedVideo[]) => void) => Promise<number>;
 }> => {
-  const PAGE_SIZE = 1000;
+  const PAGE_SIZE = 60;
 
   const { data, error } = await supabase
     .from('uploaded_videos')
-    .select('*')
+    .select('id, local_id, title, description, thumbnail_url, cloud_url, is_cloud_stored, is_youtube_embed, youtube_video_id, duration, category, subcategory, tags, views, created_at')
     .order('created_at', { ascending: false })
     .range(0, PAGE_SIZE - 1);
 
