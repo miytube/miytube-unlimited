@@ -40,8 +40,9 @@ export async function runStaleCacheCleanup(): Promise<void> {
     // 3. Wipe IndexedDB databases (preserves localStorage so the user stays logged in)
     if (indexedDB && "databases" in indexedDB) {
       try {
-        // @ts-expect-error - databases() is not in older TS lib defs
-        const dbs: { name?: string }[] = await indexedDB.databases();
+        const dbs: { name?: string }[] = await (indexedDB as IDBFactory & {
+          databases: () => Promise<{ name?: string }[]>;
+        }).databases();
         await Promise.all(
           dbs
             .filter((db) => db.name && !db.name.startsWith("supabase"))
