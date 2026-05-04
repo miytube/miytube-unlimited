@@ -320,8 +320,8 @@ const deduplicateRows = (rows: any[]): any[] => {
   });
 };
 
-// Load first batch quickly, then stream remaining pages one chunk at a time
-// via onChunk to avoid massive single-shot React re-renders.
+// Load only the first page for the global app shell. Pulling the full video
+// library into React state on every refresh can freeze the UI on large sites.
 const loadVideosFromSupabase = async (): Promise<{
   firstBatch: UploadedVideo[];
   firstRowKeys: Set<string>;
@@ -346,62 +346,11 @@ const loadVideosFromSupabase = async (): Promise<{
 
   const firstRows = deduplicateRows(data || []);
   const firstBatch = firstRows.map(mapSupabaseRow);
-  const hasMore = (data || []).length === PAGE_SIZE;
   const seenKeys = new Set<string>(firstRows.map((v: any) => v.local_id || v.id));
 
   console.log('First batch loaded:', firstBatch.length, 'videos');
 
-  const loadRemaining = async (
-    onChunk: (chunk: UploadedVideo[]) => void
-  ): Promise<number> => {
-    if (!hasMore) return 0;
-
-    let from = PAGE_SIZE;
-    let keepGoing = true;
-    let totalAdded = 0;
-
-    while (keepGoing) {
-      const { data: pageData, error: pageError } = await supabase
-        .from('uploaded_videos')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .range(from, from + PAGE_SIZE - 1);
-
-      if (pageError) {
-        console.error('Error loading remaining videos:', pageError);
-        break;
-      }
-
-      if (pageData && pageData.length > 0) {
-        const unique = pageData.filter((v: any) => {
-          const key = v.local_id || v.id;
-          if (seenKeys.has(key)) return false;
-          seenKeys.add(key);
-          return true;
-        });
-        if (unique.length > 0) {
-          onChunk(unique.map(mapSupabaseRow));
-          totalAdded += unique.length;
-        }
-        from += PAGE_SIZE;
-        keepGoing = pageData.length === PAGE_SIZE;
-
-        // Yield to the browser between chunks so the UI stays responsive.
-        await new Promise<void>((resolve) => {
-          if (typeof (window as any).requestIdleCallback === 'function') {
-            (window as any).requestIdleCallback(() => resolve(), { timeout: 200 });
-          } else {
-            setTimeout(resolve, 50);
-          }
-        });
-      } else {
-        keepGoing = false;
-      }
-    }
-
-    console.log('Remaining batches loaded:', totalAdded, 'additional videos');
-    return totalAdded;
-  };
+  const loadRemaining = async (): Promise<number> => 0;
 
   return { firstBatch, firstRowKeys: seenKeys, loadRemaining };
 };
@@ -512,7 +461,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       localStorage.removeItem('miytube_uploaded_videos');
       
       // Load first batch + local in parallel for fast initial render
-      const [localVideos, { firstBatch, loadRemaining }] = await Promise.all([
+      const [localVideos, { firstBatch }] = await Promise.all([
         getAllVideosFromDB(),
         loadVideosFromSupabase()
       ]);
@@ -526,23 +475,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       setIsLoaded(true);
       console.log('Initial render with:', initialMerged.length, 'videos');
       
-      // Stream remaining pages — append each chunk so React renders incrementally
-      // instead of swapping in 20k+ items at once (which causes the blank flash).
-      await loadRemaining((chunk) => {
-        setUploadedVideos((prev) => {
-          const existing = new Set(prev.map((v) => v.id));
-          const additions = chunk.filter((v) => !existing.has(v.id));
-          if (additions.length === 0) return prev;
-          const next = [...prev, ...additions];
-          next.sort((a, b) => {
-            const ta = a.createdAt ? Date.parse(a.createdAt) : 0;
-            const tb = b.createdAt ? Date.parse(b.createdAt) : 0;
-            return tb - ta;
-          });
-          return next;
-        });
-      });
-      console.log('Full load complete (streamed in chunks)');
+      console.log('Initial page load complete without preloading the full library');
     } catch (error) {
       console.error('Error loading videos:', error);
     }
