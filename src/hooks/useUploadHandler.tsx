@@ -27,48 +27,54 @@ export const useUploadHandler = () => {
     const videoContentTypes = ['video', 'shorts', 'music', 'comedy', 'news', 'podcast', 'audiobook', 'asmr', 'meditation', 'nature-sounds', 'sound-effects'];
     const isVideoUpload = videoContentTypes.includes(contentTypeId) || contentTypeId.includes('video') || files.some(f => f.type.startsWith('video/'));
     
+    // Filter out incompatible video files instead of blocking the entire batch
+    const compatibleFiles: File[] = [];
+    const skippedFiles: string[] = [];
+
     if (isVideoUpload) {
       for (const file of files) {
-        if (file.type.startsWith('video/')) {
-          toast({
-            title: "Checking video compatibility...",
-            description: `Verifying ${file.name} can play in browsers.`,
-          });
-          
-          try {
-            const compatibility = await checkVideoCompatibility(file);
-            
-            if (!compatibility.isCompatible) {
-              toast({
-                title: "Video format not supported",
-                description: compatibility.errorMessage || "This video cannot be played in browsers.",
-                variant: "destructive",
-                duration: 10000,
-              });
-              
-              // Show additional help toast
-              setTimeout(() => {
-                toast({
-                  title: "How to fix",
-                  description: getFormatRecommendation(),
-                  duration: 15000,
-                });
-              }, 500);
-              
-              return; // Block the upload
-            }
-            
-            console.log('Video compatibility check passed:', {
-              file: file.name,
-              details: compatibility.details,
+        if (!file.type.startsWith('video/')) {
+          compatibleFiles.push(file);
+          continue;
+        }
+
+        try {
+          const compatibility = await checkVideoCompatibility(file);
+          if (!compatibility.isCompatible) {
+            skippedFiles.push(file.name);
+            toast({
+              title: `Skipped: ${file.name}`,
+              description: compatibility.errorMessage || "This video cannot be played in browsers.",
+              variant: "destructive",
+              duration: 8000,
             });
-          } catch (error) {
-            console.warn('Video compatibility check failed, proceeding with upload:', error);
-            // Don't block upload if check itself fails - let the player handle it
+            continue;
           }
+          compatibleFiles.push(file);
+        } catch (error) {
+          console.warn('Video compatibility check failed, proceeding with upload:', error);
+          compatibleFiles.push(file);
         }
       }
+
+      if (skippedFiles.length > 0) {
+        setTimeout(() => {
+          toast({
+            title: "How to fix skipped videos",
+            description: getFormatRecommendation(),
+            duration: 12000,
+          });
+        }, 500);
+      }
+
+      if (compatibleFiles.length === 0) {
+        return; // Nothing to upload
+      }
+    } else {
+      compatibleFiles.push(...files);
     }
+
+    files = compatibleFiles;
     
     toast({
       title: `${contentTypeName} upload started`,
@@ -77,20 +83,37 @@ export const useUploadHandler = () => {
     
     // Store uploads in context - save ALL video/audio content types
     if (isVideoUpload || files.some(f => f.type.startsWith('audio/'))) {
-      try {
-        for (const file of files) {
-          // Use category from form, or fall back to contentTypeId
-          const uploadCategory = category || contentTypeId;
-          await addUploadedVideo(file, title || file.name, description || '', uploadCategory, subcategory, tags);
+      const isBatch = files.length > 1;
+      let successCount = 0;
+      const failed: string[] = [];
+      for (const file of files) {
+        const uploadCategory = category || contentTypeId;
+        const fileBaseName = file.name.split('.').slice(0, -1).join('.') || file.name;
+        const perFileTitle = isBatch ? fileBaseName : (title || fileBaseName);
+        const perFileDescription = isBatch ? '' : (description || '');
+        try {
+          await addUploadedVideo(file, perFileTitle, perFileDescription, uploadCategory, subcategory, tags);
+          successCount++;
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+          failed.push(file.name);
+          toast({
+            title: `Failed: ${file.name}`,
+            description: errorMessage,
+            variant: "destructive",
+          });
+          // Continue with the rest of the batch instead of aborting
         }
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+      }
+
+      if (successCount === 0) {
+        return; // Nothing succeeded; skip success redirect
+      }
+      if (failed.length > 0) {
         toast({
-          title: "Upload failed",
-          description: errorMessage,
-          variant: "destructive",
+          title: "Some files failed",
+          description: `${successCount} uploaded, ${failed.length} failed.`,
         });
-        return; // Don't continue with success flow
       }
     }
     
