@@ -1,67 +1,40 @@
 /**
- * Stale cache cleanup
+ * Stale cache cleanup (background, non-blocking)
  *
- * Bumps the APP_DATA_VERSION whenever local storage shapes change in a way that
- * could conflict with older cached data. On load, if the user's stored version
- * doesn't match, we clear IndexedDB + caches + service workers so the app
- * starts from a clean slate (no more blank/blink for returning users).
+ * Runs once per browser per APP_DATA_VERSION. Does NOT touch service workers
+ * or the Cache Storage API (we don't ship a service worker, and clearing it
+ * mid-load was causing a visible flash/blink on every reload).
+ *
+ * It only removes legacy IndexedDB databases that we know are obsolete, so
+ * the live app's own DBs are left alone.
  */
 
-const APP_DATA_VERSION = "2026-05-04-cloud-only-v1";
+const APP_DATA_VERSION = "2026-05-04-cloud-only-v2";
 const VERSION_KEY = "miytube_app_data_version";
+
+// Legacy DBs we no longer use. Add to this list if we ever rename.
+const LEGACY_DB_NAMES: string[] = [
+  // (intentionally empty — miytube_videos_db is still in active use)
+];
 
 export async function runStaleCacheCleanup(): Promise<void> {
   try {
-    const stored = localStorage.getItem(VERSION_KEY);
-    if (stored === APP_DATA_VERSION) return;
+    if (localStorage.getItem(VERSION_KEY) === APP_DATA_VERSION) return;
 
-    console.info("[cache] App data version changed, clearing stale caches…");
-
-    // 1. Unregister any old service workers
-    if ("serviceWorker" in navigator) {
-      try {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map((r) => r.unregister()));
-      } catch (e) {
-        console.warn("[cache] SW unregister failed", e);
-      }
-    }
-
-    // 2. Clear cache storage
-    if ("caches" in window) {
-      try {
-        const keys = await caches.keys();
-        await Promise.all(keys.map((k) => caches.delete(k)));
-      } catch (e) {
-        console.warn("[cache] caches.delete failed", e);
-      }
-    }
-
-    // 3. Wipe IndexedDB databases (preserves localStorage so the user stays logged in)
-    if (indexedDB && "databases" in indexedDB) {
-      try {
-        const dbs: { name?: string }[] = await (indexedDB as IDBFactory & {
-          databases: () => Promise<{ name?: string }[]>;
-        }).databases();
-        await Promise.all(
-          dbs
-            .filter((db) => db.name && !db.name.startsWith("supabase"))
-            .map(
-              (db) =>
-                new Promise<void>((resolve) => {
-                  const req = indexedDB.deleteDatabase(db.name!);
-                  req.onsuccess = req.onerror = req.onblocked = () => resolve();
-                }),
-            ),
-        );
-      } catch (e) {
-        console.warn("[cache] IndexedDB cleanup failed", e);
-      }
+    if (LEGACY_DB_NAMES.length && typeof indexedDB !== "undefined") {
+      await Promise.all(
+        LEGACY_DB_NAMES.map(
+          (name) =>
+            new Promise<void>((resolve) => {
+              const req = indexedDB.deleteDatabase(name);
+              req.onsuccess = req.onerror = req.onblocked = () => resolve();
+            }),
+        ),
+      );
     }
 
     localStorage.setItem(VERSION_KEY, APP_DATA_VERSION);
-    console.info("[cache] Stale cache cleanup complete");
-  } catch (e) {
-    console.warn("[cache] Cleanup error (non-fatal)", e);
+  } catch {
+    // non-fatal
   }
 }
