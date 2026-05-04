@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { uploadVideoToCloud, deleteVideoFromCloud } from '@/utils/cloudVideoUpload';
 import { useUploadProgress } from './UploadProgressContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -395,6 +395,7 @@ const deleteVideoFromSupabase = async (id: string): Promise<void> => {
 export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ children }) => {
   const [uploadedVideos, setUploadedVideos] = useState<UploadedVideo[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const hasLoadedRef = useRef(false);
   const { startUpload, setUploadStatus, completeUpload, failUpload } = useUploadProgress();
 
   const mergeAndSort = (localVideos: StoredVideo[], cloudVideos: UploadedVideo[]): UploadedVideo[] => {
@@ -484,6 +485,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
   // Load videos from both IndexedDB (local) and Supabase (cloud)
   useEffect(() => {
+    if (hasLoadedRef.current) return;
+    hasLoadedRef.current = true;
     loadStoredVideos();
   }, []);
 
