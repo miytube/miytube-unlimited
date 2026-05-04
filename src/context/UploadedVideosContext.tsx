@@ -533,7 +533,13 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           const existing = new Set(prev.map((v) => v.id));
           const additions = chunk.filter((v) => !existing.has(v.id));
           if (additions.length === 0) return prev;
-          return mergeAndSort(localVideos, [...prev, ...additions]);
+          const next = [...prev, ...additions];
+          next.sort((a, b) => {
+            const ta = a.createdAt ? Date.parse(a.createdAt) : 0;
+            const tb = b.createdAt ? Date.parse(b.createdAt) : 0;
+            return tb - ta;
+          });
+          return next;
         });
       });
       console.log('Full load complete (streamed in chunks)');
