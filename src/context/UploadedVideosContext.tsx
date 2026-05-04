@@ -673,32 +673,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         tags,
       };
       
-      // Save to IndexedDB
-      try {
-        await saveVideoToDB({
-          id: videoId,
-          fileDataUrl: '',
-          cloudUrl: newVideo.cloudUrl,
-          isCloudStored: false,
-          isYouTubeEmbed: true,
-          youtubeId: youtubeId,
-          fileName: title || 'youtube-video',
-          fileType: 'video/youtube',
-          title: newVideo.title,
-          description: newVideo.description,
-          thumbnail: youtubeThumbnail,
-          timestamp: newVideo.timestamp,
-          views: newVideo.views,
-          duration: newVideo.duration,
-          category,
-          subcategory,
-          tags,
-        });
-        console.log("Saved YouTube embed to IndexedDB:", videoId);
-      } catch (error) {
-        console.error("Error saving YouTube embed to IndexedDB:", error);
-      }
-      
       // Save to Supabase cloud backup
       const duplicateResult = await saveVideoToSupabase({
         localId: videoId,
@@ -752,30 +726,6 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         subcategory,
         tags,
       };
-      
-      // Save to IndexedDB
-      try {
-        await saveVideoToDB({
-          id: videoId,
-          fileDataUrl: '',
-          cloudUrl: importUrl,
-          isCloudStored: true,
-          fileName: title || 'imported-video',
-          fileType: 'video/mp4',
-          title: newVideo.title,
-          description: newVideo.description,
-          thumbnail: newVideo.thumbnail,
-          timestamp: newVideo.timestamp,
-          views: newVideo.views,
-          duration: newVideo.duration,
-          category,
-          subcategory,
-          tags,
-        });
-        console.log("Saved URL import to IndexedDB:", videoId);
-      } catch (error) {
-        console.error("Error saving URL import to IndexedDB:", error);
-      }
       
       // Save to Supabase cloud backup
       const duplicateResult = await saveVideoToSupabase({
