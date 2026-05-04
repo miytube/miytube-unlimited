@@ -430,8 +430,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const mergeAndSort = (localVideos: StoredVideo[], cloudVideos: UploadedVideo[]): UploadedVideo[] => {
     const cloudVideoMap = new Map(cloudVideos.map(v => [v.id, v]));
     
-    const localVideoList: UploadedVideo[] = localVideos.map(sv => {
+    const localVideoList: UploadedVideo[] = localVideos.flatMap(sv => {
       const cloudVideo = cloudVideoMap.get(sv.id);
+      if (sv.isCloudStored && !sv.isYouTubeEmbed && !cloudVideo) {
+        deleteVideoFromDB(sv.id).catch(err => console.error('Error clearing orphaned local video:', err));
+        return [];
+      }
       return {
         id: sv.id,
         file: sv.isCloudStored || sv.isYouTubeEmbed ? null : (sv.fileDataUrl ? dataUrlToFile(sv.fileDataUrl, sv.fileName, sv.fileType) : null),
