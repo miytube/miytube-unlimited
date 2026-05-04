@@ -153,6 +153,16 @@ const clearDB = async (): Promise<void> => {
   });
 };
 
+const deleteLegacyVideoDB = async (): Promise<void> => {
+  if (typeof indexedDB === 'undefined') return;
+  return new Promise((resolve) => {
+    const request = indexedDB.deleteDatabase(DB_NAME);
+    request.onerror = () => resolve();
+    request.onblocked = () => resolve();
+    request.onsuccess = () => resolve();
+  });
+};
+
 // Convert File to base64 data URL
 const fileToDataUrl = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -462,6 +472,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     console.log('Starting to load videos from storage...');
     try {
       localStorage.removeItem('miytube_uploaded_videos');
+      deleteLegacyVideoDB().catch(err => console.warn('Legacy video cache cleanup skipped:', err));
 
       if (forceRefresh) {
         initialVideosLoadPromise = null;
@@ -469,13 +480,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
       // Render immediately with first batch
       if (!initialVideosLoadPromise) {
-        initialVideosLoadPromise = Promise.all([
-          getAllVideosFromDB(),
-          loadVideosFromSupabase()
-        ]).then(([localVideos, { firstBatch }]) => {
-          console.log('Local IndexedDB videos:', localVideos.length);
+        initialVideosLoadPromise = loadVideosFromSupabase().then(({ firstBatch }) => {
           console.log('First batch cloud videos:', firstBatch.length);
-          return mergeAndSort(localVideos, firstBatch);
+          return mergeAndSort([], firstBatch);
         });
       }
 
