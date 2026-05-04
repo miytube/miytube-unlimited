@@ -340,10 +340,13 @@ const loadVideosFromSupabase = async (): Promise<{
   loadRemaining: (onChunk: (chunk: UploadedVideo[]) => void) => Promise<number>;
 }> => {
   const PAGE_SIZE = 60;
+  const CHUNK_SIZE = 1000; // Supabase max per query
+
+  const SELECT_COLS = 'id, local_id, title, description, thumbnail_url, cloud_url, is_cloud_stored, is_youtube_embed, youtube_video_id, duration, category, subcategory, tags, views, created_at';
 
   const { data, error } = await supabase
     .from('uploaded_videos')
-    .select('id, local_id, title, description, thumbnail_url, cloud_url, is_cloud_stored, is_youtube_embed, youtube_video_id, duration, category, subcategory, tags, views, created_at')
+    .select(SELECT_COLS)
     .order('created_at', { ascending: false })
     .range(0, PAGE_SIZE - 1);
 
@@ -362,7 +365,38 @@ const loadVideosFromSupabase = async (): Promise<{
 
   console.log('First batch loaded:', firstBatch.length, 'videos');
 
-  const loadRemaining = async (): Promise<number> => 0;
+  const loadRemaining = async (onChunk: (chunk: UploadedVideo[]) => void): Promise<number> => {
+    let from = PAGE_SIZE;
+    let total = 0;
+    while (true) {
+      const to = from + CHUNK_SIZE - 1;
+      const { data: chunk, error: chunkErr } = await supabase
+        .from('uploaded_videos')
+        .select(SELECT_COLS)
+        .order('created_at', { ascending: false })
+        .range(from, to);
+      if (chunkErr) {
+        console.error('Error loading remaining videos:', chunkErr);
+        break;
+      }
+      if (!chunk || chunk.length === 0) break;
+      const fresh = chunk.filter((v: any) => {
+        const k = v.local_id || v.id;
+        if (seenKeys.has(k)) return false;
+        seenKeys.add(k);
+        return true;
+      });
+      if (fresh.length > 0) {
+        const mapped = fresh.map(mapSupabaseRow);
+        onChunk(mapped);
+        total += mapped.length;
+      }
+      if (chunk.length < CHUNK_SIZE) break;
+      from += CHUNK_SIZE;
+    }
+    console.log('Loaded remaining videos:', total);
+    return total;
+  };
 
   return { firstBatch, firstRowKeys: seenKeys, loadRemaining };
 };
@@ -478,10 +512,17 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         initialVideosLoadPromise = null;
       }
 
-      // Render immediately with first batch
+      // Render immediately with first batch, then stream the rest in
       if (!initialVideosLoadPromise) {
-        initialVideosLoadPromise = loadVideosFromSupabase().then(({ firstBatch }) => {
+        initialVideosLoadPromise = loadVideosFromSupabase().then(({ firstBatch, loadRemaining }) => {
           console.log('First batch cloud videos:', firstBatch.length);
+          // Kick off background load of remaining videos
+          loadRemaining((chunk) => {
+            setUploadedVideos((prev) => mergeAndSort([], [
+              ...prev.filter(v => !v.file && !v.fileDataUrl).map(v => v) as UploadedVideo[],
+              ...chunk,
+            ]));
+          }).catch(err => console.error('Background video load failed:', err));
           return mergeAndSort([], firstBatch);
         });
       }
@@ -490,8 +531,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       setUploadedVideos(initialMerged);
       setIsLoaded(true);
       console.log('Initial render with:', initialMerged.length, 'videos');
-      
-      console.log('Initial page load complete without preloading the full library');
+
+      console.log('Initial page load complete');
     } catch (error) {
       console.error('Error loading videos:', error);
     }
