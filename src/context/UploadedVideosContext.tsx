@@ -526,14 +526,17 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       setIsLoaded(true);
       console.log('Initial render with:', initialMerged.length, 'videos');
       
-      // Load remaining in background
-      const remaining = await loadRemaining();
-      if (remaining.length > 0) {
-        const allCloud = [...firstBatch, ...remaining];
-        const fullMerged = mergeAndSort(localVideos, allCloud);
-        setUploadedVideos(fullMerged);
-        console.log('Full load complete:', fullMerged.length, 'total videos');
-      }
+      // Stream remaining pages — append each chunk so React renders incrementally
+      // instead of swapping in 20k+ items at once (which causes the blank flash).
+      await loadRemaining((chunk) => {
+        setUploadedVideos((prev) => {
+          const existing = new Set(prev.map((v) => v.id));
+          const additions = chunk.filter((v) => !existing.has(v.id));
+          if (additions.length === 0) return prev;
+          return mergeAndSort(localVideos, [...prev, ...additions]);
+        });
+      });
+      console.log('Full load complete (streamed in chunks)');
     } catch (error) {
       console.error('Error loading videos:', error);
     }
