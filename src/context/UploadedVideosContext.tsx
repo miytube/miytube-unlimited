@@ -90,6 +90,8 @@ interface UploadedVideosProviderProps {
   children: ReactNode;
 }
 
+let initialVideosLoadPromise: Promise<UploadedVideo[]> | null = null;
+
 // IndexedDB helpers
 const openDB = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
@@ -456,22 +458,28 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     return merged;
   };
 
-  const loadStoredVideos = async () => {
+  const loadStoredVideos = async (forceRefresh = false) => {
     console.log('Starting to load videos from storage...');
     try {
       localStorage.removeItem('miytube_uploaded_videos');
-      
-      // Load first batch + local in parallel for fast initial render
-      const [localVideos, { firstBatch }] = await Promise.all([
-        getAllVideosFromDB(),
-        loadVideosFromSupabase()
-      ]);
-      
-      console.log('Local IndexedDB videos:', localVideos.length);
-      console.log('First batch cloud videos:', firstBatch.length);
-      
+
+      if (forceRefresh) {
+        initialVideosLoadPromise = null;
+      }
+
       // Render immediately with first batch
-      const initialMerged = mergeAndSort(localVideos, firstBatch);
+      if (!initialVideosLoadPromise) {
+        initialVideosLoadPromise = Promise.all([
+          getAllVideosFromDB(),
+          loadVideosFromSupabase()
+        ]).then(([localVideos, { firstBatch }]) => {
+          console.log('Local IndexedDB videos:', localVideos.length);
+          console.log('First batch cloud videos:', firstBatch.length);
+          return mergeAndSort(localVideos, firstBatch);
+        });
+      }
+
+      const initialMerged = await initialVideosLoadPromise;
       setUploadedVideos(initialMerged);
       setIsLoaded(true);
       console.log('Initial render with:', initialMerged.length, 'videos');
@@ -492,7 +500,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
   const refreshVideos = async () => {
     setIsLoaded(false);
-    await loadStoredVideos();
+    await loadStoredVideos(true);
   };
 
   // Upload thumbnail to cloud storage and return URL
