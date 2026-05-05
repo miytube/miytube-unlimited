@@ -3,18 +3,19 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { useSubcategoryInfo } from '@/hooks/useSubcategoryInfo';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
 import SubcategoryHeader from '@/components/subcategory/SubcategoryHeader';
 import VideoContent from '@/components/subcategory/VideoContent';
 import AboutSection from '@/components/subcategory/AboutSection';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Navigate } from 'react-router-dom';
 import { Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
-import { Navigate } from 'react-router-dom';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos } = useUploadedVideos();
-  
-  // Get subcategory information from our hook
+  const { tree } = useCustomCategories();
+  const location = useLocation();
+
   const {
     pageTitle,
     pageDescription,
@@ -25,13 +26,16 @@ const GenericSubcategoryPage = () => {
     isKnown
   } = useSubcategoryInfo();
 
-  // Unknown path — silently redirect to home instead of showing 404
   if (!isKnown) {
     return <Navigate to="/" replace />;
   }
-  
-  // Filter videos for this subcategory using strict matching
+
   const subcategoryVideos = filterVideosBySubcategory(uploadedVideos, pageTitle, mappingKey);
+
+  // Match this static page to a custom category by slug (last URL segment)
+  const lastSegment = location.pathname.split('/').filter(Boolean).pop() || '';
+  const matchedCustomCat = tree.find((c) => c.slug === lastSegment);
+  const customSubs = matchedCustomCat?.subcategories || [];
 
   return (
     <Layout>
@@ -43,10 +47,27 @@ const GenericSubcategoryPage = () => {
           pageDescription={pageDescription}
           IconComponent={IconComponent}
         />
-        
+
+        {customSubs.length > 0 && (
+          <div className="mb-6">
+            <h2 className="text-xl font-medium mb-3">Subcategories</h2>
+            <div className="flex flex-wrap gap-2">
+              {customSubs.map((s) => (
+                <Link
+                  key={s.id}
+                  to={`/c/${matchedCustomCat!.slug}/${s.slug}`}
+                  className="px-4 py-2 bg-card hover:bg-muted rounded-full border text-sm"
+                >
+                  {s.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {subcategoryVideos.length > 0 ? (
-          <VideoContent 
-            title={`${pageTitle} Videos`} 
+          <VideoContent
+            title={`${pageTitle} Videos`}
             videos={subcategoryVideos.map(v => ({
               id: v.id,
               title: v.title,
@@ -55,15 +76,15 @@ const GenericSubcategoryPage = () => {
               views: v.views,
               timestamp: v.timestamp,
               duration: v.duration,
-            }))} 
+            }))}
           />
         ) : (
           <div className="text-center py-12 bg-card rounded-lg mb-8">
             <IconComponent className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-xl font-semibold mb-2">No {pageTitle} Videos Yet</h3>
             <p className="text-muted-foreground mb-4">Be the first to upload {pageTitle.toLowerCase()} content!</p>
-            <Link 
-              to="/upload" 
+            <Link
+              to="/upload"
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
             >
               <Upload size={18} />
@@ -71,7 +92,7 @@ const GenericSubcategoryPage = () => {
             </Link>
           </div>
         )}
-        
+
         <AboutSection title={pageTitle} />
       </div>
     </Layout>
