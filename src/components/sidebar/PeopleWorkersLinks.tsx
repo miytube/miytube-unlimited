@@ -11,14 +11,15 @@ export const PeopleWorkersLinks: React.FC = () => {
       label: 'People', 
       path: '/people-blogs',
       subItems: [
+        { id: 'people-amazing-things', label: 'Amazing Things', path: '/people/amazing-things' },
         { id: 'people-bigotry', label: 'Bigotry & Favoritism', path: '/people/bigotry' },
         { id: 'people-fighting', label: 'Fighting & Confrontations', path: '/people/fighting' },
         { id: 'people-karma', label: 'Karma & Deserved', path: '/people/karma' },
         { id: 'people-lookalikes', label: 'Look-a-likes & Impressionists', path: '/people/lookalikes' },
-        { id: 'people-thefts', label: 'Thefts & Stealing', path: '/people/thefts' },
         { id: 'people-amazing', label: 'People Amazing', path: '/people/amazing' },
-        { id: 'people-amazing-things', label: 'Amazing Things', path: '/people/amazing-things' },
-        { id: 'people-fails', label: 'People Fails & Comedy', path: '/people/fails' }
+        { id: 'people-fails', label: 'People Fails & Comedy', path: '/people/fails' },
+        { id: 'people-pranks', label: 'People Pranks', path: '/c/people/people-pranks' },
+        { id: 'people-thefts', label: 'Thefts & Stealing', path: '/people/thefts' }
       ]
     },
     { 
