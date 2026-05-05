@@ -159,7 +159,7 @@ const Index = () => {
 
         {/* Ad slot — between Recommended and Trending */}
         {!isLoading && displayVideos.length > 0 && (
-          <AdSlot label="Home recommended ad" className="mb-6" />
+          <AdSlot slot="1227265451" label="Home recommended ad" className="mb-6" />
         )}
 
         {/* Trending Videos Section - Regular videos only */}
@@ -185,7 +185,7 @@ const Index = () => {
 
         {/* Ad slot — below Shorts, above pagination */}
         {!isLoading && allVideos.length > 0 && (
-          <AdSlot label="Home below-shorts ad" className="mb-6" />
+          <AdSlot slot="1227265451" label="Home below-shorts ad" className="mb-6" />
         )}
 
         {/* Page counter below trending section */}
