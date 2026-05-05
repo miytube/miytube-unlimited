@@ -48,9 +48,10 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
   const title = watchPage?.name || subcategory?.name || category.name;
   const description = watchPage?.description || subcategory?.description || category.description;
 
-  // Filter videos by the most specific name in the hierarchy
-  const filterTerm = title;
-  const videos = getVideosByCategory(filterTerm);
+  // Filter videos by slug (videos store normalized slugs in category/subcategory)
+  const mostSpecificSlug = (watchPage?.slug || subcategory?.slug || category.slug).toLowerCase();
+  const categorySlugLower = category.slug.toLowerCase();
+  const videos = getVideosByCategory(categorySlugLower, mostSpecificSlug !== categorySlugLower ? mostSpecificSlug : undefined);
 
   return (
     <Layout>
