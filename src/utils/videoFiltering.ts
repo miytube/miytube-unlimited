@@ -61,6 +61,11 @@ const detectSportsLeague = (text: string): string | undefined => {
   return sportsLeaguePatterns.find(({ pattern }) => pattern.test(normalized))?.league;
 };
 
+const routeValueAliases: Record<string, string[]> = {
+  'sports/nhl': ['nhl-hockey', 'all-nhl-hockey'],
+  'sports-nhl': ['nhl-hockey', 'all-nhl-hockey'],
+};
+
 /**
  * Filter videos by exact category match or keyword-based matching for parent categories.
  * For parent categories (like "Business", "Cars"), we match if the video's category
@@ -150,7 +155,11 @@ export const filterVideosBySubcategory = (
   if (!isMultiSegment) {
     acceptedBase.push(lastSegment, lastSegmentSpaced, lastSegmentNoSep, titleLower, titleNoSep);
   }
-  const accepted = new Set<string>(acceptedBase.filter(Boolean));
+  const accepted = new Set<string>([
+    ...acceptedBase,
+    ...(routeValueAliases[keyLower] || []),
+    ...(routeValueAliases[keyHyphenated] || []),
+  ].filter(Boolean));
 
   const acceptedFuzzyTargets = isMultiSegment
     ? [keyLower, keyHyphenated]
