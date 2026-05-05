@@ -23,11 +23,16 @@ export const DocumentMediaLinks: React.FC = () => {
       label: 'Speeches', 
       path: '/speeches',
       subItems: [
-        { id: 'speeches-commencement', label: 'Commencement Speech', path: '/speeches/commencement' },
-        { id: 'speeches-eulogy', label: 'Eulogy & Memorial', path: '/speeches/eulogy' },
-        { id: 'speeches-informative', label: 'Informative Speech', path: '/speeches/informative' },
-        { id: 'speeches-motivational', label: 'Motivational Speech', path: '/speeches/motivational' },
-        { id: 'speeches-persuasive', label: 'Persuasive & Protest', path: '/speeches/persuasive' },
+        { id: 'speeches-informative', label: 'Informative — Educate', path: '/speeches/informative' },
+        { id: 'speeches-motivational', label: 'Motivational — Inspire', path: '/speeches/motivational' },
+        { id: 'speeches-entertaining', label: 'Entertaining — Amuse', path: '/speeches/entertaining' },
+        { id: 'speeches-persuasive', label: 'Persuasive — Convince', path: '/speeches/persuasive' },
+        { id: 'speeches-commencement', label: 'Commencement — Celebratory', path: '/speeches/commencement' },
+        { id: 'speeches-eulogy', label: 'Eulogy or Funeral — Honor', path: '/speeches/eulogy' },
+        { id: 'speeches-demonstrative', label: 'Demonstrative — Teach', path: '/speeches/demonstrative' },
+        { id: 'speeches-debate', label: 'Debate — About a Subject', path: '/speeches/debate' },
+        { id: 'speeches-pitch', label: 'Pitch — Support an Idea', path: '/speeches/pitch' },
+        { id: 'speeches-farewell', label: 'Farewell — Goodbyes', path: '/speeches/farewell' },
         { id: 'speeches-quotes-poems', label: 'Quotes, Poems, Statements', path: '/speeches/quotes-poems' }
       ]
     },
