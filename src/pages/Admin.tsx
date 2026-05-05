@@ -19,9 +19,8 @@ import { S3ImportManager } from '@/components/admin/S3ImportManager';
 import { AIAutoTitleManager } from '@/components/admin/AIAutoTitleManager';
 import { ThumbnailGeneratorManager } from '@/components/admin/ThumbnailGeneratorManager';
 import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussionManager';
-import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
 import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
-import { FolderTree, Database } from 'lucide-react';
+import { Database } from 'lucide-react';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -282,10 +281,6 @@ const Admin = () => {
               <MessageSquare className="h-4 w-4" />
               Discussion Video
             </TabsTrigger>
-            <TabsTrigger value="custom-categories" className="flex items-center gap-2">
-              <FolderTree className="h-4 w-4" />
-              Custom Categories
-            </TabsTrigger>
             <TabsTrigger value="video-audit" className="flex items-center gap-2">
               <Database className="h-4 w-4" />
               Video Audit
@@ -409,9 +404,6 @@ const Admin = () => {
           </TabsContent>
           <TabsContent value="discussion-video" className="mt-6">
             <FeaturedDiscussionManager />
-          </TabsContent>
-          <TabsContent value="custom-categories" className="mt-6">
-            <CustomCategoriesManager />
           </TabsContent>
           <TabsContent value="video-audit" className="mt-6">
             <VideoAuditManager />
