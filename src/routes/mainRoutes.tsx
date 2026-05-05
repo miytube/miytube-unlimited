@@ -179,6 +179,11 @@ export const mainRoutes = [
   <Route key="speeches-motivational" path="/speeches/motivational" element={<GenericSubcategoryPage />} />,
   <Route key="speeches-persuasive" path="/speeches/persuasive" element={<GenericSubcategoryPage />} />,
   <Route key="speeches-quotes-poems" path="/speeches/quotes-poems" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-entertaining" path="/speeches/entertaining" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-demonstrative" path="/speeches/demonstrative" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-debate" path="/speeches/debate" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-pitch" path="/speeches/pitch" element={<GenericSubcategoryPage />} />,
+  <Route key="speeches-farewell" path="/speeches/farewell" element={<GenericSubcategoryPage />} />,
   
   // New category pages with fixed icon imports
   <Route key="military" path="/military" element={<GenericCategoryPage title="Military" description="Explore military content, including personnel, vehicles, and equipment" Icon={Shield} />} />,

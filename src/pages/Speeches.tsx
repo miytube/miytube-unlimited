@@ -14,23 +14,25 @@ const Speeches = () => {
 
   const speechCategories = [
     {
-      name: 'Speech',
+      name: 'Speech Types',
       path: '/speeches',
       subcategories: [
-        { name: 'Commencement Speech', path: '/speeches/commencement', examples: 'Graduation addresses, university ceremonies' },
-        { name: 'Eulogy & Memorial', path: '/speeches/eulogy', examples: 'Memorial tributes, funeral speeches' },
-        { name: 'Informative Speech', path: '/speeches/informative', examples: 'Educational presentations, lectures' },
-        { name: 'Motivational Speech', path: '/speeches/motivational', examples: 'Inspirational talks, TED-style speeches' },
-        { name: 'Persuasive & Protest', path: '/speeches/persuasive', examples: 'Political speeches, activist addresses' },
+        { name: 'Informative — Educate', path: '/speeches/informative', examples: 'Share knowledge and facts' },
+        { name: 'Motivational — Inspire', path: '/speeches/motivational', examples: 'Uplift and energize' },
+        { name: 'Entertaining — Amuse', path: '/speeches/entertaining', examples: 'Humor and storytelling' },
+        { name: 'Persuasive — Convince', path: '/speeches/persuasive', examples: 'Sway opinions and beliefs' },
+        { name: 'Commencement — Celebratory', path: '/speeches/commencement', examples: 'Graduation addresses' },
       ]
     },
     {
-      name: 'Quotes, Poems & Statements',
-      path: '/speeches/quotes-poems',
+      name: 'More Speech Formats',
+      path: '/speeches',
       subcategories: [
-        { name: 'Famous Quotes', path: '/speeches/quotes-poems', examples: 'Historical quotes, memorable sayings' },
-        { name: 'Poetry Readings', path: '/speeches/quotes-poems', examples: 'Spoken word, poetry performances' },
-        { name: 'Public Statements', path: '/speeches/quotes-poems', examples: 'Official announcements, declarations' },
+        { name: 'Eulogy or Funeral — Honor', path: '/speeches/eulogy', examples: 'Tributes and memorials' },
+        { name: 'Demonstrative — Teach How-To', path: '/speeches/demonstrative', examples: 'Show how something is done' },
+        { name: 'Debate — Rules About a Subject', path: '/speeches/debate', examples: 'Structured argument on a topic' },
+        { name: 'Pitch Speech — Support an Idea', path: '/speeches/pitch', examples: 'Win approval for an idea' },
+        { name: 'Farewell Speech — Goodbyes', path: '/speeches/farewell', examples: 'Departures and send-offs' },
       ]
     }
   ];
