@@ -144,6 +144,7 @@ export const QuickCreatePageWidget: React.FC = () => {
     }
     setBusy(true);
     const results: { url: string; name: string }[] = [];
+    const existed: string[] = [];
     try {
       const cat = await ensureCustomCategory(selectedMain);
       for (const n of names) {
@@ -153,14 +154,28 @@ export const QuickCreatePageWidget: React.FC = () => {
           .insert({ category_id: cat.id, name: n, slug: pageSlug })
           .select('slug')
           .single();
-        if (error) throw error;
+        if (error) {
+          // Duplicate slug under this category — treat as success, link to existing
+          if ((error as any).code === '23505' || /duplicate key/i.test(error.message)) {
+            existed.push(n);
+            results.push({ url: `/c/${cat.slug}/${pageSlug}`, name: n });
+            continue;
+          }
+          throw error;
+        }
         results.push({ url: `/c/${cat.slug}/${data.slug}`, name: n });
       }
-      // Sort results alphabetically by name
       results.sort((a, b) => a.name.localeCompare(b.name));
       setCreatedUrls(results);
+      const newCount = results.length - existed.length;
       toast({
-        title: `Created ${results.length} ${results.length === 1 ? 'page' : 'pages'} under ${selectedMain.name}`,
+        title:
+          existed.length === results.length
+            ? `Already exists under ${selectedMain.name}`
+            : `Created ${newCount} ${newCount === 1 ? 'page' : 'pages'} under ${selectedMain.name}${existed.length ? ` (${existed.length} already existed)` : ''}`,
+        description: existed.length
+          ? `Already existed: ${existed.join(', ')}`
+          : undefined,
       });
       reload();
     } catch (err: any) {
