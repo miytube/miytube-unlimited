@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Check, Plus, ExternalLink, ChevronsUpDown } from 'lucide-react';
+import { Check, Plus, ExternalLink, ChevronsUpDown, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -38,63 +38,92 @@ export const QuickCreatePageWidget: React.FC = () => {
   const { toast } = useToast();
 
   const [open, setOpen] = useState(false);
-  const [pickerOpen, setPickerOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const [selectedSlugs, setSelectedSlugs] = useState<string[]>([]);
-  const [name, setName] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [createdUrls, setCreatedUrls] = useState<{ url: string; parent: string }[]>([]);
+  const [mainPickerOpen, setMainPickerOpen] = useState(false);
+  const [mainSearch, setMainSearch] = useState('');
+  const [mainSlug, setMainSlug] = useState<string>('');
 
-  // Unified, alphabetized parent list: top-level hardcoded categories + custom categories
+  const [pageNames, setPageNames] = useState<string[]>([]);
+  const [pageInput, setPageInput] = useState('');
+  const [pagePickerOpen, setPagePickerOpen] = useState(false);
+
+  const [busy, setBusy] = useState(false);
+  const [createdUrls, setCreatedUrls] = useState<{ url: string; name: string }[]>([]);
+
+  // Unified, alphabetized parent list
   const parentOptions = useMemo<ParentOption[]>(() => {
     const map = new Map<string, ParentOption>();
-
     Object.entries(allCategoryMappings).forEach(([slug, info]) => {
-      if (info.parent) return; // only top-level
+      if (info.parent) return;
       map.set(slug, { slug, name: info.title, source: 'hardcoded' });
     });
-
     tree.forEach((c) => {
       const existing = map.get(c.slug);
-      if (existing) {
-        existing.customCategoryId = c.id;
-      } else {
-        map.set(c.slug, {
-          slug: c.slug,
-          name: c.name,
-          source: 'custom',
-          customCategoryId: c.id,
-        });
-      }
+      if (existing) existing.customCategoryId = c.id;
+      else map.set(c.slug, { slug: c.slug, name: c.name, source: 'custom', customCategoryId: c.id });
     });
-
     return Array.from(map.values()).sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
     );
   }, [tree]);
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
+  const filteredMains = useMemo(() => {
+    const q = mainSearch.trim().toLowerCase();
     if (!q) return parentOptions;
     return parentOptions.filter(
       (o) => o.name.toLowerCase().includes(q) || o.slug.includes(q)
     );
-  }, [parentOptions, search]);
+  }, [parentOptions, mainSearch]);
+
+  const selectedMain = parentOptions.find((o) => o.slug === mainSlug);
+
+  // Existing pages already under selected main (as suggestions)
+  const existingPages = useMemo(() => {
+    if (!selectedMain) return [] as string[];
+    const cat = tree.find((c) => c.slug === selectedMain.slug);
+    if (!cat) return [];
+    const names = new Set<string>();
+    cat.subcategories.forEach((s) => {
+      if (s.slug !== 'general') names.add(s.name);
+      s.watch_pages.forEach((w) => names.add(w.name));
+    });
+    return Array.from(names).sort((a, b) => a.localeCompare(b));
+  }, [tree, selectedMain]);
+
+  const filteredExisting = useMemo(() => {
+    const q = pageInput.trim().toLowerCase();
+    const list = existingPages.filter((n) => !pageNames.includes(n));
+    if (!q) return list;
+    return list.filter((n) => n.toLowerCase().includes(q));
+  }, [existingPages, pageInput, pageNames]);
+
+  const exactExists =
+    pageInput.trim() &&
+    (pageNames.includes(pageInput.trim()) ||
+      existingPages.some((n) => n.toLowerCase() === pageInput.trim().toLowerCase()));
 
   const reset = () => {
-    setName('');
-    setSearch('');
-    setSelectedSlugs([]);
+    setMainSlug('');
+    setMainSearch('');
+    setPageNames([]);
+    setPageInput('');
     setCreatedUrls([]);
   };
 
-  const toggleSlug = (slug: string) => {
-    setSelectedSlugs((prev) =>
-      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
-    );
+  const addPageName = (n: string) => {
+    const trimmed = n.trim();
+    if (!trimmed) return;
+    if (!pageNames.some((p) => p.toLowerCase() === trimmed.toLowerCase())) {
+      setPageNames((prev) => [...prev, trimmed]);
+    }
+    setPageInput('');
   };
 
-  const ensureCustomCategory = async (opt: ParentOption): Promise<{ id: string; slug: string }> => {
+  const removePageName = (n: string) =>
+    setPageNames((prev) => prev.filter((p) => p !== n));
+
+  const ensureCustomCategory = async (
+    opt: ParentOption
+  ): Promise<{ id: string; slug: string }> => {
     if (opt.customCategoryId) return { id: opt.customCategoryId, slug: opt.slug };
     const { data, error } = await supabase
       .from('custom_categories')
@@ -123,37 +152,34 @@ export const QuickCreatePageWidget: React.FC = () => {
   };
 
   const handleCreate = async () => {
-    if (!name.trim()) {
-      toast({ title: 'Page name required', variant: 'destructive' });
+    if (!selectedMain) {
+      toast({ title: 'Pick a main category', variant: 'destructive' });
       return;
     }
-    if (selectedSlugs.length === 0) {
-      toast({ title: 'Pick at least one category', variant: 'destructive' });
+    const names = [...pageNames];
+    if (pageInput.trim()) names.push(pageInput.trim());
+    if (names.length === 0) {
+      toast({ title: 'Add at least one page name', variant: 'destructive' });
       return;
     }
     setBusy(true);
-    const results: { url: string; parent: string }[] = [];
+    const results: { url: string; name: string }[] = [];
     try {
-      const pageSlug = slugify(name);
-      for (const slug of selectedSlugs) {
-        const opt = parentOptions.find((o) => o.slug === slug);
-        if (!opt) continue;
-        const cat = await ensureCustomCategory(opt);
-        const sub = await ensureGeneralSub(cat.id);
+      const cat = await ensureCustomCategory(selectedMain);
+      const sub = await ensureGeneralSub(cat.id);
+      for (const n of names) {
+        const pageSlug = slugify(n);
         const { data, error } = await supabase
           .from('custom_watch_pages')
-          .insert({ subcategory_id: sub.id, name: name.trim(), slug: pageSlug })
+          .insert({ subcategory_id: sub.id, name: n, slug: pageSlug })
           .select('slug')
           .single();
         if (error) throw error;
-        results.push({
-          url: `/c/${cat.slug}/${sub.slug}/${data.slug}`,
-          parent: opt.name,
-        });
+        results.push({ url: `/c/${cat.slug}/${sub.slug}/${data.slug}`, name: n });
       }
       setCreatedUrls(results);
       toast({
-        title: `Page created in ${results.length} ${results.length === 1 ? 'category' : 'categories'}`,
+        title: `Created ${results.length} ${results.length === 1 ? 'page' : 'pages'} under ${selectedMain.name}`,
       });
       reload();
     } catch (err: any) {
@@ -168,10 +194,6 @@ export const QuickCreatePageWidget: React.FC = () => {
   };
 
   if (!isAdmin) return null;
-
-  const selectedNames = parentOptions
-    .filter((o) => selectedSlugs.includes(o.slug))
-    .map((o) => o.name);
 
   return (
     <Dialog
@@ -194,8 +216,7 @@ export const QuickCreatePageWidget: React.FC = () => {
         <DialogHeader>
           <DialogTitle>Create Page</DialogTitle>
           <DialogDescription>
-            Pick one or more categories, name the page, and it'll be saved and
-            listed alphabetically under each.
+            Pick a main category, then add one or more page names to save under it.
           </DialogDescription>
         </DialogHeader>
 
@@ -212,7 +233,7 @@ export const QuickCreatePageWidget: React.FC = () => {
                 >
                   <ExternalLink className="h-4 w-4 mt-0.5 shrink-0" />
                   <div className="min-w-0">
-                    <div className="text-xs text-muted-foreground">{r.parent}</div>
+                    <div className="text-xs text-muted-foreground">{r.name}</div>
                     <div className="font-mono text-xs break-all">{r.url}</div>
                   </div>
                 </Link>
@@ -224,19 +245,10 @@ export const QuickCreatePageWidget: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-4 py-2">
+            {/* Main Category */}
             <div className="space-y-2">
-              <Label>Page name</Label>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. NBA Playoffs 2025-2026"
-                autoFocus
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Categories ({selectedSlugs.length} selected)</Label>
-              <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+              <Label>Main Category</Label>
+              <Popover open={mainPickerOpen} onOpenChange={setMainPickerOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
@@ -244,9 +256,7 @@ export const QuickCreatePageWidget: React.FC = () => {
                     className="w-full justify-between font-normal"
                   >
                     <span className="truncate text-left">
-                      {selectedNames.length === 0
-                        ? 'Select categories…'
-                        : selectedNames.join(', ')}
+                      {selectedMain ? selectedMain.name : 'Select main category…'}
                     </span>
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
@@ -254,25 +264,28 @@ export const QuickCreatePageWidget: React.FC = () => {
                 <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
                   <div className="p-2 border-b">
                     <Input
-                      placeholder="Search categories…"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder="Search…"
+                      value={mainSearch}
+                      onChange={(e) => setMainSearch(e.target.value)}
                       className="h-9"
                     />
                   </div>
                   <ScrollArea className="h-72">
                     <div className="p-1">
-                      {filtered.length === 0 && (
+                      {filteredMains.length === 0 && (
                         <div className="py-6 text-center text-sm text-muted-foreground">
                           No categories found.
                         </div>
                       )}
-                      {filtered.map((opt) => {
-                        const checked = selectedSlugs.includes(opt.slug);
+                      {filteredMains.map((opt) => {
+                        const checked = mainSlug === opt.slug;
                         return (
                           <button
                             key={opt.slug}
-                            onClick={() => toggleSlug(opt.slug)}
+                            onClick={() => {
+                              setMainSlug(opt.slug);
+                              setMainPickerOpen(false);
+                            }}
                             className={cn(
                               'flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left',
                               checked && 'bg-accent'
@@ -292,8 +305,98 @@ export const QuickCreatePageWidget: React.FC = () => {
                   </ScrollArea>
                 </PopoverContent>
               </Popover>
+            </div>
+
+            {/* Pages / Categories under the main */}
+            <div className="space-y-2">
+              <Label>
+                Categories / Pages {pageNames.length > 0 && `(${pageNames.length})`}
+              </Label>
+
+              {pageNames.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {pageNames.map((n) => (
+                    <span
+                      key={n}
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary text-secondary-foreground text-xs"
+                    >
+                      {n}
+                      <button
+                        onClick={() => removePageName(n)}
+                        className="hover:text-destructive"
+                        aria-label={`Remove ${n}`}
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <Popover open={pagePickerOpen} onOpenChange={setPagePickerOpen}>
+                <PopoverTrigger asChild>
+                  <Input
+                    value={pageInput}
+                    onChange={(e) => {
+                      setPageInput(e.target.value);
+                      setPagePickerOpen(true);
+                    }}
+                    onFocus={() => setPagePickerOpen(true)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (pageInput.trim() && !exactExists) addPageName(pageInput);
+                      }
+                    }}
+                    placeholder={
+                      selectedMain
+                        ? 'Type a name and press Enter to add…'
+                        : 'Pick a main category first'
+                    }
+                    disabled={!selectedMain}
+                  />
+                </PopoverTrigger>
+                {selectedMain && (filteredExisting.length > 0 || pageInput.trim()) && (
+                  <PopoverContent
+                    className="w-[--radix-popover-trigger-width] p-0"
+                    align="start"
+                    onOpenAutoFocus={(e) => e.preventDefault()}
+                  >
+                    <ScrollArea className="max-h-60">
+                      <div className="p-1">
+                        {filteredExisting.map((n) => (
+                          <button
+                            key={n}
+                            onClick={() => addPageName(n)}
+                            className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left"
+                          >
+                            <Plus className="mr-2 h-4 w-4 shrink-0 opacity-60" />
+                            <span className="flex-1 truncate">{n}</span>
+                            <span className="text-xs text-muted-foreground ml-2">existing</span>
+                          </button>
+                        ))}
+                        {pageInput.trim() && !exactExists && (
+                          <button
+                            onClick={() => addPageName(pageInput)}
+                            className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left text-primary font-medium"
+                          >
+                            <Plus className="mr-2 h-4 w-4 shrink-0" />
+                            Add "{pageInput.trim()}"
+                          </button>
+                        )}
+                        {filteredExisting.length === 0 && !pageInput.trim() && (
+                          <div className="py-4 text-center text-xs text-muted-foreground">
+                            Type to add a new page
+                          </div>
+                        )}
+                      </div>
+                    </ScrollArea>
+                  </PopoverContent>
+                )}
+              </Popover>
               <p className="text-xs text-muted-foreground">
-                Pick multiple to save the same page under several categories.
+                Type any name and press Enter (or click "Add") to save it under{' '}
+                {selectedMain ? <strong>{selectedMain.name}</strong> : 'the main category'}.
               </p>
             </div>
 
@@ -301,8 +404,8 @@ export const QuickCreatePageWidget: React.FC = () => {
               <Button variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleCreate} disabled={busy}>
-                {busy ? 'Creating…' : 'Create page'}
+              <Button onClick={handleCreate} disabled={busy || !selectedMain}>
+                {busy ? 'Creating…' : 'Create'}
               </Button>
             </DialogFooter>
           </div>
