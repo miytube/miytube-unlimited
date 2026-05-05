@@ -145,7 +145,7 @@ const Index = () => {
             </div>
             {/* In-grid ad — after row 2 (highest earning placement) */}
             {displayVideos.length > 8 && (
-              <AdSlot label="Home in-grid ad" className="my-6" />
+              <AdSlot slot="1227265451" label="Home in-grid ad" className="my-6" />
             )}
             {displayVideos.length > 8 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
