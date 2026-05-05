@@ -97,10 +97,12 @@ export const useUploadHandler = () => {
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Upload failed';
           failed.push(file.name);
+          console.error(`[Upload failed] ${file.name}:`, errorMessage);
           toast({
             title: `Failed: ${file.name}`,
             description: errorMessage,
             variant: "destructive",
+            duration: 20000, // keep visible long enough during batch uploads
           });
           // Continue with the rest of the batch instead of aborting
         }
@@ -111,8 +113,10 @@ export const useUploadHandler = () => {
       }
       if (failed.length > 0) {
         toast({
-          title: "Some files failed",
-          description: `${successCount} uploaded, ${failed.length} failed.`,
+          title: `${failed.length} of ${files.length} files failed`,
+          description: `Failed: ${failed.join(', ')}`,
+          variant: "destructive",
+          duration: 30000, // persistent so user can read which files were skipped
         });
       }
     }
