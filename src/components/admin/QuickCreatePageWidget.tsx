@@ -82,10 +82,7 @@ export const QuickCreatePageWidget: React.FC = () => {
     const cat = tree.find((c) => c.slug === selectedMain.slug);
     if (!cat) return [];
     const names = new Set<string>();
-    cat.subcategories.forEach((s) => {
-      if (s.slug !== 'general') names.add(s.name);
-      s.watch_pages.forEach((w) => names.add(w.name));
-    });
+    cat.subcategories.forEach((s) => names.add(s.name));
     return Array.from(names).sort((a, b) => a.localeCompare(b));
   }, [tree, selectedMain]);
 
@@ -134,23 +131,6 @@ export const QuickCreatePageWidget: React.FC = () => {
     return { id: data.id, slug: data.slug };
   };
 
-  const ensureGeneralSub = async (categoryId: string): Promise<{ id: string; slug: string }> => {
-    const { data: existing } = await supabase
-      .from('custom_subcategories')
-      .select('id, slug')
-      .eq('category_id', categoryId)
-      .eq('slug', 'general')
-      .maybeSingle();
-    if (existing) return existing;
-    const { data, error } = await supabase
-      .from('custom_subcategories')
-      .insert({ category_id: categoryId, name: 'General', slug: 'general' })
-      .select('id, slug')
-      .single();
-    if (error) throw error;
-    return data;
-  };
-
   const handleCreate = async () => {
     if (!selectedMain) {
       toast({ title: 'Pick a main category', variant: 'destructive' });
@@ -166,17 +146,18 @@ export const QuickCreatePageWidget: React.FC = () => {
     const results: { url: string; name: string }[] = [];
     try {
       const cat = await ensureCustomCategory(selectedMain);
-      const sub = await ensureGeneralSub(cat.id);
       for (const n of names) {
         const pageSlug = slugify(n);
         const { data, error } = await supabase
-          .from('custom_watch_pages')
-          .insert({ subcategory_id: sub.id, name: n, slug: pageSlug })
+          .from('custom_subcategories')
+          .insert({ category_id: cat.id, name: n, slug: pageSlug })
           .select('slug')
           .single();
         if (error) throw error;
-        results.push({ url: `/c/${cat.slug}/${sub.slug}/${data.slug}`, name: n });
+        results.push({ url: `/c/${cat.slug}/${data.slug}`, name: n });
       }
+      // Sort results alphabetically by name
+      results.sort((a, b) => a.name.localeCompare(b.name));
       setCreatedUrls(results);
       toast({
         title: `Created ${results.length} ${results.length === 1 ? 'page' : 'pages'} under ${selectedMain.name}`,
