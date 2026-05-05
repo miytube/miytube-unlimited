@@ -49,16 +49,19 @@ const GenericSubcategoryPage = () => {
         />
 
         {customSubs.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-xl font-medium mb-3">Subcategories</h2>
-            <div className="flex flex-wrap gap-2">
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">Pages in {pageTitle}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {customSubs.map((s) => (
                 <Link
                   key={s.id}
                   to={`/c/${matchedCustomCat!.slug}/${s.slug}`}
-                  className="px-4 py-2 bg-card hover:bg-muted rounded-full border text-sm"
+                  className="group block p-4 bg-card hover:bg-muted border rounded-lg transition-colors"
                 >
-                  {s.name}
+                  <h3 className="font-semibold text-base group-hover:text-primary">{s.name}</h3>
+                  {s.description && (
+                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{s.description}</p>
+                  )}
                 </Link>
               ))}
             </div>
