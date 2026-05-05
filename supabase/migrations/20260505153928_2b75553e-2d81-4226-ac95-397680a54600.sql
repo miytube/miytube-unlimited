@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET category = 'riddles', subcategory = 'stoic-quotes' WHERE category = 'riddles-and-puzzles' AND subcategory = 'stoics-quotes';
