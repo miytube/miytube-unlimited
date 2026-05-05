@@ -145,7 +145,7 @@ const Index = () => {
             </div>
             {/* In-grid ad — after row 2 (highest earning placement) */}
             {displayVideos.length > 8 && (
-              <AdSlot slot="1227265451" label="Home in-grid ad" className="my-6" />
+              <AdSlot slot="1227265451" label="Home in-grid ad" className="my-6" format="horizontal" />
             )}
             {displayVideos.length > 8 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -159,7 +159,7 @@ const Index = () => {
 
         {/* Ad slot — between Recommended and Trending */}
         {!isLoading && displayVideos.length > 0 && (
-          <AdSlot slot="1227265451" label="Home recommended ad" className="mb-6" />
+          <AdSlot slot="7284874516" label="Home recommended ad (multiplex)" className="mb-6" format="horizontal" />
         )}
 
         {/* Trending Videos Section - Regular videos only */}
@@ -185,7 +185,7 @@ const Index = () => {
 
         {/* Ad slot — below Shorts, above pagination */}
         {!isLoading && allVideos.length > 0 && (
-          <AdSlot slot="1227265451" label="Home below-shorts ad" className="mb-6" />
+          <AdSlot slot="2804597664" label="Home below-shorts ad (miytube-grid-3)" className="mb-6" format="horizontal" />
         )}
 
         {/* Page counter below trending section */}

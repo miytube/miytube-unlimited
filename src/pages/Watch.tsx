@@ -400,7 +400,7 @@ const Watch = () => {
           {/* Right Sidebar */}
           <div className="w-80 hidden lg:block space-y-4">
             {/* Ad slot — top of recommendations sidebar */}
-            <AdSlot slot="1227265451" label="Watch sidebar ad" format="vertical" className="!my-0" />
+            <AdSlot slot="9527894473" label="Watch sidebar ad (miytube-grid-2)" format="vertical" className="!my-0" />
 
             <h3 className="text-sm font-semibold">Up Next</h3>
             
