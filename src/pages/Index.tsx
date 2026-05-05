@@ -139,10 +139,21 @@ const Index = () => {
               <h2 className="text-xl font-medium">Recommended</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {displayVideos.map((video) => (
+              {displayVideos.slice(0, 8).map((video) => (
                 <SimpleVideoCard key={video.id} {...video} />
               ))}
             </div>
+            {/* In-grid ad — after row 2 (highest earning placement) */}
+            {displayVideos.length > 8 && (
+              <AdSlot label="Home in-grid ad" className="my-6" />
+            )}
+            {displayVideos.length > 8 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {displayVideos.slice(8).map((video) => (
+                  <SimpleVideoCard key={video.id} {...video} />
+                ))}
+              </div>
+            )}
           </div>
         )}
 
