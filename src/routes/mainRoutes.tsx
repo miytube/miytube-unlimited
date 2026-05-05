@@ -199,6 +199,9 @@ export const mainRoutes = [
   // Bad Weather landing page
   <Route key="bad-weather" path="/bad-weather" element={<BadWeather />} />,
 
+  // Standalone shortcut to Medicine & Medication (lives under Education)
+  <Route key="medicine-shortcut" path="/medicine" element={<Navigate to="/education/medicine" replace />} />,
+
   // Audio Music Videos
   <Route key="audio-music-videos" path="/audio-music-videos" element={<AudioMusicVideos />} />,
 
