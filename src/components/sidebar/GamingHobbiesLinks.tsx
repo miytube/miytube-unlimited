@@ -45,7 +45,8 @@ export const GamingHobbiesLinks: React.FC = () => {
       label: 'Riddles & Puzzles', 
       path: '/riddles',
       subItems: [
-        { id: 'riddles-conundrum', label: 'Conundrums & Puzzles', path: '/riddles/conundrum' }
+        { id: 'riddles-conundrum', label: 'Conundrums & Puzzles', path: '/riddles/conundrum' },
+        { id: 'riddles-stoic-quotes', label: 'Stoic Quotes', path: '/c/riddles/stoic-quotes' }
       ]
     },
     { 
