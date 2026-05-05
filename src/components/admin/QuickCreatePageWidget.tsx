@@ -333,67 +333,53 @@ export const QuickCreatePageWidget: React.FC = () => {
                 </div>
               )}
 
-              <Popover open={pagePickerOpen} onOpenChange={setPagePickerOpen}>
-                <PopoverTrigger asChild>
-                  <Input
-                    value={pageInput}
-                    onChange={(e) => {
-                      setPageInput(e.target.value);
-                      setPagePickerOpen(true);
-                    }}
-                    onFocus={() => setPagePickerOpen(true)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        if (pageInput.trim() && !exactExists) addPageName(pageInput);
-                      }
-                    }}
-                    placeholder={
-                      selectedMain
-                        ? 'Type a name and press Enter to add…'
-                        : 'Pick a main category first'
+              <div className="flex gap-2">
+                <Input
+                  value={pageInput}
+                  onChange={(e) => setPageInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (pageInput.trim() && !exactExists) addPageName(pageInput);
                     }
-                    disabled={!selectedMain}
-                  />
-                </PopoverTrigger>
-                {selectedMain && (filteredExisting.length > 0 || pageInput.trim()) && (
-                  <PopoverContent
-                    className="w-[--radix-popover-trigger-width] p-0"
-                    align="start"
-                    onOpenAutoFocus={(e) => e.preventDefault()}
-                  >
-                    <ScrollArea className="max-h-60">
-                      <div className="p-1">
-                        {filteredExisting.map((n) => (
-                          <button
-                            key={n}
-                            onClick={() => addPageName(n)}
-                            className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left"
-                          >
-                            <Plus className="mr-2 h-4 w-4 shrink-0 opacity-60" />
-                            <span className="flex-1 truncate">{n}</span>
-                            <span className="text-xs text-muted-foreground ml-2">existing</span>
-                          </button>
-                        ))}
-                        {pageInput.trim() && !exactExists && (
-                          <button
-                            onClick={() => addPageName(pageInput)}
-                            className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left text-primary font-medium"
-                          >
-                            <Plus className="mr-2 h-4 w-4 shrink-0" />
-                            Add "{pageInput.trim()}"
-                          </button>
-                        )}
-                        {filteredExisting.length === 0 && !pageInput.trim() && (
-                          <div className="py-4 text-center text-xs text-muted-foreground">
-                            Type to add a new page
-                          </div>
-                        )}
-                      </div>
-                    </ScrollArea>
-                  </PopoverContent>
-                )}
-              </Popover>
+                  }}
+                  placeholder={
+                    selectedMain
+                      ? 'Type a name and press Enter…'
+                      : 'Pick a main category first'
+                  }
+                  disabled={!selectedMain}
+                />
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => addPageName(pageInput)}
+                  disabled={!selectedMain || !pageInput.trim() || !!exactExists}
+                >
+                  Add
+                </Button>
+              </div>
+
+              {selectedMain && filteredExisting.length > 0 && (
+                <ScrollArea className="max-h-40 border rounded-md">
+                  <div className="p-1">
+                    <div className="px-2 py-1 text-xs text-muted-foreground">
+                      Existing under {selectedMain.name} (click to add):
+                    </div>
+                    {filteredExisting.map((n) => (
+                      <button
+                        key={n}
+                        type="button"
+                        onClick={() => addPageName(n)}
+                        className="flex items-center w-full px-2 py-1.5 text-sm rounded-sm hover:bg-accent text-left"
+                      >
+                        <Plus className="mr-2 h-3.5 w-3.5 shrink-0 opacity-60" />
+                        <span className="flex-1 truncate">{n}</span>
+                      </button>
+                    ))}
+                  </div>
+                </ScrollArea>
+              )}
               <p className="text-xs text-muted-foreground">
                 Type any name and press Enter (or click "Add") to save it under{' '}
                 {selectedMain ? <strong>{selectedMain.name}</strong> : 'the main category'}.
