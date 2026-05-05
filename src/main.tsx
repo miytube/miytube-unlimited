@@ -20,5 +20,6 @@ if (typeof window !== 'undefined') {
       : setTimeout(cb, 1500);
   schedule(() => {
     runStaleCacheCleanup();
+    installAdsenseOverlayBlocker();
   });
 }
