@@ -90,9 +90,15 @@ const VideoUpload = () => {
       description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
     });
     
-    // Add videos to global context with category information
+    // Add videos to global context with category information.
+    // For batch uploads (more than one file), use each file's own basename as
+    // the title so videos don't all end up sharing the typed title.
+    const isBatch = files.length > 1;
     files.forEach(file => {
-      addUploadedVideo(file, title || file.name, description || '', category, subcategory, tags);
+      const baseName = file.name.split('.').slice(0, -1).join('.') || file.name;
+      const perFileTitle = isBatch ? baseName : (title || baseName);
+      const perFileDescription = isBatch ? '' : (description || '');
+      addUploadedVideo(file, perFileTitle, perFileDescription, category, subcategory, tags);
     });
     
     // Simulate upload completion and redirect to home page
