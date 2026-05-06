@@ -74,6 +74,8 @@ export const mainRoutes = [
   <Route key="videos" path="/videos" element={<Videos />} />,
   <Route key="videos-category" path="/videos/:category" element={<Videos />} />,
   <Route key="watch" path="/watch" element={<Watch />} />,
+  <Route key="legacy-v" path="/v/:id/:slug" element={<LegacyVideoRedirect />} />,
+  <Route key="legacy-v-noslug" path="/v/:id" element={<LegacyVideoRedirect />} />,
   <Route key="search" path="/search" element={<Search />} />,
   <Route key="upload" path="/upload" element={<Upload />} />,
   <Route key="upload-video" path="/upload/video" element={<VideoUpload />} />,
