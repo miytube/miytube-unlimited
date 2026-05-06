@@ -334,6 +334,7 @@ export const SidebarSearch: React.FC = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+          onKeyDown={handleKeyDown}
           className="pl-8 pr-8 h-9 text-sm bg-muted/50"
         />
         {searchQuery && (
@@ -345,27 +346,38 @@ export const SidebarSearch: React.FC = () => {
           </button>
         )}
       </div>
-      
+
       {isFocused && filteredItems.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-popover border rounded-md shadow-lg z-50 overflow-hidden">
-          <ScrollArea className="max-h-64">
-            <div className="p-1">
-              {filteredItems.map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.path}
-                  className="flex flex-col px-3 py-2 text-sm rounded hover:bg-accent transition-colors"
-                  onClick={() => {
-                    setSearchQuery('');
-                    setIsFocused(false);
-                  }}
-                >
-                  <span className="font-medium">{item.label}</span>
-                  {item.category && (
-                    <span className="text-xs text-muted-foreground">{item.category}</span>
-                  )}
-                </Link>
-              ))}
+          <div className="px-3 py-1.5 text-[10px] uppercase tracking-wide text-muted-foreground border-b bg-muted/30 flex items-center justify-between">
+            <span>{filteredItems.length} match{filteredItems.length === 1 ? '' : 'es'}</span>
+            <span className="hidden sm:inline">↑↓ navigate · Enter to open</span>
+          </div>
+          <ScrollArea className="max-h-80">
+            <div className="p-1" ref={listRef}>
+              {filteredItems.map((item, index) => {
+                const isActive = index === activeIndex;
+                return (
+                  <Link
+                    key={`${item.path}-${index}`}
+                    to={item.path}
+                    data-result-index={index}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    className={`flex flex-col px-3 py-2 text-sm rounded transition-colors ${
+                      isActive ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/60'
+                    }`}
+                    onClick={() => {
+                      setSearchQuery('');
+                      setIsFocused(false);
+                    }}
+                  >
+                    <span className="font-medium">{item.label}</span>
+                    {item.category && (
+                      <span className="text-xs text-muted-foreground">{item.category}</span>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           </ScrollArea>
         </div>
