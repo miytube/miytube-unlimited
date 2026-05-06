@@ -83,7 +83,6 @@ const Index = () => {
   // Videos are already sorted newest-first in context, no need to reverse
   const trendingVideos = useMemo(() => {
     return uploadedVideos
-      .filter(video => video.category?.toLowerCase() !== 'shorts')
       .slice(0, 8)
       .map(video => ({
         id: video.id,
