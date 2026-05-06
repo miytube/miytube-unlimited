@@ -61,6 +61,17 @@ const detectSportsLeague = (text: string): string | undefined => {
   return sportsLeaguePatterns.find(({ pattern }) => pattern.test(normalized))?.league;
 };
 
+// Detect playoff conference (east/west) so that fuzzy matching can't pull a
+// "west-playoffs" video into the "east-playoffs" page (only 2 edits apart).
+const detectConference = (text: string): 'east' | 'west' | undefined => {
+  const t = text.toLowerCase();
+  const hasEast = /(^|[\s\-/])east(ern)?($|[\s\-/])/.test(t);
+  const hasWest = /(^|[\s\-/])west(ern)?($|[\s\-/])/.test(t);
+  if (hasEast && !hasWest) return 'east';
+  if (hasWest && !hasEast) return 'west';
+  return undefined;
+};
+
 const routeValueAliases: Record<string, string[]> = {
   'sports/nhl': ['nhl-hockey', 'all-nhl-hockey'],
   'sports-nhl': ['nhl-hockey', 'all-nhl-hockey'],
@@ -207,6 +218,11 @@ export const filterVideosBySubcategory = (
     const requestedLeague = detectSportsLeague(`${keyLower} ${titleLower}`);
     const videoLeague = detectSportsLeague(`${vidCategory} ${vidSubcategory} ${vidTags.join(' ')}`);
     if (requestedLeague && videoLeague && requestedLeague !== videoLeague) return false;
+
+    // Playoff conference isolation (east vs west)
+    const requestedConf = detectConference(`${keyLower} ${titleLower}`);
+    const videoConf = detectConference(`${vidCategory} ${vidSubcategory}`);
+    if (requestedConf && videoConf && requestedConf !== videoConf) return false;
 
     // 1) Exact match on category or subcategory (including normalized variants)
     if (accepted.has(vidCategory) || accepted.has(vidSubcategory)) return true;
