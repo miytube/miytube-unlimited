@@ -127,6 +127,11 @@ const Search = () => {
           </div>
         )}
 
+        {/* Ad slot — top of search results (miytube-grid-9) */}
+        {query && !isSearching && (
+          <AdSlot slot="1603704785" label="Search results top ad (miytube-grid-9)" className="mb-6" format="horizontal" />
+        )}
+
         {/* AI Database Results */}
         {hasAIResults && (
           <div className="mb-8">
