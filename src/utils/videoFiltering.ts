@@ -219,6 +219,11 @@ export const filterVideosBySubcategory = (
     const videoLeague = detectSportsLeague(`${vidCategory} ${vidSubcategory} ${vidTags.join(' ')}`);
     if (requestedLeague && videoLeague && requestedLeague !== videoLeague) return false;
 
+    // Playoff conference isolation (east vs west)
+    const requestedConf = detectConference(`${keyLower} ${titleLower}`);
+    const videoConf = detectConference(`${vidCategory} ${vidSubcategory}`);
+    if (requestedConf && videoConf && requestedConf !== videoConf) return false;
+
     // 1) Exact match on category or subcategory (including normalized variants)
     if (accepted.has(vidCategory) || accepted.has(vidSubcategory)) return true;
     if (accepted.has(vidCategoryNoSep) || accepted.has(vidSubcategoryNoSep)) return true;
