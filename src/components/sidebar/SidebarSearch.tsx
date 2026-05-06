@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
@@ -217,6 +217,8 @@ export const SidebarSearch: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
+  const highlightTimerRef = useRef<number | null>(null);
+
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return [];
     
@@ -225,6 +227,45 @@ export const SidebarSearch: React.FC = () => {
       item.label.toLowerCase().includes(query) ||
       (item.category && item.category.toLowerCase().includes(query))
     ).slice(0, 10);
+  }, [searchQuery]);
+
+  // Scroll the sidebar to the first matching link as the user types.
+  useEffect(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return;
+
+    const nav = document.querySelector('nav');
+    if (!nav) return;
+
+    // Expand any collapsed groups so hidden links can be found and scrolled to.
+    const closedTriggers = nav.querySelectorAll<HTMLButtonElement>(
+      'button[data-state="closed"]'
+    );
+    closedTriggers.forEach((btn) => {
+      const txt = (btn.textContent || '').toLowerCase();
+      // open group if it likely contains a match (any group with matching word, or just open all when searching)
+      if (txt) btn.click();
+    });
+
+    // Wait a tick for groups to expand, then scroll to first matching link.
+    const t = window.setTimeout(() => {
+      const links = nav.querySelectorAll<HTMLAnchorElement>('a');
+      let target: HTMLAnchorElement | null = null;
+      for (const a of Array.from(links)) {
+        const text = (a.textContent || '').toLowerCase();
+        if (text.includes(q)) { target = a; break; }
+      }
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('ring-2', 'ring-primary', 'rounded');
+        if (highlightTimerRef.current) window.clearTimeout(highlightTimerRef.current);
+        highlightTimerRef.current = window.setTimeout(() => {
+          target?.classList.remove('ring-2', 'ring-primary', 'rounded');
+        }, 1800);
+      }
+    }, 80);
+
+    return () => window.clearTimeout(t);
   }, [searchQuery]);
 
   const handleClear = () => {
