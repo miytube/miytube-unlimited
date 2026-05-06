@@ -52,8 +52,8 @@ const LegacyVideoRedirect = () => {
             .limit(10);
 
           const all = [
-            ...(musicMatches || []).map((v: any) => ({ ...v, kind: "watch" })),
-            ...(vidMatches || []).map((v: any) => ({ ...v, kind: "watch" })),
+            ...(vidMatches || []).map((v: any) => ({ ...v, kind: "video" })),
+            ...(musicMatches || []).map((v: any) => ({ ...v, kind: "music" })),
           ];
 
           if (all.length > 0) {
