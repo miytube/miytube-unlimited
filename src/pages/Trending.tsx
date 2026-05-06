@@ -11,6 +11,7 @@ import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton, ShortGridSkeleton } from '@/components/skeletons';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 interface TrendingCategoryProps {
   title: string;
