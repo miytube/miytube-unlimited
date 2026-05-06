@@ -995,6 +995,18 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Crown,
     parent: { route: '/statues', name: 'Statues & Sculpture' }
   },
+  '/wood': {
+    title: 'Wood',
+    description: 'Wood, woodcraft, and sculpture content',
+    icon: Axe,
+    parent: { route: '/', name: 'History & Artifacts' }
+  },
+  '/wood/woodcraft-sculpture': {
+    title: 'Woodcraft & Sculpture',
+    description: 'Woodcraft, carving, and wooden sculpture',
+    icon: Axe,
+    parent: { route: '/wood', name: 'Wood' }
+  },
 
   // ============ GOVERNMENT & POLITICS ============
   '/news/shows': {
