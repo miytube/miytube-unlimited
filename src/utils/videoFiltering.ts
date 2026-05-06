@@ -152,6 +152,17 @@ export const filterVideosBySubcategory = (
     `${parentSegment}-${lastSegment}`,
     `${parentSegment}/${lastSegment}`,
   ];
+  // For deep paths (e.g. sports/nba/east-playoffs), also accept every contiguous
+  // suffix of length >=2 in both slash and hyphen forms. This lets a video stored
+  // as "nba-east-playoffs" match the /sports/nba/east-playoffs page.
+  if (keySegments.length >= 3) {
+    for (let start = 1; start < keySegments.length - 1; start++) {
+      const suffix = keySegments.slice(start);
+      const slashed = suffix.join('/');
+      const hyphenated = suffix.join('-');
+      acceptedBase.push(slashed, hyphenated, hyphenated.replace(/[-\s]/g, ''));
+    }
+  }
   if (!isMultiSegment) {
     acceptedBase.push(lastSegment, lastSegmentSpaced, lastSegmentNoSep, titleLower, titleNoSep);
   }
