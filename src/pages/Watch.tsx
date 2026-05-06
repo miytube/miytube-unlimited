@@ -392,6 +392,9 @@ const Watch = () => {
             {/* Ad slot — below video description */}
             <AdSlot slot="1227265451" label="Watch below-description ad" />
 
+            {/* Ad slot — between description and comments (miytube-grid-8 multiplex) */}
+            <AdSlot slot="8875410906" label="Watch in-content multiplex (miytube-grid-8)" className="my-4" format="auto" />
+
             {actualVideoId && <VideoComments videoId={actualVideoId} />}
             
             
@@ -487,6 +490,9 @@ const Watch = () => {
                 ))}
               </div>
             )}
+
+            {/* Ad slot — mid-sidebar (miytube-grid-7 vertical) */}
+            <AdSlot slot="1188492570" label="Watch sidebar mid ad (miytube-grid-7)" format="vertical" className="!my-0" />
 
             {/* AI Recommendations */}
             {aiRecommendations.length > 0 && (

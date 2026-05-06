@@ -8,6 +8,7 @@ import { Search as SearchIcon, Upload, Filter, SortAsc, Loader2, Sparkles } from
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -124,6 +125,11 @@ const Search = () => {
           <div className="bg-destructive/10 text-destructive px-4 py-2 rounded-md mb-4 text-sm">
             {error}
           </div>
+        )}
+
+        {/* Ad slot — top of search results (miytube-grid-9) */}
+        {query && !isSearching && (
+          <AdSlot slot="1603704785" label="Search results top ad (miytube-grid-9)" className="mb-6" format="horizontal" />
         )}
 
         {/* AI Database Results */}
