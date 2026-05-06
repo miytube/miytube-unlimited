@@ -402,6 +402,18 @@ const ShortsWatch = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Comments Sheet */}
+      <Sheet open={commentsOpen} onOpenChange={setCommentsOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>Comments</SheetTitle>
+          </SheetHeader>
+          <div className="mt-4">
+            {id && <VideoComments videoId={id} />}
+          </div>
+        </SheetContent>
+      </Sheet>
     </Layout>
   );
 };
