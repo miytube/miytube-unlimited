@@ -55,10 +55,12 @@ const Index = () => {
     prevVideoCountRef.current = uploadedVideos.length;
   }, [uploadedVideos.length]);
 
-  // ALL uploaded videos appear on home page (newest first) - including shorts
+  // Regular videos for the main home grid (shorts have their own section below)
   // Videos are already sorted newest-first in context, no need to reverse
   const allVideos = useMemo(() => {
-    return uploadedVideos.map(video => ({
+    return uploadedVideos
+      .filter(video => video.category?.toLowerCase() !== 'shorts')
+      .map(video => ({
       id: video.id,
       title: video.title,
       thumbnail: video.thumbnail,
