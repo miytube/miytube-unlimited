@@ -475,9 +475,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     });
     
     const merged: UploadedVideo[] = [...localVideoList];
-    const localIds = new Set(localVideoList.map(v => v.id));
+    const seenIds = new Set(localVideoList.map(v => v.id));
     for (const cv of cloudVideos) {
-      if (!localIds.has(cv.id)) merged.push(cv);
+      if (!seenIds.has(cv.id)) {
+        merged.push(cv);
+        seenIds.add(cv.id);
+      }
     }
     
     merged.sort((a, b) => {
@@ -518,10 +521,11 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           console.log('First batch cloud videos:', firstBatch.length);
           // Kick off background load of remaining videos
           loadRemaining((chunk) => {
-            setUploadedVideos((prev) => mergeAndSort([], [
-              ...prev.filter(v => !v.file && !v.fileDataUrl).map(v => v) as UploadedVideo[],
-              ...chunk,
-            ]));
+            setUploadedVideos((prev) => {
+              const prevById = new Map(prev.map(v => [v.id, v]));
+              for (const cv of chunk) prevById.set(cv.id, cv);
+              return mergeAndSort([], Array.from(prevById.values()) as UploadedVideo[]);
+            });
           }).catch(err => console.error('Background video load failed:', err));
           return mergeAndSort([], firstBatch);
         });
