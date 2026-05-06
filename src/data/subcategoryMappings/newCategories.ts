@@ -9,7 +9,7 @@ import {
   Heart, Baby, Users, Sparkles, Scissors, HeartHandshake, BadgeCheck,
   Utensils, Pizza, Wine,
   Gamepad2, GraduationCap, Palette, Music, Film,
-  BookOpen, Church, Crown, Amphora,
+  BookOpen, Church, Crown, Amphora, Axe,
   Flag, Megaphone, Newspaper, Radio, Mic,
   Trophy, Dumbbell, Target, Medal, Timer, Waves,
   Clapperboard, Tv, Camera, Star,
