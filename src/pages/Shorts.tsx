@@ -237,7 +237,10 @@ const Shorts = () => {
                   />
                 ))}
               </div>
-              
+
+              {/* Ad slot — below shorts grid (miytube-grid-6) */}
+              <AdSlot slot="8656198293" label="Shorts below-grid ad (miytube-grid-6)" className="my-6 max-w-md mx-auto" format="rectangle" />
+
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
