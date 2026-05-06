@@ -93,6 +93,60 @@ const ShortsWatch = () => {
     }
   };
 
+  // Load like count + user like status
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      const { data: likes } = await supabase
+        .from('video_likes')
+        .select('is_like, user_id')
+        .eq('video_id', id);
+      if (likes) {
+        setLikesCount(likes.filter((l) => l.is_like).length);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) setUserLiked(!!likes.find((l) => l.user_id === user.id && l.is_like));
+      }
+    })();
+  }, [id]);
+
+  const handleLike = async () => {
+    if (!id) return;
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({ title: 'Sign in required', description: 'Please sign in to like.', variant: 'destructive' });
+      return;
+    }
+    if (userLiked) {
+      await supabase.from('video_likes').delete().eq('video_id', id).eq('user_id', user.id);
+      setUserLiked(false);
+      setLikesCount((c) => Math.max(0, c - 1));
+    } else {
+      const { error } = await supabase
+        .from('video_likes')
+        .upsert({ video_id: id, user_id: user.id, is_like: true }, { onConflict: 'user_id,video_id' });
+      if (!error) {
+        setUserLiked(true);
+        setLikesCount((c) => c + 1);
+        trackEngagement(id, 'like');
+      }
+    }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: video?.title || 'Short', url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast({ title: 'Link copied', description: 'Share link copied to clipboard.' });
+      }
+      if (id) trackEngagement(id, 'share');
+    } catch {
+      /* cancelled */
+    }
+  };
+
   const handleEditSave = (updates: {
     title: string;
     description: string;
