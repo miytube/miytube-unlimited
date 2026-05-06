@@ -116,54 +116,59 @@ export const useFileUpload = ({ supportedFormats, maxSize, onUpload, id }: UseFi
       return;
     }
 
-    // Video compatibility check (codec/container) before we accept the file
+    // Video compatibility check (codec/container) — filter per file so one
+    // bad file in a batch never silently drops the good ones.
+    const compatibleFiles: File[] = [];
+    const skippedFiles: string[] = [];
+
     for (const file of files) {
       const extension = file.name.split('.').pop()?.toLowerCase() || '';
       const isVideoFile = file.type.startsWith('video/') || ['mp4', 'm4v', 'mov', 'webm', 'ogv', 'ogg', 'mkv', 'avi', 'wmv', 'flv', '3gp', 'mpeg', 'mpg'].includes(extension);
 
-      if (!isVideoFile) continue;
+      if (!isVideoFile) {
+        compatibleFiles.push(file);
+        continue;
+      }
 
       try {
-        toast({
-          title: "Checking video compatibility...",
-          description: `Verifying ${file.name} can play in browsers.`,
-        });
-
         const compatibility = await checkVideoCompatibility(file);
 
         if (!compatibility.isCompatible) {
           const message = compatibility.errorMessage || "This video cannot be played in browsers.";
-          setUploadError(message);
+          skippedFiles.push(file.name);
           toast({
-            title: "Video format not supported",
+            title: `Skipped: ${file.name}`,
             description: message,
             variant: "destructive",
             duration: 10000,
           });
-
-          setTimeout(() => {
-            toast({
-              title: "How to fix",
-              description: getFormatRecommendation(),
-              duration: 15000,
-            });
-          }, 500);
-
-          return;
+          continue;
         }
+        compatibleFiles.push(file);
       } catch (error) {
-        console.warn('Video compatibility check failed:', error);
-        const message = "Could not validate video compatibility. Please try again or convert to MP4 (H.264/AAC).";
-        setUploadError(message);
-        toast({
-          title: "Video validation failed",
-          description: message,
-          variant: "destructive",
-          duration: 10000,
-        });
-        return;
+        console.warn('Video compatibility check failed, accepting file anyway:', error);
+        // Don't block the upload on a flaky probe — let the server-side
+        // upload + playback path catch any real issue.
+        compatibleFiles.push(file);
       }
     }
+
+    if (skippedFiles.length > 0) {
+      setTimeout(() => {
+        toast({
+          title: "How to fix skipped videos",
+          description: getFormatRecommendation(),
+          duration: 12000,
+        });
+      }, 500);
+    }
+
+    if (compatibleFiles.length === 0) {
+      setUploadError("None of the selected videos are playable in browsers.");
+      return;
+    }
+
+    files = compatibleFiles;
 
     setUploading(true);
 
