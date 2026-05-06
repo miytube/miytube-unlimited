@@ -82,40 +82,61 @@ const VideoUpload = () => {
     }
   };
   
-  const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
+  const handleUpload = async (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     console.log("Video upload initiated:", files, "Title:", title, "Description:", description, "Category:", category, "Subcategory:", subcategory, "Tags:", tags);
-    
+
     toast({
       title: "Video upload started",
       description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
     });
-    
-    // Add videos to global context with category information.
-    // For batch uploads (more than one file), use each file's own basename as
-    // the title so videos don't all end up sharing the typed title.
+
     const isBatch = files.length > 1;
-    files.forEach(file => {
+    let successCount = 0;
+    const failed: string[] = [];
+
+    for (const file of files) {
       const baseName = file.name.split('.').slice(0, -1).join('.') || file.name;
       const perFileTitle = isBatch ? baseName : (title || baseName);
       const perFileDescription = isBatch ? '' : (description || '');
-      addUploadedVideo(file, perFileTitle, perFileDescription, category, subcategory, tags);
-    });
-    
-    // Simulate upload completion and redirect to home page
-    setTimeout(() => {
+      try {
+        await addUploadedVideo(file, perFileTitle, perFileDescription, category, subcategory, tags);
+        successCount++;
+      } catch (error) {
+        const msg = error instanceof Error ? error.message : 'Upload failed';
+        failed.push(file.name);
+        console.error(`[VideoUpload failed] ${file.name}:`, msg);
+        toast({
+          title: `Failed: ${file.name}`,
+          description: msg,
+          variant: 'destructive',
+          duration: 20000,
+        });
+      }
+    }
+
+    if (successCount === 0) {
+      return;
+    }
+
+    if (failed.length > 0) {
       toast({
-        title: "Upload complete",
-        description: "Your video has been processed and is now available on the home page and category pages.",
-        action: (
-          <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
-            View Home
-          </ToastAction>
-        )
+        title: `${failed.length} of ${files.length} files failed`,
+        description: `Failed: ${failed.join(', ')}`,
+        variant: 'destructive',
+        duration: 30000,
       });
-      
-      // Redirect to home page after upload is complete
-      navigate('/');
-    }, 2000);
+    }
+
+    toast({
+      title: 'Upload complete',
+      description: 'Your video has been processed and is now available on the home page and category pages.',
+      action: (
+        <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
+          View Home
+        </ToastAction>
+      ),
+    });
+    navigate('/');
   };
 
   const handleUrlImport = async (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[], isYouTube?: boolean, youtubeId?: string) => {
