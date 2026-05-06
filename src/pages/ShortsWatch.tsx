@@ -17,6 +17,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { VideoComments } from '@/components/watch/VideoComments';
+import { supabase } from '@/integrations/supabase/client';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 
 const ShortsWatch = () => {
   const { id } = useParams();
@@ -29,6 +33,9 @@ const ShortsWatch = () => {
   const [video, setVideo] = useState<any>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [userLiked, setUserLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
 
   // Get regular videos and other shorts for sidebar
   const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts');
@@ -83,6 +90,60 @@ const ShortsWatch = () => {
     if (videoRef.current) {
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
+    }
+  };
+
+  // Load like count + user like status
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      const { data: likes } = await supabase
+        .from('video_likes')
+        .select('is_like, user_id')
+        .eq('video_id', id);
+      if (likes) {
+        setLikesCount(likes.filter((l) => l.is_like).length);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) setUserLiked(!!likes.find((l) => l.user_id === user.id && l.is_like));
+      }
+    })();
+  }, [id]);
+
+  const handleLike = async () => {
+    if (!id) return;
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast({ title: 'Sign in required', description: 'Please sign in to like.', variant: 'destructive' });
+      return;
+    }
+    if (userLiked) {
+      await supabase.from('video_likes').delete().eq('video_id', id).eq('user_id', user.id);
+      setUserLiked(false);
+      setLikesCount((c) => Math.max(0, c - 1));
+    } else {
+      const { error } = await supabase
+        .from('video_likes')
+        .upsert({ video_id: id, user_id: user.id, is_like: true }, { onConflict: 'user_id,video_id' });
+      if (!error) {
+        setUserLiked(true);
+        setLikesCount((c) => c + 1);
+        trackEngagement(id, 'like');
+      }
+    }
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: video?.title || 'Short', url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast({ title: 'Link copied', description: 'Share link copied to clipboard.' });
+      }
+      if (id) trackEngagement(id, 'share');
+    } catch {
+      /* cancelled */
     }
   };
 
@@ -208,19 +269,19 @@ const ShortsWatch = () => {
 
             {/* Side actions */}
             <div className="absolute right-3 bottom-20 flex flex-col gap-4">
-              <button className="flex flex-col items-center text-white">
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                  <ThumbsUp className="h-5 w-5" />
+              <button className="flex flex-col items-center text-white" onClick={handleLike}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${userLiked ? 'bg-primary' : 'bg-white/20'}`}>
+                  <ThumbsUp className="h-5 w-5" fill={userLiked ? 'currentColor' : 'none'} />
                 </div>
-                <span className="text-xs mt-1">Like</span>
+                <span className="text-xs mt-1">{likesCount > 0 ? likesCount : 'Like'}</span>
               </button>
-              <button className="flex flex-col items-center text-white">
+              <button className="flex flex-col items-center text-white" onClick={() => setCommentsOpen(true)}>
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <MessageCircle className="h-5 w-5" />
                 </div>
                 <span className="text-xs mt-1">Comment</span>
               </button>
-              <button className="flex flex-col items-center text-white">
+              <button className="flex flex-col items-center text-white" onClick={handleShare}>
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <Share className="h-5 w-5" />
                 </div>
@@ -341,6 +402,18 @@ const ShortsWatch = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Comments Sheet */}
+      <Sheet open={commentsOpen} onOpenChange={setCommentsOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>Comments</SheetTitle>
+          </SheetHeader>
+          <div className="mt-4">
+            {id && <VideoComments videoId={id} />}
+          </div>
+        </SheetContent>
+      </Sheet>
     </Layout>
   );
 };
