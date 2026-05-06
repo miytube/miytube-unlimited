@@ -64,6 +64,10 @@ const detectSportsLeague = (text: string): string | undefined => {
 const routeValueAliases: Record<string, string[]> = {
   'sports/nhl': ['nhl-hockey', 'all-nhl-hockey'],
   'sports-nhl': ['nhl-hockey', 'all-nhl-hockey'],
+  'sports/nba/east-playoffs': ['nba-playoffs-25-26', 'nba-east-playoffs'],
+  'sports-nba-east-playoffs': ['nba-playoffs-25-26', 'nba-east-playoffs'],
+  'sports/nba/west-playoffs': ['nba-playoffs-25-26', 'nba-west-playoffs'],
+  'sports-nba-west-playoffs': ['nba-playoffs-25-26', 'nba-west-playoffs'],
 };
 
 /**
