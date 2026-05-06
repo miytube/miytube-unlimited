@@ -216,18 +216,69 @@ const allItems: SearchItem[] = [
 export const SidebarSearch: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const highlightTimerRef = useRef<number | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
 
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    
+
     const query = searchQuery.toLowerCase();
-    return allItems.filter(item => 
+    const matches = allItems.filter(item =>
       item.label.toLowerCase().includes(query) ||
       (item.category && item.category.toLowerCase().includes(query))
-    ).slice(0, 10);
+    );
+
+    // Rank: starts-with first, then label match, then category match, alphabetical
+    return matches.sort((a, b) => {
+      const al = a.label.toLowerCase();
+      const bl = b.label.toLowerCase();
+      const aStarts = al.startsWith(query) ? 0 : 1;
+      const bStarts = bl.startsWith(query) ? 0 : 1;
+      if (aStarts !== bStarts) return aStarts - bStarts;
+      const aLabel = al.includes(query) ? 0 : 1;
+      const bLabel = bl.includes(query) ? 0 : 1;
+      if (aLabel !== bLabel) return aLabel - bLabel;
+      return al.localeCompare(bl);
+    });
   }, [searchQuery]);
+
+  // Reset active selection when query changes
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [searchQuery]);
+
+  // Keep highlighted item in view inside the dropdown
+  useEffect(() => {
+    if (!listRef.current) return;
+    const el = listRef.current.querySelector<HTMLAnchorElement>(
+      `[data-result-index="${activeIndex}"]`
+    );
+    el?.scrollIntoView({ block: 'nearest' });
+  }, [activeIndex, filteredItems]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!filteredItems.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((i) => (i + 1) % filteredItems.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((i) => (i - 1 + filteredItems.length) % filteredItems.length);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const item = filteredItems[activeIndex];
+      if (item) {
+        window.location.href = item.path;
+        setSearchQuery('');
+        setIsFocused(false);
+      }
+    } else if (e.key === 'Escape') {
+      setSearchQuery('');
+      setIsFocused(false);
+    }
+  };
 
   // Scroll the sidebar to the first matching link as the user types.
   useEffect(() => {
