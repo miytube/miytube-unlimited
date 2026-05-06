@@ -28,6 +28,7 @@ import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import Admin from "@/pages/Admin";
 import Monetization from "@/pages/Monetization";
+import LegacyVideoRedirect from "@/pages/LegacyVideoRedirect";
 import Watchlist from "@/pages/Watchlist";
 import BreakingNews from "@/pages/BreakingNews";
 
