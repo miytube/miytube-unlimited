@@ -491,6 +491,9 @@ const Watch = () => {
               </div>
             )}
 
+            {/* Ad slot — mid-sidebar (miytube-grid-7 vertical) */}
+            <AdSlot slot="1188492570" label="Watch sidebar mid ad (miytube-grid-7)" format="vertical" className="!my-0" />
+
             {/* AI Recommendations */}
             {aiRecommendations.length > 0 && (
               <div className="space-y-2">
