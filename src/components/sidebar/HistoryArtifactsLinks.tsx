@@ -55,6 +55,15 @@ export const HistoryArtifactsLinks: React.FC = () => {
         { id: 'statues-stone', label: 'Stone Carvers', path: '/statues/stone' }
       ]
     },
+    { 
+      id: 'wood', 
+      icon: Axe, 
+      label: 'Wood', 
+      path: '/wood',
+      subItems: [
+        { id: 'wood-woodcraft-sculpture', label: 'Woodcraft & Sculpture', path: '/wood/woodcraft-sculpture' }
+      ]
+    },
   ];
 
   return <SidebarCategoryLinks title="HISTORY & ARTIFACTS" links={historyArtifactsLinks} />;
