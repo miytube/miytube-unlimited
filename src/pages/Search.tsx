@@ -8,6 +8,7 @@ import { Search as SearchIcon, Upload, Filter, SortAsc, Loader2, Sparkles } from
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
