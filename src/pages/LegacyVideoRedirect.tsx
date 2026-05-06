@@ -68,7 +68,11 @@ const LegacyVideoRedirect = () => {
             all.sort((a: any, b: any) => score(b.title) - score(a.title));
             const best = all[0];
             if (!cancelled) {
-              setTarget(`/watch/${best.id}`);
+              const url =
+                best.kind === "music"
+                  ? `/watch?id=${best.id}&type=music`
+                  : `/watch?v=${best.id}`;
+              setTarget(url);
               return;
             }
           }
