@@ -392,6 +392,9 @@ const Watch = () => {
             {/* Ad slot — below video description */}
             <AdSlot slot="1227265451" label="Watch below-description ad" />
 
+            {/* Ad slot — between description and comments (miytube-grid-8 multiplex) */}
+            <AdSlot slot="8875410906" label="Watch in-content multiplex (miytube-grid-8)" className="my-4" format="auto" />
+
             {actualVideoId && <VideoComments videoId={actualVideoId} />}
             
             
