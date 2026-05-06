@@ -59,7 +59,6 @@ const Index = () => {
   // Videos are already sorted newest-first in context, no need to reverse
   const allVideos = useMemo(() => {
     return uploadedVideos
-      .filter(video => video.category?.toLowerCase() !== 'shorts')
       .map(video => ({
       id: video.id,
       title: video.title,
