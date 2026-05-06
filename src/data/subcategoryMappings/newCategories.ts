@@ -9,7 +9,7 @@ import {
   Heart, Baby, Users, Sparkles, Scissors, HeartHandshake, BadgeCheck,
   Utensils, Pizza, Wine,
   Gamepad2, GraduationCap, Palette, Music, Film,
-  BookOpen, Church, Crown, Amphora,
+  BookOpen, Church, Crown, Amphora, Axe,
   Flag, Megaphone, Newspaper, Radio, Mic,
   Trophy, Dumbbell, Target, Medal, Timer, Waves,
   Clapperboard, Tv, Camera, Star,
@@ -994,6 +994,18 @@ export const newCategorySubcategories: SubcategoryMapping = {
     description: 'Stone carving artistry',
     icon: Crown,
     parent: { route: '/statues', name: 'Statues & Sculpture' }
+  },
+  '/wood': {
+    title: 'Wood',
+    description: 'Wood, woodcraft, and sculpture content',
+    icon: Axe,
+    parent: { route: '/', name: 'History & Artifacts' }
+  },
+  '/wood/woodcraft-sculpture': {
+    title: 'Woodcraft & Sculpture',
+    description: 'Woodcraft, carving, and wooden sculpture',
+    icon: Axe,
+    parent: { route: '/wood', name: 'Wood' }
   },
 
   // ============ GOVERNMENT & POLITICS ============

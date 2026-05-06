@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BookOpen, Landmark, Church, Globe, Crown, Scroll, Amphora } from 'lucide-react';
+import { BookOpen, Landmark, Church, Globe, Crown, Scroll, Amphora, Axe } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const HistoryArtifactsLinks: React.FC = () => {
@@ -53,6 +53,15 @@ export const HistoryArtifactsLinks: React.FC = () => {
       subItems: [
         { id: 'statues-sculpture', label: 'Sculpture & Effigy', path: '/statues/sculpture' },
         { id: 'statues-stone', label: 'Stone Carvers', path: '/statues/stone' }
+      ]
+    },
+    { 
+      id: 'wood', 
+      icon: Axe, 
+      label: 'Wood', 
+      path: '/wood',
+      subItems: [
+        { id: 'wood-woodcraft-sculpture', label: 'Woodcraft & Sculpture', path: '/wood/woodcraft-sculpture' }
       ]
     },
   ];
