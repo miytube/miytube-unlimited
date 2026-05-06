@@ -254,7 +254,17 @@ const Trending: React.FC = () => {
           </div>
         )}
 
+        {/* Ad slot — between Trending Videos and Shorts (miytube-grid-4) */}
+        {!isLoading && (activeTab === 'all' || activeTab === 'videos') && displayVideos.length > 0 && (
+          <AdSlot slot="1754152130" label="Trending in-feed ad (miytube-grid-4)" className="mb-8" format="auto" />
+        )}
+
         {!isLoading && (activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
+
+        {/* Ad slot — below Trending Shorts (miytube-grid-5) */}
+        {!isLoading && (activeTab === 'all' || activeTab === 'videos') && (
+          <AdSlot slot="6326832286" label="Trending below-shorts ad (miytube-grid-5)" className="mb-8" format="horizontal" />
+        )}
 
         {isLoading && (activeTab === 'all' || activeTab === 'music') && (
           <div className="mb-10">
