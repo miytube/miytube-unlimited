@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET subcategory = 'sports-nba-east-playoffs' WHERE id IN ('aa63b2f9-7b1c-43e7-be55-db69e028abcf','86f48a7f-37a0-4513-b0f7-46ec3ebdd1bb','272516d2-c65f-4a20-a510-8771be86e3a1');
