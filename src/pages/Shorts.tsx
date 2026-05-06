@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { ShortGridSkeleton } from '@/components/skeletons';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { sortByName } from '@/lib/sortByName';
 import { auditShortsDurations } from '@/utils/auditShortsDuration';
 
