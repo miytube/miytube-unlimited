@@ -475,9 +475,12 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     });
     
     const merged: UploadedVideo[] = [...localVideoList];
-    const localIds = new Set(localVideoList.map(v => v.id));
+    const seenIds = new Set(localVideoList.map(v => v.id));
     for (const cv of cloudVideos) {
-      if (!localIds.has(cv.id)) merged.push(cv);
+      if (!seenIds.has(cv.id)) {
+        merged.push(cv);
+        seenIds.add(cv.id);
+      }
     }
     
     merged.sort((a, b) => {
