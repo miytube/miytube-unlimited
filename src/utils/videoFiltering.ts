@@ -195,6 +195,18 @@ export const filterVideosBySubcategory = (
     if (accepted.has(vidCategory) || accepted.has(vidSubcategory)) return true;
     if (accepted.has(vidCategoryNoSep) || accepted.has(vidSubcategoryNoSep)) return true;
 
+    // 1b) Hub aggregation: a multi-segment page like /sports/nba should also
+    // include child videos stored under sports-nba-<child> or nba-<child>.
+    if (isMultiSegment) {
+      const hubPrefixes = [
+        `${keyHyphenated}-`,
+        `${keySegments.slice(1).join('-')}-`, // strip top-level (e.g. "nba-")
+      ].filter(p => p.length > 1);
+      for (const prefix of hubPrefixes) {
+        if (vidCategory.startsWith(prefix) || vidSubcategory.startsWith(prefix)) return true;
+      }
+    }
+
     // 2) Parent + child match: video.category == parent AND video.subcategory == child
     if (parentSegment) {
       const parentNoSep = parentSegment.replace(/[-\s]/g, '');
