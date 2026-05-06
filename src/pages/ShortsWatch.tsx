@@ -33,6 +33,9 @@ const ShortsWatch = () => {
   const [video, setVideo] = useState<any>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [userLiked, setUserLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
 
   // Get regular videos and other shorts for sidebar
   const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts');
