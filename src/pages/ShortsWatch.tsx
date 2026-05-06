@@ -269,19 +269,19 @@ const ShortsWatch = () => {
 
             {/* Side actions */}
             <div className="absolute right-3 bottom-20 flex flex-col gap-4">
-              <button className="flex flex-col items-center text-white">
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                  <ThumbsUp className="h-5 w-5" />
+              <button className="flex flex-col items-center text-white" onClick={handleLike}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${userLiked ? 'bg-primary' : 'bg-white/20'}`}>
+                  <ThumbsUp className="h-5 w-5" fill={userLiked ? 'currentColor' : 'none'} />
                 </div>
-                <span className="text-xs mt-1">Like</span>
+                <span className="text-xs mt-1">{likesCount > 0 ? likesCount : 'Like'}</span>
               </button>
-              <button className="flex flex-col items-center text-white">
+              <button className="flex flex-col items-center text-white" onClick={() => setCommentsOpen(true)}>
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <MessageCircle className="h-5 w-5" />
                 </div>
                 <span className="text-xs mt-1">Comment</span>
               </button>
-              <button className="flex flex-col items-center text-white">
+              <button className="flex flex-col items-center text-white" onClick={handleShare}>
                 <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                   <Share className="h-5 w-5" />
                 </div>
