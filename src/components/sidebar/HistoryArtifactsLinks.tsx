@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BookOpen, Landmark, Church, Globe, Crown, Scroll, Amphora } from 'lucide-react';
+import { BookOpen, Landmark, Church, Globe, Crown, Scroll, Amphora, Axe } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const HistoryArtifactsLinks: React.FC = () => {
