@@ -17,6 +17,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { VideoComments } from '@/components/watch/VideoComments';
+import { supabase } from '@/integrations/supabase/client';
+import { trackEngagement } from '@/hooks/useTrackEngagement';
 
 const ShortsWatch = () => {
   const { id } = useParams();
