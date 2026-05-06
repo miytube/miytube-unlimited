@@ -152,6 +152,19 @@ export const filterVideosBySubcategory = (
     `${parentSegment}-${lastSegment}`,
     `${parentSegment}/${lastSegment}`,
   ];
+  // Strip a top-level domain prefix like "sports-", "music-", "news-" so that
+  // a page keyed "sports-nba-basketball" also matches videos stored as just
+  // "nba-basketball" (and vice-versa). Common when uploaders pick a leaf
+  // category but the route lives under the parent hub.
+  const domainPrefixes = ['sports-', 'music-', 'news-', 'gaming-', 'military-', 'hollywood-'];
+  let strippedKey = keyHyphenated;
+  for (const p of domainPrefixes) {
+    if (keyHyphenated.startsWith(p)) {
+      strippedKey = keyHyphenated.slice(p.length);
+      acceptedBase.push(strippedKey, strippedKey.replace(/[-\s]/g, ''));
+      break;
+    }
+  }
   // For deep paths (e.g. sports/nba/east-playoffs), also accept every contiguous
   // suffix of length >=2 in both slash and hyphen forms. This lets a video stored
   // as "nba-east-playoffs" match the /sports/nba/east-playoffs page.
