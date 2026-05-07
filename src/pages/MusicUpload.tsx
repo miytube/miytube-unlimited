@@ -10,12 +10,64 @@ import { useUploadHandler } from '@/hooks/useUploadHandler';
 import { MusicUploadRequirements } from '@/components/music/UploadRequirements';
 import { supabase } from '@/integrations/supabase/client';
 import { uploadVideoToCloud } from '@/utils/cloudVideoUpload';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { ToastAction } from '@/components/ui/toast';
 
 const MusicUpload = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { handleUpload } = useUploadHandler();
+  const { addUploadedVideo } = useUploadedVideos();
+
+  const onMusicUrlImport = async (
+    url: string,
+    title: string,
+    description: string,
+    category?: string,
+    subcategory?: string,
+    tags?: string[],
+    isYouTube?: boolean,
+    youtubeId?: string
+  ) => {
+    try {
+      toast({
+        title: isYouTube ? "Adding YouTube music video" : "Importing music from URL",
+        description: "Processing your link...",
+      });
+
+      await addUploadedVideo(
+        new File([], title || 'Imported Music', { type: 'video/mp4' }),
+        title || (isYouTube ? 'YouTube Music Video' : 'Imported Music'),
+        description || '',
+        category || 'music',
+        subcategory,
+        tags,
+        url,
+        isYouTube,
+        youtubeId
+      );
+
+      toast({
+        title: "Import complete",
+        description: "Your music has been added and is now available.",
+        action: (
+          <ToastAction altText="Go to music page" onClick={() => navigate('/music')}>
+            View Music
+          </ToastAction>
+        ),
+      });
+
+      navigate('/music');
+    } catch (error) {
+      console.error('Music URL import error:', error);
+      toast({
+        title: "Import failed",
+        description: error instanceof Error ? error.message : "Failed to import from URL",
+        variant: "destructive",
+      });
+    }
+  };
   const musicContentType = contentTypes.music;
   
   const genreFromUrl = searchParams.get('genre') || '';
