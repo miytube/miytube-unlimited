@@ -261,7 +261,30 @@ export const filterVideosBySubcategory = (
     //    Multi-segment pages skip the title-tag match because phrases like
     //    "celebrity news" appear on tons of unrelated news videos.
     if (vidTags.includes(keyLower) || vidTags.includes(keyHyphenated)) return true;
+    if (vidTags.includes(keyNoSep)) return true;
     if (!isMultiSegment && vidTags.includes(titleLower)) return true;
+
+    // 5) Tag plural/singular tolerance against the FULL page key only.
+    //    e.g. tag "haircut" should match page "hair-cuts" (and vice versa).
+    //    Only applies to keys >=6 chars to avoid generic short-word leakage.
+    const tagTargets = [keyHyphenated, keyNoSep].filter(t => t.length >= 6);
+    const tagVariants = (s: string): string[] => {
+      const out = new Set<string>([s]);
+      if (s.endsWith('s')) out.add(s.slice(0, -1));
+      else out.add(s + 's');
+      return [...out];
+    };
+    for (const target of tagTargets) {
+      const variants = tagVariants(target);
+      for (const tag of vidTags) {
+        const tagNoSep = tag.replace(/[-\s]/g, '');
+        for (const v of variants) {
+          if (tag === v || tagNoSep === v) return true;
+          // Tight typo/plural via fuzzy (length-bounded, edit-budget tight)
+          if (isFuzzyMatch(tag, v) || isFuzzyMatch(tagNoSep, v)) return true;
+        }
+      }
+    }
 
     return false;
   });
