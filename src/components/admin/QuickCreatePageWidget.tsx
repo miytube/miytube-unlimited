@@ -306,7 +306,7 @@ export const QuickCreatePageWidget: React.FC = () => {
             {/* Pages / Categories under the main */}
             <div className="space-y-2">
               <Label>
-                Categories / Pages {pageNames.length > 0 && `(${pageNames.length})`}
+                Main Category / Pages {pageNames.length > 0 && `(${pageNames.length})`}
               </Label>
 
               {pageNames.length > 0 && (
