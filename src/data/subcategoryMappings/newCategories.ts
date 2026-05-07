@@ -1785,6 +1785,12 @@ export const newCategorySubcategories: SubcategoryMapping = {
   },
 
   // ============ MUSIC FULL ============
+  '/music/jazz': {
+    title: 'Jazz',
+    description: 'Jazz music, performances and history',
+    icon: Music,
+    parent: { route: '/music', name: 'Music' }
+  },
   '/music/rock': {
     title: 'Rock, Soul, Pop, R&B',
     description: 'Rock and soul music',
