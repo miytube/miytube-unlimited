@@ -273,6 +273,12 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Car,
     parent: { route: '/autos-vehicles', name: 'Cars & Vehicles' }
   },
+  '/cars/painting-wrapping': {
+    title: 'Car Painting & Wrapping',
+    description: 'Car paint jobs, vinyl wraps, and custom finishes',
+    icon: Car,
+    parent: { route: '/autos-vehicles', name: 'Cars & Vehicles' }
+  },
   '/motorcycles/harley': {
     title: 'Harley Davidson',
     description: 'Harley Davidson motorcycles',
