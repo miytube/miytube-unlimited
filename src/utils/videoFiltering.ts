@@ -249,6 +249,37 @@ export const filterVideosBySubcategory = (
         vidSubcategory === lastSegmentSpaced ||
         vidSubcategoryNoSep === lastSegmentNoSep;
       if (parentMatches && childMatches) return true;
+
+      // 2b) Parent + leaf-token match: when video belongs to the parent category
+      // and the leaf segment word (or a known synonym) appears as a whole word
+      // in the title or any tag, include it. This catches videos that were
+      // sub-categorized into a sibling but are clearly about this leaf topic
+      // (e.g. /hair/cuts including "From Bald... by @mickeydabarber").
+      if (parentMatches) {
+        const leafTokens = new Set<string>([lastSegment, lastSegmentSpaced]);
+        // singular / plural variant of the leaf
+        if (lastSegment.endsWith('s')) leafTokens.add(lastSegment.slice(0, -1));
+        else leafTokens.add(lastSegment + 's');
+        // domain-specific synonym map (parent → leaf → extra tokens)
+        const synonymMap: Record<string, Record<string, string[]>> = {
+          hair: {
+            cuts: ['cut', 'cuts', 'haircut', 'haircuts', 'barber', 'barbershop', 'fade', 'taper', 'shave', 'beard', 'trim', 'bald', 'mickeydabarber'],
+            styles: ['style', 'styles', 'hairstyle', 'hairstyles', 'braid', 'braids', 'curls', 'updo', 'ponytail'],
+            extensions: ['extension', 'extensions', 'weave', 'weaves', 'wig', 'wigs', 'unit', 'units', 'lacefront', 'closure'],
+          },
+        };
+        const extraTokens = synonymMap[parentSegment]?.[lastSegment] || [];
+        for (const t of extraTokens) leafTokens.add(t);
+
+        const haystacks: string[] = [video.title?.toLowerCase() || '', ...vidTags];
+        const hayJoined = haystacks.join(' ');
+        for (const tok of leafTokens) {
+          if (!tok || tok.length < 3) continue;
+          // whole-word match (allow word boundaries OR token contains hyphen/space)
+          const re = new RegExp(`(^|[^a-z0-9])${tok.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}([^a-z0-9]|$)`, 'i');
+          if (re.test(hayJoined)) return true;
+        }
+      }
     }
 
     // 3) Tight typo tolerance ONLY against the page key/title — not against tags,
