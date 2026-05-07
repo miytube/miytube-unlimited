@@ -263,7 +263,7 @@ export const filterVideosBySubcategory = (
         // domain-specific synonym map (parent → leaf → extra tokens)
         const synonymMap: Record<string, Record<string, string[]>> = {
           hair: {
-            cuts: ['cut', 'cuts', 'haircut', 'haircuts', 'barber', 'barbershop', 'fade', 'taper', 'shave', 'beard', 'trim', 'bald', 'mickeydabarber'],
+            cuts: ['cut', 'cuts', 'haircut', 'haircuts', 'barber', 'barbershop', 'fade', 'taper', 'shave', 'beard', 'trim', 'bald', 'mickeydabarber', 'unit', 'units', 'weave', 'weaves', 'wig', 'wigs', 'man unit', 'hair unit'],
             styles: ['style', 'styles', 'hairstyle', 'hairstyles', 'braid', 'braids', 'curls', 'updo', 'ponytail'],
             extensions: ['extension', 'extensions', 'weave', 'weaves', 'wig', 'wigs', 'unit', 'units', 'lacefront', 'closure'],
           },
