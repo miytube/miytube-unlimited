@@ -258,6 +258,8 @@ const MusicUpload = () => {
           supportedFormats={musicContentType.supportedFormats}
           maxSize={musicContentType.maxSize}
           onUpload={onMusicUpload}
+          onUrlImport={onMusicUrlImport}
+          showUrlImport={true}
           id="music-upload-input"
           uploadDestination={musicContentType.destination}
           categories={musicContentType.categories}
