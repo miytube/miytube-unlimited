@@ -2727,6 +2727,30 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Waves,
     parent: { route: '/sports/water', name: 'Water Sports' }
   },
+  '/sports/drag-racing': {
+    title: 'Drag Racing',
+    description: 'Drag racing across cars, motorcycles and big rigs',
+    icon: Timer,
+    parent: { route: '/sports/racing', name: 'Racing Sports' }
+  },
+  '/sports/drag-racing/dragster-funny-hotrod': {
+    title: 'Dragster / Funny / Hotrod Cars',
+    description: 'Dragster, funny car, and hotrod drag racing',
+    icon: Timer,
+    parent: { route: '/sports/drag-racing', name: 'Drag Racing' }
+  },
+  '/sports/drag-racing/vehicles-motorcycles': {
+    title: 'Vehicles / Motorcycles Challenges Competition Racing',
+    description: 'Vehicle and motorcycle drag racing challenges and competitions',
+    icon: Timer,
+    parent: { route: '/sports/drag-racing', name: 'Drag Racing' }
+  },
+  '/sports/drag-racing/trucks-big-rigs': {
+    title: 'Trucks / Big Rigs Drag Racing',
+    description: 'Trucks and big rigs drag racing',
+    icon: Timer,
+    parent: { route: '/sports/drag-racing', name: 'Drag Racing' }
+  },
   '/meditation/guided': {
     title: 'Guided Meditation',
     description: 'Guided meditation sessions',
