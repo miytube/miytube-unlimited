@@ -88,4 +88,10 @@ export const carsSubcategories: SubcategoryMapping = {
     icon: Car,
     parent: { route: '/cars', name: 'Cars' }
   },
+  'cars-street-racing': {
+    title: 'Street Cars/Motorcycles Racing',
+    description: 'Street racing cars and motorcycles competing on city streets',
+    icon: Car,
+    parent: { route: '/cars', name: 'Cars' }
+  },
 };
