@@ -49,6 +49,7 @@ export const subcategoryRoutes = [
   <Route key="cars-crashes" path="/cars/crashes" element={<GenericSubcategoryPage />} />,
   <Route key="cars-motorcycles" path="/cars/motorcycles" element={<GenericSubcategoryPage />} />,
   <Route key="cars-towed" path="/cars/towed" element={<GenericSubcategoryPage />} />,
+  <Route key="cars-street-racing" path="/cars/street-racing" element={<GenericSubcategoryPage />} />,
   
   /* Fitness Routes */
   <Route key="fitness-calisthenics" path="/fitness/calisthenics" element={<GenericSubcategoryPage />} />,

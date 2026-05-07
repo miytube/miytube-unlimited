@@ -61,7 +61,8 @@ export const AviationTransportLinks: React.FC = () => {
         { id: 'cars-supercars', label: 'Supercars & Hypercars', path: '/cars/supercars' },
         { id: 'cars-accidents', label: 'Car Accidents & Idiots', path: '/cars/accidents' },
         { id: 'cars-crashes', label: 'Crashes', path: '/cars/crashes' },
-        { id: 'cars-towed', label: 'Car got Towed', path: '/cars/towed' }
+        { id: 'cars-towed', label: 'Car got Towed', path: '/cars/towed' },
+        { id: 'cars-street-racing', label: 'Street Cars/Motorcycles Racing', path: '/cars/street-racing' }
       ]
     },
     { 
