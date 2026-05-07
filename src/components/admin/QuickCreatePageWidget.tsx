@@ -243,7 +243,7 @@ export const QuickCreatePageWidget: React.FC = () => {
           <div className="space-y-4 py-2">
             {/* Main Category */}
             <div className="space-y-2">
-              <Label>Main Category</Label>
+              <Label>Sub-Category / Parent</Label>
               <Popover open={mainPickerOpen} onOpenChange={setMainPickerOpen}>
                 <PopoverTrigger asChild>
                   <Button
