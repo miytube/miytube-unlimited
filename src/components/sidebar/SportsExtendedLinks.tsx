@@ -81,7 +81,10 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-college-women', label: 'Women Basketball', path: '/sports/college/women-basketball' },
         { id: 'sports-college-swimming', label: 'Swimming & Hockey', path: '/sports/college/swimming' },
         { id: 'sports-college-track', label: 'Track & Field', path: '/sports/college/track' },
-        { id: 'sports-college-bowl', label: 'Football Bowl Games', path: '/sports/college/bowl' }
+        { id: 'sports-college-bowl', label: 'Football Bowl Games', path: '/sports/college/bowl' },
+        { id: 'sports-college-womens-softball-season', label: "Women's Regular Season Softball", path: '/sports/college/womens-softball-season' },
+        { id: 'sports-college-womens-softball-playoffs', label: "Women's Softball Playoffs", path: '/sports/college/womens-softball-playoffs' },
+        { id: 'sports-college-womens-softball-championship', label: "Women's Softball Championship", path: '/sports/college/womens-softball-championship' }
       ]
     },
     { 

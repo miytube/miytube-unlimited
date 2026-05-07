@@ -1257,6 +1257,24 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Medal,
     parent: { route: '/sports/college', name: 'College Sports' }
   },
+  '/sports/college/womens-softball-season': {
+    title: "Women's Regular Season Softball",
+    description: "College women's softball regular season games",
+    icon: Trophy,
+    parent: { route: '/sports/college', name: 'College Sports' }
+  },
+  '/sports/college/womens-softball-playoffs': {
+    title: "Women's Softball Playoffs",
+    description: "College women's softball playoff games",
+    icon: Trophy,
+    parent: { route: '/sports/college', name: 'College Sports' }
+  },
+  '/sports/college/womens-softball-championship': {
+    title: "Women's Softball Championship Game",
+    description: "College women's softball championship game",
+    icon: Medal,
+    parent: { route: '/sports/college', name: 'College Sports' }
+  },
   '/sports/mma/ufc': {
     title: 'UFC Fighting',
     description: 'Ultimate Fighting Championship',
