@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { CategoryCombobox } from '@/components/upload/CategoryCombobox';
 import { TagInput } from '@/components/upload/TagInput';
 import { allCategoryMappings } from '@/data/allCategoryMappings';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
 
 interface VideoEditDialogProps {
   open: boolean;
