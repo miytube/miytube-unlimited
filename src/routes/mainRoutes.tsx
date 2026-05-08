@@ -16,6 +16,7 @@ import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
 import Copyright from "@/pages/Copyright";
 import Advertising from "@/pages/Advertising";
+import MediaKit from "@/pages/MediaKit";
 import Blog from "@/pages/Blog";
 import LongVideos from "@/pages/LongVideos";
 import NewsAndPolitics from "@/pages/NewsAndPolitics";
