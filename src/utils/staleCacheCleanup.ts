@@ -9,12 +9,12 @@
  * the live app's own DBs are left alone.
  */
 
-const APP_DATA_VERSION = "2026-05-04-cloud-only-v2";
+const APP_DATA_VERSION = "2026-05-08-artist-news-purge-v1";
 const VERSION_KEY = "miytube_app_data_version";
 
 // Legacy DBs we no longer use. Add to this list if we ever rename.
 const LEGACY_DB_NAMES: string[] = [
-  // (intentionally empty — miytube_videos_db is still in active use)
+  "miytube_videos_db", // purge once to drop locally cached videos with stale categories (e.g. Prince/D4vd in music-artists-news)
 ];
 
 export async function runStaleCacheCleanup(): Promise<void> {
