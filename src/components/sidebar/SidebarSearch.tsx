@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface SearchItem {
@@ -217,6 +217,7 @@ export const SidebarSearch: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
 
   const highlightTimerRef = useRef<number | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
@@ -288,17 +289,19 @@ export const SidebarSearch: React.FC = () => {
     const nav = document.querySelector('nav');
     if (!nav) return;
 
-    // Expand any collapsed groups so hidden links can be found and scrolled to.
+    // Expand any collapsed Radix groups (top-level group sections)
     const closedTriggers = nav.querySelectorAll<HTMLButtonElement>(
       'button[data-state="closed"]'
     );
-    closedTriggers.forEach((btn) => {
-      const txt = (btn.textContent || '').toLowerCase();
-      // open group if it likely contains a match (any group with matching word, or just open all when searching)
-      if (txt) btn.click();
-    });
+    closedTriggers.forEach((btn) => btn.click());
 
-    // Wait a tick for groups to expand, then scroll to first matching link.
+    // Expand any closed CollapsibleNavLink items (e.g. "How To" inside the group)
+    const closedNavTriggers = nav.querySelectorAll<HTMLDivElement>(
+      '[data-sidebar-collapsible-trigger][data-sidebar-collapsible-state="closed"]'
+    );
+    closedNavTriggers.forEach((el) => el.click());
+
+    // Wait for expansion animations, then scroll to first matching link.
     const t = window.setTimeout(() => {
       const links = nav.querySelectorAll<HTMLAnchorElement>('a');
       let target: HTMLAnchorElement | null = null;
@@ -314,7 +317,7 @@ export const SidebarSearch: React.FC = () => {
           target?.classList.remove('ring-2', 'ring-primary', 'rounded');
         }, 1800);
       }
-    }, 80);
+    }, 320);
 
     return () => window.clearTimeout(t);
   }, [searchQuery]);
@@ -366,7 +369,16 @@ export const SidebarSearch: React.FC = () => {
                     className={`flex flex-col px-3 py-2 text-sm rounded transition-colors ${
                       isActive ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/60'
                     }`}
-                    onClick={() => {
+                    onMouseDown={(e) => {
+                      // Navigate on mousedown so the input's blur (which closes the
+                      // dropdown) can never race with the click event.
+                      e.preventDefault();
+                      setSearchQuery('');
+                      setIsFocused(false);
+                      navigate(item.path);
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
                       setSearchQuery('');
                       setIsFocused(false);
                     }}
