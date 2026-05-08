@@ -290,13 +290,16 @@ export const SidebarSearch: React.FC = () => {
     const nav = document.querySelector('nav');
     if (!nav) return;
 
-    // Expand any collapsed Radix groups (top-level group sections).
+    // Expand any collapsed Radix Collapsible group triggers (top-level group sections).
     // Use dispatchEvent so we don't pull keyboard focus away from the input.
+    // IMPORTANT: filter by aria-expanded="false" so we only hit Collapsible triggers
+    // and NOT other data-state="closed" elements like Tooltip triggers (which would
+    // collapse the whole sidebar when its collapse button is wrapped in a Tooltip).
     const fireClick = (el: Element) => {
       el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
     };
     const closedTriggers = nav.querySelectorAll<HTMLButtonElement>(
-      'button[data-state="closed"]'
+      'button[data-state="closed"][aria-expanded="false"]'
     );
     closedTriggers.forEach(fireClick);
 
