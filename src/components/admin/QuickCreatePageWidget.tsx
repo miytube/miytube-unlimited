@@ -43,6 +43,8 @@ export const QuickCreatePageWidget: React.FC = () => {
   const [mainPickerOpen, setMainPickerOpen] = useState(false);
   const [mainSearch, setMainSearch] = useState('');
   const [mainSlug, setMainSlug] = useState<string>('');
+  // Pending new main category typed by admin (not yet in DB)
+  const [pendingMain, setPendingMain] = useState<ParentOption | null>(null);
 
   // Step 2: subcategory (pick existing or type new)
   const [subPickerOpen, setSubPickerOpen] = useState(false);
@@ -67,10 +69,12 @@ export const QuickCreatePageWidget: React.FC = () => {
       if (existing) existing.customCategoryId = c.id;
       else map.set(c.slug, { slug: c.slug, name: c.name, source: 'custom', customCategoryId: c.id });
     });
-    return Array.from(map.values()).sort((a, b) =>
+    const list = Array.from(map.values()).sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
     );
-  }, [tree]);
+    if (pendingMain && !map.has(pendingMain.slug)) list.unshift(pendingMain);
+    return list;
+  }, [tree, pendingMain]);
 
   const filteredMains = useMemo(() => {
     const q = mainSearch.trim().toLowerCase();
@@ -101,6 +105,7 @@ export const QuickCreatePageWidget: React.FC = () => {
   const reset = () => {
     setMainSlug('');
     setMainSearch('');
+    setPendingMain(null);
     setSubName('');
     setSubSearch('');
     setPageNames([]);
@@ -291,7 +296,39 @@ export const QuickCreatePageWidget: React.FC = () => {
                   </div>
                   <ScrollArea className="h-72">
                     <div className="p-1">
-                      {filteredMains.length === 0 && (
+                      {(() => {
+                        const q = mainSearch.trim();
+                        const exists =
+                          q &&
+                          filteredMains.some(
+                            (o) => o.name.toLowerCase() === q.toLowerCase()
+                          );
+                        if (q && !exists) {
+                          return (
+                            <button
+                              onClick={() => {
+                                const slug = slugify(q);
+                                if (!slug) return;
+                                const newOpt: ParentOption = {
+                                  slug,
+                                  name: q,
+                                  source: 'custom',
+                                };
+                                setPendingMain(newOpt);
+                                setMainSlug(slug);
+                                setMainPickerOpen(false);
+                                setSubName('');
+                              }}
+                              className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left"
+                            >
+                              <Plus className="mr-2 h-4 w-4 shrink-0 opacity-60" />
+                              Create main category "{q}"
+                            </button>
+                          );
+                        }
+                        return null;
+                      })()}
+                      {filteredMains.length === 0 && !mainSearch.trim() && (
                         <div className="py-6 text-center text-sm text-muted-foreground">
                           No categories found.
                         </div>
@@ -318,6 +355,11 @@ export const QuickCreatePageWidget: React.FC = () => {
                               )}
                             />
                             <span className="flex-1 truncate">{opt.name}</span>
+                            {opt.source === 'custom' && !opt.customCategoryId && (
+                              <span className="ml-2 text-[10px] uppercase tracking-wide text-muted-foreground">
+                                new
+                              </span>
+                            )}
                           </button>
                         );
                       })}
