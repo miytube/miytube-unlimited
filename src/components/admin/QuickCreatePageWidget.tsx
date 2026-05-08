@@ -69,10 +69,12 @@ export const QuickCreatePageWidget: React.FC = () => {
       if (existing) existing.customCategoryId = c.id;
       else map.set(c.slug, { slug: c.slug, name: c.name, source: 'custom', customCategoryId: c.id });
     });
-    return Array.from(map.values()).sort((a, b) =>
+    const list = Array.from(map.values()).sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
     );
-  }, [tree]);
+    if (pendingMain && !map.has(pendingMain.slug)) list.unshift(pendingMain);
+    return list;
+  }, [tree, pendingMain]);
 
   const filteredMains = useMemo(() => {
     const q = mainSearch.trim().toLowerCase();
