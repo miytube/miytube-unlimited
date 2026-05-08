@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
 import { checkVideoCompatibility, getFormatRecommendation } from '@/utils/videoCompatibility';
+import { validateUploadCategoryMatch } from '@/utils/uploadCategoryValidation';
 
 export const useUploadHandler = () => {
   const { toast } = useToast();
