@@ -4,7 +4,8 @@ import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Users, Globe, Shield, BarChart3, Megaphone, CheckCircle2, Download } from 'lucide-react';
-
+import React, { useEffect } from 'react';
+import { Layout } from '@/components/Layout';
 const MediaKit = () => {
   return (
     <Layout>
