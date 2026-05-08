@@ -45,6 +45,8 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
       <div className="mb-1">
         <div 
           onClick={handleToggle}
+          data-sidebar-collapsible-trigger
+          data-sidebar-collapsible-state={isExpanded ? 'open' : 'closed'}
           className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-secondary transition-colors cursor-pointer ${
             isActive || isChildActive ? 'bg-secondary font-medium' : ''
           }`}
