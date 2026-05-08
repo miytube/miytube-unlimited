@@ -19,7 +19,7 @@ export const MusicFullLinks: React.FC = () => {
         { id: 'music-country', label: 'Country & Western', path: '/music/country' },
         { id: 'music-folk', label: 'Folk (Ballads, Chorus)', path: '/music/folk' },
         { id: 'music-funk', label: 'Funk & Hard Rock', path: '/music/funk' },
-        { id: 'music-hiphop', label: 'Hip Hop, Rap, Funk', path: '/music/hiphop' },
+        { id: 'music-hiphop', label: 'Hip/Hop & Rap', path: '/music/hiphop' },
         { id: 'music-jazz', label: 'Jazz', path: '/music/jazz' },
         { id: 'music-heavy-metal', label: 'Heavy Metal', path: '/music/heavy-metal' },
         { id: 'music-rap', label: 'Rap & Reggaeton', path: '/music/rap' },
