@@ -192,19 +192,27 @@ const createLocalVideoId = (): string => {
   return `upload-${Date.now()}-${randomPart}`;
 };
 
-// Get client IP address for duplicate detection
+// Get client IP address for duplicate detection.
+// Hard-capped with a timeout so a slow/failing edge function can never stall
+// the upload pipeline (the IP is only used for opportunistic dedup).
 const getClientIp = async (): Promise<string> => {
-  try {
-    const { data, error } = await supabase.functions.invoke('get-client-ip');
-    if (error) {
-      console.error('Error getting client IP:', error);
+  const timeout = new Promise<string>((resolve) =>
+    setTimeout(() => resolve('unknown'), 3000)
+  );
+  const lookup = (async (): Promise<string> => {
+    try {
+      const { data, error } = await supabase.functions.invoke('get-client-ip');
+      if (error) {
+        console.error('Error getting client IP:', error);
+        return 'unknown';
+      }
+      return data?.ip || 'unknown';
+    } catch (err) {
+      console.error('Failed to get client IP:', err);
       return 'unknown';
     }
-    return data?.ip || 'unknown';
-  } catch (err) {
-    console.error('Failed to get client IP:', err);
-    return 'unknown';
-  }
+  })();
+  return Promise.race([lookup, timeout]);
 };
 
 // Supabase cloud backup helpers
