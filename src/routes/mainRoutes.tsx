@@ -16,6 +16,7 @@ import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
 import Copyright from "@/pages/Copyright";
 import Advertising from "@/pages/Advertising";
+import MediaKit from "@/pages/MediaKit";
 import Blog from "@/pages/Blog";
 import LongVideos from "@/pages/LongVideos";
 import NewsAndPolitics from "@/pages/NewsAndPolitics";
@@ -88,6 +89,8 @@ export const mainRoutes = [
   <Route key="privacy" path="/privacy" element={<Privacy />} />,
   <Route key="copyright" path="/copyright" element={<Copyright />} />,
   <Route key="advertising" path="/advertising" element={<Advertising />} />,
+  <Route key="media-kit" path="/media-kit" element={<MediaKit />} />,
+  <Route key="advertise-with-us" path="/advertise-with-us" element={<MediaKit />} />,
   <Route key="blog" path="/blog" element={<Blog />} />,
   <Route key="blog-new" path="/blog/new" element={<Blog />} />,
   <Route key="long-videos" path="/long-videos" element={<LongVideos />} />,
