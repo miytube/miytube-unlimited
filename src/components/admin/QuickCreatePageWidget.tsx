@@ -43,6 +43,8 @@ export const QuickCreatePageWidget: React.FC = () => {
   const [mainPickerOpen, setMainPickerOpen] = useState(false);
   const [mainSearch, setMainSearch] = useState('');
   const [mainSlug, setMainSlug] = useState<string>('');
+  // Pending new main category typed by admin (not yet in DB)
+  const [pendingMain, setPendingMain] = useState<ParentOption | null>(null);
 
   // Step 2: subcategory (pick existing or type new)
   const [subPickerOpen, setSubPickerOpen] = useState(false);
