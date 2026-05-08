@@ -229,12 +229,16 @@ export const filterVideosBySubcategory = (
     if (accepted.has(vidCategoryNoSep) || accepted.has(vidSubcategoryNoSep)) return true;
 
     // 1b) Hub aggregation: a multi-segment page like /sports/nba should also
-    // include child videos stored under sports-nba-<child> or nba-<child>.
+    // include child videos stored under sports-nba-<child>. We deliberately do
+    // NOT strip the top-level segment here — doing so caused pages like
+    // /music-artists/news to absorb every "news-*" video on the site.
     if (isMultiSegment) {
-      const hubPrefixes = [
-        `${keyHyphenated}-`,
-        `${keySegments.slice(1).join('-')}-`, // strip top-level (e.g. "nba-")
-      ].filter(p => p.length > 1);
+      const hubPrefixes = [`${keyHyphenated}-`].filter(p => p.length > 1);
+      // Only allow stripping the top segment when the path is deep (>=3 segments),
+      // e.g. /sports/nba/east-playoffs → also accept "nba-east-playoffs".
+      if (keySegments.length >= 3) {
+        hubPrefixes.push(`${keySegments.slice(1).join('-')}-`);
+      }
       for (const prefix of hubPrefixes) {
         if (vidCategory.startsWith(prefix) || vidSubcategory.startsWith(prefix)) return true;
       }
