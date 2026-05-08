@@ -327,6 +327,55 @@ export const QuickCreatePageWidget: React.FC = () => {
               </Popover>
             </div>
 
+            {/* Watch pages */}
+            <div className="space-y-2">
+              <Label>
+                Watch Page {pageNames.length > 0 && `(${pageNames.length})`}
+              </Label>
+
+              {pageNames.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {pageNames.map((n) => (
+                    <span
+                      key={n}
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary text-secondary-foreground text-xs"
+                    >
+                      {n}
+                      <button
+                        onClick={() => removePageName(n)}
+                        className="hover:text-destructive"
+                        aria-label={`Remove ${n}`}
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <Input
+                value={pageInput}
+                onChange={(e) => setPageInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (pageInput.trim()) addPageName(pageInput);
+                  }
+                }}
+                placeholder={
+                  selectedMain
+                    ? 'Type watch page name and press Enter…'
+                    : 'Pick main category first'
+                }
+                disabled={!selectedMain}
+              />
+              <p className="text-xs text-muted-foreground">
+                Press Enter to add. Click Create to save under{' '}
+                {selectedMain ? <strong>{selectedMain.name}</strong> : 'main'} /{' '}
+                {subName ? <strong>{subName}</strong> : 'sub'}.
+              </p>
+            </div>
+
             {/* Sub-category */}
             <div className="space-y-2">
               <Label>Sub-Category</Label>
@@ -414,55 +463,6 @@ export const QuickCreatePageWidget: React.FC = () => {
                   </ScrollArea>
                 </PopoverContent>
               </Popover>
-            </div>
-
-            {/* Watch pages */}
-            <div className="space-y-2">
-              <Label>
-                Watch Page {pageNames.length > 0 && `(${pageNames.length})`}
-              </Label>
-
-              {pageNames.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {pageNames.map((n) => (
-                    <span
-                      key={n}
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-secondary text-secondary-foreground text-xs"
-                    >
-                      {n}
-                      <button
-                        onClick={() => removePageName(n)}
-                        className="hover:text-destructive"
-                        aria-label={`Remove ${n}`}
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              <Input
-                value={pageInput}
-                onChange={(e) => setPageInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (pageInput.trim()) addPageName(pageInput);
-                  }
-                }}
-                placeholder={
-                  subName
-                    ? 'Type watch page name and press Enter…'
-                    : 'Pick sub-category first'
-                }
-                disabled={!subName}
-              />
-              <p className="text-xs text-muted-foreground">
-                Press Enter to add. Click Create to save under{' '}
-                {selectedMain ? <strong>{selectedMain.name}</strong> : 'main'} /{' '}
-                {subName ? <strong>{subName}</strong> : 'sub'}.
-              </p>
             </div>
 
             <DialogFooter>
