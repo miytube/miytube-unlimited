@@ -293,7 +293,20 @@ export const filterVideosBySubcategory = (
     //    "celebrity news" appear on tons of unrelated news videos.
     if (vidTags.includes(keyLower) || vidTags.includes(keyHyphenated)) return true;
     if (vidTags.includes(keyNoSep)) return true;
-    if (!isMultiSegment && vidTags.includes(titleLower)) return true;
+    // Title-only tag fallback: require the video's category to be in the same
+    // top-level domain as the page. Otherwise generic tags like "politics" on
+    // an entertainment/late-night video would leak it into /news/politics.
+    if (!isMultiSegment && vidTags.includes(titleLower)) {
+      const topLevelDomains = ['entertainment', 'music', 'sports', 'news', 'news-politics', 'gaming', 'military', 'hollywood', 'hair', 'cars', 'autos-vehicles', 'pets-animals', 'education', 'comedy', 'film', 'business', 'health', 'fitness', 'food', 'travel', 'podcasts'];
+      const pageDomain = topLevelDomains.find(d => keyHyphenated === d || keyHyphenated.startsWith(d + '-'));
+      const vidDomain = topLevelDomains.find(d => vidCategory === d || vidCategory.startsWith(d + '-'));
+      if (!pageDomain || !vidDomain || pageDomain === vidDomain ||
+          // treat news and news-politics as the same domain
+          (pageDomain.startsWith('news') && vidDomain.startsWith('news'))) {
+        return true;
+      }
+      // domain mismatch — fall through and reject
+    }
 
     // 5) Tag plural/singular tolerance against the FULL page key only.
     //    e.g. tag "haircut" should match page "hair-cuts" (and vice versa).
