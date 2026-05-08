@@ -89,12 +89,28 @@ export const useUploadHandler = () => {
       let successCount = 0;
       const failed: string[] = [];
       for (const file of files) {
-        const uploadCategory = category || contentTypeId;
         const fileBaseName = file.name.split('.').slice(0, -1).join('.') || file.name;
         const perFileTitle = isBatch ? fileBaseName : (title || fileBaseName);
         const perFileDescription = isBatch ? '' : (description || '');
+
+        // If the uploader didn't pick a category, try to infer the closest one
+        // from the title/description/filename/tags. Their explicit choice (if any)
+        // always wins.
+        let uploadCategory = category;
+        let uploadSubcategory = subcategory;
+        if (!uploadCategory) {
+          const guess = autoCategorize(perFileTitle, perFileDescription, file.name, tags);
+          if (guess) {
+            uploadCategory = guess.category;
+            if (!uploadSubcategory && guess.subcategory) uploadSubcategory = guess.subcategory;
+            console.log(`[auto-category] ${file.name} → ${guess.category}${guess.subcategory ? '/' + guess.subcategory : ''} (matched: ${guess.matchedKeywords.join(', ')})`);
+          } else {
+            uploadCategory = contentTypeId;
+          }
+        }
+
         try {
-          await addUploadedVideo(file, perFileTitle, perFileDescription, uploadCategory, subcategory, tags);
+          await addUploadedVideo(file, perFileTitle, perFileDescription, uploadCategory, uploadSubcategory, tags);
           successCount++;
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Upload failed';
