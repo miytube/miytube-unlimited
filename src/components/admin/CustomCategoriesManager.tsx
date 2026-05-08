@@ -83,15 +83,40 @@ export const CustomCategoriesManager: React.FC = () => {
     reload();
   };
 
-  const remove = async (table: 'custom_categories' | 'custom_subcategories' | 'custom_watch_pages', id: string) => {
-    if (!confirm('Delete this entry? Children will be removed too.')) return;
-    const { error } = await supabase.from(table).delete().eq('id', id);
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
-      return;
+  const remove = async (
+    table: 'custom_categories' | 'custom_subcategories' | 'custom_watch_pages',
+    id: string
+  ) => {
+    const labels = {
+      custom_categories: 'category (and ALL its subcategories and watch pages)',
+      custom_subcategories: 'subcategory (and ALL its watch pages)',
+      custom_watch_pages: 'watch page',
+    } as const;
+    if (!confirm(`Permanently delete this ${labels[table]}? This cannot be undone.`)) return;
+
+    try {
+      if (table === 'custom_categories') {
+        // Cascade: find all subcategories under this category, then their watch pages
+        const { data: subs } = await supabase
+          .from('custom_subcategories')
+          .select('id')
+          .eq('category_id', id);
+        const subIds = (subs || []).map((s) => s.id);
+        if (subIds.length > 0) {
+          await supabase.from('custom_watch_pages').delete().in('subcategory_id', subIds);
+          await supabase.from('custom_subcategories').delete().in('id', subIds);
+        }
+      } else if (table === 'custom_subcategories') {
+        await supabase.from('custom_watch_pages').delete().eq('subcategory_id', id);
+      }
+
+      const { error } = await supabase.from(table).delete().eq('id', id);
+      if (error) throw error;
+      toast({ title: 'Deleted' });
+      reload();
+    } catch (err: any) {
+      toast({ title: 'Error', description: err.message, variant: 'destructive' });
     }
-    toast({ title: 'Deleted' });
-    reload();
   };
 
   return (
