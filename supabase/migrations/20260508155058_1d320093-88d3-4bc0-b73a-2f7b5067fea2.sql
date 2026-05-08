@@ -1,0 +1,1 @@
+DELETE FROM uploaded_videos WHERE id = 'f09dd210-b5a7-4a37-8e82-4efa367ba460';
