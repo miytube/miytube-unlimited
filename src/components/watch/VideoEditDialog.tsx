@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { CategoryCombobox } from '@/components/upload/CategoryCombobox';
 import { TagInput } from '@/components/upload/TagInput';
 import { allCategoryMappings } from '@/data/allCategoryMappings';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
 
 interface VideoEditDialogProps {
   open: boolean;
@@ -42,6 +43,8 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
   const [customCategories, setCustomCategories] = useState<string[]>([]);
   const [customSubcategories, setCustomSubcategories] = useState<string[]>([]);
 
+  const { tree: customTree } = useCustomCategories();
+
   const categoryOptions = useMemo(() => {
     // Get main categories (those without a parent)
     const baseCategories = Object.entries(allCategoryMappings)
@@ -50,9 +53,15 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
         id: key,
         name: info.title
       }));
+    const fromDb = customTree.map(c => ({ id: c.slug, name: c.name }));
     const custom = customCategories.map(c => ({ id: c.toLowerCase().replace(/\s+/g, '-'), name: c }));
-    return [...baseCategories, ...custom];
-  }, [customCategories]);
+    // De-duplicate by id, prefer DB names
+    const merged = new Map<string, { id: string; name: string }>();
+    [...baseCategories, ...fromDb, ...custom].forEach(o => {
+      if (!merged.has(o.id)) merged.set(o.id, o);
+    });
+    return Array.from(merged.values());
+  }, [customCategories, customTree]);
 
   const subcategoryOptions = useMemo(() => {
     // Get subcategories that have the selected category as parent
@@ -62,9 +71,15 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
         id: key,
         name: info.title
       }));
+    const dbCat = customTree.find(c => c.slug === category);
+    const fromDb = (dbCat?.subcategories || []).map(s => ({ id: s.slug, name: s.name }));
     const custom = customSubcategories.map(c => ({ id: c.toLowerCase().replace(/\s+/g, '-'), name: c }));
-    return [...baseSubcats, ...custom];
-  }, [category, customSubcategories]);
+    const merged = new Map<string, { id: string; name: string }>();
+    [...baseSubcats, ...fromDb, ...custom].forEach(o => {
+      if (!merged.has(o.id)) merged.set(o.id, o);
+    });
+    return Array.from(merged.values());
+  }, [category, customSubcategories, customTree]);
 
   const handleAddCustomCategory = (name: string) => {
     setCustomCategories(prev => [...prev, name]);
