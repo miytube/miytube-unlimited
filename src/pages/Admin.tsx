@@ -286,6 +286,10 @@ const Admin = () => {
               <Database className="h-4 w-4" />
               Video Audit
             </TabsTrigger>
+            <TabsTrigger value="custom-categories" className="flex items-center gap-2">
+              <FolderTree className="h-4 w-4" />
+              Custom Categories
+            </TabsTrigger>
           </TabsList>
           </div>
 
