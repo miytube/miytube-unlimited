@@ -1,20 +1,23 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect } from 'react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Users, Globe, Shield, BarChart3, Megaphone, CheckCircle2, Download } from 'lucide-react';
-import React, { useEffect } from 'react';
-import { Layout } from '@/components/Layout';
+
 const MediaKit = () => {
+  useEffect(() => {
+    document.title = 'Advertise on MiyTube — Media Kit for Brands & Agencies';
+    const desc = 'MiyTube media kit: audience, ad formats, rate card, brand-safety standards, and contact for direct brand advertisers and agencies.';
+    let m = document.querySelector('meta[name="description"]');
+    if (!m) { m = document.createElement('meta'); m.setAttribute('name', 'description'); document.head.appendChild(m); }
+    m.setAttribute('content', desc);
+    let c = document.querySelector('link[rel="canonical"]');
+    if (!c) { c = document.createElement('link'); c.setAttribute('rel', 'canonical'); document.head.appendChild(c); }
+    c.setAttribute('href', 'https://miytube.com/media-kit');
+  }, []);
+
   return (
     <Layout>
-      <Helmet>
-        <title>Advertise on MiyTube — Media Kit for Brands & Agencies</title>
-        <meta name="description" content="MiyTube media kit: audience, ad formats, rate card, brand-safety standards, and contact for direct brand advertisers and agencies." />
-        <link rel="canonical" href="https://miytube.com/media-kit" />
-      </Helmet>
-
       <div className="py-8 animate-fade-in w-full max-w-[1200px] mx-auto px-4">
         {/* Hero */}
         <section className="text-center mb-12">
