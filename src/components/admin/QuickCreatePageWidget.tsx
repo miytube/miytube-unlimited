@@ -105,6 +105,7 @@ export const QuickCreatePageWidget: React.FC = () => {
   const reset = () => {
     setMainSlug('');
     setMainSearch('');
+    setPendingMain(null);
     setSubName('');
     setSubSearch('');
     setPageNames([]);
