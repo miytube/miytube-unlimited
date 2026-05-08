@@ -19,6 +19,7 @@ export const PeopleWorkersLinks: React.FC = () => {
         { id: 'people-amazing', label: 'People Amazing', path: '/people/amazing' },
         { id: 'people-fails', label: 'People Fails & Comedy', path: '/people/fails' },
         { id: 'people-pranks', label: 'People Pranks', path: '/c/people/people-pranks' },
+        { id: 'people-replica-builders', label: 'Replica Builders', path: '/c/people/replica-builders/replica-builders' },
         { id: 'people-thefts', label: 'Thefts & Stealing', path: '/people/thefts' }
       ]
     },
