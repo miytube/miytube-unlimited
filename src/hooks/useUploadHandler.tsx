@@ -76,7 +76,33 @@ export const useUploadHandler = () => {
     }
 
     files = compatibleFiles;
-    
+
+    // Category/subcategory match validation — block obvious miscategorizations.
+    // We check the global title (single upload) OR each file's base name (batch).
+    if (category || subcategory) {
+      const isBatchCheck = files.length > 1;
+      const offenders: string[] = [];
+      let firstReason = '';
+      for (const file of files) {
+        const baseName = file.name.split('.').slice(0, -1).join('.') || file.name;
+        const checkTitle = isBatchCheck ? baseName : (title || baseName);
+        const result = validateUploadCategoryMatch(checkTitle, description || '', tags, category, subcategory);
+        if (!result.ok) {
+          offenders.push(file.name);
+          if (!firstReason) firstReason = result.reason || '';
+        }
+      }
+      if (offenders.length > 0) {
+        toast({
+          title: `Upload blocked — wrong category`,
+          description: firstReason + (offenders.length > 1 ? ` (${offenders.length} files affected)` : ''),
+          variant: "destructive",
+          duration: 15000,
+        });
+        return;
+      }
+    }
+
     toast({
       title: `${contentTypeName} upload started`,
       description: `Processing ${files.length} ${files.length === 1 ? 'file' : 'files'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
