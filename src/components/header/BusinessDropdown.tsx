@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { DollarSign, ShoppingCart, BarChart } from 'lucide-react';
+import { DollarSign, ShoppingCart, BarChart, Megaphone } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +30,12 @@ export const BusinessDropdown: React.FC = () => {
           <Link to="/advertising" className="flex items-center gap-2 w-full">
             <ShoppingCart size={16} />
             <span>Advertising</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to="/media-kit" className="flex items-center gap-2 w-full">
+            <Megaphone size={16} />
+            <span>Media Kit</span>
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

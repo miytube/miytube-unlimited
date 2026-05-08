@@ -9,6 +9,7 @@ export const SidebarFooter: React.FC = () => {
         <Link to="/about" className="hover:underline">About</Link>
         <Link to="/copyright" className="hover:underline">Copyright</Link>
         <Link to="/contact" className="hover:underline">Contact</Link>
+        <Link to="/media-kit" className="hover:underline">Advertise</Link>
         <Link to="/terms" className="hover:underline">Terms</Link>
         <Link to="/privacy" className="hover:underline">Privacy</Link>
       </div>
