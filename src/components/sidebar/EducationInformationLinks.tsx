@@ -32,7 +32,8 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'howto-diy', label: 'DIY Projects', path: '/how-to-style/diy' },
         { id: 'howto-fashion', label: 'Fashion Tips', path: '/how-to-style/fashion' },
         { id: 'howto-beauty', label: 'Beauty & Makeup', path: '/how-to-style/beauty' },
-        { id: 'howto-home', label: 'Home Improvement', path: '/how-to-style/home' }
+        { id: 'howto-home', label: 'Home Improvement', path: '/how-to-style/home' },
+        { id: 'howto-hacks', label: 'Hacks of every Industry', path: '/how-to-style/hacks-of-every-industry' }
       ]
     },
     { 

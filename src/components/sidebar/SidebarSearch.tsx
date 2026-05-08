@@ -221,6 +221,7 @@ export const SidebarSearch: React.FC = () => {
 
   const highlightTimerRef = useRef<number | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return [];
@@ -289,17 +290,26 @@ export const SidebarSearch: React.FC = () => {
     const nav = document.querySelector('nav');
     if (!nav) return;
 
-    // Expand any collapsed Radix groups (top-level group sections)
+    // Expand any collapsed Radix groups (top-level group sections).
+    // Use dispatchEvent so we don't pull keyboard focus away from the input.
+    const fireClick = (el: Element) => {
+      el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+    };
     const closedTriggers = nav.querySelectorAll<HTMLButtonElement>(
       'button[data-state="closed"]'
     );
-    closedTriggers.forEach((btn) => btn.click());
+    closedTriggers.forEach(fireClick);
 
-    // Expand any closed CollapsibleNavLink items (e.g. "How To" inside the group)
+    // Expand any closed CollapsibleNavLink items (e.g. "How-to & Style" inside the group)
     const closedNavTriggers = nav.querySelectorAll<HTMLDivElement>(
       '[data-sidebar-collapsible-trigger][data-sidebar-collapsible-state="closed"]'
     );
-    closedNavTriggers.forEach((el) => el.click());
+    closedNavTriggers.forEach(fireClick);
+
+    // Restore focus to the input in case any element grabbed it.
+    if (inputRef.current && document.activeElement !== inputRef.current) {
+      inputRef.current.focus({ preventScroll: true });
+    }
 
     // Wait for expansion animations, then scroll to first matching link.
     const t = window.setTimeout(() => {
@@ -331,6 +341,7 @@ export const SidebarSearch: React.FC = () => {
       <div className="relative">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
+          ref={inputRef}
           type="text"
           placeholder="Search categories..."
           value={searchQuery}
