@@ -38,18 +38,24 @@ export const QuickCreatePageWidget: React.FC = () => {
   const { toast } = useToast();
 
   const [open, setOpen] = useState(false);
+
+  // Step 1: main category
   const [mainPickerOpen, setMainPickerOpen] = useState(false);
   const [mainSearch, setMainSearch] = useState('');
   const [mainSlug, setMainSlug] = useState<string>('');
 
+  // Step 2: subcategory (pick existing or type new)
+  const [subPickerOpen, setSubPickerOpen] = useState(false);
+  const [subSearch, setSubSearch] = useState('');
+  const [subName, setSubName] = useState<string>('');
+
+  // Step 3: watch page names
   const [pageNames, setPageNames] = useState<string[]>([]);
   const [pageInput, setPageInput] = useState('');
-  const [pagePickerOpen, setPagePickerOpen] = useState(false);
 
   const [busy, setBusy] = useState(false);
   const [createdUrls, setCreatedUrls] = useState<{ url: string; name: string }[]>([]);
 
-  // Unified, alphabetized parent list
   const parentOptions = useMemo<ParentOption[]>(() => {
     const map = new Map<string, ParentOption>();
     Object.entries(allCategoryMappings).forEach(([slug, info]) => {
@@ -76,31 +82,27 @@ export const QuickCreatePageWidget: React.FC = () => {
 
   const selectedMain = parentOptions.find((o) => o.slug === mainSlug);
 
-  // Existing pages already under selected main (as suggestions)
-  const existingPages = useMemo(() => {
-    if (!selectedMain) return [] as string[];
+  // Existing subcategories under selected main
+  const existingSubs = useMemo(() => {
+    if (!selectedMain) return [] as { name: string; slug: string }[];
     const cat = tree.find((c) => c.slug === selectedMain.slug);
     if (!cat) return [];
-    const names = new Set<string>();
-    cat.subcategories.forEach((s) => names.add(s.name));
-    return Array.from(names).sort((a, b) => a.localeCompare(b));
+    return cat.subcategories
+      .map((s) => ({ name: s.name, slug: s.slug }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [tree, selectedMain]);
 
-  const filteredExisting = useMemo(() => {
-    const q = pageInput.trim().toLowerCase();
-    const list = existingPages.filter((n) => !pageNames.includes(n));
-    if (!q) return list;
-    return list.filter((n) => n.toLowerCase().includes(q));
-  }, [existingPages, pageInput, pageNames]);
-
-  const exactExists =
-    pageInput.trim() &&
-    (pageNames.includes(pageInput.trim()) ||
-      existingPages.some((n) => n.toLowerCase() === pageInput.trim().toLowerCase()));
+  const filteredSubs = useMemo(() => {
+    const q = subSearch.trim().toLowerCase();
+    if (!q) return existingSubs;
+    return existingSubs.filter((s) => s.name.toLowerCase().includes(q));
+  }, [existingSubs, subSearch]);
 
   const reset = () => {
     setMainSlug('');
     setMainSearch('');
+    setSubName('');
+    setSubSearch('');
     setPageNames([]);
     setPageInput('');
     setCreatedUrls([]);
@@ -131,15 +133,41 @@ export const QuickCreatePageWidget: React.FC = () => {
     return { id: data.id, slug: data.slug };
   };
 
+  const ensureSubcategory = async (
+    categoryId: string,
+    name: string
+  ): Promise<{ id: string; slug: string }> => {
+    const slug = slugify(name);
+    // Look up existing
+    const { data: existing } = await supabase
+      .from('custom_subcategories')
+      .select('id, slug')
+      .eq('category_id', categoryId)
+      .eq('slug', slug)
+      .maybeSingle();
+    if (existing) return { id: existing.id, slug: existing.slug };
+    const { data, error } = await supabase
+      .from('custom_subcategories')
+      .insert({ category_id: categoryId, name, slug })
+      .select('id, slug')
+      .single();
+    if (error) throw error;
+    return { id: data.id, slug: data.slug };
+  };
+
   const handleCreate = async () => {
     if (!selectedMain) {
       toast({ title: 'Pick a main category', variant: 'destructive' });
       return;
     }
+    if (!subName.trim()) {
+      toast({ title: 'Pick or enter a sub-category', variant: 'destructive' });
+      return;
+    }
     const names = [...pageNames];
     if (pageInput.trim()) names.push(pageInput.trim());
     if (names.length === 0) {
-      toast({ title: 'Add at least one page name', variant: 'destructive' });
+      toast({ title: 'Add at least one watch page name', variant: 'destructive' });
       return;
     }
     setBusy(true);
@@ -147,23 +175,21 @@ export const QuickCreatePageWidget: React.FC = () => {
     const existed: string[] = [];
     try {
       const cat = await ensureCustomCategory(selectedMain);
+      const sub = await ensureSubcategory(cat.id, subName.trim());
       for (const n of names) {
-        const pageSlug = slugify(n);
-        const { data, error } = await supabase
-          .from('custom_subcategories')
-          .insert({ category_id: cat.id, name: n, slug: pageSlug })
-          .select('slug')
-          .single();
+        const watchSlug = slugify(n);
+        const { error } = await supabase
+          .from('custom_watch_pages')
+          .insert({ subcategory_id: sub.id, name: n, slug: watchSlug });
         if (error) {
-          // Duplicate slug under this category — treat as success, link to existing
           if ((error as any).code === '23505' || /duplicate key/i.test(error.message)) {
             existed.push(n);
-            results.push({ url: `/c/${cat.slug}/${pageSlug}`, name: n });
+            results.push({ url: `/c/${cat.slug}/${sub.slug}/${watchSlug}`, name: n });
             continue;
           }
           throw error;
         }
-        results.push({ url: `/c/${cat.slug}/${data.slug}`, name: n });
+        results.push({ url: `/c/${cat.slug}/${sub.slug}/${watchSlug}`, name: n });
       }
       results.sort((a, b) => a.name.localeCompare(b.name));
       setCreatedUrls(results);
@@ -171,11 +197,8 @@ export const QuickCreatePageWidget: React.FC = () => {
       toast({
         title:
           existed.length === results.length
-            ? `Already exists under ${selectedMain.name}`
-            : `Created ${newCount} ${newCount === 1 ? 'page' : 'pages'} under ${selectedMain.name}${existed.length ? ` (${existed.length} already existed)` : ''}`,
-        description: existed.length
-          ? `Already existed: ${existed.join(', ')}`
-          : undefined,
+            ? `Already exists under ${selectedMain.name} / ${subName}`
+            : `Created ${newCount} watch ${newCount === 1 ? 'page' : 'pages'} under ${selectedMain.name} / ${subName}${existed.length ? ` (${existed.length} already existed)` : ''}`,
       });
       reload();
     } catch (err: any) {
@@ -210,15 +233,15 @@ export const QuickCreatePageWidget: React.FC = () => {
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Create Page</DialogTitle>
+          <DialogTitle>Create Watch Page</DialogTitle>
           <DialogDescription>
-            Pick a main category, then add one or more page names to save under it.
+            Pick a main category, then a sub-category, then add watch page name(s).
           </DialogDescription>
         </DialogHeader>
 
         {createdUrls.length > 0 ? (
           <div className="space-y-3 py-2">
-            <p className="text-sm font-medium">Pages created:</p>
+            <p className="text-sm font-medium">Watch pages created:</p>
             <div className="space-y-2">
               {createdUrls.map((r) => (
                 <Link
@@ -243,7 +266,7 @@ export const QuickCreatePageWidget: React.FC = () => {
           <div className="space-y-4 py-2">
             {/* Main Category */}
             <div className="space-y-2">
-              <Label>Sub-Category</Label>
+              <Label>Main Category</Label>
               <Popover open={mainPickerOpen} onOpenChange={setMainPickerOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -281,6 +304,7 @@ export const QuickCreatePageWidget: React.FC = () => {
                             onClick={() => {
                               setMainSlug(opt.slug);
                               setMainPickerOpen(false);
+                              setSubName('');
                             }}
                             className={cn(
                               'flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left',
@@ -303,10 +327,99 @@ export const QuickCreatePageWidget: React.FC = () => {
               </Popover>
             </div>
 
-            {/* Pages / Categories under the main */}
+            {/* Sub-category */}
+            <div className="space-y-2">
+              <Label>Sub-Category</Label>
+              <Popover open={subPickerOpen} onOpenChange={setSubPickerOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    disabled={!selectedMain}
+                    className="w-full justify-between font-normal"
+                  >
+                    <span className="truncate text-left">
+                      {subName
+                        ? subName
+                        : selectedMain
+                          ? 'Pick existing or type new…'
+                          : 'Pick main category first'}
+                    </span>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                  <div className="p-2 border-b">
+                    <Input
+                      placeholder="Search or type a new sub-category…"
+                      value={subSearch}
+                      onChange={(e) => setSubSearch(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && subSearch.trim()) {
+                          e.preventDefault();
+                          setSubName(subSearch.trim());
+                          setSubPickerOpen(false);
+                        }
+                      }}
+                      className="h-9"
+                    />
+                  </div>
+                  <ScrollArea className="max-h-60">
+                    <div className="p-1">
+                      {subSearch.trim() &&
+                        !filteredSubs.some(
+                          (s) => s.name.toLowerCase() === subSearch.trim().toLowerCase()
+                        ) && (
+                          <button
+                            onClick={() => {
+                              setSubName(subSearch.trim());
+                              setSubPickerOpen(false);
+                            }}
+                            className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left"
+                          >
+                            <Plus className="mr-2 h-4 w-4 shrink-0 opacity-60" />
+                            Create "{subSearch.trim()}"
+                          </button>
+                        )}
+                      {filteredSubs.map((s) => {
+                        const checked = subName === s.name;
+                        return (
+                          <button
+                            key={s.slug}
+                            onClick={() => {
+                              setSubName(s.name);
+                              setSubPickerOpen(false);
+                            }}
+                            className={cn(
+                              'flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left',
+                              checked && 'bg-accent'
+                            )}
+                          >
+                            <Check
+                              className={cn(
+                                'mr-2 h-4 w-4 shrink-0',
+                                checked ? 'opacity-100' : 'opacity-0'
+                              )}
+                            />
+                            <span className="flex-1 truncate">{s.name}</span>
+                          </button>
+                        );
+                      })}
+                      {!subSearch.trim() && filteredSubs.length === 0 && (
+                        <div className="py-4 text-center text-xs text-muted-foreground">
+                          No sub-categories yet — type a name above to create one.
+                        </div>
+                      )}
+                    </div>
+                  </ScrollArea>
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* Watch pages */}
             <div className="space-y-2">
               <Label>
-                Main Category / Pages {pageNames.length > 0 && `(${pageNames.length})`}
+                Watch Page {pageNames.length > 0 && `(${pageNames.length})`}
               </Label>
 
               {pageNames.length > 0 && (
@@ -329,56 +442,26 @@ export const QuickCreatePageWidget: React.FC = () => {
                 </div>
               )}
 
-              <div className="flex gap-2">
-                <Input
-                  value={pageInput}
-                  onChange={(e) => setPageInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      if (pageInput.trim() && !exactExists) addPageName(pageInput);
-                    }
-                  }}
-                  placeholder={
-                    selectedMain
-                      ? 'Type a name and press Enter…'
-                      : 'Pick a main category first'
+              <Input
+                value={pageInput}
+                onChange={(e) => setPageInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (pageInput.trim()) addPageName(pageInput);
                   }
-                  disabled={!selectedMain}
-                />
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => addPageName(pageInput)}
-                  disabled={!selectedMain || !pageInput.trim() || !!exactExists}
-                >
-                  Add
-                </Button>
-              </div>
-
-              {selectedMain && filteredExisting.length > 0 && (
-                <ScrollArea className="max-h-40 border rounded-md">
-                  <div className="p-1">
-                    <div className="px-2 py-1 text-xs text-muted-foreground">
-                      Existing under {selectedMain.name} (click to add):
-                    </div>
-                    {filteredExisting.map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        onClick={() => addPageName(n)}
-                        className="flex items-center w-full px-2 py-1.5 text-sm rounded-sm hover:bg-accent text-left"
-                      >
-                        <Plus className="mr-2 h-3.5 w-3.5 shrink-0 opacity-60" />
-                        <span className="flex-1 truncate">{n}</span>
-                      </button>
-                    ))}
-                  </div>
-                </ScrollArea>
-              )}
+                }}
+                placeholder={
+                  subName
+                    ? 'Type watch page name and press Enter…'
+                    : 'Pick sub-category first'
+                }
+                disabled={!subName}
+              />
               <p className="text-xs text-muted-foreground">
-                Type any name and press Enter (or click "Add") to save it under{' '}
-                {selectedMain ? <strong>{selectedMain.name}</strong> : 'the main category'}.
+                Press Enter to add. Click Create to save under{' '}
+                {selectedMain ? <strong>{selectedMain.name}</strong> : 'main'} /{' '}
+                {subName ? <strong>{subName}</strong> : 'sub'}.
               </p>
             </div>
 
@@ -386,8 +469,8 @@ export const QuickCreatePageWidget: React.FC = () => {
               <Button variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleCreate} disabled={busy || !selectedMain}>
-                {busy ? 'Creating…' : 'Create'}
+              <Button onClick={handleCreate} disabled={busy || !selectedMain || !subName}>
+                {busy ? 'Creating…' : 'Create Watch Page'}
               </Button>
             </DialogFooter>
           </div>
