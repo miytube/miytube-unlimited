@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
 
 interface SidebarLink {
   id: string;
