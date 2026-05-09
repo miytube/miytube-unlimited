@@ -86,6 +86,10 @@ export const UploadProgressProvider: React.FC<{ children: ReactNode }> = ({ chil
     }, 5000);
   };
 
+  const dismissUpload = () => {
+    setUploadProgress(null);
+  };
+
   const isUploadInProgress = () => {
     return uploadProgress?.isUploading === true && ['processing', 'uploading', 'publishing'].includes(uploadProgress.status);
   };
@@ -98,6 +102,7 @@ export const UploadProgressProvider: React.FC<{ children: ReactNode }> = ({ chil
         setUploadStatus,
         completeUpload,
         failUpload,
+        dismissUpload,
         isUploadInProgress,
       }}
     >
