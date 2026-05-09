@@ -212,9 +212,9 @@ export const sidebarSubcategories: SubcategoryMapping = {
     icon: Scissors,
     parent: { route: '/how-to-style', name: 'How-to & Style' }
   },
-  '/how-to-style/hacks-of-every-industry': {
-    title: 'Hacks of every Industry',
-    description: 'Insider tips, tricks, and hacks from every industry',
+  '/how-to-style/invent-hacks': {
+    title: 'Invent Hacks',
+    description: 'Insider tips, tricks, and invent hacks from every industry',
     icon: Scissors,
     parent: { route: '/how-to-style', name: 'How-to & Style' }
   },
