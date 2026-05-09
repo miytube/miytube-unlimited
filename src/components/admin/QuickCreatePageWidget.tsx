@@ -20,7 +20,6 @@ import { Check, Plus, ExternalLink, ChevronsUpDown, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { allCategoryMappings } from '@/data/allCategoryMappings';
 import { sidebarMainCategoryOptions, sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
 
 const slugify = (s: string) =>
@@ -57,10 +56,6 @@ export const QuickCreatePageWidget: React.FC = () => {
     const map = new Map<string, ParentOption>();
     sidebarMainCategoryOptions.forEach((option) => {
       map.set(option.slug, { slug: option.slug, name: option.name, source: 'hardcoded' });
-    });
-    Object.entries(allCategoryMappings).forEach(([slug, info]) => {
-      if (info.parent) return;
-      if (!map.has(slug)) map.set(slug, { slug, name: info.title, source: 'custom' });
     });
     tree.forEach((c) => {
       const existing = map.get(c.slug);
