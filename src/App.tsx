@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { UploadedVideosProvider } from "./context/UploadedVideosContext";
 import { UploadProgressProvider } from "./context/UploadProgressContext";
+import { UploadProgressIndicator } from "./components/upload/UploadProgressIndicator";
 import { AuthProvider } from "./hooks/useAuth";
 import AppRoutes from "./routes";
 
@@ -18,6 +19,7 @@ const App = () => (
           <UploadedVideosProvider>
             <Toaster />
             <Sonner />
+            <UploadProgressIndicator />
             <BrowserRouter>
               <AppRoutes />
             </BrowserRouter>
