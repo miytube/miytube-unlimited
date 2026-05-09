@@ -20,6 +20,7 @@ interface UploadProgressContextType {
   setUploadStatus: (status: UploadStatus) => void;
   completeUpload: () => void;
   failUpload: (error: string) => void;
+  dismissUpload: () => void;
   isUploadInProgress: () => boolean;
 }
 
