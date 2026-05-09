@@ -96,7 +96,15 @@ export const UploadProgressIndicator: React.FC = () => {
     <div className={`fixed bottom-4 right-4 z-50 w-80 bg-card border rounded-lg shadow-lg p-4 ${getStatusColor()}`}>
       <div className="flex items-center gap-2 mb-3">
         {getStatusIcon()}
-        <span className="font-semibold text-foreground">{getStatusText()}</span>
+        <span className="font-semibold text-foreground flex-1">{getStatusText()}</span>
+        <button
+          type="button"
+          onClick={dismissUpload}
+          aria-label="Dismiss upload notification"
+          className="text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
       
       <div className="space-y-3">
