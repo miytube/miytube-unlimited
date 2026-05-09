@@ -32,6 +32,11 @@ type ParentOption = {
   customCategoryId?: string;
 };
 
+type SupabaseErrorLike = {
+  code?: string;
+  message?: string;
+};
+
 export const QuickCreatePageWidget: React.FC = () => {
   const { isAdmin } = useAuth();
   const { tree, reload } = useCustomCategories(true);
@@ -161,7 +166,8 @@ export const QuickCreatePageWidget: React.FC = () => {
           .from('custom_watch_pages')
           .insert({ subcategory_id: sub.id, name: n, slug: watchSlug });
         if (error) {
-          if ((error as any).code === '23505' || /duplicate key/i.test(error.message)) {
+          const dbError = error as SupabaseErrorLike;
+          if (dbError.code === '23505' || /duplicate key/i.test(dbError.message || '')) {
             existed.push(n);
             results.push({ url: `${baseUrl}/${watchSlug}`, name: n });
             continue;
@@ -180,10 +186,11 @@ export const QuickCreatePageWidget: React.FC = () => {
             : `Created ${newCount} ${newCount === 1 ? 'page' : 'pages'} under ${selectedMain.name}${existed.length ? ` (${existed.length} already existed)` : ''}`,
       });
       reload();
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to create page';
       toast({
         title: 'Error',
-        description: err.message || 'Failed to create page',
+        description: message,
         variant: 'destructive',
       });
     } finally {
