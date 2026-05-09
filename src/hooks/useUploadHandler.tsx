@@ -5,10 +5,12 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
 import { checkVideoCompatibility, getFormatRecommendation } from '@/utils/videoCompatibility';
 import { autoCategorize } from '@/utils/autoCategorize';
+import { useUploadProgress } from '@/context/UploadProgressContext';
 
 export const useUploadHandler = () => {
   const { toast } = useToast();
   const { addUploadedVideo } = useUploadedVideos();
+  const { failUpload } = useUploadProgress();
   const navigate = useNavigate();
   
   const handleUpload = async (
@@ -127,6 +129,7 @@ export const useUploadHandler = () => {
       }
 
       if (successCount === 0) {
+        failUpload(failed.length > 0 ? `Upload failed: ${failed.join(', ')}` : 'No videos were published. Please try again.');
         return; // Nothing succeeded; skip success redirect
       }
       if (failed.length > 0) {
