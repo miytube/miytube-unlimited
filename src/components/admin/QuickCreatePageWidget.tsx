@@ -20,7 +20,7 @@ import { Check, Plus, ExternalLink, ChevronsUpDown, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { allCategoryMappings } from '@/data/allCategoryMappings';
+import { sidebarMainCategoryOptions, sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
 
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
@@ -30,6 +30,11 @@ type ParentOption = {
   name: string;
   source: 'hardcoded' | 'custom';
   customCategoryId?: string;
+};
+
+type SupabaseErrorLike = {
+  code?: string;
+  message?: string;
 };
 
 export const QuickCreatePageWidget: React.FC = () => {
@@ -54,9 +59,8 @@ export const QuickCreatePageWidget: React.FC = () => {
 
   const parentOptions = useMemo<ParentOption[]>(() => {
     const map = new Map<string, ParentOption>();
-    Object.entries(allCategoryMappings).forEach(([slug, info]) => {
-      if (info.parent) return;
-      map.set(slug, { slug, name: info.title, source: 'hardcoded' });
+    sidebarMainCategoryOptions.forEach((option) => {
+      map.set(option.slug, { slug: option.slug, name: option.name, source: 'hardcoded' });
     });
     tree.forEach((c) => {
       const existing = map.get(c.slug);
@@ -155,18 +159,22 @@ export const QuickCreatePageWidget: React.FC = () => {
         // Each name creates a sub-category AND a watch page with the same name
         const sub = await ensureSubcategory(cat.id, n);
         const watchSlug = slugify(n);
+        const baseUrl = sidebarMainCategorySlugs.has(cat.slug)
+          ? `/${cat.slug}/${sub.slug}`
+          : `/c/${cat.slug}/${sub.slug}`;
         const { error } = await supabase
           .from('custom_watch_pages')
           .insert({ subcategory_id: sub.id, name: n, slug: watchSlug });
         if (error) {
-          if ((error as any).code === '23505' || /duplicate key/i.test(error.message)) {
+          const dbError = error as SupabaseErrorLike;
+          if (dbError.code === '23505' || /duplicate key/i.test(dbError.message || '')) {
             existed.push(n);
-            results.push({ url: `/c/${cat.slug}/${sub.slug}/${watchSlug}`, name: n });
+            results.push({ url: `${baseUrl}/${watchSlug}`, name: n });
             continue;
           }
           throw error;
         }
-        results.push({ url: `/c/${cat.slug}/${sub.slug}/${watchSlug}`, name: n });
+        results.push({ url: `${baseUrl}/${watchSlug}`, name: n });
       }
       results.sort((a, b) => a.name.localeCompare(b.name));
       setCreatedUrls(results);
@@ -178,10 +186,11 @@ export const QuickCreatePageWidget: React.FC = () => {
             : `Created ${newCount} ${newCount === 1 ? 'page' : 'pages'} under ${selectedMain.name}${existed.length ? ` (${existed.length} already existed)` : ''}`,
       });
       reload();
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to create page';
       toast({
         title: 'Error',
-        description: err.message || 'Failed to create page',
+        description: message,
         variant: 'destructive',
       });
     } finally {
