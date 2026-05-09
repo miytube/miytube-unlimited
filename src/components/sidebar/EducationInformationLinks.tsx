@@ -33,7 +33,7 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'howto-fashion', label: 'Fashion Tips', path: '/how-to-style/fashion' },
         { id: 'howto-beauty', label: 'Beauty & Makeup', path: '/how-to-style/beauty' },
         { id: 'howto-home', label: 'Home Improvement', path: '/how-to-style/home' },
-        { id: 'howto-hacks', label: 'Hacks of every Industry', path: '/how-to-style/hacks-of-every-industry' }
+        { id: 'howto-hacks', label: 'Invent Hacks', path: '/how-to-style/invent-hacks' }
       ]
     },
     { 

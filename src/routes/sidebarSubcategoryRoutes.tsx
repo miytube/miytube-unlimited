@@ -54,7 +54,8 @@ export const sidebarSubcategoryRoutes = [
   <Route key="howto-fashion" path="/how-to-style/fashion" element={<GenericSubcategoryPage />} />,
   <Route key="howto-beauty" path="/how-to-style/beauty" element={<GenericSubcategoryPage />} />,
   <Route key="howto-home" path="/how-to-style/home" element={<GenericSubcategoryPage />} />,
-  <Route key="howto-hacks" path="/how-to-style/hacks-of-every-industry" element={<GenericSubcategoryPage />} />,
+  <Route key="howto-hacks" path="/how-to-style/invent-hacks" element={<GenericSubcategoryPage />} />,
+  <Route key="howto-hacks-legacy" path="/how-to-style/hacks-of-every-industry" element={<GenericSubcategoryPage />} />,
   
   // News & Politics subcategories
   <Route key="news-breaking" path="/news/breaking" element={<GenericSubcategoryPage />} />,
