@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
 export type UploadStatus = 'idle' | 'processing' | 'uploading' | 'publishing' | 'complete' | 'failed';
 
@@ -36,6 +36,35 @@ export const useUploadProgress = () => {
 
 export const UploadProgressProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [uploadProgress, setUploadProgress] = useState<UploadProgress | null>(null);
+
+  useEffect(() => {
+    if (!uploadProgress?.isUploading || !['processing', 'uploading', 'publishing'].includes(uploadProgress.status)) {
+      return;
+    }
+
+    const estimatedSeconds = Math.max(60, uploadProgress.estimatedMinutes * 60);
+    const maxUploadSeconds = Math.max(estimatedSeconds * 3, 600);
+    const elapsedSeconds = (Date.now() - uploadProgress.startTime) / 1000;
+    const remainingMs = Math.max(0, (maxUploadSeconds - elapsedSeconds) * 1000);
+
+    const timeout = window.setTimeout(() => {
+      setUploadProgress(prev => {
+        if (!prev?.isUploading || !['processing', 'uploading', 'publishing'].includes(prev.status)) {
+          return prev;
+        }
+        console.error('Upload failed:', 'Upload appears to be stuck. Please try again.');
+        return {
+          ...prev,
+          isUploading: false,
+          status: 'failed',
+          cloudBackupComplete: false,
+          errorMessage: 'Upload appears to be stuck. Please try again.',
+        };
+      });
+    }, remainingMs);
+
+    return () => window.clearTimeout(timeout);
+  }, [uploadProgress]);
 
   const startUpload = (fileName: string, fileSizeMB: number, estimatedMinutes: number) => {
     setUploadProgress({
