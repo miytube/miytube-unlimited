@@ -117,8 +117,37 @@ const sortByLabel = <T extends { label: string }>(arr: T[]): T[] =>
 
 export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, links }) => {
   const location = useLocation();
+  const { tree } = useCustomCategories();
   const storageKey = `sidebar-category-${title.toLowerCase().replace(/\s+/g, '-')}`;
-  const sortedLinks = sortByLabel(links).map(link => ({
+
+  // Inject custom sub-categories / watch pages created from the admin into
+  // the matching hardcoded sidebar link (matched by link slug == custom category slug).
+  const enrichedLinks = useMemo(() => {
+    return links.map((link) => {
+      const slug = (link.path || '').replace(/^\//, '').split('/')[0];
+      const cat = tree.find((c) => c.slug === slug);
+      if (!cat) return link;
+      const extras: Array<{ id: string; label: string; path: string }> = [];
+      cat.subcategories.forEach((sub) => {
+        const subPath = `/c/${cat.slug}/${sub.slug}`;
+        // Only add the sub-category row if it isn't already represented
+        if (!link.subItems?.some((s) => s.path === subPath)) {
+          extras.push({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
+        }
+        sub.watch_pages.forEach((w) => {
+          extras.push({
+            id: `cc-w-${w.id}`,
+            label: `${sub.name} • ${w.name}`,
+            path: `/c/${cat.slug}/${sub.slug}/${w.slug}`,
+          });
+        });
+      });
+      if (extras.length === 0) return link;
+      return { ...link, subItems: [...(link.subItems || []), ...extras] };
+    });
+  }, [links, tree]);
+
+  const sortedLinks = sortByLabel(enrichedLinks).map(link => ({
     ...link,
     subItems: link.subItems ? sortByLabel(link.subItems) : link.subItems,
   }));
