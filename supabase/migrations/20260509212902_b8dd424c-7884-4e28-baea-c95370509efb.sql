@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET subcategory = 'invent-hacks' WHERE subcategory = 'hacks-of-every-industry';
