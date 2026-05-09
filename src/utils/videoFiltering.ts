@@ -247,7 +247,24 @@ export const filterVideosBySubcategory = (
     // 2) Parent + child match: video.category == parent AND video.subcategory == child
     if (parentSegment) {
       const parentNoSep = parentSegment.replace(/[-\s]/g, '');
-      const parentMatches = vidCategory === parentSegment || vidCategoryNoSep === parentNoSep;
+      // Parent aliases: route slugs may differ from the canonical normalized
+      // category stored on the video (e.g. route "how-to-style" vs normalized
+      // "how-to-and-style" because "&" → "and").
+      const parentAliases: Record<string, string[]> = {
+        'how-to-style': ['how-to-and-style'],
+        'how-to-and-style': ['how-to-style'],
+        'news': ['news-and-politics'],
+        'news-and-politics': ['news'],
+        'pets': ['pets-and-animals'],
+        'pets-animals': ['pets-and-animals'],
+        'pets-and-animals': ['pets-animals', 'pets'],
+        'autos': ['autos-and-vehicles', 'autos-vehicles'],
+        'autos-vehicles': ['autos-and-vehicles'],
+        'autos-and-vehicles': ['autos-vehicles'],
+      };
+      const parentVariants = new Set<string>([parentSegment, ...(parentAliases[parentSegment] || [])]);
+      const parentMatches = parentVariants.has(vidCategory) ||
+        [...parentVariants].some(p => p.replace(/[-\s]/g, '') === vidCategoryNoSep);
       const childMatches =
         vidSubcategory === lastSegment ||
         vidSubcategory === lastSegmentSpaced ||
