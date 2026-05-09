@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
+import { sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
 
 interface SidebarLink {
   id: string;
@@ -128,8 +129,11 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
       const cat = tree.find((c) => c.slug === slug);
       if (!cat) return link;
       const extras: Array<{ id: string; label: string; path: string }> = [];
+      const useNativeSidebarRoute = sidebarMainCategorySlugs.has(cat.slug);
       cat.subcategories.forEach((sub) => {
-        const subPath = `/c/${cat.slug}/${sub.slug}`;
+        const subPath = useNativeSidebarRoute
+          ? `/${cat.slug}/${sub.slug}`
+          : `/c/${cat.slug}/${sub.slug}`;
         // Only add the sub-category row if it isn't already represented
         if (!link.subItems?.some((s) => s.path === subPath)) {
           extras.push({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
@@ -138,7 +142,7 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
           extras.push({
             id: `cc-w-${w.id}`,
             label: `${sub.name} • ${w.name}`,
-            path: `/c/${cat.slug}/${sub.slug}/${w.slug}`,
+            path: `${subPath}/${w.slug}`,
           });
         });
       });
