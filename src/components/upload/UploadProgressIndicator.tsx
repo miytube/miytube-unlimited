@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Progress } from '@/components/ui/progress';
 import { useUploadProgress } from '@/context/UploadProgressContext';
-import { Upload, Clock, HardDrive, CheckCircle2, XCircle, Cloud } from 'lucide-react';
+import { Upload, Clock, HardDrive, CheckCircle2, XCircle, Cloud, X } from 'lucide-react';
 
 export const UploadProgressIndicator: React.FC = () => {
-  const { uploadProgress } = useUploadProgress();
+  const { uploadProgress, dismissUpload, failUpload } = useUploadProgress();
   const [estimatedProgress, setEstimatedProgress] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
 
@@ -25,17 +25,20 @@ export const UploadProgressIndicator: React.FC = () => {
     const interval = setInterval(() => {
       const elapsed = (Date.now() - uploadProgress.startTime) / 1000; // seconds
       setElapsedTime(elapsed);
-      
-      // Estimate progress based on elapsed time vs estimated time
-      // Use a logarithmic curve so it never quite reaches 100% until complete
+
       const estimatedSeconds = uploadProgress.estimatedMinutes * 60;
       const rawProgress = (elapsed / estimatedSeconds) * 100;
       const smoothedProgress = Math.min(95, rawProgress * 0.9 + Math.log10(rawProgress + 1) * 10);
       setEstimatedProgress(Math.max(0, smoothedProgress));
+
+      // Auto-fail if upload runs way longer than estimated (clearly stuck)
+      if (elapsed > Math.max(estimatedSeconds * 3, 600)) {
+        failUpload('Upload appears to be stuck. Please try again.');
+      }
     }, 500);
 
     return () => clearInterval(interval);
-  }, [uploadProgress]);
+  }, [uploadProgress, failUpload]);
 
   if (!uploadProgress) {
     return null;
@@ -93,7 +96,15 @@ export const UploadProgressIndicator: React.FC = () => {
     <div className={`fixed bottom-4 right-4 z-50 w-80 bg-card border rounded-lg shadow-lg p-4 ${getStatusColor()}`}>
       <div className="flex items-center gap-2 mb-3">
         {getStatusIcon()}
-        <span className="font-semibold text-foreground">{getStatusText()}</span>
+        <span className="font-semibold text-foreground flex-1">{getStatusText()}</span>
+        <button
+          type="button"
+          onClick={dismissUpload}
+          aria-label="Dismiss upload notification"
+          className="text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
       
       <div className="space-y-3">
