@@ -88,7 +88,7 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'documentary', name: 'Military Documentary' },
         { id: 'ships', name: 'Military Ships' },
         { id: 'submarines', name: 'Submarines' },
-        { id: 'war', name: 'Military War' },
+        { id: 'military-war', name: 'Military War' },
         { id: 'drones', name: 'Weapons Drones' },
         { id: 'personnel', name: 'Personnel' },
       ]},
