@@ -19,7 +19,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className={`flex flex-col flex-1 transition-all duration-300 ${isMobile ? '' : 'ml-60'}`}>
         <Header onMenuClick={() => setSidebarOpen((v) => !v)} />
         <main className="flex-1">
-          <div className="container mx-auto px-4 sm:px-6 max-w-[1400px]">
+          {/* bg-background on the centered column so vignette wallpaper ads can show in the side gutters */}
+          <div className="container mx-auto px-4 sm:px-6 max-w-[1400px] bg-background">
             {children}
           </div>
         </main>
