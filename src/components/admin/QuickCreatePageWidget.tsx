@@ -238,7 +238,7 @@ export const QuickCreatePageWidget: React.FC = () => {
 
         {createdUrls.length > 0 ? (
           <div className="space-y-3 py-2">
-            <p className="text-sm font-medium">Watch pages created:</p>
+            <p className="text-sm font-medium">Pages created:</p>
             <div className="space-y-2">
               {createdUrls.map((r) => (
                 <Link
