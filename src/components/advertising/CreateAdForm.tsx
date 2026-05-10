@@ -52,6 +52,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [totalBudget, setTotalBudget] = useState('100.00');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState('');
+  const [mediaUrl, setMediaUrl] = useState('');
 
   const toggleCategory = (cat: string) => {
     setTargetCategories(prev =>
