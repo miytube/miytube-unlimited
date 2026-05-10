@@ -69,10 +69,23 @@ export const CustomCategoriesManager: React.FC = () => {
   const addWatchPage = async (subcategoryId: string) => {
     const name = newWatchName[subcategoryId]?.trim();
     if (!name) return;
+    const slug = slugify(name);
+    const subcategory = tree.flatMap((cat) => cat.subcategories).find((sub) => sub.id === subcategoryId);
+    const duplicate = subcategory?.watch_pages.some((watch) => watch.slug === slug);
+    const mirrorsSubcategory = subcategory?.slug === slug;
+    if (duplicate || mirrorsSubcategory) {
+      toast({
+        title: 'Already exists',
+        description: mirrorsSubcategory
+          ? 'That page already exists as the subcategory page.'
+          : 'That watch page already exists under this subcategory.',
+      });
+      return;
+    }
     const { error } = await supabase.from('custom_watch_pages').insert({
       subcategory_id: subcategoryId,
       name,
-      slug: slugify(name),
+      slug,
       created_by: user?.id,
     });
     if (error) {
