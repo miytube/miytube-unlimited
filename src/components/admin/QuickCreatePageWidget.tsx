@@ -221,7 +221,7 @@ export const QuickCreatePageWidget: React.FC = () => {
         <DialogHeader>
           <DialogTitle>Create Watch Page</DialogTitle>
           <DialogDescription>
-            Pick a main category, then add the page name(s). Each name becomes a sub-category and a watch page.
+            Select an existing main category from the list. Only create a new main category if it's not already there. A sub-category / watch page is always created in step 2.
           </DialogDescription>
         </DialogHeader>
 
