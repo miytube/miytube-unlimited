@@ -86,12 +86,29 @@ export const QuickCreatePageWidget: React.FC = () => {
 
   const selectedMain = parentOptions.find((o) => o.slug === mainSlug);
 
+  // Existing sub-categories under the selected main (for the step-2 dropdown)
+  const existingSubs = useMemo(() => {
+    if (!selectedMain) return [] as { name: string; slug: string }[];
+    const cat = tree.find((c) => c.slug === selectedMain.slug);
+    if (!cat) return [];
+    return cat.subcategories.map((s) => ({ name: s.name, slug: s.slug }));
+  }, [tree, selectedMain]);
+
+  const filteredSubs = useMemo(() => {
+    const q = subSearch.trim().toLowerCase();
+    if (!q) return existingSubs;
+    return existingSubs.filter(
+      (s) => s.name.toLowerCase().includes(q) || s.slug.includes(q)
+    );
+  }, [existingSubs, subSearch]);
+
   const reset = () => {
     setMainSlug('');
     setMainSearch('');
     setPendingMain(null);
     setPageNames([]);
     setPageInput('');
+    setSubSearch('');
     setCreatedUrls([]);
   };
 
