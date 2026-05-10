@@ -10,6 +10,7 @@ import AboutSection from '@/components/subcategory/AboutSection';
 import { Link, useLocation, Navigate } from 'react-router-dom';
 import { Film, Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
+import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
@@ -17,6 +18,7 @@ const GenericSubcategoryPage = () => {
   const location = useLocation();
   const pathParts = location.pathname.split('/').filter(Boolean);
   const [categorySlug, subcategorySlug, watchSlug] = pathParts;
+  const currentPath = location.pathname.replace(/\/$/, '') || '/';
 
   const {
     pageTitle,
@@ -28,12 +30,21 @@ const GenericSubcategoryPage = () => {
     isKnown
   } = useSubcategoryInfo();
 
-  const matchedCustomCat = tree.find((c) => c.slug === categorySlug);
+  const matchedCustomCat = tree.find(
+    (c) => c.slug === categorySlug || currentPath === getSidebarMainCategoryRoute(c.slug) || currentPath.startsWith(`${getSidebarMainCategoryRoute(c.slug)}/`)
+  );
+  const matchedCustomRoute = matchedCustomCat ? getSidebarMainCategoryRoute(matchedCustomCat.slug) : undefined;
+  const customPathParts = matchedCustomRoute && currentPath.startsWith(`${matchedCustomRoute}/`)
+    ? currentPath.slice(matchedCustomRoute.length + 1).split('/').filter(Boolean)
+    : matchedCustomRoute === currentPath
+      ? []
+      : pathParts.slice(1);
+  const [customSubSlug, customWatchSlug] = customPathParts;
   const matchedCustomSub = subcategorySlug
-    ? matchedCustomCat?.subcategories.find((s) => s.slug === subcategorySlug)
+    ? matchedCustomCat?.subcategories.find((s) => s.slug === customSubSlug)
     : undefined;
-  const matchedCustomWatch = watchSlug
-    ? matchedCustomSub?.watch_pages.find((w) => w.slug === watchSlug)
+  const matchedCustomWatch = customWatchSlug
+    ? matchedCustomSub?.watch_pages.find((w) => w.slug === customWatchSlug)
     : undefined;
   const isCustomRoute = Boolean(
     matchedCustomCat &&
