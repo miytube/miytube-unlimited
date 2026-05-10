@@ -22,6 +22,7 @@ const App = () => (
             <Sonner />
             <UploadProgressIndicator />
             <BrowserRouter>
+              <VignetteAd />
               <AppRoutes />
             </BrowserRouter>
           </UploadedVideosProvider>
