@@ -40,7 +40,7 @@ const GenericSubcategoryPage = () => {
       ? []
       : pathParts.slice(1);
   const [customSubSlug, customWatchSlug] = customPathParts;
-  const matchedCustomSub = subcategorySlug
+  const matchedCustomSub = customSubSlug
     ? matchedCustomCat?.subcategories.find((s) => s.slug === customSubSlug)
     : undefined;
   const matchedCustomWatch = customWatchSlug
@@ -48,8 +48,8 @@ const GenericSubcategoryPage = () => {
     : undefined;
   const isCustomRoute = Boolean(
     matchedCustomCat &&
-      (!subcategorySlug || matchedCustomSub) &&
-      (!watchSlug || matchedCustomWatch)
+      (!customSubSlug || matchedCustomSub) &&
+      (!customWatchSlug || matchedCustomWatch)
   );
 
   if (!isKnown && customCategoriesLoading) {
@@ -88,7 +88,7 @@ const GenericSubcategoryPage = () => {
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
         <SubcategoryHeader
-          parentRoute={isCustomRoute ? `/${matchedCustomCat!.slug}` : parentRoute}
+          parentRoute={isCustomRoute ? matchedCustomRoute || `/${matchedCustomCat!.slug}` : parentRoute}
           parentName={isCustomRoute ? matchedCustomCat!.name : parentName}
           pageTitle={displayTitle}
           pageDescription={displayDescription}
@@ -102,7 +102,7 @@ const GenericSubcategoryPage = () => {
               {customSubs.map((s) => (
                 <Link
                   key={s.id}
-                  to={`/${staticMatchedCustomCat!.slug}/${s.slug}`}
+                  to={`${getSidebarMainCategoryRoute(staticMatchedCustomCat!.slug) || `/c/${staticMatchedCustomCat!.slug}`}/${s.slug}`}
                   className="group block p-4 bg-card hover:bg-muted border rounded-lg transition-colors"
                 >
                   <h3 className="font-semibold text-base group-hover:text-primary">{s.name}</h3>
