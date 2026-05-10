@@ -18,6 +18,17 @@ const SESSION_KEY = "miytube:vignette:impressions";
 const SESSION_AD_KEY = "miytube:vignette:current";
 const PREVIEW_KEY = "miytube:vignette:preview";
 const MAX_IMPRESSIONS_PER_SESSION = 3;
+// Layout: 240px sidebar + 1400px max content column. Gutters appear above ~1640px.
+const MIN_VIEWPORT_WIDTH = 1640;
+
+type VignetteCampaign = {
+  id: string;
+  business_name: string;
+  headline: string;
+  destination_url: string;
+  media_url: string | null;
+  thumbnail_url: string | null;
+};
 
 const isPreviewMode = () =>
   typeof window !== "undefined" && sessionStorage.getItem(PREVIEW_KEY) === "1";
@@ -31,17 +42,6 @@ const SAMPLE_PREVIEW_AD: VignetteCampaign = {
   media_url:
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2400&q=80",
   thumbnail_url: null,
-};
-// Layout: 240px sidebar + 1400px max content column. Gutters appear above ~1640px.
-const MIN_VIEWPORT_WIDTH = 1640;
-
-type VignetteCampaign = {
-  id: string;
-  business_name: string;
-  headline: string;
-  destination_url: string;
-  media_url: string | null;
-  thumbnail_url: string | null;
 };
 
 const isVideo = (url: string) =>
