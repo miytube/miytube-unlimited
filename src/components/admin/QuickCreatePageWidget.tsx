@@ -232,7 +232,7 @@ export const QuickCreatePageWidget: React.FC = () => {
         <DialogHeader>
           <DialogTitle>Create Watch Page</DialogTitle>
           <DialogDescription>
-            Select an existing main category from the list. Only create a new main category if it's not already there. A sub-category / watch page is always created in step 2.
+            Select an existing main category from the list. Only create a new main category if it's not already there. Step 2 creates the sub-category page.
           </DialogDescription>
         </DialogHeader>
 
@@ -367,7 +367,7 @@ export const QuickCreatePageWidget: React.FC = () => {
             {/* Step 2: Page name(s) */}
             <div className="space-y-2">
               <Label>
-                2. Sub-Category / Watch Page {pageNames.length > 0 && `(${pageNames.length})`}
+                2. Sub-Category Page {pageNames.length > 0 && `(${pageNames.length})`}
               </Label>
 
               {pageNames.length > 0 && (
