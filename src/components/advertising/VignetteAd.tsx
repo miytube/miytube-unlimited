@@ -16,7 +16,22 @@ import { supabase } from "@/integrations/supabase/client";
 
 const SESSION_KEY = "miytube:vignette:impressions";
 const SESSION_AD_KEY = "miytube:vignette:current";
+const PREVIEW_KEY = "miytube:vignette:preview";
 const MAX_IMPRESSIONS_PER_SESSION = 3;
+
+const isPreviewMode = () =>
+  typeof window !== "undefined" && sessionStorage.getItem(PREVIEW_KEY) === "1";
+
+// Sample creative used when admin enables preview without any active campaign
+const SAMPLE_PREVIEW_AD: VignetteCampaign = {
+  id: "preview",
+  business_name: "Sample Advertiser",
+  headline: "Vignette wallpaper preview",
+  destination_url: "https://miytube.com",
+  media_url:
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2400&q=80",
+  thumbnail_url: null,
+};
 // Layout: 240px sidebar + 1400px max content column. Gutters appear above ~1640px.
 const MIN_VIEWPORT_WIDTH = 1640;
 
