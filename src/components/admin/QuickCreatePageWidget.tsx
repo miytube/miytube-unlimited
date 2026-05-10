@@ -405,24 +405,121 @@ export const QuickCreatePageWidget: React.FC = () => {
                 </div>
               )}
 
-              <Input
-                value={pageInput}
-                onChange={(e) => setPageInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (pageInput.trim()) addPageName(pageInput);
-                  }
-                }}
-                placeholder={
-                  selectedMain
-                    ? 'Type a name (e.g. "Hard Rap") and press Enter…'
-                    : 'Pick main category first'
-                }
-                disabled={!selectedMain}
-              />
+              <Popover
+                open={subPickerOpen && !!selectedMain}
+                onOpenChange={(o) => setSubPickerOpen(o && !!selectedMain)}
+              >
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    disabled={!selectedMain}
+                    className="w-full justify-between font-normal"
+                  >
+                    <span className="truncate text-left text-muted-foreground">
+                      {selectedMain
+                        ? 'Pick existing sub-category or type a new one…'
+                        : 'Pick main category first'}
+                    </span>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                  <div className="p-2 border-b">
+                    <Input
+                      placeholder="Search or type new name…"
+                      value={subSearch}
+                      onChange={(e) => setSubSearch(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          const q = subSearch.trim();
+                          if (!q) return;
+                          const slug = slugify(q);
+                          const dupe = existingSubs.some(
+                            (s) => s.slug === slug || s.name.toLowerCase() === q.toLowerCase()
+                          );
+                          if (dupe) {
+                            toast({
+                              title: 'Already exists',
+                              description: `"${q}" already exists under ${selectedMain?.name}.`,
+                            });
+                            return;
+                          }
+                          addPageName(q);
+                          setSubSearch('');
+                        }
+                      }}
+                      className="h-9"
+                    />
+                  </div>
+                  <ScrollArea className="h-72">
+                    <div className="p-1">
+                      {(() => {
+                        const q = subSearch.trim();
+                        const slug = slugify(q);
+                        const dupeExisting = q && existingSubs.some(
+                          (s) => s.slug === slug || s.name.toLowerCase() === q.toLowerCase()
+                        );
+                        const dupePending = q && pageNames.some(
+                          (n) => n.toLowerCase() === q.toLowerCase()
+                        );
+                        if (q && !dupeExisting && !dupePending) {
+                          return (
+                            <div className="px-2 py-2 border-b mb-1">
+                              <p className="text-[11px] text-muted-foreground mb-1.5">
+                                Not in the list? Create it as a new sub-category:
+                              </p>
+                              <button
+                                onClick={() => {
+                                  addPageName(q);
+                                  setSubSearch('');
+                                }}
+                                className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left border border-dashed"
+                              >
+                                <Plus className="mr-2 h-4 w-4 shrink-0 opacity-60" />
+                                Create new sub-category "{q}"
+                              </button>
+                            </div>
+                          );
+                        }
+                        if (q && dupeExisting) {
+                          return (
+                            <div className="px-2 py-2 text-xs text-muted-foreground border-b mb-1">
+                              "{q}" already exists under {selectedMain?.name}.
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
+                      {existingSubs.length === 0 && !subSearch.trim() && (
+                        <div className="py-6 text-center text-sm text-muted-foreground">
+                          No sub-categories yet. Type a name above to create one.
+                        </div>
+                      )}
+                      {filteredSubs.map((s) => {
+                        const alreadyQueued = pageNames.some(
+                          (n) => slugify(n) === s.slug
+                        );
+                        return (
+                          <div
+                            key={s.slug}
+                            className="flex items-center w-full px-2 py-2 text-sm rounded-sm text-left text-muted-foreground"
+                          >
+                            <Check className="mr-2 h-4 w-4 shrink-0 opacity-60" />
+                            <span className="flex-1 truncate">{s.name}</span>
+                            <span className="ml-2 text-[10px] uppercase tracking-wide text-muted-foreground">
+                              {alreadyQueued ? 'queued' : 'exists'}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </ScrollArea>
+                </PopoverContent>
+              </Popover>
               <p className="text-xs text-muted-foreground">
-                Each name creates a sub-category <em>and</em> a watch page under{' '}
+                Existing sub-categories are shown so you don't create duplicates. Type a new name and press Enter to add it under{' '}
                 {selectedMain ? <strong>{selectedMain.name}</strong> : 'main'}.
               </p>
             </div>
