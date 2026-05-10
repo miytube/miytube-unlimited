@@ -53,6 +53,8 @@ export const QuickCreatePageWidget: React.FC = () => {
   // Step 2: page names (each becomes sub-category + watch page with same name)
   const [pageNames, setPageNames] = useState<string[]>([]);
   const [pageInput, setPageInput] = useState('');
+  const [subPickerOpen, setSubPickerOpen] = useState(false);
+  const [subSearch, setSubSearch] = useState('');
 
   const [busy, setBusy] = useState(false);
   const [createdUrls, setCreatedUrls] = useState<{ url: string; name: string }[]>([]);
