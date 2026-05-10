@@ -229,6 +229,22 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <Input value={destinationUrl} onChange={e => setDestinationUrl(e.target.value)} placeholder="https://yourbusiness.com/landing-page" />
           </div>
 
+          {adFormat === 'vignette' && (
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Wallpaper Media URL * <span className="text-xs text-muted-foreground font-normal">(image or .mp4/.webm video)</span>
+              </label>
+              <Input
+                value={mediaUrl}
+                onChange={e => setMediaUrl(e.target.value)}
+                placeholder="https://yourcdn.com/wallpaper.jpg"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Recommended: 1920×1080 or larger. Keep important content centered — the middle ~1400px is covered by the page.
+              </p>
+            </div>
+          )}
+
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setStep(1)} className="flex-1">Back</Button>
             <Button onClick={() => setStep(3)} className="flex-1" disabled={!headline.trim() || !destinationUrl.trim()}>
