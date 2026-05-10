@@ -188,6 +188,18 @@ export const QuickCreatePageWidget: React.FC = () => {
         const baseUrl = getSidebarMainCategoryRoute(cat.slug)
           ? `${getSidebarMainCategoryRoute(cat.slug)}/${sub.slug}`
           : `/c/${cat.slug}/${sub.slug}`;
+        // Check if a watch page with this slug already exists under this sub-category
+        const { data: existingWatch } = await supabase
+          .from('custom_watch_pages')
+          .select('id, slug')
+          .eq('subcategory_id', sub.id)
+          .eq('slug', watchSlug)
+          .maybeSingle();
+        if (existingWatch) {
+          existed.push(n);
+          results.push({ url: `${baseUrl}/${watchSlug}`, name: n });
+          continue;
+        }
         const { error } = await supabase
           .from('custom_watch_pages')
           .insert({ subcategory_id: sub.id, name: n, slug: watchSlug });
