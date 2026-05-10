@@ -1,6 +1,7 @@
 export interface SidebarMainCategoryOption {
   slug: string;
   name: string;
+  route?: string;
 }
 
 export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
@@ -24,6 +25,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'colosseum', name: 'Colosseum & Arenas' },
   { slug: 'comedians', name: 'Comedians' },
   { slug: 'comedy', name: 'Comedy' },
+  { slug: 'college-sports', name: 'College Sports', route: '/sports/college' },
   { slug: 'cosmetics', name: 'Cosmetics' },
   { slug: 'courts', name: 'Courts' },
   { slug: 'crazy', name: 'Crazy & Amazing' },
@@ -113,3 +115,8 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
 export const sidebarMainCategorySlugs = new Set(
   sidebarMainCategoryOptions.map((option) => option.slug)
 );
+
+export const getSidebarMainCategoryRoute = (slug: string) => {
+  const option = sidebarMainCategoryOptions.find((item) => item.slug === slug);
+  return option?.route || (option ? `/${option.slug}` : undefined);
+};

@@ -20,7 +20,7 @@ import { Check, Plus, ExternalLink, ChevronsUpDown, X } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { sidebarMainCategoryOptions, sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
+import { getSidebarMainCategoryRoute, sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
 
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
@@ -185,8 +185,8 @@ export const QuickCreatePageWidget: React.FC = () => {
         // Each name creates a sub-category AND a watch page with the same name
         const sub = await ensureSubcategory(cat.id, n);
         const watchSlug = slugify(n);
-        const baseUrl = sidebarMainCategorySlugs.has(cat.slug)
-          ? `/${cat.slug}/${sub.slug}`
+        const baseUrl = getSidebarMainCategoryRoute(cat.slug)
+          ? `${getSidebarMainCategoryRoute(cat.slug)}/${sub.slug}`
           : `/c/${cat.slug}/${sub.slug}`;
         const { error } = await supabase
           .from('custom_watch_pages')
