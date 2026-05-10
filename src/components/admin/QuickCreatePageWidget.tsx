@@ -32,11 +32,6 @@ type ParentOption = {
   customCategoryId?: string;
 };
 
-type SupabaseErrorLike = {
-  code?: string;
-  message?: string;
-};
-
 export const QuickCreatePageWidget: React.FC = () => {
   const { isAdmin } = useAuth();
   const { tree, reload } = useCustomCategories(true);
