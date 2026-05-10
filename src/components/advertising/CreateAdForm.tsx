@@ -72,6 +72,11 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
       return;
     }
 
+    if (adFormat === 'vignette' && !mediaUrl.trim()) {
+      toast({ title: "Wallpaper media required", description: "Vignette ads need an image or video URL.", variant: "destructive" });
+      return;
+    }
+
     const budget = parseFloat(totalBudget);
     if (isNaN(budget) || budget < 10) {
       toast({ title: "Invalid budget", description: "Minimum total budget is $10.00", variant: "destructive" });
