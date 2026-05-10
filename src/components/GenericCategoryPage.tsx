@@ -10,17 +10,31 @@ interface GenericCategoryPageProps {
   title: string;
   description?: string;
   Icon?: LucideIcon;
+  filterCategory?: string;
+  filterSubcategory?: string;
+  legacyFilterSubcategories?: string[];
 }
 
 const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
   title,
   description = `Explore our collection of ${title.toLowerCase()} content`,
   Icon,
+  filterCategory,
+  filterSubcategory,
+  legacyFilterSubcategories = [],
 }) => {
   const { getVideosByCategory } = useUploadedVideos();
   
   // Filter videos for this category using the context's improved matching
-  const categoryVideos = getVideosByCategory(title);
+  const primaryVideos = getVideosByCategory(filterCategory || title, filterSubcategory);
+  const legacyVideos = filterCategory
+    ? legacyFilterSubcategories.flatMap((legacySubcategory) =>
+        getVideosByCategory(filterCategory, legacySubcategory)
+      )
+    : [];
+  const categoryVideos = Array.from(
+    new Map([...primaryVideos, ...legacyVideos].map((video) => [video.id, video])).values()
+  );
 
   return (
     <Layout>
