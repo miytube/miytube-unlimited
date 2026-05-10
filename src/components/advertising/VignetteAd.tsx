@@ -128,7 +128,16 @@ export const VignetteAd = () => {
       });
   }, [ad, location.pathname, excluded, viewportOk]);
 
-  if (!ad || excluded || !viewportOk) return null;
+  // Toggle <html class="vignette-active"> so global CSS makes the body transparent
+  const isShowing = !!ad && !excluded && viewportOk;
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isShowing) root.classList.add("vignette-active");
+    else root.classList.remove("vignette-active");
+    return () => root.classList.remove("vignette-active");
+  }, [isShowing]);
+
+  if (!isShowing) return null;
 
   const mediaUrl = ad.media_url || ad.thumbnail_url!;
   const handleClick = () => {
