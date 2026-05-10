@@ -17,7 +17,8 @@ import { supabase } from "@/integrations/supabase/client";
 const SESSION_KEY = "miytube:vignette:impressions";
 const SESSION_AD_KEY = "miytube:vignette:current";
 const MAX_IMPRESSIONS_PER_SESSION = 3;
-const MIN_VIEWPORT_WIDTH = 1280;
+// Layout: 240px sidebar + 1400px max content column. Gutters appear above ~1640px.
+const MIN_VIEWPORT_WIDTH = 1640;
 
 type VignetteCampaign = {
   id: string;
