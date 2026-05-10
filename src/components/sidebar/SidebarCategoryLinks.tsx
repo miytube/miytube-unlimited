@@ -116,6 +116,15 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
 const sortByLabel = <T extends { label: string }>(arr: T[]): T[] =>
   [...arr].sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: 'base' }));
 
+const normalizePath = (path: string) => path.replace(/\/+$/, '').toLowerCase();
+
+const isRedundantWatchPage = (
+  sub: { name: string; slug: string },
+  watch: { name: string; slug: string }
+) =>
+  sub.slug.toLowerCase() === watch.slug.toLowerCase() ||
+  sub.name.trim().toLowerCase() === watch.name.trim().toLowerCase();
+
 export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, links }) => {
   const location = useLocation();
   const { tree } = useCustomCategories();
@@ -130,15 +139,21 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
       const cat = tree.find((c) => getSidebarMainCategoryRoute(c.slug) === linkPath || c.slug === slug);
       if (!cat) return link;
       const extras: Array<{ id: string; label: string; path: string }> = [];
+      const seenPaths = new Set((link.subItems || []).map((item) => normalizePath(item.path)));
+      const addExtra = (item: { id: string; label: string; path: string }) => {
+        const pathKey = normalizePath(item.path);
+        if (seenPaths.has(pathKey)) return;
+        seenPaths.add(pathKey);
+        extras.push(item);
+      };
       const sidebarRoute = getSidebarMainCategoryRoute(cat.slug);
       cat.subcategories.forEach((sub) => {
         const subPath = sidebarRoute ? `${sidebarRoute}/${sub.slug}` : `/c/${cat.slug}/${sub.slug}`;
         // Only add the sub-category row if it isn't already represented
-        if (!link.subItems?.some((s) => s.path === subPath)) {
-          extras.push({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
-        }
+        addExtra({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
         sub.watch_pages.forEach((w) => {
-          extras.push({
+          if (isRedundantWatchPage(sub, w)) return;
+          addExtra({
             id: `cc-w-${w.id}`,
             label: `${sub.name} • ${w.name}`,
             path: `${subPath}/${w.slug}`,
