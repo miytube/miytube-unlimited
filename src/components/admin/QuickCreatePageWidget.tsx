@@ -32,11 +32,6 @@ type ParentOption = {
   customCategoryId?: string;
 };
 
-type SupabaseErrorLike = {
-  code?: string;
-  message?: string;
-};
-
 export const QuickCreatePageWidget: React.FC = () => {
   const { isAdmin } = useAuth();
   const { tree, reload } = useCustomCategories(true);
@@ -50,7 +45,7 @@ export const QuickCreatePageWidget: React.FC = () => {
   const [mainSlug, setMainSlug] = useState<string>('');
   const [pendingMain, setPendingMain] = useState<ParentOption | null>(null);
 
-  // Step 2: page names (each becomes sub-category + watch page with same name)
+  // Step 2: page names (each becomes one sub-category page)
   const [pageNames, setPageNames] = useState<string[]>([]);
   const [pageInput, setPageInput] = useState('');
   const [subPickerOpen, setSubPickerOpen] = useState(false);
@@ -115,7 +110,8 @@ export const QuickCreatePageWidget: React.FC = () => {
   const addPageName = (n: string) => {
     const trimmed = n.trim();
     if (!trimmed) return;
-    if (!pageNames.some((p) => p.toLowerCase() === trimmed.toLowerCase())) {
+    const slug = slugify(trimmed);
+    if (!pageNames.some((p) => slugify(p) === slug || p.toLowerCase() === trimmed.toLowerCase())) {
       setPageNames((prev) => [...prev, trimmed]);
     }
     setPageInput('');
@@ -147,7 +143,7 @@ export const QuickCreatePageWidget: React.FC = () => {
   const ensureSubcategory = async (
     categoryId: string,
     name: string
-  ): Promise<{ id: string; slug: string }> => {
+  ): Promise<{ id: string; slug: string; existed: boolean }> => {
     const slug = slugify(name);
     const { data: existing } = await supabase
       .from('custom_subcategories')
@@ -155,14 +151,14 @@ export const QuickCreatePageWidget: React.FC = () => {
       .eq('category_id', categoryId)
       .eq('slug', slug)
       .maybeSingle();
-    if (existing) return { id: existing.id, slug: existing.slug };
+    if (existing) return { id: existing.id, slug: existing.slug, existed: true };
     const { data, error } = await supabase
       .from('custom_subcategories')
       .insert({ category_id: categoryId, name, slug })
       .select('id, slug')
       .single();
     if (error) throw error;
-    return { id: data.id, slug: data.slug };
+    return { id: data.id, slug: data.slug, existed: false };
   };
 
   const handleCreate = async () => {
@@ -182,37 +178,14 @@ export const QuickCreatePageWidget: React.FC = () => {
     try {
       const cat = await ensureCustomCategory(selectedMain);
       for (const n of names) {
-        // Each name creates a sub-category AND a watch page with the same name
+        // Each name creates or reuses one sub-category page. Do not create a
+        // duplicate watch-page row with the exact same slug as its sub-category.
         const sub = await ensureSubcategory(cat.id, n);
-        const watchSlug = slugify(n);
         const baseUrl = getSidebarMainCategoryRoute(cat.slug)
           ? `${getSidebarMainCategoryRoute(cat.slug)}/${sub.slug}`
           : `/c/${cat.slug}/${sub.slug}`;
-        // Check if a watch page with this slug already exists under this sub-category
-        const { data: existingWatch } = await supabase
-          .from('custom_watch_pages')
-          .select('id, slug')
-          .eq('subcategory_id', sub.id)
-          .eq('slug', watchSlug)
-          .maybeSingle();
-        if (existingWatch) {
-          existed.push(n);
-          results.push({ url: `${baseUrl}/${watchSlug}`, name: n });
-          continue;
-        }
-        const { error } = await supabase
-          .from('custom_watch_pages')
-          .insert({ subcategory_id: sub.id, name: n, slug: watchSlug });
-        if (error) {
-          const dbError = error as SupabaseErrorLike;
-          if (dbError.code === '23505' || /duplicate key/i.test(dbError.message || '')) {
-            existed.push(n);
-            results.push({ url: `${baseUrl}/${watchSlug}`, name: n });
-            continue;
-          }
-          throw error;
-        }
-        results.push({ url: `${baseUrl}/${watchSlug}`, name: n });
+        if (sub.existed) existed.push(n);
+        results.push({ url: baseUrl, name: n });
       }
       results.sort((a, b) => a.name.localeCompare(b.name));
       setCreatedUrls(results);
@@ -259,13 +232,13 @@ export const QuickCreatePageWidget: React.FC = () => {
         <DialogHeader>
           <DialogTitle>Create Watch Page</DialogTitle>
           <DialogDescription>
-            Select an existing main category from the list. Only create a new main category if it's not already there. A sub-category / watch page is always created in step 2.
+            Select an existing main category from the list. Only create a new main category if it's not already there. Step 2 creates the sub-category page.
           </DialogDescription>
         </DialogHeader>
 
         {createdUrls.length > 0 ? (
           <div className="space-y-3 py-2">
-            <p className="text-sm font-medium">Watch pages created:</p>
+            <p className="text-sm font-medium">Pages created:</p>
             <div className="space-y-2">
               {createdUrls.map((r) => (
                 <Link
@@ -394,7 +367,7 @@ export const QuickCreatePageWidget: React.FC = () => {
             {/* Step 2: Page name(s) */}
             <div className="space-y-2">
               <Label>
-                2. Sub-Category / Watch Page {pageNames.length > 0 && `(${pageNames.length})`}
+                2. Sub-Category Page {pageNames.length > 0 && `(${pageNames.length})`}
               </Label>
 
               {pageNames.length > 0 && (
