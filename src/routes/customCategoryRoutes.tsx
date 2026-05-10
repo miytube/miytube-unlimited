@@ -16,4 +16,6 @@ export const customCategoryRoutes = [
   />,
   <Route key="cc-native-sub" path="/:categorySlug/:subSlug" element={<GenericSubcategoryPage />} />,
   <Route key="cc-native-watch" path="/:categorySlug/:subSlug/:watchSlug" element={<GenericSubcategoryPage />} />,
+  <Route key="cc-native-nested-sub" path="/:categorySlug/:sectionSlug/:subSlug" element={<GenericSubcategoryPage />} />,
+  <Route key="cc-native-nested-watch" path="/:categorySlug/:sectionSlug/:subSlug/:watchSlug" element={<GenericSubcategoryPage />} />,
 ];
