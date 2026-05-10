@@ -216,6 +216,15 @@ export const VignetteAd = () => {
         />
       )}
 
+      {/* Subtle scrim near the content column edges so dark ads don't crush dark video thumbnails */}
+      <div
+        className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-[1480px] max-w-full"
+        style={{
+          background:
+            "linear-gradient(to right, transparent 0%, hsl(var(--background) / 0.35) 8%, hsl(var(--background) / 0.35) 92%, transparent 100%)",
+        }}
+      />
+
       {/* Subtle "Ad" label so users know it's sponsored */}
       <div className="pointer-events-none absolute left-3 top-3 rounded bg-background/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
         Ad · {ad.business_name}
