@@ -60,6 +60,7 @@ const isExcludedRoute = (pathname: string) => {
 export const VignetteAd = () => {
   const location = useLocation();
   const [ad, setAd] = useState<VignetteCampaign | null>(null);
+  const [previewMode, setPreviewMode] = useState(isPreviewMode());
   const [viewportOk, setViewportOk] = useState(
     typeof window !== "undefined" ? window.innerWidth >= MIN_VIEWPORT_WIDTH : false
   );
@@ -73,6 +74,17 @@ export const VignetteAd = () => {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  // Listen for admin preview toggle events
+  useEffect(() => {
+    const handler = () => setPreviewMode(isPreviewMode());
+    window.addEventListener("vignette-preview-change", handler);
+    window.addEventListener("storage", handler);
+    return () => {
+      window.removeEventListener("vignette-preview-change", handler);
+      window.removeEventListener("storage", handler);
+    };
+  }, []);
+
   // Pick + cache a vignette ad for the session
   useEffect(() => {
     if (excluded || !viewportOk) return;
@@ -80,7 +92,6 @@ export const VignetteAd = () => {
     let cancelled = false;
 
     (async () => {
-      // Re-use the same ad already chosen this session (so all 3 impressions are the same advertiser)
       const cached = sessionStorage.getItem(SESSION_AD_KEY);
       if (cached) {
         try {
@@ -99,10 +110,17 @@ export const VignetteAd = () => {
         .eq("payment_status", "paid")
         .limit(20);
 
-      if (cancelled || error || !data || data.length === 0) return;
+      if (cancelled) return;
 
-      const eligible = data.filter((c) => c.media_url || c.thumbnail_url);
-      if (eligible.length === 0) return;
+      const eligible = (data || []).filter((c) => c.media_url || c.thumbnail_url);
+      if (error || eligible.length === 0) {
+        // Preview mode falls back to a sample creative so admins can QA layout
+        if (previewMode) {
+          sessionStorage.setItem(SESSION_AD_KEY, JSON.stringify(SAMPLE_PREVIEW_AD));
+          setAd(SAMPLE_PREVIEW_AD);
+        }
+        return;
+      }
 
       const picked = eligible[Math.floor(Math.random() * eligible.length)];
       sessionStorage.setItem(SESSION_AD_KEY, JSON.stringify(picked));
@@ -112,11 +130,12 @@ export const VignetteAd = () => {
     return () => {
       cancelled = true;
     };
-  }, [excluded, viewportOk]);
+  }, [excluded, viewportOk, previewMode]);
 
-  // Track impression on each route the ad shows on, capped at MAX
+  // Track impression on each route the ad shows on, capped at MAX (skipped in preview)
   useEffect(() => {
     if (!ad || excluded || !viewportOk) return;
+    if (previewMode || ad.id === "preview") return;
 
     const count = Number(sessionStorage.getItem(SESSION_KEY) || "0");
     if (count >= MAX_IMPRESSIONS_PER_SESSION) {
@@ -125,9 +144,6 @@ export const VignetteAd = () => {
     }
     sessionStorage.setItem(SESSION_KEY, String(count + 1));
 
-    // Fire-and-forget impression tracking
-    supabase
-      .rpc as any; // no-op typing
     supabase
       .from("ad_campaigns")
       .select("impressions")
@@ -141,7 +157,7 @@ export const VignetteAd = () => {
           .eq("id", ad.id)
           .then(() => {});
       });
-  }, [ad, location.pathname, excluded, viewportOk]);
+  }, [ad, location.pathname, excluded, viewportOk, previewMode]);
 
   // Toggle <html class="vignette-active"> so global CSS makes the body transparent
   const isShowing = !!ad && !excluded && viewportOk;
