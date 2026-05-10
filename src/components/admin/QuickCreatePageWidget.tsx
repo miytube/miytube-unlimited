@@ -109,6 +109,13 @@ export const QuickCreatePageWidget: React.FC = () => {
     opt: ParentOption
   ): Promise<{ id: string; slug: string }> => {
     if (opt.customCategoryId) return { id: opt.customCategoryId, slug: opt.slug };
+    // Look up by slug first to avoid creating a duplicate of an existing category
+    const { data: existing } = await supabase
+      .from('custom_categories')
+      .select('id, slug')
+      .eq('slug', opt.slug)
+      .maybeSingle();
+    if (existing) return { id: existing.id, slug: existing.slug };
     const { data, error } = await supabase
       .from('custom_categories')
       .insert({ name: opt.name, slug: opt.slug })
