@@ -136,6 +136,7 @@ export const subcategoryOptionsByCategory: Record<string, Array<{ id: string; na
     { id: 'navy', name: 'Navy' },
     { id: 'marines', name: 'Marines' },
     { id: 'coast-guard', name: 'Coast Guard' },
+    { id: 'military-war', name: 'Military War' },
   ],
   'fitness': [
     { id: 'weightlifting', name: 'Weightlifting' },
