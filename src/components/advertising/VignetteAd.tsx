@@ -152,7 +152,7 @@ export const VignetteAd = () => {
   return (
     <div
       aria-hidden="false"
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
       {/* Background media fills the whole viewport */}
       {isVideo(mediaUrl) ? (
