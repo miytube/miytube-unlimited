@@ -221,7 +221,7 @@ export const QuickCreatePageWidget: React.FC = () => {
         <DialogHeader>
           <DialogTitle>Create Watch Page</DialogTitle>
           <DialogDescription>
-            Pick a main category, then add the page name(s). Each name becomes a sub-category and a watch page.
+            Select an existing main category from the list. Only create a new main category if it's not already there. A sub-category / watch page is always created in step 2.
           </DialogDescription>
         </DialogHeader>
 
@@ -252,7 +252,7 @@ export const QuickCreatePageWidget: React.FC = () => {
           <div className="space-y-4 py-2">
             {/* Step 1: Main Category */}
             <div className="space-y-2">
-              <Label>1. Main Category</Label>
+              <Label>1. Main Category (pick existing — only create new if missing)</Label>
               <Popover open={mainPickerOpen} onOpenChange={setMainPickerOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -286,24 +286,29 @@ export const QuickCreatePageWidget: React.FC = () => {
                           );
                         if (q && !exists) {
                           return (
-                            <button
-                              onClick={() => {
-                                const slug = slugify(q);
-                                if (!slug) return;
-                                const newOpt: ParentOption = {
-                                  slug,
-                                  name: q,
-                                  source: 'custom',
-                                };
-                                setPendingMain(newOpt);
-                                setMainSlug(slug);
-                                setMainPickerOpen(false);
-                              }}
-                              className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left"
-                            >
-                              <Plus className="mr-2 h-4 w-4 shrink-0 opacity-60" />
-                              Create main category "{q}"
-                            </button>
+                            <div className="px-2 py-2 border-b mb-1">
+                              <p className="text-[11px] text-muted-foreground mb-1.5">
+                                Not in the list? Create it as a new main category:
+                              </p>
+                              <button
+                                onClick={() => {
+                                  const slug = slugify(q);
+                                  if (!slug) return;
+                                  const newOpt: ParentOption = {
+                                    slug,
+                                    name: q,
+                                    source: 'custom',
+                                  };
+                                  setPendingMain(newOpt);
+                                  setMainSlug(slug);
+                                  setMainPickerOpen(false);
+                                }}
+                                className="flex items-center w-full px-2 py-2 text-sm rounded-sm hover:bg-accent text-left border border-dashed"
+                              >
+                                <Plus className="mr-2 h-4 w-4 shrink-0 opacity-60" />
+                                Create new main category "{q}"
+                              </button>
+                            </div>
                           );
                         }
                         return null;
