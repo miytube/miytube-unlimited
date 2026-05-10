@@ -92,6 +92,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           description: description.trim() || null,
           call_to_action: callToAction,
           destination_url: destinationUrl.trim(),
+          media_url: mediaUrl.trim() || null,
           target_audience: targetAudience.trim() || null,
           target_categories: targetCategories,
           daily_budget: parseFloat(dailyBudget) || 10,
