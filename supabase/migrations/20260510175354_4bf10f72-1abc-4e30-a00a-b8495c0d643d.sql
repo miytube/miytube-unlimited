@@ -1,0 +1,1 @@
+ALTER TYPE public.ad_format ADD VALUE IF NOT EXISTS 'vignette';
