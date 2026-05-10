@@ -8,6 +8,7 @@ import { UploadProgressProvider } from "./context/UploadProgressContext";
 import { UploadProgressIndicator } from "./components/upload/UploadProgressIndicator";
 import { AuthProvider } from "./hooks/useAuth";
 import AppRoutes from "./routes";
+import { VignetteAd } from "./components/advertising/VignetteAd";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
             <Sonner />
             <UploadProgressIndicator />
             <BrowserRouter>
+              <VignetteAd />
               <AppRoutes />
             </BrowserRouter>
           </UploadedVideosProvider>

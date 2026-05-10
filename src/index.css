@@ -84,6 +84,13 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  /* When a vignette wallpaper ad is mounted, let the gutters show through.
+     The Layout's centered content column carries its own bg-background. */
+  html.vignette-active,
+  html.vignette-active body {
+    background: transparent !important;
+  }
 }
 
 @layer components {

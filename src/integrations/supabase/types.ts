@@ -1165,6 +1165,7 @@ export type Database = {
         | "discovery"
         | "banner"
         | "overlay"
+        | "vignette"
       app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
@@ -1308,6 +1309,7 @@ export const Constants = {
         "discovery",
         "banner",
         "overlay",
+        "vignette",
       ],
       app_role: ["admin", "moderator", "user"],
     },

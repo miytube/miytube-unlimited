@@ -15,6 +15,7 @@ const AD_FORMATS = [
   { id: 'bumper', name: 'Bumper Ad', description: '6-second non-skippable ad', price: '$0.015/view' },
   { id: 'banner', name: 'Banner Ad', description: 'Display banner on pages', price: '$0.005/impression' },
   { id: 'overlay', name: 'Overlay Ad', description: 'Semi-transparent overlay on videos', price: '$0.008/view' },
+  { id: 'vignette', name: 'Vignette Wallpaper', description: 'Full-page background takeover (image or video) on desktop', price: '$0.012/impression' },
 ];
 
 const CATEGORIES = [
@@ -51,6 +52,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [totalBudget, setTotalBudget] = useState('100.00');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState('');
+  const [mediaUrl, setMediaUrl] = useState('');
 
   const toggleCategory = (cat: string) => {
     setTargetCategories(prev =>
@@ -67,6 +69,11 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
 
     if (!campaignName.trim() || !businessName.trim() || !headline.trim() || !destinationUrl.trim()) {
       toast({ title: "Missing fields", description: "Please fill in all required fields.", variant: "destructive" });
+      return;
+    }
+
+    if (adFormat === 'vignette' && !mediaUrl.trim()) {
+      toast({ title: "Wallpaper media required", description: "Vignette ads need an image or video URL.", variant: "destructive" });
       return;
     }
 
@@ -90,6 +97,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           description: description.trim() || null,
           call_to_action: callToAction,
           destination_url: destinationUrl.trim(),
+          media_url: mediaUrl.trim() || null,
           target_audience: targetAudience.trim() || null,
           target_categories: targetCategories,
           daily_budget: parseFloat(dailyBudget) || 10,
@@ -225,6 +233,22 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <label className="block text-sm font-medium mb-1">Destination URL *</label>
             <Input value={destinationUrl} onChange={e => setDestinationUrl(e.target.value)} placeholder="https://yourbusiness.com/landing-page" />
           </div>
+
+          {adFormat === 'vignette' && (
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Wallpaper Media URL * <span className="text-xs text-muted-foreground font-normal">(image or .mp4/.webm video)</span>
+              </label>
+              <Input
+                value={mediaUrl}
+                onChange={e => setMediaUrl(e.target.value)}
+                placeholder="https://yourcdn.com/wallpaper.jpg"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Recommended: 1920×1080 or larger. Keep important content centered — the middle ~1400px is covered by the page.
+              </p>
+            </div>
+          )}
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setStep(1)} className="flex-1">Back</Button>
