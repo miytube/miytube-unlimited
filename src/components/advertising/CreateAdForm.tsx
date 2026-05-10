@@ -15,6 +15,7 @@ const AD_FORMATS = [
   { id: 'bumper', name: 'Bumper Ad', description: '6-second non-skippable ad', price: '$0.015/view' },
   { id: 'banner', name: 'Banner Ad', description: 'Display banner on pages', price: '$0.005/impression' },
   { id: 'overlay', name: 'Overlay Ad', description: 'Semi-transparent overlay on videos', price: '$0.008/view' },
+  { id: 'vignette', name: 'Vignette Wallpaper', description: 'Full-page background takeover (image or video) on desktop', price: '$0.012/impression' },
 ];
 
 const CATEGORIES = [
