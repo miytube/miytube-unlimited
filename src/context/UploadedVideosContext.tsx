@@ -258,16 +258,24 @@ const saveVideoToSupabase = async (video: {
     return { isDuplicate: true, reason: 'session' };
   }
   
-  // Check if the same file title + size was uploaded from the same IP.
-  // Title alone is too broad for back-to-back game/highlight uploads.
+  // Check if the same file title + size was uploaded from the same IP into
+  // the same destination. Re-uploads to a corrected category must be allowed.
   if (uploaderIp !== 'unknown' && video.fileSize) {
-    const { data: existingByIpTitle } = await supabase
+    let duplicateQuery = supabase
       .from('uploaded_videos')
-      .select('id, title, file_size')
+      .select('id, title, file_size, category, subcategory')
       .eq('uploader_ip', uploaderIp)
       .eq('title', video.title)
-      .eq('file_size', video.fileSize)
-      .maybeSingle();
+      .eq('file_size', video.fileSize);
+
+    duplicateQuery = normalizedCategory
+      ? duplicateQuery.eq('category', normalizedCategory)
+      : duplicateQuery.is('category', null);
+    duplicateQuery = normalizedSubcategory
+      ? duplicateQuery.eq('subcategory', normalizedSubcategory)
+      : duplicateQuery.is('subcategory', null);
+
+    const { data: existingByIpTitle } = await duplicateQuery.maybeSingle();
     
     if (existingByIpTitle) {
       console.log('Duplicate detected: Same title from same IP address. Title:', video.title, 'IP:', uploaderIp);
