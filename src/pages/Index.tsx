@@ -98,7 +98,7 @@ const Index = () => {
 
   // Trending section - random selection of 8 on each refresh
   const trendingVideos = useMemo(() => {
-    const shuffled = [...uploadedVideos].sort(() => Math.random() - 0.5);
+    const shuffled = seededShuffle(uploadedVideos, shuffleSeed + 1);
     return shuffled
       .slice(0, 8)
       .map(video => ({
