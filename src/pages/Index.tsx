@@ -55,10 +55,14 @@ const Index = () => {
     prevVideoCountRef.current = uploadedVideos.length;
   }, [uploadedVideos.length]);
 
+  // Shuffle seed — regenerated on every page load/refresh so videos reorder
+  const shuffleSeed = useRef(Math.random()).current;
+
   // Regular videos for the main home grid (shorts have their own section below)
-  // Videos are already sorted newest-first in context, no need to reverse
+  // Shuffled randomly on each refresh per user request
   const allVideos = useMemo(() => {
-    return uploadedVideos
+    const shuffled = [...uploadedVideos].sort(() => Math.random() - 0.5);
+    return shuffled
       .map(video => ({
       id: video.id,
       title: video.title,
@@ -72,17 +76,17 @@ const Index = () => {
       subcategory: video.subcategory,
       tags: video.tags,
     }));
-  }, [uploadedVideos]);
+  }, [uploadedVideos, shuffleSeed]);
 
   const totalPages = Math.ceil(allVideos.length / videosPerPage);
   const startIndex = (currentPage - 1) * videosPerPage;
   const endIndex = startIndex + videosPerPage;
   const displayVideos = allVideos.slice(startIndex, endIndex);
 
-  // Trending section - regular videos only (non-shorts), newest first
-  // Videos are already sorted newest-first in context, no need to reverse
+  // Trending section - random selection of 8 on each refresh
   const trendingVideos = useMemo(() => {
-    return uploadedVideos
+    const shuffled = [...uploadedVideos].sort(() => Math.random() - 0.5);
+    return shuffled
       .slice(0, 8)
       .map(video => ({
         id: video.id,
@@ -97,7 +101,7 @@ const Index = () => {
         subcategory: video.subcategory,
         tags: video.tags,
       }));
-  }, [uploadedVideos]);
+  }, [uploadedVideos, shuffleSeed]);
 
   return (
     <Layout>
