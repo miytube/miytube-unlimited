@@ -89,15 +89,21 @@ export const useUploadHandler = () => {
     if (isVideoUpload || files.some(f => f.type.startsWith('audio/'))) {
       const isBatch = files.length > 1;
       let successCount = 0;
-      const failed: string[] = [];
-      for (const file of files) {
+
+      type PendingUpload = {
+        file: File;
+        perFileTitle: string;
+        perFileDescription: string;
+        uploadCategory: string | undefined;
+        uploadSubcategory: string | undefined;
+      };
+
+      // Pre-compute per-file metadata so retries reuse the same values
+      const pending: PendingUpload[] = files.map((file) => {
         const fileBaseName = file.name.split('.').slice(0, -1).join('.') || file.name;
         const perFileTitle = isBatch ? fileBaseName : (title || fileBaseName);
         const perFileDescription = isBatch ? '' : (description || '');
 
-        // If the uploader didn't pick a category, try to infer the closest one
-        // from the title/description/filename/tags. Their explicit choice (if any)
-        // always wins.
         let uploadCategory = category;
         let uploadSubcategory = subcategory;
         if (!uploadCategory) {
@@ -110,34 +116,69 @@ export const useUploadHandler = () => {
             uploadCategory = contentTypeId;
           }
         }
+        return { file, perFileTitle, perFileDescription, uploadCategory, uploadSubcategory };
+      });
 
-        try {
-          await addUploadedVideo(file, perFileTitle, perFileDescription, uploadCategory, uploadSubcategory, tags);
-          successCount++;
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Upload failed';
-          failed.push(file.name);
-          console.error(`[Upload failed] ${file.name}:`, errorMessage);
+      const MAX_ATTEMPTS = 3;
+      let queue = pending;
+      const finalFailed: { name: string; error: string }[] = [];
+
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS && queue.length > 0; attempt++) {
+        const nextQueue: PendingUpload[] = [];
+        if (attempt > 1) {
           toast({
-            title: `Failed: ${file.name}`,
-            description: errorMessage,
-            variant: "destructive",
-            duration: 20000, // keep visible long enough during batch uploads
+            title: `Retrying ${queue.length} failed ${queue.length === 1 ? 'file' : 'files'}`,
+            description: `Attempt ${attempt} of ${MAX_ATTEMPTS}…`,
+            duration: 5000,
           });
-          // Continue with the rest of the batch instead of aborting
+          // small backoff between retry passes
+          await new Promise((r) => setTimeout(r, 1500 * (attempt - 1)));
         }
+
+        for (const item of queue) {
+          try {
+            await addUploadedVideo(
+              item.file,
+              item.perFileTitle,
+              item.perFileDescription,
+              item.uploadCategory,
+              item.uploadSubcategory,
+              tags,
+            );
+            successCount++;
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+            console.error(`[Upload failed attempt ${attempt}] ${item.file.name}:`, errorMessage);
+            if (attempt < MAX_ATTEMPTS) {
+              nextQueue.push(item);
+            } else {
+              finalFailed.push({ name: item.file.name, error: errorMessage });
+              toast({
+                title: `Failed: ${item.file.name}`,
+                description: `${errorMessage} (gave up after ${MAX_ATTEMPTS} attempts)`,
+                variant: "destructive",
+                duration: 20000,
+              });
+            }
+          }
+        }
+        queue = nextQueue;
       }
 
       if (successCount === 0) {
-        failUpload(failed.length > 0 ? `Upload failed: ${failed.join(', ')}` : 'No videos were published. Please try again.');
-        return; // Nothing succeeded; skip success redirect
+        failUpload(
+          finalFailed.length > 0
+            ? `Upload failed: ${finalFailed.map((f) => f.name).join(', ')}`
+            : 'No videos were published. Please try again.',
+        );
+        return;
       }
-      if (failed.length > 0) {
+      if (finalFailed.length > 0) {
         toast({
-          title: `${failed.length} of ${files.length} files failed`,
-          description: `Failed: ${failed.join(', ')}`,
+          title: `${finalFailed.length} of ${files.length} files failed`,
+          description: `Failed after ${MAX_ATTEMPTS} attempts: ${finalFailed.map((f) => f.name).join(', ')}`,
           variant: "destructive",
-          duration: 30000, // persistent so user can read which files were skipped
+          duration: 30000,
         });
       }
     }
