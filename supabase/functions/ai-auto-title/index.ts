@@ -148,7 +148,19 @@ Deno.serve(async (req) => {
       .from("uploaded_videos")
       .select("id, title, cloud_url, video_url, thumbnail_url")
       .eq("is_cloud_stored", true)
-      .or("title.ilike.%.480p,title.ilike.%.360p,title.ilike.%.720p,title.ilike.%.1080p")
+      .or(
+        [
+          "title.ilike.%.480p",
+          "title.ilike.%.360p",
+          "title.ilike.%.720p",
+          "title.ilike.%.1080p",
+          "title.ilike.%.mob",
+          "title.ilike.%.mp4",
+          "title.ilike.%.webm",
+          "title.ilike.%.mov",
+          "title.ilike.upload-%",
+        ].join(","),
+      )
       .order("created_at", { ascending: false })
       .limit(limit);
 
