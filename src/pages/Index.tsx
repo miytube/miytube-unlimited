@@ -58,10 +58,23 @@ const Index = () => {
   // Shuffle seed — regenerated on every page load/refresh so videos reorder
   const shuffleSeed = useRef(Math.random()).current;
 
+  // Seeded shuffle (deterministic per shuffleSeed) — prevents re-shuffling/blinking
+  // when uploadedVideos array reference updates during loading
+  const seededShuffle = <T,>(arr: T[], seed: number): T[] => {
+    const result = [...arr];
+    let s = seed * 2147483647;
+    for (let i = result.length - 1; i > 0; i--) {
+      s = (s * 16807) % 2147483647;
+      const j = Math.floor((s / 2147483647) * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  };
+
   // Regular videos for the main home grid (shorts have their own section below)
   // Shuffled randomly on each refresh per user request
   const allVideos = useMemo(() => {
-    const shuffled = [...uploadedVideos].sort(() => Math.random() - 0.5);
+    const shuffled = seededShuffle(uploadedVideos, shuffleSeed);
     return shuffled
       .map(video => ({
       id: video.id,
