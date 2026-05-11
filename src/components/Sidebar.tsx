@@ -193,7 +193,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <PeopleWorkersLinks />
                 <FitnessHealthLinks />
                 <ModelsPhotosLinks />
-                <CustomCategoriesLinks />
               </CollapsibleGroup>
               
               <Separator className="my-3" />
@@ -217,6 +216,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               <CollapsibleGroup title="Travel & Transport">
                 <TravelPlacesLinks />
                 <AviationTransportLinks />
+              </CollapsibleGroup>
+
+              <Separator className="my-3" />
+
+              {/* User-created custom categories */}
+              <CollapsibleGroup title="More Categories">
+                <CustomCategoriesLinks />
               </CollapsibleGroup>
               
               <SidebarFooter />
