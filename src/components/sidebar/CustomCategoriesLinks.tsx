@@ -4,17 +4,19 @@ import { ChevronDown, Folder } from 'lucide-react';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
+import { sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
 
 export const CustomCategoriesLinks: React.FC = () => {
   const { tree, loading } = useCustomCategories();
   const [openId, setOpenId] = useState<string | null>(null);
   const [openSubId, setOpenSubId] = useState<string | null>(null);
+  const standaloneCategories = tree.filter((cat) => !sidebarMainCategorySlugs.has(cat.slug));
 
-  if (loading || tree.length === 0) return null;
+  if (loading || standaloneCategories.length === 0) return null;
 
   return (
     <div className="space-y-1">
-      {tree.map((cat) => (
+      {standaloneCategories.map((cat) => (
         <Collapsible
           key={cat.id}
           open={openId === cat.id}
