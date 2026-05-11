@@ -193,6 +193,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <PeopleWorkersLinks />
                 <FitnessHealthLinks />
                 <ModelsPhotosLinks />
+                <CustomCategoriesLinks />
               </CollapsibleGroup>
               
               <Separator className="my-3" />
