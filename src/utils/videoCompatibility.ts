@@ -110,8 +110,10 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
       if (hasResolved) return;
       hasResolved = true;
       cleanup();
-      // If we timeout, be cautious and warn the user
-      result.errorMessage = 'Could not verify video compatibility within time limit. The file may not play correctly. Consider converting to MP4 (H.264/AAC).';
+      // Do not block publishing on an inconclusive browser probe. Large batches
+      // can otherwise appear to do nothing before upload even starts.
+      result.isCompatible = true;
+      result.canPlay = true;
       resolve(result);
     }, 15000);
 
@@ -126,6 +128,15 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
       URL.revokeObjectURL(url);
     };
 
+    const markCompatible = () => {
+      if (hasResolved) return;
+      hasResolved = true;
+      cleanup();
+      result.isCompatible = true;
+      result.canPlay = true;
+      resolve(result);
+    };
+
     const onLoadedMetadata = () => {
       result.details.duration = video.duration;
       result.details.width = video.videoWidth;
@@ -135,7 +146,9 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
       video.currentTime = 0;
       video.muted = true;
       video.play().catch(() => {
-        // Play failed, but error handler will catch the reason
+        // Autoplay can be blocked by the browser without indicating a bad file.
+        // Since metadata loaded and the MIME type was accepted, don't skip it.
+        if (!video.error) markCompatible();
       });
     };
 
@@ -146,12 +159,7 @@ export const checkVideoCompatibility = (file: File): Promise<VideoCompatibilityR
 
     const onPlaying = () => {
       // Video is actually playing - codec decoding works!
-      if (hasResolved) return;
-      hasResolved = true;
-      cleanup();
-      result.isCompatible = true;
-      result.canPlay = true;
-      resolve(result);
+      markCompatible();
     };
 
     const onError = () => {
