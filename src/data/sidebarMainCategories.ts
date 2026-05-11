@@ -95,6 +95,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'royal-security-guards', name: 'Royal Security Guards' },
   { slug: 'science-tech', name: 'Science & Technology' },
   { slug: 'senate', name: 'Senate & House' },
+  { slug: 'seasonal-modeling', name: 'Seasonal Modeling', route: '/models/seasonal' },
   { slug: 'shipping-ports', name: 'Shipping Ports' },
   { slug: 'space', name: 'Space' },
   { slug: 'speeches', name: 'Speeches' },

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Camera, Star, Image, Shirt, Sun, Snowflake } from 'lucide-react';
+import { Star, Image, Shirt } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const ModelsPhotosLinks: React.FC = () => {
@@ -24,12 +24,7 @@ export const ModelsPhotosLinks: React.FC = () => {
       icon: Shirt, 
       label: 'Seasonal Modeling', 
       path: '/models/seasonal',
-      subItems: [
-        { id: 'models-fall', label: 'Fall Clothes', path: '/models/fall' },
-        { id: 'models-summer', label: 'Summer Clothes', path: '/models/summer' },
-        { id: 'models-winter', label: 'Winter Clothes', path: '/models/winter' },
-        { id: 'models-fashion-fails', label: 'Fashion Fails', path: '/models/fashion-fails' }
-      ]
+      subItems: []
     },
     { 
       id: 'pictures', 
