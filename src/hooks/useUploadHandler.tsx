@@ -90,6 +90,7 @@ export const useUploadHandler = () => {
       const isBatch = files.length > 1;
       let successCount = 0;
       const failed: string[] = [];
+      const failedFiles: File[] = [];
       for (const file of files) {
         const fileBaseName = file.name.split('.').slice(0, -1).join('.') || file.name;
         const perFileTitle = isBatch ? fileBaseName : (title || fileBaseName);
