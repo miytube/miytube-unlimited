@@ -35,7 +35,19 @@ export const AIAutoTitleManager = () => {
       .from('uploaded_videos')
       .select('id', { count: 'exact', head: true })
       .eq('is_cloud_stored', true)
-      .or('title.ilike.%.480p,title.ilike.%.360p,title.ilike.%.720p,title.ilike.%.1080p');
+      .or(
+        [
+          'title.ilike.%.480p',
+          'title.ilike.%.360p',
+          'title.ilike.%.720p',
+          'title.ilike.%.1080p',
+          'title.ilike.%.mob',
+          'title.ilike.%.mp4',
+          'title.ilike.%.webm',
+          'title.ilike.%.mov',
+          'title.ilike.upload-%',
+        ].join(',')
+      );
     setRemaining(count ?? 0);
   };
 
