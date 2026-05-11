@@ -612,7 +612,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         if (hasResolved) return;
         hasResolved = true;
         if (objectUrl) {
-          try { URL.revokeObjectURL(objectUrl); } catch {}
+          try { URL.revokeObjectURL(objectUrl); } catch { /* ignore revoke cleanup errors */ }
         }
         resolve(thumbnailUrl);
       };
@@ -685,7 +685,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       const url = URL.createObjectURL(file);
 
       const finish = (seconds: number) => {
-        try { URL.revokeObjectURL(url); } catch {}
+        try { URL.revokeObjectURL(url); } catch { /* ignore revoke cleanup errors */ }
         const safe = isFinite(seconds) && seconds > 0 ? seconds : 0;
         const minutes = Math.floor(safe / 60);
         const secs = Math.floor(safe % 60);
