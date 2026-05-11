@@ -76,17 +76,17 @@ const Index = () => {
       subcategory: video.subcategory,
       tags: video.tags,
     }));
-  }, [uploadedVideos]);
+  }, [uploadedVideos, shuffleSeed]);
 
   const totalPages = Math.ceil(allVideos.length / videosPerPage);
   const startIndex = (currentPage - 1) * videosPerPage;
   const endIndex = startIndex + videosPerPage;
   const displayVideos = allVideos.slice(startIndex, endIndex);
 
-  // Trending section - regular videos only (non-shorts), newest first
-  // Videos are already sorted newest-first in context, no need to reverse
+  // Trending section - random selection of 8 on each refresh
   const trendingVideos = useMemo(() => {
-    return uploadedVideos
+    const shuffled = [...uploadedVideos].sort(() => Math.random() - 0.5);
+    return shuffled
       .slice(0, 8)
       .map(video => ({
         id: video.id,
