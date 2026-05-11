@@ -605,6 +605,22 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
   const generateThumbnail = async (file: File): Promise<string> => {
     return new Promise((resolve) => {
+      const fallbackThumbnail = 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+      let hasResolved = false;
+      let objectUrl = '';
+      const finish = (thumbnailUrl: string) => {
+        if (hasResolved) return;
+        hasResolved = true;
+        if (objectUrl) {
+          try { URL.revokeObjectURL(objectUrl); } catch {}
+        }
+        resolve(thumbnailUrl);
+      };
+      const timeoutId = window.setTimeout(() => {
+        console.warn('Thumbnail generation timed out, publishing with fallback thumbnail:', file.name);
+        finish(fallbackThumbnail);
+      }, 8000);
+
       if (file.type.startsWith('video/')) {
         const video = document.createElement('video');
         video.preload = 'metadata';
@@ -622,30 +638,35 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            URL.revokeObjectURL(video.src);
             
             // Convert canvas to blob and upload to cloud storage
             canvas.toBlob(async (blob) => {
               if (blob) {
                 const thumbnailUrl = await uploadThumbnailToCloud(blob, file.name);
-                resolve(thumbnailUrl);
+                window.clearTimeout(timeoutId);
+                finish(thumbnailUrl);
               } else {
-                resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+                window.clearTimeout(timeoutId);
+                finish(fallbackThumbnail);
               }
             }, 'image/jpeg', 0.8);
           } else {
-            resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+            window.clearTimeout(timeoutId);
+            finish(fallbackThumbnail);
           }
         };
         
         video.onerror = () => {
-          resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+          window.clearTimeout(timeoutId);
+          finish(fallbackThumbnail);
         };
         
-        video.src = URL.createObjectURL(file);
+        objectUrl = URL.createObjectURL(file);
+        video.src = objectUrl;
         video.load();
       } else {
-        resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+        window.clearTimeout(timeoutId);
+        finish(fallbackThumbnail);
       }
     });
   };
