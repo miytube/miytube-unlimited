@@ -258,16 +258,24 @@ const saveVideoToSupabase = async (video: {
     return { isDuplicate: true, reason: 'session' };
   }
   
-  // Check if the same file title + size was uploaded from the same IP.
-  // Title alone is too broad for back-to-back game/highlight uploads.
+  // Check if the same file title + size was uploaded from the same IP into
+  // the same destination. Re-uploads to a corrected category must be allowed.
   if (uploaderIp !== 'unknown' && video.fileSize) {
-    const { data: existingByIpTitle } = await supabase
+    let duplicateQuery = supabase
       .from('uploaded_videos')
-      .select('id, title, file_size')
+      .select('id, title, file_size, category, subcategory')
       .eq('uploader_ip', uploaderIp)
       .eq('title', video.title)
-      .eq('file_size', video.fileSize)
-      .maybeSingle();
+      .eq('file_size', video.fileSize);
+
+    duplicateQuery = normalizedCategory
+      ? duplicateQuery.eq('category', normalizedCategory)
+      : duplicateQuery.is('category', null);
+    duplicateQuery = normalizedSubcategory
+      ? duplicateQuery.eq('subcategory', normalizedSubcategory)
+      : duplicateQuery.is('subcategory', null);
+
+    const { data: existingByIpTitle } = await duplicateQuery.maybeSingle();
     
     if (existingByIpTitle) {
       console.log('Duplicate detected: Same title from same IP address. Title:', video.title, 'IP:', uploaderIp);
@@ -597,6 +605,22 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
   const generateThumbnail = async (file: File): Promise<string> => {
     return new Promise((resolve) => {
+      const fallbackThumbnail = 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+      let hasResolved = false;
+      let objectUrl = '';
+      const finish = (thumbnailUrl: string) => {
+        if (hasResolved) return;
+        hasResolved = true;
+        if (objectUrl) {
+          try { URL.revokeObjectURL(objectUrl); } catch { /* ignore revoke cleanup errors */ }
+        }
+        resolve(thumbnailUrl);
+      };
+      const timeoutId = window.setTimeout(() => {
+        console.warn('Thumbnail generation timed out, publishing with fallback thumbnail:', file.name);
+        finish(fallbackThumbnail);
+      }, 8000);
+
       if (file.type.startsWith('video/')) {
         const video = document.createElement('video');
         video.preload = 'metadata';
@@ -614,30 +638,35 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            URL.revokeObjectURL(video.src);
             
             // Convert canvas to blob and upload to cloud storage
             canvas.toBlob(async (blob) => {
               if (blob) {
                 const thumbnailUrl = await uploadThumbnailToCloud(blob, file.name);
-                resolve(thumbnailUrl);
+                window.clearTimeout(timeoutId);
+                finish(thumbnailUrl);
               } else {
-                resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+                window.clearTimeout(timeoutId);
+                finish(fallbackThumbnail);
               }
             }, 'image/jpeg', 0.8);
           } else {
-            resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+            window.clearTimeout(timeoutId);
+            finish(fallbackThumbnail);
           }
         };
         
         video.onerror = () => {
-          resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+          window.clearTimeout(timeoutId);
+          finish(fallbackThumbnail);
         };
         
-        video.src = URL.createObjectURL(file);
+        objectUrl = URL.createObjectURL(file);
+        video.src = objectUrl;
         video.load();
       } else {
-        resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
+        window.clearTimeout(timeoutId);
+        finish(fallbackThumbnail);
       }
     });
   };
@@ -656,7 +685,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       const url = URL.createObjectURL(file);
 
       const finish = (seconds: number) => {
-        try { URL.revokeObjectURL(url); } catch {}
+        try { URL.revokeObjectURL(url); } catch { /* ignore revoke cleanup errors */ }
         const safe = isFinite(seconds) && seconds > 0 ? seconds : 0;
         const minutes = Math.floor(safe / 60);
         const secs = Math.floor(safe % 60);
