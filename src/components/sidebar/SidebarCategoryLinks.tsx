@@ -135,8 +135,16 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
   const enrichedLinks = useMemo(() => {
     return links.map((link) => {
       const linkPath = link.path || '';
-      const slug = linkPath.replace(/^\//, '').split('/')[0];
-      const cat = tree.find((c) => getSidebarMainCategoryRoute(c.slug) === linkPath || c.slug === slug);
+      const segments = linkPath.replace(/^\//, '').split('/').filter(Boolean);
+      const lastSegment = segments[segments.length - 1] || '';
+      const cat = tree.find((c) => {
+        const mappedRoute = getSidebarMainCategoryRoute(c.slug);
+        if (mappedRoute && mappedRoute === linkPath) return true;
+        // Only match by slug for top-level single-segment paths to avoid
+        // injecting a top-level custom category into a nested hardcoded link.
+        if (segments.length === 1 && c.slug === lastSegment) return true;
+        return false;
+      });
       if (!cat) return link;
       const extras: Array<{ id: string; label: string; path: string }> = [];
       const seenPaths = new Set((link.subItems || []).map((item) => normalizePath(item.path)));
