@@ -180,11 +180,17 @@ export const filterVideosBySubcategory = (
   // "nba-basketball" (and vice-versa). Common when uploaders pick a leaf
   // category but the route lives under the parent hub.
   const domainPrefixes = ['sports-', 'music-', 'news-', 'gaming-', 'military-', 'hollywood-'];
+  // Top-level domain names that must NEVER be accepted on their own as a
+  // stripped key — otherwise a page like /sports/news would absorb every video
+  // whose category or subcategory equals "news" (i.e. all News & Politics).
+  const topLevelDomainSet = new Set(['news', 'news-and-politics', 'sports', 'music', 'gaming', 'military', 'hollywood', 'entertainment', 'comedy', 'film', 'education', 'business', 'health', 'fitness', 'food', 'travel', 'podcasts', 'podcast']);
   let strippedKey = keyHyphenated;
   for (const p of domainPrefixes) {
     if (keyHyphenated.startsWith(p)) {
       strippedKey = keyHyphenated.slice(p.length);
-      acceptedBase.push(strippedKey, strippedKey.replace(/[-\s]/g, ''));
+      if (!topLevelDomainSet.has(strippedKey)) {
+        acceptedBase.push(strippedKey, strippedKey.replace(/[-\s]/g, ''));
+      }
       break;
     }
   }
