@@ -734,7 +734,10 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       console.log(`Adding YouTube embed: ${youtubeId}`);
       
       const videoId = createLocalVideoId();
-      const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+      // Use hqdefault.jpg — it's guaranteed to exist for every YouTube video.
+      // maxresdefault.jpg is missing for many videos and YouTube returns a generic
+      // red play-button placeholder image instead, which looks broken in the grid.
+      const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
       
       const newVideo: UploadedVideo = {
         id: videoId,
