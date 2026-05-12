@@ -94,7 +94,7 @@ const Index = () => {
         subcategory: video.subcategory,
         tags: video.tags,
       }));
-  }, [uploadedVideos, shuffleSeed]);
+  }, [uploadedVideos]);
 
   return (
     <Layout>
