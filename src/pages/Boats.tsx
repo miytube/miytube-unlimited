@@ -9,6 +9,8 @@ const Boats = () => {
       title="Boats" 
       description="Explore content about boats, sailing, and marine vessels"
       Icon={Ship}
+      filterCategory="boats"
+      legacyFilterSubcategories={['boats-all', 'all', 'all-boats', 'boats-and-ships', 'all-boats-and-ships', 'shorts']}
     />
   );
 };
