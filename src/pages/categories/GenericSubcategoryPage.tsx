@@ -63,6 +63,11 @@ const GenericSubcategoryPage = () => {
   }
 
   if (!isKnown && !isCustomRoute) {
+    // Fall back to the parent category route (e.g. /education) when the
+    // specific sub-path doesn't exist, instead of dumping the user on Home.
+    if (categorySlug && pathParts.length > 1) {
+      return <Navigate to={`/${categorySlug}`} replace />;
+    }
     return <Navigate to="/" replace />;
   }
 
