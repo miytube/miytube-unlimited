@@ -98,6 +98,23 @@ export const VideoCard: React.FC<VideoCardProps> = ({
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               onLoad={() => setImageLoaded(true)}
+              onError={(e) => {
+                const img = e.currentTarget;
+                // YouTube's maxresdefault often doesn't exist and returns a
+                // generic red play-button placeholder. Fall back to hqdefault,
+                // which is guaranteed to exist for every YouTube video.
+                if (img.src.includes('/maxresdefault.')) {
+                  img.src = img.src.replace('/maxresdefault.', '/hqdefault.');
+                  return;
+                }
+                if (img.src.includes('/hqdefault.')) {
+                  img.src = img.src.replace('/hqdefault.', '/mqdefault.');
+                  return;
+                }
+                if (!img.src.endsWith('/placeholder.svg')) {
+                  img.src = '/placeholder.svg';
+                }
+              }}
               loading="lazy"
             />
           </div>
