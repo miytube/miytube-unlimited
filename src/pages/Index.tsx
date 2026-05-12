@@ -126,17 +126,7 @@ const Index = () => {
             <span className="font-semibold text-primary">MiyTube</span> / Home
           </p>
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Home</h1>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleRefresh}
-              disabled={isRefreshing || isLoading}
-              className="gap-2"
-            >
-              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Refresh
-            </Button>
+          <h1 className="text-3xl font-bold">Home</h1>
           </div>
         </div>
 
