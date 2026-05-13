@@ -26,6 +26,19 @@ const Blog = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
+  usePageSEO({
+    title: 'MiyTube Blog — Creator stories, guides, and updates',
+    description: 'Read the latest MiyTube blog posts: creator stories, platform updates, video tips, and guides for growing your audience.',
+    path: '/blog',
+  });
+
+  const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'MiyTube Blog',
+    url: 'https://www.miytube.com/blog',
+  };
+
   useEffect(() => {
     (async () => {
       const { data } = await supabase
