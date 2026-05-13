@@ -7,6 +7,12 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   const cleanSubcategory = subcategory ? trimSlashes(subcategory) : '';
 
   if (!cleanCategory) return '/';
+  if (cleanCategory === 'racing-sports') {
+    if (!cleanSubcategory || cleanSubcategory === 'racing') return '/sports/racing';
+    return cleanSubcategory.startsWith('drag-racing')
+      ? `/sports/${cleanSubcategory}`
+      : `/sports/${cleanSubcategory}`;
+  }
   if (!cleanSubcategory) return `/${cleanCategory}`;
 
   if (subcategoryMappings[`/${cleanSubcategory}`]) return `/${cleanSubcategory}`;
