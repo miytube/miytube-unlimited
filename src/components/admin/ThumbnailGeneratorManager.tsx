@@ -15,6 +15,7 @@ interface VideoRow {
   title: string;
   cloud_url: string | null;
   video_url: string | null;
+  thumbnail_url?: string | null;
 }
 
 interface Result {
