@@ -55,9 +55,15 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [unavailable, setUnavailable] = useState(() => isVideoUnavailable(id));
   const { isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUnavailable(isVideoUnavailable(id));
+    return subscribeUnavailable(() => setUnavailable(isVideoUnavailable(id)));
+  }, [id]);
 
   const isUploaded = isUploadedVideo(id);
 
