@@ -604,7 +604,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
 
   const generateThumbnail = async (file: File): Promise<string> => {
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       const fallbackThumbnail = 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
       let hasResolved = false;
       let objectUrl = '';
