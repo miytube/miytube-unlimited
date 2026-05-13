@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useVideoPlayer } from './useVideoPlayer';
 import { VideoPlayerControls } from './VideoPlayerControls';
 import { getVideoSource } from './videoPlayerUtils';
+import { markVideoUnavailable, clearVideoUnavailable } from '@/utils/unavailableVideos';
 
 interface VideoPlayerProps {
   videoId?: string;
@@ -90,6 +91,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   const handleVideoLoaded = () => {
     setIsLoading(false);
+    if (videoId) clearVideoUnavailable(videoId);
   };
 
   const handleVideoError = () => {
@@ -106,6 +108,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     setIsLoading(false);
     setErrorMessage(msg);
+    if (videoId) markVideoUnavailable(videoId);
   };
 
   return (

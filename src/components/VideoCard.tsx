@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { MoreVertical, Edit, Trash2, AlertTriangle } from 'lucide-react';
+import { isVideoUnavailable, subscribeUnavailable } from '@/utils/unavailableVideos';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -54,9 +55,15 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [unavailable, setUnavailable] = useState(() => isVideoUnavailable(id));
   const { isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUnavailable(isVideoUnavailable(id));
+    return subscribeUnavailable(() => setUnavailable(isVideoUnavailable(id)));
+  }, [id]);
 
   const isUploaded = isUploadedVideo(id);
 
@@ -121,6 +128,15 @@ export const VideoCard: React.FC<VideoCardProps> = ({
           <span className="absolute bottom-2 right-2 px-1 py-0.5 text-xs bg-black/70 text-white rounded">
             {duration}
           </span>
+          {unavailable && (
+            <span
+              className="absolute bottom-2 left-2 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-destructive/90 text-destructive-foreground rounded"
+              title="This video failed to play in your browser. The thumbnail is shown as a preview."
+            >
+              <AlertTriangle className="h-3 w-3" />
+              Preview only
+            </span>
+          )}
           <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
             <WatchlistButton videoId={id} videoType="video" />
           </div>
