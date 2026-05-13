@@ -90,6 +90,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   const handleVideoLoaded = () => {
     setIsLoading(false);
+    if (videoId) clearVideoUnavailable(videoId);
   };
 
   const handleVideoError = () => {
@@ -106,6 +107,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
     setIsLoading(false);
     setErrorMessage(msg);
+    if (videoId) markVideoUnavailable(videoId);
   };
 
   return (
