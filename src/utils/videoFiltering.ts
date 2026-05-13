@@ -265,6 +265,7 @@ export const filterVideosBySubcategory = (
       // category stored on the video (e.g. route "how-to-style" vs normalized
       // "how-to-and-style" because "&" → "and").
       const parentAliases: Record<string, string[]> = {
+        'sports': ['racing-sports'],
         'how-to-style': ['how-to-and-style'],
         'how-to-and-style': ['how-to-style'],
         'news': ['news-and-politics'],
