@@ -46,6 +46,12 @@ const Trending: React.FC = () => {
   const { uploadedVideos, addUploadedVideo, getVideosByCategory, isLoading, refreshVideos } = useUploadedVideos();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  usePageSEO({
+    title: 'Trending now on MiyTube — Popular videos and music',
+    description: 'See what is trending on MiyTube right now: most-watched videos, hot music, breakout creators, and viral shorts.',
+    path: '/trending',
+  });
+
   const handleRefresh = async () => {
     setIsRefreshing(true);
     await refreshVideos();

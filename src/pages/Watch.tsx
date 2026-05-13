@@ -312,6 +312,13 @@ const Watch = () => {
   
   return (
     <Layout>
+      <PageSEO
+        title={`${video.title} — MiyTube`}
+        description={(video.description || `Watch ${video.title} on MiyTube.`).slice(0, 155)}
+        path={`/watch?v=${actualVideoId || video.id}`}
+        ogImage={(video as any).thumbnail}
+        ogType="video.other"
+      />
       <VideoStructuredData
         videoId={actualVideoId || video.id}
         title={video.title}
