@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
