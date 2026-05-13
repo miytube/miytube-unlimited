@@ -5,8 +5,14 @@ import { VideoCard } from '@/components/VideoCard';
 import { Trophy, Upload, Flag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { sortByName } from '@/lib/sortByName';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const Sports = () => {
+  usePageSEO({
+    title: 'Sports on MiyTube — Highlights, racing, boxing, NBA, NFL',
+    description: 'Watch sports videos on MiyTube: NBA, NFL, MLB, soccer, boxing, MMA, drag racing, NASCAR, F1, golf, tennis, and more.',
+    path: '/sports',
+  });
   const sportsCategories = [
     // Main Sports
     { id: 'sports-arenas', name: 'Sports (arenas, stadiums)' },

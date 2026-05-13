@@ -7,9 +7,15 @@ import { VideoCard } from '@/components/VideoCard';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { sortByName } from '@/lib/sortByName';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const Educational = () => {
   const { uploadedVideos } = useUploadedVideos();
+  usePageSEO({
+    title: 'Educational videos on MiyTube — Learn anything',
+    description: 'Free educational videos on MiyTube: anatomy, geography, history, science, math, languages, immigration law, and more.',
+    path: '/educational',
+  });
   
   // Filter for education-related videos using strict matching
   const educationKeywords = ['education', 'educational', 'education-anatomy', 'education-countries', 'education-kids-geography', 'education-laws', 'education-immigration', 'american-history'];

@@ -9,9 +9,15 @@ import { UploadedAudioGrid } from '@/components/music/UploadedAudioGrid';
 import { musicCategories } from '@/components/music/musicData';
 import { VideoCard } from '@/components/VideoCard';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const Music = () => {
   const { uploadedVideos } = useUploadedVideos();
+  usePageSEO({
+    title: 'Music on MiyTube — Stream music videos and audio',
+    description: 'Listen to music videos and audio on MiyTube across rock, pop, hip-hop, R&B, country, jazz, classical, electronic, and more.',
+    path: '/music',
+  });
   
   // Get all music-related uploaded videos using strict matching
   const musicKeywords = ['music', 'pop', 'rock', 'hiphop', 'electronic', 'jazz', 'country', 'classical', 'r-and-b', 'soul', 'folk', 'blues', 'music-pop', 'music-rock', 'music-country', 'music-jazz', 'music-classical'];

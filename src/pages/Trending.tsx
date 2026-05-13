@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton, ShortGridSkeleton } from '@/components/skeletons';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 interface TrendingCategoryProps {
   title: string;
