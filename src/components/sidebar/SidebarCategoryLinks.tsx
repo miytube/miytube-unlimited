@@ -154,10 +154,12 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
         seenPaths.add(pathKey);
         extras.push(item);
       };
-      const sidebarRoute = getSidebarMainCategoryRoute(cat.slug);
       cat.subcategories.forEach((sub) => {
-        const subPath = sidebarRoute ? `${sidebarRoute}/${sub.slug}` : `/c/${cat.slug}/${sub.slug}`;
-        // Only add the sub-category row if it isn't already represented
+        // Always link via /c/ so CustomCategoryPage handles it. Hardcoded
+        // routes like /music/:category and /sports/:category are claimed by
+        // built-in landing pages first and would silently render the wrong
+        // screen ("recycling" back to a generic page).
+        const subPath = `/c/${cat.slug}/${sub.slug}`;
         addExtra({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
         sub.watch_pages.forEach((w) => {
           if (isRedundantWatchPage(sub, w)) return;
