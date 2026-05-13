@@ -59,46 +59,21 @@ export const UpdateMusicVideoDialog: React.FC<UpdateMusicVideoDialogProps> = ({ 
     return urlData.publicUrl;
   };
 
-  const generateThumbnail = (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      const videoEl = document.createElement('video');
-      videoEl.preload = 'metadata';
-      videoEl.muted = true;
-      videoEl.playsInline = true;
-
-      videoEl.onloadeddata = () => {
-        videoEl.currentTime = Math.min(1, videoEl.duration / 4);
-      };
-
-      videoEl.onseeked = async () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = videoEl.videoWidth || 640;
-        canvas.height = videoEl.videoHeight || 360;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
-          URL.revokeObjectURL(videoEl.src);
-          
-          canvas.toBlob(async (blob) => {
-            if (blob) {
-              const thumbnailUrl = await uploadThumbnailToCloud(blob);
-              resolve(thumbnailUrl);
-            } else {
-              resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
-            }
-          }, 'image/jpeg', 0.8);
-        } else {
-          resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
-        }
-      };
-
-      videoEl.onerror = () => {
-        URL.revokeObjectURL(videoEl.src);
-        resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
-      };
-
-      videoEl.src = URL.createObjectURL(file);
-    });
+  const generateThumbnail = async (file: File): Promise<string> => {
+    const fallback = 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+    try {
+      const { captureVideoThumbnail } = await import('@/utils/thumbnailCapture');
+      const blob = await captureVideoThumbnail(file);
+      if (!blob) return fallback;
+      try {
+        return await uploadThumbnailToCloud(blob);
+      } catch {
+        return fallback;
+      }
+    } catch (err) {
+      console.warn('Thumbnail capture failed:', err);
+      return fallback;
+    }
   };
 
   const handleUpload = async () => {
