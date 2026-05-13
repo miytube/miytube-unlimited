@@ -1,0 +1,25 @@
+# MiyTube
+
+> MiyTube is a free video platform where creators upload, watch, and share videos across sports, music, news, education, entertainment, science & tech, and more.
+
+## Pages
+
+- [Home](/): Trending videos, shorts, and recommendations.
+- [Videos](/videos): Browse the full video library.
+- [Shorts](/shorts): Short-form vertical videos.
+- [Trending](/trending): What's popular right now.
+- [Long Videos](/long-videos): Long-form content (10+ min).
+- [Music](/music): Music videos and audio across genres.
+- [Sports](/sports): Sports highlights and full match content.
+- [Educational](/educational): Learning videos and tutorials.
+- [News](/news): Breaking news and current events.
+- [Talk at Cha](/talk-at-cha): Community discussion boards.
+- [Blog](/blog): Articles, guides, and creator stories.
+- [Upload](/upload): Upload your own videos and music.
+- [Advertising](/advertising): Run ads on MiyTube.
+- [Monetization](/monetization): Creator partner program.
+- [About](/about): About MiyTube.
+- [Contact](/contact): Contact and support.
+- [Terms](/terms): Terms of service.
+- [Privacy](/privacy): Privacy policy.
+- [Copyright](/copyright): Copyright and DMCA policy.
