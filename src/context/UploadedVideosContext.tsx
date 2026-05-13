@@ -622,48 +622,25 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       }, 8000);
 
       if (file.type.startsWith('video/')) {
-        const video = document.createElement('video');
-        video.preload = 'metadata';
-        video.muted = true;
-        video.playsInline = true;
-        
-        video.onloadeddata = () => {
-          video.currentTime = Math.min(1, video.duration * 0.1);
-        };
-        
-        video.onseeked = async () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = video.videoWidth || 640;
-          canvas.height = video.videoHeight || 360;
-          const ctx = canvas.getContext('2d');
-          if (ctx) {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Convert canvas to blob and upload to cloud storage
-            canvas.toBlob(async (blob) => {
-              if (blob) {
-                const thumbnailUrl = await uploadThumbnailToCloud(blob, file.name);
-                window.clearTimeout(timeoutId);
-                finish(thumbnailUrl);
-              } else {
-                window.clearTimeout(timeoutId);
-                finish(fallbackThumbnail);
-              }
-            }, 'image/jpeg', 0.8);
+        try {
+          const { captureVideoThumbnail } = await import('@/utils/thumbnailCapture');
+          const blob = await captureVideoThumbnail(file);
+          window.clearTimeout(timeoutId);
+          if (blob) {
+            try {
+              const thumbnailUrl = await uploadThumbnailToCloud(blob, file.name);
+              finish(thumbnailUrl);
+            } catch {
+              finish(fallbackThumbnail);
+            }
           } else {
-            window.clearTimeout(timeoutId);
             finish(fallbackThumbnail);
           }
-        };
-        
-        video.onerror = () => {
+        } catch (err) {
+          console.warn('Thumbnail capture failed:', err);
           window.clearTimeout(timeoutId);
           finish(fallbackThumbnail);
-        };
-        
-        objectUrl = URL.createObjectURL(file);
-        video.src = objectUrl;
-        video.load();
+        }
       } else {
         window.clearTimeout(timeoutId);
         finish(fallbackThumbnail);
