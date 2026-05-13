@@ -181,9 +181,10 @@ export const QuickCreatePageWidget: React.FC = () => {
         // Each name creates or reuses one sub-category page. Do not create a
         // duplicate watch-page row with the exact same slug as its sub-category.
         const sub = await ensureSubcategory(cat.id, n);
-        const baseUrl = getSidebarMainCategoryRoute(cat.slug)
-          ? `${getSidebarMainCategoryRoute(cat.slug)}/${sub.slug}`
-          : `/c/${cat.slug}/${sub.slug}`;
+        // Always route through /c/ so the custom CustomCategoryPage handles
+        // it. Hardcoded paths like /music/:category are claimed by built-in
+        // landing pages first and would silently render the wrong screen.
+        const baseUrl = `/c/${cat.slug}/${sub.slug}`;
         if (sub.existed) existed.push(n);
         results.push({ url: baseUrl, name: n });
       }
