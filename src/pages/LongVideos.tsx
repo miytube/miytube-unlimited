@@ -10,9 +10,15 @@ import { Input } from '@/components/ui/input';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useNavigate } from 'react-router-dom';
 import { sortByName } from '@/lib/sortByName';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const LongVideos = () => {
   const { toast } = useToast();
+  usePageSEO({
+    title: 'Long videos on MiyTube — Documentaries, courses, full episodes',
+    description: 'Watch long-form videos on MiyTube: documentaries, full-length courses, podcasts, episodes, and in-depth content from creators.',
+    path: '/long-videos',
+  });
   const navigate = useNavigate();
   const { uploadedVideos } = useUploadedVideos();
   const [newCategory, setNewCategory] = useState('');
