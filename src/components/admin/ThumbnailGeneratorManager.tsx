@@ -280,7 +280,7 @@ export const ThumbnailGeneratorManager = () => {
                       <>
                         <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
                         {r.thumbnail_url && (
-                          <img src={r.thumbnail_url} alt="thumb" className="w-16 h-10 object-cover rounded shrink-0" loading="lazy" />
+                          <img src={r.thumbnail_url} alt="" className="w-16 h-10 object-cover rounded shrink-0" loading="lazy" />
                         )}
                         <span className="text-xs text-muted-foreground break-all">{r.id}</span>
                       </>

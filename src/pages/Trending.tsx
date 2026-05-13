@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton, ShortGridSkeleton } from '@/components/skeletons';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 interface TrendingCategoryProps {
   title: string;
@@ -44,6 +45,12 @@ const Trending: React.FC = () => {
   const videosPerPage = 20;
   const { uploadedVideos, addUploadedVideo, getVideosByCategory, isLoading, refreshVideos } = useUploadedVideos();
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  usePageSEO({
+    title: 'Trending now on MiyTube — Popular videos and music',
+    description: 'See what is trending on MiyTube right now: most-watched videos, hot music, breakout creators, and viral shorts.',
+    path: '/trending',
+  });
 
   const handleRefresh = async () => {
     setIsRefreshing(true);

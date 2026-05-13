@@ -1,8 +1,14 @@
 
 import React from 'react';
 import { Layout } from '@/components/Layout';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const About = () => {
+  usePageSEO({
+    title: 'About MiyTube — Our mission and story',
+    description: 'Learn about MiyTube, the open video platform connecting creators and viewers across sports, music, news, education, and entertainment.',
+    path: '/about',
+  });
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8 max-w-4xl">

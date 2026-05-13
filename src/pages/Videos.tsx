@@ -7,10 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Link, useParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const Videos = () => {
   const { category } = useParams();
   const { uploadedVideos, getVideosByCategory, refreshVideos } = useUploadedVideos();
+  usePageSEO({
+    title: category ? `${category.replace(/-/g, ' ')} videos — MiyTube` : 'All videos on MiyTube',
+    description: category
+      ? `Browse ${category.replace(/-/g, ' ')} videos on MiyTube. Discover latest uploads, shorts, and trending content.`
+      : 'Browse the full MiyTube video library: latest uploads, featured, most viewed, liked, commented, and promoted videos.',
+    path: category ? `/videos/${category}` : '/videos',
+  });
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const videosPerPage = 20;

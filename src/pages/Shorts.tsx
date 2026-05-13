@@ -13,8 +13,14 @@ import { ShortGridSkeleton } from '@/components/skeletons';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { sortByName } from '@/lib/sortByName';
 import { auditShortsDurations } from '@/utils/auditShortsDuration';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const Shorts = () => {
+  usePageSEO({
+    title: 'Shorts on MiyTube — Quick vertical videos',
+    description: 'Watch short vertical videos on MiyTube — quick clips, viral moments, and trending shorts from creators worldwide.',
+    path: '/shorts',
+  });
   const { toast } = useToast();
   const { uploadedVideos, getVideosByCategory, addUploadedVideo, isLoading, refreshVideos } = useUploadedVideos();
 

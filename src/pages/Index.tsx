@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
@@ -39,6 +40,12 @@ const Index = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const prevVideoCountRef = useRef(uploadedVideos.length);
   const videosPerPage = 20;
+
+  usePageSEO({
+    title: 'MiyTube — Watch and share trending videos',
+    description: 'Watch trending videos, shorts, music, sports, news, and more on MiyTube. Free video platform for creators and viewers.',
+    path: '/',
+  });
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -106,7 +113,7 @@ const Index = () => {
             <span className="font-semibold text-primary">MiyTube</span> / Home
           </p>
           <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Home</h1>
+          <h1 className="text-3xl font-bold">MiyTube — Watch and share trending videos</h1>
           </div>
         </div>
 

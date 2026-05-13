@@ -25,7 +25,10 @@ export const AudioCard: React.FC<AudioCardProps> = ({ audio }) => {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-          <button className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center">
+          <button
+            className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center"
+            aria-label={`Play ${audio.title} by ${audio.artist}`}
+          >
             <Play size={24} />
           </button>
         </div>

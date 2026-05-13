@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 interface BlogPost {
   id: string;
@@ -24,6 +25,19 @@ const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+
+  usePageSEO({
+    title: 'MiyTube Blog — Creator stories, guides, and updates',
+    description: 'Read the latest MiyTube blog posts: creator stories, platform updates, video tips, and guides for growing your audience.',
+    path: '/blog',
+  });
+
+  const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'MiyTube Blog',
+    url: 'https://www.miytube.com/blog',
+  };
 
   useEffect(() => {
     (async () => {
@@ -44,6 +58,7 @@ const Blog = () => {
 
   return (
     <Layout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       <div className="py-6 animate-fade-in w-full max-w-[1200px] mx-auto px-4">
         <p className="text-sm text-muted-foreground mb-2">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link> / Blog

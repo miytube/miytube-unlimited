@@ -6,6 +6,7 @@ import { Loader2, Calendar, Eye, Trash2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 interface Post {
   id: string;
@@ -26,6 +27,14 @@ const BlogPost = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+
+  usePageSEO({
+    title: post ? `${post.title} — MiyTube Blog` : 'MiyTube Blog',
+    description: post?.excerpt || (post ? post.content.slice(0, 155) : 'Read the latest article on the MiyTube blog.'),
+    path: `/blog/${slug ?? ''}`,
+    ogImage: post?.cover_image_url || undefined,
+    ogType: 'article',
+  });
 
   useEffect(() => {
     if (!slug) return;
@@ -63,8 +72,20 @@ const BlogPost = () => {
 
   const isAuthor = user?.id === post.user_id;
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt || post.title,
+    image: post.cover_image_url || undefined,
+    datePublished: post.created_at,
+    url: `https://www.miytube.com/blog/${slug}`,
+    mainEntityOfPage: `https://www.miytube.com/blog/${slug}`,
+  };
+
   return (
     <Layout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <article className="py-6 animate-fade-in w-full max-w-3xl mx-auto px-4">
         <p className="text-sm text-muted-foreground mb-4">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link> / <Link to="/blog">Blog</Link> / {post.title}

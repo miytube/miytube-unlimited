@@ -9,8 +9,31 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { usePageSEO } from '@/hooks/usePageSEO';
+
+const LOCAL_BUSINESS_JSONLD = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'MiyTube',
+  url: 'https://www.miytube.com/contact',
+  telephone: '+1-555-123-4567',
+  email: 'support@miytube.com',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '123 Tech Lane',
+    addressLocality: 'San Francisco',
+    addressRegion: 'CA',
+    postalCode: '94107',
+    addressCountry: 'US',
+  },
+};
 
 const Contact = () => {
+  usePageSEO({
+    title: 'Contact MiyTube — Get in touch with our team',
+    description: 'Contact MiyTube support, business, or press. Email, phone, and headquarters address for help with your account or partnership inquiries.',
+    path: '/contact',
+  });
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
@@ -34,6 +57,10 @@ const Contact = () => {
 
   return (
     <Layout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_BUSINESS_JSONLD) }}
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6 border-b pb-4">Contact Us</h1>
         
