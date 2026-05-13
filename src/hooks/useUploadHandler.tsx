@@ -6,6 +6,7 @@ import { ToastAction } from '@/components/ui/toast';
 import { checkVideoCompatibility, getFormatRecommendation } from '@/utils/videoCompatibility';
 import { autoCategorize } from '@/utils/autoCategorize';
 import { useUploadProgress } from '@/context/UploadProgressContext';
+import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 
 export const useUploadHandler = () => {
   const { toast } = useToast();
@@ -184,7 +185,7 @@ export const useUploadHandler = () => {
     }
     
     setTimeout(() => {
-      let redirectPath = '/';
+      let redirectPath = getUploadDestinationRoute(category, subcategory);
       
       if (contentTypeId === 'shorts') redirectPath = '/shorts';
       else if (contentTypeId === 'music') redirectPath = '/music';

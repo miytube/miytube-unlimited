@@ -2335,6 +2335,12 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: GraduationCap,
     parent: { route: '/education', name: 'Education' }
   },
+  '/education/anatomy-and-human-body': {
+    title: 'Anatomy & Human Body',
+    description: 'Human anatomy education',
+    icon: GraduationCap,
+    parent: { route: '/education', name: 'Education' }
+  },
   '/education/countries': {
     title: 'Countries History',
     description: 'World countries history',

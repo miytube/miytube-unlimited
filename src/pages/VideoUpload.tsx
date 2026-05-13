@@ -10,6 +10,7 @@ import { ToastAction } from '@/components/ui/toast';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCategoryManagement } from '@/components/categories/useCategoryManagement';
+import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 
 const VideoUpload = () => {
   const { toast } = useToast();
@@ -127,16 +128,19 @@ const VideoUpload = () => {
       });
     }
 
+    const destinationRoute = getUploadDestinationRoute(category, subcategory);
+    const destinationLabel = destinationRoute === '/' ? 'Home' : destinationRoute.substring(1);
+
     toast({
       title: 'Upload complete',
-      description: 'Your video has been processed and is now available on the home page and category pages.',
+      description: 'Your video has been processed and is now available on the selected category page.',
       action: (
-        <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
-          View Home
+        <ToastAction altText={`Go to ${destinationLabel} page`} onClick={() => navigate(destinationRoute)}>
+          View {destinationLabel}
         </ToastAction>
       ),
     });
-    navigate('/');
+    navigate(destinationRoute);
   };
 
   const handleUrlImport = async (url: string, title: string, description: string, category?: string, subcategory?: string, tags?: string[], isYouTube?: boolean, youtubeId?: string) => {
@@ -161,17 +165,20 @@ const VideoUpload = () => {
         youtubeId
       );
       
+      const destinationRoute = getUploadDestinationRoute(category, subcategory);
+      const destinationLabel = destinationRoute === '/' ? 'Home' : destinationRoute.substring(1);
+
       toast({
         title: isYouTube ? "YouTube video added" : "Import complete",
         description: isYouTube ? "YouTube video has been embedded and is now available." : "Your video has been added and is now available.",
         action: (
-          <ToastAction altText="Go to home page" onClick={() => navigate('/')}>
-            View Home
+          <ToastAction altText={`Go to ${destinationLabel} page`} onClick={() => navigate(destinationRoute)}>
+            View {destinationLabel}
           </ToastAction>
         )
       });
       
-      navigate('/');
+      navigate(destinationRoute);
     } catch (error) {
       console.error("URL import error:", error);
       toast({
