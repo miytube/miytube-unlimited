@@ -100,46 +100,21 @@ const MusicUpload = () => {
     return urlData.publicUrl;
   };
 
-  const generateThumbnail = (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
-      video.muted = true;
-      video.playsInline = true;
-
-      video.onloadeddata = () => {
-        video.currentTime = Math.min(1, video.duration / 4);
-      };
-
-      video.onseeked = async () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth || 640;
-        canvas.height = video.videoHeight || 360;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          URL.revokeObjectURL(video.src);
-          
-          canvas.toBlob(async (blob) => {
-            if (blob) {
-              const thumbnailUrl = await uploadThumbnailToCloud(blob);
-              resolve(thumbnailUrl);
-            } else {
-              resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
-            }
-          }, 'image/jpeg', 0.8);
-        } else {
-          resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
-        }
-      };
-
-      video.onerror = () => {
-        URL.revokeObjectURL(video.src);
-        resolve('https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80');
-      };
-
-      video.src = URL.createObjectURL(file);
-    });
+  const generateThumbnail = async (file: File): Promise<string> => {
+    const fallback = 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+    try {
+      const { captureVideoThumbnail } = await import('@/utils/thumbnailCapture');
+      const blob = await captureVideoThumbnail(file);
+      if (!blob) return fallback;
+      try {
+        return await uploadThumbnailToCloud(blob);
+      } catch {
+        return fallback;
+      }
+    } catch (err) {
+      console.warn('Thumbnail capture failed:', err);
+      return fallback;
+    }
   };
   
   const onMusicUpload = async (
