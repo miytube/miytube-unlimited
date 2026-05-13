@@ -13,6 +13,7 @@ import { ShortGridSkeleton } from '@/components/skeletons';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { sortByName } from '@/lib/sortByName';
 import { auditShortsDurations } from '@/utils/auditShortsDuration';
+import { usePageSEO } from '@/hooks/usePageSEO';
 
 const Shorts = () => {
   const { toast } = useToast();
