@@ -58,6 +58,7 @@ const Blog = () => {
 
   return (
     <Layout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       <div className="py-6 animate-fade-in w-full max-w-[1200px] mx-auto px-4">
         <p className="text-sm text-muted-foreground mb-2">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link> / Blog
