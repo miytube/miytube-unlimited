@@ -322,7 +322,7 @@ const Watch = () => {
   
   return (
     <Layout>
-      <WatchPageSEO video={video} actualVideoId={actualVideoId} />
+      
       <VideoStructuredData
         videoId={actualVideoId || video.id}
         title={video.title}
