@@ -128,6 +128,15 @@ export const VideoCard: React.FC<VideoCardProps> = ({
           <span className="absolute bottom-2 right-2 px-1 py-0.5 text-xs bg-black/70 text-white rounded">
             {duration}
           </span>
+          {unavailable && (
+            <span
+              className="absolute bottom-2 left-2 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-destructive/90 text-destructive-foreground rounded"
+              title="This video failed to play in your browser. The thumbnail is shown as a preview."
+            >
+              <AlertTriangle className="h-3 w-3" />
+              Preview only
+            </span>
+          )}
           <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
             <WatchlistButton videoId={id} videoType="video" />
           </div>
