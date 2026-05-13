@@ -48,6 +48,15 @@ const Watch = () => {
   const [isYouTubeVideo, setIsYouTubeVideo] = useState(false);
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
 
+  const actualVideoIdForSEO = videoId || musicVideoId || video?.id;
+  usePageSEO({
+    title: video?.title ? `${video.title} — MiyTube` : 'Watch on MiyTube',
+    description: (video?.description || (video?.title ? `Watch ${video.title} on MiyTube.` : 'Watch videos on MiyTube.')).slice(0, 155),
+    path: actualVideoIdForSEO ? `/watch?v=${actualVideoIdForSEO}` : '/watch',
+    ogImage: (video as any)?.thumbnail,
+    ogType: 'video.other',
+  });
+
   // Get regular videos and shorts for sidebar
   const actualVideoId = videoId || musicVideoId;
   const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts' && v.id !== actualVideoId);
