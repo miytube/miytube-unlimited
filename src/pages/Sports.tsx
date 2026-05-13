@@ -181,6 +181,42 @@ const Sports = () => {
           </Link>
         </div>
         
+
+        {/* Racing Sports - Featured */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-4">
+            <Flag className="h-6 w-6 text-primary" />
+            <h2 className="text-xl font-medium">Racing Sports</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {[
+              { path: '/sports/drag-racing', name: 'Drag Racing' },
+              { path: '/sports/drag-racing/dragster-funny-hotrod', name: 'Dragster, Funny Car & Hotrod' },
+              { path: '/sports/drag-racing/vehicles-motorcycles', name: 'Drag Racing — Vehicles & Motorcycles' },
+              { path: '/sports/drag-racing/trucks-big-rigs', name: 'Drag Racing — Trucks & Big Rigs' },
+              { path: '/sports-nhra', name: 'NHRA Drag Racing' },
+              { path: '/sports-formula-one', name: 'Formula One (F1) Racing' },
+              { path: '/sports-nascar', name: 'NASCAR Racing' },
+              { path: '/sports-car-racing', name: 'Car Racing & WRC' },
+              { path: '/sports-race-car', name: 'Race Car Drivers' },
+              { path: '/sports-motorcycles', name: 'Motorcycle Racing (Superbike)' },
+              { path: '/sports-isle-of-man-tt', name: 'Isle of Man TT' },
+              { path: '/sports-horse-racing', name: 'Horse Racing' },
+            ].map((category) => (
+              <Link
+                key={category.path}
+                to={category.path}
+                className="bg-card p-3 rounded-lg border-2 border-primary/30 hover:border-primary hover:bg-accent/50 transition-all flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                  <Flag size={20} />
+                </div>
+                <span className="font-medium text-sm">{category.name}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Categories Grid */}
         <div className="mb-8">
           <h2 className="text-xl font-medium mb-4">Sports Categories</h2>
