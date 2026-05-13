@@ -93,10 +93,15 @@ export const ThumbnailGeneratorManager = () => {
     const src = row.cloud_url || row.video_url;
     if (!src) return { id: row.id, status: 'skipped', reason: 'no video url' };
 
+    // In regenerate mode, only re-process if existing thumbnail looks dark/black.
+    if (mode === 'regenerate' && row.thumbnail_url) {
+      const dark = await isImageDark(row.thumbnail_url);
+      if (!dark) return { id: row.id, status: 'skipped', reason: 'thumbnail looks fine' };
+    }
+
     const blob = await captureFrame(src);
     if (!blob) return { id: row.id, status: 'error', reason: 'frame capture failed (CORS or codec)' };
 
-    // Upload under the admin's own folder so RLS allows it
     const path = `${user!.id}/auto/${row.id}.jpg`;
     const { error: upErr } = await supabase.storage
       .from('thumbnails')
@@ -104,7 +109,7 @@ export const ThumbnailGeneratorManager = () => {
     if (upErr) return { id: row.id, status: 'error', reason: `upload: ${upErr.message}` };
 
     const { data: pub } = supabase.storage.from('thumbnails').getPublicUrl(path);
-    const thumbUrl = pub.publicUrl;
+    const thumbUrl = `${pub.publicUrl}?v=${Date.now()}`;
 
     const { error: dbErr } = await supabase
       .from('uploaded_videos')
@@ -116,18 +121,15 @@ export const ThumbnailGeneratorManager = () => {
   };
 
   const runBatch = async (): Promise<{ updated: number; errors: number; processed: number }> => {
-    console.log('[thumb-gen] fetching batch, size=', batchSize);
-    const { data, error } = await supabase
+    let q = supabase
       .from('uploaded_videos')
-      .select('id, title, cloud_url, video_url')
+      .select('id, title, cloud_url, video_url, thumbnail_url')
       .eq('is_cloud_stored', true)
-      .is('thumbnail_url', null)
       .order('created_at', { ascending: false })
       .limit(batchSize);
-    if (error) {
-      console.error('[thumb-gen] select error', error);
-      throw error;
-    }
+    q = mode === 'missing' ? q.is('thumbnail_url', null) : q.not('thumbnail_url', 'is', null);
+    const { data, error } = await q;
+    if (error) throw error;
 
     const rows = (data || []) as VideoRow[];
     console.log('[thumb-gen] got rows:', rows.length, rows.map(r => r.id));
