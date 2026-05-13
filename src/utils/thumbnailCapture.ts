@@ -57,6 +57,16 @@ export const captureVideoThumbnail = (
   file: File,
   opts: CaptureOptions = {}
 ): Promise<Blob | null> => {
+  const url = URL.createObjectURL(file);
+  return captureVideoThumbnailFromUrl(url, opts).finally(() => {
+    try { URL.revokeObjectURL(url); } catch {}
+  });
+};
+
+export const captureVideoThumbnailFromUrl = (
+  src: string,
+  opts: CaptureOptions = {}
+): Promise<Blob | null> => {
   const { quality = 0.85, maxWidth = 1280 } = opts;
 
   return new Promise((resolve) => {
@@ -65,12 +75,10 @@ export const captureVideoThumbnail = (
     video.muted = true;
     video.playsInline = true;
     (video as any).crossOrigin = 'anonymous';
-    const url = URL.createObjectURL(file);
-    video.src = url;
+    video.src = src;
 
     let settled = false;
     const cleanup = () => {
-      try { URL.revokeObjectURL(url); } catch {}
       video.removeAttribute('src');
       try { video.load(); } catch {}
     };
@@ -81,9 +89,10 @@ export const captureVideoThumbnail = (
       resolve(blob);
     };
 
-    const failTimer = setTimeout(() => finish(null), 20000);
+    const failTimer = setTimeout(() => finish(null), 25000);
 
     video.onerror = () => { clearTimeout(failTimer); finish(null); };
+
 
     video.onloadedmetadata = async () => {
       const duration = isFinite(video.duration) && video.duration > 0 ? video.duration : 0;

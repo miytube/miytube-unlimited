@@ -24,56 +24,15 @@ interface Result {
   reason?: string;
 }
 
-const SEEK_SECONDS = 1.5;
+import { captureVideoThumbnailFromUrl } from '@/utils/thumbnailCapture';
 
 /**
- * Loads a video element, seeks to ~1.5s, draws the frame to a canvas,
- * and returns a JPEG Blob. Resolves to null on failure.
+ * Captures a non-black frame from a remote video URL using the shared utility,
+ * which seeks past common black intros and retries deeper offsets if the first
+ * frame is all-black.
  */
 function captureFrame(videoUrl: string): Promise<Blob | null> {
-  return new Promise((resolve) => {
-    const video = document.createElement('video');
-    video.crossOrigin = 'anonymous';
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    let settled = false;
-
-    const finish = (blob: Blob | null) => {
-      if (settled) return;
-      settled = true;
-      try { video.removeAttribute('src'); video.load(); } catch { /* ignore */ }
-      resolve(blob);
-    };
-
-    const timeout = window.setTimeout(() => finish(null), 25_000);
-
-    video.addEventListener('error', () => { window.clearTimeout(timeout); finish(null); });
-    video.addEventListener('loadedmetadata', () => {
-      const target = Math.min(SEEK_SECONDS, Math.max(0.1, (video.duration || 2) * 0.1));
-      try { video.currentTime = target; } catch { finish(null); }
-    });
-    video.addEventListener('seeked', () => {
-      try {
-        const w = video.videoWidth;
-        const h = video.videoHeight;
-        if (!w || !h) return finish(null);
-        // Cap at 640px wide for compact JPEGs
-        const scale = Math.min(1, 640 / w);
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.round(w * scale);
-        canvas.height = Math.round(h * scale);
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return finish(null);
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob((b) => { window.clearTimeout(timeout); finish(b); }, 'image/jpeg', 0.78);
-      } catch {
-        finish(null);
-      }
-    });
-
-    video.src = videoUrl;
-  });
+  return captureVideoThumbnailFromUrl(videoUrl);
 }
 
 export const ThumbnailGeneratorManager = () => {
