@@ -209,7 +209,9 @@ export const ThumbnailGeneratorManager = () => {
       <CardContent className="space-y-4">
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-muted rounded-md p-3">
-            <p className="text-xs text-muted-foreground">Videos missing thumbnails</p>
+            <p className="text-xs text-muted-foreground">
+              {mode === 'missing' ? 'Videos missing thumbnails' : 'Videos with thumbnails (scan for black)'}
+            </p>
             <p className="text-2xl font-bold">{remaining?.toLocaleString() ?? '…'}</p>
           </div>
           <div className="bg-muted rounded-md p-3">
@@ -223,6 +225,27 @@ export const ThumbnailGeneratorManager = () => {
         </div>
 
         <div className="flex items-end gap-3 flex-wrap">
+          <div>
+            <Label>Mode</Label>
+            <div className="flex gap-2 mt-1">
+              <Button
+                size="sm"
+                variant={mode === 'missing' ? 'default' : 'outline'}
+                onClick={() => { offsetRef.current = 0; setMode('missing'); }}
+                disabled={running}
+              >
+                Missing only
+              </Button>
+              <Button
+                size="sm"
+                variant={mode === 'regenerate' ? 'default' : 'outline'}
+                onClick={() => { offsetRef.current = 0; setMode('regenerate'); }}
+                disabled={running}
+              >
+                Regenerate black thumbs
+              </Button>
+            </div>
+          </div>
           <div className="max-w-[180px]">
             <Label htmlFor="thumb-batch">Batch size (1-25)</Label>
             <Input
