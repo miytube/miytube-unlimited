@@ -106,7 +106,7 @@ const Index = () => {
             <span className="font-semibold text-primary">MiyTube</span> / Home
           </p>
           <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Home</h1>
+          <h1 className="text-3xl font-bold">MiyTube — Watch and share trending videos</h1>
           </div>
         </div>
 

@@ -116,6 +116,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                       size="icon"
                       onClick={toggleCollapse}
                       className="h-8 w-8"
+                      aria-label={effectiveCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                     >
                       {effectiveCollapsed ? (
                         <ChevronRight className="h-4 w-4" />

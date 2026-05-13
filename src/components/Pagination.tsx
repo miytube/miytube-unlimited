@@ -75,6 +75,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         onClick={() => handlePageChange(1)}
         disabled={currentPage === 1}
         title="First page"
+        aria-label="Go to first page"
       >
         <ChevronsLeft className="h-4 w-4" />
       </Button>
@@ -105,6 +106,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         onClick={() => handlePageChange(totalPages)}
         disabled={currentPage === totalPages}
         title="Last page"
+        aria-label="Go to last page"
       >
         <ChevronsRight className="h-4 w-4" />
       </Button>
@@ -120,6 +122,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           onKeyDown={(e) => { if (e.key === 'Enter') handleJump(); }}
           placeholder={`1-${totalPages}`}
           className="h-8 w-20 text-sm"
+          aria-label="Jump to page number"
         />
         <Button size="sm" variant="outline" onClick={handleJump}>Go</Button>
       </div>

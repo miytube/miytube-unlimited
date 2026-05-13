@@ -17,7 +17,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
       <div className="mx-auto flex items-center px-4 h-16 gap-4">
         <div className="flex items-center gap-2 flex-shrink-0">
           {onMenuClick && (
-            <Button variant="ghost" size="icon" onClick={onMenuClick} className="md:hidden">
+            <Button variant="ghost" size="icon" onClick={onMenuClick} className="md:hidden" aria-label="Open menu">
               <Menu className="h-5 w-5" />
             </Button>
           )}
