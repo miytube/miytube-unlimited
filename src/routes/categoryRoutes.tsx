@@ -24,6 +24,7 @@ import FavoritedVideos from "@/pages/videos/FavoritedVideos";
 import LikedVideos from "@/pages/videos/LikedVideos";
 import CommentedVideos from "@/pages/videos/CommentedVideos";
 import RespondedVideos from "@/pages/videos/RespondedVideos";
+import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 
 export const categoryRoutes = [
   <Route key="videos" path="/videos" element={<Videos />} />,
@@ -39,7 +40,7 @@ export const categoryRoutes = [
   <Route key="videos-commented" path="/videos/commented" element={<CommentedVideos />} />,
   <Route key="videos-responded" path="/videos/responded" element={<RespondedVideos />} />,
   <Route key="audio" path="/audio" element={<Audio />} />,
-  <Route key="audio-category" path="/audio/:category" element={<Audio />} />,
+  <Route key="audio-category" path="/audio/:category" element={<GenericSubcategoryPage />} />,
   <Route key="documents" path="/documents" element={<Documents />} />,
   <Route key="comedy" path="/comedy" element={<Comedy />} />,
   <Route key="education" path="/education" element={<CategoryPage category="Education" icon="GraduationCap" />} />,
