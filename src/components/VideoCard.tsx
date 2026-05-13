@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MoreVertical, Edit, Trash2 } from 'lucide-react';
+import { MoreVertical, Edit, Trash2, AlertTriangle } from 'lucide-react';
+import { isVideoUnavailable, subscribeUnavailable } from '@/utils/unavailableVideos';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
