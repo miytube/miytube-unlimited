@@ -15,6 +15,7 @@ interface VideoRow {
   title: string;
   cloud_url: string | null;
   video_url: string | null;
+  thumbnail_url?: string | null;
 }
 
 interface Result {
@@ -35,11 +36,41 @@ function captureFrame(videoUrl: string): Promise<Blob | null> {
   return captureVideoThumbnailFromUrl(videoUrl);
 }
 
+/** Loads an image and returns true if it's all/near-black (likely a bad thumbnail). */
+async function isImageDark(url: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    const t = setTimeout(() => resolve(false), 8000);
+    img.onerror = () => { clearTimeout(t); resolve(false); };
+    img.onload = () => {
+      clearTimeout(t);
+      try {
+        const w = 32, h = 32;
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        if (!ctx) return resolve(false);
+        ctx.drawImage(img, 0, 0, w, h);
+        const { data } = ctx.getImageData(0, 0, w, h);
+        let total = 0;
+        for (let i = 0; i < data.length; i += 4) total += data[i] + data[i + 1] + data[i + 2];
+        const avg = total / ((data.length / 4) * 3);
+        resolve(avg < 12);
+      } catch {
+        resolve(false);
+      }
+    };
+    img.src = url;
+  });
+}
+
 export const ThumbnailGeneratorManager = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [batchSize, setBatchSize] = useState(10);
   const [running, setRunning] = useState(false);
+  const [mode, setMode] = useState<'missing' | 'regenerate'>('missing');
   const continueRef = useRef(false);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [updated, setUpdated] = useState(0);
@@ -47,24 +78,30 @@ export const ThumbnailGeneratorManager = () => {
   const [recent, setRecent] = useState<Result[]>([]);
 
   const fetchRemaining = async () => {
-    const { count } = await supabase
+    let q = supabase
       .from('uploaded_videos')
       .select('id', { count: 'exact', head: true })
-      .eq('is_cloud_stored', true)
-      .is('thumbnail_url', null);
+      .eq('is_cloud_stored', true);
+    q = mode === 'missing' ? q.is('thumbnail_url', null) : q.not('thumbnail_url', 'is', null);
+    const { count } = await q;
     setRemaining(count ?? 0);
   };
 
-  useEffect(() => { fetchRemaining(); }, []);
+  useEffect(() => { fetchRemaining(); }, [mode]);
 
   const processOne = async (row: VideoRow): Promise<Result> => {
     const src = row.cloud_url || row.video_url;
     if (!src) return { id: row.id, status: 'skipped', reason: 'no video url' };
 
+    // In regenerate mode, only re-process if existing thumbnail looks dark/black.
+    if (mode === 'regenerate' && row.thumbnail_url) {
+      const dark = await isImageDark(row.thumbnail_url);
+      if (!dark) return { id: row.id, status: 'skipped', reason: 'thumbnail looks fine' };
+    }
+
     const blob = await captureFrame(src);
     if (!blob) return { id: row.id, status: 'error', reason: 'frame capture failed (CORS or codec)' };
 
-    // Upload under the admin's own folder so RLS allows it
     const path = `${user!.id}/auto/${row.id}.jpg`;
     const { error: upErr } = await supabase.storage
       .from('thumbnails')
@@ -72,7 +109,7 @@ export const ThumbnailGeneratorManager = () => {
     if (upErr) return { id: row.id, status: 'error', reason: `upload: ${upErr.message}` };
 
     const { data: pub } = supabase.storage.from('thumbnails').getPublicUrl(path);
-    const thumbUrl = pub.publicUrl;
+    const thumbUrl = `${pub.publicUrl}?v=${Date.now()}`;
 
     const { error: dbErr } = await supabase
       .from('uploaded_videos')
@@ -83,35 +120,33 @@ export const ThumbnailGeneratorManager = () => {
     return { id: row.id, status: 'updated', thumbnail_url: thumbUrl };
   };
 
+  const offsetRef = useRef(0);
+
   const runBatch = async (): Promise<{ updated: number; errors: number; processed: number }> => {
-    console.log('[thumb-gen] fetching batch, size=', batchSize);
-    const { data, error } = await supabase
+    const from = mode === 'regenerate' ? offsetRef.current : 0;
+    const to = from + batchSize - 1;
+    let q = supabase
       .from('uploaded_videos')
-      .select('id, title, cloud_url, video_url')
+      .select('id, title, cloud_url, video_url, thumbnail_url')
       .eq('is_cloud_stored', true)
-      .is('thumbnail_url', null)
       .order('created_at', { ascending: false })
-      .limit(batchSize);
-    if (error) {
-      console.error('[thumb-gen] select error', error);
-      throw error;
-    }
+      .range(from, to);
+    q = mode === 'missing' ? q.is('thumbnail_url', null) : q.not('thumbnail_url', 'is', null);
+    const { data, error } = await q;
+    if (error) throw error;
 
     const rows = (data || []) as VideoRow[];
-    console.log('[thumb-gen] got rows:', rows.length, rows.map(r => r.id));
+    if (mode === 'regenerate') offsetRef.current = from + rows.length;
     if (rows.length === 0) {
-      setRecent((prev) => [{ id: 'batch', status: 'skipped' as const, reason: 'select returned 0 rows (check RLS / filters)' }, ...prev].slice(0, 60));
+      setRecent((prev) => [{ id: 'batch', status: 'skipped' as const, reason: 'no more rows' }, ...prev].slice(0, 60));
     }
     let u = 0; let e = 0;
     const results: Result[] = [];
     for (const r of rows) {
-      console.log('[thumb-gen] processing', r.id, r.cloud_url || r.video_url);
       const res = await processOne(r);
-      console.log('[thumb-gen] result for', r.id, res);
       results.push(res);
       if (res.status === 'updated') u++;
       else if (res.status === 'error') e++;
-      // Update UI as we go so user sees progress
       setRecent((prev) => [res, ...prev].slice(0, 60));
       if (res.status === 'updated') setUpdated((n) => n + 1);
       else if (res.status === 'error') setErrors((n) => n + 1);
@@ -174,7 +209,9 @@ export const ThumbnailGeneratorManager = () => {
       <CardContent className="space-y-4">
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-muted rounded-md p-3">
-            <p className="text-xs text-muted-foreground">Videos missing thumbnails</p>
+            <p className="text-xs text-muted-foreground">
+              {mode === 'missing' ? 'Videos missing thumbnails' : 'Videos with thumbnails (scan for black)'}
+            </p>
             <p className="text-2xl font-bold">{remaining?.toLocaleString() ?? '…'}</p>
           </div>
           <div className="bg-muted rounded-md p-3">
@@ -188,6 +225,27 @@ export const ThumbnailGeneratorManager = () => {
         </div>
 
         <div className="flex items-end gap-3 flex-wrap">
+          <div>
+            <Label>Mode</Label>
+            <div className="flex gap-2 mt-1">
+              <Button
+                size="sm"
+                variant={mode === 'missing' ? 'default' : 'outline'}
+                onClick={() => { offsetRef.current = 0; setMode('missing'); }}
+                disabled={running}
+              >
+                Missing only
+              </Button>
+              <Button
+                size="sm"
+                variant={mode === 'regenerate' ? 'default' : 'outline'}
+                onClick={() => { offsetRef.current = 0; setMode('regenerate'); }}
+                disabled={running}
+              >
+                Regenerate black thumbs
+              </Button>
+            </div>
+          </div>
           <div className="max-w-[180px]">
             <Label htmlFor="thumb-batch">Batch size (1-25)</Label>
             <Input
