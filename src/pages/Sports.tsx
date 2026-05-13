@@ -2,7 +2,7 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
-import { Trophy, Upload } from 'lucide-react';
+import { Trophy, Upload, Flag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { sortByName } from '@/lib/sortByName';
 
