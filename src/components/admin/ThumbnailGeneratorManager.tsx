@@ -35,11 +35,41 @@ function captureFrame(videoUrl: string): Promise<Blob | null> {
   return captureVideoThumbnailFromUrl(videoUrl);
 }
 
+/** Loads an image and returns true if it's all/near-black (likely a bad thumbnail). */
+async function isImageDark(url: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    const t = setTimeout(() => resolve(false), 8000);
+    img.onerror = () => { clearTimeout(t); resolve(false); };
+    img.onload = () => {
+      clearTimeout(t);
+      try {
+        const w = 32, h = 32;
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        if (!ctx) return resolve(false);
+        ctx.drawImage(img, 0, 0, w, h);
+        const { data } = ctx.getImageData(0, 0, w, h);
+        let total = 0;
+        for (let i = 0; i < data.length; i += 4) total += data[i] + data[i + 1] + data[i + 2];
+        const avg = total / ((data.length / 4) * 3);
+        resolve(avg < 12);
+      } catch {
+        resolve(false);
+      }
+    };
+    img.src = url;
+  });
+}
+
 export const ThumbnailGeneratorManager = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [batchSize, setBatchSize] = useState(10);
   const [running, setRunning] = useState(false);
+  const [mode, setMode] = useState<'missing' | 'regenerate'>('missing');
   const continueRef = useRef(false);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [updated, setUpdated] = useState(0);
@@ -47,15 +77,16 @@ export const ThumbnailGeneratorManager = () => {
   const [recent, setRecent] = useState<Result[]>([]);
 
   const fetchRemaining = async () => {
-    const { count } = await supabase
+    let q = supabase
       .from('uploaded_videos')
       .select('id', { count: 'exact', head: true })
-      .eq('is_cloud_stored', true)
-      .is('thumbnail_url', null);
+      .eq('is_cloud_stored', true);
+    q = mode === 'missing' ? q.is('thumbnail_url', null) : q.not('thumbnail_url', 'is', null);
+    const { count } = await q;
     setRemaining(count ?? 0);
   };
 
-  useEffect(() => { fetchRemaining(); }, []);
+  useEffect(() => { fetchRemaining(); }, [mode]);
 
   const processOne = async (row: VideoRow): Promise<Result> => {
     const src = row.cloud_url || row.video_url;
