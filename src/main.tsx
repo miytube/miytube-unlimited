@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { runStaleCacheCleanup } from './utils/staleCacheCleanup';
-import { installAdsenseOverlayBlocker } from './utils/adsenseOverlayBlocker';
+// Vignette/overlay blocker disabled — letting AdSense vignettes render normally.
+// import { installAdsenseOverlayBlocker } from './utils/adsenseOverlayBlocker';
 
 // Render immediately — never block the UI on cache cleanup.
 createRoot(document.getElementById("root")!).render(
@@ -20,6 +21,6 @@ if (typeof window !== 'undefined') {
       : setTimeout(cb, 1500);
   schedule(() => {
     runStaleCacheCleanup();
-    installAdsenseOverlayBlocker();
+    // installAdsenseOverlayBlocker();
   });
 }
