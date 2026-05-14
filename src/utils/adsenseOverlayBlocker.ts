@@ -3,39 +3,51 @@
  * (full-page interstitial) overlays that Google injects despite the
  * dashboard toggle being off.
  *
- * Identification heuristics (Google's overlay containers):
- *  - Anchor: <ins> / <div> with id starting "google_ads_iframe" inside a
- *    fixed-position container at bottom of viewport, or class
- *    "google-anchor" / data attr "google_reactive_ads_frame".
- *  - Vignette: full-screen <ins class="adsbygoogle"> with style position:fixed
- *    covering 100vw/100vh, often with id starting "aswift_".
+ * Detection strategy: walk every fixed-position element on the page and
+ * remove it if it contains a Google ad iframe (googleads.g.doubleclick.net /
+ * googlesyndication / tpc.googlesyndication / id starting "google_ads_iframe"
+ * or "aswift_") AND covers a large portion of the viewport or is anchored
+ * to the bottom edge.
  */
 
-const isAnchorEl = (el: Element): boolean => {
-  const tag = el.tagName?.toLowerCase();
-  if (tag !== 'div' && tag !== 'ins' && tag !== 'iframe') return false;
-  const id = (el.id || '').toLowerCase();
-  const cls = (el.className && typeof el.className === 'string' ? el.className : '').toLowerCase();
-  if (cls.includes('google-anchor')) return true;
-  if (id.startsWith('google_anchor')) return true;
-  // Fixed bottom container holding an adsbygoogle iframe
-  const style = (el as HTMLElement).style;
-  if (style?.position === 'fixed' && (style.bottom === '0px' || style.bottom === '0')) {
-    if (el.querySelector('iframe[id^="google_ads_iframe"], ins.adsbygoogle')) return true;
-  }
-  return false;
+const GOOGLE_AD_IFRAME_SELECTOR = [
+  'iframe[id^="google_ads_iframe"]',
+  'iframe[id^="aswift_"]',
+  'iframe[src*="googleads.g.doubleclick.net"]',
+  'iframe[src*="googlesyndication.com"]',
+  'iframe[src*="tpc.googlesyndication.com"]',
+  'ins.adsbygoogle',
+].join(',');
+
+const containsGoogleAd = (el: Element): boolean => {
+  if (el.matches?.(GOOGLE_AD_IFRAME_SELECTOR)) return true;
+  return !!el.querySelector?.(GOOGLE_AD_IFRAME_SELECTOR);
 };
 
-const isVignetteEl = (el: Element): boolean => {
-  const id = (el.id || '').toLowerCase();
-  const cls = (el.className && typeof el.className === 'string' ? el.className : '').toLowerCase();
-  if (cls.includes('google-vignette')) return true;
-  if (id.includes('vignette')) return true;
-  const style = (el as HTMLElement).style;
-  if (style?.position === 'fixed' && (style.width === '100%' || style.width === '100vw') && (style.height === '100%' || style.height === '100vh')) {
-    if (el.querySelector('iframe[id^="google_ads_iframe"], ins.adsbygoogle')) return true;
-  }
-  return false;
+const isAdminAdSlot = (el: Element): boolean => {
+  // Don't nuke the in-app AdSlot wrapper — those are intentional manual units
+  return !!el.closest?.('[data-ad-slot-wrapper]');
+};
+
+const isOverlayCandidate = (el: HTMLElement): boolean => {
+  const cs = window.getComputedStyle(el);
+  if (cs.position !== 'fixed' && cs.position !== 'sticky') return false;
+  if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+
+  const rect = el.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  // Vignette: covers most of the viewport
+  const coversViewport = rect.width >= vw * 0.6 && rect.height >= vh * 0.6;
+  // Anchor: pinned to bottom, full-width-ish strip
+  const bottomAnchor =
+    rect.bottom >= vh - 4 && rect.width >= vw * 0.6 && rect.height <= vh * 0.35;
+  // Top anchor (rare)
+  const topAnchor =
+    rect.top <= 4 && rect.width >= vw * 0.6 && rect.height <= vh * 0.35;
+
+  return coversViewport || bottomAnchor || topAnchor;
 };
 
 const cleanup = () => {
@@ -43,21 +55,41 @@ const cleanup = () => {
   if (window.location.hash === '#google_vignette') {
     history.replaceState(null, '', window.location.pathname + window.location.search);
   }
-  document.querySelectorAll('body > div, body > ins, body > iframe').forEach((el) => {
-    if (isAnchorEl(el) || isVignetteEl(el)) {
-      el.remove();
-    }
-  });
-  // Restore body scroll if vignette locked it
-  if (document.body.style.overflow === 'hidden') {
-    document.body.style.overflow = '';
+
+  // Find every fixed/sticky element that contains a Google ad and looks like
+  // an overlay (covering the viewport or anchored to an edge). Skip our own
+  // intentional ad slots.
+  const all = document.querySelectorAll<HTMLElement>('body *');
+  for (const el of Array.from(all)) {
+    if (isAdminAdSlot(el)) continue;
+    if (!containsGoogleAd(el)) continue;
+    if (!isOverlayCandidate(el)) continue;
+    el.remove();
   }
+
+  // Class-based catch-all for Google's own overlay wrappers
+  document
+    .querySelectorAll('.google-vignette, .google-anchor, [id^="google_anchor"]')
+    .forEach((el) => {
+      if (!isAdminAdSlot(el)) el.remove();
+    });
+
+  // Restore body scroll / pointer events if vignette locked them
+  if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
+  if (document.documentElement.style.overflow === 'hidden')
+    document.documentElement.style.overflow = '';
 };
 
 export const installAdsenseOverlayBlocker = () => {
   if (typeof window === 'undefined') return;
   cleanup();
-  const observer = new MutationObserver(() => cleanup());
-  observer.observe(document.body, { childList: true, subtree: false });
+  const run = () => {
+    // Defer to next frame so we evaluate after Google finishes injecting
+    requestAnimationFrame(cleanup);
+  };
+  const observer = new MutationObserver(run);
+  observer.observe(document.body, { childList: true, subtree: true });
   window.addEventListener('hashchange', cleanup);
+  // Periodic safety sweep in case a mutation slips past the observer
+  window.setInterval(cleanup, 1500);
 };
