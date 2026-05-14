@@ -38,16 +38,9 @@ const isOverlayCandidate = (el: HTMLElement): boolean => {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  // Vignette: covers most of the viewport
-  const coversViewport = rect.width >= vw * 0.6 && rect.height >= vh * 0.6;
-  // Anchor: pinned to bottom, full-width-ish strip
-  const bottomAnchor =
-    rect.bottom >= vh - 4 && rect.width >= vw * 0.6 && rect.height <= vh * 0.35;
-  // Top anchor (rare)
-  const topAnchor =
-    rect.top <= 4 && rect.width >= vw * 0.6 && rect.height <= vh * 0.35;
-
-  return coversViewport || bottomAnchor || topAnchor;
+  // Vignette ONLY: covers most of the viewport. Anchor ads (top/bottom
+  // sticky strips) are intentionally left alone.
+  return rect.width >= vw * 0.6 && rect.height >= vh * 0.6;
 };
 
 const cleanup = () => {
