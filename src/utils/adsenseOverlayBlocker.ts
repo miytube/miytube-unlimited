@@ -60,12 +60,10 @@ const cleanup = () => {
     el.remove();
   }
 
-  // Class-based catch-all for Google's own overlay wrappers
-  document
-    .querySelectorAll('.google-vignette, .google-anchor, [id^="google_anchor"]')
-    .forEach((el) => {
-      if (!isAdminAdSlot(el)) el.remove();
-    });
+  // Class-based catch-all for Google's vignette wrapper only
+  document.querySelectorAll('.google-vignette').forEach((el) => {
+    if (!isAdminAdSlot(el)) el.remove();
+  });
 
   // Restore body scroll / pointer events if vignette locked them
   if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
