@@ -71,9 +71,12 @@ const GenericSubcategoryPage = () => {
     return <Navigate to="/" replace />;
   }
 
-  const displayTitle = matchedCustomWatch?.name || matchedCustomSub?.name || pageTitle;
-  const displayDescription =
-    matchedCustomWatch?.description || matchedCustomSub?.description || pageDescription;
+  const displayTitle = isCustomRoute && matchedCustomCat
+    ? matchedCustomWatch?.name || matchedCustomSub?.name || matchedCustomCat.name
+    : pageTitle;
+  const displayDescription = isCustomRoute && matchedCustomCat
+    ? matchedCustomWatch?.description || matchedCustomSub?.description || matchedCustomCat.description || pageDescription
+    : pageDescription;
   const DisplayIcon = isCustomRoute ? Film : IconComponent;
   const subcategoryVideos = isCustomRoute && matchedCustomCat
     ? getVideosByCategory(
