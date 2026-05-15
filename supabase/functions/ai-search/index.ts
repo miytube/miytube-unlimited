@@ -80,8 +80,11 @@ serve(async (req) => {
 
     dbQuery = dbQuery.or(orConditions);
 
-    if (detectedCategory) {
-      dbQuery = dbQuery.ilike('category', `%${detectedCategory}%`);
+    // Only filter by category if the USER explicitly picked one in the UI.
+    // Don't filter by AI-detected category — it makes title searches miss videos
+    // whose category doesn't match the AI's guess.
+    if (category) {
+      dbQuery = dbQuery.ilike('category', `%${category}%`);
     }
 
     // Apply sorting
