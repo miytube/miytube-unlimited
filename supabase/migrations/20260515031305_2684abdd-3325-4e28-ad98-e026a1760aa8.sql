@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET category = 'entertainment', subcategory = 'late-night' WHERE id = '9265d099-316f-4874-bf7b-8129dede3d31';
