@@ -367,49 +367,49 @@ export const newCategorySubcategories: SubcategoryMapping = {
     title: 'Ship Icebreakers',
     description: 'Icebreaker ships',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
   '/boats/cruise': {
     title: 'Cruise Ships',
     description: 'Cruise liners and ships',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
   '/boats/submarines': {
     title: 'Civilian Submarines',
     description: 'Civilian submarine vessels',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
   '/boats/tugboats': {
     title: 'Tugboats',
     description: 'Tugboats and harbor vessels',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
   '/boats/yachts': {
     title: 'Yachts & Luxury Yachts',
     description: 'Luxury yachts and boats',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
   '/boats/sailing': {
     title: 'Sailing Ships',
     description: 'Sailing vessels and ships',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
   '/boats/container': {
     title: 'Container Ships & Oil Tankers',
     description: 'Cargo ships and tankers',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
   '/boats/jetski': {
     title: 'Jet Skis & Personal Watercraft',
     description: 'Jet skis and watercraft',
     icon: Ship,
-    parent: { route: '/boats', name: 'Boats & Ships' }
+    parent: { route: '/boats', name: 'Boats' }
   },
 
   // ============ ANIMALS & NATURE ============
