@@ -46,7 +46,6 @@ export const TransportVehiclesLinks: React.FC = () => {
       label: 'Boats', 
       path: '/boats',
       subItems: [
-        { id: 'all-boats', label: 'All Boats', path: '/boats/all' },
         { id: 'yachts', label: 'Yachts', path: '/boats/yachts' }
       ]
     }

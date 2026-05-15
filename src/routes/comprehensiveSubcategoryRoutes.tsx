@@ -1073,7 +1073,6 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="trains-freight" path="/trains/freight" element={<GenericSubcategoryPage />} />,
   <Route key="shipping-cargo-ships" path="/shipping/cargo-ships" element={<GenericSubcategoryPage />} />,
   <Route key="shipping-oil-tankers" path="/shipping/oil-tankers" element={<GenericSubcategoryPage />} />,
-  <Route key="boats-all" path="/boats/all" element={<GenericSubcategoryPage />} />,
   <Route key="boats-sailboats" path="/boats/sailboats" element={<GenericSubcategoryPage />} />,
   <Route key="boats-speedboats" path="/boats/speedboats" element={<GenericSubcategoryPage />} />,
   

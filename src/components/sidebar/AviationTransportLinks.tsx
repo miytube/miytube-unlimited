@@ -115,7 +115,7 @@ export const AviationTransportLinks: React.FC = () => {
     { 
       id: 'boats', 
       icon: Ship, 
-      label: 'Boats & Ships', 
+      label: 'Boats', 
       path: '/boats',
       subItems: [
         { id: 'boats-icebreakers', label: 'Ship Icebreakers', path: '/boats/icebreakers' },

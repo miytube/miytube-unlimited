@@ -50,7 +50,6 @@ export const specialSubcategoryRoutes = [
   <Route key="science-tech-robots" path="/science-tech/robots" element={<GenericSubcategoryPage />} />,
   
   /* Boats Routes */
-  <Route key="boats-all" path="/boats/all" element={<GenericSubcategoryPage />} />,
   
   /* Lakes & Rivers Routes */
   <Route key="lakes-rivers-freshwater-lakes" path="/lakes-rivers/freshwater-lakes" element={<GenericSubcategoryPage />} />,

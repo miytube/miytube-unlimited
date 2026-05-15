@@ -18,7 +18,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'beaches', name: 'Beaches & Lagoons' },
   { slug: 'bible', name: 'Bible & Religion' },
   { slug: 'bloopers', name: 'Bloopers' },
-  { slug: 'boats', name: 'Boats & Ships' },
+  { slug: 'boats', name: 'Boats' },
   { slug: 'business', name: 'Business' },
   { slug: 'cell-phone', name: 'Cell Phone' },
   { slug: 'celebrities', name: 'Celebrities' },
