@@ -1948,7 +1948,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/music-artists', name: 'Music Artists' }
   },
   '/music-artists/news': {
-    title: 'Artist News & Gossip',
+    title: 'Music Artists News & Gossip',
     description: 'Music artist news',
     icon: Mic,
     parent: { route: '/music-artists', name: 'Music Artists' }

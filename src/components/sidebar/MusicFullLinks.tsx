@@ -65,7 +65,7 @@ export const MusicFullLinks: React.FC = () => {
       subItems: [
         { id: 'music-artists-works', label: 'Works & Interviews', path: '/music-artists/works' },
         { id: 'music-artists-interviews', label: 'Interviews', path: '/music-artists/interviews' },
-        { id: 'music-artists-news', label: 'News & Gossip', path: '/music-artists/news' },
+        { id: 'music-artists-news', label: 'Music Artists News & Gossip', path: '/music-artists/news' },
         { id: 'music-challenges', label: 'Music Challenges', path: '/music-artists/challenges' }
       ]
     },
