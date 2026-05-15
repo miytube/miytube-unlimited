@@ -987,22 +987,30 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     return dp[n] <= budget;
   };
 
+  // Categories that collide with other real categories under typo tolerance
+  // (e.g. "shorts" vs "sports" differ by 1 letter). These require exact match.
+  const EXACT_MATCH_CATEGORIES = new Set(['shorts', 'sports']);
+
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
     const categoryLower = category.toLowerCase().trim();
+    const requireExactCategory = EXACT_MATCH_CATEGORIES.has(categoryLower);
 
     return uploadedVideos.filter(video => {
       const vidCategory = video.category?.toLowerCase().trim() || '';
       const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
 
+      const categoryMatches = requireExactCategory
+        ? vidCategory === categoryLower
+        : (vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower));
+
       if (subcategory) {
         const subLower = subcategory.toLowerCase().trim();
-        const categoryMatches = vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower);
         const subcategoryMatches = vidSubcategory === subLower || isCloseTypo(vidSubcategory, subLower);
         return categoryMatches && subcategoryMatches;
       }
 
       // Exact match only — no substring matching, no tag fallback.
-      return vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower);
+      return categoryMatches;
     });
   };
 
