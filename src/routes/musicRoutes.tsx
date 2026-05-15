@@ -11,7 +11,7 @@ const musicGenres = [
   'blues', 'classical', 'country', 'folk', 'funk-rock', 'alternative',
   'rock-soul-pop', 'funk-hiphop-rap', 'history', 'heavy-metal', 'mexican-spanish',
   'soundtracks', 'parody', 'pop', 'rap-reggaeton', 'relaxation', 'salsa',
-  'soul-train', 'garage', 'artists-interviews', 'artists-news', 'challenges',
+  'soul-train', 'garage', 'artists-interviews', 'challenges',
   'christian', 'r-and-b', 'rock', 'spanish', 'chinese', 'soul', 'jazz', 'playlists',
   'hiphop', 'electronic', 'indie', 'reggae', 'latin', 'punk', 'metal',
   'grunge', 'rock-grunge', 'alternative-grunge', 'classic-grunge', 'post-grunge'
