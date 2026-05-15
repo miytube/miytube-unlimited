@@ -74,7 +74,6 @@ export const EnvironmentWeatherLinks: React.FC = () => {
       label: 'Boats', 
       path: '/boats',
       subItems: [
-        { id: 'all-boats', label: 'All Boats', path: '/boats/all' },
         { id: 'yachts', label: 'Yachts', path: '/boats/yachts' },
         { id: 'sailboats', label: 'Sailboats', path: '/boats/sailboats' },
         { id: 'speedboats', label: 'Speedboats', path: '/boats/speedboats' }
