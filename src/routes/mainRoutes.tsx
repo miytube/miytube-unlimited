@@ -120,7 +120,6 @@ export const mainRoutes = [
   <Route key="shipping" path="/shipping" element={<Shipping />} />,
   <Route key="autos-vehicles" path="/autos-vehicles" element={<AutosVehicles />} />,
   <Route key="boats" path="/boats" element={<Boats />} />,
-  <Route key="boats-all" path="/boats/all" element={<Boats />} />,
   <Route key="restaurants" path="/restaurants" element={<Restaurants />} />,
   <Route key="real-estate" path="/real-estate" element={<RealEstate />} />,
   <Route key="airports" path="/airports" element={<Airports />} />,

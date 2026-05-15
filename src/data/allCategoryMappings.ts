@@ -157,7 +157,6 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'science-tech-robots': { title: 'Robots', description: 'Robotics and automation', icon: Microscope, parent: { route: '/science-tech', name: 'Science & Technology' } },
   
   // Boats (nested routes)
-  'boats-all': { title: 'All Boats', description: 'All boats', icon: Sailboat, parent: { route: '/boats', name: 'Boats' } },
   
   // Arguments
   'arguments': { title: 'Arguments (Arguments, Disrespect)', description: 'Arguments and confrontations', icon: MessageSquare },
