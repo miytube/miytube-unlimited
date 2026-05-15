@@ -3,15 +3,6 @@ import { Ship, Anchor, Sailboat } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const boatsSubcategories: SubcategoryMapping = {
-  'boats-all': {
-    title: 'All Boats',
-    description: 'Explore all types of boats and watercraft',
-    icon: Ship,
-    parent: {
-      route: '/boats',
-      name: 'Boats'
-    }
-  },
   'boats-yachts': {
     title: 'Yachts',
     description: 'Luxury yachts and high-end watercraft',
