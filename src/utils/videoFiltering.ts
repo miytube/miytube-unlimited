@@ -188,7 +188,12 @@ export const filterVideosBySubcategory = (
   for (const p of domainPrefixes) {
     if (keyHyphenated.startsWith(p)) {
       strippedKey = keyHyphenated.slice(p.length);
-      if (!topLevelDomainSet.has(strippedKey)) {
+      // Block the stripped variant when it is a bare top-level domain
+      // (e.g. "sports-news" → "news") OR when it BEGINS with a different
+      // top-level domain prefix (e.g. "sports-news-podcasts" → "news-podcasts"),
+      // which would otherwise pull videos from that other domain in.
+      const startsWithOtherDomain = domainPrefixes.some(dp => strippedKey.startsWith(dp));
+      if (!topLevelDomainSet.has(strippedKey) && !startsWithOtherDomain) {
         acceptedBase.push(strippedKey, strippedKey.replace(/[-\s]/g, ''));
       }
       break;
