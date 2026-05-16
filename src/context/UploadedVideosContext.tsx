@@ -618,9 +618,10 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         resolve(thumbnailUrl);
       };
       if (file.type.startsWith('video/')) {
+        let timeoutId: number | undefined;
         try {
           const { captureVideoThumbnail } = await import('@/utils/thumbnailCapture');
-          const timeoutId = window.setTimeout(() => {
+          timeoutId = window.setTimeout(() => {
             console.warn('Thumbnail generation timed out after extended wait, publishing without thumbnail:', file.name);
             finish(fallbackThumbnail);
           }, 30000);
@@ -638,7 +639,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           }
         } catch (err) {
           console.warn('Thumbnail capture failed:', err);
-          window.clearTimeout(timeoutId);
+          if (timeoutId) window.clearTimeout(timeoutId);
           finish(fallbackThumbnail);
         }
       } else {
