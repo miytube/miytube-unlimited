@@ -603,22 +603,19 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   };
 
   const generateThumbnail = async (file: File): Promise<string> => {
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       // Empty string = no thumbnail yet. The admin "Missing only" regenerator
       // will fill it in from the uploaded video later.
       const fallbackThumbnail = '';
       let hasResolved = false;
-      let objectUrl = '';
       const finish = (thumbnailUrl: string) => {
         if (hasResolved) return;
         hasResolved = true;
-        if (objectUrl) {
-          try { URL.revokeObjectURL(objectUrl); } catch { /* ignore revoke cleanup errors */ }
-        }
         resolve(thumbnailUrl);
       };
       if (file.type.startsWith('video/')) {
         let timeoutId: number | undefined;
+        void (async () => {
         try {
           const { captureVideoThumbnail } = await import('@/utils/thumbnailCapture');
           timeoutId = window.setTimeout(() => {
@@ -642,6 +639,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           if (timeoutId) window.clearTimeout(timeoutId);
           finish(fallbackThumbnail);
         }
+        })();
       } else {
         finish(fallbackThumbnail);
       }
