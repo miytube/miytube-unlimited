@@ -89,7 +89,7 @@ export const captureVideoThumbnailFromUrl = (
       resolve(blob);
     };
 
-    const failTimer = setTimeout(() => finish(null), 25000);
+    const failTimer = setTimeout(() => finish(null), 45000);
 
     video.onerror = () => { clearTimeout(failTimer); finish(null); };
 
@@ -100,10 +100,15 @@ export const captureVideoThumbnailFromUrl = (
         ? opts.candidates
         : duration > 0
           ? [
+              2,
+              5,
+              10,
+              30,
+              60,
+              120,
+              Math.max(1, duration * 0.05),
               Math.max(2, duration * 0.1),
               Math.max(3, duration * 0.25),
-              Math.max(5, duration * 0.5),
-              Math.max(1, duration * 0.05),
               0.5,
             ]
           : [2, 5, 10, 0.5];
