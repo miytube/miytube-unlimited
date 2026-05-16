@@ -571,17 +571,17 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     await loadStoredVideos(true);
   };
 
-  // Upload thumbnail to cloud storage and return URL
+  // Upload thumbnail to cloud storage and return URL.
+  // Returns '' on failure so the row stays without a real thumbnail and the
+  // admin "Missing only" regenerator can pick it up later.
   const uploadThumbnailToCloud = async (thumbnailBlob: Blob, fileName: string): Promise<string> => {
     const { data: authData } = await supabase.auth.getUser();
     const userId = authData?.user?.id;
-    if (!userId) {
-      return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
-    }
+    if (!userId) return '';
     const fileExt = 'jpg';
     const filePath = `${userId}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-    
-    const { data, error } = await supabase.storage
+
+    const { error } = await supabase.storage
       .from('thumbnails')
       .upload(filePath, thumbnailBlob, {
         cacheControl: '3600',
@@ -591,8 +591,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
     if (error) {
       console.error('Thumbnail upload error:', error);
-      // Return a default thumbnail URL on failure
-      return 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+      return '';
     }
 
     const { data: urlData } = supabase.storage
@@ -605,7 +604,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
   const generateThumbnail = async (file: File): Promise<string> => {
     return new Promise(async (resolve) => {
-      const fallbackThumbnail = 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+      // Empty string = no thumbnail yet. The admin "Missing only" regenerator
+      // will fill it in from the uploaded video later.
+      const fallbackThumbnail = '';
       let hasResolved = false;
       let objectUrl = '';
       const finish = (thumbnailUrl: string) => {
@@ -617,7 +618,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         resolve(thumbnailUrl);
       };
       const timeoutId = window.setTimeout(() => {
-        console.warn('Thumbnail generation timed out, publishing with fallback thumbnail:', file.name);
+        console.warn('Thumbnail generation timed out, publishing without thumbnail:', file.name);
         finish(fallbackThumbnail);
       }, 8000);
 
@@ -780,7 +781,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         isCloudStored: true,
         title: title || 'Imported Video',
         description: description || '',
-        thumbnail: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
+        thumbnail: '',
         timestamp: 'Just now',
         views: '0',
         duration: '0:00',
