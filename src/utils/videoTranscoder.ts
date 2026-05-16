@@ -82,7 +82,10 @@ export const transcodeVideoFile = async (
   const sourceUrl = URL.createObjectURL(file);
   const video = document.createElement('video');
   video.src = sourceUrl;
+  // Keep element unmuted so captureStream() still produces an audio track,
+  // but drop local volume to 0 so the user doesn't hear playback during transcoding.
   video.muted = false;
+  video.volume = 0;
   video.playsInline = true;
   video.crossOrigin = 'anonymous';
   video.preload = 'auto';
