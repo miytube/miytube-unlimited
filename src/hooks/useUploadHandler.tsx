@@ -184,34 +184,31 @@ export const useUploadHandler = () => {
       }
     }
     
-    setTimeout(() => {
-      let redirectPath = getUploadDestinationRoute(category, subcategory);
-      
-      if (contentTypeId === 'shorts') redirectPath = '/shorts';
-      else if (contentTypeId === 'music') redirectPath = '/music';
-      else if (contentTypeId === 'image') redirectPath = '/images';
-      else if (contentTypeId === 'document') redirectPath = '/documents';
-      
-      const viewText = redirectPath === '/' ? 'Home' : redirectPath.substring(1);
-      const altTextValue = `Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`;
-      
-      toast({
-        title: "Upload complete",
-        description: `Your ${contentTypeName.toLowerCase()} has been processed and is now available.`,
-        action: (
-          <ToastAction 
-            className="flex items-center gap-1"
-            onClick={() => navigate(redirectPath)}
-            aria-label={altTextValue}
-            altText={altTextValue}
-          >
-            View {viewText}
-          </ToastAction>
-        )
-      });
-      
-      navigate(redirectPath);
-    }, 2000);
+    let redirectPath = getUploadDestinationRoute(category, subcategory);
+    if (contentTypeId === 'shorts') redirectPath = '/shorts';
+    else if (contentTypeId === 'music') redirectPath = '/music';
+    else if (contentTypeId === 'image') redirectPath = '/images';
+    else if (contentTypeId === 'document') redirectPath = '/documents';
+
+    const viewText = redirectPath === '/' ? 'Home' : redirectPath.substring(1);
+    const altTextValue = `Go to ${redirectPath === '/' ? 'home' : redirectPath.substring(1)} page`;
+
+    toast({
+      title: "Upload complete",
+      description: `Your ${contentTypeName.toLowerCase()} has been processed. You can keep uploading more.`,
+      duration: 8000,
+      action: (
+        <ToastAction
+          className="flex items-center gap-1"
+          onClick={() => navigate(redirectPath)}
+          aria-label={altTextValue}
+          altText={altTextValue}
+        >
+          View {viewText}
+        </ToastAction>
+      )
+    });
+    // No auto-redirect — stay on the upload page so batch uploads aren't interrupted.
   };
 
   return { handleUpload };
