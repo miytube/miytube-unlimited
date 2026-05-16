@@ -781,7 +781,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         isCloudStored: true,
         title: title || 'Imported Video',
         description: description || '',
-        thumbnail: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
+        thumbnail: '',
         timestamp: 'Just now',
         views: '0',
         duration: '0:00',
