@@ -318,7 +318,7 @@ const saveVideoToSupabase = async (video: {
   return { isDuplicate: false };
 };
 
-const mapSupabaseRow = (v: any): UploadedVideo => ({
+  const mapSupabaseRow = (v: any): UploadedVideo => ({
   id: v.local_id || v.id,
   file: null,
   fileDataUrl: '',
@@ -328,7 +328,7 @@ const mapSupabaseRow = (v: any): UploadedVideo => ({
   youtubeId: v.youtube_video_id || undefined,
   title: v.title,
   description: v.description || '',
-  thumbnail: v.thumbnail_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80',
+  thumbnail: v.thumbnail_url || '/placeholder.svg',
   timestamp: new Date(v.created_at).toLocaleDateString(),
   createdAt: v.created_at,
   views: String(v.views || 0),
@@ -618,9 +618,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         resolve(thumbnailUrl);
       };
       const timeoutId = window.setTimeout(() => {
-        console.warn('Thumbnail generation timed out, publishing without thumbnail:', file.name);
+        console.warn('Thumbnail generation timed out after extended wait, publishing without thumbnail:', file.name);
         finish(fallbackThumbnail);
-      }, 8000);
+      }, 30000);
 
       if (file.type.startsWith('video/')) {
         try {
