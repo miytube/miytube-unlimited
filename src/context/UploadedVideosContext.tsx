@@ -604,7 +604,9 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
   const generateThumbnail = async (file: File): Promise<string> => {
     return new Promise(async (resolve) => {
-      const fallbackThumbnail = 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80';
+      // Empty string = no thumbnail yet. The admin "Missing only" regenerator
+      // will fill it in from the uploaded video later.
+      const fallbackThumbnail = '';
       let hasResolved = false;
       let objectUrl = '';
       const finish = (thumbnailUrl: string) => {
@@ -616,7 +618,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         resolve(thumbnailUrl);
       };
       const timeoutId = window.setTimeout(() => {
-        console.warn('Thumbnail generation timed out, publishing with fallback thumbnail:', file.name);
+        console.warn('Thumbnail generation timed out, publishing without thumbnail:', file.name);
         finish(fallbackThumbnail);
       }, 8000);
 
