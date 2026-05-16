@@ -624,7 +624,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
           timeoutId = window.setTimeout(() => {
             console.warn('Thumbnail generation timed out after extended wait, publishing without thumbnail:', file.name);
             finish(fallbackThumbnail);
-          }, 30000);
+          }, 50000);
           const blob = await captureVideoThumbnail(file);
           window.clearTimeout(timeoutId);
           if (blob) {
