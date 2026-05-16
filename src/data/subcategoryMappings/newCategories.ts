@@ -2433,6 +2433,18 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Users,
     parent: { route: '/people-blogs', name: 'People' }
   },
+  '/people/pranks': {
+    title: 'People Pranks',
+    description: 'Pranks and practical jokes involving people',
+    icon: Users,
+    parent: { route: '/people-blogs', name: 'People' }
+  },
+  '/people/replica-builders': {
+    title: 'Replica Builders',
+    description: 'People building replicas and recreations',
+    icon: Users,
+    parent: { route: '/people-blogs', name: 'People' }
+  },
   '/workers/amazing': {
     title: 'Amazing & Great Things',
     description: 'Workers doing amazing things',
