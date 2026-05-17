@@ -18,31 +18,23 @@ const AudioMusicVideos: React.FC = () => {
   const { uploadedVideos } = useUploadedVideos();
 
   const filtered = useMemo(() => {
-    // Strict: only videos whose CATEGORY is music/audio (not just videos that mention music in their description).
-    const MUSIC_CATEGORIES = new Set([
-      'music', 'audio', 'audio-music-videos', 'audio-music', 'music-videos',
-      'pop', 'rock', 'hip-hop', 'hiphop', 'rap', 'r-and-b', 'rnb', 'soul',
-      'country', 'jazz', 'blues', 'classical', 'electronic', 'reggae', 'latin',
-      'metal', 'folk', 'indie', 'funk', 'punk', 'christian', 'salsa', 'mariachi',
-      'mandopop', 'spanish', 'soundtracks', 'parody',
-    ]);
+    // Strict: only show videos that were explicitly uploaded as music
+    // (category is exactly 'music' or 'audio-music-videos'). No genre-name
+    // matching, no auto-tag matching — otherwise random uploads with words
+    // like "song" or "rock" in their title leak onto this page.
+    const MUSIC_CATEGORIES = new Set(['music', 'audio-music-videos', 'audio-music', 'music-videos']);
 
     const musicVideos = uploadedVideos.filter((v) => {
       const cat = (v.category || '').toLowerCase().trim();
-      const sub = (v.subcategory || '').toLowerCase().trim();
-      // Must be tagged as a music category — no fuzzy title/description matching
-      return MUSIC_CATEGORIES.has(cat) || MUSIC_CATEGORIES.has(sub) ||
-             cat === 'music' || sub === 'music' ||
-             cat.startsWith('music-') || sub.startsWith('music-');
+      return MUSIC_CATEGORIES.has(cat);
     });
 
     if (!genre) return musicVideos;
 
     const g = genre.toLowerCase().replace(/\s+/g, '-');
     return musicVideos.filter((v) => {
-      const cat = (v.category || '').toLowerCase();
       const sub = (v.subcategory || '').toLowerCase();
-      return cat === g || sub === g || cat === `music-${g}` || sub === `music-${g}`;
+      return sub === g || sub === `music-${g}`;
     });
   }, [uploadedVideos, genre]);
 
