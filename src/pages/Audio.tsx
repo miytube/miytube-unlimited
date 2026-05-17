@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Music, Upload, Play, Pause, Loader2, Search, Plus } from 'lucide-react';
+import { Music, Upload, Play, Pause, Loader2, Search, Plus, Trash2 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
