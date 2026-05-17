@@ -7,6 +7,14 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   const cleanSubcategory = subcategory ? trimSlashes(subcategory) : '';
 
   if (!cleanCategory) return '/';
+  if (cleanCategory === 'professional-track-and-field') {
+    return cleanSubcategory === 'track-and-field' || cleanSubcategory === 'track-field'
+      ? '/sports/track-field/professional/track-field'
+      : '/sports/track-field/professional';
+  }
+  if (cleanCategory === 'track-field' && cleanSubcategory === 'professional-track-and-field') {
+    return '/sports/track-field/professional';
+  }
   if (cleanCategory === 'racing-sports') {
     if (!cleanSubcategory || cleanSubcategory === 'racing') return '/sports/racing';
     return cleanSubcategory.startsWith('drag-racing')

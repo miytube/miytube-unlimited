@@ -18,6 +18,7 @@ import { AdSlot } from '@/components/ads/AdSlot';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
 import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
+import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -319,6 +320,8 @@ const Watch = () => {
 
   // Check if video source is missing
   const hasVideoSource = video.file || (isYouTubeVideo && youtubeVideoId);
+  const categoryRoute = getUploadDestinationRoute(video.category);
+  const subcategoryRoute = getUploadDestinationRoute(video.category, video.subcategory);
   
   return (
     <Layout>
@@ -336,7 +339,7 @@ const Watch = () => {
         items={[
           { name: 'Home', path: '/' },
           ...(video.category
-            ? [{ name: video.category, path: `/${String(video.category).toLowerCase().replace(/\s+/g, '-')}` }]
+            ? [{ name: video.category, path: categoryRoute }]
             : []),
           { name: video.title, path: `/watch/${actualVideoId || video.id}` },
         ]}
@@ -350,7 +353,7 @@ const Watch = () => {
               <div className="text-sm text-muted-foreground">
                 {video.category && (
                   <Link 
-                    to={`/${String(video.category).toLowerCase().replace(/\s+/g, '-')}`} 
+                    to={categoryRoute} 
                     className="hover:text-primary transition-colors"
                   >
                     {video.category}
@@ -359,7 +362,7 @@ const Watch = () => {
                 {video.category && video.subcategory && <span className="mx-1">/</span>}
                 {video.subcategory && (
                   <Link 
-                    to={`/${String(video.category || '').toLowerCase().replace(/\s+/g, '-')}/${String(video.subcategory).toLowerCase().replace(/\s+/g, '-')}`} 
+                    to={subcategoryRoute} 
                     className="font-medium text-foreground hover:text-primary transition-colors"
                   >
                     {video.subcategory}

@@ -219,9 +219,10 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
       });
       if (!cat) return link;
       const extras: Array<{ id: string; label: string; path: string }> = [];
-      const seenPaths = new Set((link.subItems || []).map((item) => normalizePath(item.path)));
+      const existingItems = (link.subItems || []).flatMap((item) => [item, ...(item.subItems || [])]);
+      const seenPaths = new Set(existingItems.map((item) => normalizePath(item.path)));
       const normalizeLabel = (label: string) => label.trim().toLowerCase().replace(/\s+/g, ' ');
-      const seenLabels = new Set((link.subItems || []).map((item) => normalizeLabel(item.label)));
+      const seenLabels = new Set(existingItems.map((item) => normalizeLabel(item.label)));
       const addExtra = (item: { id: string; label: string; path: string }) => {
         const pathKey = normalizePath(item.path);
         const labelKey = normalizeLabel(item.label);
@@ -239,6 +240,7 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
         addExtra({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
         sub.watch_pages.forEach((w) => {
           if (isRedundantWatchPage(sub, w)) return;
+          if (seenLabels.has(normalizeLabel(w.name))) return;
           addExtra({
             id: `cc-w-${w.id}`,
             label: `${sub.name} • ${w.name}`,
