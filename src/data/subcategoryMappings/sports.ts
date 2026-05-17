@@ -354,6 +354,18 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  '/sports/nhl/4-nations-face-off': {
+    title: '4-Nations Face Off',
+    description: 'NHL 4-Nations Face Off tournament games, highlights and coverage',
+    icon: Trophy,
+    parent: { route: '/sports/nhl', name: 'NHL Hockey' }
+  },
+  '/sports/nhl/4-nations-face-off/nations-hockey': {
+    title: 'Nations Hockey',
+    description: 'Nations Hockey matchups, highlights and coverage from the 4-Nations Face Off',
+    icon: Trophy,
+    parent: { route: '/sports/nhl/4-nations-face-off', name: '4-Nations Face Off' }
+  },
 
   // Horse Sports
   'sports-horse-racing': {
