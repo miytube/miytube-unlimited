@@ -809,6 +809,14 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="sports-college-track-nested" path="/sports/college/track" element={<GenericSubcategoryPage />} />,
   <Route key="sports-college-bowl-nested" path="/sports/college/bowl" element={<GenericSubcategoryPage />} />,
 
+  // Track & Field custom categories (under Sports)
+  <Route key="sports-pro-track" path="/sports/professional-track-field" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-pro-track-sub" path="/sports/professional-track-field/:subSlug" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-pro-track-watch" path="/sports/professional-track-field/:subSlug/:watchSlug" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-hs-track" path="/sports/high-school-track-field" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-hs-track-sub" path="/sports/high-school-track-field/:subSlug" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-hs-track-watch" path="/sports/high-school-track-field/:subSlug/:watchSlug" element={<GenericSubcategoryPage />} />,
+
   // NBA nested routes
   <Route key="sports-nba-east-playoffs" path="/sports/nba/east-playoffs" element={<GenericSubcategoryPage />} />,
   <Route key="sports-nba-west-playoffs" path="/sports/nba/west-playoffs" element={<GenericSubcategoryPage />} />,
