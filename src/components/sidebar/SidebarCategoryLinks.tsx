@@ -5,12 +5,19 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 
+interface SidebarSubItem {
+  id: string;
+  label: string;
+  path: string;
+  subItems?: Array<{ id: string; label: string; path: string }>;
+}
+
 interface SidebarLink {
   id: string;
   icon: React.ElementType;
   label: string;
   path: string;
-  subItems?: Array<{id: string, label: string, path: string}>;
+  subItems?: SidebarSubItem[];
 }
 
 interface SidebarCategoryProps {
