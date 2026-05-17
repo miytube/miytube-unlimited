@@ -220,10 +220,14 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
       if (!cat) return link;
       const extras: Array<{ id: string; label: string; path: string }> = [];
       const seenPaths = new Set((link.subItems || []).map((item) => normalizePath(item.path)));
+      const normalizeLabel = (label: string) => label.trim().toLowerCase().replace(/\s+/g, ' ');
+      const seenLabels = new Set((link.subItems || []).map((item) => normalizeLabel(item.label)));
       const addExtra = (item: { id: string; label: string; path: string }) => {
         const pathKey = normalizePath(item.path);
-        if (seenPaths.has(pathKey)) return;
+        const labelKey = normalizeLabel(item.label);
+        if (seenPaths.has(pathKey) || seenLabels.has(labelKey)) return;
         seenPaths.add(pathKey);
+        seenLabels.add(labelKey);
         extras.push(item);
       };
       cat.subcategories.forEach((sub) => {
