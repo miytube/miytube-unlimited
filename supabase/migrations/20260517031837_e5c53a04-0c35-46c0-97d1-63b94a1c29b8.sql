@@ -1,0 +1,1 @@
+DELETE FROM public.custom_watch_pages WHERE id = '47151329-3dcb-47ee-9e41-60f32360c782';
