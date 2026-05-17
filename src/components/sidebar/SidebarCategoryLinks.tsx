@@ -87,7 +87,20 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
             </Link>
             {item.subItems!.map((subItem, index) => {
               const isSubActive = location.pathname === subItem.path || location.pathname.startsWith(`${subItem.path}/`);
-              
+              const hasNested = subItem.subItems && subItem.subItems.length > 0;
+
+              if (hasNested) {
+                return (
+                  <NestedSubItem
+                    key={subItem.id}
+                    subItem={subItem}
+                    location={location}
+                    index={index}
+                    isExpanded={isExpanded}
+                  />
+                );
+              }
+
               return (
                 <Link
                   key={subItem.id}
