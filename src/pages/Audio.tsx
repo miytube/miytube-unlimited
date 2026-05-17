@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Music, Upload, Play, Pause, Loader2, Search, Plus } from 'lucide-react';
+import { Music, Upload, Play, Pause, Loader2, Search, Plus, Trash2 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -243,6 +243,26 @@ const Audio = () => {
     }
   };
 
+  const handleDelete = async (track: AudioTrack) => {
+    if (!user) return;
+    if (track.user_id !== user.id && !isAdmin) {
+      toast({ title: 'Not allowed', description: 'You can only delete your own audio.', variant: 'destructive' });
+      return;
+    }
+    if (!confirm(`Delete "${track.title}"? This cannot be undone.`)) return;
+    const { error } = await supabase.from('music_videos').delete().eq('id', track.id);
+    if (error) {
+      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+      return;
+    }
+    if (playingId === track.id) {
+      audioRef.current?.pause();
+      setPlayingId(null);
+    }
+    setTracks((prev) => prev.filter((t) => t.id !== track.id));
+    toast({ title: 'Audio deleted' });
+  };
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
@@ -420,12 +440,23 @@ const Audio = () => {
                         <span className="truncate">{track.category || 'Audio'}</span>
                         <span className="flex-shrink-0 ml-2">{track.views} plays</span>
                       </div>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); togglePlay(track); }}
-                        className="mt-2 text-xs text-primary hover:underline"
-                      >
-                        {isPlaying ? 'Pause preview' : 'Quick play'}
-                      </button>
+                      <div className="flex items-center justify-between mt-2">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); togglePlay(track); }}
+                          className="text-xs text-primary hover:underline"
+                        >
+                          {isPlaying ? 'Pause preview' : 'Quick play'}
+                        </button>
+                        {(isAdmin || (user && user.id === track.user_id)) && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleDelete(track); }}
+                            className="text-xs text-destructive hover:underline inline-flex items-center gap-1"
+                            title="Delete this audio"
+                          >
+                            <Trash2 className="h-3 w-3" /> Delete
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
