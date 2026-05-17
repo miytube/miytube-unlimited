@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import CategoryPage from "@/pages/CategoryPage";
 import Videos from "@/pages/Videos";
 import Audio from "@/pages/Audio";
+import AudioWatch from "@/pages/AudioWatch";
 import Documents from "@/pages/Documents";
 import Comedy from "@/pages/Comedy";
 import Educational from "@/pages/Educational";
@@ -40,6 +41,7 @@ export const categoryRoutes = [
   <Route key="videos-commented" path="/videos/commented" element={<CommentedVideos />} />,
   <Route key="videos-responded" path="/videos/responded" element={<RespondedVideos />} />,
   <Route key="audio" path="/audio" element={<Audio />} />,
+  <Route key="audio-track" path="/audio/track/:id" element={<AudioWatch />} />,
   <Route key="audio-category" path="/audio/:category" element={<GenericSubcategoryPage />} />,
   <Route key="documents" path="/documents" element={<Documents />} />,
   <Route key="comedy" path="/comedy" element={<Comedy />} />,
