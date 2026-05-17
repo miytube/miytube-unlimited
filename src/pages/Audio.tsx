@@ -243,6 +243,26 @@ const Audio = () => {
     }
   };
 
+  const handleDelete = async (track: AudioTrack) => {
+    if (!user) return;
+    if (track.user_id !== user.id && !isAdmin) {
+      toast({ title: 'Not allowed', description: 'You can only delete your own audio.', variant: 'destructive' });
+      return;
+    }
+    if (!confirm(`Delete "${track.title}"? This cannot be undone.`)) return;
+    const { error } = await supabase.from('music_videos').delete().eq('id', track.id);
+    if (error) {
+      toast({ title: 'Delete failed', description: error.message, variant: 'destructive' });
+      return;
+    }
+    if (playingId === track.id) {
+      audioRef.current?.pause();
+      setPlayingId(null);
+    }
+    setTracks((prev) => prev.filter((t) => t.id !== track.id));
+    toast({ title: 'Audio deleted' });
+  };
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
