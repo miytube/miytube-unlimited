@@ -167,8 +167,13 @@ const Audio = () => {
 
   useEffect(() => { fetchTracks(); }, []);
 
+  const normalizeCat = (v: string) =>
+    v.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
   const filteredTracks = tracks.filter((t) => {
-    const matchesCat = activeCategory === 'All' || t.category === activeCategory;
+    const matchesCat =
+      activeCategory === 'All' ||
+      (t.category && normalizeCat(t.category) === normalizeCat(activeCategory));
     const matchesSearch = !searchTerm || t.title.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCat && matchesSearch;
   });
