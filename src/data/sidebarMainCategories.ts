@@ -26,7 +26,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'comedians', name: 'Comedians' },
   { slug: 'comedy', name: 'Comedy' },
   { slug: 'college-sports', name: 'College Sports', route: '/sports/college' },
-  { slug: 'professional-track-field', name: 'Professional Track & Field', route: '/sports/professional-track-field' },
+  { slug: 'track-field', name: 'Track & Field', route: '/sports/track-field' },
   { slug: 'high-school-track-field', name: 'High School Track & Field', route: '/sports/high-school-track-field' },
   { slug: 'cosmetics', name: 'Cosmetics' },
   { slug: 'courts', name: 'Courts' },
