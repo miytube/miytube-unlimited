@@ -292,27 +292,39 @@ const Audio = () => {
                     className="bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow group"
                   >
                     <button
-                      onClick={() => togglePlay(track)}
+                      onClick={() => navigate(`/audio/track/${track.id}`)}
                       className="relative aspect-square w-full bg-muted flex items-center justify-center overflow-hidden"
-                      aria-label={isPlaying ? `Pause ${track.title}` : `Play ${track.title}`}
+                      aria-label={`Open ${track.title}`}
                     >
                       <img
                         src={miyTubeLogo}
                         alt="MiyTube"
                         className="w-3/4 h-3/4 object-contain opacity-80"
                       />
-                      <div className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity ${isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100">
                         <div className="h-14 w-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg">
-                          {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-0.5" />}
+                          <Play className="h-6 w-6 ml-0.5" />
                         </div>
                       </div>
                     </button>
                     <div className="p-3">
-                      <h3 className="font-semibold text-sm truncate" title={track.title}>{track.title}</h3>
+                      <h3
+                        className="font-semibold text-sm truncate cursor-pointer hover:text-primary"
+                        title={track.title}
+                        onClick={() => navigate(`/audio/track/${track.id}`)}
+                      >
+                        {track.title}
+                      </h3>
                       <div className="flex items-center justify-between mt-1 text-xs text-muted-foreground">
                         <span className="truncate">{track.category || 'Audio'}</span>
                         <span className="flex-shrink-0 ml-2">{track.views} plays</span>
                       </div>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); togglePlay(track); }}
+                        className="mt-2 text-xs text-primary hover:underline"
+                      >
+                        {isPlaying ? 'Pause preview' : 'Quick play'}
+                      </button>
                     </div>
                   </div>
                 );
