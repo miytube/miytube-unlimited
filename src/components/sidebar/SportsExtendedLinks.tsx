@@ -173,7 +173,7 @@ export const SportsExtendedLinks: React.FC = () => {
           label: 'Professional Track & Field',
           path: '/sports/track-field/professional',
           subItems: [
-            { id: 'sports-pro-track-field', label: 'Track & Field', path: '/sports/track-field/professional/track-field' },
+            { id: 'sports-pro-track-field', label: 'Track & Field', path: '/c/track-field/professional/track-field' },
           ],
         },
         { id: 'sports-hs-track', label: 'High School Track & Field', path: '/sports/high-school-track-field/meets-events/high-school-track-field' },
