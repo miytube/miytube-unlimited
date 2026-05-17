@@ -51,7 +51,7 @@ interface AudioTrack {
 
 const Audio = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { toast } = useToast();
   const [tracks, setTracks] = useState<AudioTrack[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,6 +62,18 @@ const Audio = () => {
   const tracksPerPage = 25;
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Custom categories merged with built-ins
+  const [customCats, setCustomCats] = useState<string[]>([]);
+  const allCategories = React.useMemo(() => {
+    const merged = Array.from(new Set([...AUDIO_CATEGORIES, ...customCats]));
+    return merged;
+  }, [customCats]);
+
+  // New-category dialog
+  const [newCatOpen, setNewCatOpen] = useState(false);
+  const [newCatName, setNewCatName] = useState('');
+  const [savingCat, setSavingCat] = useState(false);
+
   // Upload state
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -69,6 +81,57 @@ const Audio = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<string>('Pop');
   const [file, setFile] = useState<File | null>(null);
+
+  const fetchCustomCats = async () => {
+    const { data } = await supabase
+      .from('custom_categories')
+      .select('name, description')
+      .eq('is_active', true);
+    // Only audio-flagged custom categories (description marker)
+    const names = (data || [])
+      .filter((r: any) => (r.description || '').toLowerCase().includes('[audio]'))
+      .map((r: any) => r.name as string);
+    setCustomCats(names);
+  };
+
+  useEffect(() => { fetchCustomCats(); }, []);
+
+  const handleCreateCategory = async () => {
+    const name = newCatName.trim();
+    if (!name) return;
+    if (name.length > 50) {
+      toast({ title: 'Name too long', description: 'Max 50 characters', variant: 'destructive' });
+      return;
+    }
+    if (allCategories.some((c) => c.toLowerCase() === name.toLowerCase())) {
+      toast({ title: 'Category already exists', variant: 'destructive' });
+      return;
+    }
+    if (!isAdmin) {
+      toast({ title: 'Admin only', description: 'Only admins can create categories.', variant: 'destructive' });
+      return;
+    }
+    setSavingCat(true);
+    const slug = name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const { error } = await supabase.from('custom_categories').insert({
+      name,
+      slug,
+      description: '[audio] User-created audio category',
+      is_active: true,
+      created_by: user?.id,
+    });
+    setSavingCat(false);
+    if (error) {
+      toast({ title: 'Could not create category', description: error.message, variant: 'destructive' });
+      return;
+    }
+    toast({ title: `Category "${name}" created` });
+    setNewCatOpen(false);
+    setNewCatName('');
+    await fetchCustomCats();
+    setActiveCategory(name);
+    setCategory(name);
+  };
 
   const fetchTracks = async () => {
     setLoading(true);
