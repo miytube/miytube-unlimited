@@ -283,7 +283,7 @@ const Audio = () => {
                   <Select value={category} onValueChange={setCategory}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {AUDIO_CATEGORIES.filter((c) => c !== 'All').map((c) => (
+                      {allCategories.filter((c) => c !== 'All').map((c) => (
                         <SelectItem key={c} value={c}>{c}</SelectItem>
                       ))}
                     </SelectContent>
@@ -316,8 +316,8 @@ const Audio = () => {
           </div>
         </div>
 
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {sortByName(AUDIO_CATEGORIES).map((cat) => (
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 items-center">
+          {sortByName(allCategories).map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -330,6 +330,44 @@ const Audio = () => {
               {cat}
             </button>
           ))}
+          {isAdmin && (
+            <Dialog open={newCatOpen} onOpenChange={setNewCatOpen}>
+              <DialogTrigger asChild>
+                <button
+                  className="px-3 py-1.5 rounded-full text-sm whitespace-nowrap border border-dashed border-primary text-primary hover:bg-primary/10 transition-colors inline-flex items-center gap-1"
+                  title="Create a new audio category"
+                >
+                  <Plus className="h-3.5 w-3.5" /> New Category
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create new audio category</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3">
+                  <Label htmlFor="new-cat-name">Category name</Label>
+                  <Input
+                    id="new-cat-name"
+                    value={newCatName}
+                    onChange={(e) => setNewCatName(e.target.value)}
+                    placeholder="e.g. Spanish & Mexican"
+                    maxLength={50}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleCreateCategory(); }}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Appears as a chip here and in the upload dialog.
+                  </p>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setNewCatOpen(false)}>Cancel</Button>
+                  <Button onClick={handleCreateCategory} disabled={savingCat || !newCatName.trim()}>
+                    {savingCat ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
+                    Create
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         {loading ? (
