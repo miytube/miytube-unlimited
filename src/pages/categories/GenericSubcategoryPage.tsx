@@ -91,6 +91,9 @@ const GenericSubcategoryPage = () => {
   const lastSegment = pathParts[pathParts.length - 1] || '';
   const staticMatchedCustomCat = isCustomRoute ? matchedCustomCat : tree.find((c) => c.slug === lastSegment);
   const customSubs = staticMatchedCustomCat?.subcategories || [];
+  const customWatchPages = isCustomRoute && matchedCustomSub && !customWatchSlug
+    ? matchedCustomSub.watch_pages
+    : [];
 
   return (
     <Layout>
@@ -116,6 +119,26 @@ const GenericSubcategoryPage = () => {
                   <h3 className="font-semibold text-base group-hover:text-primary">{s.name}</h3>
                   {s.description && (
                     <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{s.description}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {customWatchPages.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-medium mb-4">Pages in {displayTitle}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {customWatchPages.map((w) => (
+                <Link
+                  key={w.id}
+                  to={`${matchedCustomRoute || `/c/${matchedCustomCat!.slug}`}/${matchedCustomSub!.slug}/${w.slug}`}
+                  className="group block p-4 bg-card hover:bg-muted border rounded-lg transition-colors"
+                >
+                  <h3 className="font-semibold text-base group-hover:text-primary">{w.name}</h3>
+                  {w.description && (
+                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{w.description}</p>
                   )}
                 </Link>
               ))}
