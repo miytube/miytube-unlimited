@@ -140,7 +140,7 @@ const Audio = () => {
       .from('music_videos')
       .select('id, title, description, video_url, category, duration, user_id, views, created_at, tags')
       .order('created_at', { ascending: false })
-      .limit(200);
+      .limit(1000);
 
     if (error) {
       toast({ title: 'Could not load audio', description: error.message, variant: 'destructive' });
