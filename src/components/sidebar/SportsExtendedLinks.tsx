@@ -162,6 +162,17 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-track-field', label: 'Track & Field (Highlights)', path: '/sports/track-field' }
       ]
     },
+    {
+      id: 'sports-track-field-group',
+      icon: Medal,
+      label: 'Track & Field',
+      path: '/sports/professional-track-field',
+      subItems: [
+        { id: 'sports-pro-track', label: 'Professional Track & Field', path: '/sports/professional-track-field' },
+        { id: 'sports-hs-track', label: 'High School Track & Field', path: '/sports/high-school-track-field/meets-events/high-school-track-field' },
+        { id: 'sports-cif-track', label: 'CIF Track & Field', path: '/sports/high-school-track-field/meets-events/cif-track-field' },
+      ]
+    },
     { 
       id: 'sports-volleyball', 
       icon: Trophy, 
