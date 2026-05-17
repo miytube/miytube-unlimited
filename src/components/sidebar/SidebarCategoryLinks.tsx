@@ -5,12 +5,19 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 
+interface SidebarSubItem {
+  id: string;
+  label: string;
+  path: string;
+  subItems?: Array<{ id: string; label: string; path: string }>;
+}
+
 interface SidebarLink {
   id: string;
   icon: React.ElementType;
   label: string;
   path: string;
-  subItems?: Array<{id: string, label: string, path: string}>;
+  subItems?: SidebarSubItem[];
 }
 
 interface SidebarCategoryProps {
@@ -22,6 +29,58 @@ interface CollapsibleNavLinkProps {
   item: SidebarLink;
   location: { pathname: string };
 }
+
+const NestedSubItem: React.FC<{
+  subItem: SidebarSubItem;
+  location: { pathname: string };
+  index: number;
+  isExpanded: boolean;
+}> = ({ subItem, location, index, isExpanded: parentExpanded }) => {
+  const isSelfActive = location.pathname === subItem.path;
+  const isChildActive = subItem.subItems?.some(
+    (c) => location.pathname === c.path || location.pathname.startsWith(`${c.path}/`)
+  );
+  const [open, setOpen] = useState(isSelfActive || isChildActive);
+  return (
+    <div>
+      <div
+        className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-md hover:bg-secondary/60 transition-all duration-200 ${
+          isSelfActive || isChildActive ? 'text-primary font-medium' : 'text-muted-foreground'
+        } ${parentExpanded ? 'animate-slide-in-item' : ''}`}
+        style={{ animationDelay: `${(index + 1) * 30}ms` }}
+      >
+        <button
+          type="button"
+          onClick={(e) => { e.preventDefault(); setOpen(!open); }}
+          className="p-0.5 hover:text-foreground"
+          aria-label={open ? 'Collapse' : 'Expand'}
+        >
+          <ChevronRight size={12} className={`transition-transform ${open ? 'rotate-90' : ''}`} />
+        </button>
+        <Link to={subItem.path} className="flex-1">{subItem.label}</Link>
+      </div>
+      {open && (
+        <div className="pl-6 space-y-0.5 mt-0.5">
+          {subItem.subItems!.map((c) => {
+            const cActive = location.pathname === c.path || location.pathname.startsWith(`${c.path}/`);
+            return (
+              <Link
+                key={c.id}
+                to={c.path}
+                className={`block px-3 py-1 text-sm rounded-md hover:bg-secondary/60 ${
+                  cActive ? 'text-primary font-medium' : 'text-muted-foreground'
+                }`}
+              >
+                {c.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location }) => {
   const isActive = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
@@ -80,7 +139,20 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
             </Link>
             {item.subItems!.map((subItem, index) => {
               const isSubActive = location.pathname === subItem.path || location.pathname.startsWith(`${subItem.path}/`);
-              
+              const hasNested = subItem.subItems && subItem.subItems.length > 0;
+
+              if (hasNested) {
+                return (
+                  <NestedSubItem
+                    key={subItem.id}
+                    subItem={subItem}
+                    location={location}
+                    index={index}
+                    isExpanded={isExpanded}
+                  />
+                );
+              }
+
               return (
                 <Link
                   key={subItem.id}
