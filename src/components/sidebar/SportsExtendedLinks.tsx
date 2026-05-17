@@ -54,7 +54,9 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-nhl-east', label: 'All-Star East Team', path: '/sports/nhl/east' },
         { id: 'sports-nhl-west', label: 'All-Star West Team', path: '/sports/nhl/west' },
         { id: 'sports-nhl-playoffs', label: 'NHL Playoffs', path: '/sports/nhl/playoffs' },
-        { id: 'sports-nhl-players', label: 'NHL Players & Coaches', path: '/sports/nhl/players' }
+        { id: 'sports-nhl-players', label: 'NHL Players & Coaches', path: '/sports/nhl/players' },
+        { id: 'sports-nhl-4-nations', label: '4-Nations Face Off', path: '/sports/nhl/4-nations-face-off' },
+        { id: 'sports-nhl-nations-hockey', label: 'Nations Hockey', path: '/sports/nhl/4-nations-face-off/nations-hockey' }
       ]
     },
     { 
