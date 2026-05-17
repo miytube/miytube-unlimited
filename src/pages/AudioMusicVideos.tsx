@@ -26,7 +26,9 @@ const AudioMusicVideos: React.FC = () => {
 
     const musicVideos = uploadedVideos.filter((v) => {
       const cat = (v.category || '').toLowerCase().trim();
-      return MUSIC_CATEGORIES.has(cat);
+      const tags = Array.isArray(v.tags) ? v.tags.map((t) => String(t).toLowerCase()) : [];
+      // Only show audio-only uploads in this section
+      return MUSIC_CATEGORIES.has(cat) && tags.includes('audio-only');
     });
 
     if (!genre) return musicVideos;
