@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { Music, Upload, Play, Pause, Loader2, Search } from 'lucide-react';
+import { Music, Upload, Play, Pause, Loader2, Search, Plus } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import miyTubeLogo from '@/assets/miytube-logo.png';
@@ -51,7 +51,7 @@ interface AudioTrack {
 
 const Audio = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { toast } = useToast();
   const [tracks, setTracks] = useState<AudioTrack[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,6 +62,18 @@ const Audio = () => {
   const tracksPerPage = 25;
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Custom categories merged with built-ins
+  const [customCats, setCustomCats] = useState<string[]>([]);
+  const allCategories = React.useMemo(() => {
+    const merged = Array.from(new Set([...AUDIO_CATEGORIES, ...customCats]));
+    return merged;
+  }, [customCats]);
+
+  // New-category dialog
+  const [newCatOpen, setNewCatOpen] = useState(false);
+  const [newCatName, setNewCatName] = useState('');
+  const [savingCat, setSavingCat] = useState(false);
+
   // Upload state
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -69,6 +81,57 @@ const Audio = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<string>('Pop');
   const [file, setFile] = useState<File | null>(null);
+
+  const fetchCustomCats = async () => {
+    const { data } = await supabase
+      .from('custom_categories')
+      .select('name, description')
+      .eq('is_active', true);
+    // Only audio-flagged custom categories (description marker)
+    const names = (data || [])
+      .filter((r: any) => (r.description || '').toLowerCase().includes('[audio]'))
+      .map((r: any) => r.name as string);
+    setCustomCats(names);
+  };
+
+  useEffect(() => { fetchCustomCats(); }, []);
+
+  const handleCreateCategory = async () => {
+    const name = newCatName.trim();
+    if (!name) return;
+    if (name.length > 50) {
+      toast({ title: 'Name too long', description: 'Max 50 characters', variant: 'destructive' });
+      return;
+    }
+    if (allCategories.some((c) => c.toLowerCase() === name.toLowerCase())) {
+      toast({ title: 'Category already exists', variant: 'destructive' });
+      return;
+    }
+    if (!isAdmin) {
+      toast({ title: 'Admin only', description: 'Only admins can create categories.', variant: 'destructive' });
+      return;
+    }
+    setSavingCat(true);
+    const slug = name.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const { error } = await supabase.from('custom_categories').insert({
+      name,
+      slug,
+      description: '[audio] User-created audio category',
+      is_active: true,
+      created_by: user?.id,
+    });
+    setSavingCat(false);
+    if (error) {
+      toast({ title: 'Could not create category', description: error.message, variant: 'destructive' });
+      return;
+    }
+    toast({ title: `Category "${name}" created` });
+    setNewCatOpen(false);
+    setNewCatName('');
+    await fetchCustomCats();
+    setActiveCategory(name);
+    setCategory(name);
+  };
 
   const fetchTracks = async () => {
     setLoading(true);
@@ -220,7 +283,7 @@ const Audio = () => {
                   <Select value={category} onValueChange={setCategory}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {AUDIO_CATEGORIES.filter((c) => c !== 'All').map((c) => (
+                      {allCategories.filter((c) => c !== 'All').map((c) => (
                         <SelectItem key={c} value={c}>{c}</SelectItem>
                       ))}
                     </SelectContent>
@@ -253,8 +316,8 @@ const Audio = () => {
           </div>
         </div>
 
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          {sortByName(AUDIO_CATEGORIES).map((cat) => (
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 items-center">
+          {sortByName(allCategories).map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -267,6 +330,44 @@ const Audio = () => {
               {cat}
             </button>
           ))}
+          {isAdmin && (
+            <Dialog open={newCatOpen} onOpenChange={setNewCatOpen}>
+              <DialogTrigger asChild>
+                <button
+                  className="px-3 py-1.5 rounded-full text-sm whitespace-nowrap border border-dashed border-primary text-primary hover:bg-primary/10 transition-colors inline-flex items-center gap-1"
+                  title="Create a new audio category"
+                >
+                  <Plus className="h-3.5 w-3.5" /> New Category
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create new audio category</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3">
+                  <Label htmlFor="new-cat-name">Category name</Label>
+                  <Input
+                    id="new-cat-name"
+                    value={newCatName}
+                    onChange={(e) => setNewCatName(e.target.value)}
+                    placeholder="e.g. Spanish & Mexican"
+                    maxLength={50}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleCreateCategory(); }}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Appears as a chip here and in the upload dialog.
+                  </p>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setNewCatOpen(false)}>Cancel</Button>
+                  <Button onClick={handleCreateCategory} disabled={savingCat || !newCatName.trim()}>
+                    {savingCat ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
+                    Create
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         {loading ? (
