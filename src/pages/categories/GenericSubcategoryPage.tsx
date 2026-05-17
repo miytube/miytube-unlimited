@@ -103,7 +103,7 @@ const GenericSubcategoryPage = () => {
           IconComponent={DisplayIcon}
         />
 
-        {customSubs.length > 0 && (
+        {customSubs.length > 0 && !customSubSlug && !customWatchSlug && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">Pages in {pageTitle}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
