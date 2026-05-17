@@ -81,7 +81,7 @@ const NestedSubItem: React.FC<{
   );
 };
 
-[State for individual collapsible group is tracked in `CollapsibleNavLink`]
+
 const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location }) => {
   const isActive = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
   const isChildActive = item.subItems?.some(subItem => 
