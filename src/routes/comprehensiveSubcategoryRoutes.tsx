@@ -810,9 +810,9 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="sports-college-bowl-nested" path="/sports/college/bowl" element={<GenericSubcategoryPage />} />,
 
   // Track & Field custom categories (under Sports)
-  <Route key="sports-pro-track" path="/sports/professional-track-field" element={<GenericSubcategoryPage />} />,
-  <Route key="sports-pro-track-sub" path="/sports/professional-track-field/:subSlug" element={<GenericSubcategoryPage />} />,
-  <Route key="sports-pro-track-watch" path="/sports/professional-track-field/:subSlug/:watchSlug" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-track-field-root" path="/sports/track-field" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-track-field-sub" path="/sports/track-field/:subSlug" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-track-field-watch" path="/sports/track-field/:subSlug/:watchSlug" element={<GenericSubcategoryPage />} />,
   <Route key="sports-hs-track" path="/sports/high-school-track-field" element={<GenericSubcategoryPage />} />,
   <Route key="sports-hs-track-sub" path="/sports/high-school-track-field/:subSlug" element={<GenericSubcategoryPage />} />,
   <Route key="sports-hs-track-watch" path="/sports/high-school-track-field/:subSlug/:watchSlug" element={<GenericSubcategoryPage />} />,
