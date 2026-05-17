@@ -440,12 +440,23 @@ const Audio = () => {
                         <span className="truncate">{track.category || 'Audio'}</span>
                         <span className="flex-shrink-0 ml-2">{track.views} plays</span>
                       </div>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); togglePlay(track); }}
-                        className="mt-2 text-xs text-primary hover:underline"
-                      >
-                        {isPlaying ? 'Pause preview' : 'Quick play'}
-                      </button>
+                      <div className="flex items-center justify-between mt-2">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); togglePlay(track); }}
+                          className="text-xs text-primary hover:underline"
+                        >
+                          {isPlaying ? 'Pause preview' : 'Quick play'}
+                        </button>
+                        {(isAdmin || (user && user.id === track.user_id)) && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleDelete(track); }}
+                            className="text-xs text-destructive hover:underline inline-flex items-center gap-1"
+                            title="Delete this audio"
+                          >
+                            <Trash2 className="h-3 w-3" /> Delete
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
