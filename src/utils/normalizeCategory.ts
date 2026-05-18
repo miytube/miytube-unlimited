@@ -19,5 +19,12 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     .replace(/[^a-z0-9-]+/g, '-')   // any other punctuation -> hyphen
     .replace(/-+/g, '-')            // collapse repeated hyphens
     .replace(/^-+|-+$/g, '');       // trim hyphens
-  return cleaned || undefined;
+
+  const aliases: Record<string, string> = {
+    'courts-police-trails': 'courts-trials',
+    'courts-police-trials': 'courts-trials',
+    'court-trials': 'courts-trials',
+  };
+
+  return aliases[cleaned] || cleaned || undefined;
 };
