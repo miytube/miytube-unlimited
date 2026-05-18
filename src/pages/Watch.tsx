@@ -9,6 +9,7 @@ import { VideoComments } from '@/components/watch/VideoComments';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
