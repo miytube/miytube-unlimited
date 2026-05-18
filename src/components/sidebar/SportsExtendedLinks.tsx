@@ -151,7 +151,8 @@ export const SportsExtendedLinks: React.FC = () => {
       path: '/sports/golf',
       subItems: [
         { id: 'sports-pga', label: 'PGA Golf Players', path: '/sports/pga' },
-        { id: 'sports-ryder', label: 'Ryder Cup', path: '/sports/ryder-cup' }
+        { id: 'sports-ryder', label: 'Ryder Cup', path: '/sports/ryder-cup' },
+        { id: 'sports-golf-masters', label: 'Masters', path: '/sports/golf/masters' }
       ]
     },
     { 
