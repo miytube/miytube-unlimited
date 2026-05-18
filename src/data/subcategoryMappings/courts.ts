@@ -10,7 +10,25 @@ export const courtsSubcategories: SubcategoryMapping = {
     icon: Gavel,
     parent: { route: '/courts', name: 'Courts' }
   },
+  'courts-trials': {
+    title: 'Court Trials',
+    description: 'Court proceedings, trials and legal procedures',
+    icon: Gavel,
+    parent: { route: '/courts-police', name: 'Courts & Police' }
+  },
+  'court-trials': {
+    title: 'Court Trials',
+    description: 'Court proceedings, trials and legal procedures',
+    icon: Gavel,
+    parent: { route: '/courts-police', name: 'Courts & Police' }
+  },
   'courts-police-trails': {
+    title: 'Court Trials',
+    description: 'Court proceedings, trials and legal procedures',
+    icon: Gavel,
+    parent: { route: '/courts-police', name: 'Courts & Police' }
+  },
+  'courts-police-trials': {
     title: 'Court Trials',
     description: 'Court proceedings, trials and legal procedures',
     icon: Gavel,
