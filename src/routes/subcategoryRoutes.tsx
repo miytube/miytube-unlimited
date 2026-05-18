@@ -105,6 +105,8 @@ export const subcategoryRoutes = [
   
   /* Courts & Crime Routes */
   <Route key="courts-police-trails" path="/courts-police/trails" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-police-trials" path="/courts-police/trials" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-courts-trials" path="/courts/courts-trials" element={<GenericSubcategoryPage />} />,
   <Route key="courts-police-sentencing" path="/courts-police/sentencing" element={<GenericSubcategoryPage />} />,
   <Route key="courts-police-supreme-court" path="/courts-police/supreme-court" element={<GenericSubcategoryPage />} />,
   <Route key="courts-police-fraud" path="/courts-police/fraud" element={<GenericSubcategoryPage />} />,
