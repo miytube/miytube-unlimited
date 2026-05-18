@@ -228,7 +228,7 @@ export const filterVideosBySubcategory = (
     ? [keyLower, keyHyphenated]
     : [keyLower, keyHyphenated, lastSegment, lastSegmentSpaced];
 
-  const norm = (s: string) => s.toLowerCase().trim().replace(/^\/+/, '');
+  const norm = (s: string) => normalizeCategoryValue(s) || s.toLowerCase().trim().replace(/^\/+/, '');
   const normNoSep = (s: string) => norm(s).replace(/[-\s/]/g, '');
 
   return videos.filter(video => {
