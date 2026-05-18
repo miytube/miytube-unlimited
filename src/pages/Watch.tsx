@@ -229,7 +229,10 @@ const Watch = () => {
                 category: cloudVideo.category,
                 subcategory: cloudVideo.subcategory,
                 isYouTubeEmbed: cloudVideo.is_youtube_embed,
-                youtubeId: cloudVideo.youtube_video_id
+                youtubeId: cloudVideo.youtube_video_id,
+                dbId: cloudVideo.id,
+                dbUserId: cloudVideo.user_id,
+                dbTable: 'uploaded_videos',
               });
               setLoading(false);
               return;
