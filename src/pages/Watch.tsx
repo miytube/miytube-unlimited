@@ -316,7 +316,9 @@ const Watch = () => {
     }
   }, [video, isMusicVideo, navigate]);
 
-  const isUserUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
+  const isLocalUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
+  const isOwner = !!(video?.dbUserId && user?.id && video.dbUserId === user.id);
+  const isUserUpload = isLocalUpload || isOwner || isAdmin;
   
   if (loading) {
     return (
