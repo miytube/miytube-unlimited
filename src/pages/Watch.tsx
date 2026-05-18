@@ -42,6 +42,7 @@ const Watch = () => {
   
   const { getVideoById } = useVideos();
   const { uploadedVideos, isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
+  const { user, isAdmin } = useAuth();
   const [video, setVideo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
