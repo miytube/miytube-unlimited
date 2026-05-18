@@ -9,6 +9,7 @@ import { VideoComments } from '@/components/watch/VideoComments';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -41,6 +42,7 @@ const Watch = () => {
   
   const { getVideoById } = useVideos();
   const { uploadedVideos, isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
+  const { user, isAdmin } = useAuth();
   const [video, setVideo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -200,6 +202,9 @@ const Watch = () => {
                     tags: musicByUUID.tags || [],
                     category: musicByUUID.category,
                     subcategory: musicByUUID.subcategory,
+                    dbId: musicByUUID.id,
+                    dbUserId: musicByUUID.user_id,
+                    dbTable: 'music_videos',
                   });
                   setLoading(false);
                   return;
@@ -224,7 +229,10 @@ const Watch = () => {
                 category: cloudVideo.category,
                 subcategory: cloudVideo.subcategory,
                 isYouTubeEmbed: cloudVideo.is_youtube_embed,
-                youtubeId: cloudVideo.youtube_video_id
+                youtubeId: cloudVideo.youtube_video_id,
+                dbId: cloudVideo.id,
+                dbUserId: cloudVideo.user_id,
+                dbTable: 'uploaded_videos',
               });
               setLoading(false);
               return;
@@ -275,14 +283,29 @@ const Watch = () => {
     }
   };
 
-  const handleDelete = () => {
-    if (videoId) {
-      deleteUploadedVideo(videoId);
-      toast({
-        title: "Video deleted",
-        description: "Your video has been deleted.",
-      });
+  const handleDelete = async () => {
+    try {
+      // Local upload? Use context (also clears DB if cloud-synced).
+      if (videoId && isUploadedVideo(videoId)) {
+        deleteUploadedVideo(videoId);
+      } else if (video?.dbId && video?.dbTable) {
+        const { error } = await supabase
+          .from(video.dbTable as 'uploaded_videos' | 'music_videos')
+          .delete()
+          .eq('id', video.dbId);
+        if (error) throw error;
+      } else {
+        throw new Error('No deletable record found for this video');
+      }
+      toast({ title: 'Video deleted', description: 'The video has been deleted.' });
       navigate('/');
+    } catch (err: any) {
+      console.error('Delete failed:', err);
+      toast({
+        title: 'Delete failed',
+        description: err?.message || 'You may not have permission to delete this video.',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -293,7 +316,9 @@ const Watch = () => {
     }
   }, [video, isMusicVideo, navigate]);
 
-  const isUserUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
+  const isLocalUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
+  const isOwner = !!(video?.dbUserId && user?.id && video.dbUserId === user.id);
+  const isUserUpload = isLocalUpload || isOwner || isAdmin;
   
   if (loading) {
     return (
