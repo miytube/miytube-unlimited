@@ -990,19 +990,19 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const EXACT_MATCH_CATEGORIES = new Set(['shorts', 'sports']);
 
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
-    const categoryLower = category.toLowerCase().trim();
+    const categoryLower = normalizeCategoryValue(category) || category.toLowerCase().trim();
     const requireExactCategory = EXACT_MATCH_CATEGORIES.has(categoryLower);
 
     return uploadedVideos.filter(video => {
-      const vidCategory = video.category?.toLowerCase().trim() || '';
-      const vidSubcategory = video.subcategory?.toLowerCase().trim() || '';
+      const vidCategory = normalizeCategoryValue(video.category) || video.category?.toLowerCase().trim() || '';
+      const vidSubcategory = normalizeCategoryValue(video.subcategory) || video.subcategory?.toLowerCase().trim() || '';
 
       const categoryMatches = requireExactCategory
         ? vidCategory === categoryLower
         : (vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower));
 
       if (subcategory) {
-        const subLower = subcategory.toLowerCase().trim();
+        const subLower = normalizeCategoryValue(subcategory) || subcategory.toLowerCase().trim();
         const subcategoryMatches = vidSubcategory === subLower || isCloseTypo(vidSubcategory, subLower);
         return categoryMatches && subcategoryMatches;
       }

@@ -55,7 +55,7 @@ export const LawJusticeLinks: React.FC = () => {
       label: 'Courts & Police', 
       path: '/courts-police',
       subItems: [
-        { id: 'court-trials', label: 'Court Trials', path: '/court-trials' },
+        { id: 'court-trials', label: 'Court Trials', path: '/courts/courts-trials' },
         { id: 'courts-indictment', label: 'Courts Indictment', path: '/courts-indictment' },
         { id: 'courts-sentencing', label: 'Courts Sentencing', path: '/courts-sentencing' }
       ]

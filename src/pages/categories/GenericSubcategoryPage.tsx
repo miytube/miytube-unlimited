@@ -11,6 +11,7 @@ import { Link, useLocation, Navigate } from 'react-router-dom';
 import { Film, Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
 import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
+import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
@@ -46,9 +47,19 @@ const GenericSubcategoryPage = () => {
   const matchedCustomWatch = customWatchSlug
     ? matchedCustomSub?.watch_pages.find((w) => w.slug === customWatchSlug)
     : undefined;
+  const normalizedCustomSubSlug = normalizeCategoryValue(customSubSlug);
+  const normalizedCustomWatchSlug = normalizeCategoryValue(customWatchSlug);
+  const matchedCanonicalStaticPage = Boolean(
+    !isKnown &&
+      matchedCustomCat &&
+      !matchedCustomSub &&
+      !matchedCustomWatch &&
+      normalizedCustomSubSlug &&
+      normalizeCategoryValue(`${matchedCustomCat.slug}-${normalizedCustomSubSlug}`) === normalizedCustomSubSlug
+  );
   const isCustomRoute = Boolean(
     matchedCustomCat &&
-      (!customSubSlug || matchedCustomSub) &&
+      (!customSubSlug || matchedCustomSub || matchedCanonicalStaticPage) &&
       (!customWatchSlug || matchedCustomWatch)
   );
 
@@ -81,8 +92,8 @@ const GenericSubcategoryPage = () => {
   const subcategoryVideos = isCustomRoute && matchedCustomCat
     ? getVideosByCategory(
         matchedCustomCat.slug,
-        (matchedCustomWatch?.slug || matchedCustomSub?.slug || matchedCustomCat.slug) !== matchedCustomCat.slug
-          ? (matchedCustomWatch?.slug || matchedCustomSub?.slug)
+        (matchedCustomWatch?.slug || matchedCustomSub?.slug || normalizedCustomWatchSlug || normalizedCustomSubSlug || matchedCustomCat.slug) !== matchedCustomCat.slug
+          ? (matchedCustomWatch?.slug || matchedCustomSub?.slug || normalizedCustomWatchSlug || normalizedCustomSubSlug)
           : undefined
       )
     : filterVideosBySubcategory(uploadedVideos, pageTitle, mappingKey);

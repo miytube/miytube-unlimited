@@ -1282,6 +1282,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="fire-land-fires" path="/fire-land-fires" element={<GenericSubcategoryPage />} />,
   <Route key="courts-police" path="/courts-police" element={<GenericSubcategoryPage />} />,
   <Route key="court-trials" path="/court-trials" element={<GenericSubcategoryPage />} />,
+  <Route key="courts-courts-trials" path="/courts/courts-trials" element={<GenericSubcategoryPage />} />,
   
   // Models sidebar routes
   <Route key="models-runway" path="/models/runway" element={<GenericSubcategoryPage />} />,
