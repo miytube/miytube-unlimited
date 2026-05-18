@@ -283,14 +283,29 @@ const Watch = () => {
     }
   };
 
-  const handleDelete = () => {
-    if (videoId) {
-      deleteUploadedVideo(videoId);
-      toast({
-        title: "Video deleted",
-        description: "Your video has been deleted.",
-      });
+  const handleDelete = async () => {
+    try {
+      // Local upload? Use context (also clears DB if cloud-synced).
+      if (videoId && isUploadedVideo(videoId)) {
+        deleteUploadedVideo(videoId);
+      } else if (video?.dbId && video?.dbTable) {
+        const { error } = await supabase
+          .from(video.dbTable as 'uploaded_videos' | 'music_videos')
+          .delete()
+          .eq('id', video.dbId);
+        if (error) throw error;
+      } else {
+        throw new Error('No deletable record found for this video');
+      }
+      toast({ title: 'Video deleted', description: 'The video has been deleted.' });
       navigate('/');
+    } catch (err: any) {
+      console.error('Delete failed:', err);
+      toast({
+        title: 'Delete failed',
+        description: err?.message || 'You may not have permission to delete this video.',
+        variant: 'destructive',
+      });
     }
   };
 
