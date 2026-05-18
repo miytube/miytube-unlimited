@@ -5,6 +5,7 @@
  */
 
 import { UploadedVideo } from '@/context/UploadedVideosContext';
+import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 
 /**
  * True Levenshtein edit distance — used for tight typo tolerance only.
@@ -73,6 +74,10 @@ const detectConference = (text: string): 'east' | 'west' | undefined => {
 };
 
 const routeValueAliases: Record<string, string[]> = {
+  'court-trials': ['courts-trials', 'courts-police-trails', 'courts-police-trials'],
+  'courts-trials': ['court-trials', 'courts-police-trails', 'courts-police-trials'],
+  'courts/courts-trials': ['courts-trials', 'court-trials', 'courts-police-trails', 'courts-police-trials'],
+  'courts-courts-trials': ['courts-trials', 'court-trials', 'courts-police-trails', 'courts-police-trials'],
   'sports/nhl': ['nhl-hockey', 'all-nhl-hockey'],
   'sports-nhl': ['nhl-hockey', 'all-nhl-hockey'],
   'sports/nba/east-playoffs': ['nba-playoffs-25-26', 'nba-east-playoffs'],
