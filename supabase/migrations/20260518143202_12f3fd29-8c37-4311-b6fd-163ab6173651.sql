@@ -1,0 +1,1 @@
+UPDATE public.custom_subcategories SET slug='randb-and-pop' WHERE slug='r-b-pop';
