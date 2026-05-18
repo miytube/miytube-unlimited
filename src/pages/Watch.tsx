@@ -202,6 +202,9 @@ const Watch = () => {
                     tags: musicByUUID.tags || [],
                     category: musicByUUID.category,
                     subcategory: musicByUUID.subcategory,
+                    dbId: musicByUUID.id,
+                    dbUserId: musicByUUID.user_id,
+                    dbTable: 'music_videos',
                   });
                   setLoading(false);
                   return;
