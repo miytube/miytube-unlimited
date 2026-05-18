@@ -22,8 +22,16 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { getSidebarMainCategoryRoute, sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
 
+// IMPORTANT: must match normalizeCategoryValue so created page slugs line up
+// with how videos are tagged (e.g. "R&B & Pop" -> "randb-and-pop", not "r-b-pop").
 const slugify = (s: string) =>
-  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  s
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
 
 type ParentOption = {
   slug: string;
