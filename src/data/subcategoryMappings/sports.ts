@@ -316,6 +316,18 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  '/sports/golf': {
+    title: 'Golf',
+    description: 'Golf tournaments, players, and highlights',
+    icon: Trophy,
+    parent: { route: '/sports', name: 'Sports' }
+  },
+  '/sports/golf/masters': {
+    title: 'Masters',
+    description: 'The Masters golf tournament',
+    icon: Trophy,
+    parent: { route: '/sports/golf', name: 'Golf' }
+  },
 
   // Hockey
   'sports-hockey-countries': {
