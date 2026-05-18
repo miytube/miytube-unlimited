@@ -14,7 +14,7 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     .toLowerCase()
     .trim()
     .replace(/^\/+|\/+$/g, '')      // strip leading/trailing slashes
-    .replace(/[\/\s_]+/g, '-')      // slashes, spaces, underscores -> hyphen
+    .replace(/[\s/_]+/g, '-')       // slashes, spaces, underscores -> hyphen
     .replace(/&/g, 'and')
     .replace(/[^a-z0-9-]+/g, '-')   // any other punctuation -> hyphen
     .replace(/-+/g, '-')            // collapse repeated hyphens
