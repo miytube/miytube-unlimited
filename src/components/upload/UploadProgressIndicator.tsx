@@ -134,9 +134,14 @@ export const UploadProgressIndicator: React.FC = () => {
               Elapsed: {formatTime(elapsedTime)} | Est. total: ~{uploadProgress.estimatedMinutes} min
             </div>
             
-            <p className="text-xs text-amber-500 font-medium">
-              ⚠️ Please keep this page open until upload completes.
-            </p>
+            <div className="text-xs text-amber-600 dark:text-amber-400 font-medium space-y-1 bg-amber-500/10 border border-amber-500/30 rounded-md p-2">
+              <p>⚠️ Do not interrupt this upload:</p>
+              <ul className="list-disc list-inside space-y-0.5 font-normal text-amber-700 dark:text-amber-300">
+                <li>Keep this tab open and focused</li>
+                <li>Don't start another upload until this finishes</li>
+                <li>Large files (1GB+) can take 10–30+ minutes</li>
+              </ul>
+            </div>
           </>
         )}
 
