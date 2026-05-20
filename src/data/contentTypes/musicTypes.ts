@@ -30,6 +30,10 @@ export const musicContentTypes: Record<string, ContentType> = {
         { id: 'trap', name: 'Trap' },
         { id: 'lofi', name: 'Lo-Fi' },
       ]},
+      { id: 'music', name: 'Music', subcategories: [
+        { id: 'spanish', name: 'Spanish & Mexican' },
+        { id: 'music-lyrics-spanish', name: 'Spanish & Mexican Lyrics' },
+      ]},
       { id: 'electronic', name: 'Electronic', subcategories: [
         { id: 'house', name: 'House' },
         { id: 'techno', name: 'Techno' },

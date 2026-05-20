@@ -16,6 +16,8 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'pop', name: 'Pop' },
         { id: 'rock', name: 'Rock' },
         { id: 'hiphop', name: 'Hip Hop' },
+        { id: 'spanish', name: 'Spanish & Mexican' },
+        { id: 'music-lyrics-spanish', name: 'Spanish & Mexican Lyrics' },
       ]},
       { id: 'gaming', name: 'Gaming', subcategories: [
         { id: 'arcade-games', name: 'Arcade Games' },
