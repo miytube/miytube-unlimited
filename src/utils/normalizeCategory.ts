@@ -24,6 +24,12 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'courts-police-trails': 'courts-trials',
     'courts-police-trials': 'courts-trials',
     'court-trials': 'courts-trials',
+    'music-spanish': 'spanish',
+    'mexican-spanish': 'spanish',
+    'music-mexican-spanish': 'spanish',
+    'spanish-mexican-music': 'spanish',
+    'spanich-mexican-music': 'spanish',
+    'music-lyrics-spanish-and-mexican': 'music-lyrics-spanish',
   };
 
   return aliases[cleaned] || cleaned || undefined;

@@ -1,5 +1,5 @@
 
-import { Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 
 // Generate routes for all categories from the mapping
@@ -79,7 +79,7 @@ const categoryKeys = [
   'music-lyrics', 'music-mandarin', 'music-mandarin-lyrics', 'music-christmas',
   'music-christmas-lyrics', 'music-blues', 'music-classical', 'music-country',
   'music-folk', 'music-funk-rock', 'music-alternative', 'music-rock-soul-pop',
-  'music-funk-hiphop-rap', 'music-history', 'music-heavy-metal', 'music-mexican-spanish',
+  'music-funk-hiphop-rap', 'music-history', 'music-heavy-metal',
   'music-soundtracks', 'music-parody', 'music-pop', 'music-rap-reggaeton',
   'music-relaxation', 'music-salsa', 'music-soul-train', 'music-garage',
   'music-artists-interviews', 'music-artists-news', 'music-challenges',
@@ -286,6 +286,9 @@ const categoryKeys = [
   'military-weapons-drones',
 ];
 
-export const allCategoryRoutes = categoryKeys.map(key => (
-  <Route key={key} path={`/${key}`} element={<GenericSubcategoryPage />} />
-));
+export const allCategoryRoutes = [
+  <Route key="music-mexican-spanish-redirect" path="/music-mexican-spanish" element={<Navigate to="/music/spanish" replace />} />,
+  ...categoryKeys.map(key => (
+    <Route key={key} path={`/${key}`} element={<GenericSubcategoryPage />} />
+  )),
+];

@@ -85,6 +85,8 @@ export const subcategoryOptionsByCategory: Record<string, Array<{ id: string; na
     { id: 'country', name: 'Country' },
     { id: 'electronic', name: 'Electronic' },
     { id: 'rnb', name: 'R&B' },
+    { id: 'spanish', name: 'Spanish & Mexican' },
+    { id: 'music-lyrics-spanish', name: 'Spanish & Mexican Lyrics' },
   ],
   'gaming': [
     { id: 'arcade-games', name: 'Arcade Games' },
