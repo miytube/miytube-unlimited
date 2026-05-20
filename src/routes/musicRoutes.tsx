@@ -1,5 +1,6 @@
 
 import { Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Music from "@/pages/Music";
 import MusicGenre from "@/pages/MusicGenre";
 import MusicUpload from "@/pages/MusicUpload";
@@ -9,10 +10,10 @@ import MusicMeditation from "@/pages/MusicMeditation";
 const musicGenres = [
   'lyrics', 'mandarin', 'mandarin-lyrics', 'christmas', 'christmas-lyrics',
   'blues', 'classical', 'country', 'folk', 'funk-rock', 'alternative',
-  'rock-soul-pop', 'funk-hiphop-rap', 'history', 'heavy-metal', 'mexican-spanish',
+  'rock-soul-pop', 'funk-hiphop-rap', 'history', 'heavy-metal',
   'soundtracks', 'parody', 'pop', 'rap-reggaeton', 'relaxation', 'salsa',
   'soul-train', 'garage', 'artists-interviews', 'challenges',
-  'christian', 'r-and-b', 'rock', 'spanish', 'chinese', 'soul', 'jazz', 'playlists',
+  'christian', 'r-and-b', 'rock', 'chinese', 'soul', 'jazz', 'playlists',
   'hiphop', 'electronic', 'indie', 'reggae', 'latin', 'punk', 'metal',
   'grunge', 'rock-grunge', 'alternative-grunge', 'classic-grunge', 'post-grunge'
 ];
@@ -20,6 +21,7 @@ const musicGenres = [
 export const musicRoutes = [
   <Route key="music-main" path="/music" element={<Music />} />,
   <Route key="music-upload" path="/upload/music" element={<MusicUpload />} />,
+  <Route key="music-mexican-spanish-redirect" path="/music/mexican-spanish" element={<Navigate to="/music/spanish" replace />} />,
   <Route key="musical-instruments" path="/musical-instruments" element={<MusicGenre />} />,
   <Route key="music-meditation" path="/music-meditation" element={<MusicMeditation />} />,
   <Route key="muiscmeditation" path="/muiscmeditation" element={<MusicMeditation />} />,
