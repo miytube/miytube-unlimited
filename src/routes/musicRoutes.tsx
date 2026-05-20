@@ -1,6 +1,5 @@
 
-import { Route } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import Music from "@/pages/Music";
 import MusicGenre from "@/pages/MusicGenre";
 import MusicUpload from "@/pages/MusicUpload";
