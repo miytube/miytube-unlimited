@@ -313,7 +313,6 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'music-funk-hiphop-rap': { title: 'Music (Funk, Hip/Hop, Rap)', description: 'Funk, hip hop and rap music', icon: Headphones },
   'music-history': { title: 'Music (History, Musical Work)', description: 'Music history and musical works', icon: BookOpen },
   'music-heavy-metal': { title: 'Music (Heavy Metal)', description: 'Heavy metal music', icon: Guitar },
-  'music-mexican-spanish': { title: 'Music (Mexican, Spanish, Latina)', description: 'Latin, Mexican and Spanish music', icon: Music },
   'music-soundtracks': { title: 'Music (Soundtracks)', description: 'Movie and show soundtracks', icon: Film },
   'music-parody': { title: 'Music (Parody, Satire, Witty)', description: 'Parody and satirical music', icon: Laugh },
   'music-pop': { title: 'Music (Pop, Pop Rock, Traditional Pop)', description: 'Pop and pop rock music', icon: Music },
