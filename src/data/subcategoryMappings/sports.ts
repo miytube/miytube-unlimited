@@ -328,6 +328,12 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports/golf', name: 'Golf' }
   },
+  '/sports/golf/pga-championship': {
+    title: 'PGA Championship',
+    description: 'PGA Championship tournament highlights and recaps',
+    icon: Trophy,
+    parent: { route: '/sports/golf', name: 'Golf' }
+  },
 
   // Hockey
   'sports-hockey-countries': {
