@@ -30,6 +30,10 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'spanish-mexican-music': 'spanish',
     'spanich-mexican-music': 'spanish',
     'music-lyrics-spanish-and-mexican': 'music-lyrics-spanish',
+    'alternative-and-others': 'alternative',
+    'alternative-music': 'alternative',
+    'alternative-pop-and-electropop': 'alternative',
+    'indie-alternative': 'alternative',
   };
 
   return aliases[cleaned] || cleaned || undefined;
