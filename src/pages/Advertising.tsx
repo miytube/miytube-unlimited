@@ -3,9 +3,10 @@ import { Layout } from '@/components/Layout';
 import { CreateAdForm } from '@/components/advertising/CreateAdForm';
 import { MyCampaigns } from '@/components/advertising/MyCampaigns';
 import { AdPricing } from '@/components/advertising/AdPricing';
+import { ContactSales } from '@/components/advertising/ContactSales';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
-import { Megaphone, BarChart3, DollarSign, Plus, Globe } from 'lucide-react';
+import { Megaphone, BarChart3, DollarSign, Plus, Globe, Headset } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -41,6 +42,9 @@ const Advertising = () => {
             </TabsTrigger>
             <TabsTrigger value="pricing" className="flex items-center gap-2">
               <DollarSign className="h-4 w-4" /> Pricing
+            </TabsTrigger>
+            <TabsTrigger value="contact" className="flex items-center gap-2">
+              <Headset className="h-4 w-4" /> Contact Sales
             </TabsTrigger>
             {user && (
               <>
@@ -157,11 +161,31 @@ const Advertising = () => {
                 </div>
               </div>
             </div>
+
+            {/* Contact Sales CTA */}
+            <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-8 mb-12">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                  <h2 className="text-2xl font-semibold mb-2">Mid-Size & Enterprise Advertisers</h2>
+                  <p className="text-muted-foreground max-w-xl">
+                    Need custom ad packages, bulk pricing, or dedicated support? Our sales team works with businesses of all sizes to build the right campaign for your goals.
+                  </p>
+                </div>
+                <Button onClick={() => setActiveTab('contact')} size="lg" className="flex-shrink-0">
+                  <Headset className="h-5 w-5 mr-2" /> Contact Sales
+                </Button>
+              </div>
+            </div>
           </TabsContent>
 
           {/* Pricing Tab */}
           <TabsContent value="pricing">
             <AdPricing />
+          </TabsContent>
+
+          {/* Contact Sales Tab */}
+          <TabsContent value="contact">
+            <ContactSales />
           </TabsContent>
 
           {/* Create Ad Tab */}
