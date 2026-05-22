@@ -58,7 +58,7 @@ export const ContactSales = () => {
     setSubmitted(true);
     toast({
       title: 'Inquiry sent!',
-      description: "We'll get back to you at miytube@aol.com within 1-2 business days.",
+      description: "We'll get back to you at miytube@miytube.com within 1-2 business days.",
     });
   };
 
@@ -69,7 +69,7 @@ export const ContactSales = () => {
         <h3 className="text-2xl font-semibold mb-2">Thank you!</h3>
         <p className="text-muted-foreground max-w-md">
           Your inquiry has been sent to our team at{' '}
-          <a href="mailto:miytube@aol.com" className="text-primary underline">miytube@aol.com</a>.
+          <a href="mailto:miytube@miytube.com" className="text-primary underline">miytube@miytube.com</a>.
           We'll reach out within 1-2 business days.
         </p>
       </div>
@@ -98,8 +98,8 @@ export const ContactSales = () => {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Email</p>
-                <a href="mailto:miytube@aol.com" className="font-medium text-primary hover:underline">
-                  miytube@aol.com
+                <a href="mailto:miytube@miytube.com" className="font-medium text-primary hover:underline">
+                  miytube@miytube.com
                 </a>
               </div>
             </div>
