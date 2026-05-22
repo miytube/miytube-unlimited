@@ -1,4 +1,7 @@
 import { useEffect, useRef } from 'react';
+import { useIsLikelyChina } from '@/hooks/useIsLikelyChina';
+import { HouseAd } from './HouseAd';
+
 
 /**
  * Reusable Google AdSense ad slot.
@@ -32,9 +35,10 @@ export const AdSlot = ({
 }: AdSlotProps) => {
   const insRef = useRef<HTMLModElement | null>(null);
   const pushedRef = useRef(false);
+  const isLikelyChina = useIsLikelyChina();
 
   useEffect(() => {
-    if (pushedRef.current) return;
+    if (pushedRef.current || isLikelyChina) return;
     try {
       // @ts-ignore – adsbygoogle is injected by the AdSense script in index.html
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -43,7 +47,13 @@ export const AdSlot = ({
       // Silently ignore — ad blocker or script not loaded yet
       console.debug('AdSlot push failed (likely ad blocker):', err);
     }
-  }, []);
+  }, [isLikelyChina]);
+
+  // For visitors where AdSense is blocked (mainland China), show a house ad
+  // instead of leaving the slot blank.
+  if (isLikelyChina) {
+    return <HouseAd className={className} />;
+  }
 
   return (
     <div
