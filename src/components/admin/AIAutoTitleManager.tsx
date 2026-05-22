@@ -117,7 +117,7 @@ export const AIAutoTitleManager = () => {
         videos.push({ id: r.id, filename: r.title || '', frames });
       } catch (e: any) {
         errors++;
-        setRecent((p) => [{ id: r.id, status: 'error', error: `extract: ${e?.message || e}` }, ...p].slice(0, 100));
+        setRecent((p) => [{ id: r.id, status: 'error' as const, error: `extract: ${e?.message || e}` }, ...p].slice(0, 100));
       }
     }
 
