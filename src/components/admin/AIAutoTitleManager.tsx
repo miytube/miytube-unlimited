@@ -301,7 +301,14 @@ export const AIAutoTitleManager = () => {
                         <div className="flex-1">
                           <p className="font-medium">{r.title}</p>
                           <p className="text-xs text-muted-foreground">
-                            {r.category} → {r.subcategory} • was: <code>{r.old_title?.slice(0, 50)}</code>
+                            {r.category} → {r.subcategory || '—'}
+                            {typeof r.confidence === 'number' && (
+                              <span className={r.confidence >= 0.7 ? 'text-green-500' : r.confidence >= 0.5 ? 'text-yellow-500' : 'text-destructive'}>
+                                {' '}• {Math.round(r.confidence * 100)}% conf
+                              </span>
+                            )}
+                            {r.frames_used ? <> • {r.frames_used} frames</> : null}
+                            {r.old_title ? <> • was: <code>{r.old_title.slice(0, 40)}</code></> : null}
                           </p>
                         </div>
                       </div>
