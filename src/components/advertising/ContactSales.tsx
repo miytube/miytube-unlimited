@@ -98,8 +98,8 @@ export const ContactSales = () => {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Email</p>
-                <a href="mailto:miytube@aol.com" className="font-medium text-primary hover:underline">
-                  miytube@aol.com
+                <a href="mailto:miytube@miytube.com" className="font-medium text-primary hover:underline">
+                  miytube@miytube.com
                 </a>
               </div>
             </div>
