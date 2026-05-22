@@ -221,6 +221,39 @@ export const AIAutoTitleManager = () => {
           </div>
         </div>
 
+        <div className="flex items-center gap-4 flex-wrap rounded-md border p-3">
+          <div className="flex items-center gap-2">
+            <Switch id="smart" checked={smartMode} onCheckedChange={setSmartMode} disabled={running} />
+            <Label htmlFor="smart" className="cursor-pointer">
+              Smart mode (multi-frame)
+            </Label>
+          </div>
+          <p className="text-xs text-muted-foreground flex-1 min-w-[200px]">
+            {smartMode
+              ? `Samples ${framesPerVideo} frames per video so the AI sees start, middle, and end — far fewer mislabeled videos.`
+              : 'Legacy: uses only the thumbnail (frame 0). Faster but often wrong.'}
+          </p>
+          {smartMode && (
+            <div className="max-w-[120px]">
+              <Label htmlFor="frames" className="text-xs">Frames / video</Label>
+              <Input
+                id="frames"
+                type="number"
+                min={3}
+                max={6}
+                value={framesPerVideo}
+                onChange={(e) => setFramesPerVideo(Math.max(3, Math.min(6, Number(e.target.value) || 5)))}
+                disabled={running}
+              />
+            </div>
+          )}
+        </div>
+
+        {phase && (
+          <p className="text-xs text-muted-foreground italic">{phase}</p>
+        )}
+
+
         <div className="flex items-end gap-3 flex-wrap">
           <div className="flex-1 max-w-[180px]">
             <Label htmlFor="batch">Batch size (1-100)</Label>
