@@ -58,7 +58,7 @@ export const ContactSales = () => {
     setSubmitted(true);
     toast({
       title: 'Inquiry sent!',
-      description: "We'll get back to you at miytube@aol.com within 1-2 business days.",
+      description: "We'll get back to you at miytube@miytube.com within 1-2 business days.",
     });
   };
 
