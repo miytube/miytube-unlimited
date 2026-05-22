@@ -43,6 +43,9 @@ const Advertising = () => {
             <TabsTrigger value="pricing" className="flex items-center gap-2">
               <DollarSign className="h-4 w-4" /> Pricing
             </TabsTrigger>
+            <TabsTrigger value="contact" className="flex items-center gap-2">
+              <Headset className="h-4 w-4" /> Contact Sales
+            </TabsTrigger>
             {user && (
               <>
                 <TabsTrigger value="create" className="flex items-center gap-2">
