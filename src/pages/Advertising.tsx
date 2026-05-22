@@ -161,6 +161,21 @@ const Advertising = () => {
                 </div>
               </div>
             </div>
+
+            {/* Contact Sales CTA */}
+            <div className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-8 mb-12">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                  <h2 className="text-2xl font-semibold mb-2">Mid-Size & Enterprise Advertisers</h2>
+                  <p className="text-muted-foreground max-w-xl">
+                    Need custom ad packages, bulk pricing, or dedicated support? Our sales team works with businesses of all sizes to build the right campaign for your goals.
+                  </p>
+                </div>
+                <Button onClick={() => setActiveTab('contact')} size="lg" className="flex-shrink-0">
+                  <Headset className="h-5 w-5 mr-2" /> Contact Sales
+                </Button>
+              </div>
+            </div>
           </TabsContent>
 
           {/* Pricing Tab */}
