@@ -20,7 +20,21 @@ interface RunResult {
   subcategory?: string;
   error?: string;
   reason?: string;
+  confidence?: number;
+  frames_used?: number;
 }
+
+const FILENAME_FILTER = [
+  'title.ilike.%.480p',
+  'title.ilike.%.360p',
+  'title.ilike.%.720p',
+  'title.ilike.%.1080p',
+  'title.ilike.%.mob',
+  'title.ilike.%.mp4',
+  'title.ilike.%.webm',
+  'title.ilike.%.mov',
+  'title.ilike.upload-%',
+].join(',');
 
 export const AIAutoTitleManager = () => {
   const { toast } = useToast();
