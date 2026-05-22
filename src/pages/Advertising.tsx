@@ -183,6 +183,11 @@ const Advertising = () => {
             <AdPricing />
           </TabsContent>
 
+          {/* Contact Sales Tab */}
+          <TabsContent value="contact">
+            <ContactSales />
+          </TabsContent>
+
           {/* Create Ad Tab */}
           <TabsContent value="create">
             {user ? (
