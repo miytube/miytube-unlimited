@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,9 +22,10 @@ interface RunResult {
 
 export const AIAutoTitleManager = () => {
   const { toast } = useToast();
-  const [batchSize, setBatchSize] = useState(5);
+  const [batchSize, setBatchSize] = useState(100);
   const [running, setRunning] = useState(false);
   const [continuous, setContinuous] = useState(false);
+  const continuousRef = useRef(false);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [totalUpdated, setTotalUpdated] = useState(0);
   const [totalErrors, setTotalErrors] = useState(0);
@@ -59,7 +60,7 @@ export const AIAutoTitleManager = () => {
     });
     if (error) throw error;
     const results: RunResult[] = data?.results || [];
-    setRecent((prev) => [...results, ...prev].slice(0, 50));
+    setRecent((prev) => [...results, ...prev].slice(0, 100));
     setTotalUpdated((n) => n + (data?.updated || 0));
     setTotalErrors((n) => n + (data?.errors || 0));
     return {
@@ -85,25 +86,35 @@ export const AIAutoTitleManager = () => {
   const handleRunAll = async () => {
     setRunning(true);
     setContinuous(true);
+    continuousRef.current = true;
     try {
-      while (true) {
+      while (continuousRef.current) {
         const r = await runBatch();
         await fetchRemaining();
         if (r.processed === 0) break;
-        if (!continuous && r.processed > 0) { /* still continuing */ }
+        if (!continuousRef.current) break;
         // small breather between batches
         await new Promise((res) => setTimeout(res, 1500));
       }
-      toast({ title: 'All done', description: 'No more videos need titling.' });
+      toast({
+        title: continuousRef.current ? 'All done' : 'Stopped',
+        description: continuousRef.current
+          ? 'No more videos need titling.'
+          : 'Continuous run stopped.',
+      });
     } catch (e: any) {
       toast({ title: 'Stopped', description: e.message, variant: 'destructive' });
     } finally {
+      continuousRef.current = false;
       setRunning(false);
       setContinuous(false);
     }
   };
 
-  const stop = () => setContinuous(false);
+  const stop = () => {
+    continuousRef.current = false;
+    setContinuous(false);
+  };
 
   return (
     <Card>
@@ -114,7 +125,8 @@ export const AIAutoTitleManager = () => {
         </CardTitle>
         <CardDescription>
           Uses AI vision to generate real titles, categories, and descriptions for videos that still
-          have raw filename titles (e.g. <code>9c3c744d…480p</code>).
+          have raw filename titles (e.g. <code>9c3c744d…480p</code>). Continuous mode keeps pulling
+          batches until none remain.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -133,16 +145,16 @@ export const AIAutoTitleManager = () => {
           </div>
         </div>
 
-        <div className="flex items-end gap-3">
+        <div className="flex items-end gap-3 flex-wrap">
           <div className="flex-1 max-w-[180px]">
-            <Label htmlFor="batch">Batch size (1-25)</Label>
+            <Label htmlFor="batch">Batch size (1-100)</Label>
             <Input
               id="batch"
               type="number"
               min={1}
-              max={25}
+              max={100}
               value={batchSize}
-              onChange={(e) => setBatchSize(Math.max(1, Math.min(25, Number(e.target.value) || 10)))}
+              onChange={(e) => setBatchSize(Math.max(1, Math.min(100, Number(e.target.value) || 100)))}
               disabled={running}
             />
           </div>
