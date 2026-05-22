@@ -46,31 +46,24 @@ export const AIAutoTitleManager = () => {
   const [totalUpdated, setTotalUpdated] = useState(0);
   const [totalErrors, setTotalErrors] = useState(0);
   const [recent, setRecent] = useState<RunResult[]>([]);
+  const [smartMode, setSmartMode] = useState(true);
+  const [framesPerVideo, setFramesPerVideo] = useState(5);
+  const [phase, setPhase] = useState<string>('');
 
   const fetchRemaining = async () => {
     const { count } = await supabase
       .from('uploaded_videos')
       .select('id', { count: 'exact', head: true })
       .eq('is_cloud_stored', true)
-      .or(
-        [
-          'title.ilike.%.480p',
-          'title.ilike.%.360p',
-          'title.ilike.%.720p',
-          'title.ilike.%.1080p',
-          'title.ilike.%.mob',
-          'title.ilike.%.mp4',
-          'title.ilike.%.webm',
-          'title.ilike.%.mov',
-          'title.ilike.upload-%',
-        ].join(',')
-      );
+      .or(FILENAME_FILTER);
     setRemaining(count ?? 0);
   };
 
   useEffect(() => { fetchRemaining(); }, []);
 
-  const runBatch = async (): Promise<{ updated: number; errors: number; processed: number }> => {
+  // Legacy server-side: server picks rows and uses single thumbnail.
+  const runLegacyBatch = async (): Promise<{ updated: number; errors: number; processed: number }> => {
+    setPhase('Calling AI on thumbnails…');
     const { data, error } = await supabase.functions.invoke('ai-auto-title', {
       body: { batch_size: batchSize },
     });
@@ -85,6 +78,73 @@ export const AIAutoTitleManager = () => {
       processed: data?.processed || 0,
     };
   };
+
+  // Smart: pull a batch, extract frames per video in the browser, post frames to AI.
+  const runSmartBatch = async (): Promise<{ updated: number; errors: number; processed: number }> => {
+    setPhase('Loading batch…');
+    const { data: rows, error } = await supabase
+      .from('uploaded_videos')
+      .select('id, title, cloud_url, video_url, thumbnail_url')
+      .eq('is_cloud_stored', true)
+      .or(FILENAME_FILTER)
+      .order('created_at', { ascending: false })
+      .limit(Math.min(batchSize, 25)); // smaller per-call so we stay under edge timeout
+
+    if (error) throw error;
+    if (!rows || rows.length === 0) {
+      setPhase('');
+      return { updated: 0, errors: 0, processed: 0 };
+    }
+
+    const videos: { id: string; filename: string; frames: string[] }[] = [];
+    let errors = 0;
+    for (let i = 0; i < rows.length; i++) {
+      const r = rows[i] as any;
+      setPhase(`Extracting frames ${i + 1}/${rows.length}…`);
+      const url = r.cloud_url || r.video_url;
+      if (!url) {
+        errors++;
+        setRecent((p) => [{ id: r.id, status: 'error', error: 'no video url' }, ...p].slice(0, 100));
+        continue;
+      }
+      try {
+        const frames = await extractVideoFrames(url, { count: framesPerVideo });
+        if (frames.length === 0) {
+          errors++;
+          setRecent((p) => [{ id: r.id, status: 'skipped', reason: 'no frames extracted' }, ...p].slice(0, 100));
+          continue;
+        }
+        videos.push({ id: r.id, filename: r.title || '', frames });
+      } catch (e: any) {
+        errors++;
+        setRecent((p) => [{ id: r.id, status: 'error', error: `extract: ${e?.message || e}` }, ...p].slice(0, 100));
+      }
+    }
+
+    if (videos.length === 0) {
+      setTotalErrors((n) => n + errors);
+      setPhase('');
+      return { updated: 0, errors, processed: rows.length };
+    }
+
+    setPhase(`Calling AI on ${videos.length} videos × ${framesPerVideo} frames…`);
+    const { data, error: fnErr } = await supabase.functions.invoke('ai-auto-title', {
+      body: { videos },
+    });
+    if (fnErr) throw fnErr;
+    const results: RunResult[] = data?.results || [];
+    setRecent((prev) => [...results, ...prev].slice(0, 100));
+    setTotalUpdated((n) => n + (data?.updated || 0));
+    setTotalErrors((n) => n + (data?.errors || 0) + errors);
+    setPhase('');
+    return {
+      updated: data?.updated || 0,
+      errors: (data?.errors || 0) + errors,
+      processed: rows.length,
+    };
+  };
+
+  const runBatch = () => (smartMode ? runSmartBatch() : runLegacyBatch());
 
   const handleRunOne = async () => {
     setRunning(true);
