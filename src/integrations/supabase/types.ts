@@ -149,6 +149,39 @@ export type Database = {
         }
         Relationships: []
       }
+      advertiser_inquiries: {
+        Row: {
+          budget_range: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          status: string
+        }
+        Insert: {
+          budget_range?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          status?: string
+        }
+        Update: {
+          budget_range?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          status?: string
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           content: string
