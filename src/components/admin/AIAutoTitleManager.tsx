@@ -104,7 +104,7 @@ export const AIAutoTitleManager = () => {
       const url = r.cloud_url || r.video_url;
       if (!url) {
         errors++;
-        setRecent((p) => [{ id: r.id, status: 'error', error: 'no video url' }, ...p].slice(0, 100));
+        setRecent((p) => [{ id: r.id, status: 'error' as const, error: 'no video url' }, ...p].slice(0, 100));
         continue;
       }
       try {
