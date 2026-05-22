@@ -69,7 +69,7 @@ export const ContactSales = () => {
         <h3 className="text-2xl font-semibold mb-2">Thank you!</h3>
         <p className="text-muted-foreground max-w-md">
           Your inquiry has been sent to our team at{' '}
-          <a href="mailto:miytube@aol.com" className="text-primary underline">miytube@aol.com</a>.
+          <a href="mailto:miytube@miytube.com" className="text-primary underline">miytube@miytube.com</a>.
           We'll reach out within 1-2 business days.
         </p>
       </div>
