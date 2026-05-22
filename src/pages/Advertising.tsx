@@ -3,9 +3,10 @@ import { Layout } from '@/components/Layout';
 import { CreateAdForm } from '@/components/advertising/CreateAdForm';
 import { MyCampaigns } from '@/components/advertising/MyCampaigns';
 import { AdPricing } from '@/components/advertising/AdPricing';
+import { ContactSales } from '@/components/advertising/ContactSales';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
-import { Megaphone, BarChart3, DollarSign, Plus, Globe } from 'lucide-react';
+import { Megaphone, BarChart3, DollarSign, Plus, Globe, Headset } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
