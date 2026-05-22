@@ -111,7 +111,7 @@ export const AIAutoTitleManager = () => {
         const frames = await extractVideoFrames(url, { count: framesPerVideo });
         if (frames.length === 0) {
           errors++;
-          setRecent((p) => [{ id: r.id, status: 'skipped', reason: 'no frames extracted' }, ...p].slice(0, 100));
+          setRecent((p) => [{ id: r.id, status: 'skipped' as const, reason: 'no frames extracted' }, ...p].slice(0, 100));
           continue;
         }
         videos.push({ id: r.id, filename: r.title || '', frames });
