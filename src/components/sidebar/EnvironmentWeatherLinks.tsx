@@ -12,6 +12,7 @@ export const EnvironmentWeatherLinks: React.FC = () => {
       path: '/weather',
       subItems: [
         { id: 'weather-forecast', label: 'Weather Forecast', path: '/weather/forecast' },
+        { id: 'weather-snow', label: 'Snow', path: '/weather/snow' },
         { id: 'weather-storms', label: 'Storms & Hurricanes', path: '/weather/storms' },
         { id: 'weather-climate', label: 'Climate Change', path: '/weather/climate' },
         { id: 'weather-extreme', label: 'Extreme Weather', path: '/weather/extreme' }
