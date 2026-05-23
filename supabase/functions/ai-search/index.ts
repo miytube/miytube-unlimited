@@ -66,8 +66,14 @@ serve(async (req) => {
 
     // Always include the raw query as a keyword so the user's exact phrase still matches,
     // even if AI keyword extraction split or dropped words.
-    const rawQuery = query.trim().toLowerCase();
-    const keywordSet = new Set<string>([rawQuery, ...searchKeywords.map(k => k.toLowerCase())]);
+    const cleanKeyword = (value: string) => value
+      .toLowerCase()
+      .replace(/["'`{}[\](),]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const rawQuery = cleanKeyword(query);
+    const keywordSet = new Set<string>([rawQuery, ...searchKeywords.map(cleanKeyword)]);
     // Also break the raw query into individual words (length >= 2) for broader matching
     rawQuery.split(/[\s,_\-|/]+/).filter(w => w.length >= 2).forEach(w => keywordSet.add(w));
     const allKeywords = Array.from(keywordSet).filter(Boolean);
@@ -78,17 +84,22 @@ serve(async (req) => {
 
     // Search across title, description, category, subcategory, tags AND file_name
     // (file_name preserves the original upload name even after AI auto-title rewrites it)
-    const escape = (s: string) => s.replace(/[,()]/g, ' ');
+    const tagSafe = (s: string) => /^[a-z0-9][a-z0-9_-]*$/i.test(s);
     const orConditions = allKeywords.map(k => {
-      const kw = escape(k);
-      return [
+      const kw = k;
+      const conditions = [
         `title.ilike.%${kw}%`,
         `description.ilike.%${kw}%`,
         `category.ilike.%${kw}%`,
         `subcategory.ilike.%${kw}%`,
         `file_name.ilike.%${kw}%`,
-        `tags.cs.{${kw}}`,
-      ].join(',');
+      ];
+
+      if (tagSafe(kw)) {
+        conditions.push(`tags.cs.{${kw}}`);
+      }
+
+      return conditions.join(',');
     }).join(',');
 
     dbQuery = dbQuery.or(orConditions);
@@ -122,7 +133,7 @@ serve(async (req) => {
       .select('*');
 
     const musicOrConditions = allKeywords.map(k => {
-      const kw = k.replace(/[,()]/g, ' ');
+      const kw = k;
       return `title.ilike.%${kw}%,description.ilike.%${kw}%,category.ilike.%${kw}%,file_name.ilike.%${kw}%`;
     }).join(',');
 
