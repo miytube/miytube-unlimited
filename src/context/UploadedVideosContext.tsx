@@ -64,7 +64,7 @@ interface UploadedVideosContextType {
   updateUploadedVideo: (
     id: string,
     updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
-  ) => void;
+  ) => Promise<void>;
   deleteUploadedVideo: (id: string) => void;
   clearUploadedVideos: () => void;
   getVideosByCategory: (category: string, subcategory?: string) => UploadedVideo[];
@@ -417,7 +417,7 @@ const loadVideosFromSupabase = async (): Promise<{
   return { firstBatch, firstRowKeys: seenKeys, loadRemaining };
 };
 
-const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<void> => {
+const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<number> => {
   const supabaseUpdates: Record<string, unknown> = {};
   if (updates.title !== undefined) supabaseUpdates.title = updates.title;
   if (updates.description !== undefined) supabaseUpdates.description = updates.description;
@@ -425,20 +425,27 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
   if (updates.subcategory !== undefined) supabaseUpdates.subcategory = normalizeCategoryValue(updates.subcategory as string);
   if (updates.tags !== undefined) supabaseUpdates.tags = updates.tags;
   if (updates.thumbnail !== undefined) supabaseUpdates.thumbnail_url = updates.thumbnail;
-  
-  if (Object.keys(supabaseUpdates).length > 0) {
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-    const query = supabase.from('uploaded_videos').update(supabaseUpdates);
-    const { error, data } = isUUID
-      ? await query.eq('id', id).select('id')
-      : await query.eq('local_id', id).select('id');
 
-    if (error) {
-      console.error('Error updating video in Supabase:', error);
-    } else {
-      console.log('Updated video in Supabase:', id, 'rows:', data?.length || 0);
-    }
+  if (Object.keys(supabaseUpdates).length === 0) return 0;
+
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+  const query = supabase.from('uploaded_videos').update(supabaseUpdates);
+  const { error, data } = isUUID
+    ? await query.eq('id', id).select('id')
+    : await query.eq('local_id', id).select('id');
+
+  if (error) {
+    console.error('Error updating video in Supabase:', error);
+    throw new Error(error.message || 'Failed to update video');
   }
+  const rows = data?.length || 0;
+  console.log('Updated video in Supabase:', id, 'rows:', rows);
+  if (rows === 0) {
+    throw new Error(
+      "Update blocked: you don't have permission to edit this video. Sign in as the owner or an admin."
+    );
+  }
+  return rows;
 };
 
 const deleteVideoFromSupabase = async (id: string): Promise<void> => {
@@ -923,15 +930,20 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     id: string,
     updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
   ) => {
+    const prevList = uploadedVideos;
     setUploadedVideos(prev =>
       prev.map(video =>
         video.id === id ? { ...video, ...updates } : video
       )
     );
-    // Always persist to Supabase, even if the video isn't in the local list yet
-    // (e.g. loaded directly from cloud on the Watch page).
-    await updateVideoInSupabase(id, updates as Record<string, unknown>);
-    console.log("Updated video:", id, updates);
+    try {
+      await updateVideoInSupabase(id, updates as Record<string, unknown>);
+      console.log("Updated video:", id, updates);
+    } catch (err) {
+      // Revert optimistic local change so the UI matches what's actually saved
+      setUploadedVideos(prevList);
+      throw err;
+    }
   };
 
   const deleteUploadedVideo = async (id: string) => {

@@ -266,19 +266,26 @@ const Watch = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [video?.id]);
 
-  const handleEditSave = (updates: {
+  const handleEditSave = async (updates: {
     title: string;
     description: string;
     category?: string;
     subcategory?: string;
     tags: string[];
   }) => {
-    if (videoId) {
-      updateUploadedVideo(videoId, updates);
+    if (!videoId) return;
+    try {
+      await updateUploadedVideo(videoId, updates);
       setVideo((prev: any) => ({ ...prev, ...updates }));
       toast({
         title: "Video updated",
         description: "Your video has been updated successfully.",
+      });
+    } catch (err) {
+      toast({
+        title: "Couldn't save changes",
+        description: err instanceof Error ? err.message : "Update failed.",
+        variant: "destructive",
       });
     }
   };
