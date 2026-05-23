@@ -930,15 +930,20 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     id: string,
     updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
   ) => {
+    const prevList = uploadedVideos;
     setUploadedVideos(prev =>
       prev.map(video =>
         video.id === id ? { ...video, ...updates } : video
       )
     );
-    // Always persist to Supabase, even if the video isn't in the local list yet
-    // (e.g. loaded directly from cloud on the Watch page).
-    await updateVideoInSupabase(id, updates as Record<string, unknown>);
-    console.log("Updated video:", id, updates);
+    try {
+      await updateVideoInSupabase(id, updates as Record<string, unknown>);
+      console.log("Updated video:", id, updates);
+    } catch (err) {
+      // Revert optimistic local change so the UI matches what's actually saved
+      setUploadedVideos(prevList);
+      throw err;
+    }
   };
 
   const deleteUploadedVideo = async (id: string) => {
