@@ -118,7 +118,7 @@ serve(async (req) => {
       dbQuery = dbQuery.order('created_at', { ascending: false });
     }
 
-    dbQuery = dbQuery.limit(Math.min(limit, 50));
+    dbQuery = dbQuery.limit(200);
 
     const { data: videos, error } = await dbQuery;
 
@@ -126,6 +126,45 @@ serve(async (req) => {
       console.error('Database search error:', error);
       throw new Error('Search query failed');
     }
+
+    const normalizeText = (value: unknown) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const genericTerms = new Set(['a', 'an', 'and', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'the', 'to', 'vs', 'nba', 'game', 'full', 'highlights', 'highlight']);
+    const rawTerms = rawQuery.split(/\s+/).filter(w => w.length >= 2);
+    const importantTerms = rawTerms.filter(w => !genericTerms.has(w));
+    const requiredTerms = importantTerms.length > 0 ? importantTerms : rawTerms;
+
+    const scoreVideo = (video: Record<string, unknown>) => {
+      const primaryText = normalizeText(`${video.title || ''} ${video.file_name || ''}`);
+      const secondaryText = normalizeText(`${video.description || ''} ${(video.tags as string[] | null || []).join(' ')}`);
+      const categoryText = normalizeText(`${video.category || ''} ${video.subcategory || ''}`);
+      const allText = `${primaryText} ${secondaryText} ${categoryText}`;
+
+      const requiredMatches = requiredTerms.filter(term => allText.includes(term)).length;
+      const primaryMatches = requiredTerms.filter(term => primaryText.includes(term)).length;
+      const secondaryMatches = requiredTerms.filter(term => secondaryText.includes(term)).length;
+      const categoryMatches = requiredTerms.filter(term => categoryText.includes(term)).length;
+
+      let score = 0;
+      if (rawQuery && primaryText.includes(rawQuery)) score += 1000;
+      score += primaryMatches * 120;
+      score += secondaryMatches * 45;
+      score += categoryMatches * 10;
+      score += requiredMatches * 20;
+
+      return { score, requiredMatches };
+    };
+
+    const minRequiredMatches = requiredTerms.length > 1 ? Math.min(2, requiredTerms.length) : 1;
+    const rankedVideos = (videos || [])
+      .map(video => ({ video, ...scoreVideo(video as Record<string, unknown>) }))
+      .filter(item => requiredTerms.length === 0 || item.requiredMatches >= minRequiredMatches)
+      .sort((a, b) => {
+        if (sortBy === 'relevance' && b.score !== a.score) return b.score - a.score;
+        if (sortBy === 'views') return ((b.video.views as number | null) || 0) - ((a.video.views as number | null) || 0);
+        return new Date((b.video.created_at as string) || 0).getTime() - new Date((a.video.created_at as string) || 0).getTime();
+      })
+      .slice(0, Math.min(limit, 50))
+      .map(item => item.video);
 
     // Also search music_videos (include file_name fallback)
     let musicQuery = supabase
@@ -142,11 +181,11 @@ serve(async (req) => {
     const { data: musicVideos } = await musicQuery;
 
     return new Response(JSON.stringify({
-      videos: videos || [],
+      videos: rankedVideos || [],
       musicVideos: musicVideos || [],
       searchIntent,
       detectedCategory,
-      totalResults: (videos?.length || 0) + (musicVideos?.length || 0),
+      totalResults: (rankedVideos?.length || 0) + (musicVideos?.length || 0),
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
