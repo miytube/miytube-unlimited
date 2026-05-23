@@ -417,7 +417,7 @@ const loadVideosFromSupabase = async (): Promise<{
   return { firstBatch, firstRowKeys: seenKeys, loadRemaining };
 };
 
-const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<void> => {
+const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<number> => {
   const supabaseUpdates: Record<string, unknown> = {};
   if (updates.title !== undefined) supabaseUpdates.title = updates.title;
   if (updates.description !== undefined) supabaseUpdates.description = updates.description;
@@ -425,20 +425,27 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
   if (updates.subcategory !== undefined) supabaseUpdates.subcategory = normalizeCategoryValue(updates.subcategory as string);
   if (updates.tags !== undefined) supabaseUpdates.tags = updates.tags;
   if (updates.thumbnail !== undefined) supabaseUpdates.thumbnail_url = updates.thumbnail;
-  
-  if (Object.keys(supabaseUpdates).length > 0) {
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-    const query = supabase.from('uploaded_videos').update(supabaseUpdates);
-    const { error, data } = isUUID
-      ? await query.eq('id', id).select('id')
-      : await query.eq('local_id', id).select('id');
 
-    if (error) {
-      console.error('Error updating video in Supabase:', error);
-    } else {
-      console.log('Updated video in Supabase:', id, 'rows:', data?.length || 0);
-    }
+  if (Object.keys(supabaseUpdates).length === 0) return 0;
+
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+  const query = supabase.from('uploaded_videos').update(supabaseUpdates);
+  const { error, data } = isUUID
+    ? await query.eq('id', id).select('id')
+    : await query.eq('local_id', id).select('id');
+
+  if (error) {
+    console.error('Error updating video in Supabase:', error);
+    throw new Error(error.message || 'Failed to update video');
   }
+  const rows = data?.length || 0;
+  console.log('Updated video in Supabase:', id, 'rows:', rows);
+  if (rows === 0) {
+    throw new Error(
+      "Update blocked: you don't have permission to edit this video. Sign in as the owner or an admin."
+    );
+  }
+  return rows;
 };
 
 const deleteVideoFromSupabase = async (id: string): Promise<void> => {
