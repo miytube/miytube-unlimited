@@ -64,25 +64,36 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Build search pattern
-    const searchPattern = searchKeywords.map(k => `%${k.toLowerCase()}%`);
+    // Always include the raw query as a keyword so the user's exact phrase still matches,
+    // even if AI keyword extraction split or dropped words.
+    const rawQuery = query.trim().toLowerCase();
+    const keywordSet = new Set<string>([rawQuery, ...searchKeywords.map(k => k.toLowerCase())]);
+    // Also break the raw query into individual words (length >= 2) for broader matching
+    rawQuery.split(/[\s,_\-|/]+/).filter(w => w.length >= 2).forEach(w => keywordSet.add(w));
+    const allKeywords = Array.from(keywordSet).filter(Boolean);
 
     let dbQuery = supabase
       .from('uploaded_videos')
       .select('*');
 
-    // Apply text search across title, description, category, tags
-    // Use OR conditions for each keyword
-    const orConditions = searchKeywords.map(k => {
-      const kw = k.toLowerCase();
-      return `title.ilike.%${kw}%,description.ilike.%${kw}%,category.ilike.%${kw}%,subcategory.ilike.%${kw}%`;
+    // Search across title, description, category, subcategory, tags AND file_name
+    // (file_name preserves the original upload name even after AI auto-title rewrites it)
+    const escape = (s: string) => s.replace(/[,()]/g, ' ');
+    const orConditions = allKeywords.map(k => {
+      const kw = escape(k);
+      return [
+        `title.ilike.%${kw}%`,
+        `description.ilike.%${kw}%`,
+        `category.ilike.%${kw}%`,
+        `subcategory.ilike.%${kw}%`,
+        `file_name.ilike.%${kw}%`,
+        `tags.cs.{${kw}}`,
+      ].join(',');
     }).join(',');
 
     dbQuery = dbQuery.or(orConditions);
 
     // Only filter by category if the USER explicitly picked one in the UI.
-    // Don't filter by AI-detected category — it makes title searches miss videos
-    // whose category doesn't match the AI's guess.
     if (category) {
       dbQuery = dbQuery.ilike('category', `%${category}%`);
     }
