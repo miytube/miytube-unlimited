@@ -116,14 +116,14 @@ serve(async (req) => {
       throw new Error('Search query failed');
     }
 
-    // Also search music_videos
+    // Also search music_videos (include file_name fallback)
     let musicQuery = supabase
       .from('music_videos')
       .select('*');
 
-    const musicOrConditions = searchKeywords.map(k => {
-      const kw = k.toLowerCase();
-      return `title.ilike.%${kw}%,description.ilike.%${kw}%,category.ilike.%${kw}%`;
+    const musicOrConditions = allKeywords.map(k => {
+      const kw = k.replace(/[,()]/g, ' ');
+      return `title.ilike.%${kw}%,description.ilike.%${kw}%,category.ilike.%${kw}%,file_name.ilike.%${kw}%`;
     }).join(',');
 
     musicQuery = musicQuery.or(musicOrConditions).limit(10);
