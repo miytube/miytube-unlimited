@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
 interface SearchResult {
@@ -28,6 +28,8 @@ export const useAISearch = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<AISearchResults | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Track the latest in-flight request so stale responses can't overwrite fresh ones
+  const requestSeqRef = useRef(0);
 
   const search = async (
     query: string,
@@ -35,6 +37,7 @@ export const useAISearch = () => {
   ): Promise<AISearchResults | null> => {
     if (!query.trim()) return null;
 
+    const mySeq = ++requestSeqRef.current;
     setIsSearching(true);
     setError(null);
 
@@ -48,6 +51,11 @@ export const useAISearch = () => {
         },
       });
 
+      // Ignore this response if a newer search has already started — prevents
+      // stale/empty responses from overwriting fresh results (the "results
+      // appear then disappear 3 seconds later" bug).
+      if (mySeq !== requestSeqRef.current) return null;
+
       if (fnError) {
         console.error('AI search error:', fnError);
         setError('Search failed. Please try again.');
@@ -57,11 +65,14 @@ export const useAISearch = () => {
       setResults(data);
       return data;
     } catch (err) {
+      if (mySeq !== requestSeqRef.current) return null;
       console.error('AI search failed:', err);
       setError('Search unavailable. Please try again later.');
       return null;
     } finally {
-      setIsSearching(false);
+      if (mySeq === requestSeqRef.current) {
+        setIsSearching(false);
+      }
     }
   };
 
