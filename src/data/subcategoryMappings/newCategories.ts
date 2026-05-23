@@ -2775,6 +2775,12 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Timer,
     parent: { route: '/sports/drag-racing', name: 'Drag Racing' }
   },
+  '/sports/drag-racing/motorcycles': {
+    title: 'Motorcycles Drag Racing',
+    description: 'Motorcycle drag racing events and competitions',
+    icon: Timer,
+    parent: { route: '/sports/drag-racing', name: 'Drag Racing' }
+  },
   '/sports/drag-racing/trucks-big-rigs': {
     title: 'Trucks / Big Rigs Drag Racing',
     description: 'Trucks and big rigs drag racing',
