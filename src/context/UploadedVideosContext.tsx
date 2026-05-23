@@ -64,7 +64,7 @@ interface UploadedVideosContextType {
   updateUploadedVideo: (
     id: string,
     updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
-  ) => void;
+  ) => Promise<void>;
   deleteUploadedVideo: (id: string) => void;
   clearUploadedVideos: () => void;
   getVideosByCategory: (category: string, subcategory?: string) => UploadedVideo[];
