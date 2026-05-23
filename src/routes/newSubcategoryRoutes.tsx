@@ -22,6 +22,7 @@ export const newSubcategoryRoutes = [
   <Route key="sports-drag-racing" path="/sports/drag-racing" element={<GenericSubcategoryPage />} />,
   <Route key="sports-drag-racing-dragster" path="/sports/drag-racing/dragster-funny-hotrod" element={<GenericSubcategoryPage />} />,
   <Route key="sports-drag-racing-vehicles" path="/sports/drag-racing/vehicles-motorcycles" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-drag-racing-motorcycles" path="/sports/drag-racing/motorcycles" element={<GenericSubcategoryPage />} />,
   <Route key="sports-drag-racing-trucks" path="/sports/drag-racing/trucks-big-rigs" element={<GenericSubcategoryPage />} />,
   <Route key="sports-dirt-racing" path="/sports/dirt-racing" element={<GenericSubcategoryPage />} />,
   <Route key="sports-motorcycle-racing" path="/sports/motorcycle-racing" element={<GenericSubcategoryPage />} />,
