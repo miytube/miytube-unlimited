@@ -147,19 +147,26 @@ const ShortsWatch = () => {
     }
   };
 
-  const handleEditSave = (updates: {
+  const handleEditSave = async (updates: {
     title: string;
     description: string;
     category?: string;
     subcategory?: string;
     tags: string[];
   }) => {
-    if (id) {
-      updateUploadedVideo(id, updates);
+    if (!id) return;
+    try {
+      await updateUploadedVideo(id, updates);
       setVideo((prev: any) => ({ ...prev, ...updates }));
       toast({
         title: "Short updated",
         description: "Your short has been updated successfully.",
+      });
+    } catch (err) {
+      toast({
+        title: "Couldn't save changes",
+        description: err instanceof Error ? err.message : "Update failed.",
+        variant: "destructive",
       });
     }
   };
