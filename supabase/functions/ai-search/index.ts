@@ -73,9 +73,18 @@ serve(async (req) => {
       .trim();
 
     const rawQuery = cleanKeyword(query);
-    const keywordSet = new Set<string>([rawQuery, ...searchKeywords.map(cleanKeyword)]);
-    // Also break the raw query into individual words (length >= 2) for broader matching
-    rawQuery.split(/[\s,_\-|/]+/).filter(w => w.length >= 2).forEach(w => keywordSet.add(w));
+    const genericTerms = new Set(['a', 'an', 'and', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'the', 'to', 'vs', 'nba', 'basketball', 'sports', 'game', 'full', 'highlights', 'highlight']);
+    const rawTerms = rawQuery.split(/[\s,_\-|/]+/).filter(w => w.length >= 2);
+    const importantTerms = rawTerms.filter(w => !genericTerms.has(w));
+    const termsForDbSearch = importantTerms.length > 0 ? importantTerms : rawTerms;
+    const keywordSet = new Set<string>([
+      rawQuery,
+      ...searchKeywords.map(cleanKeyword).filter(k => {
+        const parts = k.split(/\s+/).filter(Boolean);
+        return parts.length > 1 || !genericTerms.has(k);
+      }),
+      ...termsForDbSearch,
+    ]);
     const allKeywords = Array.from(keywordSet).filter(Boolean);
 
     let dbQuery = supabase
@@ -128,9 +137,6 @@ serve(async (req) => {
     }
 
     const normalizeText = (value: unknown) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-    const genericTerms = new Set(['a', 'an', 'and', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'the', 'to', 'vs', 'nba', 'game', 'full', 'highlights', 'highlight']);
-    const rawTerms = rawQuery.split(/\s+/).filter(w => w.length >= 2);
-    const importantTerms = rawTerms.filter(w => !genericTerms.has(w));
     const requiredTerms = importantTerms.length > 0 ? importantTerms : rawTerms;
 
     const scoreVideo = (video: Record<string, unknown>) => {
