@@ -9,7 +9,7 @@ export const speechesSubcategories: SubcategoryMapping = {
   'speeches/entertaining': { title: 'Entertaining Speech', description: 'Amuse — engage with humor and stories', icon: Smile, parent },
   'speeches/persuasive': { title: 'Persuasive Speech', description: 'Convince — sway opinions and beliefs', icon: Users, parent },
   'speeches/commencement': { title: 'Commencement Speech', description: 'Celebratory — graduation addresses', icon: BookOpen, parent },
-  'speeches/eulogy': { title: 'Eulogy or Funeral Speech', description: 'Honor — tributes and memorials', icon: Heart, parent },
+  'speeches/eulogy': { title: 'Eulogy, Memorial & Funeral', description: 'Tributes, memorials, and funeral honors', icon: Heart, parent },
   'speeches/demonstrative': { title: 'Demonstrative Speech', description: 'Teach — how-to and demonstrations', icon: Wrench, parent },
   'speeches/debate': { title: 'Debate Speech', description: 'Rules-based discussion about a subject', icon: Scale, parent },
   'speeches/pitch': { title: 'Pitch Speech', description: 'Support or approval of an idea', icon: Megaphone, parent },

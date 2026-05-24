@@ -28,7 +28,7 @@ export const DocumentMediaLinks: React.FC = () => {
         { id: 'speeches-entertaining', label: 'Entertaining — Amuse', path: '/speeches/entertaining' },
         { id: 'speeches-persuasive', label: 'Persuasive — Convince', path: '/speeches/persuasive' },
         { id: 'speeches-commencement', label: 'Commencement — Celebratory', path: '/speeches/commencement' },
-        { id: 'speeches-eulogy', label: 'Eulogy or Funeral — Honor', path: '/speeches/eulogy' },
+        { id: 'speeches-eulogy', label: 'Eulogy, Memorial & Funeral', path: '/speeches/eulogy' },
         { id: 'speeches-demonstrative', label: 'Demonstrative — Teach', path: '/speeches/demonstrative' },
         { id: 'speeches-debate', label: 'Debate — About a Subject', path: '/speeches/debate' },
         { id: 'speeches-pitch', label: 'Pitch — Support an Idea', path: '/speeches/pitch' },

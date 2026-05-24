@@ -18,7 +18,7 @@ export const speechContentTypes: Record<string, ContentType> = {
         { id: 'entertaining', name: 'Entertaining — Amuse' },
         { id: 'persuasive', name: 'Persuasive — Convince' },
         { id: 'commencement', name: 'Commencement — Celebratory' },
-        { id: 'eulogy', name: 'Eulogy or Funeral — Honor' },
+        { id: 'eulogy', name: 'Eulogy, Memorial & Funeral' },
         { id: 'demonstrative', name: 'Demonstrative — Teach' },
         { id: 'debate', name: 'Debate — About a Subject' },
         { id: 'pitch', name: 'Pitch Speech — Support an Idea' },

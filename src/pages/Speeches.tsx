@@ -28,7 +28,7 @@ const Speeches = () => {
       name: 'More Speech Formats',
       path: '/speeches',
       subcategories: [
-        { name: 'Eulogy or Funeral — Honor', path: '/speeches/eulogy', examples: 'Tributes and memorials' },
+        { name: 'Eulogy, Memorial & Funeral', path: '/speeches/eulogy', examples: 'Tributes, memorials, and funeral honors' },
         { name: 'Demonstrative — Teach How-To', path: '/speeches/demonstrative', examples: 'Show how something is done' },
         { name: 'Debate — Rules About a Subject', path: '/speeches/debate', examples: 'Structured argument on a topic' },
         { name: 'Pitch Speech — Support an Idea', path: '/speeches/pitch', examples: 'Win approval for an idea' },
