@@ -34,6 +34,10 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'alternative-music': 'alternative',
     'alternative-pop-and-electropop': 'alternative',
     'indie-alternative': 'alternative',
+    'eulogy-or-funeral-honor': 'eulogy',
+    'eulogy-or-funeral': 'eulogy',
+    'eulogy-and-memorial': 'eulogy',
+    'eulogy-memorial-and-funeral': 'eulogy',
   };
 
   return aliases[cleaned] || cleaned || undefined;

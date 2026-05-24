@@ -1082,8 +1082,8 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/speeches', name: 'Speeches' }
   },
   '/speeches/eulogy': {
-    title: 'Eulogy & Memorial',
-    description: 'Memorial and eulogy speeches',
+    title: 'Eulogy, Memorial & Funeral',
+    description: 'Tributes, memorials, and funeral honors',
     icon: Mic,
     parent: { route: '/speeches', name: 'Speeches' }
   },
