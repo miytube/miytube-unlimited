@@ -59,6 +59,12 @@ export const GamingHobbiesLinks: React.FC = () => {
         { id: 'dances-choreography', label: 'Music Choreography', path: '/dances/choreography' }
       ]
     },
+    {
+      id: 'wsop',
+      icon: Spade,
+      label: 'WSOP',
+      path: '/c/wsop',
+    },
   ];
 
   return <SidebarCategoryLinks title="GAMING & HOBBIES" links={gamingHobbiesLinks} />;
