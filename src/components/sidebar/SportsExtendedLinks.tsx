@@ -13,11 +13,8 @@ export const SportsExtendedLinks: React.FC = () => {
       subItems: [
         { id: 'sports-nba-season', label: 'NBA Basketball Season', path: '/sports/nba/season' },
         { id: 'sports-nba-east', label: 'NBA East Playoffs', path: '/sports/nba/east-playoffs' },
-        { id: 'sports-nba-east-playin', label: 'NBA East Play in Tournament', path: '/c/nba-basketball/nba-east-play-in-tournament' },
         { id: 'sports-nba-players', label: 'NBA Players & Coaches', path: '/sports/nba/players' },
-        { id: 'sports-nba-playoffs-25-26', label: 'NBA Playoffs 25-26', path: '/c/nba-basketball/nba-playoffs-25-26' },
-        { id: 'sports-nba-west', label: 'NBA West Playoffs', path: '/sports/nba/west-playoffs' },
-        { id: 'sports-nba-west-playin', label: 'NBA West Play in Tournament', path: '/c/nba-basketball/nba-west-play-in-tournament' }
+        { id: 'sports-nba-west', label: 'NBA West Playoffs', path: '/sports/nba/west-playoffs' }
       ]
     },
     { 

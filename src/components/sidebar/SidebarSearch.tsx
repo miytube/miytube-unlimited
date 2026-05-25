@@ -3,6 +3,8 @@ import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
+import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 
 interface SearchItem {
   label: string;
@@ -161,8 +163,6 @@ const allItems: SearchItem[] = [
   // Sports
   { label: 'Sports', path: '/sports', category: 'Sports' },
   { label: 'NBA Basketball', path: '/nba-basketball', category: 'Sports' },
-  { label: 'NBA East Play in Tournament', path: '/c/nba-basketball/nba-east-play-in-tournament', category: 'Sports' },
-  { label: 'NBA West Play in Tournament', path: '/c/nba-basketball/nba-west-play-in-tournament', category: 'Sports' },
   { label: 'NFL Football', path: '/nfl-football', category: 'Sports' },
   { label: 'MLB Baseball', path: '/mlb-baseball', category: 'Sports' },
   { label: 'NHL Hockey', path: '/nhl-hockey', category: 'Sports' },
@@ -231,11 +231,46 @@ export const SidebarSearch: React.FC = () => {
   const listRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const { tree } = useCustomCategories();
+
+  // Dynamically include every admin-created category, subcategory, and watch page
+  // so newly added entries appear in search automatically — no hardcoding needed.
+  const dynamicItems = useMemo<SearchItem[]>(() => {
+    const items: SearchItem[] = [];
+    const seen = new Set(allItems.map((i) => i.path.toLowerCase()));
+    const push = (item: SearchItem) => {
+      const key = item.path.toLowerCase();
+      if (seen.has(key)) return;
+      seen.add(key);
+      items.push(item);
+    };
+    tree.forEach((cat) => {
+      const catRoute = getSidebarMainCategoryRoute(cat.slug) || `/c/${cat.slug}`;
+      push({ label: cat.name, path: catRoute, category: cat.name });
+      cat.subcategories.forEach((sub) => {
+        push({
+          label: sub.name,
+          path: `/c/${cat.slug}/${sub.slug}`,
+          category: cat.name,
+        });
+        sub.watch_pages.forEach((w) => {
+          push({
+            label: w.name,
+            path: `/c/${cat.slug}/${sub.slug}/${w.slug}`,
+            category: `${cat.name} • ${sub.name}`,
+          });
+        });
+      });
+    });
+    return items;
+  }, [tree]);
+
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return [];
 
     const query = searchQuery.toLowerCase();
-    const matches = allItems.filter(item =>
+    const combined = [...allItems, ...dynamicItems];
+    const matches = combined.filter(item =>
       item.label.toLowerCase().includes(query) ||
       (item.category && item.category.toLowerCase().includes(query))
     );
@@ -252,7 +287,7 @@ export const SidebarSearch: React.FC = () => {
       if (aLabel !== bLabel) return aLabel - bLabel;
       return al.localeCompare(bl);
     });
-  }, [searchQuery]);
+  }, [searchQuery, dynamicItems]);
 
   // Reset active selection when query changes
   useEffect(() => {
