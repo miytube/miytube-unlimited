@@ -1,0 +1,1 @@
+REVOKE SELECT (uploader_ip) ON public.uploaded_videos FROM anon, authenticated;
