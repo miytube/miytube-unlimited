@@ -5,7 +5,7 @@ import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 
 const gamingSubcategories = [
   'game-challenges', 'game-toys', 'arcade-games', 'casino-slots', 'dominos',
-  'lottery', 'xbox-playstation', 'gaming-cards', 'magic-tricks', 'fps', 'moba', 'esports'
+  'lottery', 'xbox-playstation', 'xbox-playstation-nintendo', 'gaming-cards', 'magic-tricks', 'fps', 'moba', 'esports'
 ];
 
 export const gamingRoutes = [

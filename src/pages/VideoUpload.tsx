@@ -32,7 +32,7 @@ const VideoUpload = () => {
       { id: 'casino-slots', name: 'Casino Slots' },
       { id: 'dominos', name: 'Dominoes & Domino Fails' },
       { id: 'lottery', name: 'Lottery & Prize & Raffle' },
-      { id: 'xbox-playstation', name: 'Xbox & PlayStation' },
+      { id: 'xbox-playstation-nintendo', name: 'Xbox, PlayStation & Nintendo' },
       { id: 'gaming-cards', name: 'Gaming Cards' },
       { id: 'fps', name: 'FPS Games' },
       { id: 'rpg', name: 'RPG Games' },
