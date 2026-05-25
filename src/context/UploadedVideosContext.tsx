@@ -292,6 +292,16 @@ const saveVideoToSupabase = async (video: {
 
     if (existingByIpTitle) {
       console.log('Duplicate detected: Same file_name + size from same IP. File:', video.fileName, 'IP:', uploaderIp);
+      await supabase.from('blocked_uploads').insert({
+        user_id: userId,
+        file_name: video.fileName,
+        file_size: video.fileSize ?? null,
+        title: video.title,
+        category: normalizedCategory,
+        subcategory: normalizedSubcategory,
+        reason: 'duplicate_file',
+        details: `Same file_name + size already uploaded from this IP into ${normalizedCategory || 'no-category'}/${normalizedSubcategory || 'no-subcategory'}`,
+      });
       return { isDuplicate: true, reason: 'location' };
     }
   }
