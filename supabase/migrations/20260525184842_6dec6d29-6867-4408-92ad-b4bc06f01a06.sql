@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET subcategory = 'xbox-playstation-nintendo' WHERE subcategory IN ('xbox-and-playstation-5','xbox-playstation','xbox');
