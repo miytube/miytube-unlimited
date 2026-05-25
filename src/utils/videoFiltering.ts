@@ -97,6 +97,11 @@ const routeValueAliases: Record<string, string[]> = {
   'foods-street': ['travel-street-food'],
   'street-food': ['travel-street-food'],
   'travel/street-food': ['travel-street-food'],
+  'babies/funny': ['funny-and-comedy', 'babies-funny-and-comedy', 'babies-and-infants-funny-and-comedy'],
+  '/babies/funny': ['funny-and-comedy', 'babies-funny-and-comedy', 'babies-and-infants-funny-and-comedy'],
+  'babies-funny': ['funny-and-comedy', 'babies-funny-and-comedy', 'babies-and-infants-funny-and-comedy'],
+  'babies/fails': ['baby-fails', 'babies-fails', 'babies-and-infants-baby-fails'],
+  '/babies/fails': ['baby-fails', 'babies-fails', 'babies-and-infants-baby-fails'],
 };
 
 /**
