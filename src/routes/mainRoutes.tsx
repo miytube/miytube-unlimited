@@ -8,6 +8,7 @@ import Search from "@/pages/Search";
 import Upload from "@/pages/Upload";
 import VideoUpload from "@/pages/VideoUpload";
 import MusicUpload from "@/pages/MusicUpload";
+import BlockedUploads from "@/pages/BlockedUploads";
 import Shorts from "@/pages/Shorts";
 import Trending from "@/pages/Trending";
 import About from "@/pages/About";
@@ -81,6 +82,7 @@ export const mainRoutes = [
   <Route key="upload" path="/upload" element={<Upload />} />,
   <Route key="upload-video" path="/upload/video" element={<VideoUpload />} />,
   <Route key="upload-music" path="/upload/music" element={<MusicUpload />} />,
+  <Route key="blocked-uploads" path="/blocked-uploads" element={<BlockedUploads />} />,
   <Route key="shorts" path="/shorts" element={<Shorts />} />,
   <Route key="trending" path="/trending" element={<Trending />} />,
   <Route key="about" path="/about" element={<About />} />,

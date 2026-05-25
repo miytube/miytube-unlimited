@@ -182,6 +182,45 @@ export type Database = {
         }
         Relationships: []
       }
+      blocked_uploads: {
+        Row: {
+          category: string | null
+          created_at: string
+          details: string | null
+          file_name: string
+          file_size: number | null
+          id: string
+          reason: string
+          subcategory: string | null
+          title: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          details?: string | null
+          file_name: string
+          file_size?: number | null
+          id?: string
+          reason: string
+          subcategory?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          details?: string | null
+          file_name?: string
+          file_size?: number | null
+          id?: string
+          reason?: string
+          subcategory?: string | null
+          title?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           content: string
