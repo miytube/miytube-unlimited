@@ -141,6 +141,12 @@ const allItems: SearchItem[] = [
   { label: 'Card Games', path: '/card-games', category: 'Gaming & Hobbies' },
   { label: 'Magic Tricks', path: '/magic-tricks', category: 'Gaming & Hobbies' },
   { label: 'Game Challenges', path: '/game-challenges', category: 'Gaming & Hobbies' },
+
+  // WSOP / Poker
+  { label: 'WSOP', path: '/c/wsop', category: 'WSOP' },
+  { label: 'Poker (Card Games)', path: '/c/wsop/poker-card-games', category: 'WSOP' },
+  { label: 'Poker (Players)', path: '/c/wsop/poker-players', category: 'WSOP' },
+  { label: 'Poker (News & Gossip)', path: '/c/wsop/poker-news-gossip', category: 'WSOP' },
   
   // Fitness & Health
   { label: 'Physical Fitness', path: '/physical-fitness', category: 'Fitness & Health' },
