@@ -32,7 +32,7 @@ export const LifestyleRelationshipsLinks: React.FC = () => {
       label: 'Babies & Infants', 
       path: '/babies',
       subItems: [
-        { id: 'babies-funny', label: 'Funny & Comedy', path: '/babies/funny' },
+        { id: 'babies-funny', label: 'Babies Funny & Comedy', path: '/babies/funny' },
         { id: 'babies-fails', label: 'Baby Fails', path: '/babies/fails' }
       ]
     },
