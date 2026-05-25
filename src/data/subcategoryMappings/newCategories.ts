@@ -1991,9 +1991,9 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Gamepad2,
     parent: { route: '/gaming', name: 'Gaming' }
   },
-  '/gaming/xbox': {
-    title: 'Xbox & PlayStation 5',
-    description: 'Console gaming',
+  '/gaming/xbox-playstation-nintendo': {
+    title: 'Xbox, PlayStation & Nintendo',
+    description: 'Console gaming on Xbox, PlayStation and Nintendo',
     icon: Gamepad2,
     parent: { route: '/gaming', name: 'Gaming' }
   },

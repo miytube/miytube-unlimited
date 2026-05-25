@@ -24,7 +24,7 @@ const Gaming = () => {
     { id: 'casino-slots', name: 'Casino Slots', icon: <Dice1 size={24} />, path: '/gaming/casino-slots' },
     { id: 'dominos', name: 'Dominoes', icon: <Dice1 size={24} />, path: '/gaming/dominos' },
     { id: 'lottery', name: 'Lottery', icon: <Ticket size={24} />, path: '/gaming/lottery' },
-    { id: 'xbox-playstation', name: 'Xbox & PlayStation', icon: <Smartphone size={24} />, path: '/gaming/xbox-playstation' },
+    { id: 'xbox-playstation-nintendo', name: 'Xbox, PlayStation & Nintendo', icon: <Smartphone size={24} />, path: '/gaming/xbox-playstation-nintendo' },
     { id: 'gaming-cards', name: 'Gaming Cards', icon: <CreditCard size={24} />, path: '/gaming/gaming-cards' },
     { id: 'magic-tricks', name: 'Magic Tricks', icon: <Sparkles size={24} />, path: '/gaming/magic-tricks' },
     { id: 'fps', name: 'FPS', icon: <Target size={24} />, path: '/gaming/fps' },
