@@ -120,6 +120,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'weather', name: 'Weather' },
   { slug: 'wood', name: 'Wood' },
   { slug: 'workers', name: 'Workers' },
+  { slug: 'wsop', name: 'WSOP', route: '/c/wsop' },
 ];
 
 export const sidebarMainCategorySlugs = new Set(

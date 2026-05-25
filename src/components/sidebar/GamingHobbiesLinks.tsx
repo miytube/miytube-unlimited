@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Gamepad2, Dice1, Wand2, Target, Trophy, Puzzle } from 'lucide-react';
+import { Gamepad2, Dice1, Wand2, Target, Trophy, Puzzle, Spade } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const GamingHobbiesLinks: React.FC = () => {
@@ -58,6 +58,12 @@ export const GamingHobbiesLinks: React.FC = () => {
         { id: 'dances-styles', label: 'Different Dance Styles', path: '/dances/styles' },
         { id: 'dances-choreography', label: 'Music Choreography', path: '/dances/choreography' }
       ]
+    },
+    {
+      id: 'wsop',
+      icon: Spade,
+      label: 'WSOP',
+      path: '/c/wsop',
     },
   ];
 
