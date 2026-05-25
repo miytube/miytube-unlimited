@@ -8,6 +8,7 @@ import Search from "@/pages/Search";
 import Upload from "@/pages/Upload";
 import VideoUpload from "@/pages/VideoUpload";
 import MusicUpload from "@/pages/MusicUpload";
+import BlockedUploads from "@/pages/BlockedUploads";
 import Shorts from "@/pages/Shorts";
 import Trending from "@/pages/Trending";
 import About from "@/pages/About";
