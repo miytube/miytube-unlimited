@@ -161,6 +161,8 @@ const allItems: SearchItem[] = [
   // Sports
   { label: 'Sports', path: '/sports', category: 'Sports' },
   { label: 'NBA Basketball', path: '/nba-basketball', category: 'Sports' },
+  { label: 'NBA East Play in Tournament', path: '/c/nba-basketball/nba-east-play-in-tournament', category: 'Sports' },
+  { label: 'NBA West Play in Tournament', path: '/c/nba-basketball/nba-west-play-in-tournament', category: 'Sports' },
   { label: 'NFL Football', path: '/nfl-football', category: 'Sports' },
   { label: 'MLB Baseball', path: '/mlb-baseball', category: 'Sports' },
   { label: 'NHL Hockey', path: '/nhl-hockey', category: 'Sports' },
