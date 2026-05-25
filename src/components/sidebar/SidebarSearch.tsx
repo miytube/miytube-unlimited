@@ -3,6 +3,8 @@ import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
+import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 
 interface SearchItem {
   label: string;
