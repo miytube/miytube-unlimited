@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Gamepad2, Dice1, Wand2, Target, Trophy, Puzzle } from 'lucide-react';
+import { Gamepad2, Dice1, Wand2, Target, Trophy, Puzzle, Spade } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const GamingHobbiesLinks: React.FC = () => {
