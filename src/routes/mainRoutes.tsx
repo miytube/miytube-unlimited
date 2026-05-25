@@ -82,6 +82,7 @@ export const mainRoutes = [
   <Route key="upload" path="/upload" element={<Upload />} />,
   <Route key="upload-video" path="/upload/video" element={<VideoUpload />} />,
   <Route key="upload-music" path="/upload/music" element={<MusicUpload />} />,
+  <Route key="blocked-uploads" path="/blocked-uploads" element={<BlockedUploads />} />,
   <Route key="shorts" path="/shorts" element={<Shorts />} />,
   <Route key="trending" path="/trending" element={<Trending />} />,
   <Route key="about" path="/about" element={<About />} />,
