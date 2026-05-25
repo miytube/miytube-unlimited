@@ -233,11 +233,46 @@ export const SidebarSearch: React.FC = () => {
   const listRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const { tree } = useCustomCategories();
+
+  // Dynamically include every admin-created category, subcategory, and watch page
+  // so newly added entries appear in search automatically — no hardcoding needed.
+  const dynamicItems = useMemo<SearchItem[]>(() => {
+    const items: SearchItem[] = [];
+    const seen = new Set(allItems.map((i) => i.path.toLowerCase()));
+    const push = (item: SearchItem) => {
+      const key = item.path.toLowerCase();
+      if (seen.has(key)) return;
+      seen.add(key);
+      items.push(item);
+    };
+    tree.forEach((cat) => {
+      const catRoute = getSidebarMainCategoryRoute(cat.slug) || `/c/${cat.slug}`;
+      push({ label: cat.name, path: catRoute, category: cat.name });
+      cat.subcategories.forEach((sub) => {
+        push({
+          label: sub.name,
+          path: `/c/${cat.slug}/${sub.slug}`,
+          category: cat.name,
+        });
+        sub.watch_pages.forEach((w) => {
+          push({
+            label: w.name,
+            path: `/c/${cat.slug}/${sub.slug}/${w.slug}`,
+            category: `${cat.name} • ${sub.name}`,
+          });
+        });
+      });
+    });
+    return items;
+  }, [tree]);
+
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) return [];
 
     const query = searchQuery.toLowerCase();
-    const matches = allItems.filter(item =>
+    const combined = [...allItems, ...dynamicItems];
+    const matches = combined.filter(item =>
       item.label.toLowerCase().includes(query) ||
       (item.category && item.category.toLowerCase().includes(query))
     );
