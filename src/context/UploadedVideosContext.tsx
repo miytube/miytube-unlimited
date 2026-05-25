@@ -255,6 +255,16 @@ const saveVideoToSupabase = async (video: {
   
   if (existingById) {
     console.log('Video already exists in Supabase with local_id:', video.localId);
+    await supabase.from('blocked_uploads').insert({
+      user_id: userId,
+      file_name: video.fileName || video.title,
+      file_size: video.fileSize ?? null,
+      title: video.title,
+      category: normalizedCategory,
+      subcategory: normalizedSubcategory,
+      reason: 'duplicate_session',
+      details: 'Same local_id already exists',
+    });
     return { isDuplicate: true, reason: 'session' };
   }
   
