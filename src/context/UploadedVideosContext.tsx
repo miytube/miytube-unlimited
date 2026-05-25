@@ -258,14 +258,17 @@ const saveVideoToSupabase = async (video: {
     return { isDuplicate: true, reason: 'session' };
   }
   
-  // Check if the same file title + size was uploaded from the same IP into
-  // the same destination. Re-uploads to a corrected category must be allowed.
-  if (uploaderIp !== 'unknown' && video.fileSize) {
+  // Check if the EXACT same file (file_name + file_size) was uploaded from the
+  // same IP into the same destination. Using file_name + file_size as the
+  // fingerprint instead of title prevents false positives for doubleheader /
+  // tripleheader games where multiple distinct videos share the same matchup
+  // title but are actually different game files.
+  if (uploaderIp !== 'unknown' && video.fileSize && video.fileName) {
     let duplicateQuery = supabase
       .from('uploaded_videos')
-      .select('id, title, file_size, category, subcategory')
+      .select('id, title, file_name, file_size, category, subcategory')
       .eq('uploader_ip', uploaderIp)
-      .eq('title', video.title)
+      .eq('file_name', video.fileName)
       .eq('file_size', video.fileSize);
 
     duplicateQuery = normalizedCategory
@@ -276,9 +279,9 @@ const saveVideoToSupabase = async (video: {
       : duplicateQuery.is('subcategory', null);
 
     const { data: existingByIpTitle } = await duplicateQuery.maybeSingle();
-    
+
     if (existingByIpTitle) {
-      console.log('Duplicate detected: Same title from same IP address. Title:', video.title, 'IP:', uploaderIp);
+      console.log('Duplicate detected: Same file_name + size from same IP. File:', video.fileName, 'IP:', uploaderIp);
       return { isDuplicate: true, reason: 'location' };
     }
   }
