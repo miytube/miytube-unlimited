@@ -289,7 +289,7 @@ export const SidebarSearch: React.FC = () => {
       if (aLabel !== bLabel) return aLabel - bLabel;
       return al.localeCompare(bl);
     });
-  }, [searchQuery]);
+  }, [searchQuery, dynamicItems]);
 
   // Reset active selection when query changes
   useEffect(() => {
