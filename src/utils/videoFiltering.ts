@@ -87,6 +87,8 @@ const routeValueAliases: Record<string, string[]> = {
   'sports/nba/season': ['nba-season', 'nba-basketball-season', 'nba-regular-season'],
   'sports-nba-season': ['nba-season', 'nba-basketball-season', 'nba-regular-season'],
   'sports/nba': ['nba', 'nba-basketball'],
+  'sports/mlb': ['mlb', 'mlb-baseball', 'all-mlb-baseball'],
+  'sports-mlb': ['mlb', 'mlb-baseball', 'all-mlb-baseball'],
   // Street food sidebar links use multiple aliases; videos are stored under
   // category=travel-and-events / subcategory=travel-street-food.
   'travel-events/street-foods': ['travel-street-food'],
