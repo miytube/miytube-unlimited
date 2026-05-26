@@ -45,7 +45,7 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'doctor', name: 'Doctor & Medical Practice' },
         { id: 'lawyer', name: 'Lawyer & Attorney' },
       ]},
-      { id: 'film', name: 'Film & Movies', subcategories: [
+      { id: 'film', name: 'Film', subcategories: [
         { id: 'westerns', name: 'Westerns' },
         { id: 'spaghetti-westerns', name: 'Spaghetti Westerns' },
         { id: 'modern-westerns', name: 'Modern Westerns' },
