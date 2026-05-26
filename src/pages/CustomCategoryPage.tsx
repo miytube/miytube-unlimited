@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
@@ -125,27 +125,7 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
         )}
 
         {videos.length > 0 ? (
-          <div className="mb-8">
-            <h2 className="text-xl font-medium mb-4">{title} Videos</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {videos.slice(0, 20).map((video) => (
-                <VideoCard
-                  key={video.id}
-                  id={video.id}
-                  title={video.title}
-                  thumbnail={video.thumbnail}
-                  channelName="Your Channel"
-                  views={video.views}
-                  timestamp={video.timestamp}
-                  duration={video.duration}
-                  description={video.description}
-                  category={video.category}
-                  subcategory={video.subcategory}
-                  tags={video.tags}
-                />
-              ))}
-            </div>
-          </div>
+          <VideosPaginated videos={videos} title={title} />
         ) : (
           <div className="text-center py-12 bg-card rounded-lg mb-8">
             <Folder className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
@@ -175,3 +155,73 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
 };
 
 export default CustomCategoryPage;
+
+const PAGE_SIZE = 20;
+
+const VideosPaginated: React.FC<{ videos: any[]; title: string }> = ({ videos, title }) => {
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(videos.length / PAGE_SIZE));
+
+  // Reset to page 1 when the underlying list changes (e.g., new upload)
+  useEffect(() => { setPage(1); }, [videos.length]);
+
+  const pageVideos = videos.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  return (
+    <div className="mb-8">
+      <div className="flex items-baseline justify-between mb-4 flex-wrap gap-2">
+        <h2 className="text-xl font-medium">{title} Videos</h2>
+        <span className="text-sm text-muted-foreground">
+          {videos.length} total · Page {page} of {totalPages}
+        </span>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {pageVideos.map((video) => (
+          <VideoCard
+            key={video.id}
+            id={video.id}
+            title={video.title}
+            thumbnail={video.thumbnail}
+            channelName="Your Channel"
+            views={video.views}
+            timestamp={video.timestamp}
+            duration={video.duration}
+            description={video.description}
+            category={video.category}
+            subcategory={video.subcategory}
+            tags={video.tags}
+          />
+        ))}
+      </div>
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-4 py-2 rounded-md border bg-card hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={`px-3 py-2 rounded-md border text-sm min-w-[40px] ${
+                p === page ? 'bg-primary text-primary-foreground' : 'bg-card hover:bg-muted'
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="px-4 py-2 rounded-md border bg-card hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+          >
+            Next
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
