@@ -464,6 +464,12 @@ export const sidebarSubcategories: SubcategoryMapping = {
   },
 
   // Oceans subcategories
+  '/oceans/sea': {
+    title: 'Sea',
+    description: 'Sea videos and content',
+    icon: Waves,
+    parent: { route: '/oceans', name: 'Waters & Oceans' }
+  },
   '/oceans/marine-life': {
     title: 'Marine Life',
     description: 'Ocean wildlife and marine life',
