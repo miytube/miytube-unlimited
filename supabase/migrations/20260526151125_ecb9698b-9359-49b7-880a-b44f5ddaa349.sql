@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET subcategory = 'boats' WHERE category = 'boats' AND subcategory = 'all-boats';
