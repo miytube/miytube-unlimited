@@ -63,6 +63,7 @@ export const EnvironmentWeatherLinks: React.FC = () => {
       label: 'Waters & Oceans', 
       path: '/oceans',
       subItems: [
+        { id: 'oceans-sea', label: 'Sea', path: '/oceans/sea' },
         { id: 'oceans-marine-life', label: 'Marine Life', path: '/oceans/marine-life' },
         { id: 'oceans-deep-sea', label: 'Deep Sea', path: '/oceans/deep-sea' },
         { id: 'oceans-coral-reefs', label: 'Coral Reefs', path: '/oceans/coral-reefs' },
