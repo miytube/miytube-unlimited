@@ -296,6 +296,9 @@ export const filterVideosBySubcategory = (
         'autos': ['autos-and-vehicles', 'autos-vehicles'],
         'autos-vehicles': ['autos-and-vehicles'],
         'autos-and-vehicles': ['autos-vehicles'],
+        'oceans': ['waters-and-oceans', 'waters-oceans'],
+        'waters-and-oceans': ['oceans', 'waters-oceans'],
+        'waters-oceans': ['oceans', 'waters-and-oceans'],
       };
       const parentVariants = new Set<string>([parentSegment, ...(parentAliases[parentSegment] || [])]);
       const parentMatches = parentVariants.has(vidCategory) ||
