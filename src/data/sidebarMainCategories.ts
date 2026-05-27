@@ -45,6 +45,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'fails', name: 'Fails' },
   { slug: 'family', name: 'Family' },
   { slug: 'film-animation', name: 'Film & Animation' },
+  { slug: 'film', name: 'Film', route: '/film-animation' },
   { slug: 'fire-department', name: 'Fire Department' },
   { slug: 'floods', name: 'Floods' },
   { slug: 'foods', name: 'Foods' },
