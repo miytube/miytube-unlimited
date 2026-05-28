@@ -4,6 +4,7 @@ import { TagInput } from './TagInput';
 import { CategoryCombobox } from './CategoryCombobox';
 import { getSubcategoryOptionsForCategory } from '@/utils/subcategoryOptions';
 import { useAIAutoTag } from '@/hooks/useAIAutoTag';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2 } from 'lucide-react';
 import {
@@ -62,6 +63,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
 }) => {
   const [customCategories, setCustomCategories] = useState<Category[]>([]);
   const [customSubcategories, setCustomSubcategories] = useState<Array<{id: string, name: string}>>([]);
+  const { tree: savedCustomCategoryTree } = useCustomCategories();
   const { analyzeContent, isAnalyzing } = useAIAutoTag();
 
   const handleAIAutoTag = async () => {
@@ -87,8 +89,27 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
     if (defaultCategory && !selectedCategory) setSelectedCategory(defaultCategory);
   }, [defaultTitle, defaultDescription, defaultCategory, videoTitle, videoDescription, selectedCategory]);
 
-  // Combine built-in and custom categories
-  const allCategories = [...categories, ...customCategories];
+  const savedCustomCategories = useMemo<Category[]>(() => {
+    return savedCustomCategoryTree.map((cat) => ({
+      id: cat.slug,
+      name: cat.name,
+      subcategories: cat.subcategories.map((sub) => ({ id: sub.slug, name: sub.name })),
+    }));
+  }, [savedCustomCategoryTree]);
+
+  // Combine built-in, saved custom, and newly typed categories
+  const allCategories = useMemo(() => {
+    const merged = new Map<string, Category>();
+    [...categories, ...savedCustomCategories, ...customCategories].forEach((cat) => {
+      const existing = merged.get(cat.id);
+      merged.set(cat.id, {
+        ...existing,
+        ...cat,
+        subcategories: [...(existing?.subcategories || []), ...(cat.subcategories || [])],
+      });
+    });
+    return Array.from(merged.values());
+  }, [categories, savedCustomCategories, customCategories]);
   
   const selectedCategoryObj = allCategories.find(cat => cat.id === selectedCategory);
   const builtInSubcategories = selectedCategoryObj?.subcategories || [];
