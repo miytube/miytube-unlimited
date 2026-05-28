@@ -74,6 +74,16 @@ const detectConference = (text: string): 'east' | 'west' | undefined => {
 };
 
 const routeValueAliases: Record<string, string[]> = {
+  'music/rock': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
+  'music-rock': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
+  'music/pop': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
+  'music-pop': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
+  'music/soul': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'music-rock-soul-pop', 'rock-soul-pop'],
+  'music-soul': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'music-rock-soul-pop', 'rock-soul-pop'],
+  'music/rnb': ['randb', 'r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
+  'music-rnb': ['randb', 'r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
+  'music/r-and-b': ['randb', 'rnb', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
+  'music-r-and-b': ['randb', 'rnb', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
   'court-trials': ['courts-trials', 'courts-police-trails', 'courts-police-trials'],
   'courts-trials': ['court-trials', 'courts-police-trails', 'courts-police-trials'],
   'courts/courts-trials': ['courts-trials', 'court-trials', 'courts-police-trails', 'courts-police-trials'],
@@ -401,6 +411,14 @@ export const filterVideosByMusicGenre = (
   const genreLower = genre.toLowerCase().trim();
   if (!genreLower) return [];
 
+  const genreAliases: Record<string, string[]> = {
+    rock: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
+    pop: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
+    soul: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'music-rock-soul-pop', 'rock-soul-pop'],
+    rnb: ['randb', 'r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
+    'r-and-b': ['randb', 'rnb', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
+  };
+
   // Build accepted genre variants (hyphen / space / no-separator)
   const genreSpaced = genreLower.replace(/-/g, ' ');
   const genreNoSep = genreLower.replace(/[-\s]/g, '');
@@ -412,6 +430,7 @@ export const filterVideosByMusicGenre = (
     `music ${genreLower}`,
     `music-${genreSpaced}`,
     `music ${genreSpaced}`,
+    ...(genreAliases[genreLower] || []),
   ]);
 
   const norm = (s: string) => s.toLowerCase().trim();
