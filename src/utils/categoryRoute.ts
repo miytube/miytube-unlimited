@@ -28,7 +28,12 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
 
   if (cleanSubcategory.startsWith(`${cleanCategory}/`)) return `/${cleanSubcategory}`;
   if (cleanSubcategory.startsWith(`${cleanCategory}-`)) {
-    return `/${cleanCategory}/${cleanSubcategory.slice(cleanCategory.length + 1)}`;
+    const shortenedSubcategory = cleanSubcategory.slice(cleanCategory.length + 1);
+    const shortenedRoute = `/${cleanCategory}/${shortenedSubcategory}`;
+    if (subcategoryMappings[shortenedRoute] || subcategoryMappings[shortenedRoute.slice(1)]) {
+      return shortenedRoute;
+    }
+    return `/${cleanCategory}/${cleanSubcategory}`;
   }
 
   return `/${cleanCategory}/${cleanSubcategory}`;

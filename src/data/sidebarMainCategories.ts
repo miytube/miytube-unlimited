@@ -90,6 +90,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'non-mammals', name: 'Non-Mammals' },
   { slug: 'nonprofits', name: 'Nonprofits' },
   { slug: 'oceans', name: 'Waters & Oceans' },
+  { slug: 'people', name: 'People' },
   { slug: 'people-blogs', name: 'People & Blogs' },
   { slug: 'physical-fitness', name: 'Fitness & Workout' },
   { slug: 'pictures', name: 'Pictures & Photos' },

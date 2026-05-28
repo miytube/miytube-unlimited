@@ -9,7 +9,7 @@ export const PeopleWorkersLinks: React.FC = () => {
       id: 'people', 
       icon: Users, 
       label: 'People', 
-      path: '/people-blogs',
+      path: '/people',
       subItems: [
         { id: 'people-amazing-things', label: 'Amazing Things', path: '/people/amazing-things' },
         { id: 'people-bigotry', label: 'Bigotry & Favoritism', path: '/people/bigotry' },
