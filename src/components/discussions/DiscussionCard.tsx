@@ -3,7 +3,7 @@ import { MessageCircle, ThumbsUp } from 'lucide-react';
 import { SocialShareButtons } from './SocialShareButtons';
 
 export interface Discussion {
-  id: number;
+  id: number | string;
   category: string;
   title: string;
   author: string;
@@ -12,6 +12,7 @@ export interface Discussion {
   likes: number;
   timestamp: string;
 }
+
 
 interface DiscussionCardProps {
   discussion: Discussion;
