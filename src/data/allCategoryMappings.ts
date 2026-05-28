@@ -310,6 +310,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'music-funk-rock': { title: 'Music (Funk & Hard Rock)', description: 'Funk and hard rock music', icon: Guitar },
   'music-alternative': { title: 'Music (Alternative, Others)', description: 'Alternative music and more', icon: Music },
   'music-rock-soul-pop': { title: 'Music (Rock, Soul, Pop)', description: 'Rock, soul, pop and more', icon: Music },
+  'music-rock': { title: 'R&B, Pop, Soul, Rock', description: 'R&B, pop, soul and rock music', icon: Music },
   'music-funk-hiphop-rap': { title: 'Music (Funk, Hip/Hop, Rap)', description: 'Funk, hip hop and rap music', icon: Headphones },
   'music-history': { title: 'Music (History, Musical Work)', description: 'Music history and musical works', icon: BookOpen },
   'music-heavy-metal': { title: 'Music (Heavy Metal)', description: 'Heavy metal music', icon: Guitar },

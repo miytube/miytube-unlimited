@@ -74,8 +74,8 @@ const detectConference = (text: string): 'east' | 'west' | undefined => {
 };
 
 const routeValueAliases: Record<string, string[]> = {
-  'music/rock': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
-  'music-rock': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
+  'music/rock': ['randb-pop-soul-rock', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
+  'music-rock': ['randb-pop-soul-rock', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
   'music/pop': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
   'music-pop': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
   'music/soul': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'music-rock-soul-pop', 'rock-soul-pop'],
@@ -412,7 +412,7 @@ export const filterVideosByMusicGenre = (
   if (!genreLower) return [];
 
   const genreAliases: Record<string, string[]> = {
-    rock: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
+    rock: ['randb-pop-soul-rock', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
     pop: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
     soul: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'music-rock-soul-pop', 'rock-soul-pop'],
     rnb: ['randb', 'r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
