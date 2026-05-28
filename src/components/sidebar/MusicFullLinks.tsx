@@ -11,7 +11,8 @@ export const MusicFullLinks: React.FC = () => {
       label: 'Music', 
       path: '/music',
       subItems: [
-        { id: 'music-rock', label: 'Rock, Soul, Pop, R&B', path: '/music/rock' },
+        { id: 'music-rock', label: 'R&B, Pop, Soul, Rock', path: '/music/rock' },
+        { id: 'music-rock-music', label: 'Rock Music', path: '/c/music/rock-music' },
         { id: 'music-alternative', label: 'Alternative & Others', path: '/music/alternative' },
         { id: 'music-blues', label: 'Blues', path: '/music/blues' },
         { id: 'music-christmas', label: 'Christmas Jingles', path: '/music/christmas' },
