@@ -447,13 +447,13 @@ export const filterVideosByMusicGenre = (
       categoryLower.startsWith('music ');
     if (!isMusicVideo) return false;
 
-    // Exact (or normalized) match on category/subcategory
+    // Category/subcategory is the ONLY source of truth for genre membership.
+    // Tag matching was removed: generic tags like "rock" on a video whose
+    // subcategory was explicitly moved to "rock-music" should NOT pull it back
+    // onto /music/rock. User rule: if the page was not chosen, the video does
+    // not belong there.
     if (variants.has(categoryLower) || variants.has(subcategoryLower)) return true;
     if (variants.has(normNoSep(video.category || '')) || variants.has(normNoSep(video.subcategory || ''))) return true;
-
-    // Exact tag match only
-    const tags = (video.tags || []).map(t => norm(t));
-    if (tags.some(t => variants.has(t))) return true;
 
     return false;
   });
