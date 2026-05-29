@@ -291,6 +291,10 @@ const Admin = () => {
               <FolderTree className="h-4 w-4" />
               Custom Categories
             </TabsTrigger>
+            <TabsTrigger value="yt-restore" className="flex items-center gap-2">
+              <Youtube className="h-4 w-4" />
+              YouTube Restore
+            </TabsTrigger>
           </TabsList>
           </div>
 
