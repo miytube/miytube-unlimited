@@ -43,13 +43,13 @@ const LegacyVideoRedirect = () => {
             .from("music_videos")
             .select("id,title")
             .or(orClauses)
-            .limit(10);
+            .limit(20);
 
           const { data: vidMatches } = await supabase
             .from("uploaded_videos")
             .select("id,title")
             .or(orClauses)
-            .limit(10);
+            .limit(20);
 
           const all = [
             ...(vidMatches || []).map((v: any) => ({ ...v, kind: "video" })),
@@ -57,17 +57,31 @@ const LegacyVideoRedirect = () => {
           ];
 
           if (all.length > 0) {
-            // pick the title with the most overlapping tokens
+            // Drop common filler words so a match on "the"/"at"/"show" doesn't win.
+            const STOP = new Set([
+              "the","and","for","with","into","from","that","this","you","your",
+              "are","was","were","has","have","had","but","not","all","any",
+              "out","get","got","gets","new","old","one","two","day","show",
+              "video","official","feat","ft","vs","at","on","in","of","to",
+              "a","an","is","it","by","or",
+            ]);
+            const meaningful = topTokens.filter(
+              (t) => t.length > 3 && !STOP.has(t.toLowerCase())
+            );
+            // Require at least 60% of meaningful slug words to appear in title
+            // (and never fewer than 2). Otherwise fall through to /search.
+            const required = Math.max(2, Math.ceil(meaningful.length * 0.6));
+
             const score = (title: string) => {
               const lower = title.toLowerCase();
-              return topTokens.reduce(
+              return meaningful.reduce(
                 (acc, t) => acc + (lower.includes(t.toLowerCase()) ? 1 : 0),
                 0
               );
             };
             all.sort((a: any, b: any) => score(b.title) - score(a.title));
             const best = all[0];
-            if (!cancelled) {
+            if (best && score(best.title) >= required && !cancelled) {
               const url =
                 best.kind === "music"
                   ? `/watch?id=${best.id}&type=music`
