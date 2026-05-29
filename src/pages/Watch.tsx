@@ -213,6 +213,15 @@ const Watch = () => {
             }
             
             if (cloudVideo) {
+              // Flip the YouTube-embed state so the player renders an iframe
+              // instead of trying to load a youtube.com/watch URL as <video src>.
+              if (cloudVideo.is_youtube_embed && cloudVideo.youtube_video_id) {
+                setIsYouTubeVideo(true);
+                setYoutubeVideoId(cloudVideo.youtube_video_id);
+              } else {
+                setIsYouTubeVideo(false);
+                setYoutubeVideoId(null);
+              }
               const videoSource = cloudVideo.cloud_url || cloudVideo.video_url;
               setVideo({
                 id: cloudVideo.local_id || cloudVideo.id,
