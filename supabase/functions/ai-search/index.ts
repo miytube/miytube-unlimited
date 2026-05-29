@@ -197,7 +197,8 @@ serve(async (req) => {
       .slice(0, Math.min(limit, 50))
       .map(item => item.video);
 
-    // Also search music_videos (include file_name fallback)
+    // Also search music_videos with the SAME scoring + filter so unrelated
+    // songs don't appear just because their title contains a stray word.
     let musicQuery = supabase
       .from('music_videos')
       .select('*');
@@ -207,19 +208,32 @@ serve(async (req) => {
       return `title.ilike.%${kw}%,description.ilike.%${kw}%,category.ilike.%${kw}%,file_name.ilike.%${kw}%`;
     }).join(',');
 
-    musicQuery = musicQuery.or(musicOrConditions).limit(10);
+    musicQuery = musicQuery.or(musicOrConditions).limit(200);
 
     const { data: musicVideos } = await musicQuery;
 
+    const rankedMusic = (musicVideos || [])
+      .map(video => ({ video, ...scoreVideo(video as Record<string, unknown>) }))
+      .filter(item => {
+        if (requiredTerms.length === 0) return true;
+        if (item.requiredMatches < minRequiredMatches) return false;
+        if (isShortQuery && item.primaryMatches < 1) return false;
+        return true;
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10)
+      .map(item => item.video);
+
     return new Response(JSON.stringify({
       videos: rankedVideos || [],
-      musicVideos: musicVideos || [],
+      musicVideos: rankedMusic || [],
       searchIntent,
       detectedCategory,
-      totalResults: (rankedVideos?.length || 0) + (musicVideos?.length || 0),
+      totalResults: (rankedVideos?.length || 0) + (rankedMusic?.length || 0),
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
+
   } catch (error) {
     console.error('ai-search error:', error);
     return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
