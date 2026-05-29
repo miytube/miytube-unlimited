@@ -139,16 +139,21 @@ serve(async (req) => {
     const normalizeText = (value: unknown) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
     const requiredTerms = importantTerms.length > 0 ? importantTerms : rawTerms;
 
+    // Whole-word matcher so "love" doesn't match "lovable" / "glove" / "lover"
+    const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const hasWord = (haystack: string, term: string) =>
+      new RegExp(`(?:^|\\s)${escapeRe(term)}(?:\\s|$)`).test(haystack);
+
     const scoreVideo = (video: Record<string, unknown>) => {
       const primaryText = normalizeText(`${video.title || ''} ${video.file_name || ''}`);
       const secondaryText = normalizeText(`${video.description || ''} ${(video.tags as string[] | null || []).join(' ')}`);
       const categoryText = normalizeText(`${video.category || ''} ${video.subcategory || ''}`);
       const allText = `${primaryText} ${secondaryText} ${categoryText}`;
 
-      const requiredMatches = requiredTerms.filter(term => allText.includes(term)).length;
-      const primaryMatches = requiredTerms.filter(term => primaryText.includes(term)).length;
-      const secondaryMatches = requiredTerms.filter(term => secondaryText.includes(term)).length;
-      const categoryMatches = requiredTerms.filter(term => categoryText.includes(term)).length;
+      const requiredMatches = requiredTerms.filter(term => hasWord(allText, term)).length;
+      const primaryMatches = requiredTerms.filter(term => hasWord(primaryText, term)).length;
+      const secondaryMatches = requiredTerms.filter(term => hasWord(secondaryText, term)).length;
+      const categoryMatches = requiredTerms.filter(term => hasWord(categoryText, term)).length;
 
       let score = 0;
       if (rawQuery && primaryText.includes(rawQuery)) score += 1000;
@@ -157,13 +162,22 @@ serve(async (req) => {
       score += categoryMatches * 10;
       score += requiredMatches * 20;
 
-      return { score, requiredMatches };
+      return { score, requiredMatches, primaryMatches };
     };
 
+    // For short queries (1-2 meaningful words like "love" or "money"), require the
+    // match to appear in the TITLE/file_name — not just description or tags — to
+    // avoid returning unrelated videos that only mention the word in passing.
+    const isShortQuery = requiredTerms.length > 0 && requiredTerms.length <= 2;
     const minRequiredMatches = requiredTerms.length > 1 ? Math.min(2, requiredTerms.length) : 1;
     const rankedVideos = (videos || [])
       .map(video => ({ video, ...scoreVideo(video as Record<string, unknown>) }))
-      .filter(item => requiredTerms.length === 0 || item.requiredMatches >= minRequiredMatches)
+      .filter(item => {
+        if (requiredTerms.length === 0) return true;
+        if (item.requiredMatches < minRequiredMatches) return false;
+        if (isShortQuery && item.primaryMatches < 1) return false;
+        return true;
+      })
       .sort((a, b) => {
         if (sortBy === 'relevance' && b.score !== a.score) return b.score - a.score;
         if (sortBy === 'views') return ((b.video.views as number | null) || 0) - ((a.video.views as number | null) || 0);
