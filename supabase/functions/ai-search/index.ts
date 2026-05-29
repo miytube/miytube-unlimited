@@ -73,19 +73,30 @@ serve(async (req) => {
       .trim();
 
     const rawQuery = cleanKeyword(query);
-    const genericTerms = new Set(['a', 'an', 'and', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'the', 'to', 'vs', 'nba', 'basketball', 'sports', 'game', 'full', 'highlights', 'highlight']);
+    // Generic / very short / extremely common words — kept out of the DB OR so
+    // they don't flood the result set with rows matching e.g. "no" or "music"
+    // and push the actual match past the LIMIT.
+    const genericTerms = new Set([
+      'a','an','and','at','by','for','from','in','of','on','the','to','vs','no','is','it','or','as','be',
+      'my','we','you','your','our','i','do','if','so','up','us','am','re',
+      'nba','basketball','sports','game','full','highlights','highlight',
+      'music','song','video','official','feat','ft','mix','remix','version','live','hd','4k',
+      'show','part','ep','episode','season',
+    ]);
     const rawTerms = rawQuery.split(/[\s,_\-|/]+/).filter(w => w.length >= 2);
-    const importantTerms = rawTerms.filter(w => !genericTerms.has(w));
+    const importantTerms = rawTerms.filter(w => !genericTerms.has(w) && w.length >= 3);
     const termsForDbSearch = importantTerms.length > 0 ? importantTerms : rawTerms;
     const keywordSet = new Set<string>([
       rawQuery,
       ...searchKeywords.map(cleanKeyword).filter(k => {
         const parts = k.split(/\s+/).filter(Boolean);
-        return parts.length > 1 || !genericTerms.has(k);
+        // Allow multi-word AI phrases, otherwise require length>=3 and not generic
+        return parts.length > 1 || (k.length >= 3 && !genericTerms.has(k));
       }),
       ...termsForDbSearch,
     ]);
     const allKeywords = Array.from(keywordSet).filter(Boolean);
+
 
     let dbQuery = supabase
       .from('uploaded_videos')
