@@ -21,7 +21,8 @@ import { ThumbnailGeneratorManager } from '@/components/admin/ThumbnailGenerator
 import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussionManager';
 import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
-import { Database, FolderTree } from 'lucide-react';
+import { YouTubeRestoreManager } from '@/components/admin/YouTubeRestoreManager';
+import { Database, FolderTree, Youtube } from 'lucide-react';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
