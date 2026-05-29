@@ -21,7 +21,8 @@ import { ThumbnailGeneratorManager } from '@/components/admin/ThumbnailGenerator
 import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussionManager';
 import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
-import { Database, FolderTree } from 'lucide-react';
+import { YouTubeRestoreManager } from '@/components/admin/YouTubeRestoreManager';
+import { Database, FolderTree, Youtube } from 'lucide-react';
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -290,6 +291,10 @@ const Admin = () => {
               <FolderTree className="h-4 w-4" />
               Custom Categories
             </TabsTrigger>
+            <TabsTrigger value="yt-restore" className="flex items-center gap-2">
+              <Youtube className="h-4 w-4" />
+              YouTube Restore
+            </TabsTrigger>
           </TabsList>
           </div>
 
@@ -415,6 +420,9 @@ const Admin = () => {
           </TabsContent>
           <TabsContent value="custom-categories" className="mt-6">
             <CustomCategoriesManager />
+          </TabsContent>
+          <TabsContent value="yt-restore" className="mt-6">
+            <YouTubeRestoreManager />
           </TabsContent>
         </Tabs>
       </div>
