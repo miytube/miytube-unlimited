@@ -421,6 +421,9 @@ const Admin = () => {
           <TabsContent value="custom-categories" className="mt-6">
             <CustomCategoriesManager />
           </TabsContent>
+          <TabsContent value="yt-restore" className="mt-6">
+            <YouTubeRestoreManager />
+          </TabsContent>
         </Tabs>
       </div>
     </Layout>
