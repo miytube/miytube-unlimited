@@ -73,19 +73,30 @@ serve(async (req) => {
       .trim();
 
     const rawQuery = cleanKeyword(query);
-    const genericTerms = new Set(['a', 'an', 'and', 'at', 'by', 'for', 'from', 'in', 'of', 'on', 'the', 'to', 'vs', 'nba', 'basketball', 'sports', 'game', 'full', 'highlights', 'highlight']);
+    // Generic / very short / extremely common words — kept out of the DB OR so
+    // they don't flood the result set with rows matching e.g. "no" or "music"
+    // and push the actual match past the LIMIT.
+    const genericTerms = new Set([
+      'a','an','and','at','by','for','from','in','of','on','the','to','vs','no','is','it','or','as','be',
+      'my','we','you','your','our','i','do','if','so','up','us','am','re',
+      'nba','basketball','sports','game','full','highlights','highlight',
+      'music','song','video','official','feat','ft','mix','remix','version','live','hd','4k',
+      'show','part','ep','episode','season',
+    ]);
     const rawTerms = rawQuery.split(/[\s,_\-|/]+/).filter(w => w.length >= 2);
-    const importantTerms = rawTerms.filter(w => !genericTerms.has(w));
+    const importantTerms = rawTerms.filter(w => !genericTerms.has(w) && w.length >= 3);
     const termsForDbSearch = importantTerms.length > 0 ? importantTerms : rawTerms;
     const keywordSet = new Set<string>([
       rawQuery,
       ...searchKeywords.map(cleanKeyword).filter(k => {
         const parts = k.split(/\s+/).filter(Boolean);
-        return parts.length > 1 || !genericTerms.has(k);
+        // Allow multi-word AI phrases, otherwise require length>=3 and not generic
+        return parts.length > 1 || (k.length >= 3 && !genericTerms.has(k));
       }),
       ...termsForDbSearch,
     ]);
     const allKeywords = Array.from(keywordSet).filter(Boolean);
+
 
     let dbQuery = supabase
       .from('uploaded_videos')
@@ -186,7 +197,8 @@ serve(async (req) => {
       .slice(0, Math.min(limit, 50))
       .map(item => item.video);
 
-    // Also search music_videos (include file_name fallback)
+    // Also search music_videos with the SAME scoring + filter so unrelated
+    // songs don't appear just because their title contains a stray word.
     let musicQuery = supabase
       .from('music_videos')
       .select('*');
@@ -196,19 +208,32 @@ serve(async (req) => {
       return `title.ilike.%${kw}%,description.ilike.%${kw}%,category.ilike.%${kw}%,file_name.ilike.%${kw}%`;
     }).join(',');
 
-    musicQuery = musicQuery.or(musicOrConditions).limit(10);
+    musicQuery = musicQuery.or(musicOrConditions).limit(200);
 
     const { data: musicVideos } = await musicQuery;
 
+    const rankedMusic = (musicVideos || [])
+      .map(video => ({ video, ...scoreVideo(video as Record<string, unknown>) }))
+      .filter(item => {
+        if (requiredTerms.length === 0) return true;
+        if (item.requiredMatches < minRequiredMatches) return false;
+        if (isShortQuery && item.primaryMatches < 1) return false;
+        return true;
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10)
+      .map(item => item.video);
+
     return new Response(JSON.stringify({
       videos: rankedVideos || [],
-      musicVideos: musicVideos || [],
+      musicVideos: rankedMusic || [],
       searchIntent,
       detectedCategory,
-      totalResults: (rankedVideos?.length || 0) + (musicVideos?.length || 0),
+      totalResults: (rankedVideos?.length || 0) + (rankedMusic?.length || 0),
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
+
   } catch (error) {
     console.error('ai-search error:', error);
     return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
