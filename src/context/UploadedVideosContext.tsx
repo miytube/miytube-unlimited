@@ -445,20 +445,22 @@ const loadVideosFromSupabase = async (): Promise<{
 
 const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<number> => {
   const supabaseUpdates: Record<string, unknown> = {};
+  const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
+  const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
   if (updates.title !== undefined) supabaseUpdates.title = updates.title;
   if (updates.description !== undefined) supabaseUpdates.description = updates.description;
-  if (updates.category !== undefined || updates.subcategory !== undefined) {
+  if (hasCategory || hasSubcategory) {
     const current = await supabase
       .from('uploaded_videos')
       .select('category, subcategory')
       .or(`id.eq.${id},local_id.eq.${id}`)
       .maybeSingle();
     const { category, subcategory } = canonicalizeCategoryAssignment(
-      updates.category !== undefined ? updates.category as string : current.data?.category,
-      updates.subcategory !== undefined ? updates.subcategory as string : current.data?.subcategory
+      hasCategory ? updates.category as string : current.data?.category,
+      hasSubcategory ? updates.subcategory as string : current.data?.subcategory
     );
-    if (updates.category !== undefined) supabaseUpdates.category = category ?? null;
-    if (updates.subcategory !== undefined) supabaseUpdates.subcategory = subcategory ?? null;
+    if (hasCategory) supabaseUpdates.category = category ?? null;
+    if (hasSubcategory || (hasCategory && subcategory)) supabaseUpdates.subcategory = subcategory ?? null;
   }
   if (updates.tags !== undefined) supabaseUpdates.tags = updates.tags;
   if (updates.thumbnail !== undefined) supabaseUpdates.thumbnail_url = updates.thumbnail;
@@ -488,11 +490,13 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
 const normalizeVideoUpdates = (
   updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
 ): Partial<Omit<UploadedVideo, 'id' | 'file'>> => {
+  const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
+  const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
   const normalized = canonicalizeCategoryAssignment(updates.category, updates.subcategory);
   return {
     ...updates,
-    category: updates.category !== undefined ? normalized.category : updates.category,
-    subcategory: updates.subcategory !== undefined ? normalized.subcategory : updates.subcategory,
+    ...(hasCategory ? { category: normalized.category } : {}),
+    ...(hasSubcategory || (hasCategory && normalized.subcategory) ? { subcategory: normalized.subcategory } : {}),
   };
 };
 
