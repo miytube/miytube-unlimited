@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Layout } from '@/components/Layout';
-import { Zap, Upload } from 'lucide-react';
+import { Zap, Upload, Flame } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AudioCard } from '@/components/music/AudioCard';
 import { audioSamples } from '@/components/music/musicData';
