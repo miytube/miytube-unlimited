@@ -30,7 +30,8 @@ export const MusicFullLinks: React.FC = () => {
         { id: 'music-soul-train', label: 'Soul Train', path: '/music/soul-train' },
         { id: 'music-christian', label: 'Christian (Pop, Rap, Rock)', path: '/music/christian' },
         { id: 'music-parody', label: 'Parody & Satire', path: '/music/parody' },
-        { id: 'music-pop', label: 'Pop & Soft Rock', path: '/music/pop' },
+        { id: 'music-pop', label: 'Pop, Pop Rock, Traditional Pop', path: '/music/pop' },
+        { id: 'music-soft-rock', label: 'Pop & Soft Rock', path: '/music/soft-rock' },
         { id: 'music-soundtracks', label: 'Soundtracks & Movie Music', path: '/music/soundtracks' },
         { id: 'music-history', label: 'Music History', path: '/music/history' }
       ]

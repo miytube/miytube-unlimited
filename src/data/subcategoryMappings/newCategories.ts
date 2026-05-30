@@ -1888,8 +1888,14 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/music', name: 'Music' }
   },
   '/music/pop': {
+    title: 'Music (Pop, Pop Rock, Traditional Pop)',
+    description: 'Pop, pop rock and traditional pop music',
+    icon: Music,
+    parent: { route: '/music', name: 'Music' }
+  },
+  '/music/soft-rock': {
     title: 'Pop & Soft Rock',
-    description: 'Pop music',
+    description: 'Pop and soft rock music',
     icon: Music,
     parent: { route: '/music', name: 'Music' }
   },
