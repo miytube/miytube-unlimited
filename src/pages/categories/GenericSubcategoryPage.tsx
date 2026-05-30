@@ -168,6 +168,10 @@ const GenericSubcategoryPage = () => {
               views: v.views,
               timestamp: v.timestamp,
               duration: v.duration,
+                description: v.description,
+                category: v.category,
+                subcategory: v.subcategory,
+                tags: v.tags,
             }))}
           />
         ) : (
