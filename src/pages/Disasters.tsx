@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Layout } from '@/components/Layout';
-import { Zap, Upload } from 'lucide-react';
+import { Zap, Upload, Flame } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AudioCard } from '@/components/music/AudioCard';
 import { audioSamples } from '@/components/music/musicData';
@@ -87,6 +87,14 @@ const Disasters = () => {
                 <div className="text-center">
                   <Zap size={32} className="mx-auto mb-2 text-primary" />
                   <div className="font-medium">Tsunamis</div>
+                </div>
+              </div>
+            </Link>
+            <Link to="/disasters/explosions" className="block">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+                <div className="text-center">
+                  <Flame size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">Explosions</div>
                 </div>
               </div>
             </Link>
