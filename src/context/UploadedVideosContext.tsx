@@ -982,20 +982,38 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
 
   const deleteUploadedVideo = async (id: string) => {
     const videoToDelete = uploadedVideos.find(v => v.id === id);
-    
+    const prevList = uploadedVideos;
+
+    // Optimistic UI removal
     setUploadedVideos(prev => prev.filter(video => video.id !== id));
-    
+
     try {
+      // Delete from Supabase first — this is the source of truth
+      const { deletedCount, error } = await deleteVideoFromSupabase(id);
+
+      if (error || deletedCount === 0) {
+        // Revert UI — deletion didn't actually happen on the server
+        console.warn('Video was not deleted on the server. Reverting UI.', { id, error, deletedCount });
+        setUploadedVideos(prevList);
+        const reason = error
+          ? `Server error: ${error}`
+          : 'You can only delete videos you uploaded while signed in. Please sign in as the original uploader (or an admin) and try again.';
+        throw new Error(reason);
+      }
+
+      // Delete local IndexedDB copy so it doesn't come back on reload
+      await deleteVideoFromDB(id).catch(err => console.warn('Local DB delete failed:', err));
+
       // Delete from cloud storage if applicable
       if (videoToDelete?.isCloudStored && videoToDelete?.cloudUrl) {
-        await deleteVideoFromCloud(videoToDelete.cloudUrl);
+        await deleteVideoFromCloud(videoToDelete.cloudUrl).catch(err =>
+          console.warn('Cloud storage delete failed (row already removed):', err)
+        );
         console.log("Deleted video from cloud storage:", id);
       }
-      
-      // Delete from Supabase
-      await deleteVideoFromSupabase(id);
     } catch (error) {
       console.error("Error deleting video:", error);
+      throw error;
     }
   };
 
