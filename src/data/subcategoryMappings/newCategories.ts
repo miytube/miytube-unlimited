@@ -2317,6 +2317,12 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Wrench,
     parent: { route: '/how-to-style', name: 'How To' }
   },
+  '/how-to/arts-crafts/sewing': {
+    title: 'Sewing',
+    description: 'Sewing tutorials, patterns, and projects',
+    icon: Wrench,
+    parent: { route: '/how-to/arts-crafts', name: 'Arts & Crafts' }
+  },
   '/home-electrical/replace': {
     title: 'Replace & Repair',
     description: 'Electrical repairs',

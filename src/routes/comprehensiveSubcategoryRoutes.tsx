@@ -1193,6 +1193,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="how-to-windows-doors" path="/how-to/windows-doors" element={<GenericSubcategoryPage />} />,
   <Route key="how-to-toilets" path="/how-to/toilets" element={<GenericSubcategoryPage />} />,
   <Route key="how-to-arts-crafts" path="/how-to/arts-crafts" element={<GenericSubcategoryPage />} />,
+  <Route key="how-to-arts-crafts-sewing" path="/how-to/arts-crafts/sewing" element={<GenericSubcategoryPage />} />,
   <Route key="home-electrical" path="/home-electrical" element={<GenericSubcategoryPage />} />,
   <Route key="home-electrical-replace" path="/home-electrical/replace" element={<GenericSubcategoryPage />} />,
   <Route key="home-electrical-install" path="/home-electrical/install" element={<GenericSubcategoryPage />} />,
