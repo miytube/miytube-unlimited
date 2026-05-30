@@ -26,12 +26,25 @@ const RULES: CategoryRule[] = [
                'beat', 'beats', 'instrumental', 'acoustic', 'band', 'rapper',
                'singer', 'producer', 'dj set'] },
 
+  // Presidents (must come BEFORE News/Politics so president/biden/trump/etc.
+  // don't get pulled into the generic politics bucket).
+  { category: 'presidents', subcategory: 'former',
+    keywords: ['former president', 'ex-president', 'ex president', 'obama',
+               'george bush', 'bill clinton', 'jimmy carter', 'reagan'] },
+  { category: 'presidents', subcategory: 'motorcade',
+    keywords: ['presidential motorcade', 'motorcade'] },
+  { category: 'presidents', subcategory: 'airforce',
+    keywords: ['air force one', 'marine one'] },
+  { category: 'presidents',
+    keywords: ['president', 'presidents', 'presidential', 'biden', 'trump',
+               'white house', 'oval office', 'potus', 'commander in chief'] },
+
   // News & Politics
   { category: 'news', subcategory: 'breaking-news',
     keywords: ['breaking news', 'breaking:', 'just in', 'developing'] },
   { category: 'news', subcategory: 'politics',
     keywords: ['politics', 'political', 'election', 'senate', 'congress',
-               'president', 'biden', 'trump', 'governor', 'campaign', 'vote'] },
+               'governor', 'campaign', 'vote'] },
   { category: 'news',
     keywords: ['news', 'report', 'reports', 'reported', 'update', 'headline',
                'headlines', 'press conference'] },
