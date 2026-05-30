@@ -23,34 +23,48 @@ export const UploadedAudioGrid: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     const fetchTracks = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('music_videos')
-        .select('id, title, video_url, category, views, tags')
-        .contains('tags', ['audio-only'])
-        .order('created_at', { ascending: false })
-        .limit(500);
+      try {
+        const { data, error } = await supabase
+          .from('music_videos')
+          .select('id, title, video_url, category, views, tags')
+          .contains('tags', ['audio-only'])
+          .order('created_at', { ascending: false })
+          .limit(500);
 
-      if (error) {
-        toast({ title: 'Could not load audio', description: error.message, variant: 'destructive' });
-        setLoading(false);
-        return;
+        if (cancelled) return;
+
+        if (error) {
+          // Silently degrade — the section just shows "No audio uploaded yet".
+          console.warn('[UploadedAudioGrid] could not load audio:', error.message);
+          setTracks([]);
+          setLoading(false);
+          return;
+        }
+        const audioOnly = (data || [])
+          .filter((r: any) => Array.isArray(r.tags) && r.tags.includes('audio-only'))
+          .map((r: any) => ({
+            id: r.id,
+            title: r.title,
+            audio_url: r.video_url,
+            category: r.category,
+            views: r.views,
+          }));
+        setTracks(audioOnly);
+      } catch (err) {
+        if (cancelled) return;
+        console.warn('[UploadedAudioGrid] fetch failed:', err);
+        setTracks([]);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      const audioOnly = (data || [])
-        .filter((r: any) => Array.isArray(r.tags) && r.tags.includes('audio-only'))
-        .map((r: any) => ({
-          id: r.id,
-          title: r.title,
-          audio_url: r.video_url,
-          category: r.category,
-          views: r.views,
-        }));
-      setTracks(audioOnly);
-      setLoading(false);
     };
     fetchTracks();
-  }, [toast]);
+    return () => { cancelled = true; };
+  }, []);
+
 
   const togglePlay = (track: AudioTrack) => {
     if (playingId === track.id) {
