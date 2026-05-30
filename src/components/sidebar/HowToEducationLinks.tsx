@@ -18,6 +18,7 @@ export const HowToEducationLinks: React.FC = () => {
         { id: 'howto-windows-doors', label: 'Fix Windows & Doors', path: '/how-to/windows-doors' },
         { id: 'howto-toilets', label: 'Fix/Replace Toilets', path: '/how-to/toilets' },
         { id: 'howto-arts-crafts', label: 'Arts & Crafts', path: '/how-to/arts-crafts' },
+        { id: 'howto-arts-crafts-sewing', label: '— Sewing', path: '/how-to/arts-crafts/sewing' },
         { id: 'howto-hacks', label: 'Invent Hacks', path: '/how-to-style/invent-hacks' }
       ]
     },
