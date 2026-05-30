@@ -39,10 +39,14 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'eulogy-and-memorial': 'eulogy',
     'eulogy-memorial-and-funeral': 'eulogy',
     'thefts': 'people-thefts',
+    'thiefts': 'people-thefts',
     'stealing': 'people-thefts',
     'thefts-stealing': 'people-thefts',
+    'thiefts-stealing': 'people-thefts',
     'thefts-and-stealing': 'people-thefts',
+    'thiefts-and-stealing': 'people-thefts',
     'people-thefts-and-stealing': 'people-thefts',
+    'people-thiefts-and-stealing': 'people-thefts',
   };
 
   return aliases[cleaned] || cleaned || undefined;
