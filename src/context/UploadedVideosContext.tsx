@@ -447,14 +447,16 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
   const supabaseUpdates: Record<string, unknown> = {};
   const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
   const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   if (updates.title !== undefined) supabaseUpdates.title = updates.title;
   if (updates.description !== undefined) supabaseUpdates.description = updates.description;
   if (hasCategory || hasSubcategory) {
-    const current = await supabase
+    const currentQuery = supabase
       .from('uploaded_videos')
       .select('category, subcategory')
-      .or(`id.eq.${id},local_id.eq.${id}`)
-      .maybeSingle();
+    const current = isUUID
+      ? await currentQuery.eq('id', id).maybeSingle()
+      : await currentQuery.eq('local_id', id).maybeSingle();
     const { category, subcategory } = canonicalizeCategoryAssignment(
       hasCategory ? updates.category as string : current.data?.category,
       hasSubcategory ? updates.subcategory as string : current.data?.subcategory
@@ -467,7 +469,6 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
 
   if (Object.keys(supabaseUpdates).length === 0) return 0;
 
-  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   const query = supabase.from('uploaded_videos').update(supabaseUpdates);
   const { error, data } = isUUID
     ? await query.eq('id', id).select('id')
