@@ -47,6 +47,15 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'thiefts-and-stealing': 'people-thefts',
     'people-thefts-and-stealing': 'people-thefts',
     'people-thiefts-and-stealing': 'people-thefts',
+    'sports-college': 'college-sports',
+    'college-sport': 'college-sports',
+    'college-sports-category': 'college-sports',
+    'sports-college-bowl': 'football-bowl-games',
+    'sports-college-football-bowl': 'football-bowl-games',
+    'college-football-bowl': 'football-bowl-games',
+    'college-football-bowl-games': 'football-bowl-games',
+    'football-bowl-game': 'football-bowl-games',
+    'bowl-games': 'football-bowl-games',
   };
 
   return aliases[cleaned] || cleaned || undefined;
