@@ -8,6 +8,9 @@ export interface MockVideo {
   views: string;
   timestamp: string;
   duration: string;
+  description?: string;
+  category?: string;
+  subcategory?: string;
   tags?: string[];
 }
 

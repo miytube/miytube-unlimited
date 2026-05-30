@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -45,6 +45,15 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
   const [customSubcategories, setCustomSubcategories] = useState<string[]>([]);
 
   const { tree: customTree } = useCustomCategories();
+
+  useEffect(() => {
+    if (!open) return;
+    setTitle(video.title);
+    setDescription(video.description);
+    setCategory(normalizeCategoryValue(video.category) || '');
+    setSubcategory(normalizeCategoryValue(video.subcategory) || '');
+    setTags(video.tags || []);
+  }, [open, video.id, video.title, video.description, video.category, video.subcategory, video.tags]);
 
   const categoryOptions = useMemo(() => {
     // Get main categories (those without a parent)
@@ -99,8 +108,8 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
     onSave({
       title,
       description,
-      category: category || undefined,
-      subcategory: subcategory || undefined,
+      category: normalizeCategoryValue(category) || undefined,
+      subcategory: normalizeCategoryValue(subcategory) || undefined,
       tags,
     });
     onOpenChange(false);

@@ -82,6 +82,11 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
     : null;
 
   const handleAddCustom = () => {
+    if (closeMatch) {
+      handleSelect(closeMatch.id);
+      return;
+    }
+
     if (inputValue.trim() && !exactMatch) {
       const customId = inputValue.trim().toLowerCase().replace(/\s+/g, '-');
       onValueChange(customId);
