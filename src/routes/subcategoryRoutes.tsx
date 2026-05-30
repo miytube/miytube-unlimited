@@ -78,6 +78,7 @@ export const subcategoryRoutes = [
   <Route key="disasters-volcano" path="/disasters/volcano" element={<GenericSubcategoryPage />} />,
   <Route key="disasters-landslides" path="/disasters/landslides" element={<GenericSubcategoryPage />} />,
   <Route key="disasters-tsunami" path="/disasters/tsunami" element={<GenericSubcategoryPage />} />,
+  <Route key="disasters-explosions" path="/disasters/explosions" element={<GenericSubcategoryPage />} />,
   
   /* Floods Routes */
   <Route key="floods-flash-flood" path="/floods/flash-flood" element={<GenericSubcategoryPage />} />,
