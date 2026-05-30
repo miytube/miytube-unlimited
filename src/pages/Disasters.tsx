@@ -90,6 +90,14 @@ const Disasters = () => {
                 </div>
               </div>
             </Link>
+            <Link to="/disasters/explosions" className="block">
+              <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center">
+                <div className="text-center">
+                  <Flame size={32} className="mx-auto mb-2 text-primary" />
+                  <div className="font-medium">Explosions</div>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
