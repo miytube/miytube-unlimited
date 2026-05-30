@@ -446,6 +446,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Sports - Main categories
   'sports': { title: 'Sports', description: 'Sports coverage', icon: Trophy },
+  'college-sports': { title: 'College Sports', description: 'NCAA college sports content', icon: Trophy },
   'sports-arenas': { title: 'Sports (Arenas, Stadiums)', description: 'Sports venues', icon: Building2 },
   'sports-basketball-football': { title: 'Sports (Basketball, Football)', description: 'Basketball and football', icon: Trophy },
   'sports-car-racing': { title: 'Sports (Car Racing, WRC)', description: 'Car racing events', icon: Car },
@@ -479,6 +480,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'sports-college-basketball': { title: 'Sports College Basketball', description: 'College basketball', icon: Trophy },
   'sports-college-football': { title: 'Sports College Football', description: 'College football', icon: Trophy },
   'sports-college-football-bowl': { title: 'Sports College Football Bowl', description: 'College football bowl games', icon: Trophy },
+  'football-bowl-games': { title: 'Football Bowl Games', description: 'College football bowl games', icon: Trophy, parent: { route: '/college-sports', name: 'College Sports' } },
   'sports-college-track': { title: 'Sports College Track & Field', description: 'College track & field', icon: Timer },
   'sports-college-women-basketball': { title: 'Sports College Women Basketball', description: 'Women college basketball', icon: Trophy },
   'sports-fans-challenges': { title: 'Sports Fans Challenges', description: 'Fan challenges and prizes', icon: Trophy },
