@@ -116,7 +116,10 @@ const routeValueAliases: Record<string, string[]> = {
   'babies-funny': ['funny-and-comedy', 'babies-funny-and-comedy', 'babies-and-infants-funny-and-comedy'],
   'babies/fails': ['baby-fails', 'babies-fails', 'babies-and-infants-baby-fails'],
   '/babies/fails': ['baby-fails', 'babies-fails', 'babies-and-infants-baby-fails'],
+  'comedy/snl': ['snl-saturday-night-live', 'snl', 'snl-skits', 'saturday-night-live'],
+  'comedy-snl': ['snl-saturday-night-live', 'snl', 'snl-skits', 'saturday-night-live'],
 };
+
 
 /**
  * Filter videos by exact category match or keyword-based matching for parent categories.
