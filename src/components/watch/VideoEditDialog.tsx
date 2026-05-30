@@ -8,6 +8,7 @@ import { CategoryCombobox } from '@/components/upload/CategoryCombobox';
 import { TagInput } from '@/components/upload/TagInput';
 import { allCategoryMappings } from '@/data/allCategoryMappings';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
+import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 
 interface VideoEditDialogProps {
   open: boolean;
@@ -37,8 +38,8 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
 }) => {
   const [title, setTitle] = useState(video.title);
   const [description, setDescription] = useState(video.description);
-  const [category, setCategory] = useState(video.category || '');
-  const [subcategory, setSubcategory] = useState(video.subcategory || '');
+  const [category, setCategory] = useState(normalizeCategoryValue(video.category) || '');
+  const [subcategory, setSubcategory] = useState(normalizeCategoryValue(video.subcategory) || '');
   const [tags, setTags] = useState<string[]>(video.tags || []);
   const [customCategories, setCustomCategories] = useState<string[]>([]);
   const [customSubcategories, setCustomSubcategories] = useState<string[]>([]);
@@ -80,6 +81,11 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
     });
     return Array.from(merged.values());
   }, [category, customSubcategories, customTree]);
+
+  const handleCategoryChange = (value: string) => {
+    setCategory(value);
+    setSubcategory('');
+  };
 
   const handleAddCustomCategory = (name: string) => {
     setCustomCategories(prev => [...prev, name]);
@@ -134,7 +140,7 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
             <CategoryCombobox
               options={categoryOptions}
               value={category}
-              onValueChange={setCategory}
+              onValueChange={handleCategoryChange}
               placeholder="Select or enter category"
               onAddCustom={handleAddCustomCategory}
             />
