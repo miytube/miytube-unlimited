@@ -360,9 +360,10 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'pranks': { title: 'Pranks (Funny, Weird, Crazy)', description: 'Funny and crazy pranks', icon: Laugh },
   
   // Presidents
-  'president-motorcade': { title: "President's Motorcade", description: 'Presidential motorcade footage', icon: Car },
-  'presidents': { title: 'Presidents (Air Force One, Marine One)', description: 'Presidential aircraft and transport', icon: Plane },
-  'presidents-former': { title: 'Presidents (Former Presidents)', description: 'Former presidents', icon: Landmark },
+  'presidents': { title: 'Presidents', description: 'Presidents of the United States', icon: Landmark },
+  'president-motorcade': { title: "Presidential Motorcade", description: 'Presidential motorcade footage', icon: Car, parent: { route: '/presidents', name: 'Presidents' } },
+  'presidents-airforce': { title: 'Air Force One & Marine One', description: 'Presidential aircraft and transport', icon: Plane, parent: { route: '/presidents', name: 'Presidents' } },
+  'presidents-former': { title: 'Former Presidents', description: 'Former presidents', icon: Landmark, parent: { route: '/presidents', name: 'Presidents' } },
   
   // Property
   'property': { title: 'Property (Land, Buildings)', description: 'Property and real estate', icon: Building },
