@@ -171,14 +171,22 @@ const ShortsWatch = () => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (id) {
-      deleteUploadedVideo(id);
-      toast({
-        title: "Short deleted",
-        description: "Your short has been deleted.",
-      });
-      navigate('/shorts');
+      try {
+        await deleteUploadedVideo(id);
+        toast({
+          title: "Short deleted",
+          description: "Your short has been deleted.",
+        });
+        navigate('/shorts');
+      } catch (err) {
+        toast({
+          title: "Couldn't delete short",
+          description: err instanceof Error ? err.message : "Delete failed.",
+          variant: "destructive",
+        });
+      }
     }
   };
 

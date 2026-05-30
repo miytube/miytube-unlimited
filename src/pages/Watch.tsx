@@ -303,7 +303,7 @@ const Watch = () => {
     try {
       // Local upload? Use context (also clears DB if cloud-synced).
       if (videoId && isUploadedVideo(videoId)) {
-        deleteUploadedVideo(videoId);
+        await deleteUploadedVideo(videoId);
       } else if (video?.dbId && video?.dbTable) {
         const { error } = await supabase
           .from(video.dbTable as 'uploaded_videos' | 'music_videos')
