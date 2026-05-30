@@ -471,6 +471,14 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
   return rows;
 };
 
+const normalizeVideoUpdates = (
+  updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
+): Partial<Omit<UploadedVideo, 'id' | 'file'>> => ({
+  ...updates,
+  category: updates.category !== undefined ? normalizeCategoryValue(updates.category) : updates.category,
+  subcategory: updates.subcategory !== undefined ? normalizeCategoryValue(updates.subcategory) : updates.subcategory,
+});
+
 const deleteVideoFromSupabase = async (id: string): Promise<void> => {
   const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
@@ -953,15 +961,16 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     id: string,
     updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
   ) => {
+    const normalizedUpdates = normalizeVideoUpdates(updates);
     const prevList = uploadedVideos;
     setUploadedVideos(prev =>
       prev.map(video =>
-        video.id === id ? { ...video, ...updates } : video
+        video.id === id ? { ...video, ...normalizedUpdates } : video
       )
     );
     try {
-      await updateVideoInSupabase(id, updates as Record<string, unknown>);
-      console.log("Updated video:", id, updates);
+      await updateVideoInSupabase(id, normalizedUpdates as Record<string, unknown>);
+      console.log("Updated video:", id, normalizedUpdates);
     } catch (err) {
       // Revert optimistic local change so the UI matches what's actually saved
       setUploadedVideos(prevList);
