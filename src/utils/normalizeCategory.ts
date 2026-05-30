@@ -38,6 +38,11 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'eulogy-or-funeral': 'eulogy',
     'eulogy-and-memorial': 'eulogy',
     'eulogy-memorial-and-funeral': 'eulogy',
+    'thefts': 'people-thefts',
+    'stealing': 'people-thefts',
+    'thefts-stealing': 'people-thefts',
+    'thefts-and-stealing': 'people-thefts',
+    'people-thefts-and-stealing': 'people-thefts',
   };
 
   return aliases[cleaned] || cleaned || undefined;
