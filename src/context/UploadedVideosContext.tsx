@@ -479,17 +479,19 @@ const normalizeVideoUpdates = (
   subcategory: updates.subcategory !== undefined ? normalizeCategoryValue(updates.subcategory) : updates.subcategory,
 });
 
-const deleteVideoFromSupabase = async (id: string): Promise<void> => {
+const deleteVideoFromSupabase = async (id: string): Promise<{ deletedCount: number; error: string | null }> => {
   const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
-  const query = supabase.from('uploaded_videos').delete();
-  const { error } = isUUID ? await query.eq('id', id) : await query.eq('local_id', id);
+  const query = supabase.from('uploaded_videos').delete().select('id');
+  const { data, error } = isUUID ? await query.eq('id', id) : await query.eq('local_id', id);
 
   if (error) {
     console.error('Error deleting video from Supabase:', error);
-  } else {
-    console.log('Deleted video from Supabase:', id);
+    return { deletedCount: 0, error: error.message };
   }
+  const count = data?.length ?? 0;
+  console.log(`Deleted ${count} video row(s) from Supabase for id:`, id);
+  return { deletedCount: count, error: null };
 };
 
 export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ children }) => {
