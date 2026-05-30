@@ -1,5 +1,5 @@
 
-import { Zap, Mountain, Waves } from 'lucide-react';
+import { Zap, Mountain, Waves, Flame } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const disastersSubcategories: SubcategoryMapping = {
@@ -44,6 +44,12 @@ export const disastersSubcategories: SubcategoryMapping = {
     title: 'Tsunami',
     description: 'Tsunami events, coastal disasters and wave footage',
     icon: Waves,
+    parent: { route: '/disasters', name: 'Disasters' }
+  },
+  'disasters-explosions': {
+    title: 'Explosions',
+    description: 'Explosion footage, blasts, and related disaster events',
+    icon: Flame,
     parent: { route: '/disasters', name: 'Disasters' }
   },
 };
