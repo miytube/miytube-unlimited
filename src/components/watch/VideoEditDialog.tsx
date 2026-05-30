@@ -9,6 +9,11 @@ import { TagInput } from '@/components/upload/TagInput';
 import { allCategoryMappings } from '@/data/allCategoryMappings';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
+import {
+  canonicalizeCategoryAssignment,
+  getKnownParentCategoryOptions,
+  getKnownSubcategoryOptionsForParent,
+} from '@/utils/categoryAssignment';
 
 interface VideoEditDialogProps {
   open: boolean;
@@ -63,11 +68,12 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
         id: key,
         name: info.title
       }));
+    const knownParents = getKnownParentCategoryOptions();
     const fromDb = customTree.map(c => ({ id: c.slug, name: c.name }));
     const custom = customCategories.map(c => ({ id: c.toLowerCase().replace(/\s+/g, '-'), name: c }));
     // De-duplicate by id, prefer DB names
     const merged = new Map<string, { id: string; name: string }>();
-    [...baseCategories, ...fromDb, ...custom].forEach(o => {
+    [...baseCategories, ...knownParents, ...fromDb, ...custom].forEach(o => {
       if (!merged.has(o.id)) merged.set(o.id, o);
     });
     return Array.from(merged.values());
@@ -81,11 +87,12 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
         id: key,
         name: info.title
       }));
+    const knownSubcats = getKnownSubcategoryOptionsForParent(category);
     const dbCat = customTree.find(c => c.slug === category);
     const fromDb = (dbCat?.subcategories || []).map(s => ({ id: s.slug, name: s.name }));
     const custom = customSubcategories.map(c => ({ id: c.toLowerCase().replace(/\s+/g, '-'), name: c }));
     const merged = new Map<string, { id: string; name: string }>();
-    [...baseSubcats, ...fromDb, ...custom].forEach(o => {
+    [...baseSubcats, ...knownSubcats, ...fromDb, ...custom].forEach(o => {
       if (!merged.has(o.id)) merged.set(o.id, o);
     });
     return Array.from(merged.values());
@@ -105,11 +112,12 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
   };
 
   const handleSave = () => {
+    const normalized = canonicalizeCategoryAssignment(category, subcategory);
     onSave({
       title,
       description,
-      category: normalizeCategoryValue(category) || undefined,
-      subcategory: normalizeCategoryValue(subcategory) || undefined,
+      category: normalized.category,
+      subcategory: normalized.subcategory,
       tags,
     });
     onOpenChange(false);

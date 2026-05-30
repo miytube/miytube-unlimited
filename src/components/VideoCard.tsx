@@ -89,12 +89,20 @@ export const VideoCard: React.FC<VideoCardProps> = ({
     }
   };
 
-  const handleDelete = () => {
-    deleteUploadedVideo(id);
-    toast({
-      title: "Video deleted",
-      description: "Your video has been deleted.",
-    });
+  const handleDelete = async () => {
+    try {
+      await deleteUploadedVideo(id);
+      toast({
+        title: "Video deleted",
+        description: "Your video has been deleted.",
+      });
+    } catch (err) {
+      toast({
+        title: "Couldn't delete video",
+        description: err instanceof Error ? err.message : "Delete failed.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

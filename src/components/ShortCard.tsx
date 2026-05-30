@@ -77,12 +77,20 @@ export const ShortCard: React.FC<ShortCardProps> = ({
     }
   };
 
-  const handleDelete = () => {
-    deleteUploadedVideo(id);
-    toast({
-      title: "Short deleted",
-      description: "Your short has been deleted.",
-    });
+  const handleDelete = async () => {
+    try {
+      await deleteUploadedVideo(id);
+      toast({
+        title: "Short deleted",
+        description: "Your short has been deleted.",
+      });
+    } catch (err) {
+      toast({
+        title: "Couldn't delete short",
+        description: err instanceof Error ? err.message : "Delete failed.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

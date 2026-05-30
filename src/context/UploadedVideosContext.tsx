@@ -4,6 +4,7 @@ import { useUploadProgress } from './UploadProgressContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
+import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
 
 type DuplicateCheckResult = { isDuplicate: false } | { isDuplicate: true; reason: 'session' | 'location' };
 
@@ -243,9 +244,11 @@ const saveVideoToSupabase = async (video: {
     throw new Error('You must be signed in to save uploaded videos.');
   }
 
-  // Normalize category/subcategory to canonical lower-hyphen form before insert
-  const normalizedCategory = normalizeCategoryValue(video.category);
-  const normalizedSubcategory = normalizeCategoryValue(video.subcategory);
+  // Normalize category/subcategory into the same parent + child values used by category pages.
+  const { category: normalizedCategory, subcategory: normalizedSubcategory } = canonicalizeCategoryAssignment(
+    video.category,
+    video.subcategory
+  );
   // Check if a video with this local_id already exists to prevent duplicates from same session
   const { data: existingById } = await supabase
     .from('uploaded_videos')
@@ -442,16 +445,30 @@ const loadVideosFromSupabase = async (): Promise<{
 
 const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<number> => {
   const supabaseUpdates: Record<string, unknown> = {};
+  const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
+  const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   if (updates.title !== undefined) supabaseUpdates.title = updates.title;
   if (updates.description !== undefined) supabaseUpdates.description = updates.description;
-  if (updates.category !== undefined) supabaseUpdates.category = normalizeCategoryValue(updates.category as string);
-  if (updates.subcategory !== undefined) supabaseUpdates.subcategory = normalizeCategoryValue(updates.subcategory as string);
+  if (hasCategory || hasSubcategory) {
+    const currentQuery = supabase
+      .from('uploaded_videos')
+      .select('category, subcategory')
+    const current = isUUID
+      ? await currentQuery.eq('id', id).maybeSingle()
+      : await currentQuery.eq('local_id', id).maybeSingle();
+    const { category, subcategory } = canonicalizeCategoryAssignment(
+      hasCategory ? updates.category as string : current.data?.category,
+      hasSubcategory ? updates.subcategory as string : current.data?.subcategory
+    );
+    if (hasCategory) supabaseUpdates.category = category ?? null;
+    if (hasSubcategory || (hasCategory && subcategory)) supabaseUpdates.subcategory = subcategory ?? null;
+  }
   if (updates.tags !== undefined) supabaseUpdates.tags = updates.tags;
   if (updates.thumbnail !== undefined) supabaseUpdates.thumbnail_url = updates.thumbnail;
 
   if (Object.keys(supabaseUpdates).length === 0) return 0;
 
-  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   const query = supabase.from('uploaded_videos').update(supabaseUpdates);
   const { error, data } = isUUID
     ? await query.eq('id', id).select('id')
@@ -473,11 +490,16 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
 
 const normalizeVideoUpdates = (
   updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
-): Partial<Omit<UploadedVideo, 'id' | 'file'>> => ({
-  ...updates,
-  category: updates.category !== undefined ? normalizeCategoryValue(updates.category) : updates.category,
-  subcategory: updates.subcategory !== undefined ? normalizeCategoryValue(updates.subcategory) : updates.subcategory,
-});
+): Partial<Omit<UploadedVideo, 'id' | 'file'>> => {
+  const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
+  const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
+  const normalized = canonicalizeCategoryAssignment(updates.category, updates.subcategory);
+  return {
+    ...updates,
+    ...(hasCategory ? { category: normalized.category } : {}),
+    ...(hasSubcategory || (hasCategory && normalized.subcategory) ? { subcategory: normalized.subcategory } : {}),
+  };
+};
 
 const deleteVideoFromSupabase = async (id: string): Promise<{ deletedCount: number; error: string | null }> => {
   const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
