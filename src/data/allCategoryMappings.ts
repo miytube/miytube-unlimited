@@ -331,15 +331,15 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // People Categories
   'people': { title: 'People', description: 'People and society', icon: Users },
-  'people-bigotry': { title: 'People (Bigotry, Favoritism)', description: 'Social issues', icon: Users },
-  'people-fighting': { title: 'People (Fighting, Confrontations)', description: 'Confrontations and conflicts', icon: Users },
-  'people-karma': { title: 'People (Karma, Deserved)', description: 'Karma and justice', icon: Scale },
-  'people-look-alikes': { title: 'People (Look-alikes, Impressions)', description: 'Celebrity look-alikes and impressions', icon: Users },
-  'people-thefts': { title: 'People (Thefts, Stealing)', description: 'Theft and crime', icon: AlertTriangle },
+  'people-bigotry': { title: 'Bigotry & Favoritism', description: 'Social issues', icon: Users, parent: { route: '/people', name: 'People' } },
+  'people-fighting': { title: 'Fighting & Confrontations', description: 'Confrontations and conflicts', icon: Users, parent: { route: '/people', name: 'People' } },
+  'people-karma': { title: 'Karma & Deserved', description: 'Karma and justice', icon: Scale, parent: { route: '/people', name: 'People' } },
+  'people-look-alikes': { title: 'Look-a-likes & Impressionists', description: 'Celebrity look-alikes and impressions', icon: Users, parent: { route: '/people', name: 'People' } },
+  'people-thefts': { title: 'Thefts & Stealing', description: 'Theft and crime', icon: AlertTriangle, parent: { route: '/people', name: 'People' } },
   'people-blogs': { title: 'People & Blogs', description: 'Personal blogs and vlogs', icon: Users },
-  'people-amazing': { title: 'People Amazing', description: 'Amazing people and stories', icon: Star },
-  'people-amazing-things': { title: 'People Amazing Things', description: 'Amazing feats and achievements', icon: Sparkles },
-  'people-fails': { title: 'People Fails, Comedy', description: 'Funny fails and comedy', icon: Laugh },
+  'people-amazing': { title: 'People Amazing', description: 'Amazing people and stories', icon: Star, parent: { route: '/people', name: 'People' } },
+  'people-amazing-things': { title: 'Amazing Things', description: 'Amazing feats and achievements', icon: Sparkles, parent: { route: '/people', name: 'People' } },
+  'people-fails': { title: 'People Fails & Comedy', description: 'Funny fails and comedy', icon: Laugh, parent: { route: '/people', name: 'People' } },
   'people-workers': { title: 'People Worker (Fails, Accidents)', description: 'Worker fails and accidents', icon: Wrench },
   
   // Pets & Animals
