@@ -1,5 +1,5 @@
 
-import { Zap, Mountain, Waves } from 'lucide-react';
+import { Zap, Mountain, Waves, Flame } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
 export const disastersSubcategories: SubcategoryMapping = {
