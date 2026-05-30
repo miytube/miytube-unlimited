@@ -798,6 +798,17 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'documentary-films': { title: 'Documentary Films', description: 'Documentaries', icon: Film },
   'kids-education': { title: 'Kids Education', description: 'Educational content for kids', icon: GraduationCap },
   'history': { title: 'History', description: 'Historical content', icon: BookOpen },
+
+  // How To (top-level)
+  'how-to-style': { title: 'How To', description: 'How-to guides, DIY, and tutorials', icon: Wrench },
+  'how-to-arts-crafts': { title: 'Arts & Crafts', description: 'Arts and crafts projects', icon: Palette, parent: { route: '/how-to-style', name: 'How To' } },
+  'how-to-arts-crafts-sewing': { title: 'Sewing', description: 'Sewing tutorials and projects', icon: Wrench, parent: { route: '/how-to-style', name: 'How To' } },
+  'how-to-building': { title: 'Building & Garages', description: 'Construction tutorials', icon: Wrench, parent: { route: '/how-to-style', name: 'How To' } },
+  'how-to-clean-carpet': { title: 'Clean Carpet & Windows', description: 'Cleaning tutorials', icon: Wrench, parent: { route: '/how-to-style', name: 'How To' } },
+  'how-to-clean-bathroom': { title: 'Clean Shower & Sink', description: 'Bathroom cleaning', icon: Wrench, parent: { route: '/how-to-style', name: 'How To' } },
+  'how-to-remodel': { title: 'Remodel Bathroom', description: 'Bathroom remodeling', icon: Wrench, parent: { route: '/how-to-style', name: 'How To' } },
+  'how-to-windows-doors': { title: 'Fix Windows & Doors', description: 'Window and door repairs', icon: Wrench, parent: { route: '/how-to-style', name: 'How To' } },
+  'how-to-toilets': { title: 'Fix/Replace Toilets', description: 'Toilet repairs', icon: Wrench, parent: { route: '/how-to-style', name: 'How To' } },
 };
 
 // Helper function to get category info
