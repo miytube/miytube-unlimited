@@ -1,0 +1,1 @@
+UPDATE public.custom_subcategories SET name='Roland Garros Women', slug='roland-garros-women' WHERE id='47e085d1-1dbf-4ec8-9d20-f52c79ce1c1d';
