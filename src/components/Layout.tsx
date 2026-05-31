@@ -4,7 +4,7 @@ import { Footer } from './Footer';
 import { Sidebar } from './Sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { QuickCreatePageWidget } from './admin/QuickCreatePageWidget';
-import { VignettePreviewToggle } from './admin/VignettePreviewToggle';
+
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Footer />
       </div>
       <QuickCreatePageWidget />
-      <VignettePreviewToggle />
+      
     </div>
   );
 };
