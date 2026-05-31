@@ -51,7 +51,14 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
       ? `/sports/${cleanSubcategory}`
       : `/sports/${cleanSubcategory}`;
   }
-  if (!cleanSubcategory) return `/${cleanCategory}`;
+  if (!cleanSubcategory) {
+    const resolvedNoSub = resolveSidebarSlug(cleanCategory);
+    if (resolvedNoSub) {
+      return getSidebarMainCategoryRoute(resolvedNoSub) || `/${resolvedNoSub}`;
+    }
+    return `/${cleanCategory}`;
+  }
+
 
   if (subcategoryMappings[`/${cleanSubcategory}`]) return `/${cleanSubcategory}`;
   if (subcategoryMappings[cleanSubcategory]) return cleanSubcategory.startsWith('/') ? cleanSubcategory : `/${cleanSubcategory}`;
