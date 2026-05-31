@@ -92,7 +92,7 @@ export const SportsExtendedLinks: React.FC = () => {
       id: 'sports-mma', 
       icon: Dumbbell, 
       label: 'MMA & Fighting', 
-      path: '/sports/mma',
+      path: '/c/mma-and-fighting',
       subItems: [
         { id: 'sports-mma-ufc', label: 'UFC Fighting', path: '/sports/mma/ufc' },
         { id: 'sports-mma-women', label: 'Women MMA & UFC', path: '/sports/mma/women' },
