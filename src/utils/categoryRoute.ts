@@ -1,12 +1,37 @@
 import { subcategoryMappings } from '@/data/subcategoryMappings';
+import {
+  sidebarMainCategoryOptions,
+  getSidebarMainCategoryRoute,
+} from '@/data/sidebarMainCategories';
 
 const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
+
+const knownSidebarSlugs = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
+
+/**
+ * Resolve a category slug to the slug actually registered as a sidebar main
+ * category. Videos sometimes get persisted with a namespaced prefix (e.g.
+ * `sports-tennis` when the real sidebar slug is `tennis`). Without this
+ * fallback the breadcrumb link points to a route that no router entry
+ * handles, so clicking it appears to "refresh" the page.
+ */
+const resolveSidebarSlug = (slug: string): string | undefined => {
+  if (knownSidebarSlugs.has(slug)) return slug;
+  // Try stripping a single-word prefix like "sports-", "music-", etc.
+  const dashIdx = slug.indexOf('-');
+  if (dashIdx > 0) {
+    const tail = slug.slice(dashIdx + 1);
+    if (knownSidebarSlugs.has(tail)) return tail;
+  }
+  return undefined;
+};
 
 export const getUploadDestinationRoute = (category?: string, subcategory?: string) => {
   const cleanCategory = category ? trimSlashes(category) : '';
   const cleanSubcategory = subcategory ? trimSlashes(subcategory) : '';
 
   if (!cleanCategory) return '/';
+
   if (cleanCategory === 'college-sports') {
     if (!cleanSubcategory) return '/sports/college';
     if (cleanSubcategory === 'football-bowl-games') return '/sports/college/bowl';
