@@ -66,5 +66,14 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     return `/${cleanCategory}/${cleanSubcategory}`;
   }
 
+  // Fall back to the sidebar main-category route so links generated for
+  // namespaced category slugs (e.g. "sports-tennis") still resolve to the
+  // actual page ("/c/tennis") instead of an unrouted /sports-tennis URL.
+  const resolvedSlug = resolveSidebarSlug(cleanCategory);
+  if (resolvedSlug) {
+    const baseRoute = getSidebarMainCategoryRoute(resolvedSlug) || `/${resolvedSlug}`;
+    return cleanSubcategory ? `${baseRoute}/${cleanSubcategory}` : baseRoute;
+  }
+
   return `/${cleanCategory}/${cleanSubcategory}`;
 };
