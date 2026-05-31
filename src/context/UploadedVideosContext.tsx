@@ -1055,7 +1055,10 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     if (Math.abs(a.length - b.length) > 2) return false;
     const longer = Math.max(a.length, b.length);
     if (longer < 6) return false;
-    const budget = longer >= 10 ? 2 : 1;
+    // Budget of 1 — keeps real typo correction (e.g. "gorros" → "garros") but
+    // prevents collisions like "roland-garros-women" matching "roland-garros-men"
+    // (which is only 2 deletions apart).
+    const budget = 1;
     const m = a.length, n = b.length;
     const dp: number[] = new Array(n + 1);
     for (let j = 0; j <= n; j++) dp[j] = j;
