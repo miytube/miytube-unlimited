@@ -136,7 +136,7 @@ export const SportsExtendedLinks: React.FC = () => {
       id: 'sports-tennis', 
       icon: Target, 
       label: 'Tennis', 
-      path: '/sports/tennis',
+      path: '/c/tennis',
       subItems: [
         { id: 'sports-tennis-men', label: 'Tennis Men', path: '/sports/tennis/men' },
         { id: 'sports-tennis-women', label: 'Tennis Women', path: '/sports/tennis/women' },
