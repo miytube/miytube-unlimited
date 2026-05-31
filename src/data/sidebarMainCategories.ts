@@ -86,6 +86,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'nhl-hockey', name: 'NHL Hockey', route: '/sports/nhl' },
   { slug: 'racing-sports', name: 'Racing Sports', route: '/sports/racing' },
   { slug: 'golf', name: 'Golf', route: '/sports/golf' },
+  { slug: 'tennis', name: 'Tennis', route: '/c/tennis' },
   { slug: 'news', name: 'News & Politics' },
   { slug: 'non-mammals', name: 'Non-Mammals' },
   { slug: 'nonprofits', name: 'Nonprofits' },
