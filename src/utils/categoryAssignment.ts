@@ -111,6 +111,14 @@ export const canonicalizeCategoryAssignment = (
       return { category: categoryAsLeaf.parent, subcategory: categoryAsLeaf.child };
     }
 
+    // If the subcategory uniquely identifies a known parent (e.g. user picked
+    // "Street Cars/Motorcycles Racing" which lives under /cars), prefer that
+    // parent over a mismatched sidebar category (e.g. "autos-vehicles").
+    const leafFromSub = resolveUniqueSubcategoryAlias(normalizedSubcategory);
+    if (leafFromSub && leafFromSub.parent !== normalizedCategory) {
+      return { category: leafFromSub.parent, subcategory: leafFromSub.child };
+    }
+
     return { category: normalizedCategory, subcategory: normalizedSubcategory };
   }
 
