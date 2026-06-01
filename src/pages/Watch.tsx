@@ -334,7 +334,10 @@ const Watch = () => {
 
   const isLocalUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
   const isOwner = !!(video?.dbUserId && user?.id && video.dbUserId === user.id);
-  const isUserUpload = isLocalUpload || isOwner || isAdmin;
+  // Edits/deletes hit Supabase, so the user MUST be signed in for RLS to allow
+  // the write. Without `user`, the request goes out as anon and silently fails
+  // (rows match=0), making the title appear to revert. Gate the controls on auth.
+  const isUserUpload = !!user && (isLocalUpload || isOwner || isAdmin);
   
   if (loading) {
     return (
