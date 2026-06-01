@@ -1079,20 +1079,22 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   const EXACT_MATCH_CATEGORIES = new Set(['shorts', 'sports']);
 
   const getVideosByCategory = (category: string, subcategory?: string): UploadedVideo[] => {
-    const categoryLower = normalizeCategoryValue(category) || category.toLowerCase().trim();
+    const normalizedRequest = canonicalizeCategoryAssignment(category, subcategory);
+    const categoryLower = normalizedRequest.category || normalizeCategoryValue(category) || category.toLowerCase().trim();
+    const subcategoryLower = normalizedRequest.subcategory || (subcategory ? normalizeCategoryValue(subcategory) || subcategory.toLowerCase().trim() : undefined);
     const requireExactCategory = EXACT_MATCH_CATEGORIES.has(categoryLower);
 
     return uploadedVideos.filter(video => {
-      const vidCategory = normalizeCategoryValue(video.category) || video.category?.toLowerCase().trim() || '';
-      const vidSubcategory = normalizeCategoryValue(video.subcategory) || video.subcategory?.toLowerCase().trim() || '';
+      const normalizedVideo = canonicalizeCategoryAssignment(video.category, video.subcategory);
+      const vidCategory = normalizedVideo.category || normalizeCategoryValue(video.category) || video.category?.toLowerCase().trim() || '';
+      const vidSubcategory = normalizedVideo.subcategory || normalizeCategoryValue(video.subcategory) || video.subcategory?.toLowerCase().trim() || '';
 
       const categoryMatches = requireExactCategory
         ? vidCategory === categoryLower
         : (vidCategory === categoryLower || isCloseTypo(vidCategory, categoryLower));
 
-      if (subcategory) {
-        const subLower = normalizeCategoryValue(subcategory) || subcategory.toLowerCase().trim();
-        const subcategoryMatches = vidSubcategory === subLower || isCloseTypo(vidSubcategory, subLower);
+      if (subcategoryLower) {
+        const subcategoryMatches = vidSubcategory === subcategoryLower || isCloseTypo(vidSubcategory, subcategoryLower);
         return categoryMatches && subcategoryMatches;
       }
 

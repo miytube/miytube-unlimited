@@ -1,4 +1,5 @@
 import { subcategoryMappings } from '@/data/subcategoryMappings';
+import { sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 
 export interface CanonicalCategoryAssignment {
@@ -58,6 +59,20 @@ const buildKnownSubcategories = (): KnownSubcategoryAssignment[] => {
 const knownSubcategories = buildKnownSubcategories();
 const knownParentSlugs = new Set(knownSubcategories.map((row) => row.parent));
 
+const resolveSidebarCategorySlug = (value?: string): string | undefined => {
+  const normalized = normalizeCategoryValue(value);
+  if (!normalized) return undefined;
+  if (sidebarMainCategorySlugs.has(normalized)) return normalized;
+
+  const dashIdx = normalized.indexOf('-');
+  if (dashIdx > 0) {
+    const tail = normalized.slice(dashIdx + 1);
+    if (sidebarMainCategorySlugs.has(tail)) return tail;
+  }
+
+  return normalized;
+};
+
 const resolveUniqueSubcategoryAlias = (value?: string): KnownSubcategoryAssignment | undefined => {
   const normalized = normalizeCategoryValue(value);
   if (!normalized || knownParentSlugs.has(normalized)) return undefined;
@@ -71,7 +86,7 @@ export const canonicalizeCategoryAssignment = (
   category?: string | null,
   subcategory?: string | null
 ): CanonicalCategoryAssignment => {
-  const normalizedCategory = normalizeCategoryValue(category);
+  const normalizedCategory = resolveSidebarCategorySlug(category ?? undefined);
   const normalizedSubcategory = normalizeCategoryValue(subcategory);
 
   if (normalizedCategory && normalizedSubcategory) {
