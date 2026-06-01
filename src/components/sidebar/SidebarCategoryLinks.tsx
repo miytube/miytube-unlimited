@@ -135,7 +135,7 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
               } ${isExpanded ? 'animate-slide-in-item' : ''}`}
               style={{ animationDelay: '0ms' }}
             >
-              All {item.label}
+              {item.label}
             </Link>
             {item.subItems!.map((subItem, index) => {
               const isSubActive = location.pathname === subItem.path || location.pathname.startsWith(`${subItem.path}/`);
