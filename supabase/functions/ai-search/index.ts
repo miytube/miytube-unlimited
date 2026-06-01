@@ -150,8 +150,10 @@ serve(async (req) => {
     const normalizeText = (value: unknown) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
     const requiredTerms = importantTerms.length > 0 ? importantTerms : rawTerms;
 
-    // Whole-word matcher so "love" doesn't match "lovable" / "glove" / "lover"
+    // Substring matcher — "ball" should also surface "basketball", "softball", etc.
+    // Whole-word match still gives a relevance boost so exact word hits rank higher.
     const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const hasSubstring = (haystack: string, term: string) => haystack.includes(term);
     const hasWord = (haystack: string, term: string) =>
       new RegExp(`(?:^|\\s)${escapeRe(term)}(?:\\s|$)`).test(haystack);
 
@@ -161,13 +163,15 @@ serve(async (req) => {
       const categoryText = normalizeText(`${video.category || ''} ${video.subcategory || ''}`);
       const allText = `${primaryText} ${secondaryText} ${categoryText}`;
 
-      const requiredMatches = requiredTerms.filter(term => hasWord(allText, term)).length;
-      const primaryMatches = requiredTerms.filter(term => hasWord(primaryText, term)).length;
-      const secondaryMatches = requiredTerms.filter(term => hasWord(secondaryText, term)).length;
-      const categoryMatches = requiredTerms.filter(term => hasWord(categoryText, term)).length;
+      const requiredMatches = requiredTerms.filter(term => hasSubstring(allText, term)).length;
+      const primaryMatches = requiredTerms.filter(term => hasSubstring(primaryText, term)).length;
+      const secondaryMatches = requiredTerms.filter(term => hasSubstring(secondaryText, term)).length;
+      const categoryMatches = requiredTerms.filter(term => hasSubstring(categoryText, term)).length;
+      const primaryWordMatches = requiredTerms.filter(term => hasWord(primaryText, term)).length;
 
       let score = 0;
       if (rawQuery && primaryText.includes(rawQuery)) score += 1000;
+      score += primaryWordMatches * 200; // boost exact-word title hits
       score += primaryMatches * 120;
       score += secondaryMatches * 45;
       score += categoryMatches * 10;
