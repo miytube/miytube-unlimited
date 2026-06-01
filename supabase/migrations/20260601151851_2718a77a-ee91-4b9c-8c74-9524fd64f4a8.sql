@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET category = 'hollywood' WHERE category = 'hollywwod';

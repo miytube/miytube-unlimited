@@ -118,6 +118,10 @@ const routeValueAliases: Record<string, string[]> = {
   '/babies/fails': ['baby-fails', 'babies-fails', 'babies-and-infants-baby-fails'],
   'comedy/snl': ['snl-saturday-night-live', 'snl', 'snl-skits', 'saturday-night-live'],
   'comedy-snl': ['snl-saturday-night-live', 'snl', 'snl-skits', 'saturday-night-live'],
+  'hollywood/celebrities/news': ['celebrity-news', 'celebrities-news', 'hollywood-celebrity-news', 'hollywood-celebrities-news'],
+  'hollywood-celebrities-news': ['celebrity-news', 'celebrities-news', 'hollywood-celebrity-news'],
+  'hollywood/celebrities/actors': ['celebrity-actors', 'celebrities-actors', 'hollywood-celebrity-actors', 'hollywood-celebrities-actors'],
+  'hollywood-celebrities-actors': ['celebrity-actors', 'celebrities-actors', 'hollywood-celebrity-actors'],
 };
 
 
