@@ -82,14 +82,23 @@ const resolveUniqueSubcategoryAlias = (value?: string): KnownSubcategoryAssignme
   return uniqueKeys.size === 1 ? matches[0] : undefined;
 };
 
+// Reserved top-level categories whose slug must NEVER be re-mapped to a
+// nested subcategory (e.g. 'shorts' is its own /shorts feed, NOT /funny/shorts).
+const RESERVED_TOP_LEVEL_CATEGORIES = new Set(['shorts']);
+
 export const canonicalizeCategoryAssignment = (
   category?: string | null,
   subcategory?: string | null
 ): CanonicalCategoryAssignment => {
   const normalizedCategory = resolveSidebarCategorySlug(category ?? undefined);
   const normalizedSubcategory = normalizeCategoryValue(subcategory);
+  const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 
   if (normalizedCategory && normalizedSubcategory) {
+    if (categoryIsReserved) {
+      return { category: normalizedCategory, subcategory: normalizedSubcategory };
+    }
+
     const childUnderParent = knownSubcategories.find(
       (row) => row.parent === normalizedCategory && row.aliases.has(normalizedSubcategory)
     );
@@ -102,6 +111,10 @@ export const canonicalizeCategoryAssignment = (
       return { category: categoryAsLeaf.parent, subcategory: categoryAsLeaf.child };
     }
 
+    return { category: normalizedCategory, subcategory: normalizedSubcategory };
+  }
+
+  if (categoryIsReserved) {
     return { category: normalizedCategory, subcategory: normalizedSubcategory };
   }
 
