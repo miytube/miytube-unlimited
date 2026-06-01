@@ -444,6 +444,19 @@ const loadVideosFromSupabase = async (): Promise<{
 };
 
 const updateVideoInSupabase = async (id: string, updates: Record<string, unknown>): Promise<number> => {
+  // Make sure the supabase client is sending the CURRENT user JWT, not the
+  // stale anon token. If the session expired silently the row update would be
+  // blocked by RLS and look like the title "won't stay".
+  const { data: sessionData } = await supabase.auth.getSession();
+  let session = sessionData.session;
+  if (!session) {
+    const { data: refreshed } = await supabase.auth.refreshSession();
+    session = refreshed.session;
+  }
+  if (!session?.user) {
+    throw new Error('You are signed out. Please sign in again to save changes.');
+  }
+
   const supabaseUpdates: Record<string, unknown> = {};
   const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
   const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
@@ -471,22 +484,55 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
 
   const query = supabase.from('uploaded_videos').update(supabaseUpdates);
   const { error, data } = isUUID
-    ? await query.eq('id', id).select('id')
-    : await query.eq('local_id', id).select('id');
+    ? await query.eq('id', id).select('id, title, user_id')
+    : await query.eq('local_id', id).select('id, title, user_id');
 
   if (error) {
-    console.error('Error updating video in Supabase:', error);
+    console.error('Error updating video in Supabase:', error, 'updates:', supabaseUpdates, 'id:', id);
     throw new Error(error.message || 'Failed to update video');
   }
   const rows = data?.length || 0;
-  console.log('Updated video in Supabase:', id, 'rows:', rows);
+  console.log('Updated video in Supabase:', id, 'rows:', rows, 'data:', data);
   if (rows === 0) {
+    // The row exists (we render it on screen) but UPDATE returned no rows.
+    // That means RLS blocked the write. Look up the owner so we can give a
+    // useful error and also confirm whether the current user is the admin or
+    // owner that the policy expects.
+    const ownerQuery = supabase.from('uploaded_videos').select('user_id');
+    const owner = isUUID
+      ? await ownerQuery.eq('id', id).maybeSingle()
+      : await ownerQuery.eq('local_id', id).maybeSingle();
+    const ownerId = (owner.data as { user_id?: string } | null)?.user_id;
+    const currentUid = session.user.id;
+    const isOwner = !!ownerId && ownerId === currentUid;
+
+    // Re-check admin role server-side via has_role so we don't rely on stale
+    // client state.
+    let isAdmin = false;
+    const { data: adminRow } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', currentUid)
+      .eq('role', 'admin')
+      .maybeSingle();
+    isAdmin = !!adminRow;
+
+    console.warn('Update returned 0 rows (RLS blocked).', {
+      id, ownerId, currentUid, isOwner, isAdmin,
+    });
+
+    if (isOwner || isAdmin) {
+      throw new Error(
+        'Save was rejected by the database even though you appear to have permission. Try signing out and back in, then save again.'
+      );
+    }
     throw new Error(
-      "Update blocked: you don't have permission to edit this video. Sign in as the owner or an admin."
+      "You don't have permission to edit this video. Sign in as the owner or an admin."
     );
   }
   return rows;
 };
+
 
 const normalizeVideoUpdates = (
   updates: Partial<Omit<UploadedVideo, 'id' | 'file'>>
