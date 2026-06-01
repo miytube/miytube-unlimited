@@ -150,8 +150,10 @@ serve(async (req) => {
     const normalizeText = (value: unknown) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
     const requiredTerms = importantTerms.length > 0 ? importantTerms : rawTerms;
 
-    // Whole-word matcher so "love" doesn't match "lovable" / "glove" / "lover"
+    // Substring matcher — "ball" should also surface "basketball", "softball", etc.
+    // Whole-word match still gives a relevance boost so exact word hits rank higher.
     const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const hasSubstring = (haystack: string, term: string) => haystack.includes(term);
     const hasWord = (haystack: string, term: string) =>
       new RegExp(`(?:^|\\s)${escapeRe(term)}(?:\\s|$)`).test(haystack);
 
