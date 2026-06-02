@@ -118,6 +118,8 @@ const GenericSubcategoryPage = () => {
           IconComponent={DisplayIcon}
         />
 
+        <AdSlot slot="1227265451" label="Subcategory top ad" className="mb-6" format="horizontal" />
+
         {customSubs.length > 0 && !customSubSlug && !customWatchSlug && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">Pages in {pageTitle}</h2>
