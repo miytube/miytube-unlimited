@@ -12,6 +12,7 @@ import { Film, Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
 import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
