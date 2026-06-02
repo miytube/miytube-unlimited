@@ -106,6 +106,8 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
           </div>
         )}
         
+        <AdSlot slot="7284874516" label="Category mid multiplex" className="mb-6" format="auto" />
+
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About {category}</h2>
           <p className="text-muted-foreground">
