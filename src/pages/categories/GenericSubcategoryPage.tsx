@@ -192,9 +192,8 @@ const GenericSubcategoryPage = () => {
           </div>
         )}
 
-        )}
-
         <AdSlot slot="7284874516" label="Subcategory mid multiplex" className="mb-6" format="auto" />
+
 
         <AboutSection title={displayTitle} />
       </div>
