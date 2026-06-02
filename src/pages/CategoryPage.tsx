@@ -64,6 +64,10 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
             <span>Upload</span>
           </Link>
         </div>
+
+        <AdSlot slot="1227265451" label="Category top ad" className="mb-6" format="horizontal" />
+
+
         
         {categoryVideos.length > 0 ? (
           <div className="mb-8">
