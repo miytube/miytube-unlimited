@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 interface CategoryPageProps {
   category: string;
