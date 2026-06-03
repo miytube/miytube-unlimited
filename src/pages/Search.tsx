@@ -128,7 +128,10 @@ const Search = () => {
           </div>
         )}
 
-        {/* Ad slot removed — relying on AdSense Auto Ads */}
+        {/* Square display AdSense unit (miytube-new-7) */}
+        <div className="my-6 max-w-sm mx-auto">
+          <AdSlot slot="2074250134" format="auto" responsive label="Sponsored" />
+        </div>
 
         {/* AI Database Results */}
         {hasAIResults && (
