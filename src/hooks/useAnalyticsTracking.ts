@@ -202,5 +202,5 @@ export const useAnalyticsTracking = () => {
       clearInterval(heartbeat);
       window.removeEventListener('beforeunload', cleanup);
     };
-  }, [location.pathname, user?.id, isAdmin]);
+  }, [location.pathname, user?.id, isAdmin, isLowQuality]);
 };
