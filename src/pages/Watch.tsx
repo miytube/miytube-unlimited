@@ -20,6 +20,7 @@ import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
 import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
+import { AdSlot } from '@/components/ads/AdSlot';
 import {
   AlertDialog,
   AlertDialogAction,
