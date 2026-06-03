@@ -13,6 +13,7 @@ import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton, ShortGridSkeleton } from '@/components/skeletons';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
 
 interface TrendingCategoryProps {
   title: string;
@@ -128,8 +129,9 @@ const Trending: React.FC = () => {
   const displayPodcasts = podcastVideos.slice(podcastStartIndex, podcastStartIndex + videosPerPage);
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
-    files.forEach(file => {
-      addUploadedVideo(file, title || file.name, description || '', 'trending', subcategory, tags);
+    files.forEach((file) => {
+      const metadata = getPerFileUploadMetadata(file, title, description, files.length);
+      addUploadedVideo(file, metadata.title, metadata.description, 'trending', subcategory, tags);
     });
     toast({
       title: "Video uploaded to Trending",
