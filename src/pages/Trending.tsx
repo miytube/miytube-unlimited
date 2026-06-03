@@ -105,13 +105,27 @@ const Trending: React.FC = () => {
   const endIndex = startIndex + videosPerPage;
   const displayVideos = trendingVideos.slice(startIndex, endIndex);
 
-  // Get uploaded music with pagination
+  // Helper: detect whether an uploaded video is truly a short (≤60s)
+  const isShortVideo = (v: typeof musicVideosRaw[number]) => {
+    if (v.category?.toLowerCase() === 'shorts') return true;
+    const parts = (v.duration || '').split(':');
+    if (parts.length === 2) {
+      const total = Number(parts[0]) * 60 + Number(parts[1]);
+      if (isFinite(total) && total > 0 && total <= 60) return true;
+    }
+    return false;
+  };
+
+  // Get uploaded music with pagination (preserve raw fields so we can pick the right card)
   const musicVideos = musicVideosRaw.map(video => ({
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
-    creator: 'Your Channel',
+    channelName: 'Your Channel',
     views: video.views,
+    timestamp: video.timestamp,
+    duration: video.duration,
+    isShort: isShortVideo(video),
   }));
   const musicTotalPages = Math.ceil(musicVideos.length / videosPerPage);
   const musicStartIndex = (musicPage - 1) * videosPerPage;
@@ -122,8 +136,11 @@ const Trending: React.FC = () => {
     id: video.id,
     title: video.title,
     thumbnail: video.thumbnail,
-    creator: 'Your Channel',
+    channelName: 'Your Channel',
     views: video.views,
+    timestamp: video.timestamp,
+    duration: video.duration,
+    isShort: isShortVideo(video),
   }));
   const podcastTotalPages = Math.ceil(podcastVideos.length / videosPerPage);
   const podcastStartIndex = (podcastPage - 1) * videosPerPage;
