@@ -101,6 +101,10 @@ const LongVideos = () => {
             <Button onClick={handleUploadClick}>Upload Long Video</Button>
           </div>
         )}
+        {/* Vertical display AdSense unit (miytube-new-8) */}
+        <div className="my-8 max-w-md mx-auto">
+          <AdSlot slot="5449702606" format="auto" responsive label="Sponsored" />
+        </div>
         
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
