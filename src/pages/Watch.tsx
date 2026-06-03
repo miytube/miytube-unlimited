@@ -597,6 +597,14 @@ const Watch = () => {
         </div>
       </div>
 
+      {/* Multiplex AdSense unit (miytube-new-10) — Watch page bottom */}
+      <div className="my-8 px-4">
+        <h2 className="text-xl font-medium mb-4">More for you</h2>
+        <AdSlot slot="5438395639" format="autorelaxed" responsive={false} label="Sponsored" />
+      </div>
+
+
+
       {isUserUpload && video && (
         <>
           <VideoEditDialog
