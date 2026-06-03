@@ -10,6 +10,7 @@ import { musicCategories } from '@/components/music/musicData';
 import { VideoCard } from '@/components/VideoCard';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const Music = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -54,6 +55,12 @@ const Music = () => {
         <UploadedAudioGrid />
 
         <FeaturedMusicVideo />
+
+        {/* Square display AdSense unit (miytube-new-9) */}
+        <div className="my-8 max-w-sm mx-auto">
+          <AdSlot slot="2440395887" format="auto" responsive label="Sponsored" />
+        </div>
+
 
         <MusicCategories categories={musicCategories} />
       </div>
