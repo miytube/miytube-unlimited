@@ -57,7 +57,7 @@ const BreakingNewsCategory = () => {
         title: 'Upload complete',
         description: 'Your video is now available in Breaking News.',
         action: (
-          <ToastAction altText="Reload" onClick={() => navigate(0 as any)}>
+          <ToastAction altText="Reload" onClick={() => window.location.reload()}>
             Refresh
           </ToastAction>
         ),
