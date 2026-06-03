@@ -8,6 +8,7 @@ import { autoCategorize } from '@/utils/autoCategorize';
 import { useUploadProgress } from '@/context/UploadProgressContext';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 import { supabase } from '@/integrations/supabase/client';
+import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
 
 export const useUploadHandler = () => {
   const { toast } = useToast();
@@ -113,9 +114,12 @@ export const useUploadHandler = () => {
 
       // Pre-compute per-file metadata so retries reuse the same values
       const pending: PendingUpload[] = files.map((file) => {
-        const fileBaseName = file.name.split('.').slice(0, -1).join('.') || file.name;
-        const perFileTitle = isBatch ? fileBaseName : (title || fileBaseName);
-        const perFileDescription = isBatch ? '' : (description || '');
+        const { title: perFileTitle, description: perFileDescription } = getPerFileUploadMetadata(
+          file,
+          title,
+          description,
+          files.length,
+        );
 
         let uploadCategory = category;
         let uploadSubcategory = subcategory;

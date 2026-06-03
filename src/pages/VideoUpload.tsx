@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCategoryManagement } from '@/components/categories/useCategoryManagement';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
+import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
 
 const VideoUpload = () => {
   const { toast } = useToast();
@@ -93,14 +94,16 @@ const VideoUpload = () => {
       description: `Processing ${files.length} ${files.length === 1 ? 'video' : 'videos'} ${category ? `in category: ${category}` : ''}${subcategory ? `, subcategory: ${subcategory}` : ''}`,
     });
 
-    const isBatch = files.length > 1;
     let successCount = 0;
     const failed: string[] = [];
 
     for (const file of files) {
-      const baseName = file.name.split('.').slice(0, -1).join('.') || file.name;
-      const perFileTitle = isBatch ? baseName : (title || baseName);
-      const perFileDescription = isBatch ? '' : (description || '');
+      const { title: perFileTitle, description: perFileDescription } = getPerFileUploadMetadata(
+        file,
+        title,
+        description,
+        files.length,
+      );
       try {
         await addUploadedVideo(file, perFileTitle, perFileDescription, category, subcategory, tags);
         successCount++;
