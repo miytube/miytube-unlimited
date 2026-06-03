@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { ShortGridSkeleton } from '@/components/skeletons';
-import { AdSlot } from '@/components/ads/AdSlot';
+
 import { sortByName } from '@/lib/sortByName';
 import { auditShortsDurations } from '@/utils/auditShortsDuration';
 import { usePageSEO } from '@/hooks/usePageSEO';
@@ -248,8 +248,7 @@ const Shorts = () => {
                 ))}
               </div>
 
-              {/* Ad slot — below shorts grid (miytube-grid-6) */}
-              <AdSlot slot="8656198293" label="Shorts below-grid ad (miytube-grid-6)" className="my-6 max-w-md mx-auto" format="rectangle" />
+              {/* Ad slot removed — relying on AdSense Auto Ads */}
 
               <Pagination
                 currentPage={currentPage}

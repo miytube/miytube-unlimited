@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { AdSlot } from '@/components/ads/AdSlot';
+
 
 interface CategoryPageProps {
   category: string;
@@ -65,7 +65,7 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
           </Link>
         </div>
 
-        <AdSlot slot="1227265451" label="Category top ad" className="mb-6" format="horizontal" />
+        {/* Ad slot removed — relying on AdSense Auto Ads */}
 
 
         
@@ -106,7 +106,7 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
           </div>
         )}
         
-        <AdSlot slot="7284874516" label="Category mid multiplex" className="mb-6" format="auto" />
+        {/* Ad slot removed — relying on AdSense Auto Ads */}
 
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About {category}</h2>

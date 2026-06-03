@@ -15,7 +15,7 @@ import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAIRecommendations } from '@/hooks/useAIRecommendations';
 import { usePageSEO } from '@/hooks/usePageSEO';
-import { AdSlot } from '@/components/ads/AdSlot';
+
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
 import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
@@ -447,11 +447,7 @@ const Watch = () => {
             
             <VideoDescription description={video.description} />
 
-            {/* Ad slot — below video description */}
-            <AdSlot slot="1227265451" label="Watch below-description ad" />
-
-            {/* Ad slot — between description and comments (miytube-grid-8 multiplex) */}
-            <AdSlot slot="8875410906" label="Watch in-content multiplex (miytube-grid-8)" className="my-4" format="auto" />
+            {/* Ad slots removed — relying on AdSense Auto Ads */}
 
             {actualVideoId && <VideoComments videoId={actualVideoId} />}
             
@@ -460,8 +456,7 @@ const Watch = () => {
 
           {/* Right Sidebar */}
           <div className="w-80 hidden lg:block space-y-4">
-            {/* Ad slot — top of recommendations sidebar */}
-            <AdSlot slot="9527894473" label="Watch sidebar ad (miytube-grid-2)" format="vertical" className="!my-0" />
+            {/* Ad slot removed — relying on AdSense Auto Ads */}
 
             <h3 className="text-sm font-semibold">Up Next</h3>
             
@@ -549,8 +544,7 @@ const Watch = () => {
               </div>
             )}
 
-            {/* Ad slot — mid-sidebar (miytube-grid-7 vertical) */}
-            <AdSlot slot="1188492570" label="Watch sidebar mid ad (miytube-grid-7)" format="vertical" className="!my-0" />
+            {/* Ad slot removed — relying on AdSense Auto Ads */}
 
             {/* AI Recommendations */}
             {aiRecommendations.length > 0 && (

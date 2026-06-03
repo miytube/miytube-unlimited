@@ -12,7 +12,7 @@ import { Film, Upload } from 'lucide-react';
 import { filterVideosBySubcategory } from '@/utils/videoFiltering';
 import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
-import { AdSlot } from '@/components/ads/AdSlot';
+
 
 const GenericSubcategoryPage = () => {
   const { uploadedVideos, getVideosByCategory } = useUploadedVideos();
@@ -118,7 +118,7 @@ const GenericSubcategoryPage = () => {
           IconComponent={DisplayIcon}
         />
 
-        <AdSlot slot="1227265451" label="Subcategory top ad" className="mb-6" format="horizontal" />
+        {/* Ad slot removed — relying on AdSense Auto Ads */}
 
         {customSubs.length > 0 && !customSubSlug && !customWatchSlug && (
           <div className="mb-8">
@@ -192,7 +192,7 @@ const GenericSubcategoryPage = () => {
           </div>
         )}
 
-        <AdSlot slot="7284874516" label="Subcategory mid multiplex" className="mb-6" format="auto" />
+        {/* Ad slot removed — relying on AdSense Auto Ads */}
 
 
         <AboutSection title={displayTitle} />
