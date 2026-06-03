@@ -114,12 +114,21 @@ export const canonicalizeCategoryAssignment = (
     // If the subcategory uniquely identifies a known parent (e.g. user picked
     // "Street Cars/Motorcycles Racing" which lives under /cars), prefer that
     // parent over a mismatched sidebar category (e.g. "autos-vehicles").
-    const leafFromSub = resolveUniqueSubcategoryAlias(normalizedSubcategory);
-    if (leafFromSub && leafFromSub.parent !== normalizedCategory) {
-      return { category: leafFromSub.parent, subcategory: leafFromSub.child };
+    // EXCEPTION: if the user explicitly picked a real sidebar/parent category,
+    // respect their choice — a slug like "country" must not auto-jump from
+    // Travel & Events to Music just because /music/country exists.
+    const userPickedValidParent =
+      sidebarMainCategorySlugs.has(normalizedCategory) ||
+      knownParentSlugs.has(normalizedCategory);
+    if (!userPickedValidParent) {
+      const leafFromSub = resolveUniqueSubcategoryAlias(normalizedSubcategory);
+      if (leafFromSub && leafFromSub.parent !== normalizedCategory) {
+        return { category: leafFromSub.parent, subcategory: leafFromSub.child };
+      }
     }
 
     return { category: normalizedCategory, subcategory: normalizedSubcategory };
+
   }
 
   if (categoryIsReserved) {
