@@ -312,14 +312,27 @@ const Trending: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayMusic.map(item => (
-                <ShortCard
-                  key={item.id}
-                  id={item.id}
-                  title={item.title}
-                  thumbnail={item.thumbnail}
-                  creator={item.creator}
-                  views={item.views}
-                />
+                item.isShort ? (
+                  <ShortCard
+                    key={item.id}
+                    id={item.id}
+                    title={item.title}
+                    thumbnail={item.thumbnail}
+                    creator={item.channelName}
+                    views={item.views}
+                  />
+                ) : (
+                  <VideoCard
+                    key={item.id}
+                    id={item.id}
+                    title={item.title}
+                    thumbnail={item.thumbnail}
+                    channelName={item.channelName}
+                    views={item.views}
+                    timestamp={item.timestamp}
+                    duration={item.duration}
+                  />
+                )
               ))}
             </div>
             <div className="flex items-center justify-between mt-4">
