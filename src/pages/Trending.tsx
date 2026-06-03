@@ -14,6 +14,7 @@ import { VideoGridSkeleton, ShortGridSkeleton } from '@/components/skeletons';
 
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 interface TrendingCategoryProps {
   title: string;
