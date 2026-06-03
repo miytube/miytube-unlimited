@@ -7,6 +7,7 @@ import { filterVideosBySubcategory } from '@/utils/videoFiltering';
 import VideoContent from '@/components/subcategory/VideoContent';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
+import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
 
 const CATEGORY_ID = 'podcasts';
 const SUBCATEGORY_ID = 'news';
@@ -38,10 +39,11 @@ const PodcastNews = () => {
   ) => {
     try {
       for (const file of files) {
+        const metadata = getPerFileUploadMetadata(file, title, description, files.length);
         await addUploadedVideo(
           file,
-          title || file.name,
-          description || '',
+          metadata.title,
+          metadata.description,
           category || CATEGORY_ID,
           subcategory || SUBCATEGORY_ID,
           tags

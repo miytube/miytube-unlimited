@@ -14,6 +14,7 @@ import { AdSlot } from '@/components/ads/AdSlot';
 import { sortByName } from '@/lib/sortByName';
 import { auditShortsDurations } from '@/utils/auditShortsDuration';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
 
 const Shorts = () => {
   usePageSEO({
@@ -118,7 +119,10 @@ const Shorts = () => {
   const handleUpload = async (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     try {
       await Promise.all(
-        files.map(file => addUploadedVideo(file, title || file.name, description || '', 'shorts', subcategory, tags))
+        files.map((file) => {
+          const metadata = getPerFileUploadMetadata(file, title, description, files.length);
+          return addUploadedVideo(file, metadata.title, metadata.description, 'shorts', subcategory, tags);
+        })
       );
       toast({
         title: "Short video uploaded",

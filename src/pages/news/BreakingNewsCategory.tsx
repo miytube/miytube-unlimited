@@ -8,6 +8,7 @@ import VideoContent from '@/components/subcategory/VideoContent';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
 
 const NEWS_CATEGORY_ID = 'news-politics';
 const SUBCATEGORY_ID = 'breaking-news';
@@ -42,10 +43,11 @@ const BreakingNewsCategory = () => {
   ) => {
     try {
       for (const file of files) {
+        const metadata = getPerFileUploadMetadata(file, title, description, files.length);
         await addUploadedVideo(
           file,
-          title || file.name,
-          description || '',
+          metadata.title,
+          metadata.description,
           category || NEWS_CATEGORY_ID,
           subcategory || SUBCATEGORY_ID,
           tags
@@ -55,7 +57,7 @@ const BreakingNewsCategory = () => {
         title: 'Upload complete',
         description: 'Your video is now available in Breaking News.',
         action: (
-          <ToastAction altText="Reload" onClick={() => navigate(0 as any)}>
+          <ToastAction altText="Reload" onClick={() => window.location.reload()}>
             Refresh
           </ToastAction>
         ),
