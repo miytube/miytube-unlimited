@@ -1188,6 +1188,36 @@ export type Database = {
         }
         Relationships: []
       }
+      visitor_ip_cache: {
+        Row: {
+          asn: string | null
+          checked_at: string
+          country: string | null
+          ip: string
+          is_datacenter: boolean
+          is_proxy: boolean
+          org: string | null
+        }
+        Insert: {
+          asn?: string | null
+          checked_at?: string
+          country?: string | null
+          ip: string
+          is_datacenter?: boolean
+          is_proxy?: boolean
+          org?: string | null
+        }
+        Update: {
+          asn?: string | null
+          checked_at?: string
+          country?: string | null
+          ip?: string
+          is_datacenter?: boolean
+          is_proxy?: boolean
+          org?: string | null
+        }
+        Relationships: []
+      }
       watchlist: {
         Row: {
           created_at: string

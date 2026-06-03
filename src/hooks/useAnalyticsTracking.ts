@@ -18,6 +18,20 @@ const generateSessionId = (): string => {
 const sessionScopedRequest = (sessionId: string) =>
   supabase.functions.setAuth ? supabase : supabase; // placeholder for typing
 
+// Cached per-session result of the server-side datacenter/proxy check.
+// One call per browser session — result is stored in sessionStorage.
+const VISITOR_QUALITY_KEY = 'analytics_visitor_quality';
+type VisitorQuality = { is_datacenter: boolean; is_proxy: boolean };
+
+const getCachedVisitorQuality = (): VisitorQuality | null => {
+  try {
+    const raw = sessionStorage.getItem(VISITOR_QUALITY_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
 export const useAnalyticsTracking = () => {
   const location = useLocation();
   const { user } = useAuth();
@@ -25,6 +39,34 @@ export const useAnalyticsTracking = () => {
   const lastPathRef = useRef<string>('');
   const isBotRef = useRef<boolean>(isLikelyBot());
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isLowQuality, setIsLowQuality] = useState<boolean>(() => {
+    const cached = getCachedVisitorQuality();
+    return cached ? cached.is_datacenter || cached.is_proxy : false;
+  });
+  const qualityCheckedRef = useRef<boolean>(!!getCachedVisitorQuality());
+
+  // One-time server-side datacenter/proxy check per session
+  useEffect(() => {
+    if (qualityCheckedRef.current) return;
+    if (isBotRef.current) return;
+    qualityCheckedRef.current = true;
+    supabase.functions
+      .invoke('check-visitor-quality')
+      .then(({ data }) => {
+        if (!data) return;
+        const result: VisitorQuality = {
+          is_datacenter: !!data.is_datacenter,
+          is_proxy: !!data.is_proxy,
+        };
+        try {
+          sessionStorage.setItem(VISITOR_QUALITY_KEY, JSON.stringify(result));
+        } catch {}
+        if (result.is_datacenter || result.is_proxy) setIsLowQuality(true);
+      })
+      .catch(() => {
+        // Network/edge failure — don't block tracking
+      });
+  }, []);
 
   // Check if current user is admin — skip all tracking for admins.
   // Also honor a per-browser "exclude me" flag (localStorage) so the owner
@@ -54,6 +96,10 @@ export const useAnalyticsTracking = () => {
     // Skip all analytics for bots/crawlers — keeps quality signals clean
     // for AdSense (high bounce rate from bots reduces ad fill rate).
     if (isBotRef.current) return;
+
+    // Skip datacenter/proxy/VPN traffic — these inflate pageview counts
+    // without producing real ad impressions and drag down RPM.
+    if (isLowQuality) return;
 
     // Skip tracking for admin users so owner visits don't inflate stats
     if (isAdmin) {
@@ -156,5 +202,5 @@ export const useAnalyticsTracking = () => {
       clearInterval(heartbeat);
       window.removeEventListener('beforeunload', cleanup);
     };
-  }, [location.pathname, user?.id, isAdmin]);
+  }, [location.pathname, user?.id, isAdmin, isLowQuality]);
 };
