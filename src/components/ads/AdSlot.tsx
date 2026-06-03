@@ -14,7 +14,7 @@ import { HouseAd } from './HouseAd';
  */
 interface AdSlotProps {
   slot?: string;
-  format?: 'auto' | 'fluid' | 'rectangle' | 'horizontal' | 'vertical';
+  format?: 'auto' | 'fluid' | 'rectangle' | 'horizontal' | 'vertical' | 'autorelaxed';
   layout?: string;
   className?: string;
   /** When true, ad uses full container width and responsive layout. */
