@@ -151,6 +151,13 @@ const Index = () => {
 
         {/* Ad slot removed — relying on AdSense Auto Ads */}
 
+        {/* In-feed AdSense unit (miytube-new-1) */}
+        {!isLoading && displayVideos.length > 0 && (
+          <div className="my-8">
+            <AdSlot slot="1406515812" format="auto" responsive label="Sponsored" />
+          </div>
+        )}
+
         {/* Trending Videos Section - Regular videos only */}
         {!isLoading && trendingVideos.length > 0 && (
           <div className="mb-6">
