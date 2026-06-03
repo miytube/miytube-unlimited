@@ -14,6 +14,7 @@ import { VideoGridSkeleton, ShortGridSkeleton } from '@/components/skeletons';
 
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 interface TrendingCategoryProps {
   title: string;
@@ -263,7 +264,10 @@ const Trending: React.FC = () => {
           </div>
         )}
 
-        {/* Ad slot removed — relying on AdSense Auto Ads */}
+        {/* Vertical display AdSense unit (miytube-new-6) */}
+        <div className="my-8 mx-auto max-w-md">
+          <AdSlot slot="8439817701" format="auto" responsive label="Sponsored" />
+        </div>
 
         {!isLoading && (activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
 
