@@ -10,6 +10,7 @@ import { musicCategories } from '@/components/music/musicData';
 import { VideoCard } from '@/components/VideoCard';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const Music = () => {
   const { uploadedVideos } = useUploadedVideos();
