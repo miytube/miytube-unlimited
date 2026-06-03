@@ -11,6 +11,7 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useNavigate } from 'react-router-dom';
 import { sortByName } from '@/lib/sortByName';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 const LongVideos = () => {
   const { toast } = useToast();
