@@ -201,6 +201,13 @@ const Index = () => {
               onPageChange={setCurrentPage}
             />
           </div>
+
+        {/* Multiplex AdSense unit (miytube-new-3) — "More content you might like" */}
+        {!isLoading && displayVideos.length > 0 && (
+          <div className="my-8">
+            <h2 className="text-xl font-medium mb-4">More for you</h2>
+            <AdSlot slot="3008057853" format="autorelaxed" responsive={false} label="Sponsored" />
+          </div>
         )}
 
         {!isLoading && allVideos.length === 0 && (
