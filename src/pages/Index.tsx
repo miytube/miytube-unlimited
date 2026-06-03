@@ -179,7 +179,12 @@ const Index = () => {
         {/* Shorts Section - below Trending */}
         {!isLoading && <ShortVideosSection />}
 
-        {/* Ad slot removed — relying on AdSense Auto Ads */}
+        {/* Horizontal AdSense unit (miytube-new-2) */}
+        {!isLoading && displayVideos.length > 0 && (
+          <div className="my-8">
+            <AdSlot slot="4004758990" format="horizontal" responsive label="Sponsored" />
+          </div>
+        )}
 
         {/* Page counter below trending section */}
         {!isLoading && displayVideos.length > 0 && (
