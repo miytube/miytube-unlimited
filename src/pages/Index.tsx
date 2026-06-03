@@ -7,6 +7,7 @@ import { Pagination, PageInfo } from '@/components/Pagination';
 import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 import { usePageSEO } from '@/hooks/usePageSEO';
