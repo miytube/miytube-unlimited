@@ -264,7 +264,10 @@ const Trending: React.FC = () => {
           </div>
         )}
 
-        {/* Ad slot removed — relying on AdSense Auto Ads */}
+        {/* Vertical display AdSense unit (miytube-new-6) */}
+        <div className="my-8 mx-auto max-w-md">
+          <AdSlot slot="8439817701" format="auto" responsive label="Sponsored" />
+        </div>
 
         {!isLoading && (activeTab === 'all' || activeTab === 'videos') && <TrendingShortVideosSection />}
 
