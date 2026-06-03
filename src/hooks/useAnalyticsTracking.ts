@@ -97,6 +97,10 @@ export const useAnalyticsTracking = () => {
     // for AdSense (high bounce rate from bots reduces ad fill rate).
     if (isBotRef.current) return;
 
+    // Skip datacenter/proxy/VPN traffic — these inflate pageview counts
+    // without producing real ad impressions and drag down RPM.
+    if (isLowQuality) return;
+
     // Skip tracking for admin users so owner visits don't inflate stats
     if (isAdmin) {
       // Also disable GA4 property so no hits leak through
