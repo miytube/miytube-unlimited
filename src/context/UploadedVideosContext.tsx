@@ -1059,14 +1059,21 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       // Delete from Supabase first — this is the source of truth
       const { deletedCount, error } = await deleteVideoFromSupabase(id);
 
-      if (error || deletedCount === 0) {
-        // Revert UI — deletion didn't actually happen on the server
-        console.warn('Video was not deleted on the server. Reverting UI.', { id, error, deletedCount });
+      if (error) {
+        // Real server/RLS error — revert UI
+        console.warn('Video was not deleted on the server. Reverting UI.', { id, error });
         setUploadedVideos(prevList);
-        const reason = error
-          ? `Server error: ${error}`
-          : 'You can only delete videos you uploaded while signed in. Please sign in as the original uploader (or an admin) and try again.';
-        throw new Error(reason);
+        throw new Error(
+          /permission|policy|rls/i.test(error)
+            ? 'You can only delete videos you uploaded while signed in. Please sign in as the original uploader (or an admin) and try again.'
+            : `Server error: ${error}`
+        );
+      }
+
+      if (deletedCount === 0) {
+        // Row doesn't exist on the server (local-only or already deleted).
+        // Treat as success and continue cleaning up local + cloud state.
+        console.log('No server row found to delete; cleaning up local copy only.', { id });
       }
 
       // Delete local IndexedDB copy so it doesn't come back on reload
