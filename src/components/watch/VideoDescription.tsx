@@ -21,11 +21,14 @@ export const VideoDescription: React.FC<VideoDescriptionProps> = ({ description 
       </p>
       
       {isLongDescription && (
-        <button 
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={expanded ? 'Collapse video description' : 'Expand full video description'}
           className="text-sm font-medium mt-2 text-primary hover:text-primary/80 transition-colors"
           onClick={() => setExpanded(!expanded)}
         >
-          {expanded ? 'Show less' : 'Read more'}
+          {expanded ? 'Show less' : 'Read full description'}
         </button>
       )}
     </div>

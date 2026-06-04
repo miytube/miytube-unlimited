@@ -60,8 +60,12 @@ export const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
                   <span>{post.comments}</span>
                 </span>
               </div>
-              <button className="text-primary hover:underline text-sm font-medium">
-                Read More
+              <button
+                type="button"
+                aria-label={`Read full post: ${post.title}`}
+                className="text-primary hover:underline text-sm font-medium"
+              >
+                Read full post
               </button>
             </div>
           </div>
