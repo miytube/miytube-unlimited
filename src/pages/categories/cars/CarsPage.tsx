@@ -79,7 +79,7 @@ const CarsPage = () => {
               <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Car size={32} className="mx-auto mb-2 text-primary" />
-                  <div className="font-medium">Major Repairs</div>
+                  <div className="font-medium">Major Car Repairs</div>
                 </div>
               </div>
             </Link>
@@ -87,7 +87,7 @@ const CarsPage = () => {
               <div className="aspect-square rounded-lg overflow-hidden relative group bg-card flex items-center justify-center hover:bg-accent transition-colors">
                 <div className="text-center">
                   <Car size={32} className="mx-auto mb-2 text-primary" />
-                  <div className="font-medium">Minor Repairs</div>
+                  <div className="font-medium">Minor Car Repairs</div>
                 </div>
               </div>
             </Link>
