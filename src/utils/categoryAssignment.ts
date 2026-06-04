@@ -95,11 +95,12 @@ const inferCarsMajorRepairSubcategory = (values: Array<string | null | undefined
 
 export const canonicalizeCategoryAssignment = (
   category?: string | null,
-  subcategory?: string | null
+  subcategory?: string | null,
+  textHints: Array<string | null | undefined> = []
 ): CanonicalCategoryAssignment => {
   const normalizedCategory = resolveSidebarCategorySlug(category ?? undefined);
   const inferredSubcategory = normalizedCategory === 'autos-vehicles'
-    ? inferCarsMajorRepairSubcategory([subcategory])
+    ? inferCarsMajorRepairSubcategory([subcategory, ...textHints])
     : undefined;
   const normalizedSubcategory = normalizeCategoryValue(subcategory) || inferredSubcategory;
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
