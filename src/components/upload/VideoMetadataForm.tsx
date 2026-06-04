@@ -98,19 +98,29 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
     }));
   }, [savedCustomCategoryTree]);
 
-  // Combine built-in, saved custom, and newly typed categories
+  // Always include every known parent category (e.g. "Pets & Animals") so the
+  // combobox's fuzzy/typo matcher has a complete list to compare against.
+  // Without this, hardcoded category props can miss canonical categories and
+  // typos like "pets & aniamls" get accepted as new custom categories.
+  const knownParentCategories = useMemo<Category[]>(
+    () => getKnownParentCategoryOptions().map((c) => ({ id: c.id, name: c.name, subcategories: [] })),
+    []
+  );
+
+  // Combine built-in, known canonical, saved custom, and newly typed categories
   const allCategories = useMemo(() => {
     const merged = new Map<string, Category>();
-    [...categories, ...savedCustomCategories, ...customCategories].forEach((cat) => {
+    [...categories, ...knownParentCategories, ...savedCustomCategories, ...customCategories].forEach((cat) => {
       const existing = merged.get(cat.id);
       merged.set(cat.id, {
         ...existing,
         ...cat,
+        name: existing?.name || cat.name,
         subcategories: [...(existing?.subcategories || []), ...(cat.subcategories || [])],
       });
     });
     return Array.from(merged.values());
-  }, [categories, savedCustomCategories, customCategories]);
+  }, [categories, knownParentCategories, savedCustomCategories, customCategories]);
   
   const selectedCategoryObj = allCategories.find(cat => cat.id === selectedCategory);
   const builtInSubcategories = selectedCategoryObj?.subcategories || [];
