@@ -20,6 +20,7 @@ import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
 import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
+import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
 import { AdSlot } from '@/components/ads/AdSlot';
 import {
   AlertDialog,
@@ -136,6 +137,11 @@ const Watch = () => {
           // Prefer cloud URL if available; otherwise fall back to local file/data URL
           const videoSource = uploadedVideo.cloudUrl || uploadedVideo.file || uploadedVideo.fileDataUrl;
           
+          const normalizedAssignment = canonicalizeCategoryAssignment(
+            uploadedVideo.category,
+            uploadedVideo.subcategory,
+            [uploadedVideo.title, uploadedVideo.description, ...(uploadedVideo.tags || [])]
+          );
           setVideo({
             id: uploadedVideo.id,
             title: uploadedVideo.title,
@@ -148,8 +154,8 @@ const Watch = () => {
             subscribers: '0',
             file: videoSource,
             tags: uploadedVideo.tags || [],
-            category: uploadedVideo.category,
-            subcategory: uploadedVideo.subcategory,
+            category: normalizedAssignment.category || uploadedVideo.category,
+            subcategory: normalizedAssignment.subcategory || uploadedVideo.subcategory,
             isYouTubeEmbed: uploadedVideo.isYouTubeEmbed,
             youtubeId: uploadedVideo.youtubeId
           });
@@ -224,6 +230,11 @@ const Watch = () => {
                 setYoutubeVideoId(null);
               }
               const videoSource = cloudVideo.cloud_url || cloudVideo.video_url;
+              const normalizedAssignment = canonicalizeCategoryAssignment(
+                cloudVideo.category,
+                cloudVideo.subcategory,
+                [cloudVideo.title, cloudVideo.description, ...(cloudVideo.tags || [])]
+              );
               setVideo({
                 id: cloudVideo.local_id || cloudVideo.id,
                 title: cloudVideo.title,
@@ -236,8 +247,8 @@ const Watch = () => {
                 subscribers: '0',
                 file: videoSource,
                 tags: cloudVideo.tags || [],
-                category: cloudVideo.category,
-                subcategory: cloudVideo.subcategory,
+                category: normalizedAssignment.category || cloudVideo.category,
+                subcategory: normalizedAssignment.subcategory || cloudVideo.subcategory,
                 isYouTubeEmbed: cloudVideo.is_youtube_embed,
                 youtubeId: cloudVideo.youtube_video_id,
                 dbId: cloudVideo.id,
