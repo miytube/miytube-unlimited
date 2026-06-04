@@ -3,6 +3,7 @@ import {
   sidebarMainCategoryOptions,
   getSidebarMainCategoryRoute,
 } from '@/data/sidebarMainCategories';
+import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
 
 const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
 
@@ -27,8 +28,9 @@ const resolveSidebarSlug = (slug: string): string | undefined => {
 };
 
 export const getUploadDestinationRoute = (category?: string, subcategory?: string) => {
-  const cleanCategory = category ? trimSlashes(category) : '';
-  const cleanSubcategory = subcategory ? trimSlashes(subcategory) : '';
+  const canonical = canonicalizeCategoryAssignment(category, subcategory);
+  const cleanCategory = canonical.category ? trimSlashes(canonical.category) : (category ? trimSlashes(category) : '');
+  const cleanSubcategory = canonical.subcategory ? trimSlashes(canonical.subcategory) : (subcategory ? trimSlashes(subcategory) : '');
 
   if (!cleanCategory) return '/';
 
@@ -50,6 +52,15 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     return cleanSubcategory.startsWith('drag-racing')
       ? `/sports/${cleanSubcategory}`
       : `/sports/${cleanSubcategory}`;
+  }
+  if (cleanCategory === 'cars') {
+    const carRepairRoutes: Record<string, string> = {
+      'cars-repairs-major': '/cars/repairs/major',
+      'cars-repairs-minor': '/cars/repairs/minor',
+      'cars-repairs-hacks': '/cars/repairs/hacks',
+      'cars-repairs-maintenance': '/cars/repairs/maintenance',
+    };
+    if (cleanSubcategory && carRepairRoutes[cleanSubcategory]) return carRepairRoutes[cleanSubcategory];
   }
   if (!cleanSubcategory) {
     const resolvedNoSub = resolveSidebarSlug(cleanCategory);
