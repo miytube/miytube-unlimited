@@ -195,17 +195,17 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Plane,
     parent: { route: '/helicopters', name: 'Helicopters' }
   },
-  '/cars/major-repairs': {
+  '/cars/repairs/major': {
     title: 'Major Car Repairs',
     description: 'Major automotive repairs',
     icon: Car,
-    parent: { route: '/autos-vehicles', name: 'Cars & Vehicles' }
+    parent: { route: '/cars/repairs', name: 'Car Repairs' }
   },
-  '/cars/minor-repairs': {
+  '/cars/repairs/minor': {
     title: 'Minor Car Repairs',
     description: 'Minor automotive repairs and maintenance',
     icon: Car,
-    parent: { route: '/autos-vehicles', name: 'Cars & Vehicles' }
+    parent: { route: '/cars/repairs', name: 'Car Repairs' }
   },
   '/cars/racing-crashes': {
     title: 'Racing Crashes & Accidents',
