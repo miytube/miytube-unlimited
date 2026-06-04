@@ -1,9 +1,12 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
-// All audio uploads now live on the unified /audio page (reads from music_videos table).
-// This legacy route redirects there so the sidebar link always lands on the full list.
-const AudioMusicVideos: React.FC = () => <Navigate to="/audio" replace />;
+// Legacy route — redirects to /audio while preserving query params (?genre=Salsa, etc.)
+// so traffic from Google Search keeps landing on the intended genre.
+const AudioMusicVideos: React.FC = () => {
+  const { search, hash } = useLocation();
+  return <Navigate to={`/audio${search}${hash}`} replace />;
+};
 
 export const AUDIO_MUSIC_GENRES = [
   'Pop', 'Rock', 'Hip Hop', 'Rap', 'R&B', 'Soul', 'Country', 'Jazz', 'Blues',
