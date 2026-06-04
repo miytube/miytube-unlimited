@@ -379,4 +379,9 @@
   <url><loc>https://www.miytube.com/videos/personal</loc><changefreq>weekly</changefreq><priority>0.3</priority></url>
   <url><loc>https://www.miytube.com/videos/responded</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.miytube.com/film-movies</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+
+  <!-- Additional category routes -->
+  <url><loc>https://www.miytube.com/music-mexican-spanish</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.miytube.com/courts-police</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.miytube.com/sports/nfl-football</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>

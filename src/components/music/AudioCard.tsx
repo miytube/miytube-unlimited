@@ -45,10 +45,18 @@ export const AudioCard: React.FC<AudioCardProps> = ({ audio }) => {
             <span className="text-muted-foreground">{audio.plays} plays</span>
           </div>
           <div className="flex items-center gap-2">
-            <button className="text-muted-foreground hover:text-primary transition-colors">
+            <button
+              type="button"
+              aria-label={`Like ${audio.title}`}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
               <Heart size={18} />
             </button>
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
+            <button
+              type="button"
+              aria-label={`More options for ${audio.title}`}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
               <MoreHorizontal size={18} />
             </button>
           </div>

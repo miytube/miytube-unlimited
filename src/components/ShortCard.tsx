@@ -137,6 +137,7 @@ export const ShortCard: React.FC<ShortCardProps> = ({
             <Button
               variant="ghost"
               size="icon"
+              aria-label="Short video options"
               className="absolute top-2 right-2 h-8 w-8 bg-black/50 text-white hover:bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity z-10"
               onClick={(e) => e.preventDefault()}
             >
