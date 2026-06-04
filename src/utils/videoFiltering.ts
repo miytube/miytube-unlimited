@@ -122,6 +122,16 @@ const routeValueAliases: Record<string, string[]> = {
   'hollywood-celebrities-news': ['celebrity-news', 'celebrities-news', 'hollywood-celebrity-news'],
   'hollywood/celebrities/actors': ['celebrity-actors', 'celebrities-actors', 'hollywood-celebrity-actors', 'hollywood-celebrities-actors'],
   'hollywood-celebrities-actors': ['celebrity-actors', 'celebrities-actors', 'hollywood-celebrity-actors'],
+  // Car repair watch pages — accept legacy / sidebar-label variants that
+  // got stored under autos-vehicles or with shorter subcategory ids.
+  'cars/repairs/major': ['cars-repairs-major', 'major-repairs', 'cars-major-repairs', 'major-car-repairs'],
+  'cars-repairs-major': ['major-repairs', 'cars-major-repairs', 'major-car-repairs'],
+  'cars/repairs/minor': ['cars-repairs-minor', 'minor-repairs', 'cars-minor-repairs', 'minor-car-repairs'],
+  'cars-repairs-minor': ['minor-repairs', 'cars-minor-repairs', 'minor-car-repairs'],
+  'cars/repairs/hacks': ['cars-repairs-hacks', 'car-hacks', 'cars-hacks', 'car-repair-hacks'],
+  'cars-repairs-hacks': ['car-hacks', 'cars-hacks', 'car-repair-hacks'],
+  'cars/repairs/maintenance': ['cars-repairs-maintenance', 'car-maintenance', 'cars-maintenance'],
+  'cars-repairs-maintenance': ['car-maintenance', 'cars-maintenance'],
 };
 
 

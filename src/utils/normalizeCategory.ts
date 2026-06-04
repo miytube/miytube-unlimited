@@ -56,6 +56,21 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'college-football-bowl-games': 'football-bowl-games',
     'football-bowl-game': 'football-bowl-games',
     'bowl-games': 'football-bowl-games',
+    // Car repair subcategories — uploaders pick "Major Repairs" under
+    // "Cars & Vehicles" but the watch page is /cars/repairs/major which
+    // expects the canonical id "cars-repairs-major".
+    'major-repairs': 'cars-repairs-major',
+    'cars-major-repairs': 'cars-repairs-major',
+    'major-car-repairs': 'cars-repairs-major',
+    'minor-repairs': 'cars-repairs-minor',
+    'cars-minor-repairs': 'cars-repairs-minor',
+    'minor-car-repairs': 'cars-repairs-minor',
+    'car-hacks': 'cars-repairs-hacks',
+    'cars-hacks': 'cars-repairs-hacks',
+    'car-repair-hacks': 'cars-repairs-hacks',
+    'car-maintenance': 'cars-repairs-maintenance',
+    'cars-maintenance': 'cars-repairs-maintenance',
+    'car-repairs': 'cars-repairs',
   };
 
   return aliases[cleaned] || cleaned || undefined;
