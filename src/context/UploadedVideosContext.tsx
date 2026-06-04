@@ -476,7 +476,8 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
       : await currentQuery.eq('local_id', id).maybeSingle();
     const { category, subcategory } = canonicalizeCategoryAssignment(
       hasCategory ? updates.category as string : current.data?.category,
-      hasSubcategory ? updates.subcategory as string : current.data?.subcategory
+      hasSubcategory ? updates.subcategory as string : current.data?.subcategory,
+      [updates.title as string, updates.description as string, ...((updates.tags as string[] | undefined) || [])]
     );
     if (hasCategory) supabaseUpdates.category = category ?? null;
     if (hasSubcategory || (hasCategory && subcategory)) supabaseUpdates.subcategory = subcategory ?? null;
@@ -543,7 +544,11 @@ const normalizeVideoUpdates = (
 ): Partial<Omit<UploadedVideo, 'id' | 'file'>> => {
   const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
   const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
-  const normalized = canonicalizeCategoryAssignment(updates.category, updates.subcategory);
+  const normalized = canonicalizeCategoryAssignment(
+    updates.category,
+    updates.subcategory,
+    [updates.title, updates.description, ...((updates.tags as string[] | undefined) || [])]
+  );
   return {
     ...updates,
     ...(hasCategory ? { category: normalized.category } : {}),
