@@ -247,7 +247,8 @@ const saveVideoToSupabase = async (video: {
   // Normalize category/subcategory into the same parent + child values used by category pages.
   const { category: normalizedCategory, subcategory: normalizedSubcategory } = canonicalizeCategoryAssignment(
     video.category,
-    video.subcategory
+    video.subcategory,
+    [video.title, video.description, video.fileName, ...video.tags]
   );
   // Check if a video with this local_id already exists to prevent duplicates from same session
   const { data: existingById } = await supabase
@@ -344,25 +345,28 @@ const saveVideoToSupabase = async (video: {
   return { isDuplicate: false };
 };
 
-  const mapSupabaseRow = (v: any): UploadedVideo => ({
-  id: v.local_id || v.id,
-  file: null,
-  fileDataUrl: '',
-  cloudUrl: v.cloud_url || undefined,
-  isCloudStored: v.is_cloud_stored || false,
-  isYouTubeEmbed: v.is_youtube_embed || false,
-  youtubeId: v.youtube_video_id || undefined,
-  title: v.title,
-  description: v.description || '',
-  thumbnail: v.thumbnail_url || '/placeholder.svg',
-  timestamp: new Date(v.created_at).toLocaleDateString(),
-  createdAt: v.created_at,
-  views: String(v.views || 0),
-  duration: v.duration || '0:00',
-  category: v.category || undefined,
-  subcategory: v.subcategory || undefined,
-  tags: v.tags || [],
-});
+  const mapSupabaseRow = (v: any): UploadedVideo => {
+  const normalized = canonicalizeCategoryAssignment(v.category, v.subcategory, [v.title, v.description, ...(v.tags || [])]);
+  return {
+    id: v.local_id || v.id,
+    file: null,
+    fileDataUrl: '',
+    cloudUrl: v.cloud_url || undefined,
+    isCloudStored: v.is_cloud_stored || false,
+    isYouTubeEmbed: v.is_youtube_embed || false,
+    youtubeId: v.youtube_video_id || undefined,
+    title: v.title,
+    description: v.description || '',
+    thumbnail: v.thumbnail_url || '/placeholder.svg',
+    timestamp: new Date(v.created_at).toLocaleDateString(),
+    createdAt: v.created_at,
+    views: String(v.views || 0),
+    duration: v.duration || '0:00',
+    category: normalized.category || v.category || undefined,
+    subcategory: normalized.subcategory || v.subcategory || undefined,
+    tags: v.tags || [],
+  };
+};
 
 const deduplicateRows = (rows: any[]): any[] => {
   const seen = new Set<string>();
