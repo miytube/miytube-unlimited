@@ -94,40 +94,48 @@ export const canonicalizeCategoryAssignment = (
   const normalizedSubcategory = normalizeCategoryValue(subcategory);
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 
-  if (normalizedCategory && normalizedSubcategory) {
+  // Sidebar label "Cars & Vehicles" points at /autos-vehicles, but every
+  // dedicated car page (repairs, hacks, drifting, …) lives under /cars.
+  // When the user picks autos-vehicles together with a car-specific
+  // subcategory, route it to the cars parent so the chosen watch page
+  // actually displays the upload.
+  const AUTOS_TO_CARS = normalizedCategory === 'autos-vehicles' &&
+    normalizedSubcategory &&
+    (normalizedSubcategory.startsWith('cars-') || knownSubcategories.some(
+      (row) => row.parent === 'cars' && row.aliases.has(normalizedSubcategory)
+    ) || knownSubcategories.some(
+      (row) => row.parent === 'cars-repairs' && row.aliases.has(normalizedSubcategory)
+    ));
+  const effectiveCategory = AUTOS_TO_CARS ? 'cars' : normalizedCategory;
+
+  if (effectiveCategory && normalizedSubcategory) {
     if (categoryIsReserved) {
-      return { category: normalizedCategory, subcategory: normalizedSubcategory };
+      return { category: effectiveCategory, subcategory: normalizedSubcategory };
     }
 
     const childUnderParent = knownSubcategories.find(
-      (row) => row.parent === normalizedCategory && row.aliases.has(normalizedSubcategory)
+      (row) => row.parent === effectiveCategory && row.aliases.has(normalizedSubcategory)
     );
     if (childUnderParent) {
-      return { category: normalizedCategory, subcategory: childUnderParent.child };
+      return { category: effectiveCategory, subcategory: childUnderParent.child };
     }
 
-    const categoryAsLeaf = resolveUniqueSubcategoryAlias(normalizedCategory);
+    const categoryAsLeaf = resolveUniqueSubcategoryAlias(effectiveCategory);
     if (categoryAsLeaf && categoryAsLeaf.aliases.has(normalizedSubcategory)) {
       return { category: categoryAsLeaf.parent, subcategory: categoryAsLeaf.child };
     }
 
-    // If the subcategory uniquely identifies a known parent (e.g. user picked
-    // "Street Cars/Motorcycles Racing" which lives under /cars), prefer that
-    // parent over a mismatched sidebar category (e.g. "autos-vehicles").
-    // EXCEPTION: if the user explicitly picked a real sidebar/parent category,
-    // respect their choice — a slug like "country" must not auto-jump from
-    // Travel & Events to Music just because /music/country exists.
     const userPickedValidParent =
-      sidebarMainCategorySlugs.has(normalizedCategory) ||
-      knownParentSlugs.has(normalizedCategory);
+      sidebarMainCategorySlugs.has(effectiveCategory) ||
+      knownParentSlugs.has(effectiveCategory);
     if (!userPickedValidParent) {
       const leafFromSub = resolveUniqueSubcategoryAlias(normalizedSubcategory);
-      if (leafFromSub && leafFromSub.parent !== normalizedCategory) {
+      if (leafFromSub && leafFromSub.parent !== effectiveCategory) {
         return { category: leafFromSub.parent, subcategory: leafFromSub.child };
       }
     }
 
-    return { category: normalizedCategory, subcategory: normalizedSubcategory };
+    return { category: effectiveCategory, subcategory: normalizedSubcategory };
 
   }
 
