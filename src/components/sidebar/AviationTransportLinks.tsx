@@ -48,8 +48,8 @@ export const AviationTransportLinks: React.FC = () => {
       label: 'Cars & Vehicles', 
       path: '/autos-vehicles',
       subItems: [
-        { id: 'cars-major-repairs', label: 'Major Repairs', path: '/cars/major-repairs' },
-        { id: 'cars-minor-repairs', label: 'Minor Repairs', path: '/cars/minor-repairs' },
+        { id: 'cars-repairs-major', label: 'Major Car Repairs', path: '/cars/repairs/major' },
+        { id: 'cars-repairs-minor', label: 'Minor Car Repairs', path: '/cars/repairs/minor' },
         { id: 'cars-racing-crashes', label: 'Racing Crashes & Accidents', path: '/cars/racing-crashes' },
         { id: 'cars-hacks', label: 'Car Hacks & Tips', path: '/cars/hacks' },
         { id: 'cars-repo', label: 'Car Repo & Repossession', path: '/cars/repo' },
