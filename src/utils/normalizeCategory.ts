@@ -21,6 +21,8 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     .replace(/^-+|-+$/g, '');       // trim hyphens
 
   const aliases: Record<string, string> = {
+    'cars-and-vehicles': 'autos-vehicles',
+    'autos-and-vehicles': 'autos-vehicles',
     'courts-police-trails': 'courts-trials',
     'courts-police-trials': 'courts-trials',
     'court-trials': 'courts-trials',
