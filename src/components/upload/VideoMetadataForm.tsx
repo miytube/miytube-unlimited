@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { TagInput } from './TagInput';
 import { CategoryCombobox } from './CategoryCombobox';
 import { getSubcategoryOptionsForCategory } from '@/utils/subcategoryOptions';
+import { getKnownParentCategoryOptions } from '@/utils/categoryAssignment';
 import { useAIAutoTag } from '@/hooks/useAIAutoTag';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { Button } from '@/components/ui/button';
