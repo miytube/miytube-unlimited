@@ -247,7 +247,8 @@ const saveVideoToSupabase = async (video: {
   // Normalize category/subcategory into the same parent + child values used by category pages.
   const { category: normalizedCategory, subcategory: normalizedSubcategory } = canonicalizeCategoryAssignment(
     video.category,
-    video.subcategory
+    video.subcategory,
+    [video.title, video.description, video.fileName, ...video.tags]
   );
   // Check if a video with this local_id already exists to prevent duplicates from same session
   const { data: existingById } = await supabase
@@ -344,25 +345,28 @@ const saveVideoToSupabase = async (video: {
   return { isDuplicate: false };
 };
 
-  const mapSupabaseRow = (v: any): UploadedVideo => ({
-  id: v.local_id || v.id,
-  file: null,
-  fileDataUrl: '',
-  cloudUrl: v.cloud_url || undefined,
-  isCloudStored: v.is_cloud_stored || false,
-  isYouTubeEmbed: v.is_youtube_embed || false,
-  youtubeId: v.youtube_video_id || undefined,
-  title: v.title,
-  description: v.description || '',
-  thumbnail: v.thumbnail_url || '/placeholder.svg',
-  timestamp: new Date(v.created_at).toLocaleDateString(),
-  createdAt: v.created_at,
-  views: String(v.views || 0),
-  duration: v.duration || '0:00',
-  category: v.category || undefined,
-  subcategory: v.subcategory || undefined,
-  tags: v.tags || [],
-});
+  const mapSupabaseRow = (v: any): UploadedVideo => {
+  const normalized = canonicalizeCategoryAssignment(v.category, v.subcategory, [v.title, v.description, ...(v.tags || [])]);
+  return {
+    id: v.local_id || v.id,
+    file: null,
+    fileDataUrl: '',
+    cloudUrl: v.cloud_url || undefined,
+    isCloudStored: v.is_cloud_stored || false,
+    isYouTubeEmbed: v.is_youtube_embed || false,
+    youtubeId: v.youtube_video_id || undefined,
+    title: v.title,
+    description: v.description || '',
+    thumbnail: v.thumbnail_url || '/placeholder.svg',
+    timestamp: new Date(v.created_at).toLocaleDateString(),
+    createdAt: v.created_at,
+    views: String(v.views || 0),
+    duration: v.duration || '0:00',
+    category: normalized.category || v.category || undefined,
+    subcategory: normalized.subcategory || v.subcategory || undefined,
+    tags: v.tags || [],
+  };
+};
 
 const deduplicateRows = (rows: any[]): any[] => {
   const seen = new Set<string>();
@@ -472,7 +476,8 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
       : await currentQuery.eq('local_id', id).maybeSingle();
     const { category, subcategory } = canonicalizeCategoryAssignment(
       hasCategory ? updates.category as string : current.data?.category,
-      hasSubcategory ? updates.subcategory as string : current.data?.subcategory
+      hasSubcategory ? updates.subcategory as string : current.data?.subcategory,
+      [updates.title as string, updates.description as string, ...((updates.tags as string[] | undefined) || [])]
     );
     if (hasCategory) supabaseUpdates.category = category ?? null;
     if (hasSubcategory || (hasCategory && subcategory)) supabaseUpdates.subcategory = subcategory ?? null;
@@ -539,7 +544,11 @@ const normalizeVideoUpdates = (
 ): Partial<Omit<UploadedVideo, 'id' | 'file'>> => {
   const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
   const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
-  const normalized = canonicalizeCategoryAssignment(updates.category, updates.subcategory);
+  const normalized = canonicalizeCategoryAssignment(
+    updates.category,
+    updates.subcategory,
+    [updates.title, updates.description, ...((updates.tags as string[] | undefined) || [])]
+  );
   return {
     ...updates,
     ...(hasCategory ? { category: normalized.category } : {}),
@@ -821,6 +830,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       // maxresdefault.jpg is missing for many videos and YouTube returns a generic
       // red play-button placeholder image instead, which looks broken in the grid.
       const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+      const normalizedAssignment = canonicalizeCategoryAssignment(category, subcategory, [title, description, ...tags]);
       
       const newVideo: UploadedVideo = {
         id: videoId,
@@ -836,8 +846,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         timestamp: 'Just now',
         views: '0',
         duration: '0:00',
-        category,
-        subcategory,
+        category: normalizedAssignment.category,
+        subcategory: normalizedAssignment.subcategory,
         tags,
       };
       
@@ -878,6 +888,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       console.log(`Importing video from URL: ${importUrl}`);
       
       const videoId = createLocalVideoId();
+      const normalizedAssignment = canonicalizeCategoryAssignment(category, subcategory, [title, description, ...tags]);
       const newVideo: UploadedVideo = {
         id: videoId,
         file: null,
@@ -890,8 +901,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
         timestamp: 'Just now',
         views: '0',
         duration: '0:00',
-        category,
-        subcategory,
+        category: normalizedAssignment.category,
+        subcategory: normalizedAssignment.subcategory,
         tags,
       };
       
@@ -967,6 +978,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       const thumbnail = await generateThumbnail(file);
       
       const videoId = createLocalVideoId();
+      const normalizedAssignment = canonicalizeCategoryAssignment(effectiveCategory, subcategory, [title, description, file.name, ...tags]);
       const newVideo: UploadedVideo = {
       id: videoId,
       file: null,
@@ -979,8 +991,8 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       timestamp: 'Just now',
       views: '0',
       duration,
-      category: effectiveCategory,
-      subcategory,
+      category: normalizedAssignment.category,
+      subcategory: normalizedAssignment.subcategory,
       tags,
     };
     

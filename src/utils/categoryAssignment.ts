@@ -86,12 +86,23 @@ const resolveUniqueSubcategoryAlias = (value?: string): KnownSubcategoryAssignme
 // nested subcategory (e.g. 'shorts' is its own /shorts feed, NOT /funny/shorts).
 const RESERVED_TOP_LEVEL_CATEGORIES = new Set(['shorts']);
 
+const CAR_REPAIR_TEXT = /\b(wrecked|rebuild|rebuilt|repair|repairs|mechanic|engine|transmission|flood\s+damaged?|damage[d]?|salvage|restoration|restore)\b/i;
+
+const inferCarsMajorRepairSubcategory = (values: Array<string | null | undefined>): string | undefined => {
+  const text = values.filter(Boolean).join(' ');
+  return CAR_REPAIR_TEXT.test(text) ? 'cars-repairs-major' : undefined;
+};
+
 export const canonicalizeCategoryAssignment = (
   category?: string | null,
-  subcategory?: string | null
+  subcategory?: string | null,
+  textHints: Array<string | null | undefined> = []
 ): CanonicalCategoryAssignment => {
   const normalizedCategory = resolveSidebarCategorySlug(category ?? undefined);
-  const normalizedSubcategory = normalizeCategoryValue(subcategory);
+  const inferredSubcategory = normalizedCategory === 'autos-vehicles'
+    ? inferCarsMajorRepairSubcategory([subcategory, ...textHints])
+    : undefined;
+  const normalizedSubcategory = normalizeCategoryValue(subcategory) || inferredSubcategory;
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 
   // Sidebar label "Cars & Vehicles" points at /autos-vehicles, but every
