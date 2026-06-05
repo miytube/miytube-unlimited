@@ -15,8 +15,11 @@ serve(async (req) => {
     const { videoId, category, tags, limit = 8 } = await req.json();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    // Use the anon key + public view so uploader_ip can never leak. RLS on the
+    // public view exposes only non-PII columns.
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+    const VIDEOS_TABLE = 'uploaded_videos_public' as const;
 
     // Get recommendations based on category, tags, and recency
     let recommendations: any[] = [];
