@@ -148,6 +148,36 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    // ---- Auth: require an authenticated admin caller ----
+    const authHeader = req.headers.get("Authorization") ?? "";
+    if (!authHeader.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const userClient = createClient(SUPABASE_URL, ANON_KEY, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: userData, error: userErr } = await userClient.auth.getUser();
+    if (userErr || !userData?.user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
+    const { data: roleRow } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userData.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!roleRow) {
+      return new Response(JSON.stringify({ error: "Admin only" }), {
+        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const payload = await req.json().catch(() => ({}));
     const { batch_size = 10, dry_run = false, videos: smartVideos, min_confidence = 0.5 } = payload as {
       batch_size?: number;
@@ -156,7 +186,6 @@ Deno.serve(async (req) => {
       min_confidence?: number;
     };
 
-    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
     const results: any[] = [];
     const startTime = Date.now();
     const MAX_RUNTIME_MS = 110_000;
