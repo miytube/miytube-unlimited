@@ -15,8 +15,11 @@ serve(async (req) => {
     const { videoId, category, tags, limit = 8 } = await req.json();
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    // Use the anon key + public view so uploader_ip can never leak. RLS on the
+    // public view exposes only non-PII columns.
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
+    const VIDEOS_TABLE = 'uploaded_videos_public' as const;
 
     // Get recommendations based on category, tags, and recency
     let recommendations: any[] = [];
@@ -24,7 +27,7 @@ serve(async (req) => {
     // 1. Same category videos (highest priority)
     if (category) {
       const { data: categoryVideos } = await supabase
-        .from('uploaded_videos')
+        .from(VIDEOS_TABLE)
         .select('*')
         .ilike('category', `%${category}%`)
         .neq('id', videoId || '')
@@ -40,7 +43,7 @@ serve(async (req) => {
       const existingIds = recommendations.map(v => v.id);
       
       const { data: popularVideos } = await supabase
-        .from('uploaded_videos')
+        .from(VIDEOS_TABLE)
         .select('*')
         .not('id', 'in', `(${[videoId, ...existingIds].filter(Boolean).join(',')})`)
         .order('views', { ascending: false })
