@@ -100,7 +100,7 @@ serve(async (req) => {
 
 
     let dbQuery = supabase
-      .from('uploaded_videos')
+      .from('uploaded_videos_public')
       .select('*');
 
     // Search across title, description, category, subcategory, tags AND file_name
