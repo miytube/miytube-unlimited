@@ -27,7 +27,7 @@ serve(async (req) => {
     // 1. Same category videos (highest priority)
     if (category) {
       const { data: categoryVideos } = await supabase
-        .from('uploaded_videos')
+        .from(VIDEOS_TABLE)
         .select('*')
         .ilike('category', `%${category}%`)
         .neq('id', videoId || '')
@@ -43,7 +43,7 @@ serve(async (req) => {
       const existingIds = recommendations.map(v => v.id);
       
       const { data: popularVideos } = await supabase
-        .from('uploaded_videos')
+        .from(VIDEOS_TABLE)
         .select('*')
         .not('id', 'in', `(${[videoId, ...existingIds].filter(Boolean).join(',')})`)
         .order('views', { ascending: false })
