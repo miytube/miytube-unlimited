@@ -148,6 +148,12 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
           </div>
         )}
 
+        <div className="my-6">
+          <AdSlot slot="4004758990" format="autorelaxed" responsive label="Sponsored" />
+        </div>
+
+
+
         {description && (
           <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
             <h2 className="text-xl font-semibold mb-4">About {title}</h2>
