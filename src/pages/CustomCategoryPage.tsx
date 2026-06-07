@@ -60,7 +60,7 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
           <Link to="/" className="font-semibold text-primary">MiyTube</Link>
           <ChevronRight className="h-3 w-3" />
           <Link to={`/c/${category.slug}`} className="hover:text-foreground">{category.name}</Link>
-          {subcategory && (
+          {subcategory && subcategory.slug !== 'main' && (
             <>
               <ChevronRight className="h-3 w-3" />
               <Link to={`/c/${category.slug}/${subcategory.slug}`} className="hover:text-foreground">
