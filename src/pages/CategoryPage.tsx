@@ -2,6 +2,7 @@
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { 
   Car, GraduationCap, Film, Scissors, HeartHandshake, Users, Dog, 
   Microscope, Plane, Pizza, Utensils, Quote, Clapperboard, Star, 
@@ -65,7 +66,9 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
           </Link>
         </div>
 
-        {/* Ad slot removed — relying on AdSense Auto Ads */}
+        <div className="mb-6">
+          <AdSlot slot="1406515812" format="horizontal" responsive label="Sponsored" />
+        </div>
 
 
         
@@ -106,7 +109,9 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
           </div>
         )}
         
-        {/* Ad slot removed — relying on AdSense Auto Ads */}
+        <div className="my-6">
+          <AdSlot slot="4004758990" format="autorelaxed" responsive label="Sponsored" />
+        </div>
 
         <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
           <h2 className="text-xl font-semibold mb-4">About {category}</h2>
