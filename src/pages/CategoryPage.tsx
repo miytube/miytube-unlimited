@@ -67,7 +67,7 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
         </div>
 
         <div className="mb-6">
-          <AdSlot slot="1406515812" format="horizontal" responsive label="Sponsored" />
+          <AdSlot slot="3247036478" format="auto" responsive label="Sponsored" />
         </div>
 
 
