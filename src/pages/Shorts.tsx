@@ -249,7 +249,9 @@ const Shorts = () => {
                 ))}
               </div>
 
-              {/* Ad slot removed — relying on AdSense Auto Ads */}
+              <div className="my-6">
+                <AdSlot slot="4004758990" format="autorelaxed" responsive label="Sponsored" />
+              </div>
 
               <Pagination
                 currentPage={currentPage}
