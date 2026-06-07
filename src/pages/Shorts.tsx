@@ -250,7 +250,7 @@ const Shorts = () => {
               </div>
 
               <div className="my-6">
-                <AdSlot slot="4004758990" format="autorelaxed" responsive label="Sponsored" />
+                <AdSlot slot="7525496759" format="autorelaxed" responsive label="Sponsored" />
               </div>
 
               <Pagination
