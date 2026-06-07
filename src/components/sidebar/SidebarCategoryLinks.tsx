@@ -237,13 +237,16 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
         // built-in landing pages first and would silently render the wrong
         // screen ("recycling" back to a generic page).
         const subPath = `/c/${cat.slug}/${sub.slug}`;
-        addExtra({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
+        const isHiddenSub = sub.slug === 'main';
+        if (!isHiddenSub) {
+          addExtra({ id: `cc-${sub.id}`, label: sub.name, path: subPath });
+        }
         sub.watch_pages.forEach((w) => {
           if (isRedundantWatchPage(sub, w)) return;
           if (seenLabels.has(normalizeLabel(w.name))) return;
           addExtra({
             id: `cc-w-${w.id}`,
-            label: `${sub.name} • ${w.name}`,
+            label: isHiddenSub ? w.name : `${sub.name} • ${w.name}`,
             path: `${subPath}/${w.slug}`,
           });
         });
