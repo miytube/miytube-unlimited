@@ -149,7 +149,7 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
         )}
 
         <div className="my-6">
-          <AdSlot slot="4004758990" format="autorelaxed" responsive label="Sponsored" />
+          <AdSlot slot="7860538679" format="autorelaxed" responsive label="Sponsored" />
         </div>
 
 
