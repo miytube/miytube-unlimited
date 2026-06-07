@@ -5,6 +5,7 @@ import { VideoCard } from '@/components/VideoCard';
 import { Folder, Upload, ChevronRight } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
+import { AdSlot } from '@/components/ads/AdSlot';
 
 type Mode = 'category' | 'subcategory' | 'watch';
 
@@ -86,6 +87,10 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
             <Upload size={18} />
             <span>Upload</span>
           </Link>
+        </div>
+
+        <div className="mb-6">
+          <AdSlot slot="1406515812" format="horizontal" responsive label="Sponsored" />
         </div>
 
         {/* Subcategory list when on category page */}
