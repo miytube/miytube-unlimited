@@ -238,7 +238,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'cosmetics-lipstick': { title: 'Cosmetics (Lipstick, Makeup)', description: 'Lip makeup', icon: Palette },
   
   // Courts Categories
-  'court-trials': { title: 'Court Trials, Court Procedures', description: 'Court trials', icon: Gavel },
+  'court-trials': { title: 'Courts Trials, Court Procedures', description: 'Courts trials', icon: Gavel },
   'courts-indictment': { title: 'Courts (Indictment, Charges)', description: 'Legal charges', icon: Gavel },
   'courts-sentencing': { title: 'Courts (Sentencing, Judgement)', description: 'Court sentencing', icon: Scale },
   'courts-police-crime': { title: 'Courts & Police, Crime', description: 'Crime and courts', icon: Shield },
