@@ -21,7 +21,10 @@ const Music = () => {
   });
   
   // Get all music-related uploaded videos using strict matching
-  const musicKeywords = ['music', 'pop', 'rock', 'hiphop', 'electronic', 'jazz', 'country', 'classical', 'r-and-b', 'soul', 'folk', 'blues', 'music-pop', 'music-rock', 'music-country', 'music-jazz', 'music-classical'];
+  // IMPORTANT: only use music-prefixed keywords. Bare words like 'country', 'pop',
+  // 'rock' would match non-music videos whose subcategory happens to equal that
+  // word (e.g. travel videos tagged subcategory="country").
+  const musicKeywords = ['music', 'music-pop', 'music-rock', 'music-hiphop', 'music-electronic', 'music-jazz', 'music-country', 'music-classical', 'music-r-and-b', 'music-soul', 'music-folk', 'music-blues'];
   const musicVideos = filterVideosByCategory(uploadedVideos, 'music', musicKeywords);
   
   return (
