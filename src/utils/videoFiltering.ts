@@ -434,7 +434,7 @@ export const filterVideosByMusicGenre = (
 
   const genreAliases: Record<string, string[]> = {
     rock: ['randb-pop-soul-rock', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
-    pop: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
+    pop: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb', 'pop-pop-rock-traditional-pop', 'pop-and-soft-rock', 'pop-and-soft-pop', 'pop-and-soft', 'pop-song', 'pop-music', 'pop-lyrics', 'soft-pop', 'traditional-pop'],
     soul: ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'music-rock-soul-pop', 'rock-soul-pop'],
     rnb: ['randb', 'r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
     'r-and-b': ['randb', 'rnb', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
