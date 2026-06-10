@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Layout } from '@/components/Layout';
 import { VideoCard } from '@/components/VideoCard';
 import { Link } from 'react-router-dom';
 import { Upload, LucideIcon } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { Pagination, PageInfo } from '@/components/Pagination';
+
 
 interface GenericCategoryPageProps {
   title: string;
