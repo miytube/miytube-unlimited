@@ -7,6 +7,8 @@ import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
 
 const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
 
+const CUSTOM_PAGE_CATEGORIES = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
+
 const knownSidebarSlugs = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
 
 /**
@@ -33,6 +35,14 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   const cleanSubcategory = canonical.subcategory ? trimSlashes(canonical.subcategory) : (subcategory ? trimSlashes(subcategory) : '');
 
   if (!cleanCategory) return '/';
+
+  // Admin-created sidebar pages live under /c/ in the router. Sending uploads
+  // or generated links to the pretty static route (for example /sports/nhl/*)
+  // lets older/static mappings claim the URL and can bounce users back to the
+  // parent page. Keep dynamic/custom pages on the canonical /c/... route.
+  if (CUSTOM_PAGE_CATEGORIES.has(cleanCategory)) {
+    return cleanSubcategory ? `/c/${cleanCategory}/${cleanSubcategory}` : `/c/${cleanCategory}`;
+  }
 
   if (cleanCategory === 'college-sports') {
     if (!cleanSubcategory) return '/sports/college';
