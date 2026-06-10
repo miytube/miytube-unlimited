@@ -13,7 +13,7 @@ const MediaKit = () => {
     m.setAttribute('content', desc);
     let c = document.querySelector('link[rel="canonical"]');
     if (!c) { c = document.createElement('link'); c.setAttribute('rel', 'canonical'); document.head.appendChild(c); }
-    c.setAttribute('href', 'https://miytube.com/media-kit');
+    c.setAttribute('href', 'https://www.miytube.com/media-kit');
   }, []);
 
   return (

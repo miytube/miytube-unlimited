@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const DOMAIN = 'https://miytube.com';
+const DOMAIN = 'https://www.miytube.com';
 
 interface Crumb {
   name: string;

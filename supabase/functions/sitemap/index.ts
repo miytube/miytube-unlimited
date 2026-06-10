@@ -96,7 +96,7 @@ const staticRoutes = [
   { path: '/relationships', priority: '0.6', changefreq: 'weekly' },
 ]
 
-const DOMAIN = 'https://miytube.com'
+const DOMAIN = 'https://www.miytube.com'
 
 // Escape XML special characters
 function escapeXml(text: string): string {

@@ -6,7 +6,7 @@ const corsHeaders = {
   'Content-Type': 'application/xml',
 }
 
-const DOMAIN = 'https://miytube.com'
+const DOMAIN = 'https://www.miytube.com'
 
 function escapeXml(text: string): string {
   if (!text) return ''

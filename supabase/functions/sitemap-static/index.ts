@@ -93,7 +93,7 @@ const staticRoutes = [
   { path: '/relationships', priority: '0.6', changefreq: 'weekly' },
 ]
 
-const DOMAIN = 'https://miytube.com'
+const DOMAIN = 'https://www.miytube.com'
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
