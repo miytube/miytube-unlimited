@@ -170,7 +170,7 @@ const Watch = () => {
             
             // First try to find by local_id
             const { data: byLocalId } = await supabase
-              .from('uploaded_videos')
+              .from('uploaded_videos_public')
               .select('*')
               .eq('local_id', videoId)
               .maybeSingle();
@@ -180,11 +180,12 @@ const Watch = () => {
             } else if (isUUID) {
               // Only try UUID lookup if videoId is a valid UUID format
               const { data: byUUID } = await supabase
-                .from('uploaded_videos')
+                .from('uploaded_videos_public')
                 .select('*')
                 .eq('id', videoId)
                 .maybeSingle();
               cloudVideo = byUUID;
+
 
               // Fallback: try music_videos table for UUIDs that come from search
               if (!cloudVideo) {
