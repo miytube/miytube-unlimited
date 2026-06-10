@@ -4,7 +4,7 @@ const corsHeaders = {
   'Content-Type': 'application/xml',
 }
 
-const DOMAIN = 'https://miytube.com'
+const DOMAIN = 'https://www.miytube.com'
 const FUNCTIONS_URL = 'https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1'
 
 Deno.serve(async (req) => {

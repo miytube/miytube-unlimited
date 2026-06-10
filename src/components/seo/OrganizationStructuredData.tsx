@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const DOMAIN = 'https://miytube.com';
+const DOMAIN = 'https://www.miytube.com';
 
 /**
  * Injects schema.org Organization + WebSite JSON-LD into <head>.

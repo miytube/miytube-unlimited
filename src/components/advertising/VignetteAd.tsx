@@ -38,7 +38,7 @@ const SAMPLE_PREVIEW_AD: VignetteCampaign = {
   id: "preview",
   business_name: "Sample Advertiser",
   headline: "Vignette wallpaper preview",
-  destination_url: "https://miytube.com",
+  destination_url: "https://www.miytube.com",
   media_url:
     "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2400&q=80",
   thumbnail_url: null,

@@ -12,7 +12,7 @@ interface VideoStructuredDataProps {
   tags?: string[];
 }
 
-const DOMAIN = 'https://miytube.com';
+const DOMAIN = 'https://www.miytube.com';
 
 const toIsoDuration = (d?: string): string | undefined => {
   if (!d) return undefined;
