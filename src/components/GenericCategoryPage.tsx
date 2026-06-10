@@ -38,6 +38,14 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
     new Map([...primaryVideos, ...legacyVideos].map((video) => [video.id, video])).values()
   );
 
+  const VIDEOS_PER_PAGE = 20;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(categoryVideos.length / VIDEOS_PER_PAGE);
+  const displayVideos = useMemo(() => {
+    const start = (currentPage - 1) * VIDEOS_PER_PAGE;
+    return categoryVideos.slice(start, start + VIDEOS_PER_PAGE);
+  }, [categoryVideos, currentPage]);
+
   return (
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
@@ -66,9 +74,17 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
         
         {categoryVideos.length > 0 ? (
           <div className="mb-8">
-            <h2 className="text-xl font-medium mb-4">{title} Videos</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-medium">{title} Videos</h2>
+              <PageInfo
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={categoryVideos.length}
+                itemLabel="videos"
+              />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {categoryVideos.slice(0, 20).map((video) => (
+              {displayVideos.map((video) => (
                 <VideoCard 
                   key={video.id} 
                   id={video.id}
@@ -85,7 +101,13 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
                 />
               ))}
             </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
+
         ) : (
           <div className="text-center py-12 bg-card rounded-lg mb-8">
             {Icon && <Icon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />}
