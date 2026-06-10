@@ -99,15 +99,24 @@ const ShortsWatch = () => {
     (async () => {
       const { data: likes } = await supabase
         .from('video_likes')
-        .select('is_like, user_id')
+        .select('is_like')
         .eq('video_id', id);
       if (likes) {
         setLikesCount(likes.filter((l) => l.is_like).length);
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) setUserLiked(!!likes.find((l) => l.user_id === user.id && l.is_like));
+      }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: own } = await supabase
+          .from('video_likes')
+          .select('is_like')
+          .eq('video_id', id)
+          .eq('user_id', user.id)
+          .maybeSingle();
+        setUserLiked(!!(own && own.is_like));
       }
     })();
   }, [id]);
+
 
   const handleLike = async () => {
     if (!id) return;
