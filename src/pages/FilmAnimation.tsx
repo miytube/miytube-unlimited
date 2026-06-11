@@ -59,8 +59,17 @@ const animationCategories = [
 
 const FilmAnimation: React.FC = () => {
   const { uploadedVideos } = useUploadedVideos();
+  const { tree } = useCustomCategories();
   const [filmOpen, setFilmOpen] = React.useState(true);
   const [animationOpen, setAnimationOpen] = React.useState(true);
+
+  const customFilmAnimation = tree.find((c) => c.slug === 'film-animation');
+  const customSubLinks = (customFilmAnimation?.subcategories || []).map((s) => ({
+    path: `/film-animation/${s.slug}`,
+    label: s.name,
+    icon: Clapperboard,
+  }));
+  const mergedAnimationCategories = [...animationCategories, ...customSubLinks];
 
   // Filter videos for film & animation category
   const categoryVideos = uploadedVideos.filter(video => 
