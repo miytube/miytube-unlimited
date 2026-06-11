@@ -53,7 +53,7 @@ export const comedySubcategories: SubcategoryMapping = {
     parent: { route: '/comedy', name: 'Comedy' }
   },
   '/comedy/roasts': {
-    title: 'Roasts & Jokes & Events',
+    title: 'Roasts, Jokes & Events',
     description: 'Comedy roasts, jokes and humorous events',
     icon: Smile,
     parent: { route: '/comedy', name: 'Comedy' }

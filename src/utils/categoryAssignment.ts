@@ -62,6 +62,13 @@ const knownParentSlugs = new Set(knownSubcategories.map((row) => row.parent));
 const resolveSidebarCategorySlug = (value?: string): string | undefined => {
   const normalized = normalizeCategoryValue(value);
   if (!normalized) return undefined;
+  const directAliases: Record<string, string> = {
+    'sports-nba': 'nba-basketball',
+    'sports-nba-basketball': 'nba-basketball',
+    'nba': 'nba-basketball',
+    'nba-basketbaall': 'nba-basketball',
+  };
+  if (directAliases[normalized]) return directAliases[normalized];
   if (sidebarMainCategorySlugs.has(normalized)) return normalized;
 
   const dashIdx = normalized.indexOf('-');
@@ -102,7 +109,21 @@ export const canonicalizeCategoryAssignment = (
   const inferredSubcategory = normalizedCategory === 'autos-vehicles'
     ? inferCarsMajorRepairSubcategory([subcategory, ...textHints])
     : undefined;
-  const normalizedSubcategory = normalizeCategoryValue(subcategory) || inferredSubcategory;
+  const rawNormalizedSubcategory = normalizeCategoryValue(subcategory) || inferredSubcategory;
+  const subcategoryAliasesByParent: Record<string, Record<string, string>> = {
+    comedy: {
+      'roasts-and-jokes': 'roasts',
+      'roasts-and-jokes-and-events': 'roasts',
+      'roasts-jokes': 'roasts',
+      'roasts-jokes-events': 'roasts',
+      'comedy-roasts': 'roasts',
+      'comedy-roasts-jokes': 'roasts',
+      'comedy-roasts-jokes-events': 'roasts',
+    },
+  };
+  const normalizedSubcategory = normalizedCategory && rawNormalizedSubcategory
+    ? subcategoryAliasesByParent[normalizedCategory]?.[rawNormalizedSubcategory] || rawNormalizedSubcategory
+    : rawNormalizedSubcategory;
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 
   // Sidebar label "Cars & Vehicles" points at /autos-vehicles, but every
