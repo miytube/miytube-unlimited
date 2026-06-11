@@ -133,7 +133,7 @@ const FilmAnimation: React.FC = () => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4 bg-card/50 rounded-b-lg border-x border-b">
-                {sortByName(animationCategories).map((category) => (
+                {sortByName(mergedAnimationCategories).map((category) => (
                   <Link
                     key={category.path}
                     to={category.path}
