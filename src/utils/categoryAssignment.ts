@@ -109,7 +109,21 @@ export const canonicalizeCategoryAssignment = (
   const inferredSubcategory = normalizedCategory === 'autos-vehicles'
     ? inferCarsMajorRepairSubcategory([subcategory, ...textHints])
     : undefined;
-  const normalizedSubcategory = normalizeCategoryValue(subcategory) || inferredSubcategory;
+  const rawNormalizedSubcategory = normalizeCategoryValue(subcategory) || inferredSubcategory;
+  const subcategoryAliasesByParent: Record<string, Record<string, string>> = {
+    comedy: {
+      'roasts-and-jokes': 'roasts',
+      'roasts-and-jokes-and-events': 'roasts',
+      'roasts-jokes': 'roasts',
+      'roasts-jokes-events': 'roasts',
+      'comedy-roasts': 'roasts',
+      'comedy-roasts-jokes': 'roasts',
+      'comedy-roasts-jokes-events': 'roasts',
+    },
+  };
+  const normalizedSubcategory = normalizedCategory && rawNormalizedSubcategory
+    ? subcategoryAliasesByParent[normalizedCategory]?.[rawNormalizedSubcategory] || rawNormalizedSubcategory
+    : rawNormalizedSubcategory;
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 
   // Sidebar label "Cars & Vehicles" points at /autos-vehicles, but every
