@@ -1,0 +1,1 @@
+UPDATE public.custom_subcategories SET name = 'Bloopers (film, movies)' WHERE slug = 'bloopers-tv-animation';
