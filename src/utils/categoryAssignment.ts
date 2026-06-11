@@ -62,6 +62,13 @@ const knownParentSlugs = new Set(knownSubcategories.map((row) => row.parent));
 const resolveSidebarCategorySlug = (value?: string): string | undefined => {
   const normalized = normalizeCategoryValue(value);
   if (!normalized) return undefined;
+  const directAliases: Record<string, string> = {
+    'sports-nba': 'nba-basketball',
+    'sports-nba-basketball': 'nba-basketball',
+    'nba': 'nba-basketball',
+    'nba-basketbaall': 'nba-basketball',
+  };
+  if (directAliases[normalized]) return directAliases[normalized];
   if (sidebarMainCategorySlugs.has(normalized)) return normalized;
 
   const dashIdx = normalized.indexOf('-');

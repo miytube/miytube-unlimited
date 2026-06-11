@@ -36,14 +36,6 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
 
   if (!cleanCategory) return '/';
 
-  // Admin-created sidebar pages live under /c/ in the router. Sending uploads
-  // or generated links to the pretty static route (for example /sports/nhl/*)
-  // lets older/static mappings claim the URL and can bounce users back to the
-  // parent page. Keep dynamic/custom pages on the canonical /c/... route.
-  if (CUSTOM_PAGE_CATEGORIES.has(cleanCategory)) {
-    return cleanSubcategory ? `/c/${cleanCategory}/${cleanSubcategory}` : `/c/${cleanCategory}`;
-  }
-
   if (cleanCategory === 'college-sports') {
     if (!cleanSubcategory) return '/sports/college';
     if (cleanSubcategory === 'football-bowl-games') return '/sports/college/bowl';
@@ -81,6 +73,11 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   }
 
 
+  const nestedStaticRoute = `/${cleanCategory}/${cleanSubcategory}`;
+  if (subcategoryMappings[nestedStaticRoute] || subcategoryMappings[nestedStaticRoute.slice(1)]) {
+    return nestedStaticRoute;
+  }
+
   if (subcategoryMappings[`/${cleanSubcategory}`]) return `/${cleanSubcategory}`;
   if (subcategoryMappings[cleanSubcategory]) return cleanSubcategory.startsWith('/') ? cleanSubcategory : `/${cleanSubcategory}`;
 
@@ -91,7 +88,15 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     if (subcategoryMappings[shortenedRoute] || subcategoryMappings[shortenedRoute.slice(1)]) {
       return shortenedRoute;
     }
+    if (CUSTOM_PAGE_CATEGORIES.has(cleanCategory)) return `/c/${cleanCategory}/${cleanSubcategory}`;
     return `/${cleanCategory}/${cleanSubcategory}`;
+  }
+
+  // Admin-created sidebar watch pages live under /c/ when no static watch route
+  // exists. This keeps dynamic pages like NBA Championship Finals available,
+  // while static pages like /comedy/roasts keep their real watch-page URL.
+  if (CUSTOM_PAGE_CATEGORIES.has(cleanCategory)) {
+    return `/c/${cleanCategory}/${cleanSubcategory}`;
   }
 
   // Fall back to the sidebar main-category route so links generated for
