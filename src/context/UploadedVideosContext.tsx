@@ -688,6 +688,35 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
     await loadStoredVideos(true);
   };
 
+  // Realtime: auto-refresh when any video row is inserted/updated/deleted in
+  // the cloud, so newly uploaded videos (e.g. NBA finals) appear on Home,
+  // Trending, and category pages without requiring a manual navigation.
+  useEffect(() => {
+    let debounceId: number | undefined;
+    const scheduleRefresh = () => {
+      if (debounceId) window.clearTimeout(debounceId);
+      debounceId = window.setTimeout(() => {
+        loadStoredVideos(true).catch((err) =>
+          console.warn('Realtime refresh failed:', err)
+        );
+      }, 800);
+    };
+
+    const channel = supabase
+      .channel('uploaded_videos-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'uploaded_videos' },
+        () => scheduleRefresh()
+      )
+      .subscribe();
+
+    return () => {
+      if (debounceId) window.clearTimeout(debounceId);
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
   // Upload thumbnail to cloud storage and return URL.
   // Returns '' on failure so the row stays without a real thumbnail and the
   // admin "Missing only" regenerator can pick it up later.
