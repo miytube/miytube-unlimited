@@ -1,0 +1,2 @@
+UPDATE public.custom_categories SET slug='film-animation', name='Film & Animation' WHERE slug='flim-and-animation';
+UPDATE public.custom_subcategories SET slug='bloopers-tv-animation', name='Bloopers (TV, Animation)' WHERE slug='bloopers-tv-flim-animation';
