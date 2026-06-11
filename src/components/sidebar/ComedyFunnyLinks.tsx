@@ -12,7 +12,7 @@ export const ComedyFunnyLinks: React.FC = () => {
       path: '/comedy',
       subItems: [
         { id: 'comedy-standup', label: 'Stand Up Comedy', path: '/comedy/standup' },
-        { id: 'comedy-roasts', label: 'Roasts & Jokes & Events', path: '/comedy/roasts' },
+        { id: 'comedy-roasts', label: 'Roasts, Jokes & Events', path: '/comedy/roasts' },
         { id: 'comedy-snl', label: 'SNL (Saturday Night Live)', path: '/comedy/snl' },
         { id: 'comedy-sitcom', label: 'Comedy Shows (Sitcom)', path: '/comedy/sitcom' },
         { id: 'comedy-pranks', label: 'Funny & Pranks Videos', path: '/comedy/pranks' },
