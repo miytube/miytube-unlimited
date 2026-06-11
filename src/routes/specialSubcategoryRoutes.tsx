@@ -13,6 +13,8 @@ export const specialSubcategoryRoutes = [
   <Route key="film-animation-military" path="/film-animation/military" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-classics" path="/film-animation/classics" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-bloopers" path="/film-animation/bloopers" element={<GenericSubcategoryPage />} />,
+  <Route key="film-animation-bloopers-tv-animation" path="/film-animation/bloopers-tv-animation" element={<GenericSubcategoryPage />} />,
+  
   
   /* Airports Routes */
   <Route key="airports-fails" path="/airports/fails" element={<GenericSubcategoryPage />} />,

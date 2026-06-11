@@ -8,6 +8,7 @@ import {
   Bomb, Music, Scissors, FileText, Popcorn
 } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { VideoCard } from '@/components/VideoCard';
 import { sortByName } from '@/lib/sortByName';
 import {
@@ -58,8 +59,17 @@ const animationCategories = [
 
 const FilmAnimation: React.FC = () => {
   const { uploadedVideos } = useUploadedVideos();
+  const { tree } = useCustomCategories();
   const [filmOpen, setFilmOpen] = React.useState(true);
   const [animationOpen, setAnimationOpen] = React.useState(true);
+
+  const customFilmAnimation = tree.find((c) => c.slug === 'film-animation');
+  const customSubLinks = (customFilmAnimation?.subcategories || []).map((s) => ({
+    path: `/film-animation/${s.slug}`,
+    label: s.name,
+    icon: Clapperboard,
+  }));
+  const mergedAnimationCategories = [...animationCategories, ...customSubLinks];
 
   // Filter videos for film & animation category
   const categoryVideos = uploadedVideos.filter(video => 
@@ -123,7 +133,7 @@ const FilmAnimation: React.FC = () => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 p-4 bg-card/50 rounded-b-lg border-x border-b">
-                {sortByName(animationCategories).map((category) => (
+                {sortByName(mergedAnimationCategories).map((category) => (
                   <Link
                     key={category.path}
                     to={category.path}
