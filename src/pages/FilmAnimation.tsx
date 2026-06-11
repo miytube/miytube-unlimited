@@ -8,6 +8,7 @@ import {
   Bomb, Music, Scissors, FileText, Popcorn
 } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { VideoCard } from '@/components/VideoCard';
 import { sortByName } from '@/lib/sortByName';
 import {
