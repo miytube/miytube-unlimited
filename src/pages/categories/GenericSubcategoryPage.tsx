@@ -33,9 +33,12 @@ const GenericSubcategoryPage = () => {
     isKnown
   } = useSubcategoryInfo();
 
-  const matchedCustomCat = tree.find(
-    (c) => c.slug === categorySlug || currentPath === getSidebarMainCategoryRoute(c.slug) || currentPath.startsWith(`${getSidebarMainCategoryRoute(c.slug)}/`)
-  );
+  const exactCustomCat = tree.find((c) => c.slug === categorySlug);
+  const routedCustomCat = tree.find((c) => {
+    const route = getSidebarMainCategoryRoute(c.slug);
+    return route && (currentPath === route || currentPath.startsWith(`${route}/`));
+  });
+  const matchedCustomCat = exactCustomCat || routedCustomCat;
   const matchedCustomRoute = matchedCustomCat ? getSidebarMainCategoryRoute(matchedCustomCat.slug) : undefined;
   const customPathParts = matchedCustomRoute && currentPath.startsWith(`${matchedCustomRoute}/`)
     ? currentPath.slice(matchedCustomRoute.length + 1).split('/').filter(Boolean)
