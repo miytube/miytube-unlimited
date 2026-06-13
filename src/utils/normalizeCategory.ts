@@ -62,6 +62,9 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'sports-nhl-hockey': 'nhl-hockey',
     'new-and-politics': 'news-and-politics',
     'news-politics': 'news-and-politics',
+    'fifa-word-cup-soocer-football': 'fifa-world-cup-soccer-football',
+    'fifa-world-cup-soocer-football': 'fifa-world-cup-soccer-football',
+    'fifa-word-cup-soccer-football': 'fifa-world-cup-soccer-football',
     // Car repair subcategories — uploaders pick "Major Repairs" under
     // "Cars & Vehicles" but the watch page is /cars/repairs/major which
     // expects the canonical id "cars-repairs-major".

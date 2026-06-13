@@ -9,6 +9,8 @@ const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
 
 const CUSTOM_PAGE_CATEGORIES = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
 
+const CUSTOM_ONLY_CATEGORY_ROUTES = new Set(['soccer-and-football']);
+
 const knownSidebarSlugs = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
 
 /**
@@ -35,6 +37,10 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   const cleanSubcategory = canonical.subcategory ? trimSlashes(canonical.subcategory) : (subcategory ? trimSlashes(subcategory) : '');
 
   if (!cleanCategory) return '/';
+
+  if (CUSTOM_ONLY_CATEGORY_ROUTES.has(cleanCategory)) {
+    return cleanSubcategory ? `/c/${cleanCategory}/${cleanSubcategory}` : `/c/${cleanCategory}`;
+  }
 
   if (cleanCategory === 'college-sports') {
     if (!cleanSubcategory) return '/sports/college';

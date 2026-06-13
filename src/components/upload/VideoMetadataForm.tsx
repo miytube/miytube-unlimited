@@ -94,7 +94,10 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
     return savedCustomCategoryTree.map((cat) => ({
       id: cat.slug,
       name: cat.name,
-      subcategories: cat.subcategories.map((sub) => ({ id: sub.slug, name: sub.name })),
+      subcategories: cat.subcategories.flatMap((sub) => {
+        const watchPages = sub.watch_pages.map((watch) => ({ id: watch.slug, name: watch.name }));
+        return [{ id: sub.slug, name: sub.name }, ...watchPages];
+      }),
     }));
   }, [savedCustomCategoryTree]);
 
