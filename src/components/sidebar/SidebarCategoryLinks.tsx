@@ -212,17 +212,31 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
 
   // Inject custom sub-categories / watch pages created from the admin into
   // the matching hardcoded sidebar link (matched by link slug == custom category slug).
+  const normalizeForMatch = (value: string) =>
+    value
+      .toLowerCase()
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   const enrichedLinks = useMemo(() => {
     return links.map((link) => {
       const linkPath = link.path || '';
       const segments = linkPath.replace(/^\//, '').split('/').filter(Boolean);
       const lastSegment = segments[segments.length - 1] || '';
+      const linkLabelKey = normalizeForMatch(link.label || '');
+      const lastSegmentKey = normalizeForMatch(lastSegment);
       const cat = tree.find((c) => {
         const mappedRoute = getSidebarMainCategoryRoute(c.slug);
         if (mappedRoute && mappedRoute === linkPath) return true;
-        // Only match by slug for top-level single-segment paths to avoid
-        // injecting a top-level custom category into a nested hardcoded link.
-        if (segments.length === 1 && c.slug === lastSegment) return true;
+        const catSlugKey = normalizeForMatch(c.slug);
+        const catNameKey = normalizeForMatch(c.name);
+        // Match top-level or nested links whose label/last segment matches
+        // the custom category's slug or normalized name. This lets admins
+        // create a category like "Soccer & Football" (slug soccer-and-football)
+        // and have it auto-attach to the hardcoded "Soccer & Football" link.
+        if (catSlugKey === lastSegmentKey) return true;
+        if (catNameKey && catNameKey === linkLabelKey) return true;
+        if (catSlugKey === linkLabelKey) return true;
         return false;
       });
       if (!cat) return link;
