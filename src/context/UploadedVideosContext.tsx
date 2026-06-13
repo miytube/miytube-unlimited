@@ -73,7 +73,13 @@ interface UploadedVideosContextType {
   refreshVideos: () => Promise<void>;
 }
 
-const UploadedVideosContext = createContext<UploadedVideosContextType | undefined>(undefined);
+type UploadedVideosGlobalContext = typeof globalThis & {
+  __miytubeUploadedVideosContext__?: React.Context<UploadedVideosContextType | undefined>;
+};
+
+const UploadedVideosContext =
+  ((globalThis as UploadedVideosGlobalContext).__miytubeUploadedVideosContext__ ??=
+    createContext<UploadedVideosContextType | undefined>(undefined));
 
 const DB_NAME = 'miytube_videos_db';
 const DB_VERSION = 1;
