@@ -22,7 +22,7 @@ const allItems: SearchItem[] = [
   { label: 'AI Humanoids', path: '/ai-humanoids', category: 'AI & Technology' },
   { label: 'AI Robotics', path: '/ai-robotics', category: 'AI & Technology' },
   { label: 'Cell Phone Tricks & Hacks', path: '/cell-phone-tricks', category: 'AI & Technology' },
-  { label: 'Internet Programming', path: '/internet-programming', category: 'AI & Technology' },
+  { label: 'Internet Programming', path: '/internet/programming', category: 'AI & Technology' },
   { label: 'Science & Technology', path: '/science-technology', category: 'AI & Technology' },
   { label: 'Science & Tech Inventions', path: '/science-tech-inventions', category: 'AI & Technology' },
   { label: 'Science & Tech Gadgets', path: '/science-tech-gadgets', category: 'AI & Technology' },
