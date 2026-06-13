@@ -105,21 +105,29 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
     return (
       <div className="mb-1">
         <div 
-          onClick={handleToggle}
           data-sidebar-collapsible-trigger
           data-sidebar-collapsible-state={isExpanded ? 'open' : 'closed'}
           className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-secondary transition-colors cursor-pointer ${
             isActive || isChildActive ? 'bg-secondary font-medium' : ''
           }`}
         >
-          <Icon size={20} />
-          <span className="flex-1">{item.label}</span>
-          <ChevronDown 
-            size={16} 
-            className={`text-muted-foreground transition-transform duration-200 ${
-              isExpanded ? 'rotate-0' : '-rotate-90'
-            }`} 
-          />
+          <Link to={item.path} className="flex flex-1 items-center gap-3 min-w-0">
+            <Icon size={20} />
+            <span className="truncate">{item.label}</span>
+          </Link>
+          <button
+            type="button"
+            onClick={handleToggle}
+            className="p-1 text-muted-foreground hover:text-foreground"
+            aria-label={isExpanded ? 'Collapse' : 'Expand'}
+          >
+            <ChevronDown 
+              size={16} 
+              className={`transition-transform duration-200 ${
+                isExpanded ? 'rotate-0' : '-rotate-90'
+              }`} 
+            />
+          </button>
         </div>
         
         <div 
