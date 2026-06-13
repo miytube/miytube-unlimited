@@ -65,6 +65,13 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'fifa-word-cup-soocer-football': 'fifa-world-cup-soccer-football',
     'fifa-world-cup-soocer-football': 'fifa-world-cup-soccer-football',
     'fifa-word-cup-soccer-football': 'fifa-world-cup-soccer-football',
+    // Gangsters (plural) watch page — accept singular misspellings
+    'gangster-crime-drama': 'film-gangsters-crime-drama',
+    'gangsters-crime-drama': 'film-gangsters-crime-drama',
+    'film-gangster-crime-drama': 'film-gangsters-crime-drama',
+    'film-gangsters': 'film-gangsters-crime-drama',
+    'gangster-films': 'film-gangsters-crime-drama',
+    'gangster-film': 'film-gangsters-crime-drama',
     // Car repair subcategories — uploaders pick "Major Repairs" under
     // "Cars & Vehicles" but the watch page is /cars/repairs/major which
     // expects the canonical id "cars-repairs-major".
