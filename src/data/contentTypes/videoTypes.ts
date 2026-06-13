@@ -94,6 +94,9 @@ export const videoContentTypes: Record<string, ContentType> = {
         { id: 'drones', name: 'Weapons Drones' },
         { id: 'personnel', name: 'Personnel' },
       ]},
+      { id: 'soccer-and-football', name: 'Soccer & Football', subcategories: [
+        { id: 'fifa-world-cup-soccer-football', name: 'FIFA World Cup (soccer, Football)' },
+      ]},
     ],
     destination: "Your Videos on Home Page and Selected Category"
   },
