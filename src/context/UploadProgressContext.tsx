@@ -24,7 +24,13 @@ interface UploadProgressContextType {
   isUploadInProgress: () => boolean;
 }
 
-const UploadProgressContext = createContext<UploadProgressContextType | undefined>(undefined);
+type UploadProgressGlobalContext = typeof globalThis & {
+  __miytubeUploadProgressContext__?: React.Context<UploadProgressContextType | undefined>;
+};
+
+const UploadProgressContext =
+  ((globalThis as UploadProgressGlobalContext).__miytubeUploadProgressContext__ ??=
+    createContext<UploadProgressContextType | undefined>(undefined));
 
 export const useUploadProgress = () => {
   const context = useContext(UploadProgressContext);
