@@ -67,6 +67,9 @@ const resolveSidebarCategorySlug = (value?: string): string | undefined => {
     'sports-nba-basketball': 'nba-basketball',
     'nba': 'nba-basketball',
     'nba-basketbaall': 'nba-basketball',
+    'sports-soccer': 'soccer-and-football',
+    'soccer-football': 'soccer-and-football',
+    'soccer-and-football': 'soccer-and-football',
   };
   if (directAliases[normalized]) return directAliases[normalized];
   if (sidebarMainCategorySlugs.has(normalized)) return normalized;
