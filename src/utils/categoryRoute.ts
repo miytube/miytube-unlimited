@@ -64,6 +64,9 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     };
     if (cleanSubcategory && carRepairRoutes[cleanSubcategory]) return carRepairRoutes[cleanSubcategory];
   }
+  if (cleanCategory === 'news' && cleanSubcategory === 'news-and-politics') {
+    return '/news';
+  }
   if (!cleanSubcategory) {
     const resolvedNoSub = resolveSidebarSlug(cleanCategory);
     if (resolvedNoSub) {
