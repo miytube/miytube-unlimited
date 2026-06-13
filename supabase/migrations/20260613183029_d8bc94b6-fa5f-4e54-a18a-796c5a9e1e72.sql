@@ -1,0 +1,1 @@
+UPDATE public.custom_subcategories SET name = 'FIFA World Cup (soccer, Football)', slug = 'fifa-world-cup-soccer-football' WHERE id = '1a569120-0c09-48a9-b970-4e61cd89e232';
