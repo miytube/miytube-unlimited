@@ -97,6 +97,7 @@ export const mainRoutes = [
   <Route key="blog-new" path="/blog/new" element={<Blog />} />,
   <Route key="long-videos" path="/long-videos" element={<LongVideos />} />,
   <Route key="news-politics" path="/news" element={<NewsAndPolitics />} />,
+  <Route key="news-politics-legacy" path="/news-and-politics" element={<Navigate to="/news" replace />} />,
   <Route key="talk-at-cha" path="/talk-at-cha" element={<TalkAtCha />} />,
   <Route key="educational" path="/educational" element={<Educational />} />,
   <Route key="channel" path="/channel" element={<Channel />} />,

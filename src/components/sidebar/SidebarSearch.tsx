@@ -207,8 +207,8 @@ const allItems: SearchItem[] = [
   { label: 'Boats', path: '/boats', category: 'Autos & Vehicles' },
   
   // News & Politics
-  { label: 'News & Politics', path: '/news-and-politics', category: 'News & Politics' },
-  { label: 'Politics', path: '/politics', category: 'News & Politics' },
+  { label: 'News & Politics', path: '/news', category: 'News & Politics' },
+  { label: 'Politics', path: '/news/politics', category: 'News & Politics' },
   { label: 'Weather', path: '/weather', category: 'News & Politics' },
   { label: 'Disasters', path: '/disasters', category: 'News & Politics' },
   
