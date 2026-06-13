@@ -104,31 +104,33 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
   if (hasSubItems) {
     return (
       <div className="mb-1">
-        <div 
+        <div
           data-sidebar-collapsible-trigger
           data-sidebar-collapsible-state={isExpanded ? 'open' : 'closed'}
+          onClick={() => setIsExpanded(!isExpanded)}
           className={`flex items-center gap-3 px-3 py-2 rounded-md hover:bg-secondary transition-colors cursor-pointer ${
             isActive || isChildActive ? 'bg-secondary font-medium' : ''
           }`}
         >
-          <Link to={item.path} className="flex flex-1 items-center gap-3 min-w-0">
+          <div className="flex flex-1 items-center gap-3 min-w-0">
             <Icon size={20} />
             <span className="truncate">{item.label}</span>
-          </Link>
+          </div>
           <button
             type="button"
             onClick={handleToggle}
             className="p-1 text-muted-foreground hover:text-foreground"
             aria-label={isExpanded ? 'Collapse' : 'Expand'}
           >
-            <ChevronDown 
-              size={16} 
+            <ChevronDown
+              size={16}
               className={`transition-transform duration-200 ${
                 isExpanded ? 'rotate-0' : '-rotate-90'
-              }`} 
+              }`}
             />
           </button>
         </div>
+
         
         <div 
           className={`overflow-hidden transition-all duration-300 ease-out ${
