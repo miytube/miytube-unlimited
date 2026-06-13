@@ -3,8 +3,13 @@ import { Layout } from '@/components/Layout';
 import { Globe, Upload, Newspaper, Landmark, MapPin, Radio, Mic } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { sortByName } from '@/lib/sortByName';
+import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import VideoContent from '@/components/subcategory/VideoContent';
 
 const NewsAndPolitics = () => {
+  const { getVideosByCategory } = useUploadedVideos();
+  const newsVideos = getVideosByCategory('news');
+
   const subcategories = [
     { name: 'Breaking News', icon: Newspaper, route: '/news/breaking', description: 'Real-time updates on developing stories' },
     { name: 'Politics', icon: Landmark, route: '/news/politics', description: 'Government, elections and policy' },
@@ -37,6 +42,25 @@ const NewsAndPolitics = () => {
             <span>Upload News</span>
           </Link>
         </div>
+
+        {newsVideos.length > 0 && (
+          <VideoContent
+            title="News & Politics Videos"
+            videos={newsVideos.map((video) => ({
+              id: video.id,
+              title: video.title,
+              thumbnail: video.thumbnail,
+              channelName: 'Your Channel',
+              views: video.views,
+              timestamp: video.timestamp,
+              duration: video.duration,
+              description: video.description,
+              category: video.category,
+              subcategory: video.subcategory,
+              tags: video.tags,
+            }))}
+          />
+        )}
 
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-6">Subcategories</h2>
