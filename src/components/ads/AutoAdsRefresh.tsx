@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -14,18 +14,20 @@ import { useLocation } from 'react-router-dom';
  */
 export const AutoAdsRefresh = () => {
   const location = useLocation();
+  const hasMounted = useRef(false);
 
   useEffect(() => {
     // Skip the very first render — the AdSense script in index.html already
     // handles the initial page load on its own.
     if (typeof window === 'undefined') return;
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
 
     try {
       // @ts-ignore – injected by the AdSense script in index.html
-      (window.adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: 'ca-pub-3759206856597376',
-        enable_page_level_ads: true,
-      });
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
       // Ad blockers / offline / etc. — fail silently.
       console.debug('Auto Ads refresh skipped:', err);
