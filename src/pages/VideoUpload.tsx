@@ -44,6 +44,9 @@ const VideoUpload = () => {
       { id: 'basketball', name: 'Basketball' },
       { id: 'tennis', name: 'Tennis' },
     ] },
+    { id: 'soccer-and-football', name: 'Soccer & Football', icon: <Film size={20} />, description: 'Upload soccer and football videos.', subcategories: [
+      { id: 'fifa-world-cup-soccer-football', name: 'FIFA World Cup (soccer, Football)' },
+    ] },
     { id: 'education', name: 'Education', icon: <Film size={20} />, description: 'Share educational content, tutorials, and lectures.', subcategories: [
       { id: 'science', name: 'Science' },
       { id: 'math', name: 'Mathematics' },
