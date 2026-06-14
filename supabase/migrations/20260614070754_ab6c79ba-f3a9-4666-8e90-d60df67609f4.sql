@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET subcategory='snl' WHERE category='comedy' AND subcategory IN ('snl-saturday-night-live','saturday-night-live','snl-skits','comedy-snl');
