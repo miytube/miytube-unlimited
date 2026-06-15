@@ -24,7 +24,34 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
-  const validateInputs = () => {
+  const validateInputs = (requireChannelName = false) => {
+    if (requireChannelName) {
+      const trimmed = channelName.trim();
+      if (!trimmed) {
+        toast({
+          title: "Username required",
+          description: "Please choose a username (channel name) to continue.",
+          variant: "destructive"
+        });
+        return false;
+      }
+      if (trimmed.length < 3 || trimmed.length > 30) {
+        toast({
+          title: "Invalid username",
+          description: "Username must be between 3 and 30 characters.",
+          variant: "destructive"
+        });
+        return false;
+      }
+      if (!/^[a-zA-Z0-9_.-]+$/.test(trimmed)) {
+        toast({
+          title: "Invalid username",
+          description: "Use only letters, numbers, underscores, dots, or hyphens.",
+          variant: "destructive"
+        });
+        return false;
+      }
+    }
     if (!email || !email.includes('@')) {
       toast({
         title: "Invalid email",
