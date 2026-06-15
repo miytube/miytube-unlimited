@@ -102,7 +102,7 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateInputs()) return;
+    if (!validateInputs(true)) return;
     
     setIsLoading(true);
     const { error } = await signUp(email, password, channelName || undefined);
