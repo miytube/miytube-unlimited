@@ -22,7 +22,9 @@ import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussion
 import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
 import { YouTubeRestoreManager } from '@/components/admin/YouTubeRestoreManager';
-import { Database, FolderTree, Youtube } from 'lucide-react';
+import { BandwidthHogs } from '@/components/admin/BandwidthHogs';
+import { Database, FolderTree, Youtube, TrendingUp } from 'lucide-react';
+
 
 type AppRole = 'admin' | 'moderator' | 'user';
 
@@ -271,6 +273,11 @@ const Admin = () => {
               <Cloud className="h-4 w-4" />
               S3 Import
             </TabsTrigger>
+            <TabsTrigger value="bandwidth" className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Bandwidth Hogs
+            </TabsTrigger>
+
             <TabsTrigger value="thumbs" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
               Thumbnails
@@ -404,6 +411,11 @@ const Admin = () => {
           <TabsContent value="s3" className="mt-6">
             <S3ImportManager />
           </TabsContent>
+
+          <TabsContent value="bandwidth" className="mt-6">
+            <BandwidthHogs />
+          </TabsContent>
+
 
           <TabsContent value="thumbs" className="mt-6">
             <ThumbnailGeneratorManager />
