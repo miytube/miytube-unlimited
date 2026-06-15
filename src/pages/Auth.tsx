@@ -24,7 +24,34 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
-  const validateInputs = () => {
+  const validateInputs = (requireChannelName = false) => {
+    if (requireChannelName) {
+      const trimmed = channelName.trim();
+      if (!trimmed) {
+        toast({
+          title: "Username required",
+          description: "Please choose a username (channel name) to continue.",
+          variant: "destructive"
+        });
+        return false;
+      }
+      if (trimmed.length < 3 || trimmed.length > 30) {
+        toast({
+          title: "Invalid username",
+          description: "Username must be between 3 and 30 characters.",
+          variant: "destructive"
+        });
+        return false;
+      }
+      if (!/^[a-zA-Z0-9_.-]+$/.test(trimmed)) {
+        toast({
+          title: "Invalid username",
+          description: "Use only letters, numbers, underscores, dots, or hyphens.",
+          variant: "destructive"
+        });
+        return false;
+      }
+    }
     if (!email || !email.includes('@')) {
       toast({
         title: "Invalid email",
@@ -75,7 +102,7 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateInputs()) return;
+    if (!validateInputs(true)) return;
     
     setIsLoading(true);
     const { error } = await signUp(email, password, channelName || undefined);
@@ -170,18 +197,24 @@ const Auth = () => {
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4 mt-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-channel">Channel Name (optional)</Label>
+                  <Label htmlFor="signup-channel">Username</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="signup-channel"
                       type="text"
-                      placeholder="Your channel name"
+                      placeholder="Pick a username (3-30 chars)"
                       value={channelName}
                       onChange={(e) => setChannelName(e.target.value)}
                       className="pl-10"
+                      required
+                      minLength={3}
+                      maxLength={30}
                     />
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    Letters, numbers, underscores, dots, or hyphens. This is how viewers will see you.
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
