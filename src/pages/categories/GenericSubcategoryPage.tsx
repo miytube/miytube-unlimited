@@ -25,7 +25,6 @@ const GenericSubcategoryPage = () => {
   const currentPath = location.pathname.replace(/\/$/, '') || '/';
   const parentStaticPath = pathParts.length > 2 ? `/${pathParts.slice(0, -1).join('/')}` : undefined;
   const staticParentMapping = parentStaticPath ? subcategoryMappings[parentStaticPath] : undefined;
-  const isStaticWatchRoute = Boolean(!isKnown && watchSlug && staticParentMapping);
   const formatSlugTitle = (slug?: string) =>
     (slug || '')
       .split('-')
@@ -42,6 +41,7 @@ const GenericSubcategoryPage = () => {
     mappingKey,
     isKnown
   } = useSubcategoryInfo();
+  const isStaticWatchRoute = Boolean(!isKnown && watchSlug && staticParentMapping);
 
   const exactCustomCat = tree.find((c) => c.slug === categorySlug);
   const routedCustomCat = tree.find((c) => {
