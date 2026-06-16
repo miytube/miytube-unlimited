@@ -333,6 +333,7 @@ export const filterVideosBySubcategory = (
         'autos': ['autos-and-vehicles', 'autos-vehicles'],
         'autos-vehicles': ['autos-and-vehicles'],
         'autos-and-vehicles': ['autos-vehicles'],
+        'cars': ['autos-vehicles', 'autos-and-vehicles', 'autos', 'cars-and-vehicles'],
         'oceans': ['waters-and-oceans', 'waters-oceans'],
         'waters-and-oceans': ['oceans', 'waters-oceans'],
         'waters-oceans': ['oceans', 'waters-and-oceans'],
