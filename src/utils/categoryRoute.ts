@@ -77,6 +77,7 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   if (cleanCategory === 'travel-events') {
     const citiesRoutes = new Set(['cities', 'towns', 'cities-towns', 'travel-cities', 'travel-events-cities-towns', 'travel-cities-towns']);
     if (cleanSubcategory && citiesRoutes.has(cleanSubcategory)) return '/travel-events/cities-towns';
+    if (!cleanSubcategory) return '/travel-events';
   }
   if (!cleanSubcategory) {
     const resolvedNoSub = resolveSidebarSlug(cleanCategory);
