@@ -13,6 +13,7 @@ import { filterVideosBySubcategory } from '@/utils/videoFiltering';
 import { getSidebarMainCategoryRoute } from '@/data/sidebarMainCategories';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { subcategoryMappings } from '@/data/subcategoryMappings';
 
 
 const GenericSubcategoryPage = () => {
@@ -22,6 +23,15 @@ const GenericSubcategoryPage = () => {
   const pathParts = location.pathname.split('/').filter(Boolean);
   const [categorySlug, subcategorySlug, watchSlug] = pathParts;
   const currentPath = location.pathname.replace(/\/$/, '') || '/';
+  const parentStaticPath = pathParts.length > 2 ? `/${pathParts.slice(0, -1).join('/')}` : undefined;
+  const staticParentMapping = parentStaticPath ? subcategoryMappings[parentStaticPath] : undefined;
+  const isStaticWatchRoute = Boolean(!isKnown && watchSlug && staticParentMapping);
+  const formatSlugTitle = (slug?: string) =>
+    (slug || '')
+      .split('-')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 
   const {
     pageTitle,
@@ -78,7 +88,7 @@ const GenericSubcategoryPage = () => {
     );
   }
 
-  if (!isKnown && !isCustomRoute) {
+  if (!isKnown && !isCustomRoute && !isStaticWatchRoute) {
     // Fall back to the parent category route (e.g. /education) when the
     // specific sub-path doesn't exist, instead of dumping the user on Home.
     if (categorySlug && pathParts.length > 1) {
@@ -89,9 +99,13 @@ const GenericSubcategoryPage = () => {
 
   const displayTitle = isCustomRoute && matchedCustomCat
     ? matchedCustomWatch?.name || matchedCustomSub?.name || matchedCustomCat.name
+    : isStaticWatchRoute
+      ? formatSlugTitle(watchSlug)
     : pageTitle;
   const displayDescription = isCustomRoute && matchedCustomCat
     ? matchedCustomWatch?.description || matchedCustomSub?.description || matchedCustomCat.description || pageDescription
+    : isStaticWatchRoute
+      ? `Explore videos and content about ${formatSlugTitle(watchSlug).toLowerCase()}`
     : pageDescription;
   const DisplayIcon = isCustomRoute ? Film : IconComponent;
   const subcategoryVideos = isCustomRoute && matchedCustomCat
@@ -101,6 +115,8 @@ const GenericSubcategoryPage = () => {
           ? (matchedCustomWatch?.slug || matchedCustomSub?.slug || normalizedCustomWatchSlug || normalizedCustomSubSlug)
           : undefined
       )
+    : isStaticWatchRoute
+      ? filterVideosBySubcategory(uploadedVideos, displayTitle, pathParts.join('/'))
     : filterVideosBySubcategory(uploadedVideos, pageTitle, mappingKey);
 
   // Match static pages to custom child pages by slug (for static category landing pages)
@@ -115,8 +131,8 @@ const GenericSubcategoryPage = () => {
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
         <SubcategoryHeader
-          parentRoute={isCustomRoute ? matchedCustomRoute || `/${matchedCustomCat!.slug}` : parentRoute}
-          parentName={isCustomRoute ? matchedCustomCat!.name : parentName}
+          parentRoute={isCustomRoute ? matchedCustomRoute || `/${matchedCustomCat!.slug}` : isStaticWatchRoute ? parentStaticPath! : parentRoute}
+          parentName={isCustomRoute ? matchedCustomCat!.name : isStaticWatchRoute ? staticParentMapping!.title : parentName}
           pageTitle={displayTitle}
           pageDescription={displayDescription}
           IconComponent={DisplayIcon}
