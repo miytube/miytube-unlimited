@@ -67,6 +67,7 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
       'cars-repairs-minor': '/cars/repairs/minor',
       'cars-repairs-hacks': '/cars/repairs/hacks',
       'cars-repairs-maintenance': '/cars/repairs/maintenance',
+      'cars-repo': '/cars/repo',
     };
     if (cleanSubcategory && carRepairRoutes[cleanSubcategory]) return carRepairRoutes[cleanSubcategory];
   }
