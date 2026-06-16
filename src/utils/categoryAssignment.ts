@@ -70,6 +70,8 @@ const resolveSidebarCategorySlug = (value?: string): string | undefined => {
     'sports-soccer': 'soccer-and-football',
     'soccer-football': 'soccer-and-football',
     'soccer-and-football': 'soccer-and-football',
+      'travel': 'travel-events',
+      'travel-and-events': 'travel-events',
   };
   if (directAliases[normalized]) return directAliases[normalized];
   if (sidebarMainCategorySlugs.has(normalized)) return normalized;
@@ -122,6 +124,14 @@ export const canonicalizeCategoryAssignment = (
       'comedy-roasts': 'roasts',
       'comedy-roasts-jokes': 'roasts',
       'comedy-roasts-jokes-events': 'roasts',
+    },
+    'travel-events': {
+      'cities': 'cities-towns',
+      'towns': 'cities-towns',
+      'travel-cities': 'cities-towns',
+      'travel-events-cities-towns': 'cities-towns',
+      'travel-cities-towns': 'cities-towns',
+      'cities-and-towns': 'cities-towns',
     },
   };
   const normalizedSubcategory = normalizedCategory && rawNormalizedSubcategory
