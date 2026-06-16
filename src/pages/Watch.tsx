@@ -379,6 +379,23 @@ const Watch = () => {
   const hasVideoSource = video.file || (isYouTubeVideo && youtubeVideoId);
   const categoryRoute = getUploadDestinationRoute(video.category);
   const subcategoryRoute = getUploadDestinationRoute(video.category, video.subcategory);
+
+  // Friendly display labels for known slug-style category/subcategory values
+  const CATEGORY_DISPLAY_LABELS: Record<string, string> = {
+    'autos-vehicles': 'Cars & Vehicles',
+    'autos-and-vehicles': 'Cars & Vehicles',
+    'cars-and-vehicles': 'Cars & Vehicles',
+    'cars': 'Cars & Vehicles',
+    'autos & vehicles': 'Cars & Vehicles',
+    'repo': 'Car Repo & Repossession',
+    'cars-repo': 'Car Repo & Repossession',
+    'car-repo': 'Car Repo & Repossession',
+  };
+  const prettyLabel = (raw?: string) => {
+    if (!raw) return raw;
+    const key = raw.toString().trim().toLowerCase();
+    return CATEGORY_DISPLAY_LABELS[key] || raw;
+  };
   
   return (
     <Layout>
