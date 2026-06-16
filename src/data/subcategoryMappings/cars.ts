@@ -88,6 +88,12 @@ export const carsSubcategories: SubcategoryMapping = {
     icon: Car,
     parent: { route: '/cars', name: 'Cars' }
   },
+  'cars-repo': {
+    title: 'Car Repo & Repossession',
+    description: 'Car repossession videos, repo stories, and vehicle recovery content',
+    icon: Car,
+    parent: { route: '/cars', name: 'Cars & Vehicles' }
+  },
   'cars-street-racing': {
     title: 'Street Cars/Motorcycles Racing',
     description: 'Street racing cars and motorcycles competing on city streets',
