@@ -778,7 +778,7 @@ export const comprehensiveSubcategoryRoutes = [
   
   // Travel flat routes
   <Route key="beaches" path="/beaches" element={<GenericSubcategoryPage />} />,
-  <Route key="cities-towns" path="/cities-towns" element={<GenericSubcategoryPage />} />,
+  <Route key="cities-towns" path="/cities-towns" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   <Route key="hotels" path="/hotels" element={<GenericSubcategoryPage />} />,
   <Route key="night-clubs" path="/night-clubs" element={<GenericSubcategoryPage />} />,
   <Route key="street-food" path="/street-food" element={<GenericSubcategoryPage />} />,
