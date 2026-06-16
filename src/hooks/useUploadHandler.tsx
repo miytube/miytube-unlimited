@@ -4,7 +4,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
 import { checkVideoCompatibility, getFormatRecommendation } from '@/utils/videoCompatibility';
-import { autoCategorize } from '@/utils/autoCategorize';
 import { useUploadProgress } from '@/context/UploadProgressContext';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 import { supabase } from '@/integrations/supabase/client';
@@ -124,14 +123,7 @@ export const useUploadHandler = () => {
         let uploadCategory = category;
         let uploadSubcategory = subcategory;
         if (!uploadCategory) {
-          const guess = autoCategorize(perFileTitle, perFileDescription, file.name, tags);
-          if (guess) {
-            uploadCategory = guess.category;
-            if (!uploadSubcategory && guess.subcategory) uploadSubcategory = guess.subcategory;
-            console.log(`[auto-category] ${file.name} → ${guess.category}${guess.subcategory ? '/' + guess.subcategory : ''} (matched: ${guess.matchedKeywords.join(', ')})`);
-          } else {
-            uploadCategory = contentTypeId;
-          }
+          uploadCategory = contentTypeId;
         }
         return { file, perFileTitle, perFileDescription, uploadCategory, uploadSubcategory };
       });
