@@ -1,8 +1,11 @@
-import { Route } from 'react-router-dom';
+import { Navigate, Route } from 'react-router-dom';
 import CustomCategoryPage from '@/pages/CustomCategoryPage';
 import GenericSubcategoryPage from '@/pages/categories/GenericSubcategoryPage';
 
 export const customCategoryRoutes = [
+  <Route key="cc-travel-events-cities" path="/c/travel-events/cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
+  <Route key="cc-travel-events-cities-towns" path="/c/travel-events/cities-towns" element={<Navigate to="/travel-events/cities-towns" replace />} />,
+  <Route key="cc-travel-events-travel-cities" path="/c/travel-events/travel-cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   <Route key="cc-cat" path="/c/:categorySlug" element={<CustomCategoryPage mode="category" />} />,
   <Route
     key="cc-sub"
