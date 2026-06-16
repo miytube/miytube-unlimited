@@ -12,7 +12,7 @@ export const TravelPlacesLinks: React.FC = () => {
       path: '/travel-events',
       subItems: [
         { id: 'travel-beaches', label: 'Beaches', path: '/travel/beaches' },
-        { id: 'travel-cities', label: 'Cities & Towns', path: '/travel/cities' },
+        { id: 'travel-cities', label: 'Cities & Towns', path: '/travel-events/cities-towns' },
         { id: 'travel-country-foods', label: 'Country Foods', path: '/travel/country-foods' },
         { id: 'travel-hotels-expensive', label: 'Most Expensive Hotels', path: '/travel/hotels-expensive' },
         { id: 'travel-hotels', label: 'Hotels & Motels', path: '/travel/hotels' },
