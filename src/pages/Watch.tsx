@@ -390,6 +390,10 @@ const Watch = () => {
     'repo': 'Car Repo & Repossession',
     'cars-repo': 'Car Repo & Repossession',
     'car-repo': 'Car Repo & Repossession',
+    'car-repo-and-repossession': 'Car Repo & Repossession',
+    'car-repo-and-repossessions': 'Car Repo & Repossession',
+    'cars-repo-and-repossession': 'Car Repo & Repossession',
+    'cars-repo-and-repossessions': 'Car Repo & Repossession',
   };
   const prettyLabel = (raw?: string) => {
     if (!raw) return raw;

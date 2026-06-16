@@ -92,6 +92,19 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'car-maintenance': 'cars-repairs-maintenance',
     'cars-maintenance': 'cars-repairs-maintenance',
     'car-repairs': 'cars-repairs',
+    'car-repo': 'cars-repo',
+    'repo': 'cars-repo',
+    'car-repo-and-repossession': 'cars-repo',
+    'car-repo-and-repossessions': 'cars-repo',
+    'cars-repo-and-repossession': 'cars-repo',
+    'cars-repo-and-repossessions': 'cars-repo',
+    'car-repo-repossession': 'cars-repo',
+    'car-repo-repossessions': 'cars-repo',
+    'cars-repo-repossession': 'cars-repo',
+    'cars-repo-repossessions': 'cars-repo',
+    'car-repossession': 'cars-repo',
+    'car-repossessions': 'cars-repo',
+    'repossessions': 'cars-repo',
   };
 
   return aliases[cleaned] || cleaned || undefined;
