@@ -288,6 +288,7 @@ const categoryKeys = [
 
 export const allCategoryRoutes = [
   <Route key="music-mexican-spanish-redirect" path="/music-mexican-spanish" element={<Navigate to="/music/spanish" replace />} />,
+  <Route key="travel-cities-redirect" path="/travel-cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   ...categoryKeys.map(key => (
     <Route key={key} path={`/${key}`} element={<GenericSubcategoryPage />} />
   )),
