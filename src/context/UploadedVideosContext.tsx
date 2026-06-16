@@ -859,7 +859,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       // maxresdefault.jpg is missing for many videos and YouTube returns a generic
       // red play-button placeholder image instead, which looks broken in the grid.
       const youtubeThumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
-      const normalizedAssignment = canonicalizeCategoryAssignment(category, subcategory, [title, description, ...tags]);
+      const normalizedAssignment = canonicalizeCategoryAssignment(category, subcategory);
       
       const newVideo: UploadedVideo = {
         id: videoId,
@@ -917,7 +917,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       console.log(`Importing video from URL: ${importUrl}`);
       
       const videoId = createLocalVideoId();
-      const normalizedAssignment = canonicalizeCategoryAssignment(category, subcategory, [title, description, ...tags]);
+      const normalizedAssignment = canonicalizeCategoryAssignment(category, subcategory);
       const newVideo: UploadedVideo = {
         id: videoId,
         file: null,
@@ -1007,7 +1007,7 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
       const thumbnail = await generateThumbnail(file);
       
       const videoId = createLocalVideoId();
-      const normalizedAssignment = canonicalizeCategoryAssignment(effectiveCategory, subcategory, [title, description, file.name, ...tags]);
+      const normalizedAssignment = canonicalizeCategoryAssignment(effectiveCategory, subcategory);
       const newVideo: UploadedVideo = {
       id: videoId,
       file: null,

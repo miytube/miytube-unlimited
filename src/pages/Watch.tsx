@@ -376,6 +376,15 @@ const Watch = () => {
 
   // Friendly display labels for known slug-style category/subcategory values
   const CATEGORY_DISPLAY_LABELS: Record<string, string> = {
+    'travel-events': 'Travel & Events',
+    'travel-and-events': 'Travel & Events',
+    'cities': 'Cities & Towns',
+    'towns': 'Cities & Towns',
+    'cities-towns': 'Cities & Towns',
+    'travel-cities': 'Cities & Towns',
+    'travel-events-cities-towns': 'Cities & Towns',
+    'travel-cities-towns': 'Cities & Towns',
+    'cities-and-towns': 'Cities & Towns',
     'autos-vehicles': 'Cars & Vehicles',
     'autos-and-vehicles': 'Cars & Vehicles',
     'cars-and-vehicles': 'Cars & Vehicles',
@@ -389,11 +398,22 @@ const Watch = () => {
     'cars-repo-and-repossession': 'Car Repo & Repossession',
     'cars-repo-and-repossessions': 'Car Repo & Repossession',
   };
-  const prettyLabel = (raw?: string) => {
+  const labelKey = (raw?: string) => raw?.toString().trim().toLowerCase().replace(/^\/+|\/+$/g, '');
+  const formatSlugLabel = (raw?: string) =>
+    raw?.toString().replace(/^\/+|\/+$/g, '').split('-').filter(Boolean).map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  const prettyCategoryLabel = (raw?: string) => {
     if (!raw) return raw;
-    const key = raw.toString().trim().toLowerCase();
-    return CATEGORY_DISPLAY_LABELS[key] || raw;
+    const key = labelKey(raw)!;
+    return CATEGORY_DISPLAY_LABELS[key] || sidebarMainCategoryOptions.find((item) => item.slug === key)?.name || formatSlugLabel(raw) || raw;
   };
+  const prettySubcategoryLabel = (category?: string, subcategory?: string) => {
+    if (!subcategory) return subcategory;
+    const route = getUploadDestinationRoute(category, subcategory);
+    const mapping = subcategoryMappings[route] || subcategoryMappings[route.replace(/^\//, '')];
+    return mapping?.title || CATEGORY_DISPLAY_LABELS[labelKey(subcategory)!] || formatSlugLabel(subcategory) || subcategory;
+  };
+  const categoryLabel = prettyCategoryLabel(video.category);
+  const subcategoryLabel = prettySubcategoryLabel(video.category, video.subcategory);
   
   return (
     <Layout>
