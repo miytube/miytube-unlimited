@@ -178,7 +178,7 @@ const allItems: SearchItem[] = [
   // Travel
   { label: 'Travel', path: '/travel-events', category: 'Travel & Places' },
   { label: 'Beaches', path: '/beaches', category: 'Travel & Places' },
-  { label: 'Cities & Towns', path: '/cities-towns', category: 'Travel & Places' },
+  { label: 'Cities & Towns', path: '/travel-events/cities-towns', category: 'Travel & Places' },
   { label: 'Hotels', path: '/hotels', category: 'Travel & Places' },
   { label: 'Restaurants', path: '/restaurants', category: 'Travel & Places' },
   { label: 'Night Clubs', path: '/night-clubs', category: 'Travel & Places' },
