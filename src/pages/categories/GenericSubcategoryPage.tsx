@@ -22,6 +22,7 @@ const GenericSubcategoryPage = () => {
   const location = useLocation();
   const pathParts = location.pathname.split('/').filter(Boolean);
   const [categorySlug, subcategorySlug, watchSlug] = pathParts;
+  const leafSlug = pathParts[pathParts.length - 1];
   const currentPath = location.pathname.replace(/\/$/, '') || '/';
   const parentStaticPath = pathParts.length > 2 ? `/${pathParts.slice(0, -1).join('/')}` : undefined;
   const staticParentMapping = parentStaticPath ? subcategoryMappings[parentStaticPath] : undefined;
@@ -100,12 +101,12 @@ const GenericSubcategoryPage = () => {
   const displayTitle = isCustomRoute && matchedCustomCat
     ? matchedCustomWatch?.name || matchedCustomSub?.name || matchedCustomCat.name
     : isStaticWatchRoute
-      ? formatSlugTitle(watchSlug)
+      ? formatSlugTitle(leafSlug)
     : pageTitle;
   const displayDescription = isCustomRoute && matchedCustomCat
     ? matchedCustomWatch?.description || matchedCustomSub?.description || matchedCustomCat.description || pageDescription
     : isStaticWatchRoute
-      ? `Explore videos and content about ${formatSlugTitle(watchSlug).toLowerCase()}`
+      ? `Explore videos and content about ${formatSlugTitle(leafSlug).toLowerCase()}`
     : pageDescription;
   const DisplayIcon = isCustomRoute ? Film : IconComponent;
   const subcategoryVideos = isCustomRoute && matchedCustomCat
