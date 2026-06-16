@@ -134,6 +134,10 @@ const routeValueAliases: Record<string, string[]> = {
   'cars-repairs-hacks': ['car-hacks', 'cars-hacks', 'car-repair-hacks'],
   'cars/repairs/maintenance': ['cars-repairs-maintenance', 'car-maintenance', 'cars-maintenance'],
   'cars-repairs-maintenance': ['car-maintenance', 'cars-maintenance'],
+  // Car repo & repossession — sidebar route /cars/repo; videos may be stored
+  // under autos-vehicles with various subcategory slug variants.
+  'cars/repo': ['cars-repo', 'car-repo', 'repo', 'car-repo-and-repossessions', 'cars-repo-and-repossessions', 'car-repo-repossessions', 'cars-repo-repossessions', 'car-repossessions', 'repossessions'],
+  'cars-repo': ['car-repo', 'repo', 'car-repo-and-repossessions', 'cars-repo-and-repossessions', 'car-repo-repossessions', 'cars-repo-repossessions', 'car-repossessions', 'repossessions'],
 };
 
 
@@ -329,6 +333,7 @@ export const filterVideosBySubcategory = (
         'autos': ['autos-and-vehicles', 'autos-vehicles'],
         'autos-vehicles': ['autos-and-vehicles'],
         'autos-and-vehicles': ['autos-vehicles'],
+        'cars': ['autos-vehicles', 'autos-and-vehicles', 'autos', 'cars-and-vehicles'],
         'oceans': ['waters-and-oceans', 'waters-oceans'],
         'waters-and-oceans': ['oceans', 'waters-oceans'],
         'waters-oceans': ['oceans', 'waters-and-oceans'],
