@@ -21,6 +21,8 @@ import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
 import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
+import { subcategoryMappings } from '@/data/subcategoryMappings';
+import { sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
 import { AdSlot } from '@/components/ads/AdSlot';
 import {
   AlertDialog,
@@ -137,11 +139,7 @@ const Watch = () => {
           // Prefer cloud URL if available; otherwise fall back to local file/data URL
           const videoSource = uploadedVideo.cloudUrl || uploadedVideo.file || uploadedVideo.fileDataUrl;
           
-          const normalizedAssignment = canonicalizeCategoryAssignment(
-            uploadedVideo.category,
-            uploadedVideo.subcategory,
-            [uploadedVideo.title, uploadedVideo.description, ...(uploadedVideo.tags || [])]
-          );
+          const normalizedAssignment = canonicalizeCategoryAssignment(uploadedVideo.category, uploadedVideo.subcategory);
           setVideo({
             id: uploadedVideo.id,
             title: uploadedVideo.title,
@@ -231,11 +229,7 @@ const Watch = () => {
                 setYoutubeVideoId(null);
               }
               const videoSource = cloudVideo.cloud_url || cloudVideo.video_url;
-              const normalizedAssignment = canonicalizeCategoryAssignment(
-                cloudVideo.category,
-                cloudVideo.subcategory,
-                [cloudVideo.title, cloudVideo.description, ...(cloudVideo.tags || [])]
-              );
+              const normalizedAssignment = canonicalizeCategoryAssignment(cloudVideo.category, cloudVideo.subcategory);
               setVideo({
                 id: cloudVideo.local_id || cloudVideo.id,
                 title: cloudVideo.title,

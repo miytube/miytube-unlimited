@@ -253,8 +253,7 @@ const saveVideoToSupabase = async (video: {
   // Normalize category/subcategory into the same parent + child values used by category pages.
   const { category: normalizedCategory, subcategory: normalizedSubcategory } = canonicalizeCategoryAssignment(
     video.category,
-    video.subcategory,
-    [video.title, video.description, video.fileName, ...video.tags]
+    video.subcategory
   );
   // Check if a video with this local_id already exists to prevent duplicates from same session
   const { data: existingById } = await supabase
@@ -352,7 +351,7 @@ const saveVideoToSupabase = async (video: {
 };
 
   const mapSupabaseRow = (v: any): UploadedVideo => {
-  const normalized = canonicalizeCategoryAssignment(v.category, v.subcategory, [v.title, v.description, ...(v.tags || [])]);
+  const normalized = canonicalizeCategoryAssignment(v.category, v.subcategory);
   return {
     id: v.local_id || v.id,
     file: null,
@@ -482,8 +481,7 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
       : await currentQuery.eq('local_id', id).maybeSingle();
     const { category, subcategory } = canonicalizeCategoryAssignment(
       hasCategory ? updates.category as string : current.data?.category,
-      hasSubcategory ? updates.subcategory as string : current.data?.subcategory,
-      [updates.title as string, updates.description as string, ...((updates.tags as string[] | undefined) || [])]
+      hasSubcategory ? updates.subcategory as string : current.data?.subcategory
     );
     if (hasCategory) supabaseUpdates.category = category ?? null;
     if (hasSubcategory || (hasCategory && subcategory)) supabaseUpdates.subcategory = subcategory ?? null;
@@ -550,11 +548,7 @@ const normalizeVideoUpdates = (
 ): Partial<Omit<UploadedVideo, 'id' | 'file'>> => {
   const hasCategory = Object.prototype.hasOwnProperty.call(updates, 'category');
   const hasSubcategory = Object.prototype.hasOwnProperty.call(updates, 'subcategory');
-  const normalized = canonicalizeCategoryAssignment(
-    updates.category,
-    updates.subcategory,
-    [updates.title, updates.description, ...((updates.tags as string[] | undefined) || [])]
-  );
+  const normalized = canonicalizeCategoryAssignment(updates.category, updates.subcategory);
   return {
     ...updates,
     ...(hasCategory ? { category: normalized.category } : {}),
