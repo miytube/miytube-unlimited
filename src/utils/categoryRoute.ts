@@ -74,6 +74,10 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   if (cleanCategory === 'news' && cleanSubcategory === 'news-and-politics') {
     return '/news';
   }
+  if (cleanCategory === 'travel-events') {
+    const citiesRoutes = new Set(['cities', 'towns', 'cities-towns', 'travel-cities', 'travel-events-cities-towns', 'travel-cities-towns']);
+    if (cleanSubcategory && citiesRoutes.has(cleanSubcategory)) return '/travel-events/cities-towns';
+  }
   if (!cleanSubcategory) {
     const resolvedNoSub = resolveSidebarSlug(cleanCategory);
     if (resolvedNoSub) {
