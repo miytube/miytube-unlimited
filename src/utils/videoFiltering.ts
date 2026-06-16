@@ -138,7 +138,12 @@ const routeValueAliases: Record<string, string[]> = {
   // under autos-vehicles with various subcategory slug variants.
   'cars/repo': ['cars-repo', 'car-repo', 'repo', 'car-repo-and-repossessions', 'cars-repo-and-repossessions', 'car-repo-repossessions', 'cars-repo-repossessions', 'car-repossessions', 'repossessions'],
   'cars-repo': ['car-repo', 'repo', 'car-repo-and-repossessions', 'cars-repo-and-repossessions', 'car-repo-repossessions', 'cars-repo-repossessions', 'car-repossessions', 'repossessions'],
+  // MLB World Series — videos commonly stored as subcategory 'world-series'
+  // under category 'sports-mlb' or 'mlb-baseball'.
+  'sports/mlb/world-series': ['world-series', 'mlb-world-series', 'sports-mlb-world-series', 'mlb-baseball-world-series', 'world-series-mlb'],
+  'sports-mlb-world-series': ['world-series', 'mlb-world-series', 'mlb-baseball-world-series', 'world-series-mlb'],
 };
+
 
 
 /**
