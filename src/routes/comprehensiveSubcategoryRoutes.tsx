@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 import NFLFootballPage from "@/pages/categories/sports/NFLFootballPage";
 import AFLFootballPage from "@/pages/categories/sports/AFLFootballPage";
@@ -398,7 +398,7 @@ export const comprehensiveSubcategoryRoutes = [
   // Travel & Places routes
   <Route key="travel" path="/travel" element={<GenericSubcategoryPage />} />,
   <Route key="travel-beaches" path="/travel/beaches" element={<GenericSubcategoryPage />} />,
-  <Route key="travel-cities" path="/travel/cities" element={<GenericSubcategoryPage />} />,
+  <Route key="travel-cities" path="/travel/cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   <Route key="travel-foods" path="/travel/foods" element={<GenericSubcategoryPage />} />,
   <Route key="travel-hotels" path="/travel/hotels" element={<GenericSubcategoryPage />} />,
   <Route key="travel-luxury-hotels" path="/travel/luxury-hotels" element={<GenericSubcategoryPage />} />,
@@ -778,7 +778,7 @@ export const comprehensiveSubcategoryRoutes = [
   
   // Travel flat routes
   <Route key="beaches" path="/beaches" element={<GenericSubcategoryPage />} />,
-  <Route key="cities-towns" path="/cities-towns" element={<GenericSubcategoryPage />} />,
+  <Route key="cities-towns" path="/cities-towns" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   <Route key="hotels" path="/hotels" element={<GenericSubcategoryPage />} />,
   <Route key="night-clubs" path="/night-clubs" element={<GenericSubcategoryPage />} />,
   <Route key="street-food" path="/street-food" element={<GenericSubcategoryPage />} />,
