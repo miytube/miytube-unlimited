@@ -413,7 +413,7 @@ const Watch = () => {
         items={[
           { name: 'Home', path: '/' },
           ...(video.category
-            ? [{ name: video.category, path: categoryRoute }]
+            ? [{ name: prettyLabel(video.category)!, path: categoryRoute }]
             : []),
           { name: video.title, path: `/watch/${actualVideoId || video.id}` },
         ]}
@@ -430,7 +430,7 @@ const Watch = () => {
                     to={categoryRoute} 
                     className="hover:text-primary transition-colors"
                   >
-                    {video.category}
+                    {prettyLabel(video.category)}
                   </Link>
                 )}
                 {video.category && video.subcategory && <span className="mx-1">/</span>}
@@ -439,7 +439,7 @@ const Watch = () => {
                     to={subcategoryRoute} 
                     className="font-medium text-foreground hover:text-primary transition-colors"
                   >
-                    {video.subcategory}
+                    {prettyLabel(video.subcategory)}
                   </Link>
                 )}
               </div>
