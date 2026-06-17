@@ -40,7 +40,7 @@ export const entertainmentSubcategories: SubcategoryMapping = {
     }
   },
   'entertainment-hollywood': {
-    title: 'Hollywood & Celebrities',
+    title: 'Hollywood',
     description: 'Hollywood, celebrity culture, and entertainment news',
     icon: Star,
     parent: {
