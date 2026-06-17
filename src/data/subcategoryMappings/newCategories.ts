@@ -1712,7 +1712,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/comedy', name: 'Comedy' }
   },
   '/comedy/jokes': {
-    title: 'Comedy & Jokes',
+    title: 'Jokes',
     description: 'Jokes and comedy',
     icon: Smile,
     parent: { route: '/comedy', name: 'Comedy' }
