@@ -220,7 +220,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'cars-strange': { title: 'Cars (Strange, Weird)', description: 'Unusual cars', icon: Car },
   'cars-supercars': { title: 'Cars (Supercars, Hypercars)', description: 'Supercars and hypercars', icon: Car },
   'cars-accidents': { title: 'Cars Accidents (Idiot, Bad Drivers)', description: 'Car accident footage', icon: AlertTriangle },
-  'cars-trucks-motorcycles': { title: 'Cars, Trucks, Motorcycles', description: 'All vehicles', icon: Car },
+  'cars-trucks-motorcycles': { title: 'All Vehicles', description: 'Cars, trucks and motorcycles', icon: Car },
   'crashes': { title: 'Crashes (Cars, Trucks, Motorcycles)', description: 'Vehicle crashes', icon: AlertTriangle },
   
   // Cell Phone
