@@ -593,7 +593,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'workers': { title: 'Workers (Amazing, Great Things)', description: 'Amazing workers', icon: Wrench },
   
   // Workout
-  'workout': { title: 'Workout (Weightlifting, Fitness)', description: 'Workout and fitness', icon: Dumbbell },
+  'workout': { title: 'Workout', description: 'Workout content', icon: Dumbbell },
   'workout-female': { title: 'Workout Female', description: 'Women workouts', icon: Dumbbell },
   'workout-fitness': { title: 'Workout Fitness', description: 'Fitness workouts', icon: Dumbbell },
   'workout-male': { title: 'Workout Male', description: 'Men workouts', icon: Dumbbell },
