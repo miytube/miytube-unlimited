@@ -111,8 +111,8 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'animals-octopus': { title: 'Animals Octopus (Squid, Cephalopod)', description: 'Cephalopods', icon: Dog },
   
   // Animation & Film
-  'animation-film-military': { title: 'Animation & Film, Military', description: 'Military animation and films', icon: Film },
-  'animation-film-movies': { title: 'Animation, Film, Movies (Clips)', description: 'Movie clips and animation', icon: Clapperboard },
+  'animation-film-military': { title: 'Military Animation', description: 'Military animation and films', icon: Film },
+  'animation-film-movies': { title: 'Animation & Movie Clips', description: 'Movie clips and animation', icon: Clapperboard },
   
   // Film & Animation (nested routes)
   'film-animation-military': { title: 'Military Animation & Film', description: 'Military animation and film', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
