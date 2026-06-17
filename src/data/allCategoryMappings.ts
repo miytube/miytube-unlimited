@@ -70,7 +70,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'celebrities': { title: 'Celebrities', description: 'Celebrity news and content', icon: Star },
   
   // AI Categories
-  'ai-agents': { title: 'AI (AI Agents, Software Systems)', description: 'AI agents and systems', icon: Code },
+  'ai-agents': { title: 'AI Agents', description: 'AI agents and systems', icon: Code },
   'ai-agents-software': { title: 'AI Agents & Software', description: 'AI agents and software systems', icon: Code },
   'ai-chatgpt': { title: 'AI (ChatGPT, Gemini, Microsoft)', description: 'AI assistants and chatbots', icon: Terminal },
   'artificial-intelligence': { title: 'Artificial Intelligence (Bots)', description: 'AI and robotics content', icon: Cog },
