@@ -582,7 +582,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'weapons': { title: 'Weapons (Civilian Guns, Knives)', description: 'Weapons', icon: Target },
   
   // Weather & Disasters
-  'weather-disasters': { title: 'Weather & Disasters', description: 'Weather and disaster coverage', icon: Cloud },
+  'weather-disasters': { title: 'Severe Weather', description: 'Severe weather coverage', icon: Cloud },
   
   // Weightlifting
   'weightlifting-prank': { title: 'Weight Lifting (Prank)', description: 'Weightlifting pranks', icon: Weight },
