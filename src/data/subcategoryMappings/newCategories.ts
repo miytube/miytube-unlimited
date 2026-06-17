@@ -1512,7 +1512,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/entertainment', name: 'Entertainment' }
   },
   '/entertainment/hollywood': {
-    title: 'Hollywood & Celebrities',
+    title: 'Hollywood',
     description: 'Hollywood entertainment',
     icon: Star,
     parent: { route: '/entertainment', name: 'Entertainment' }
