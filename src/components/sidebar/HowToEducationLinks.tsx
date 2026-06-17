@@ -44,8 +44,14 @@ export const HowToEducationLinks: React.FC = () => {
         { id: 'education-geography', label: 'Kids Geography', path: '/education/geography' },
         { id: 'education-laws', label: 'Laws & Constitution', path: '/education/laws' },
         { id: 'education-medicine', label: 'Medicine & Medication', path: '/education/medicine' },
-        { id: 'education-medical', label: 'Medical (Disease)', path: '/education/medical' },
-        { id: 'education-medical-disease', label: 'Disease (process, treatments)', path: '/education/medical/disease' },
+        {
+          id: 'education-medical',
+          label: 'Medical (Disease)',
+          path: '/education/medical/disease',
+          subItems: [
+            { id: 'education-medical-disease', label: 'Disease (process, treatments)', path: '/education/medical/disease' },
+          ],
+        },
         { id: 'education-religion', label: 'Religion', path: '/education/religion' },
         { id: 'education-nursing', label: 'RN Nursing & LVN', path: '/education/nursing' },
         { id: 'education-learn', label: 'Learning Techniques', path: '/education/learn' }

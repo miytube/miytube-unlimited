@@ -96,7 +96,6 @@ export const subcategoryRoutes = [
   <Route key="education-geography" path="/education/geography" element={<GenericSubcategoryPage />} />,
   <Route key="education-laws" path="/education/laws" element={<GenericSubcategoryPage />} />,
   <Route key="education-medicine" path="/education/medicine" element={<GenericSubcategoryPage />} />,
-  <Route key="education-medical" path="/education/medical" element={<GenericSubcategoryPage />} />,
   <Route key="education-medical-disease" path="/education/medical/disease" element={<GenericSubcategoryPage />} />,
   <Route key="education-religion" path="/education/religion" element={<GenericSubcategoryPage />} />,
   <Route key="education-nursing" path="/education/nursing" element={<GenericSubcategoryPage />} />,

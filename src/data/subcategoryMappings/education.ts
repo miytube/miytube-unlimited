@@ -107,16 +107,10 @@ export const educationSubcategories: SubcategoryMapping = {
     icon: Gavel,
     parent: { route: '/education', name: 'Education' }
   },
-  'education-medical': {
-    title: 'Medical (Disease)',
-    description: 'Medical conditions, diseases and related education',
-    icon: Stethoscope,
-    parent: { route: '/education', name: 'Education' }
-  },
   'education-medical-disease': {
     title: 'Disease (process, treatments)',
     description: 'Disease process, progression and treatments',
     icon: HeartPulse,
-    parent: { route: '/education/medical', name: 'Medical (Disease)' }
+    parent: { route: '/education', name: 'Education' }
   },
 };
