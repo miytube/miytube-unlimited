@@ -67,7 +67,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   // Actors & Celebrities
   'actors-actress-bios': { title: 'Actors & Actress (Bios)', description: 'Actor and actress biographies', icon: Film },
   'actors-information': { title: 'Actors, Actresses Information', description: 'Information about actors and actresses', icon: Users },
-  'celebrities': { title: 'Celebrities (Actors, Actresses)', description: 'Celebrity news and content', icon: Star },
+  'celebrities': { title: 'Celebrities', description: 'Celebrity news and content', icon: Star },
   
   // AI Categories
   'ai-agents': { title: 'AI (AI Agents, Software Systems)', description: 'AI agents and systems', icon: Code },
