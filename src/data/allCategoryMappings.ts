@@ -449,7 +449,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'sports': { title: 'Sports', description: 'Sports coverage', icon: Trophy },
   'college-sports': { title: 'College Sports', description: 'NCAA college sports content', icon: Trophy },
   'sports-arenas': { title: 'Sports (Arenas, Stadiums)', description: 'Sports venues', icon: Building2 },
-  'sports-basketball-football': { title: 'Sports (Basketball, Football)', description: 'Basketball and football', icon: Trophy },
+  'sports-basketball-football': { title: 'Basketball & Football', description: 'Basketball and football', icon: Trophy },
   'sports-car-racing': { title: 'Sports (Car Racing, WRC)', description: 'Car racing events', icon: Car },
   'sports-comedy': { title: 'Sports (Comedy, Bloopers)', description: 'Sports comedy and bloopers', icon: Laugh },
   'sports-fishing': { title: 'Sports (Fishing)', description: 'Fishing', icon: Anchor },
