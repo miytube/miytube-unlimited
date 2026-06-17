@@ -482,7 +482,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/courts', name: 'Courts' }
   },
   '/courts/crime': {
-    title: 'Courts & Police Crime',
+    title: 'Courts',
     description: 'Court cases and police crime',
     icon: Gavel,
     parent: { route: '/courts', name: 'Courts' }
