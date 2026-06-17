@@ -15,6 +15,8 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'biblical-history', label: 'Biblical History', path: '/education/biblical-history' },
         { id: 'bible-quotes', label: 'Bible Quotes', path: '/education/bible-quotes' },
         { id: 'medicine', label: 'Medicine & Medication', path: '/education/medicine' },
+        { id: 'medical', label: 'Medical (Disease)', path: '/education/medical' },
+        { id: 'medical-disease', label: 'Disease (process, treatments)', path: '/education/medical/disease' },
         { id: 'religion', label: 'Religion', path: '/education/religion' },
         { id: 'nursing', label: 'Nursing & Healthcare', path: '/education/nursing' },
         { id: 'learn', label: 'Learning Techniques', path: '/education/learn' },
