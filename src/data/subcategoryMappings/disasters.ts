@@ -17,9 +17,9 @@ export const disastersSubcategories: SubcategoryMapping = {
     parent: { route: '/disasters', name: 'Disasters' }
   },
   'disasters-fires': {
-    title: 'Fires & Explosions',
+    title: 'Fires',
     description: 'Fire disasters, prevention and rescue operations',
-    icon: Zap,
+    icon: Flame,
     parent: { route: '/disasters', name: 'Disasters' }
   },
   'disasters-hurricanes': {
