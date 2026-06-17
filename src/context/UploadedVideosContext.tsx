@@ -575,10 +575,11 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
     // That means RLS blocked the write. Look up the owner so we can give a
     // useful error and also confirm whether the current user is the admin or
     // owner that the policy expects.
-    const ownerQuery = supabase.from('uploaded_videos').select('user_id');
-    const owner = isUUID
-      ? await ownerQuery.eq('id', id).maybeSingle()
-      : await ownerQuery.eq('local_id', id).maybeSingle();
+    const owner = matched.data
+      ? { data: matched.data }
+      : isUUID
+        ? await supabase.from('uploaded_videos').select('user_id').eq('id', id).maybeSingle()
+        : await supabase.from('uploaded_videos').select('user_id').eq('local_id', id).maybeSingle();
     const ownerId = (owner.data as { user_id?: string } | null)?.user_id;
     const currentUid = session.user.id;
     const isOwner = !!ownerId && ownerId === currentUid;
