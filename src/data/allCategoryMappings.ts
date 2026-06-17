@@ -173,7 +173,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'dating-breakups': { title: 'Dating (Breakups)', description: 'Breakup content', icon: Heart },
   'dating-flirting': { title: 'Dating (Flirting, Crush)', description: 'Flirting tips', icon: Heart },
   'dating-relationship': { title: 'Dating (Relationship)', description: 'Relationship advice', icon: Heart },
-  'dating-single': { title: 'Dating, Single', description: 'Single life content', icon: Heart },
+  'dating-single': { title: 'Single Life', description: 'Single life content', icon: Heart },
   'divorce': { title: 'Divorce', description: 'Divorce content', icon: Heart },
   
   // Auditions
