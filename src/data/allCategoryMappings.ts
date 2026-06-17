@@ -60,7 +60,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'comedy-funny-pranks': { title: 'Funny Pranks Videos', description: 'Funny videos and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-roasts': { title: 'Comedy (Roasts, Jokes, Events)', description: 'Comedy roasts and events', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-standup': { title: 'Comedy (Stand Up, Jokes)', description: 'Stand-up comedy performances', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
-  'comedy-jokes-pranks': { title: 'Comedy & Jokes, Pranks', description: 'Jokes and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-jokes-pranks': { title: 'Jokes & Pranks', description: 'Jokes and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-sitcom': { title: 'Comedy Show (Sitcom)', description: 'Sitcom clips and episodes', icon: Tv, parent: { route: '/comedy', name: 'Comedy' } },
   'bloopers': { title: 'Bloopers (Screwup, Blunder)', description: 'Funny bloopers and mistakes', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   
