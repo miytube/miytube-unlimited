@@ -370,7 +370,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'property': { title: 'Property (Land, Buildings)', description: 'Property and real estate', icon: Building },
   
   // Protesters
-  'protesters': { title: 'Protesters (Demonstrators)', description: 'Protests and demonstrations', icon: Megaphone },
+  'protesters': { title: 'Protesters', description: 'Protests and demonstrations', icon: Megaphone },
   
   // Quotes & Poems
   'quotes-poems': { title: 'Quotes, Poems, Statements', description: 'Inspirational quotes and poetry', icon: Quote },
