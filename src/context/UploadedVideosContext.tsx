@@ -542,10 +542,27 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
 
   if (Object.keys(supabaseUpdates).length === 0) return 0;
 
-  const query = supabase.from('uploaded_videos').update(supabaseUpdates);
-  const { error, data } = isUUID
-    ? await query.eq('id', id).select('id, title, user_id')
-    : await query.eq('local_id', id).select('id, title, user_id');
+  const matchQuery = supabase
+    .from('uploaded_videos')
+    .select('id, local_id, cloud_url, title, user_id')
+  const matched = isUUID
+    ? await matchQuery.eq('id', id).maybeSingle()
+    : await matchQuery.eq('local_id', id).maybeSingle();
+
+  if (matched.error) {
+    console.error('Error finding video before update:', matched.error, 'id:', id);
+    throw new Error(matched.error.message || 'Failed to find video before saving');
+  }
+
+  const variantPrefix = getVideoVariantQueryPrefix(matched.data || { local_id: id });
+  let query = supabase.from('uploaded_videos').update(supabaseUpdates);
+  if (variantPrefix) {
+    query = query.like(variantPrefix.column, `${variantPrefix.prefix}.%`);
+  } else {
+    query = isUUID ? query.eq('id', id) : query.eq('local_id', id);
+  }
+
+  const { error, data } = await query.select('id, local_id, cloud_url, title, user_id');
 
   if (error) {
     console.error('Error updating video in Supabase:', error, 'updates:', supabaseUpdates, 'id:', id);
