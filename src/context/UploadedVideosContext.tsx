@@ -1143,9 +1143,15 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   ) => {
     const normalizedUpdates = normalizeVideoUpdates(updates);
     const prevList = uploadedVideos;
+    const targetVideo = uploadedVideos.find(video => video.id === id);
+    const targetGroupKey = getVideoVariantGroupKey(targetVideo || { id });
+    const shouldUpdateVideo = (video: UploadedVideo) => {
+      if (video.id === id) return true;
+      return !!targetGroupKey && getVideoVariantGroupKey(video) === targetGroupKey;
+    };
     setUploadedVideos(prev =>
       prev.map(video =>
-        video.id === id ? { ...video, ...normalizedUpdates } : video
+        shouldUpdateVideo(video) ? { ...video, ...normalizedUpdates } : video
       )
     );
     try {
