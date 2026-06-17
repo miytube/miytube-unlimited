@@ -260,9 +260,9 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Disasters
   'disasters-avalanches': { title: 'Disasters (Avalanches, Snow)', description: 'Avalanche disasters', icon: Mountain },
-  'disasters-earthquakes': { title: 'Disasters (Earthquakes, Floods)', description: 'Earthquakes and floods', icon: AlertTriangle },
-  'disasters-fires': { title: 'Disasters (Fires, Explosion)', description: 'Fire disasters', icon: Flame },
-  'disasters-hurricanes': { title: 'Disasters (Hurricanes, Tornado)', description: 'Storm disasters', icon: Wind },
+  'disasters-earthquakes': { title: 'Earthquakes', description: 'Earthquakes', icon: AlertTriangle },
+  'disasters-fires': { title: 'Fires', description: 'Fire disasters', icon: Flame },
+  'disasters-hurricanes': { title: 'Hurricanes', description: 'Hurricanes', icon: Wind },
   'disasters-volcano': { title: 'Disasters (Volcano)', description: 'Volcanic disasters', icon: Flame },
   
   // Documents & Documentaries
