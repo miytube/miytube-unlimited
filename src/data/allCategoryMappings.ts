@@ -317,7 +317,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'music-soundtracks': { title: 'Music (Soundtracks)', description: 'Movie and show soundtracks', icon: Film },
   'music-parody': { title: 'Music (Parody, Satire, Witty)', description: 'Parody and satirical music', icon: Laugh },
   'music-pop': { title: 'Music (Pop, Pop Rock, Traditional Pop)', description: 'Pop, pop rock and traditional pop music', icon: Music },
-  'music-soft-rock': { title: 'Pop & Soft Rock', description: 'Pop and soft rock music', icon: Music },
+  'music-soft-rock': { title: 'Soft Rock', description: 'Soft rock music', icon: Music },
   'music-rap-reggaeton': { title: 'Music (Rap, Reggaeton)', description: 'Rap and reggaeton music', icon: Headphones },
   'music-relaxation': { title: 'Music (Relaxation, Meditation)', description: 'Relaxation and meditation music', icon: Volume2 },
   'music-salsa': { title: 'Music (Salsa)', description: 'Salsa music and dance', icon: Music },
