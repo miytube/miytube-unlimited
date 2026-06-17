@@ -383,6 +383,57 @@ const deduplicateRows = (rows: any[]): any[] => {
   });
 };
 
+const TRANSCODED_VARIANT_RE = /^(.+)\.(?:144p|240p|360p|480p|720p|1080p|2160p|mob|mobile)(\.[^./?#]+)?$/i;
+
+const getTranscodedVariantInfo = (value?: string | null): { prefix: string; key: string } | undefined => {
+  const clean = value?.toString().trim().split(/[?#]/)[0];
+  if (!clean) return undefined;
+  const match = clean.match(TRANSCODED_VARIANT_RE);
+  if (!match) return undefined;
+  return {
+    prefix: match[1],
+    key: `${match[1]}${match[2] || ''}`.toLowerCase(),
+  };
+};
+
+const getVideoVariantGroupKey = (video: {
+  id?: string | null;
+  local_id?: string | null;
+  cloudUrl?: string | null;
+  cloud_url?: string | null;
+  fileName?: string | null;
+  file_name?: string | null;
+  title?: string | null;
+}): string | undefined => {
+  const values = [
+    video.local_id,
+    video.id,
+    video.cloudUrl,
+    video.cloud_url,
+    video.fileName,
+    video.file_name,
+    video.title,
+  ];
+  for (const value of values) {
+    const info = getTranscodedVariantInfo(value);
+    if (info) return info.key;
+  }
+  return undefined;
+};
+
+const getVideoVariantQueryPrefix = (video: {
+  local_id?: string | null;
+  id?: string | null;
+  cloud_url?: string | null;
+  cloudUrl?: string | null;
+}): { column: 'local_id' | 'cloud_url'; prefix: string } | undefined => {
+  const localInfo = getTranscodedVariantInfo(video.local_id || video.id);
+  if (localInfo) return { column: 'local_id', prefix: localInfo.prefix };
+  const cloudInfo = getTranscodedVariantInfo(video.cloud_url || video.cloudUrl);
+  if (cloudInfo) return { column: 'cloud_url', prefix: cloudInfo.prefix };
+  return undefined;
+};
+
 // Load only the first page for the global app shell. Pulling the full video
 // library into React state on every refresh can freeze the UI on large sites.
 const loadVideosFromSupabase = async (): Promise<{
@@ -491,10 +542,27 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
 
   if (Object.keys(supabaseUpdates).length === 0) return 0;
 
-  const query = supabase.from('uploaded_videos').update(supabaseUpdates);
-  const { error, data } = isUUID
-    ? await query.eq('id', id).select('id, title, user_id')
-    : await query.eq('local_id', id).select('id, title, user_id');
+  const matchQuery = supabase
+    .from('uploaded_videos')
+    .select('id, local_id, cloud_url, title, user_id')
+  const matched = isUUID
+    ? await matchQuery.eq('id', id).maybeSingle()
+    : await matchQuery.eq('local_id', id).maybeSingle();
+
+  if (matched.error) {
+    console.error('Error finding video before update:', matched.error, 'id:', id);
+    throw new Error(matched.error.message || 'Failed to find video before saving');
+  }
+
+  const variantPrefix = getVideoVariantQueryPrefix(matched.data || { local_id: id });
+  let query = supabase.from('uploaded_videos').update(supabaseUpdates);
+  if (variantPrefix) {
+    query = query.like(variantPrefix.column, `${variantPrefix.prefix}.%`);
+  } else {
+    query = isUUID ? query.eq('id', id) : query.eq('local_id', id);
+  }
+
+  const { error, data } = await query.select('id, local_id, cloud_url, title, user_id');
 
   if (error) {
     console.error('Error updating video in Supabase:', error, 'updates:', supabaseUpdates, 'id:', id);
@@ -507,10 +575,11 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
     // That means RLS blocked the write. Look up the owner so we can give a
     // useful error and also confirm whether the current user is the admin or
     // owner that the policy expects.
-    const ownerQuery = supabase.from('uploaded_videos').select('user_id');
-    const owner = isUUID
-      ? await ownerQuery.eq('id', id).maybeSingle()
-      : await ownerQuery.eq('local_id', id).maybeSingle();
+    const owner = matched.data
+      ? { data: matched.data }
+      : isUUID
+        ? await supabase.from('uploaded_videos').select('user_id').eq('id', id).maybeSingle()
+        : await supabase.from('uploaded_videos').select('user_id').eq('local_id', id).maybeSingle();
     const ownerId = (owner.data as { user_id?: string } | null)?.user_id;
     const currentUid = session.user.id;
     const isOwner = !!ownerId && ownerId === currentUid;
@@ -1074,9 +1143,15 @@ export const UploadedVideosProvider: React.FC<UploadedVideosProviderProps> = ({ 
   ) => {
     const normalizedUpdates = normalizeVideoUpdates(updates);
     const prevList = uploadedVideos;
+    const targetVideo = uploadedVideos.find(video => video.id === id);
+    const targetGroupKey = getVideoVariantGroupKey(targetVideo || { id });
+    const shouldUpdateVideo = (video: UploadedVideo) => {
+      if (video.id === id) return true;
+      return !!targetGroupKey && getVideoVariantGroupKey(video) === targetGroupKey;
+    };
     setUploadedVideos(prev =>
       prev.map(video =>
-        video.id === id ? { ...video, ...normalizedUpdates } : video
+        shouldUpdateVideo(video) ? { ...video, ...normalizedUpdates } : video
       )
     );
     try {
