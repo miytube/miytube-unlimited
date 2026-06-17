@@ -17,7 +17,7 @@ export const relationshipsSubcategories: SubcategoryMapping = {
     parent: { route: '/relationships', name: 'Relationships' }
   },
   'relationships-flirting': {
-    title: 'Attraction & Flirting',
+    title: 'Flirting',
     description: 'Flirting techniques, signs and romantic attraction',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
