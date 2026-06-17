@@ -241,7 +241,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'court-trials': { title: 'Courts Trials, Court Procedures', description: 'Courts trials', icon: Gavel },
   'courts-indictment': { title: 'Courts (Indictment, Charges)', description: 'Legal charges', icon: Gavel },
   'courts-sentencing': { title: 'Courts (Sentencing, Judgement)', description: 'Court sentencing', icon: Scale },
-  'courts-police-crime': { title: 'Courts & Police, Crime', description: 'Crime and courts', icon: Shield },
+  'courts-police-crime': { title: 'Courts', description: 'Courts content', icon: Shield },
   'courts-supreme': { title: 'Courts, Supreme Courts, District', description: 'Supreme court content', icon: Landmark },
   
   // Crime
