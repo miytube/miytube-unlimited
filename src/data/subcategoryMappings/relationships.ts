@@ -35,7 +35,7 @@ export const relationshipsSubcategories: SubcategoryMapping = {
     parent: { route: '/relationships', name: 'Relationships' }
   },
   'relationships-single': {
-    title: 'Dating & Single',
+    title: 'Single Life',
     description: 'Content for singles, dating life and solo journey',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
