@@ -57,7 +57,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'comedy': { title: 'Comedy', description: 'Laugh with our comedy videos', icon: Laugh },
   'comedy-snl': { title: 'Saturday Night Live', description: 'SNL sketches, performers and history', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedians-interviews': { title: 'Comedians (Interviews, Work)', description: 'Comedian interviews and behind the scenes', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
-  'comedy-funny-pranks': { title: 'Comedy (Funny, Pranks) Videos', description: 'Funny videos and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-funny-pranks': { title: 'Funny Pranks Videos', description: 'Funny videos and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-roasts': { title: 'Comedy (Roasts, Jokes, Events)', description: 'Comedy roasts and events', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-standup': { title: 'Comedy (Stand Up, Jokes)', description: 'Stand-up comedy performances', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-jokes-pranks': { title: 'Comedy & Jokes, Pranks', description: 'Jokes and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
