@@ -383,6 +383,57 @@ const deduplicateRows = (rows: any[]): any[] => {
   });
 };
 
+const TRANSCODED_VARIANT_RE = /^(.+)\.(?:144p|240p|360p|480p|720p|1080p|2160p|mob|mobile)(\.[^./?#]+)?$/i;
+
+const getTranscodedVariantInfo = (value?: string | null): { prefix: string; key: string } | undefined => {
+  const clean = value?.toString().trim().split(/[?#]/)[0];
+  if (!clean) return undefined;
+  const match = clean.match(TRANSCODED_VARIANT_RE);
+  if (!match) return undefined;
+  return {
+    prefix: match[1],
+    key: `${match[1]}${match[2] || ''}`.toLowerCase(),
+  };
+};
+
+const getVideoVariantGroupKey = (video: {
+  id?: string | null;
+  local_id?: string | null;
+  cloudUrl?: string | null;
+  cloud_url?: string | null;
+  fileName?: string | null;
+  file_name?: string | null;
+  title?: string | null;
+}): string | undefined => {
+  const values = [
+    video.local_id,
+    video.id,
+    video.cloudUrl,
+    video.cloud_url,
+    video.fileName,
+    video.file_name,
+    video.title,
+  ];
+  for (const value of values) {
+    const info = getTranscodedVariantInfo(value);
+    if (info) return info.key;
+  }
+  return undefined;
+};
+
+const getVideoVariantQueryPrefix = (video: {
+  local_id?: string | null;
+  id?: string | null;
+  cloud_url?: string | null;
+  cloudUrl?: string | null;
+}): { column: 'local_id' | 'cloud_url'; prefix: string } | undefined => {
+  const localInfo = getTranscodedVariantInfo(video.local_id || video.id);
+  if (localInfo) return { column: 'local_id', prefix: localInfo.prefix };
+  const cloudInfo = getTranscodedVariantInfo(video.cloud_url || video.cloudUrl);
+  if (cloudInfo) return { column: 'cloud_url', prefix: cloudInfo.prefix };
+  return undefined;
+};
+
 // Load only the first page for the global app shell. Pulling the full video
 // library into React state on every refresh can freeze the UI on large sites.
 const loadVideosFromSupabase = async (): Promise<{
