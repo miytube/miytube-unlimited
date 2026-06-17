@@ -23,7 +23,7 @@ export const disastersSubcategories: SubcategoryMapping = {
     parent: { route: '/disasters', name: 'Disasters' }
   },
   'disasters-hurricanes': {
-    title: 'Hurricanes & Tornadoes',
+    title: 'Hurricanes',
     description: 'Extreme weather events, storms and aftermath',
     icon: Zap,
     parent: { route: '/disasters', name: 'Disasters' }
