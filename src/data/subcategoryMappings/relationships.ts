@@ -17,25 +17,25 @@ export const relationshipsSubcategories: SubcategoryMapping = {
     parent: { route: '/relationships', name: 'Relationships' }
   },
   'relationships-flirting': {
-    title: 'Attraction & Flirting',
+    title: 'Flirting',
     description: 'Flirting techniques, signs and romantic attraction',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
   },
   'relationships-attraction': {
-    title: 'Attraction & Flirting',
+    title: 'Attraction',
     description: 'Attraction, flirting techniques and romantic interest',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
   },
   'relationships-singles': {
-    title: 'Dating & Single',
+    title: 'Single Life',
     description: 'Content for single people and solo lifestyle',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
   },
   'relationships-single': {
-    title: 'Dating & Single',
+    title: 'Single Life',
     description: 'Content for singles, dating life and solo journey',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }

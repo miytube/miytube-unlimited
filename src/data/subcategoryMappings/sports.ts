@@ -201,7 +201,7 @@ export const sportsSubcategories: SubcategoryMapping = {
 
   // College Sports
   'sports-college-swimming': {
-    title: 'College Swimming & Hockey',
+    title: 'College Swimming',
     description: 'College swimming, hockey, and other sports',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }

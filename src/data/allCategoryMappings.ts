@@ -57,20 +57,20 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'comedy': { title: 'Comedy', description: 'Laugh with our comedy videos', icon: Laugh },
   'comedy-snl': { title: 'Saturday Night Live', description: 'SNL sketches, performers and history', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedians-interviews': { title: 'Comedians (Interviews, Work)', description: 'Comedian interviews and behind the scenes', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
-  'comedy-funny-pranks': { title: 'Comedy (Funny, Pranks) Videos', description: 'Funny videos and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-funny-pranks': { title: 'Funny Pranks Videos', description: 'Funny videos and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-roasts': { title: 'Comedy (Roasts, Jokes, Events)', description: 'Comedy roasts and events', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-standup': { title: 'Comedy (Stand Up, Jokes)', description: 'Stand-up comedy performances', icon: Mic, parent: { route: '/comedy', name: 'Comedy' } },
-  'comedy-jokes-pranks': { title: 'Comedy & Jokes, Pranks', description: 'Jokes and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
+  'comedy-jokes-pranks': { title: 'Jokes & Pranks', description: 'Jokes and pranks', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   'comedy-sitcom': { title: 'Comedy Show (Sitcom)', description: 'Sitcom clips and episodes', icon: Tv, parent: { route: '/comedy', name: 'Comedy' } },
   'bloopers': { title: 'Bloopers (Screwup, Blunder)', description: 'Funny bloopers and mistakes', icon: Laugh, parent: { route: '/comedy', name: 'Comedy' } },
   
   // Actors & Celebrities
   'actors-actress-bios': { title: 'Actors & Actress (Bios)', description: 'Actor and actress biographies', icon: Film },
   'actors-information': { title: 'Actors, Actresses Information', description: 'Information about actors and actresses', icon: Users },
-  'celebrities': { title: 'Celebrities (Actors, Actresses)', description: 'Celebrity news and content', icon: Star },
+  'celebrities': { title: 'Celebrities', description: 'Celebrity news and content', icon: Star },
   
   // AI Categories
-  'ai-agents': { title: 'AI (AI Agents, Software Systems)', description: 'AI agents and systems', icon: Code },
+  'ai-agents': { title: 'AI Agents', description: 'AI agents and systems', icon: Code },
   'ai-agents-software': { title: 'AI Agents & Software', description: 'AI agents and software systems', icon: Code },
   'ai-chatgpt': { title: 'AI (ChatGPT, Gemini, Microsoft)', description: 'AI assistants and chatbots', icon: Terminal },
   'artificial-intelligence': { title: 'Artificial Intelligence (Bots)', description: 'AI and robotics content', icon: Cog },
@@ -103,16 +103,16 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'animals-birds': { title: 'Animals (Birds, Raptors, Fowl)', description: 'Birds and fowl', icon: Dog },
   'animals-crabs': { title: 'Animals (Crabs, Lobsters, Crustaceans)', description: 'Crustaceans', icon: Dog },
   'animals-fish': { title: 'Animals (Fishes, Fish)', description: 'Fish and aquatic life', icon: Dog },
-  'animals-mammals': { title: 'Animals (Mammals, Birds, Reptiles)', description: 'Various animals', icon: Dog },
-  'animals-orcas': { title: 'Animals (Mammals, Orcas, Dolphins)', description: 'Marine mammals', icon: Dog },
+  'animals-mammals': { title: 'Mammals', description: 'Mammals', icon: Dog },
+  'animals-orcas': { title: 'Orcas & Dolphins', description: 'Marine mammals', icon: Dog },
   'animals-jellyfish': { title: 'Animals (Man of War, Siphonophore)', description: 'Jellyfish and related', icon: Dog },
   'animals-reptiles': { title: 'Animals (Reptiles, Snakes)', description: 'Reptiles and snakes', icon: Dog },
   'animals-rodents': { title: 'Animals (Rodents, Rats, Beavers)', description: 'Rodents', icon: Dog },
   'animals-octopus': { title: 'Animals Octopus (Squid, Cephalopod)', description: 'Cephalopods', icon: Dog },
   
   // Animation & Film
-  'animation-film-military': { title: 'Animation & Film, Military', description: 'Military animation and films', icon: Film },
-  'animation-film-movies': { title: 'Animation, Film, Movies (Clips)', description: 'Movie clips and animation', icon: Clapperboard },
+  'animation-film-military': { title: 'Military Animation', description: 'Military animation and films', icon: Film },
+  'animation-film-movies': { title: 'Animation & Movie Clips', description: 'Movie clips and animation', icon: Clapperboard },
   
   // Film & Animation (nested routes)
   'film-animation-military': { title: 'Military Animation & Film', description: 'Military animation and film', icon: Clapperboard, parent: { route: '/film-animation', name: 'Film & Animation' } },
@@ -169,11 +169,11 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Dating & Attraction
   'attraction-dating': { title: 'Attraction (Dating)', description: 'Dating and attraction content', icon: Heart },
-  'dating': { title: 'Dating (Dating)', description: 'Dating content', icon: Heart },
+  'dating': { title: 'Dating', description: 'Dating content', icon: Heart },
   'dating-breakups': { title: 'Dating (Breakups)', description: 'Breakup content', icon: Heart },
   'dating-flirting': { title: 'Dating (Flirting, Crush)', description: 'Flirting tips', icon: Heart },
   'dating-relationship': { title: 'Dating (Relationship)', description: 'Relationship advice', icon: Heart },
-  'dating-single': { title: 'Dating, Single', description: 'Single life content', icon: Heart },
+  'dating-single': { title: 'Single Life', description: 'Single life content', icon: Heart },
   'divorce': { title: 'Divorce', description: 'Divorce content', icon: Heart },
   
   // Auditions
@@ -220,7 +220,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'cars-strange': { title: 'Cars (Strange, Weird)', description: 'Unusual cars', icon: Car },
   'cars-supercars': { title: 'Cars (Supercars, Hypercars)', description: 'Supercars and hypercars', icon: Car },
   'cars-accidents': { title: 'Cars Accidents (Idiot, Bad Drivers)', description: 'Car accident footage', icon: AlertTriangle },
-  'cars-trucks-motorcycles': { title: 'Cars, Trucks, Motorcycles', description: 'All vehicles', icon: Car },
+  'cars-trucks-motorcycles': { title: 'All Vehicles', description: 'Cars, trucks and motorcycles', icon: Car },
   'crashes': { title: 'Crashes (Cars, Trucks, Motorcycles)', description: 'Vehicle crashes', icon: AlertTriangle },
   
   // Cell Phone
@@ -241,7 +241,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'court-trials': { title: 'Courts Trials, Court Procedures', description: 'Courts trials', icon: Gavel },
   'courts-indictment': { title: 'Courts (Indictment, Charges)', description: 'Legal charges', icon: Gavel },
   'courts-sentencing': { title: 'Courts (Sentencing, Judgement)', description: 'Court sentencing', icon: Scale },
-  'courts-police-crime': { title: 'Courts & Police, Crime', description: 'Crime and courts', icon: Shield },
+  'courts-police-crime': { title: 'Courts', description: 'Courts content', icon: Shield },
   'courts-supreme': { title: 'Courts, Supreme Courts, District', description: 'Supreme court content', icon: Landmark },
   
   // Crime
@@ -260,9 +260,9 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   
   // Disasters
   'disasters-avalanches': { title: 'Disasters (Avalanches, Snow)', description: 'Avalanche disasters', icon: Mountain },
-  'disasters-earthquakes': { title: 'Disasters (Earthquakes, Floods)', description: 'Earthquakes and floods', icon: AlertTriangle },
-  'disasters-fires': { title: 'Disasters (Fires, Explosion)', description: 'Fire disasters', icon: Flame },
-  'disasters-hurricanes': { title: 'Disasters (Hurricanes, Tornado)', description: 'Storm disasters', icon: Wind },
+  'disasters-earthquakes': { title: 'Earthquakes', description: 'Earthquakes', icon: AlertTriangle },
+  'disasters-fires': { title: 'Fires', description: 'Fire disasters', icon: Flame },
+  'disasters-hurricanes': { title: 'Hurricanes', description: 'Hurricanes', icon: Wind },
   'disasters-volcano': { title: 'Disasters (Volcano)', description: 'Volcanic disasters', icon: Flame },
   
   // Documents & Documentaries
@@ -310,14 +310,14 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'music-funk-rock': { title: 'Music (Funk & Hard Rock)', description: 'Funk and hard rock music', icon: Guitar },
   'music-alternative': { title: 'Music (Alternative, Others)', description: 'Alternative music and more', icon: Music },
   'music-rock-soul-pop': { title: 'Music (Rock, Soul, Pop)', description: 'Rock, soul, pop and more', icon: Music },
-  'music-rock': { title: 'R&B, Pop, Soul, Rock', description: 'R&B, pop, soul and rock music', icon: Music },
+  'music-rock': { title: 'Soul & Rock', description: 'Soul and rock music', icon: Music },
   'music-funk-hiphop-rap': { title: 'Music (Funk, Hip/Hop, Rap)', description: 'Funk, hip hop and rap music', icon: Headphones },
   'music-history': { title: 'Music (History, Musical Work)', description: 'Music history and musical works', icon: BookOpen },
   'music-heavy-metal': { title: 'Music (Heavy Metal)', description: 'Heavy metal music', icon: Guitar },
   'music-soundtracks': { title: 'Music (Soundtracks)', description: 'Movie and show soundtracks', icon: Film },
   'music-parody': { title: 'Music (Parody, Satire, Witty)', description: 'Parody and satirical music', icon: Laugh },
   'music-pop': { title: 'Music (Pop, Pop Rock, Traditional Pop)', description: 'Pop, pop rock and traditional pop music', icon: Music },
-  'music-soft-rock': { title: 'Pop & Soft Rock', description: 'Pop and soft rock music', icon: Music },
+  'music-soft-rock': { title: 'Soft Rock', description: 'Soft rock music', icon: Music },
   'music-rap-reggaeton': { title: 'Music (Rap, Reggaeton)', description: 'Rap and reggaeton music', icon: Headphones },
   'music-relaxation': { title: 'Music (Relaxation, Meditation)', description: 'Relaxation and meditation music', icon: Volume2 },
   'music-salsa': { title: 'Music (Salsa)', description: 'Salsa music and dance', icon: Music },
@@ -449,9 +449,9 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'sports': { title: 'Sports', description: 'Sports coverage', icon: Trophy },
   'college-sports': { title: 'College Sports', description: 'NCAA college sports content', icon: Trophy },
   'sports-arenas': { title: 'Sports (Arenas, Stadiums)', description: 'Sports venues', icon: Building2 },
-  'sports-basketball-football': { title: 'Sports (Basketball, Football)', description: 'Basketball and football', icon: Trophy },
+  'sports-basketball-football': { title: 'Basketball & Football', description: 'Basketball and football', icon: Trophy },
   'sports-car-racing': { title: 'Sports (Car Racing, WRC)', description: 'Car racing events', icon: Car },
-  'sports-comedy': { title: 'Sports (Comedy, Bloopers)', description: 'Sports comedy and bloopers', icon: Laugh },
+  'sports-comedy': { title: 'Sports Comedy', description: 'Sports comedy and bloopers', icon: Laugh },
   'sports-fishing': { title: 'Sports (Fishing)', description: 'Fishing', icon: Anchor },
   'sports-interviews': { title: 'Sports (Interviews, Athletes)', description: 'Athlete interviews', icon: Mic },
   'sports-kickboxing': { title: 'Sports (Kickboxing)', description: 'Kickboxing fights', icon: Trophy },
@@ -463,7 +463,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'sports-race-car': { title: 'Sports (Race Car Drivers)', description: 'Race car drivers', icon: Car },
   'sports-cycling': { title: 'Sports (Road, Mountain, Bicycle)', description: 'Cycling sports', icon: Bike },
   'sports-rugby-cricket': { title: 'Sports (Rugby, Cricket, Lacrosse)', description: 'Rugby, cricket and lacrosse', icon: Trophy },
-  'sports-soccer': { title: 'Sports (Soccer, American Football)', description: 'Soccer and football', icon: Trophy },
+  'sports-soccer': { title: 'Soccer', description: 'Soccer', icon: Trophy },
   'sports-water': { title: 'Sports (Surfing, Kayaking)', description: 'Water sports', icon: Waves },
   'sports-tennis-men-finals': { title: 'Sports (Tennis Men Final Champions)', description: 'Men tennis finals', icon: Trophy },
   'sports-tennis-men': { title: 'Sports (Tennis Men)', description: 'Men tennis', icon: Trophy },
@@ -582,7 +582,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'weapons': { title: 'Weapons (Civilian Guns, Knives)', description: 'Weapons', icon: Target },
   
   // Weather & Disasters
-  'weather-disasters': { title: 'Weather & Disasters', description: 'Weather and disaster coverage', icon: Cloud },
+  'weather-disasters': { title: 'Severe Weather', description: 'Severe weather coverage', icon: Cloud },
   
   // Weightlifting
   'weightlifting-prank': { title: 'Weight Lifting (Prank)', description: 'Weightlifting pranks', icon: Weight },
@@ -593,7 +593,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'workers': { title: 'Workers (Amazing, Great Things)', description: 'Amazing workers', icon: Wrench },
   
   // Workout
-  'workout': { title: 'Workout (Weightlifting, Fitness)', description: 'Workout and fitness', icon: Dumbbell },
+  'workout': { title: 'Workout', description: 'Workout content', icon: Dumbbell },
   'workout-female': { title: 'Workout Female', description: 'Women workouts', icon: Dumbbell },
   'workout-fitness': { title: 'Workout Fitness', description: 'Fitness workouts', icon: Dumbbell },
   'workout-male': { title: 'Workout Male', description: 'Men workouts', icon: Dumbbell },

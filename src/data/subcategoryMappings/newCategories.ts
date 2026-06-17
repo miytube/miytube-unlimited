@@ -482,7 +482,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/courts', name: 'Courts' }
   },
   '/courts/crime': {
-    title: 'Courts & Police Crime',
+    title: 'Courts',
     description: 'Court cases and police crime',
     icon: Gavel,
     parent: { route: '/courts', name: 'Courts' }
@@ -702,13 +702,13 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/relationships', name: 'Relationships' }
   },
   '/relationships/attraction': {
-    title: 'Attraction & Flirting',
+    title: 'Attraction',
     description: 'Dating attraction and flirting',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
   },
   '/relationships/single': {
-    title: 'Dating & Single',
+    title: 'Single Life',
     description: 'Single life and dating',
     icon: Heart,
     parent: { route: '/relationships', name: 'Relationships' }
@@ -1512,7 +1512,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/entertainment', name: 'Entertainment' }
   },
   '/entertainment/hollywood': {
-    title: 'Hollywood & Celebrities',
+    title: 'Hollywood',
     description: 'Hollywood entertainment',
     icon: Star,
     parent: { route: '/entertainment', name: 'Entertainment' }
@@ -1712,7 +1712,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/comedy', name: 'Comedy' }
   },
   '/comedy/jokes': {
-    title: 'Comedy & Jokes',
+    title: 'Jokes',
     description: 'Jokes and comedy',
     icon: Smile,
     parent: { route: '/comedy', name: 'Comedy' }
