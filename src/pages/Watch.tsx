@@ -504,7 +504,10 @@ const Watch = () => {
 
           {/* Right Sidebar */}
           <div className="w-80 hidden lg:block space-y-4">
-            {/* Ad slot removed — relying on AdSense Auto Ads */}
+            {/* Vertical AdSense unit (miytube-new-4) — moved to top of sidebar so it's visible above the fold */}
+            <div>
+              <AdSlot slot="8953833343" format="vertical" responsive label="Sponsored" />
+            </div>
 
             <h3 className="text-sm font-semibold">Up Next</h3>
             
@@ -592,10 +595,8 @@ const Watch = () => {
               </div>
             )}
 
-            {/* Vertical AdSense unit (miytube-new-4) — Watch page sidebar */}
-            <div className="my-4">
-              <AdSlot slot="8953833343" format="vertical" responsive label="Sponsored" />
-            </div>
+
+
 
             {/* AI Recommendations */}
             {aiRecommendations.length > 0 && (
