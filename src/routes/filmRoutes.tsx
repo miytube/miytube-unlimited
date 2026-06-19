@@ -47,6 +47,7 @@ export const filmRoutes = [
   <Route key="film-animation-fantasy-drama" path="/film-animation/fantasy-drama" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-adventure" path="/film-animation/adventure" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-cartoons" path="/film-animation/cartoons" element={<GenericSubcategoryPage />} />,
+  <Route key="film-animation-cartoons-comedy-drama-family" path="/film-animation/cartoons/comedy-drama-family" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-comedy-crime" path="/film-animation/comedy-crime" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-comedy" path="/film-animation/comedy" element={<GenericSubcategoryPage />} />,
   <Route key="film-animation-drama" path="/film-animation/drama" element={<GenericSubcategoryPage />} />,
