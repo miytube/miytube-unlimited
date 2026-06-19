@@ -88,22 +88,20 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
     opt => opt.name.toLowerCase() === inputValue.toLowerCase()
   );
 
-  // Only suggest typo correction when lengths are close and edit distance is small
+  // Only suggest typo correction when lengths are close and edit distance is small.
+  // Exclude substring matches — "boats" inside "Tugboats" is not a typo.
   const closeMatch = !exactMatch && inputValue.trim().length > 3
     ? options.find(opt => {
         const a = opt.name.toLowerCase().trim();
         const b = inputValue.toLowerCase().trim();
-        if (Math.abs(a.length - b.length) > 3) return false;
-        return getSimilarity(a, b) > 0.8;
+        if (a.includes(b) || b.includes(a)) return false;
+        if (Math.abs(a.length - b.length) > 2) return false;
+        const dist = levenshtein(a, b);
+        return dist > 0 && dist <= 2;
       })
     : null;
 
   const handleAddCustom = () => {
-    if (closeMatch) {
-      handleSelect(closeMatch.id);
-      return;
-    }
-
     if (inputValue.trim() && !exactMatch) {
       const customId = inputValue.trim().toLowerCase().replace(/\s+/g, '-');
       onValueChange(customId);
