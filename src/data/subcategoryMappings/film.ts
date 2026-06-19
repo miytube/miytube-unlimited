@@ -365,6 +365,24 @@ export const filmSubcategories: SubcategoryMapping = {
       name: 'Film & Animation'
     }
   },
+  'film-animation-cartoons-comedy-drama-family': {
+    title: 'Cartoons (Comedy, Drama, Family)',
+    description: 'Cartoons blending comedy, drama, and family themes',
+    icon: Laugh,
+    parent: {
+      route: '/film-animation/cartoons',
+      name: 'Cartoons'
+    }
+  },
+  '/film-animation/cartoons/comedy-drama-family': {
+    title: 'Cartoons (Comedy, Drama, Family)',
+    description: 'Cartoons blending comedy, drama, and family themes',
+    icon: Laugh,
+    parent: {
+      route: '/film-animation/cartoons',
+      name: 'Cartoons'
+    }
+  },
   'film-animation-comedy-crime': {
     title: 'Film Animation (Comedy, Crime)',
     description: 'Comedy and crime animated films',
