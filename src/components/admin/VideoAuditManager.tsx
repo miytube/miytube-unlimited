@@ -37,6 +37,7 @@ interface VideoRow {
   file_name: string | null;
   cloud_url: string | null;
   video_url: string | null;
+  thumbnail_url: string | null;
   is_cloud_stored: boolean | null;
   is_youtube_embed: boolean | null;
   file_size: number | null;
