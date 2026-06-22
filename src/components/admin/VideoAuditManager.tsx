@@ -14,7 +14,19 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Copy, ExternalLink, Database, Cloud, AlertTriangle, UploadCloud, Loader2 } from 'lucide-react';
+import { Search, Copy, ExternalLink, Database, Cloud, AlertTriangle, UploadCloud, Loader2, Tag } from 'lucide-react';
+
+// Old S3 keys have the form videos/{id}/{timestamp}/{rand}/{filename} —
+// multiple "/" segments under videos/. New keys are videos/{title}-{6id}.{ext}.
+const needsRekey = (cloudUrl: string | null) => {
+  if (!cloudUrl) return false;
+  if (!cloudUrl.includes('amazonaws.com') && !cloudUrl.includes('.s3.')) return false;
+  const m = cloudUrl.match(/amazonaws\.com\/(.+?)(?:\?|$)/);
+  if (!m) return false;
+  const key = decodeURIComponent(m[1]);
+  // new format has exactly one slash (videos/foo-abc123.mp4)
+  return (key.match(/\//g) || []).length > 1;
+};
 
 interface VideoRow {
   id: string;
