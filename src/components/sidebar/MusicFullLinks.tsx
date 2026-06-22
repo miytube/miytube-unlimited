@@ -80,6 +80,15 @@ export const MusicFullLinks: React.FC = () => {
         { id: 'music-instrument-players', label: 'Instrument Players', path: '/music/instruments/players' }
       ]
     },
+    {
+      id: 'music-producers',
+      icon: Radio,
+      label: 'Music Producers',
+      path: '/c/music-producers',
+      subItems: [
+        { id: 'music-producers-promoters', label: 'Music Producers (producers, promoters)', path: '/c/music-producers' }
+      ]
+    },
   ];
 
   return <SidebarCategoryLinks title="MUSIC" links={musicFullLinks} />;
