@@ -219,7 +219,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <AviationTransportLinks />
               </CollapsibleGroup>
 
+              <Separator className="my-3" />
+
+              {/* User-created categories */}
+              <CollapsibleGroup title="More Categories" defaultOpen={true}>
+                <CustomCategoriesLinks />
+              </CollapsibleGroup>
+
               <SidebarFooter />
+
             </>
           )}
         </div>
