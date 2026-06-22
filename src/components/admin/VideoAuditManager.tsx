@@ -28,6 +28,9 @@ const needsRekey = (cloudUrl: string | null) => {
   return (key.match(/\//g) || []).length > 1;
 };
 
+const thumbOnSupabase = (url: string | null | undefined) =>
+  !!url && url.includes('supabase.co/storage');
+
 interface VideoRow {
   id: string;
   title: string;
