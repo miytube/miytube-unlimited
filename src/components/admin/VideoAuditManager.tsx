@@ -304,6 +304,45 @@ export const VideoAuditManager = () => {
     }
   };
 
+  const handleMigrateThumbnailsBulk = async () => {
+    const ids = filtered.filter((v) => thumbOnSupabase(v.thumbnail_url)).map((v) => v.id);
+    if (ids.length === 0) {
+      toast({ title: 'Nothing to migrate', description: 'No Supabase-hosted thumbnails on this page.' });
+      return;
+    }
+    setBulkThumbs(true);
+    try {
+      const chunks: string[][] = [];
+      for (let i = 0; i < ids.length; i += 10) chunks.push(ids.slice(i, i + 10));
+      let migrated = 0, failed = 0, skipped = 0;
+      for (const chunk of chunks) {
+        const { data, error } = await supabase.functions.invoke('migrate-thumbnail-to-s3', {
+          body: { videoIds: chunk, table: 'uploaded_videos', deleteFromSupabase: deleteAfter },
+        });
+        if (error) throw new Error(error.message);
+        for (const r of (data?.results ?? []) as Array<{ status: string }>) {
+          if (r.status === 'migrated') migrated++;
+          else if (r.status === 'failed') failed++;
+          else skipped++;
+        }
+      }
+      toast({
+        title: 'Thumbnail migration complete',
+        description: `${migrated} migrated, ${skipped} skipped, ${failed} failed.`,
+        variant: failed > 0 ? 'destructive' : 'default',
+      });
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Thumbnail migration failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setBulkThumbs(false);
+    }
+  };
+
   const toggleRow = (id: string) => {
     setSelected((prev) => {
       const n = new Set(prev);
