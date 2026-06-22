@@ -389,6 +389,20 @@ export const VideoAuditManager = () => {
             <span className="text-sm text-muted-foreground">{selected.size} selected</span>
             <Button
               size="sm"
+              variant="outline"
+              onClick={handleRekeyBulk}
+              disabled={bulkRekeying}
+              title="Rename all old-format S3 keys on this page to title-based names"
+            >
+              {bulkRekeying ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <Tag className="h-4 w-4 mr-1" />
+              )}
+              Rename old S3 keys to titles
+            </Button>
+            <Button
+              size="sm"
               onClick={handleMigrateBulk}
               disabled={selected.size === 0 || bulkRunning}
             >
