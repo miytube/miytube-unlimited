@@ -83,6 +83,7 @@ export const VideoAuditManager = () => {
   const [rekeying, setRekeying] = useState<Set<string>>(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
   const [bulkRekeying, setBulkRekeying] = useState(false);
+  const [bulkThumbs, setBulkThumbs] = useState(false);
   const [deleteAfter, setDeleteAfter] = useState(true);
 
   const fetchVideos = async () => {
