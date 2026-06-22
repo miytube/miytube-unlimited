@@ -107,7 +107,8 @@ const Index = () => {
   return (
     <Layout>
       <OrganizationStructuredData />
-      <div className="py-4 w-full">
+      <div className="py-4 w-full flex gap-6">
+        <div className="flex-1 min-w-0">
         {/* Page Header */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground mb-2">
