@@ -223,6 +223,82 @@ export const VideoAuditManager = () => {
     }
   };
 
+  const rekey = async (ids: string[]) => {
+    if (ids.length === 0) return;
+    const { data, error } = await supabase.functions.invoke('rekey-s3-video', {
+      body: { videoIds: ids, table: 'uploaded_videos' },
+    });
+    if (error) throw new Error(error.message);
+    return data as { results: Array<{ id: string; status: string; message?: string; newUrl?: string; newKey?: string }> };
+  };
+
+  const handleRekeyOne = async (id: string) => {
+    setRekeying((prev) => new Set(prev).add(id));
+    try {
+      const data = await rekey([id]);
+      const r = data?.results?.[0];
+      if (!r) throw new Error('No response');
+      if (r.status === 'rekeyed') {
+        toast({ title: 'Renamed on S3', description: r.newKey });
+      } else {
+        toast({
+          title: r.status === 'skipped' ? 'Skipped' : 'Failed',
+          description: r.message || r.status,
+          variant: r.status === 'failed' ? 'destructive' : 'default',
+        });
+      }
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Rename failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setRekeying((prev) => {
+        const n = new Set(prev);
+        n.delete(id);
+        return n;
+      });
+    }
+  };
+
+  const handleRekeyBulk = async () => {
+    const ids = filtered.filter((v) => needsRekey(v.cloud_url)).map((v) => v.id);
+    if (ids.length === 0) {
+      toast({ title: 'Nothing to rename', description: 'No old-format S3 keys on this page.' });
+      return;
+    }
+    setBulkRekeying(true);
+    try {
+      const chunks: string[][] = [];
+      for (let i = 0; i < ids.length; i += 5) chunks.push(ids.slice(i, i + 5));
+      let rekeyed = 0, failed = 0, skipped = 0;
+      for (const chunk of chunks) {
+        const data = await rekey(chunk);
+        for (const r of data?.results ?? []) {
+          if (r.status === 'rekeyed') rekeyed++;
+          else if (r.status === 'failed') failed++;
+          else skipped++;
+        }
+      }
+      toast({
+        title: 'Bulk rename complete',
+        description: `${rekeyed} renamed, ${skipped} skipped, ${failed} failed. Old S3 objects remain — delete in AWS console.`,
+        variant: failed > 0 ? 'destructive' : 'default',
+      });
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Bulk rename failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setBulkRekeying(false);
+    }
+  };
+
   const toggleRow = (id: string) => {
     setSelected((prev) => {
       const n = new Set(prev);
