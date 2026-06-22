@@ -49,10 +49,12 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
 
   return (
     <Layout>
-      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
+      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4 flex gap-6">
+        <div className="flex-1 min-w-0">
         <p className="text-sm text-muted-foreground mb-2">
           <span className="font-semibold text-primary">MiyTube</span> / {category}
         </p>
+        
         
         <div className="flex items-center gap-3 mb-8">
           <IconComponent className="h-8 w-8 text-primary" />
