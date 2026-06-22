@@ -112,9 +112,16 @@ Deno.serve(async (req) => {
         const contentType = dl.headers.get("content-type") || "video/mp4";
         const blob = await dl.blob();
 
-        // Build S3 object key
-        const baseName = sanitize(r.file_name || r.title || `video-${r.id}.mp4`);
-        const objectKey = `videos/migrated/${r.id}-${Date.now()}-${baseName}`;
+        // Build S3 object key — use the video TITLE as the filename so it's
+        // easy to find in S3. Fall back to original filename, then id. We add
+        // a short 6-char id suffix only to prevent collisions between videos
+        // that happen to share the same title.
+        const rawTitle = (r.title && String(r.title).trim()) || r.file_name || `video-${r.id}`;
+        const extMatch = (r.file_name || sourceUrl || "").match(/\.([a-zA-Z0-9]{2,5})(?:\?|$)/);
+        const ext = extMatch ? extMatch[1].toLowerCase() : "mp4";
+        const titleBase = sanitize(rawTitle).replace(/\.[a-zA-Z0-9]{2,5}$/, "");
+        const shortId = String(r.id).replace(/-/g, "").slice(0, 6);
+        const objectKey = `videos/${titleBase}-${shortId}.${ext}`;
 
         // Sign S3 upload
         const signResp = await fetch(
