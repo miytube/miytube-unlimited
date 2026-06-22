@@ -447,6 +447,20 @@ export const VideoAuditManager = () => {
             </Button>
             <Button
               size="sm"
+              variant="outline"
+              onClick={handleMigrateThumbnailsBulk}
+              disabled={bulkThumbs}
+              title="Migrate all Supabase-hosted thumbnails on this page to S3"
+            >
+              {bulkThumbs ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <UploadCloud className="h-4 w-4 mr-1" />
+              )}
+              Migrate thumbnails to S3
+            </Button>
+            <Button
+              size="sm"
               onClick={handleMigrateBulk}
               disabled={selected.size === 0 || bulkRunning}
             >
