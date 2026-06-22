@@ -107,7 +107,8 @@ const Index = () => {
   return (
     <Layout>
       <OrganizationStructuredData />
-      <div className="py-4 w-full">
+      <div className="py-4 w-full flex gap-6">
+        <div className="flex-1 min-w-0">
         {/* Page Header */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground mb-2">
@@ -221,6 +222,22 @@ const Index = () => {
             </Link>
           </div>
         )}
+        </div>
+
+        {/* Right rail Skyscraper (300x600) — desktop only */}
+        <aside className="hidden xl:block w-[300px] flex-shrink-0">
+          <div className="sticky top-20">
+            <AdSlot
+              slot="8953833343"
+              format="vertical"
+              responsive={false}
+              label="Sponsored"
+              className="!rounded-none"
+              style={{ width: 300, height: 600 }}
+              insStyle={{ display: 'inline-block', width: 300, height: 600 }}
+            />
+          </div>
+        </aside>
       </div>
     </Layout>
   );

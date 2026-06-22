@@ -504,9 +504,17 @@ const Watch = () => {
 
           {/* Right Sidebar */}
           <div className="w-80 hidden lg:block space-y-4">
-            {/* Vertical AdSense unit (miytube-new-4) — moved to top of sidebar so it's visible above the fold */}
-            <div>
-              <AdSlot slot="8953833343" format="vertical" responsive label="Sponsored" />
+            {/* Skyscraper (300x600) AdSense unit — top of right rail */}
+            <div className="flex justify-center">
+              <AdSlot
+                slot="8953833343"
+                format="vertical"
+                responsive={false}
+                label="Sponsored"
+                className="!rounded-none"
+                style={{ width: 300, height: 600 }}
+                insStyle={{ display: 'inline-block', width: 300, height: 600 }}
+              />
             </div>
 
             <h3 className="text-sm font-semibold">Up Next</h3>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { CSSProperties, useEffect, useRef } from 'react';
 import { useIsLikelyChina } from '@/hooks/useIsLikelyChina';
 import { HouseAd } from './HouseAd';
 
@@ -21,6 +21,10 @@ interface AdSlotProps {
   responsive?: boolean;
   /** Visual label so admins can spot empty slots in dev. */
   label?: string;
+  /** Style applied to the wrapper div (use for fixed sizes like leaderboard/skyscraper). */
+  style?: CSSProperties;
+  /** Style applied directly to the <ins> element. */
+  insStyle?: CSSProperties;
 }
 
 const PUBLISHER_ID = 'ca-pub-3759206856597376';
@@ -32,6 +36,8 @@ export const AdSlot = ({
   className = '',
   responsive = true,
   label,
+  style,
+  insStyle,
 }: AdSlotProps) => {
   const insRef = useRef<HTMLModElement | null>(null);
   const pushedRef = useRef(false);
@@ -59,11 +65,12 @@ export const AdSlot = ({
     <div
       className={`w-full overflow-hidden rounded-md ${className}`}
       aria-label={label || 'Advertisement'}
+      style={style}
     >
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'block' }}
+        style={{ display: 'block', ...insStyle }}
         data-ad-client={PUBLISHER_ID}
         data-ad-slot={slot}
         data-ad-format={format}

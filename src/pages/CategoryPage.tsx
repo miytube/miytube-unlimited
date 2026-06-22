@@ -49,10 +49,12 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
 
   return (
     <Layout>
-      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
+      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4 flex gap-6">
+        <div className="flex-1 min-w-0">
         <p className="text-sm text-muted-foreground mb-2">
           <span className="font-semibold text-primary">MiyTube</span> / {category}
         </p>
+        
         
         <div className="flex items-center gap-3 mb-8">
           <IconComponent className="h-8 w-8 text-primary" />
@@ -127,6 +129,22 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
             </Link>
           </div>
         </div>
+        </div>
+
+        {/* Right rail Skyscraper (300x600) — desktop only */}
+        <aside className="hidden xl:block w-[300px] flex-shrink-0">
+          <div className="sticky top-20">
+            <AdSlot
+              slot="7860538679"
+              format="vertical"
+              responsive={false}
+              label="Sponsored"
+              className="!rounded-none"
+              style={{ width: 300, height: 600 }}
+              insStyle={{ display: 'inline-block', width: 300, height: 600 }}
+            />
+          </div>
+        </aside>
       </div>
     </Layout>
   );
