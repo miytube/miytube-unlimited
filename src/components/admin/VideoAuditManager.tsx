@@ -448,7 +448,9 @@ export const VideoAuditManager = () => {
                   const backend = detectBackend(v.cloud_url);
                   const key = extractStorageKey(v.cloud_url);
                   const canMigrate = backend === 'supabase';
+                  const canRekey = needsRekey(v.cloud_url);
                   const isMigrating = migrating.has(v.id);
+                  const isRekeying = rekeying.has(v.id);
                   return (
                     <TableRow key={v.id}>
                       <TableCell>
