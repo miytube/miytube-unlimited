@@ -506,6 +506,21 @@ export const VideoAuditManager = () => {
                               )}
                             </Button>
                           )}
+                          {canRekey && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleRekeyOne(v.id)}
+                              disabled={isRekeying}
+                              title="Rename this S3 object to a title-based key"
+                            >
+                              {isRekeying ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <Tag className="h-4 w-4" />
+                              )}
+                            </Button>
+                          )}
                           {v.cloud_url && (
                             <>
                               <Button
