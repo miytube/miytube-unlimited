@@ -76,7 +76,9 @@ export const VideoAuditManager = () => {
   const [backendFilter, setBackendFilter] = useState<'all' | 'supabase' | 'aws_s3' | 'missing'>('all');
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [migrating, setMigrating] = useState<Set<string>>(new Set());
+  const [rekeying, setRekeying] = useState<Set<string>>(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
+  const [bulkRekeying, setBulkRekeying] = useState(false);
   const [deleteAfter, setDeleteAfter] = useState(true);
 
   const fetchVideos = async () => {
