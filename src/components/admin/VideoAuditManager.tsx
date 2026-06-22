@@ -94,7 +94,7 @@ export const VideoAuditManager = () => {
       let query = supabase
         .from('uploaded_videos')
         .select(
-          'id, title, file_name, cloud_url, video_url, is_cloud_stored, is_youtube_embed, file_size, created_at',
+          'id, title, file_name, cloud_url, video_url, thumbnail_url, is_cloud_stored, is_youtube_embed, file_size, created_at',
           { count: 'exact' }
         )
         .order('created_at', { ascending: false })
