@@ -1,13 +1,14 @@
 /**
- * Safety net: removes any AdSense anchor (sticky bottom) or vignette
- * (full-page interstitial) overlays that Google injects despite the
- * dashboard toggle being off.
+ * Safety net: removes any AdSense anchor (sticky bottom/top) or vignette
+ * (full-page interstitial) overlays that Google injects despite dashboard
+ * settings.
  *
  * Detection strategy: walk every fixed-position element on the page and
  * remove it if it contains a Google ad iframe (googleads.g.doubleclick.net /
  * googlesyndication / tpc.googlesyndication / id starting "google_ads_iframe"
- * or "aswift_") AND covers a large portion of the viewport or is anchored
- * to the bottom edge.
+ * or "aswift_") AND either covers a large portion of the viewport, is anchored
+ * to an edge, or looks like a small floating chip (e.g. the "Movies"
+ * related-search ad).
  */
 
 const GOOGLE_AD_IFRAME_SELECTOR = [
@@ -38,9 +39,18 @@ const isOverlayCandidate = (el: HTMLElement): boolean => {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  // Vignette ONLY: covers most of the viewport. Anchor ads (top/bottom
-  // sticky strips) are intentionally left alone.
-  return rect.width >= vw * 0.6 && rect.height >= vh * 0.6;
+  // Vignette: covers most of the viewport.
+  if (rect.width >= vw * 0.6 && rect.height >= vh * 0.6) return true;
+
+  // Anchor / related-search chip: anchored to top/bottom edge and fairly wide,
+  // or a small fixed element very close to the bottom right.
+  const anchoredToBottom = rect.bottom >= vh - 20;
+  const anchoredToTop = rect.top <= 20;
+  const anchoredToEdge = anchoredToBottom || anchoredToTop;
+  const fullWidthish = rect.width >= vw * 0.45;
+  const floatingChip = anchoredToBottom && rect.width <= 360 && rect.height <= 80;
+
+  return anchoredToEdge && (fullWidthish || floatingChip);
 };
 
 const cleanup = () => {

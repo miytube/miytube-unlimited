@@ -9,7 +9,6 @@ import { UploadProgressIndicator } from "./components/upload/UploadProgressIndic
 import { AuthProvider } from "./hooks/useAuth";
 import AppRoutes from "./routes";
 import { VignetteAd } from "./components/advertising/VignetteAd";
-import { AutoAdsRefresh } from "./components/ads/AutoAdsRefresh";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +23,6 @@ const App = () => (
             <UploadProgressIndicator />
             <BrowserRouter>
               <VignetteAd />
-              <AutoAdsRefresh />
               <AppRoutes />
             </BrowserRouter>
           </UploadedVideosProvider>
