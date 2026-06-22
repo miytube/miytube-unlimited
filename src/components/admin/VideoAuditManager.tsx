@@ -14,7 +14,19 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Copy, ExternalLink, Database, Cloud, AlertTriangle, UploadCloud, Loader2 } from 'lucide-react';
+import { Search, Copy, ExternalLink, Database, Cloud, AlertTriangle, UploadCloud, Loader2, Tag } from 'lucide-react';
+
+// Old S3 keys have the form videos/{id}/{timestamp}/{rand}/{filename} —
+// multiple "/" segments under videos/. New keys are videos/{title}-{6id}.{ext}.
+const needsRekey = (cloudUrl: string | null) => {
+  if (!cloudUrl) return false;
+  if (!cloudUrl.includes('amazonaws.com') && !cloudUrl.includes('.s3.')) return false;
+  const m = cloudUrl.match(/amazonaws\.com\/(.+?)(?:\?|$)/);
+  if (!m) return false;
+  const key = decodeURIComponent(m[1]);
+  // new format has exactly one slash (videos/foo-abc123.mp4)
+  return (key.match(/\//g) || []).length > 1;
+};
 
 interface VideoRow {
   id: string;
@@ -64,7 +76,9 @@ export const VideoAuditManager = () => {
   const [backendFilter, setBackendFilter] = useState<'all' | 'supabase' | 'aws_s3' | 'missing'>('all');
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [migrating, setMigrating] = useState<Set<string>>(new Set());
+  const [rekeying, setRekeying] = useState<Set<string>>(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
+  const [bulkRekeying, setBulkRekeying] = useState(false);
   const [deleteAfter, setDeleteAfter] = useState(true);
 
   const fetchVideos = async () => {
@@ -209,6 +223,82 @@ export const VideoAuditManager = () => {
     }
   };
 
+  const rekey = async (ids: string[]) => {
+    if (ids.length === 0) return;
+    const { data, error } = await supabase.functions.invoke('rekey-s3-video', {
+      body: { videoIds: ids, table: 'uploaded_videos' },
+    });
+    if (error) throw new Error(error.message);
+    return data as { results: Array<{ id: string; status: string; message?: string; newUrl?: string; newKey?: string }> };
+  };
+
+  const handleRekeyOne = async (id: string) => {
+    setRekeying((prev) => new Set(prev).add(id));
+    try {
+      const data = await rekey([id]);
+      const r = data?.results?.[0];
+      if (!r) throw new Error('No response');
+      if (r.status === 'rekeyed') {
+        toast({ title: 'Renamed on S3', description: r.newKey });
+      } else {
+        toast({
+          title: r.status === 'skipped' ? 'Skipped' : 'Failed',
+          description: r.message || r.status,
+          variant: r.status === 'failed' ? 'destructive' : 'default',
+        });
+      }
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Rename failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setRekeying((prev) => {
+        const n = new Set(prev);
+        n.delete(id);
+        return n;
+      });
+    }
+  };
+
+  const handleRekeyBulk = async () => {
+    const ids = filtered.filter((v) => needsRekey(v.cloud_url)).map((v) => v.id);
+    if (ids.length === 0) {
+      toast({ title: 'Nothing to rename', description: 'No old-format S3 keys on this page.' });
+      return;
+    }
+    setBulkRekeying(true);
+    try {
+      const chunks: string[][] = [];
+      for (let i = 0; i < ids.length; i += 5) chunks.push(ids.slice(i, i + 5));
+      let rekeyed = 0, failed = 0, skipped = 0;
+      for (const chunk of chunks) {
+        const data = await rekey(chunk);
+        for (const r of data?.results ?? []) {
+          if (r.status === 'rekeyed') rekeyed++;
+          else if (r.status === 'failed') failed++;
+          else skipped++;
+        }
+      }
+      toast({
+        title: 'Bulk rename complete',
+        description: `${rekeyed} renamed, ${skipped} skipped, ${failed} failed. Old S3 objects remain — delete in AWS console.`,
+        variant: failed > 0 ? 'destructive' : 'default',
+      });
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Bulk rename failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setBulkRekeying(false);
+    }
+  };
+
   const toggleRow = (id: string) => {
     setSelected((prev) => {
       const n = new Set(prev);
@@ -299,6 +389,20 @@ export const VideoAuditManager = () => {
             <span className="text-sm text-muted-foreground">{selected.size} selected</span>
             <Button
               size="sm"
+              variant="outline"
+              onClick={handleRekeyBulk}
+              disabled={bulkRekeying}
+              title="Rename all old-format S3 keys on this page to title-based names"
+            >
+              {bulkRekeying ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <Tag className="h-4 w-4 mr-1" />
+              )}
+              Rename old S3 keys to titles
+            </Button>
+            <Button
+              size="sm"
               onClick={handleMigrateBulk}
               disabled={selected.size === 0 || bulkRunning}
             >
@@ -344,7 +448,9 @@ export const VideoAuditManager = () => {
                   const backend = detectBackend(v.cloud_url);
                   const key = extractStorageKey(v.cloud_url);
                   const canMigrate = backend === 'supabase';
+                  const canRekey = needsRekey(v.cloud_url);
                   const isMigrating = migrating.has(v.id);
+                  const isRekeying = rekeying.has(v.id);
                   return (
                     <TableRow key={v.id}>
                       <TableCell>
@@ -397,6 +503,21 @@ export const VideoAuditManager = () => {
                                 <Loader2 className="h-4 w-4 animate-spin" />
                               ) : (
                                 <UploadCloud className="h-4 w-4" />
+                              )}
+                            </Button>
+                          )}
+                          {canRekey && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleRekeyOne(v.id)}
+                              disabled={isRekeying}
+                              title="Rename this S3 object to a title-based key"
+                            >
+                              {isRekeying ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <Tag className="h-4 w-4" />
                               )}
                             </Button>
                           )}
