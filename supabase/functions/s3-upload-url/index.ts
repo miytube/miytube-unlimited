@@ -61,9 +61,12 @@ Deno.serve(async (req) => {
 
     const safeName = sanitizeObjectFileName(fileName);
     const folder = kind === "thumbnail" ? "thumbnails" : "videos";
-    const objectKey = `${folder}/${userId}/${Date.now()}-${Math.random()
-      .toString(36)
-      .slice(2, 9)}-${safeName}`;
+    const extMatch = safeName.match(/\.([a-zA-Z0-9]{2,5})$/);
+    const ext = extMatch ? extMatch[1].toLowerCase() : kind === "thumbnail" ? "jpg" : "mp4";
+    const base = safeName.replace(/\.[a-zA-Z0-9]{2,5}$/, "") || "upload";
+    const shortId = crypto.randomUUID().replace(/-/g, "").slice(0, 6);
+    // Title-based key (easy to find in S3), short suffix prevents collisions
+    const objectKey = `${folder}/${base}-${shortId}.${ext}`;
 
     const signResp = await fetch(
       `${API_URL}/api/v1/sign_storage_url?provider=aws_s3&mode=write`,

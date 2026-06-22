@@ -28,12 +28,16 @@ const needsRekey = (cloudUrl: string | null) => {
   return (key.match(/\//g) || []).length > 1;
 };
 
+const thumbOnSupabase = (url: string | null | undefined) =>
+  !!url && url.includes('supabase.co/storage');
+
 interface VideoRow {
   id: string;
   title: string;
   file_name: string | null;
   cloud_url: string | null;
   video_url: string | null;
+  thumbnail_url: string | null;
   is_cloud_stored: boolean | null;
   is_youtube_embed: boolean | null;
   file_size: number | null;
@@ -79,6 +83,7 @@ export const VideoAuditManager = () => {
   const [rekeying, setRekeying] = useState<Set<string>>(new Set());
   const [bulkRunning, setBulkRunning] = useState(false);
   const [bulkRekeying, setBulkRekeying] = useState(false);
+  const [bulkThumbs, setBulkThumbs] = useState(false);
   const [deleteAfter, setDeleteAfter] = useState(true);
 
   const fetchVideos = async () => {
@@ -90,7 +95,7 @@ export const VideoAuditManager = () => {
       let query = supabase
         .from('uploaded_videos')
         .select(
-          'id, title, file_name, cloud_url, video_url, is_cloud_stored, is_youtube_embed, file_size, created_at',
+          'id, title, file_name, cloud_url, video_url, thumbnail_url, is_cloud_stored, is_youtube_embed, file_size, created_at',
           { count: 'exact' }
         )
         .order('created_at', { ascending: false })
@@ -299,6 +304,45 @@ export const VideoAuditManager = () => {
     }
   };
 
+  const handleMigrateThumbnailsBulk = async () => {
+    const ids = filtered.filter((v) => thumbOnSupabase(v.thumbnail_url)).map((v) => v.id);
+    if (ids.length === 0) {
+      toast({ title: 'Nothing to migrate', description: 'No Supabase-hosted thumbnails on this page.' });
+      return;
+    }
+    setBulkThumbs(true);
+    try {
+      const chunks: string[][] = [];
+      for (let i = 0; i < ids.length; i += 10) chunks.push(ids.slice(i, i + 10));
+      let migrated = 0, failed = 0, skipped = 0;
+      for (const chunk of chunks) {
+        const { data, error } = await supabase.functions.invoke('migrate-thumbnail-to-s3', {
+          body: { videoIds: chunk, table: 'uploaded_videos', deleteFromSupabase: deleteAfter },
+        });
+        if (error) throw new Error(error.message);
+        for (const r of (data?.results ?? []) as Array<{ status: string }>) {
+          if (r.status === 'migrated') migrated++;
+          else if (r.status === 'failed') failed++;
+          else skipped++;
+        }
+      }
+      toast({
+        title: 'Thumbnail migration complete',
+        description: `${migrated} migrated, ${skipped} skipped, ${failed} failed.`,
+        variant: failed > 0 ? 'destructive' : 'default',
+      });
+      await fetchVideos();
+    } catch (err) {
+      toast({
+        title: 'Thumbnail migration failed',
+        description: err instanceof Error ? err.message : 'Unknown',
+        variant: 'destructive',
+      });
+    } finally {
+      setBulkThumbs(false);
+    }
+  };
+
   const toggleRow = (id: string) => {
     setSelected((prev) => {
       const n = new Set(prev);
@@ -400,6 +444,20 @@ export const VideoAuditManager = () => {
                 <Tag className="h-4 w-4 mr-1" />
               )}
               Rename old S3 keys to titles
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleMigrateThumbnailsBulk}
+              disabled={bulkThumbs}
+              title="Migrate all Supabase-hosted thumbnails on this page to S3"
+            >
+              {bulkThumbs ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <UploadCloud className="h-4 w-4 mr-1" />
+              )}
+              Migrate thumbnails to S3
             </Button>
             <Button
               size="sm"
