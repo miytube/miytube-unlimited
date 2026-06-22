@@ -106,6 +106,7 @@ export const AdSlot = ({
 
   return (
     <div
+      data-ad-slot-wrapper
       className={`w-full overflow-hidden rounded-md ${className}`}
       aria-label={label || 'Advertisement'}
       style={style}
