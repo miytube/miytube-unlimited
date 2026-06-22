@@ -23,7 +23,6 @@ const App = () => (
             <UploadProgressIndicator />
             <BrowserRouter>
               <VignetteAd />
-              <AutoAdsRefresh />
               <AppRoutes />
             </BrowserRouter>
           </UploadedVideosProvider>
