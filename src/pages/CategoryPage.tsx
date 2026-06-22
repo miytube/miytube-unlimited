@@ -129,6 +129,22 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ category, icon }) => {
             </Link>
           </div>
         </div>
+        </div>
+
+        {/* Right rail Skyscraper (300x600) — desktop only */}
+        <aside className="hidden xl:block w-[300px] flex-shrink-0">
+          <div className="sticky top-20">
+            <AdSlot
+              slot="7860538679"
+              format="vertical"
+              responsive={false}
+              label="Sponsored"
+              className="!rounded-none"
+              style={{ width: 300, height: 600 }}
+              insStyle={{ display: 'inline-block', width: 300, height: 600 }}
+            />
+          </div>
+        </aside>
       </div>
     </Layout>
   );
