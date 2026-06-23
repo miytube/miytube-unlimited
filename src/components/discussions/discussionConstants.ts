@@ -101,6 +101,7 @@ export const CATEGORIES = [
   'Music',
   'News',
   'Politics',
+  'Sports',
   'Stocks',
   'Technology',
 ];
