@@ -38,7 +38,7 @@ import { RealEstateLinks } from './sidebar/RealEstateLinks';
 import { GovernmentPoliticsLinks } from './sidebar/GovernmentPoliticsLinks';
 import { HistoryArtifactsLinks } from './sidebar/HistoryArtifactsLinks';
 import { KidsEducationLinks } from './sidebar/KidsEducationLinks';
-import { CustomCategoriesLinks } from './sidebar/CustomCategoriesLinks';
+
 
 
 interface SidebarProps {
@@ -219,15 +219,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <AviationTransportLinks />
               </CollapsibleGroup>
 
-              <Separator className="my-3" />
-
-              {/* User-created categories */}
-              <CollapsibleGroup title="More Categories" defaultOpen={true}>
-                <CustomCategoriesLinks />
-              </CollapsibleGroup>
-
               <SidebarFooter />
-
             </>
           )}
         </div>
