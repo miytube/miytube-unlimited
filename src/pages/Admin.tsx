@@ -422,6 +422,12 @@ const Admin = () => {
             <BandwidthHogs />
           </TabsContent>
 
+          <TabsContent value="cold-storage" className="mt-6">
+            <ColdStorageCandidates />
+          </TabsContent>
+
+
+
 
           <TabsContent value="thumbs" className="mt-6">
             <ThumbnailGeneratorManager />
