@@ -19,6 +19,14 @@ interface Post {
   user_id: string;
 }
 
+const BlogJsonLd = ({ data }: { data: object }) => {
+  const ref = React.useRef<HTMLScriptElement>(null);
+  React.useEffect(() => {
+    if (ref.current) ref.current.textContent = JSON.stringify(data);
+  }, [data]);
+  return <script type="application/ld+json" ref={ref} />;
+};
+
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
