@@ -106,11 +106,13 @@ Deno.serve(async (req) => {
           continue;
         }
 
-        // Download from Supabase Storage (public URL) — stream, do NOT buffer
+        // Download from Supabase Storage (public URL).
+        // S3 presigned PUTs require a known Content-Length and do NOT accept
+        // chunked Transfer-Encoding, so we must buffer the body before upload.
         const dl = await fetch(sourceUrl);
-        if (!dl.ok || !dl.body) throw new Error(`Download failed [${dl.status}]`);
+        if (!dl.ok) throw new Error(`Download failed [${dl.status}]`);
         const contentType = dl.headers.get("content-type") || "video/mp4";
-        const contentLength = dl.headers.get("content-length");
+        const buf = await dl.arrayBuffer();
 
         // Build S3 object key — use the video TITLE as the filename so it's
         // easy to find in S3. Fall back to original filename, then id. We add
@@ -141,13 +143,14 @@ Deno.serve(async (req) => {
         }
         const signData = await signResp.json();
 
-        // Upload to S3 — stream the response body directly (no in-memory blob)
-        const uploadHeaders: Record<string, string> = { "Content-Type": contentType };
-        if (contentLength) uploadHeaders["Content-Length"] = contentLength;
+        // Upload to S3 with a real Content-Length header
         const upResp = await fetch(signData.url, {
           method: signData.method ?? "PUT",
-          headers: uploadHeaders,
-          body: dl.body,
+          headers: {
+            "Content-Type": contentType,
+            "Content-Length": String(buf.byteLength),
+          },
+          body: buf,
         });
         if (!upResp.ok) {
           throw new Error(`S3 PUT failed [${upResp.status}]: ${await upResp.text()}`);
