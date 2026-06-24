@@ -53,8 +53,22 @@ serve(async (req) => {
       if (popularVideos) recommendations.push(...popularVideos);
     }
 
-    // 3. Use AI to rank if we have enough context
-    if (tags && tags.length > 0 && recommendations.length > 3) {
+    // 3. Use AI to rank if we have enough context — gated to authenticated callers
+    // so anonymous traffic can't drain LOVABLE_API_KEY credits.
+    let isAuthed = false;
+    try {
+      const authHeader = req.headers.get('Authorization') ?? '';
+      if (authHeader.toLowerCase().startsWith('bearer ')) {
+        const userClient = createClient(supabaseUrl, supabaseKey, {
+          global: { headers: { Authorization: authHeader } },
+        });
+        const token = authHeader.replace(/^Bearer\s+/i, '');
+        const { data: claimsData } = await userClient.auth.getClaims(token);
+        isAuthed = !!claimsData?.claims;
+      }
+    } catch { /* treat as unauthenticated */ }
+
+    if (isAuthed && tags && tags.length > 0 && recommendations.length > 3) {
       const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
       if (LOVABLE_API_KEY) {
         try {
