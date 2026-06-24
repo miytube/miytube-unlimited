@@ -20,39 +20,46 @@ serve(async (req) => {
       });
     }
 
-    // Require authentication to prevent anonymous abuse of AI credits.
-    const authHeader = req.headers.get('Authorization') ?? '';
+    // Only authenticated callers may trigger the AI keyword-extraction step so
+    // anonymous traffic cannot drain LOVABLE_API_KEY credits. Anonymous users
+    // still get plain keyword search below.
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } },
-    });
-    const token = authHeader.replace(/^Bearer\s+/i, '');
-    const { data: claimsData, error: authError } = await userClient.auth.getClaims(token);
-    if (authError || !claimsData?.claims) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    const authHeader = req.headers.get('Authorization') ?? '';
+    let isAuthed = false;
+    if (authHeader.toLowerCase().startsWith('bearer ')) {
+      try {
+        const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+          global: { headers: { Authorization: authHeader } },
+        });
+        const token = authHeader.replace(/^Bearer\s+/i, '');
+        const { data: claimsData } = await userClient.auth.getClaims(token);
+        isAuthed = !!claimsData?.claims;
+      } catch { /* treat as unauthenticated */ }
     }
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY is not configured');
 
-    // Step 1: Use AI to understand the search intent and generate search terms
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-lite',
-        messages: [
-          { role: 'system', content: 'Extract search keywords from the user query. Return ONLY a JSON object: {"keywords": ["word1", "word2"], "category": "detected category or null", "intent": "what the user is looking for in one sentence"}' },
-          { role: 'user', content: query }
-        ],
-      }),
-    });
+    let searchKeywords: string[] = [query];
+    let detectedCategory: string | null = category || null;
+    let searchIntent = query;
+
+    // Step 1: Use AI to understand the search intent — authenticated callers only
+    if (isAuthed && LOVABLE_API_KEY) {
+      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash-lite',
+          messages: [
+            { role: 'system', content: 'Extract search keywords from the user query. Return ONLY a JSON object: {"keywords": ["word1", "word2"], "category": "detected category or null", "intent": "what the user is looking for in one sentence"}' },
+            { role: 'user', content: query }
+          ],
+        }),
+      });
 
     let searchKeywords: string[] = [query];
     let detectedCategory: string | null = category || null;
