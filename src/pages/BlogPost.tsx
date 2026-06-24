@@ -19,6 +19,14 @@ interface Post {
   user_id: string;
 }
 
+const BlogJsonLd = ({ data }: { data: object }) => {
+  const ref = React.useRef<HTMLScriptElement>(null);
+  React.useEffect(() => {
+    if (ref.current) ref.current.textContent = JSON.stringify(data);
+  }, [data]);
+  return <script type="application/ld+json" ref={ref} />;
+};
+
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
@@ -85,8 +93,9 @@ const BlogPost = () => {
 
   return (
     <Layout>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <BlogJsonLd data={articleJsonLd} />
       <article className="py-6 animate-fade-in w-full max-w-3xl mx-auto px-4">
+
         <p className="text-sm text-muted-foreground mb-4">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link> / <Link to="/blog">Blog</Link> / {post.title}
         </p>

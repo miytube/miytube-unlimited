@@ -20,50 +20,70 @@ serve(async (req) => {
       });
     }
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY is not configured');
+    // Only authenticated callers may trigger the AI keyword-extraction step so
+    // anonymous traffic cannot drain LOVABLE_API_KEY credits. Anonymous users
+    // still get plain keyword search below.
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const authHeader = req.headers.get('Authorization') ?? '';
+    let isAuthed = false;
+    if (authHeader.toLowerCase().startsWith('bearer ')) {
+      try {
+        const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+          global: { headers: { Authorization: authHeader } },
+        });
+        const token = authHeader.replace(/^Bearer\s+/i, '');
+        const { data: claimsData } = await userClient.auth.getClaims(token);
+        isAuthed = !!claimsData?.claims;
+      } catch { /* treat as unauthenticated */ }
+    }
 
-    // Step 1: Use AI to understand the search intent and generate search terms
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash-lite',
-        messages: [
-          { role: 'system', content: 'Extract search keywords from the user query. Return ONLY a JSON object: {"keywords": ["word1", "word2"], "category": "detected category or null", "intent": "what the user is looking for in one sentence"}' },
-          { role: 'user', content: query }
-        ],
-      }),
-    });
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     let searchKeywords: string[] = [query];
     let detectedCategory: string | null = category || null;
     let searchIntent = query;
 
-    if (aiResponse.ok) {
-      const aiData = await aiResponse.json();
-      const content = aiData.choices?.[0]?.message?.content || '';
-      try {
-        const jsonMatch = content.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const parsed = JSON.parse(jsonMatch[0]);
-          searchKeywords = parsed.keywords || [query];
-          detectedCategory = category || parsed.category || null;
-          searchIntent = parsed.intent || query;
-        }
-      } catch { /* use defaults */ }
-    } else {
-      await aiResponse.text(); // consume body
+    let searchKeywords: string[] = [query];
+    let detectedCategory: string | null = category || null;
+    let searchIntent = query;
+
+    // Step 1: Use AI to understand the search intent — authenticated callers only
+    if (isAuthed && LOVABLE_API_KEY) {
+      const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash-lite',
+          messages: [
+            { role: 'system', content: 'Extract search keywords from the user query. Return ONLY a JSON object: {"keywords": ["word1", "word2"], "category": "detected category or null", "intent": "what the user is looking for in one sentence"}' },
+            { role: 'user', content: query }
+          ],
+        }),
+      });
+
+      if (aiResponse.ok) {
+        const aiData = await aiResponse.json();
+        const content = aiData.choices?.[0]?.message?.content || '';
+        try {
+          const jsonMatch = content.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            const parsed = JSON.parse(jsonMatch[0]);
+            searchKeywords = parsed.keywords || [query];
+            detectedCategory = category || parsed.category || null;
+            searchIntent = parsed.intent || query;
+          }
+        } catch { /* use defaults */ }
+      } else {
+        await aiResponse.text(); // consume body
+      }
     }
 
-    // Step 2: Query the database
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    // Use the anon key + public view so uploader_ip can never leak.
-    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Step 2: Query the database (use the public view so uploader_ip can never leak)
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     // Always include the raw query as a keyword so the user's exact phrase still matches,
     // even if AI keyword extraction split or dropped words.

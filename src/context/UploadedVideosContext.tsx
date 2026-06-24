@@ -447,7 +447,7 @@ const loadVideosFromSupabase = async (): Promise<{
   const SELECT_COLS = 'id, local_id, title, description, thumbnail_url, cloud_url, is_cloud_stored, is_youtube_embed, youtube_video_id, duration, category, subcategory, tags, views, created_at';
 
   const { data, error } = await supabase
-    .from('uploaded_videos')
+    .from('uploaded_videos_public')
     .select(SELECT_COLS)
     .order('created_at', { ascending: false })
     .range(0, PAGE_SIZE - 1);
@@ -473,7 +473,7 @@ const loadVideosFromSupabase = async (): Promise<{
     while (true) {
       const to = from + CHUNK_SIZE - 1;
       const { data: chunk, error: chunkErr } = await supabase
-        .from('uploaded_videos')
+        .from('uploaded_videos_public')
         .select(SELECT_COLS)
         .order('created_at', { ascending: false })
         .range(from, to);

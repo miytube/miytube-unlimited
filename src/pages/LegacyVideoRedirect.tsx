@@ -46,7 +46,7 @@ const LegacyVideoRedirect = () => {
             .limit(20);
 
           const { data: vidMatches } = await supabase
-            .from("uploaded_videos")
+            .from("uploaded_videos_public")
             .select("id,title")
             .or(orClauses)
             .limit(20);
