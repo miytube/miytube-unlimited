@@ -74,11 +74,8 @@ serve(async (req) => {
       await aiResponse.text(); // consume body
     }
 
-    // Step 2: Query the database
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    // Use the anon key + public view so uploader_ip can never leak.
-    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Step 2: Query the database (use the public view so uploader_ip can never leak)
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
     // Always include the raw query as a keyword so the user's exact phrase still matches,
     // even if AI keyword extraction split or dropped words.
