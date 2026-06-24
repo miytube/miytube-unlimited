@@ -6,7 +6,12 @@ const MAX_VIDEOS_PER_REQUEST = 3;
 const MAX_BUFFER_BYTES = 50 * 1024 * 1024;
 
 const sanitize = (n: string) =>
-  n.trim().replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 180) || "upload";
+  n.trim()
+    .replace(/[^a-zA-Z0-9._-]/g, "_")
+    .replace(/\.{2,}/g, ".")
+    .replace(/_{2,}/g, "_")
+    .replace(/^[._-]+|[._-]+$/g, "")
+    .slice(0, 180) || "upload";
 
 interface MigrateBody {
   videoIds: string[];
