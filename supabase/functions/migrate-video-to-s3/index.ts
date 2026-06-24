@@ -2,6 +2,8 @@ import { corsHeaders } from "https://esm.sh/@supabase/supabase-js@2.95.0/cors";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
 
 const API_URL = "https://connector-gateway.lovable.dev";
+const MAX_VIDEOS_PER_REQUEST = 3;
+const MAX_BUFFER_BYTES = 50 * 1024 * 1024;
 
 const sanitize = (n: string) =>
   n.trim().replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 180) || "upload";
@@ -67,8 +69,8 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    if (ids.length > 5) {
-      return new Response(JSON.stringify({ error: "Max 5 videos per request" }), {
+    if (ids.length > MAX_VIDEOS_PER_REQUEST) {
+      return new Response(JSON.stringify({ error: `Max ${MAX_VIDEOS_PER_REQUEST} videos per request` }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -106,13 +108,25 @@ Deno.serve(async (req) => {
           continue;
         }
 
-        // Download from Supabase Storage (public URL).
-        // S3 presigned PUTs require a known Content-Length and do NOT accept
-        // chunked Transfer-Encoding, so we must buffer the body before upload.
+        // Download from Supabase Storage (public URL). S3 presigned PUTs need
+        // a real Content-Length, but they do not require us to buffer the file.
+        // Stream the response body through while explicitly forwarding size.
         const dl = await fetch(sourceUrl);
         if (!dl.ok) throw new Error(`Download failed [${dl.status}]`);
         const contentType = dl.headers.get("content-type") || "video/mp4";
-        const buf = await dl.arrayBuffer();
+        const contentLength = Number(dl.headers.get("content-length") || 0);
+        if (!contentLength || Number.isNaN(contentLength)) {
+          throw new Error("Download did not include file size; cannot upload safely to S3");
+        }
+
+        let uploadBody: BodyInit;
+        if (contentLength <= MAX_BUFFER_BYTES) {
+          uploadBody = await dl.arrayBuffer();
+        } else if (dl.body) {
+          uploadBody = dl.body;
+        } else {
+          throw new Error("Download stream unavailable");
+        }
 
         // Build S3 object key — use the video TITLE as the filename so it's
         // easy to find in S3. Fall back to original filename, then id. We add
@@ -148,9 +162,9 @@ Deno.serve(async (req) => {
           method: signData.method ?? "PUT",
           headers: {
             "Content-Type": contentType,
-            "Content-Length": String(buf.byteLength),
+            "Content-Length": String(contentLength),
           },
-          body: buf,
+          body: uploadBody,
         });
         if (!upResp.ok) {
           throw new Error(`S3 PUT failed [${upResp.status}]: ${await upResp.text()}`);
