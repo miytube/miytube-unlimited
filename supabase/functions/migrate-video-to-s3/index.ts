@@ -67,8 +67,8 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    if (ids.length > 25) {
-      return new Response(JSON.stringify({ error: "Max 25 videos per request" }), {
+    if (ids.length > 5) {
+      return new Response(JSON.stringify({ error: "Max 5 videos per request" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -106,11 +106,11 @@ Deno.serve(async (req) => {
           continue;
         }
 
-        // Download from Supabase Storage (public URL)
+        // Download from Supabase Storage (public URL) — stream, do NOT buffer
         const dl = await fetch(sourceUrl);
-        if (!dl.ok) throw new Error(`Download failed [${dl.status}]`);
+        if (!dl.ok || !dl.body) throw new Error(`Download failed [${dl.status}]`);
         const contentType = dl.headers.get("content-type") || "video/mp4";
-        const blob = await dl.blob();
+        const contentLength = dl.headers.get("content-length");
 
         // Build S3 object key — use the video TITLE as the filename so it's
         // easy to find in S3. Fall back to original filename, then id. We add
@@ -141,11 +141,13 @@ Deno.serve(async (req) => {
         }
         const signData = await signResp.json();
 
-        // Upload to S3
+        // Upload to S3 — stream the response body directly (no in-memory blob)
+        const uploadHeaders: Record<string, string> = { "Content-Type": contentType };
+        if (contentLength) uploadHeaders["Content-Length"] = contentLength;
         const upResp = await fetch(signData.url, {
           method: signData.method ?? "PUT",
-          headers: { "Content-Type": contentType },
-          body: blob,
+          headers: uploadHeaders,
+          body: dl.body,
         });
         if (!upResp.ok) {
           throw new Error(`S3 PUT failed [${upResp.status}]: ${await upResp.text()}`);
