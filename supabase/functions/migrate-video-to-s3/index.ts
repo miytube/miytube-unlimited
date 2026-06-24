@@ -67,8 +67,8 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    if (ids.length > 25) {
-      return new Response(JSON.stringify({ error: "Max 25 videos per request" }), {
+    if (ids.length > 5) {
+      return new Response(JSON.stringify({ error: "Max 5 videos per request" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
