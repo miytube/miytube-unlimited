@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import { Search, Copy, ExternalLink, Database, Cloud, AlertTriangle, UploadCloud, Loader2, Tag } from 'lucide-react';
+import { StorageCostEstimate } from './StorageCostEstimate';
 
 // Old S3 keys have the form videos/{id}/{timestamp}/{rand}/{filename} —
 // multiple "/" segments under videos/. New keys are videos/{title}-{6id}.{ext}.
@@ -379,6 +380,9 @@ export const VideoAuditManager = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Cost estimate panel */}
+        <StorageCostEstimate />
+
         {/* Backend summary chips (current page) */}
         <div className="flex flex-wrap gap-2 items-center text-sm">
           <span className="text-muted-foreground">This page:</span>
