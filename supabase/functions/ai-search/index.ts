@@ -44,6 +44,10 @@ serve(async (req) => {
     let detectedCategory: string | null = category || null;
     let searchIntent = query;
 
+    let searchKeywords: string[] = [query];
+    let detectedCategory: string | null = category || null;
+    let searchIntent = query;
+
     // Step 1: Use AI to understand the search intent — authenticated callers only
     if (isAuthed && LOVABLE_API_KEY) {
       const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -61,24 +65,21 @@ serve(async (req) => {
         }),
       });
 
-    let searchKeywords: string[] = [query];
-    let detectedCategory: string | null = category || null;
-    let searchIntent = query;
-
-    if (aiResponse.ok) {
-      const aiData = await aiResponse.json();
-      const content = aiData.choices?.[0]?.message?.content || '';
-      try {
-        const jsonMatch = content.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const parsed = JSON.parse(jsonMatch[0]);
-          searchKeywords = parsed.keywords || [query];
-          detectedCategory = category || parsed.category || null;
-          searchIntent = parsed.intent || query;
-        }
-      } catch { /* use defaults */ }
-    } else {
-      await aiResponse.text(); // consume body
+      if (aiResponse.ok) {
+        const aiData = await aiResponse.json();
+        const content = aiData.choices?.[0]?.message?.content || '';
+        try {
+          const jsonMatch = content.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            const parsed = JSON.parse(jsonMatch[0]);
+            searchKeywords = parsed.keywords || [query];
+            detectedCategory = category || parsed.category || null;
+            searchIntent = parsed.intent || query;
+          }
+        } catch { /* use defaults */ }
+      } else {
+        await aiResponse.text(); // consume body
+      }
     }
 
     // Step 2: Query the database (use the public view so uploader_ip can never leak)
