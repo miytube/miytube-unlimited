@@ -473,7 +473,7 @@ const loadVideosFromSupabase = async (): Promise<{
     while (true) {
       const to = from + CHUNK_SIZE - 1;
       const { data: chunk, error: chunkErr } = await supabase
-        .from('uploaded_videos')
+        .from('uploaded_videos_public')
         .select(SELECT_COLS)
         .order('created_at', { ascending: false })
         .range(from, to);
