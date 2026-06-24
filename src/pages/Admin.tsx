@@ -23,7 +23,8 @@ import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
 import { YouTubeRestoreManager } from '@/components/admin/YouTubeRestoreManager';
 import { BandwidthHogs } from '@/components/admin/BandwidthHogs';
-import { Database, FolderTree, Youtube, TrendingUp } from 'lucide-react';
+import { ColdStorageCandidates } from '@/components/admin/ColdStorageCandidates';
+import { Database, FolderTree, Youtube, TrendingUp, Snowflake } from 'lucide-react';
 
 
 type AppRole = 'admin' | 'moderator' | 'user';
@@ -277,6 +278,11 @@ const Admin = () => {
               <TrendingUp className="h-4 w-4" />
               Bandwidth Hogs
             </TabsTrigger>
+            <TabsTrigger value="cold-storage" className="flex items-center gap-2">
+              <Snowflake className="h-4 w-4" />
+              Cold Storage
+            </TabsTrigger>
+
 
             <TabsTrigger value="thumbs" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
@@ -415,6 +421,12 @@ const Admin = () => {
           <TabsContent value="bandwidth" className="mt-6">
             <BandwidthHogs />
           </TabsContent>
+
+          <TabsContent value="cold-storage" className="mt-6">
+            <ColdStorageCandidates />
+          </TabsContent>
+
+
 
 
           <TabsContent value="thumbs" className="mt-6">
