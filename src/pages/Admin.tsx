@@ -278,6 +278,11 @@ const Admin = () => {
               <TrendingUp className="h-4 w-4" />
               Bandwidth Hogs
             </TabsTrigger>
+            <TabsTrigger value="cold-storage" className="flex items-center gap-2">
+              <Snowflake className="h-4 w-4" />
+              Cold Storage
+            </TabsTrigger>
+
 
             <TabsTrigger value="thumbs" className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4" />
