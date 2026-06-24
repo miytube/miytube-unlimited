@@ -45,6 +45,7 @@ interface VideoRow {
 }
 
 const PAGE_SIZE = 50;
+const MIGRATION_BATCH_SIZE = 3;
 
 const formatBytes = (bytes: number | null) => {
   if (!bytes) return '—';
@@ -199,9 +200,11 @@ export const VideoAuditManager = () => {
     if (ids.length === 0) return;
     setBulkRunning(true);
     try {
-      // chunk into batches of 10 to avoid edge-function timeouts on large files
+      // Chunk into small batches to avoid edge-function memory/time limits.
       const chunks: string[][] = [];
-      for (let i = 0; i < ids.length; i += 10) chunks.push(ids.slice(i, i + 10));
+      for (let i = 0; i < ids.length; i += MIGRATION_BATCH_SIZE) {
+        chunks.push(ids.slice(i, i + MIGRATION_BATCH_SIZE));
+      }
       let migrated = 0, failed = 0, skipped = 0;
       for (const chunk of chunks) {
         const data = await migrate(chunk);
