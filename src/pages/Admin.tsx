@@ -23,7 +23,8 @@ import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
 import { YouTubeRestoreManager } from '@/components/admin/YouTubeRestoreManager';
 import { BandwidthHogs } from '@/components/admin/BandwidthHogs';
-import { Database, FolderTree, Youtube, TrendingUp } from 'lucide-react';
+import { ColdStorageCandidates } from '@/components/admin/ColdStorageCandidates';
+import { Database, FolderTree, Youtube, TrendingUp, Snowflake } from 'lucide-react';
 
 
 type AppRole = 'admin' | 'moderator' | 'user';
