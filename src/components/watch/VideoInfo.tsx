@@ -68,16 +68,15 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
   const fetchLikeCounts = async () => {
     if (!videoId) return;
 
-    const { data: likes } = await supabase
-      .from('video_likes')
-      .select('is_like')
-      .eq('video_id', videoId);
+    const { data } = await supabase.rpc('get_video_like_counts', {
+      _video_ids: [videoId],
+    });
 
-    if (likes) {
-      setLikesCount(likes.filter(l => l.is_like).length);
-      setDislikesCount(likes.filter(l => !l.is_like).length);
-    }
+    const row = (data || [])[0];
+    setLikesCount(Number(row?.likes ?? 0));
+    setDislikesCount(Number(row?.dislikes ?? 0));
   };
+
 
   const handleLike = async (isLike: boolean) => {
     if (!videoId) return;

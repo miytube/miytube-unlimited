@@ -97,13 +97,10 @@ const ShortsWatch = () => {
   useEffect(() => {
     if (!id) return;
     (async () => {
-      const { data: likes } = await supabase
-        .from('video_likes')
-        .select('is_like')
-        .eq('video_id', id);
-      if (likes) {
-        setLikesCount(likes.filter((l) => l.is_like).length);
-      }
+      const { data: counts } = await supabase.rpc('get_video_like_counts', {
+        _video_ids: [id],
+      });
+      setLikesCount(Number((counts || [])[0]?.likes ?? 0));
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data: own } = await supabase
@@ -116,6 +113,7 @@ const ShortsWatch = () => {
       }
     })();
   }, [id]);
+
 
 
   const handleLike = async () => {
