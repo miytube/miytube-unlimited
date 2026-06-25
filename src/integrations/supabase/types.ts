@@ -1326,6 +1326,21 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_discussion_like_counts: {
+        Args: { _discussion_ids: string[] }
+        Returns: {
+          discussion_id: string
+          likes: number
+        }[]
+      }
+      get_video_like_counts: {
+        Args: { _video_ids: string[] }
+        Returns: {
+          dislikes: number
+          likes: number
+          video_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
