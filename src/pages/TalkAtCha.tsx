@@ -57,15 +57,16 @@ const TalkAtCha = () => {
     if (ids.length) {
       const [{ data: replies }, { data: likes }] = await Promise.all([
         supabase.from('discussion_replies').select('discussion_id').in('discussion_id', ids),
-        supabase.from('discussion_likes').select('discussion_id').in('discussion_id', ids),
+        supabase.rpc('get_discussion_like_counts', { _discussion_ids: ids }),
       ]);
       (replies ?? []).forEach((r: any) => {
         replyCounts[r.discussion_id] = (replyCounts[r.discussion_id] ?? 0) + 1;
       });
       (likes ?? []).forEach((l: any) => {
-        likeCounts[l.discussion_id] = (likeCounts[l.discussion_id] ?? 0) + 1;
+        likeCounts[l.discussion_id] = Number(l.likes ?? 0);
       });
     }
+
 
     setDiscussions(
       (posts ?? []).map((p) => ({
