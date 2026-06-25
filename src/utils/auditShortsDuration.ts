@@ -95,7 +95,7 @@ export const auditShortsDurations = async (): Promise<void> => {
         fixed++;
       }
 
-      await supabase.from('uploaded_videos').update(updates).eq('id', v.id);
+      await supabase.from('uploaded_videos').update(updates as never).eq('id', v.id);
     }
 
     window.sessionStorage.setItem(STORAGE_KEY, '1');
