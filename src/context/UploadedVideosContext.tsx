@@ -555,7 +555,7 @@ const updateVideoInSupabase = async (id: string, updates: Record<string, unknown
   }
 
   const variantPrefix = getVideoVariantQueryPrefix(matched.data || { local_id: id });
-  let query = supabase.from('uploaded_videos').update(supabaseUpdates);
+  let query = supabase.from('uploaded_videos').update(supabaseUpdates as never);
   if (variantPrefix) {
     query = query.like(variantPrefix.column, `${variantPrefix.prefix}.%`);
   } else {
