@@ -42,6 +42,14 @@ export const useAISearch = () => {
     setError(null);
 
     try {
+      // AI search requires authentication — skip silently for anonymous users
+      // and let the local fallback handle results.
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        if (mySeq === requestSeqRef.current) setResults(null);
+        return null;
+      }
+
       const { data, error: fnError } = await supabase.functions.invoke('ai-search', {
         body: {
           query,
@@ -51,14 +59,11 @@ export const useAISearch = () => {
         },
       });
 
-      // Ignore this response if a newer search has already started — prevents
-      // stale/empty responses from overwriting fresh results (the "results
-      // appear then disappear 3 seconds later" bug).
       if (mySeq !== requestSeqRef.current) return null;
 
       if (fnError) {
         console.error('AI search error:', fnError);
-        setError('Search failed. Please try again.');
+        // Don't surface as a hard error — local results still render.
         return null;
       }
 
