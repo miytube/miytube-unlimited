@@ -72,7 +72,6 @@ export const useAISearch = () => {
     } catch (err) {
       if (mySeq !== requestSeqRef.current) return null;
       console.error('AI search failed:', err);
-      setError('Search unavailable. Please try again later.');
       return null;
     } finally {
       if (mySeq === requestSeqRef.current) {
