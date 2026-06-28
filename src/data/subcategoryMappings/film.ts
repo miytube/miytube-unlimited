@@ -357,7 +357,7 @@ export const filmSubcategories: SubcategoryMapping = {
     }
   },
   'film-animation-cartoons': {
-    title: 'Film Animation (Cartoons)',
+    title: 'Cartoons',
     description: 'Traditional cartoons and animated series',
     icon: Clapperboard,
     parent: {
