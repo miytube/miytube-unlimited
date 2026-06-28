@@ -22,6 +22,7 @@ const physicalFitnessEntries: SubcategoryMapping = {
 // /physical-fitness/weight-lifting (which would otherwise redirect back to the parent).
 const physicalFitnessPathAliases: SubcategoryMapping = {
   '/physical-fitness/weight-lifting': physicalFitnessEntries['fitness-weight-lifting'],
+  '/physical-fitness/weightlifting-prank': physicalFitnessEntries['fitness-weightlifting-prank'],
   '/physical-fitness/weightlifting-female': physicalFitnessEntries['fitness-weightlifting-female'],
   '/physical-fitness/weightlifting-male': physicalFitnessEntries['fitness-weightlifting-male'],
   '/physical-fitness/workers': physicalFitnessEntries['fitness-workers'],
