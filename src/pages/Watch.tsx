@@ -575,7 +575,7 @@ const Watch = () => {
             {/* Remaining Videos */}
             {regularVideos.length > 1 && (
               <div className="space-y-2">
-                {regularVideos.slice(1, 8).map((vid) => (
+                {regularVideos.slice(1, 12).map((vid) => (
                   <Link 
                     key={vid.id} 
                     to={`/watch?v=${vid.id}`}
