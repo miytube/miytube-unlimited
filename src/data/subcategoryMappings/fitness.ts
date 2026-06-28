@@ -6,6 +6,7 @@ const physicalFitnessParent = { route: '/physical-fitness', name: 'Physical Fitn
 
 const physicalFitnessEntries: SubcategoryMapping = {
   'fitness-weight-lifting': { title: 'Weight Lifting', description: 'Weight lifting videos, pranks, and amazing feats', icon: Dumbbell, parent: physicalFitnessParent },
+  'fitness-weightlifting-prank': { title: 'Weightlifting Prank', description: 'Weightlifting prank videos', icon: Dumbbell, parent: physicalFitnessParent },
   'fitness-weightlifting-female': { title: 'Weightlifting Female', description: 'Female weightlifting and inspiration', icon: Dumbbell, parent: physicalFitnessParent },
   'fitness-weightlifting-male': { title: 'Weightlifting Male', description: 'Male weightlifting and training', icon: Dumbbell, parent: physicalFitnessParent },
   'fitness-workers': { title: 'Workers', description: 'Amazing workers, great things and physical feats', icon: Dumbbell, parent: physicalFitnessParent },
@@ -21,6 +22,7 @@ const physicalFitnessEntries: SubcategoryMapping = {
 // /physical-fitness/weight-lifting (which would otherwise redirect back to the parent).
 const physicalFitnessPathAliases: SubcategoryMapping = {
   '/physical-fitness/weight-lifting': physicalFitnessEntries['fitness-weight-lifting'],
+  '/physical-fitness/weightlifting-prank': physicalFitnessEntries['fitness-weightlifting-prank'],
   '/physical-fitness/weightlifting-female': physicalFitnessEntries['fitness-weightlifting-female'],
   '/physical-fitness/weightlifting-male': physicalFitnessEntries['fitness-weightlifting-male'],
   '/physical-fitness/workers': physicalFitnessEntries['fitness-workers'],
