@@ -6,6 +6,7 @@ const physicalFitnessParent = { route: '/physical-fitness', name: 'Physical Fitn
 
 const physicalFitnessEntries: SubcategoryMapping = {
   'fitness-weight-lifting': { title: 'Weight Lifting', description: 'Weight lifting videos, pranks, and amazing feats', icon: Dumbbell, parent: physicalFitnessParent },
+  'fitness-weightlifting-prank': { title: 'Weightlifting Prank', description: 'Weightlifting prank videos', icon: Dumbbell, parent: physicalFitnessParent },
   'fitness-weightlifting-female': { title: 'Weightlifting Female', description: 'Female weightlifting and inspiration', icon: Dumbbell, parent: physicalFitnessParent },
   'fitness-weightlifting-male': { title: 'Weightlifting Male', description: 'Male weightlifting and training', icon: Dumbbell, parent: physicalFitnessParent },
   'fitness-workers': { title: 'Workers', description: 'Amazing workers, great things and physical feats', icon: Dumbbell, parent: physicalFitnessParent },
