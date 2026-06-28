@@ -358,6 +358,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="physical-fitness" path="/physical-fitness" element={<GenericSubcategoryPage />} />,
   <Route key="physical-fitness-calisthenics" path="/physical-fitness/calisthenics" element={<GenericSubcategoryPage />} />,
   <Route key="physical-fitness-weight-lifting" path="/physical-fitness/weight-lifting" element={<GenericSubcategoryPage />} />,
+  <Route key="physical-fitness-weightlifting-prank" path="/physical-fitness/weightlifting-prank" element={<GenericSubcategoryPage />} />,
   <Route key="physical-fitness-weightlifting-female" path="/physical-fitness/weightlifting-female" element={<GenericSubcategoryPage />} />,
   <Route key="physical-fitness-weightlifting-male" path="/physical-fitness/weightlifting-male" element={<GenericSubcategoryPage />} />,
   <Route key="physical-fitness-workout" path="/physical-fitness/workout" element={<GenericSubcategoryPage />} />,
