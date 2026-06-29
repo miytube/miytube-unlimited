@@ -18,9 +18,13 @@ export const UploadDropdown: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="p-2 rounded-full hover:bg-secondary transition-colors">
-          <Upload size={20} />
-        </button>
+        <button
+          type="button"
+          aria-label="Upload content"
+          className="p-2 rounded-full hover:bg-secondary transition-colors"
+        >
+          <Upload size={20} aria-hidden="true" />
+
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Upload Content</DropdownMenuLabel>
