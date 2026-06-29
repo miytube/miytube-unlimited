@@ -109,12 +109,12 @@ export const AdSlot = ({
       data-ad-slot-wrapper
       className={`w-full overflow-hidden rounded-md ${className}`}
       aria-label={label || 'Advertisement'}
-      style={style}
+      style={{ minHeight: 100, ...style }}
     >
       <ins
         ref={insRef}
         className="adsbygoogle"
-        style={{ display: 'block', ...insStyle }}
+        style={{ display: 'block', minHeight: 100, width: '100%', ...insStyle }}
         data-ad-client={PUBLISHER_ID}
         data-ad-slot={slot}
         data-ad-format={format}
@@ -124,3 +124,4 @@ export const AdSlot = ({
     </div>
   );
 };
+
