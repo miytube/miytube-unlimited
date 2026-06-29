@@ -7,7 +7,7 @@ import { checkVideoCompatibility, getFormatRecommendation } from '@/utils/videoC
 import { useUploadProgress } from '@/context/UploadProgressContext';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 import { supabase } from '@/integrations/supabase/client';
-import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
+import { getPerFileUploadMetadata, getPerFileTags } from '@/utils/uploadMetadata';
 
 export const useUploadHandler = () => {
   const { toast } = useToast();
