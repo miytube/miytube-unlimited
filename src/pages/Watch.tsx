@@ -495,11 +495,12 @@ const Watch = () => {
             
             <VideoDescription description={video.description} />
 
-            {/* Ad slots removed — relying on AdSense Auto Ads */}
-
             {actualVideoId && <VideoComments videoId={actualVideoId} />}
-            
-            
+
+            {/* Ad unit directly below comments to fill the main-column whitespace */}
+            <div className="mt-4">
+              <AdSlot slot="2074250134" format="autorelaxed" responsive label="Sponsored" />
+            </div>
           </div>
 
           {/* Right Sidebar */}
