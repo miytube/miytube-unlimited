@@ -24,6 +24,8 @@ export const UploadDropdown: React.FC = () => {
           className="p-2 rounded-full hover:bg-secondary transition-colors"
         >
           <Upload size={20} aria-hidden="true" />
+        </button>
+
 
       </DropdownMenuTrigger>
       <DropdownMenuContent>
