@@ -107,6 +107,7 @@ export const useUploadHandler = () => {
         file: File;
         perFileTitle: string;
         perFileDescription: string;
+        perFileTags: string[];
         uploadCategory: string | undefined;
         uploadSubcategory: string | undefined;
       };
@@ -119,13 +120,14 @@ export const useUploadHandler = () => {
           description,
           files.length,
         );
+        const perFileTags = getPerFileTags(file, perFileTitle, tags, files.length);
 
         let uploadCategory = category;
         let uploadSubcategory = subcategory;
         if (!uploadCategory) {
           uploadCategory = contentTypeId;
         }
-        return { file, perFileTitle, perFileDescription, uploadCategory, uploadSubcategory };
+        return { file, perFileTitle, perFileDescription, perFileTags, uploadCategory, uploadSubcategory };
       });
 
       const MAX_ATTEMPTS = 3;
@@ -152,7 +154,7 @@ export const useUploadHandler = () => {
               item.perFileDescription,
               item.uploadCategory,
               item.uploadSubcategory,
-              tags,
+              item.perFileTags,
             );
             successCount++;
           } catch (error) {
