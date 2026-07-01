@@ -379,8 +379,8 @@ export const sidebarSubcategories: SubcategoryMapping = {
     parent: { route: '/foods', name: 'Foods' }
   },
   '/foods/cooking': {
-    title: 'Cooking Tips',
-    description: 'Cooking tips and techniques',
+    title: 'Cooking & Food Preparation',
+    description: 'Cooking techniques and food preparation',
     icon: Pizza,
     parent: { route: '/foods', name: 'Foods' }
   },
