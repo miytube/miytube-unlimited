@@ -2267,6 +2267,12 @@ export const newCategorySubcategories: SubcategoryMapping = {
     icon: Map,
     parent: { route: '/travel-events', name: 'Travel & Events' }
   },
+  '/travel-events/street-foods': {
+    title: 'Street Food',
+    description: 'Street food around the world',
+    icon: Map,
+    parent: { route: '/travel-events', name: 'Travel & Events' }
+  },
   '/travel/nightlife': {
     title: 'Streets & Night Life',
     description: 'City nightlife',
