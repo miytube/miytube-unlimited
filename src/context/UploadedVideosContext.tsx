@@ -283,21 +283,13 @@ const saveVideoToSupabase = async (video: {
   // tripleheader games where multiple distinct videos share the same matchup
   // title but are actually different game files.
   if (uploaderIp !== 'unknown' && video.fileSize && video.fileName) {
-    let duplicateQuery = supabase
-      .from('uploaded_videos')
-      .select('id, title, file_name, file_size, category, subcategory')
-      .eq('uploader_ip', uploaderIp)
-      .eq('file_name', video.fileName)
-      .eq('file_size', video.fileSize);
-
-    duplicateQuery = normalizedCategory
-      ? duplicateQuery.eq('category', normalizedCategory)
-      : duplicateQuery.is('category', null);
-    duplicateQuery = normalizedSubcategory
-      ? duplicateQuery.eq('subcategory', normalizedSubcategory)
-      : duplicateQuery.is('subcategory', null);
-
-    const { data: existingByIpTitle } = await duplicateQuery.maybeSingle();
+    const { data: existingByIpTitle } = await supabase.rpc('check_upload_duplicate_by_ip', {
+      _uploader_ip: uploaderIp,
+      _file_name: video.fileName,
+      _file_size: video.fileSize,
+      _category: normalizedCategory ?? null,
+      _subcategory: normalizedSubcategory ?? null,
+    }).maybeSingle();
 
     if (existingByIpTitle) {
       console.log('Duplicate detected: Same file_name + size from same IP. File:', video.fileName, 'IP:', uploaderIp);
@@ -314,6 +306,7 @@ const saveVideoToSupabase = async (video: {
       return { isDuplicate: true, reason: 'location' };
     }
   }
+
   
   // Don't pass 'id' - let the database generate UUID automatically
   // Store local_id to maintain URL compatibility
