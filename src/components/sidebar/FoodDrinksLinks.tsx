@@ -12,7 +12,7 @@ export const FoodDrinksLinks: React.FC = () => {
       path: '/foods',
       subItems: [
         { id: 'foods-tuna', label: 'Blue Tuna & Cutting', path: '/foods/tuna' },
-        { id: 'foods-cooking', label: 'Cooking & Making', path: '/foods/cooking' },
+        { id: 'foods-cooking', label: 'Cooking & Food Preparation', path: '/foods/cooking' },
         { id: 'foods-seafood', label: 'Crab & Shrimp', path: '/foods/seafood' },
         { id: 'foods-dieting', label: 'Dieting & Weight Loss', path: '/foods/dieting' },
         { id: 'foods-fruits', label: 'Fruits & Vegetables', path: '/foods/fruits' },
