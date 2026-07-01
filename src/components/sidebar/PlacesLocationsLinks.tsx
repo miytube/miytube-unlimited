@@ -58,7 +58,7 @@ export const PlacesLocationsLinks: React.FC = () => {
       path: '/foods',
       subItems: [
         { id: 'foods-recipes', label: 'Recipes', path: '/foods/recipes' },
-        { id: 'foods-cooking', label: 'Cooking Tips', path: '/foods/cooking' },
+        { id: 'foods-cooking', label: 'Cooking & Food Preparation', path: '/foods/cooking' },
         { id: 'foods-baking', label: 'Baking', path: '/foods/baking' },
         { id: 'foods-street', label: 'Street Food', path: '/foods/street' }
       ]
