@@ -133,6 +133,12 @@ export const canonicalizeCategoryAssignment = (
       'travel-cities-towns': 'cities-towns',
       'cities-and-towns': 'cities-towns',
     },
+    foods: {
+      'cooking-tips': 'cooking',
+      'cooking-and-food-preparation': 'cooking',
+      'cooking-food-preparation': 'cooking',
+      'foods-cooking-tips': 'cooking',
+    },
   };
   const normalizedSubcategory = normalizedCategory && rawNormalizedSubcategory
     ? subcategoryAliasesByParent[normalizedCategory]?.[rawNormalizedSubcategory] || rawNormalizedSubcategory
