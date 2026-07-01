@@ -1318,6 +1318,23 @@ export type Database = {
       }
     }
     Functions: {
+      check_upload_duplicate_by_ip: {
+        Args: {
+          _category: string
+          _file_name: string
+          _file_size: number
+          _subcategory: string
+          _uploader_ip: string
+        }
+        Returns: {
+          category: string
+          file_name: string
+          file_size: number
+          id: string
+          subcategory: string
+          title: string
+        }[]
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
