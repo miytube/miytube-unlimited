@@ -61,6 +61,13 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
       ? `/sports/${cleanSubcategory}`
       : `/sports/${cleanSubcategory}`;
   }
+  if (
+    cleanCategory === 'sports-wnba' ||
+    cleanCategory === 'wnba-basketball' ||
+    (cleanCategory === 'sports' && ['wnba', 'wnba-basketball', 'sports-wnba-basketball'].includes(cleanSubcategory))
+  ) {
+    return '/sports/wnba';
+  }
   if (cleanCategory === 'cars') {
     const carRepairRoutes: Record<string, string> = {
       'cars-repairs-major': '/cars/repairs/major',
