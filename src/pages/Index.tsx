@@ -139,7 +139,18 @@ const Index = () => {
                 <SimpleVideoCard key={video.id} {...video} />
               ))}
             </div>
-            {/* Ad slot removed — relying on AdSense Auto Ads */}
+            {/* Above-the-fold responsive ad — sits at the bottom of the first viewport
+                on most screens so it's visible before the user scrolls. */}
+            <div className="my-6">
+              <AdSlot
+                slot="1406515812"
+                format="auto"
+                responsive
+                label="Sponsored"
+                style={{ minHeight: 250 }}
+                insStyle={{ display: 'block', minHeight: 250 }}
+              />
+            </div>
             {displayVideos.length > 8 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {displayVideos.slice(8).map((video) => (
@@ -152,12 +163,6 @@ const Index = () => {
 
         {/* Ad slot removed — relying on AdSense Auto Ads */}
 
-        {/* In-feed AdSense unit (miytube-new-1) */}
-        {!isLoading && displayVideos.length > 0 && (
-          <div className="my-8">
-            <AdSlot slot="1406515812" format="auto" responsive label="Sponsored" />
-          </div>
-        )}
 
         {/* Trending Videos Section - Regular videos only */}
         {!isLoading && trendingVideos.length > 0 && (
@@ -224,17 +229,28 @@ const Index = () => {
         )}
         </div>
 
-        {/* Right rail Skyscraper (300x600) — desktop only */}
-        <aside className="hidden xl:block w-[300px] flex-shrink-0">
-          <div className="sticky top-20">
+        {/* Right rail Skyscraper — sticky, vertical, stays visible while scrolling.
+            Shown from lg up so more visitors see it; responsive on tablet, 300x600 on desktop. */}
+        <aside className="hidden lg:block w-[300px] flex-shrink-0">
+          <div className="sticky top-20 space-y-4">
             <AdSlot
               slot="8953833343"
               format="vertical"
-              responsive={false}
+              responsive
               label="Sponsored"
               className="!rounded-none"
-              style={{ width: 300, height: 600 }}
-              insStyle={{ display: 'inline-block', width: 300, height: 600 }}
+              style={{ minHeight: 600 }}
+              insStyle={{ display: 'block', width: '100%', minHeight: 600 }}
+            />
+            {/* Second vertical unit below the fold in the rail for return-scroll impressions */}
+            <AdSlot
+              slot="2074250134"
+              format="vertical"
+              responsive
+              label="Sponsored"
+              className="!rounded-none"
+              style={{ minHeight: 250 }}
+              insStyle={{ display: 'block', width: '100%', minHeight: 250 }}
             />
           </div>
         </aside>
