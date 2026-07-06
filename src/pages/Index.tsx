@@ -139,7 +139,18 @@ const Index = () => {
                 <SimpleVideoCard key={video.id} {...video} />
               ))}
             </div>
-            {/* Ad slot removed — relying on AdSense Auto Ads */}
+            {/* Above-the-fold responsive ad — sits at the bottom of the first viewport
+                on most screens so it's visible before the user scrolls. */}
+            <div className="my-6">
+              <AdSlot
+                slot="1406515812"
+                format="auto"
+                responsive
+                label="Sponsored"
+                style={{ minHeight: 250 }}
+                insStyle={{ display: 'block', minHeight: 250 }}
+              />
+            </div>
             {displayVideos.length > 8 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {displayVideos.slice(8).map((video) => (
