@@ -403,6 +403,10 @@ const Admin = () => {
             <PartnerApplicationsManager />
           </TabsContent>
 
+          <TabsContent value="ad-campaigns" className="mt-6">
+            <AdCampaignsManager />
+          </TabsContent>
+
           <TabsContent value="repair" className="mt-6">
             <RepairMissingFilesManager />
           </TabsContent>
