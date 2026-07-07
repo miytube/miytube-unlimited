@@ -44,6 +44,7 @@ export type Database = {
       ad_campaigns: {
         Row: {
           ad_format: Database["public"]["Enums"]["ad_format"]
+          admin_notes: string | null
           age_range_max: number | null
           age_range_min: number | null
           amount_spent: number
@@ -59,15 +60,20 @@ export type Database = {
           daily_budget: number
           description: string | null
           destination_url: string
+          dispute_status: string | null
           end_date: string | null
           headline: string
           id: string
           impressions: number
+          last_payment_error: string | null
           media_url: string | null
           payment_method: string | null
           payment_reference: string | null
           payment_status: string | null
           refunded_amount: number
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           start_date: string
           status: Database["public"]["Enums"]["ad_campaign_status"]
           stripe_customer_id: string | null
@@ -82,6 +88,7 @@ export type Database = {
         }
         Insert: {
           ad_format?: Database["public"]["Enums"]["ad_format"]
+          admin_notes?: string | null
           age_range_max?: number | null
           age_range_min?: number | null
           amount_spent?: number
@@ -97,15 +104,20 @@ export type Database = {
           daily_budget?: number
           description?: string | null
           destination_url: string
+          dispute_status?: string | null
           end_date?: string | null
           headline: string
           id?: string
           impressions?: number
+          last_payment_error?: string | null
           media_url?: string | null
           payment_method?: string | null
           payment_reference?: string | null
           payment_status?: string | null
           refunded_amount?: number
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           start_date?: string
           status?: Database["public"]["Enums"]["ad_campaign_status"]
           stripe_customer_id?: string | null
@@ -120,6 +132,7 @@ export type Database = {
         }
         Update: {
           ad_format?: Database["public"]["Enums"]["ad_format"]
+          admin_notes?: string | null
           age_range_max?: number | null
           age_range_min?: number | null
           amount_spent?: number
@@ -135,15 +148,20 @@ export type Database = {
           daily_budget?: number
           description?: string | null
           destination_url?: string
+          dispute_status?: string | null
           end_date?: string | null
           headline?: string
           id?: string
           impressions?: number
+          last_payment_error?: string | null
           media_url?: string | null
           payment_method?: string | null
           payment_reference?: string | null
           payment_status?: string | null
           refunded_amount?: number
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           start_date?: string
           status?: Database["public"]["Enums"]["ad_campaign_status"]
           stripe_customer_id?: string | null
