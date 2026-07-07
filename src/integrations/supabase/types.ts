@@ -47,6 +47,7 @@ export type Database = {
           age_range_max: number | null
           age_range_min: number | null
           amount_spent: number
+          budget_payments: Json
           business_name: string
           business_website: string | null
           call_to_action: string | null
@@ -66,8 +67,10 @@ export type Database = {
           payment_method: string | null
           payment_reference: string | null
           payment_status: string | null
+          refunded_amount: number
           start_date: string
           status: Database["public"]["Enums"]["ad_campaign_status"]
+          stripe_customer_id: string | null
           target_audience: string | null
           target_categories: string[] | null
           target_locations: string[] | null
@@ -82,6 +85,7 @@ export type Database = {
           age_range_max?: number | null
           age_range_min?: number | null
           amount_spent?: number
+          budget_payments?: Json
           business_name: string
           business_website?: string | null
           call_to_action?: string | null
@@ -101,8 +105,10 @@ export type Database = {
           payment_method?: string | null
           payment_reference?: string | null
           payment_status?: string | null
+          refunded_amount?: number
           start_date?: string
           status?: Database["public"]["Enums"]["ad_campaign_status"]
+          stripe_customer_id?: string | null
           target_audience?: string | null
           target_categories?: string[] | null
           target_locations?: string[] | null
@@ -117,6 +123,7 @@ export type Database = {
           age_range_max?: number | null
           age_range_min?: number | null
           amount_spent?: number
+          budget_payments?: Json
           business_name?: string
           business_website?: string | null
           call_to_action?: string | null
@@ -136,8 +143,10 @@ export type Database = {
           payment_method?: string | null
           payment_reference?: string | null
           payment_status?: string | null
+          refunded_amount?: number
           start_date?: string
           status?: Database["public"]["Enums"]["ad_campaign_status"]
+          stripe_customer_id?: string | null
           target_audience?: string | null
           target_categories?: string[] | null
           target_locations?: string[] | null
@@ -1393,6 +1402,7 @@ export type Database = {
         | "paused"
         | "completed"
         | "rejected"
+        | "pending_review"
       ad_format:
         | "skippable_instream"
         | "non_skippable_instream"
@@ -1536,6 +1546,7 @@ export const Constants = {
         "paused",
         "completed",
         "rejected",
+        "pending_review",
       ],
       ad_format: [
         "skippable_instream",
