@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) throw new Error("Unauthorized");
 
-    const { campaignId, environment } = await req.json();
+    const { campaignId, environment, reason, finalStatus } = await req.json();
     if (!campaignId || (environment !== "sandbox" && environment !== "live")) {
       throw new Error("Invalid input");
     }
