@@ -9,6 +9,7 @@ import { UploadProgressIndicator } from "./components/upload/UploadProgressIndic
 import { AuthProvider } from "./hooks/useAuth";
 import AppRoutes from "./routes";
 import { VignetteAd } from "./components/advertising/VignetteAd";
+import { PaymentTestModeBanner } from "./components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
             <Sonner />
             <UploadProgressIndicator />
             <BrowserRouter>
+              <PaymentTestModeBanner />
               <VignetteAd />
               <AppRoutes />
             </BrowserRouter>

@@ -33,6 +33,7 @@ import Monetization from "@/pages/Monetization";
 import LegacyVideoRedirect from "@/pages/LegacyVideoRedirect";
 import Watchlist from "@/pages/Watchlist";
 import BreakingNews from "@/pages/BreakingNews";
+import CampaignCheckoutReturn from "@/pages/CampaignCheckoutReturn";
 
 // New pages to fix 404s
 import HowToStyle from "@/pages/HowToStyle";
@@ -91,6 +92,7 @@ export const mainRoutes = [
   <Route key="privacy" path="/privacy" element={<Privacy />} />,
   <Route key="copyright" path="/copyright" element={<Copyright />} />,
   <Route key="advertising" path="/advertising" element={<Advertising />} />,
+  <Route key="advertising-checkout-return" path="/advertising/checkout-return" element={<CampaignCheckoutReturn />} />,
   <Route key="media-kit" path="/media-kit" element={<MediaKit />} />,
   <Route key="advertise-with-us" path="/advertise-with-us" element={<MediaKit />} />,
   <Route key="blog" path="/blog" element={<Blog />} />,
