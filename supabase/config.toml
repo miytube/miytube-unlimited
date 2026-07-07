@@ -32,3 +32,15 @@ verify_jwt = false
 
 [functions.process-email-queue]
 verify_jwt = true
+
+[functions.create-ad-checkout]
+verify_jwt = false
+
+[functions.topup-ad-checkout]
+verify_jwt = false
+
+[functions.refund-ad-campaign]
+verify_jwt = false
+
+[functions.payments-webhook]
+verify_jwt = false
