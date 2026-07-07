@@ -263,6 +263,10 @@ const Admin = () => {
               <UserPlus className="h-4 w-4" />
               Partner Applications
             </TabsTrigger>
+            <TabsTrigger value="ad-campaigns" className="flex items-center gap-2">
+              <Megaphone className="h-4 w-4" />
+              Ad Campaigns
+            </TabsTrigger>
             <TabsTrigger value="repair" className="flex items-center gap-2">
               <Wrench className="h-4 w-4" />
               Repair Files
