@@ -28,6 +28,8 @@ interface Campaign {
   end_date: string | null;
   created_at: string;
   payment_status: string;
+  rejection_reason?: string | null;
+  admin_notes?: string | null;
 }
 
 const statusColors: Record<string, string> = {
