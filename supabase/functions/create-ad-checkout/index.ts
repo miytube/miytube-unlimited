@@ -84,7 +84,6 @@ Deno.serve(async (req) => {
           currency: "usd",
           product: "ad_campaign_custom",
           unit_amount: customAmountCents,
-          tax_behavior: "exclusive",
         },
         quantity: 1,
       };
