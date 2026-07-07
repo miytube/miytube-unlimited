@@ -10,7 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity, Cloud, Sparkles, Image as ImageIcon, MessageSquare } from 'lucide-react';
+import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity, Cloud, Sparkles, Image as ImageIcon, MessageSquare, Megaphone } from 'lucide-react';
+import AdCampaignsManager from '@/components/admin/AdCampaignsManager';
 import { BreakingNewsManager } from '@/components/admin/BreakingNewsManager';
 import PartnerApplicationsManager from '@/components/admin/PartnerApplicationsManager';
 import { RepairMissingFilesManager } from '@/components/admin/RepairMissingFilesManager';
@@ -262,6 +263,10 @@ const Admin = () => {
               <UserPlus className="h-4 w-4" />
               Partner Applications
             </TabsTrigger>
+            <TabsTrigger value="ad-campaigns" className="flex items-center gap-2">
+              <Megaphone className="h-4 w-4" />
+              Ad Campaigns
+            </TabsTrigger>
             <TabsTrigger value="repair" className="flex items-center gap-2">
               <Wrench className="h-4 w-4" />
               Repair Files
@@ -396,6 +401,10 @@ const Admin = () => {
 
           <TabsContent value="partners" className="mt-6">
             <PartnerApplicationsManager />
+          </TabsContent>
+
+          <TabsContent value="ad-campaigns" className="mt-6">
+            <AdCampaignsManager />
           </TabsContent>
 
           <TabsContent value="repair" className="mt-6">

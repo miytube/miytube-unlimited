@@ -135,6 +135,88 @@ async function handleCampaignPayment(session: any, env: StripeEnv, isTopup: bool
   }
 }
 
+async function handleChargeRefunded(charge: any) {
+  const piId = typeof charge.payment_intent === "string"
+    ? charge.payment_intent
+    : charge.payment_intent?.id;
+  if (!piId) return;
+
+  // Find the campaign that has this PI in its budget_payments
+  const { data: campaigns } = await getSupabase()
+    .from("ad_campaigns")
+    .select("id, budget_payments, refunded_amount")
+    .contains("budget_payments", [{ payment_intent: piId }]);
+  const campaign = campaigns?.[0];
+  if (!campaign) {
+    console.log("No campaign found for refunded PI:", piId);
+    return;
+  }
+
+  // Recompute refunded totals from Stripe's authoritative amount_refunded (cents)
+  const payments = (campaign.budget_payments as any[]) || [];
+  const totalRefundedCents = Number(charge.amount_refunded || 0);
+  const updated = payments.map((p) =>
+    p.payment_intent === piId ? { ...p, refunded_cents: totalRefundedCents } : p,
+  );
+  const totalRefundedUsd = updated.reduce(
+    (s, p) => s + Number(p.refunded_cents || 0) / 100,
+    0,
+  );
+
+  await getSupabase()
+    .from("ad_campaigns")
+    .update({ budget_payments: updated, refunded_amount: totalRefundedUsd })
+    .eq("id", campaign.id);
+}
+
+async function handleDispute(dispute: any) {
+  const piId = typeof dispute.payment_intent === "string"
+    ? dispute.payment_intent
+    : dispute.payment_intent?.id;
+  if (!piId) return;
+  const { data: campaigns } = await getSupabase()
+    .from("ad_campaigns")
+    .select("id, campaign_name, user_id")
+    .contains("budget_payments", [{ payment_intent: piId }]);
+  const campaign = campaigns?.[0];
+  if (!campaign) return;
+  await getSupabase()
+    .from("ad_campaigns")
+    .update({
+      dispute_status: dispute.status,
+      status: "paused",
+    })
+    .eq("id", campaign.id);
+
+  // Notify admins so someone can respond
+  const { data: admins } = await getSupabase()
+    .from("user_roles")
+    .select("user_id")
+    .eq("role", "admin");
+  for (const admin of admins || []) {
+    const { data: adminUser } = await getSupabase().auth.admin.getUserById(admin.user_id);
+    const email = adminUser?.user?.email;
+    if (!email) continue;
+    await enqueueEmail({
+      to: email,
+      label: "ad_campaign_dispute",
+      subject: `⚠️ Dispute opened on ${campaign.campaign_name}`,
+      html: `<p>A payment dispute (${dispute.status}) was opened on <strong>${campaign.campaign_name}</strong>. The campaign has been paused.</p><p>Review evidence in the Stripe dashboard.</p>`,
+    });
+  }
+}
+
+async function handlePaymentFailed(pi: any) {
+  const campaignId = pi.metadata?.campaignId;
+  if (!campaignId) return;
+  const err = pi.last_payment_error?.message || "Payment failed";
+  await getSupabase()
+    .from("ad_campaigns")
+    .update({ last_payment_error: err })
+    .eq("id", campaignId);
+  console.log("Recorded payment failure for", campaignId, err);
+}
+
 async function handleWebhook(req: Request, env: StripeEnv) {
   const event = await verifyWebhook(req, env);
 
@@ -151,9 +233,18 @@ async function handleWebhook(req: Request, env: StripeEnv) {
       }
       break;
     }
-    case "transaction.payment_failed":
+    case "charge.refunded":
+      await handleChargeRefunded(event.data.object);
+      break;
+    case "charge.dispute.created":
+    case "charge.dispute.funds_withdrawn":
+      await handleDispute(event.data.object);
+      break;
+    case "payment_intent.payment_failed":
+      await handlePaymentFailed(event.data.object);
+      break;
     case "checkout.session.async_payment_failed":
-      console.log("Payment failed:", event.data.object?.id);
+      console.log("Async payment failed:", (event.data.object as any)?.id);
       break;
     default:
       console.log("Unhandled event:", event.type);

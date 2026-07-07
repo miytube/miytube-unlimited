@@ -84,7 +84,6 @@ Deno.serve(async (req) => {
           currency: "usd",
           product: "ad_campaign_custom",
           unit_amount: customAmountCents,
-          tax_behavior: "exclusive",
         },
         quantity: 1,
       };
@@ -111,8 +110,11 @@ Deno.serve(async (req) => {
         userId: user.id,
         campaignId,
         purpose: "campaign_payment",
+        managed_payments: "true",
       },
-      automatic_tax: { enabled: true },
+      // Full compliance handling: Stripe collects/files/remits tax + handles
+      // fraud, disputes, and transaction support for supported buyer countries.
+      managed_payments: { enabled: true },
     } as any);
 
     // Stash the session id on the campaign so webhooks / UI can correlate

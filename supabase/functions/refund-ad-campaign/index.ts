@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) throw new Error("Unauthorized");
 
-    const { campaignId, environment } = await req.json();
+    const { campaignId, environment, reason, finalStatus } = await req.json();
     if (!campaignId || (environment !== "sandbox" && environment !== "live")) {
       throw new Error("Invalid input");
     }
@@ -70,7 +70,7 @@ Deno.serve(async (req) => {
       const refund = await stripe.refunds.create({
         payment_intent: p.payment_intent,
         amount: toRefund,
-        metadata: { campaignId, reason: "campaign_cancellation" },
+        metadata: { campaignId, reason: reason || "campaign_cancellation" },
       });
       refunds.push({ payment_intent: p.payment_intent, amount: toRefund });
       p.refunded_cents = already + toRefund;
@@ -85,7 +85,8 @@ Deno.serve(async (req) => {
       .update({
         refunded_amount: alreadyRefunded + totalRefundedNow,
         budget_payments: sortedPayments,
-        status: "completed",
+        status: finalStatus || "completed",
+        ...(reason ? { rejection_reason: reason } : {}),
       })
       .eq("id", campaignId);
 
