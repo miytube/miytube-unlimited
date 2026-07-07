@@ -209,6 +209,22 @@ const Account = () => {
             </form>
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Receipt className="h-5 w-5" /> Billing
+            </CardTitle>
+            <CardDescription>See every charge and refund on your account.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline" className="w-full justify-between">
+              <Link to="/account/payments">
+                View payment history
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );
