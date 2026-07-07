@@ -10,7 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity, Cloud, Sparkles, Image as ImageIcon, MessageSquare } from 'lucide-react';
+import { Shield, Users, Video, BarChart3, Settings, Trash2, Newspaper, UserPlus, Wrench, Activity, Cloud, Sparkles, Image as ImageIcon, MessageSquare, Megaphone } from 'lucide-react';
+import AdCampaignsManager from '@/components/admin/AdCampaignsManager';
 import { BreakingNewsManager } from '@/components/admin/BreakingNewsManager';
 import PartnerApplicationsManager from '@/components/admin/PartnerApplicationsManager';
 import { RepairMissingFilesManager } from '@/components/admin/RepairMissingFilesManager';
