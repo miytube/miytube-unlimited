@@ -45,7 +45,6 @@ Deno.serve(async (req) => {
           currency: "usd",
           product: "ad_campaign_custom",
           unit_amount: amountCents,
-          tax_behavior: "exclusive",
         },
         quantity: 1,
       }],
@@ -67,8 +66,9 @@ Deno.serve(async (req) => {
         campaignId,
         purpose: "campaign_topup",
         topupCents: String(amountCents),
+        managed_payments: "true",
       },
-      automatic_tax: { enabled: true },
+      managed_payments: { enabled: true },
     } as any);
 
     return new Response(JSON.stringify({ clientSecret: session.client_secret }), {
