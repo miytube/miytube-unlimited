@@ -30,6 +30,7 @@ interface Campaign {
   rejection_reason: string | null;
   admin_notes: string | null;
   dispute_status: string | null;
+  budget_payments: any[] | null;
 }
 
 type Action = "approve" | "reject" | "request_changes";
@@ -147,6 +148,36 @@ export default function AdCampaignsManager() {
                     )}
                     {c.admin_notes && (
                       <p className="text-xs text-muted-foreground">Notes: {c.admin_notes}</p>
+                    )}
+                    {Array.isArray(c.budget_payments) && c.budget_payments.length > 0 && (
+                      <details className="text-xs bg-muted/40 rounded p-2">
+                        <summary className="cursor-pointer font-medium">
+                          Transaction breakdown ({c.budget_payments.length})
+                        </summary>
+                        <div className="mt-2 space-y-1">
+                          {c.budget_payments.map((p: any, i: number) => (
+                            <div key={i} className="flex justify-between gap-2 font-mono">
+                              <span>{p.kind === "topup" ? "top-up" : "initial"} · {new Date(p.paid_at).toLocaleDateString()}</span>
+                              <span>
+                                +${Number(p.amount).toFixed(2)}
+                                {Number(p.refunded_cents || 0) > 0 && (
+                                  <span className="text-red-600 ml-2">−${(Number(p.refunded_cents) / 100).toFixed(2)} refunded</span>
+                                )}
+                              </span>
+                            </div>
+                          ))}
+                          <div className="flex justify-between pt-1 border-t font-semibold">
+                            <span>Spent shown to advertiser</span>
+                            <span>${Number(c.amount_spent).toFixed(2)}</span>
+                          </div>
+                          {Number(c.refunded_amount) > 0 && (
+                            <div className="flex justify-between text-red-600">
+                              <span>Total refunded</span>
+                              <span>${Number(c.refunded_amount).toFixed(2)}</span>
+                            </div>
+                          )}
+                        </div>
+                      </details>
                     )}
                     {tab === "pending_review" && (
                       <div className="flex gap-2 pt-2">

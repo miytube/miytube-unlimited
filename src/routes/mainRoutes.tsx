@@ -34,6 +34,7 @@ import LegacyVideoRedirect from "@/pages/LegacyVideoRedirect";
 import Watchlist from "@/pages/Watchlist";
 import BreakingNews from "@/pages/BreakingNews";
 import CampaignCheckoutReturn from "@/pages/CampaignCheckoutReturn";
+import PaymentHistory from "@/pages/PaymentHistory";
 
 // New pages to fix 404s
 import HowToStyle from "@/pages/HowToStyle";
@@ -114,6 +115,7 @@ export const mainRoutes = [
   <Route key="forgot-password" path="/forgot-password" element={<ForgotPassword />} />,
   <Route key="reset-password" path="/reset-password" element={<ResetPassword />} />,
   <Route key="account" path="/account" element={<Account />} />,
+  <Route key="account-payments" path="/account/payments" element={<PaymentHistory />} />,
   <Route key="admin" path="/admin" element={<Admin />} />,
   <Route key="monetization" path="/monetization" element={<Monetization />} />,
   <Route key="watchlist" path="/watchlist" element={<Watchlist />} />,

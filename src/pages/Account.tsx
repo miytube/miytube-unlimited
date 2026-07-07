@@ -9,7 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Layout } from '@/components/Layout';
-import { Mail, User, Lock, Save, Loader2 } from 'lucide-react';
+import { Mail, User, Lock, Save, Loader2, Receipt, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Account = () => {
   const { user, loading: authLoading } = useAuth();
@@ -206,6 +207,22 @@ const Account = () => {
                 {saving ? 'Updating...' : 'Update password'}
               </Button>
             </form>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Receipt className="h-5 w-5" /> Billing
+            </CardTitle>
+            <CardDescription>See every charge and refund on your account.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline" className="w-full justify-between">
+              <Link to="/account/payments">
+                View payment history
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
