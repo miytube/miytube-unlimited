@@ -206,6 +206,48 @@ async function handleDispute(dispute: any) {
   }
 }
 
+async function handleDisputeClosed(dispute: any) {
+  const piId = typeof dispute.payment_intent === "string"
+    ? dispute.payment_intent
+    : dispute.payment_intent?.id;
+  if (!piId) return;
+  const { data: campaigns } = await getSupabase()
+    .from("ad_campaigns")
+    .select("id, campaign_name, user_id, status")
+    .contains("budget_payments", [{ payment_intent: piId }]);
+  const campaign = campaigns?.[0];
+  if (!campaign) return;
+
+  const won = dispute.status === "won";
+  await getSupabase()
+    .from("ad_campaigns")
+    .update({
+      dispute_status: dispute.status,
+      // If dispute was won → resume (advertiser keeps money, campaign continues).
+      // If lost → mark canceled (money already taken back by cardholder's bank).
+      status: won ? "active" : "canceled",
+    })
+    .eq("id", campaign.id);
+
+  const { data: admins } = await getSupabase()
+    .from("user_roles")
+    .select("user_id")
+    .eq("role", "admin");
+  for (const admin of admins || []) {
+    const { data: adminUser } = await getSupabase().auth.admin.getUserById(admin.user_id);
+    const email = adminUser?.user?.email;
+    if (!email) continue;
+    await enqueueEmail({
+      to: email,
+      label: "ad_campaign_dispute_closed",
+      subject: won
+        ? `✅ Dispute won on ${campaign.campaign_name}`
+        : `❌ Dispute lost on ${campaign.campaign_name}`,
+      html: `<p>The payment dispute on <strong>${campaign.campaign_name}</strong> closed as <strong>${dispute.status}</strong>. Campaign is now <strong>${won ? "active again" : "canceled"}</strong>.</p>`,
+    });
+  }
+}
+
 async function handlePaymentFailed(pi: any) {
   const campaignId = pi.metadata?.campaignId;
   if (!campaignId) return;
@@ -239,6 +281,9 @@ async function handleWebhook(req: Request, env: StripeEnv) {
     case "charge.dispute.created":
     case "charge.dispute.funds_withdrawn":
       await handleDispute(event.data.object);
+      break;
+    case "charge.dispute.closed":
+      await handleDisputeClosed(event.data.object);
       break;
     case "payment_intent.payment_failed":
       await handlePaymentFailed(event.data.object);

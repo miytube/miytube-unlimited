@@ -9,7 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Layout } from '@/components/Layout';
-import { Mail, User, Lock, Save, Loader2 } from 'lucide-react';
+import { Mail, User, Lock, Save, Loader2, Receipt, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Account = () => {
   const { user, loading: authLoading } = useAuth();
