@@ -6,7 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, DollarSign, Target, Megaphone, Calendar, Globe, Image } from 'lucide-react';
+import { Loader2, DollarSign, Target, Megaphone, Calendar, Image, CreditCard, Star } from 'lucide-react';
+import { CampaignCheckout } from './CampaignCheckout';
 
 const AD_FORMATS = [
   { id: 'discovery', name: 'Discovery Ad', description: 'Appears in search results and homepage', price: '$0.01/view' },
@@ -26,6 +27,16 @@ const CATEGORIES = [
 
 const CTA_OPTIONS = ['Learn More', 'Shop Now', 'Sign Up', 'Watch Now', 'Download', 'Get Offer', 'Book Now', 'Contact Us'];
 
+type PricingChoice =
+  | { kind: 'tier'; priceId: 'ad_starter_10' | 'ad_growth_50' | 'ad_enterprise_500'; amount: number; label: string }
+  | { kind: 'custom'; amount: number };
+
+const TIERS: Array<Extract<PricingChoice, { kind: 'tier' }> & { recommended?: boolean; features: string[] }> = [
+  { kind: 'tier', priceId: 'ad_starter_10', amount: 10, label: 'Starter', features: ['Discovery ads', 'Basic targeting', 'Up to 1,000 views/day'] },
+  { kind: 'tier', priceId: 'ad_growth_50', amount: 50, label: 'Growth', recommended: true, features: ['All ad formats', 'Advanced targeting', 'Up to 10,000 views/day', 'Priority placement'] },
+  { kind: 'tier', priceId: 'ad_enterprise_500', amount: 500, label: 'Enterprise', features: ['Premium placement', 'Unlimited views', 'Dedicated account manager', 'A/B testing'] },
+];
+
 interface CreateAdFormProps {
   onSuccess?: () => void;
 }
@@ -37,7 +48,6 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
 
-  // Form state
   const [campaignName, setCampaignName] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [businessWebsite, setBusinessWebsite] = useState('');
@@ -49,43 +59,44 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [targetAudience, setTargetAudience] = useState('');
   const [targetCategories, setTargetCategories] = useState<string[]>([]);
   const [dailyBudget, setDailyBudget] = useState('10.00');
-  const [totalBudget, setTotalBudget] = useState('100.00');
+  const [customTotalBudget, setCustomTotalBudget] = useState('100.00');
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState('');
   const [mediaUrl, setMediaUrl] = useState('');
+  const [pricingKind, setPricingKind] = useState<'tier' | 'custom'>('tier');
+  const [selectedTier, setSelectedTier] = useState<typeof TIERS[number]>(TIERS[1]);
+  const [newCampaignId, setNewCampaignId] = useState<string | null>(null);
+
+  const pricing: PricingChoice = pricingKind === 'tier'
+    ? selectedTier
+    : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
 
   const toggleCategory = (cat: string) => {
-    setTargetCategories(prev =>
-      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
-    );
+    setTargetCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
   };
 
   const handleSubmit = async () => {
     if (!user) {
-      toast({ title: "Sign in required", description: "Please sign in to create an ad campaign.", variant: "destructive" });
+      toast({ title: 'Sign in required', description: 'Please sign in to create an ad campaign.', variant: 'destructive' });
       navigate('/auth');
       return;
     }
-
     if (!campaignName.trim() || !businessName.trim() || !headline.trim() || !destinationUrl.trim()) {
-      toast({ title: "Missing fields", description: "Please fill in all required fields.", variant: "destructive" });
+      toast({ title: 'Missing fields', description: 'Please fill in all required fields.', variant: 'destructive' });
       return;
     }
-
     if (adFormat === 'vignette' && !mediaUrl.trim()) {
-      toast({ title: "Wallpaper media required", description: "Vignette ads need an image or video URL.", variant: "destructive" });
+      toast({ title: 'Wallpaper media required', description: 'Vignette ads need an image or video URL.', variant: 'destructive' });
       return;
     }
-
-    const budget = parseFloat(totalBudget);
-    if (isNaN(budget) || budget < 10) {
-      toast({ title: "Invalid budget", description: "Minimum total budget is $10.00", variant: "destructive" });
+    if (pricing.amount < 10) {
+      toast({ title: 'Invalid budget', description: 'Minimum budget is $10.00', variant: 'destructive' });
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('ad_campaigns')
         .insert({
           user_id: user.id,
@@ -101,23 +112,22 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           target_audience: targetAudience.trim() || null,
           target_categories: targetCategories,
           daily_budget: parseFloat(dailyBudget) || 10,
-          total_budget: budget,
+          total_budget: pricing.amount,
           start_date: startDate,
           end_date: endDate || null,
           status: 'pending_payment' as any,
           payment_status: 'unpaid',
-        });
+        })
+        .select('id')
+        .single();
 
       if (error) throw error;
-
-      toast({
-        title: "Campaign Created!",
-        description: "Your ad campaign has been submitted. Complete payment to activate it.",
-      });
-      onSuccess?.();
+      setNewCampaignId(data!.id as string);
+      setStep(5);
+      toast({ title: 'Campaign saved', description: 'Complete payment to submit it for review.' });
     } catch (err: any) {
       console.error('Ad creation error:', err);
-      toast({ title: "Error", description: err.message || "Failed to create campaign.", variant: "destructive" });
+      toast({ title: 'Error', description: err.message || 'Failed to create campaign.', variant: 'destructive' });
     } finally {
       setIsSubmitting(false);
     }
@@ -127,46 +137,40 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
 
   return (
     <div className="space-y-6">
-      {/* Progress Steps */}
       <div className="flex items-center gap-2 mb-6">
-        {[1, 2, 3, 4].map(s => (
+        {[1, 2, 3, 4, 5].map(s => (
           <React.Fragment key={s}>
             <button
-              onClick={() => setStep(s)}
+              onClick={() => (s < 5 || newCampaignId) && setStep(s)}
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                 step === s ? 'bg-primary text-primary-foreground' : step > s ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'
               }`}
             >
               {s}
             </button>
-            {s < 4 && <div className={`flex-1 h-0.5 ${step > s ? 'bg-primary' : 'bg-muted'}`} />}
+            {s < 5 && <div className={`flex-1 h-0.5 ${step > s ? 'bg-primary' : 'bg-muted'}`} />}
           </React.Fragment>
         ))}
       </div>
 
-      {/* Step 1: Business Info */}
       {step === 1 && (
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center gap-2 mb-4">
             <Megaphone className="h-5 w-5 text-primary" />
             <h3 className="text-lg font-semibold">Campaign Details</h3>
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1">Campaign Name *</label>
             <Input value={campaignName} onChange={e => setCampaignName(e.target.value)} placeholder="e.g. Summer Sale Promo" />
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1">Business Name *</label>
             <Input value={businessName} onChange={e => setBusinessName(e.target.value)} placeholder="Your business name" />
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1">Business Website</label>
             <Input value={businessWebsite} onChange={e => setBusinessWebsite(e.target.value)} placeholder="https://yourbusiness.com" />
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1">Ad Format *</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
@@ -185,189 +189,172 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               ))}
             </div>
           </div>
-
-          <Button onClick={() => setStep(2)} className="w-full" disabled={!campaignName.trim() || !businessName.trim()}>
-            Next: Creative
-          </Button>
+          <Button onClick={() => setStep(2)} className="w-full" disabled={!campaignName.trim() || !businessName.trim()}>Next: Creative</Button>
         </div>
       )}
 
-      {/* Step 2: Creative */}
       {step === 2 && (
         <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center gap-2 mb-4">
-            <Image className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Ad Creative</h3>
-          </div>
-
+          <div className="flex items-center gap-2 mb-4"><Image className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Ad Creative</h3></div>
           <div>
             <label className="block text-sm font-medium mb-1">Headline * (max 90 chars)</label>
             <Input value={headline} onChange={e => setHeadline(e.target.value.slice(0, 90))} placeholder="Catchy headline for your ad" />
             <span className="text-xs text-muted-foreground">{headline.length}/90</span>
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1">Description</label>
-            <textarea
-              value={description}
-              onChange={e => setDescription(e.target.value.slice(0, 500))}
-              placeholder="Tell viewers about your product or service"
-              className="w-full p-2 rounded-md border bg-background min-h-[80px]"
-            />
+            <textarea value={description} onChange={e => setDescription(e.target.value.slice(0, 500))} placeholder="Tell viewers about your product or service" className="w-full p-2 rounded-md border bg-background min-h-[80px]" />
             <span className="text-xs text-muted-foreground">{description.length}/500</span>
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1">Call to Action</label>
             <Select value={callToAction} onValueChange={setCallToAction}>
               <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {CTA_OPTIONS.map(cta => (
-                  <SelectItem key={cta} value={cta}>{cta}</SelectItem>
-                ))}
-              </SelectContent>
+              <SelectContent>{CTA_OPTIONS.map(cta => <SelectItem key={cta} value={cta}>{cta}</SelectItem>)}</SelectContent>
             </Select>
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-1">Destination URL *</label>
             <Input value={destinationUrl} onChange={e => setDestinationUrl(e.target.value)} placeholder="https://yourbusiness.com/landing-page" />
           </div>
-
           {adFormat === 'vignette' && (
             <div>
-              <label className="block text-sm font-medium mb-1">
-                Wallpaper Media URL * <span className="text-xs text-muted-foreground font-normal">(image or .mp4/.webm video)</span>
-              </label>
-              <Input
-                value={mediaUrl}
-                onChange={e => setMediaUrl(e.target.value)}
-                placeholder="https://yourcdn.com/wallpaper.jpg"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Recommended: 1920×1080 or larger. Keep important content centered — the middle ~1400px is covered by the page.
-              </p>
+              <label className="block text-sm font-medium mb-1">Wallpaper Media URL * <span className="text-xs text-muted-foreground font-normal">(image or .mp4/.webm video)</span></label>
+              <Input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://yourcdn.com/wallpaper.jpg" />
+              <p className="text-xs text-muted-foreground mt-1">Recommended: 1920×1080 or larger. Keep important content centered — the middle ~1400px is covered by the page.</p>
             </div>
           )}
-
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setStep(1)} className="flex-1">Back</Button>
-            <Button onClick={() => setStep(3)} className="flex-1" disabled={!headline.trim() || !destinationUrl.trim()}>
-              Next: Targeting
-            </Button>
+            <Button onClick={() => setStep(3)} className="flex-1" disabled={!headline.trim() || !destinationUrl.trim()}>Next: Targeting</Button>
           </div>
         </div>
       )}
 
-      {/* Step 3: Targeting */}
       {step === 3 && (
         <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center gap-2 mb-4">
-            <Target className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Audience Targeting</h3>
-          </div>
-
+          <div className="flex items-center gap-2 mb-4"><Target className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Audience Targeting</h3></div>
           <div>
             <label className="block text-sm font-medium mb-1">Target Audience Description</label>
             <Input value={targetAudience} onChange={e => setTargetAudience(e.target.value)} placeholder="e.g. Young professionals interested in tech" />
           </div>
-
           <div>
             <label className="block text-sm font-medium mb-2">Target Categories</label>
             <div className="flex flex-wrap gap-2">
               {CATEGORIES.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => toggleCategory(cat)}
-                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                    targetCategories.includes(cat) ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  }`}
-                >
-                  {cat}
-                </button>
+                <button key={cat} onClick={() => toggleCategory(cat)} className={`px-3 py-1 rounded-full text-sm transition-colors ${targetCategories.includes(cat) ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'}`}>{cat}</button>
               ))}
             </div>
           </div>
-
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setStep(2)} className="flex-1">Back</Button>
-            <Button onClick={() => setStep(4)} className="flex-1">Next: Budget & Payment</Button>
+            <Button onClick={() => setStep(4)} className="flex-1">Next: Budget</Button>
           </div>
         </div>
       )}
 
-      {/* Step 4: Budget & Payment */}
       {step === 4 && (
         <div className="space-y-4 animate-fade-in">
-          <div className="flex items-center gap-2 mb-4">
-            <DollarSign className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold">Budget & Schedule</h3>
+          <div className="flex items-center gap-2 mb-4"><DollarSign className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Choose Your Budget</h3></div>
+
+          <div className="flex gap-2 p-1 bg-muted rounded-lg">
+            <button
+              onClick={() => setPricingKind('tier')}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'tier' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+            >Packages</button>
+            <button
+              onClick={() => setPricingKind('custom')}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'custom' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+            >Custom budget</button>
           </div>
+
+          {pricingKind === 'tier' ? (
+            <div className="grid md:grid-cols-3 gap-3">
+              {TIERS.map(t => (
+                <button
+                  key={t.priceId}
+                  onClick={() => setSelectedTier(t)}
+                  className={`relative text-left p-4 rounded-lg border transition-all ${
+                    selectedTier.priceId === t.priceId ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'
+                  }`}
+                >
+                  {t.recommended && (
+                    <span className="absolute -top-2 right-3 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <Star className="h-2.5 w-2.5" /> Recommended
+                    </span>
+                  )}
+                  <div className="font-semibold">{t.label}</div>
+                  <div className="text-2xl font-bold text-primary my-1">${t.amount}</div>
+                  <ul className="text-xs text-muted-foreground space-y-1 mt-2">
+                    {t.features.map(f => <li key={f}>• {f}</li>)}
+                  </ul>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Daily Budget ($) *</label>
+                <Input type="number" min="1" step="0.01" value={dailyBudget} onChange={e => setDailyBudget(e.target.value)} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Total Budget ($) * <span className="text-xs text-muted-foreground">min $10</span></label>
+                <Input type="number" min="10" step="0.01" value={customTotalBudget} onChange={e => setCustomTotalBudget(e.target.value)} />
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Daily Budget ($) *</label>
-              <Input type="number" min="1" step="0.01" value={dailyBudget} onChange={e => setDailyBudget(e.target.value)} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Total Budget ($) *</label>
-              <Input type="number" min="10" step="0.01" value={totalBudget} onChange={e => setTotalBudget(e.target.value)} />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1 flex items-center gap-1">
-                <Calendar className="h-3 w-3" /> Start Date *
-              </label>
+              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> Start Date *</label>
               <Input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 flex items-center gap-1">
-                <Calendar className="h-3 w-3" /> End Date
-              </label>
+              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> End Date</label>
               <Input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
             </div>
           </div>
 
-          {/* Campaign Summary */}
           <div className="bg-muted/50 rounded-lg p-4 space-y-2">
             <h4 className="font-medium">Campaign Summary</h4>
             <div className="grid grid-cols-2 gap-2 text-sm">
               <span className="text-muted-foreground">Campaign:</span><span>{campaignName}</span>
               <span className="text-muted-foreground">Format:</span><span>{selectedFormat?.name}</span>
               <span className="text-muted-foreground">Rate:</span><span>{selectedFormat?.price}</span>
-              <span className="text-muted-foreground">Daily Budget:</span><span>${dailyBudget}</span>
-              <span className="text-muted-foreground">Total Budget:</span><span className="font-semibold text-primary">${totalBudget}</span>
+              <span className="text-muted-foreground">Plan:</span><span>{pricingKind === 'tier' ? selectedTier.label : 'Custom'}</span>
+              <span className="text-muted-foreground">Total to charge:</span><span className="font-semibold text-primary">${pricing.amount.toFixed(2)}</span>
               <span className="text-muted-foreground">Categories:</span><span>{targetCategories.join(', ') || 'All'}</span>
-            </div>
-          </div>
-
-          {/* Payment Info */}
-          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-            <h4 className="font-medium flex items-center gap-2">
-              <DollarSign className="h-4 w-4 text-primary" />
-              Payment Information
-            </h4>
-            <p className="text-sm text-muted-foreground mt-1">
-              Your campaign will be submitted for review. Once approved, you'll receive payment instructions via email.
-              MiyTube accepts payments via credit card, PayPal, and bank transfer.
-            </p>
-            <div className="mt-3 p-3 bg-background rounded border">
-              <div className="flex justify-between text-sm">
-                <span>Campaign Total:</span>
-                <span className="font-bold text-lg">${totalBudget}</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">You will only be charged when your ads are shown to viewers.</p>
             </div>
           </div>
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setStep(3)} className="flex-1">Back</Button>
-            <Button onClick={handleSubmit} className="flex-1" disabled={isSubmitting}>
-              {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <DollarSign className="h-4 w-4 mr-2" />}
-              {isSubmitting ? 'Submitting...' : 'Submit Campaign'}
+            <Button onClick={handleSubmit} className="flex-1" disabled={isSubmitting || pricing.amount < 10}>
+              {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <CreditCard className="h-4 w-4 mr-2" />}
+              {isSubmitting ? 'Saving...' : `Continue to Payment ($${pricing.amount.toFixed(2)})`}
             </Button>
+          </div>
+        </div>
+      )}
+
+      {step === 5 && newCampaignId && (
+        <div className="space-y-4 animate-fade-in">
+          <div className="flex items-center gap-2 mb-4">
+            <CreditCard className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold">Complete Payment</h3>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Charging <strong>${pricing.amount.toFixed(2)}</strong> for your campaign. Card details are handled securely — MiyTube never sees them.
+          </p>
+          <CampaignCheckout
+            campaignId={newCampaignId}
+            mode="initial"
+            priceId={pricing.kind === 'tier' ? pricing.priceId : undefined}
+            customAmountCents={pricing.kind === 'custom' ? Math.round(pricing.amount * 100) : undefined}
+          />
+          <div className="flex justify-between text-xs text-muted-foreground pt-2">
+            <span>Ref: {newCampaignId.slice(0, 8)}</span>
+            <button onClick={() => { onSuccess?.(); navigate('/advertising'); }} className="underline">Pay later</button>
           </div>
         </div>
       )}

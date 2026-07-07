@@ -3,8 +3,11 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, Eye, MousePointerClick, BarChart3, Pause, Play, Trash2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Loader2, Eye, MousePointerClick, BarChart3, Pause, Play, Trash2, CreditCard, Plus, XCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { CampaignCheckout } from './CampaignCheckout';
 
 interface Campaign {
   id: string;
@@ -16,6 +19,7 @@ interface Campaign {
   daily_budget: number;
   total_budget: number;
   amount_spent: number;
+  refunded_amount: number;
   impressions: number;
   clicks: number;
   views: number;
@@ -29,6 +33,7 @@ interface Campaign {
 const statusColors: Record<string, string> = {
   draft: 'bg-muted text-muted-foreground',
   pending_payment: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  pending_review: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
   active: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
   paused: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
   completed: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
@@ -40,6 +45,11 @@ export const MyCampaigns: React.FC = () => {
   const { toast } = useToast();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
+  const [payingCampaign, setPayingCampaign] = useState<Campaign | null>(null);
+  const [topupCampaign, setTopupCampaign] = useState<Campaign | null>(null);
+  const [topupAmount, setTopupAmount] = useState('25.00');
+  const [topupCheckoutId, setTopupCheckoutId] = useState<string | null>(null);
+  const [refundingId, setRefundingId] = useState<string | null>(null);
 
   const fetchCampaigns = async () => {
     if (!user) return;
@@ -49,56 +59,52 @@ export const MyCampaigns: React.FC = () => {
       .select('*')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error fetching campaigns:', error);
-    } else {
-      setCampaigns((data as any[]) || []);
-    }
+    if (error) console.error(error);
+    else setCampaigns((data as any[]) || []);
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchCampaigns();
-  }, [user]);
+  useEffect(() => { fetchCampaigns(); }, [user]);
 
   const togglePause = async (id: string, currentStatus: string) => {
     const newStatus = currentStatus === 'active' ? 'paused' : 'active';
-    const { error } = await supabase
-      .from('ad_campaigns')
-      .update({ status: newStatus })
-      .eq('id', id);
-
-    if (error) {
-      toast({ title: "Error", description: "Failed to update campaign.", variant: "destructive" });
-    } else {
-      toast({ title: "Updated", description: `Campaign ${newStatus === 'active' ? 'resumed' : 'paused'}.` });
-      fetchCampaigns();
-    }
+    const { error } = await supabase.from('ad_campaigns').update({ status: newStatus }).eq('id', id);
+    if (error) toast({ title: 'Error', description: 'Failed to update campaign.', variant: 'destructive' });
+    else { toast({ title: 'Updated', description: `Campaign ${newStatus === 'active' ? 'resumed' : 'paused'}.` }); fetchCampaigns(); }
   };
 
   const deleteCampaign = async (id: string) => {
-    const { error } = await supabase
-      .from('ad_campaigns')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from('ad_campaigns').delete().eq('id', id);
+    if (error) toast({ title: 'Error', description: 'Only draft campaigns can be deleted.', variant: 'destructive' });
+    else { toast({ title: 'Deleted', description: 'Campaign removed.' }); fetchCampaigns(); }
+  };
 
-    if (error) {
-      toast({ title: "Error", description: "Only draft campaigns can be deleted.", variant: "destructive" });
-    } else {
-      toast({ title: "Deleted", description: "Campaign removed." });
+  const cancelWithRefund = async (id: string) => {
+    if (!confirm('Cancel this campaign and refund the unspent budget? This cannot be undone.')) return;
+    setRefundingId(id);
+    try {
+      const { data, error } = await supabase.functions.invoke('refund-ad-campaign', {
+        body: { campaignId: id, environment: (await import('@/lib/stripe')).getStripeEnvironment() },
+      });
+      if (error || data?.error) throw new Error(error?.message || data?.error);
+      toast({ title: 'Refund issued', description: `$${Number(data.refunded).toFixed(2)} will be returned to your card.` });
       fetchCampaigns();
+    } catch (e: any) {
+      toast({ title: 'Refund failed', description: e.message, variant: 'destructive' });
+    } finally {
+      setRefundingId(null);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center py-8">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
-      </div>
-    );
-  }
+  const startTopup = (c: Campaign) => {
+    setTopupCampaign(c);
+    setTopupAmount('25.00');
+    setTopupCheckoutId(null);
+  };
 
+  if (loading) {
+    return <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+  }
   if (campaigns.length === 0) {
     return (
       <div className="text-center py-12 bg-card rounded-lg">
@@ -110,71 +116,120 @@ export const MyCampaigns: React.FC = () => {
   }
 
   return (
-    <div className="space-y-4">
-      {campaigns.map(campaign => (
-        <div key={campaign.id} className="bg-card rounded-lg border p-4 space-y-3">
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-semibold">{campaign.campaign_name}</h3>
-              <p className="text-sm text-muted-foreground">{campaign.business_name} · {campaign.ad_format.replace(/_/g, ' ')}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge className={statusColors[campaign.status] || ''}>
-                {campaign.status.replace(/_/g, ' ')}
-              </Badge>
-              {campaign.payment_status === 'unpaid' && campaign.status === 'pending_payment' && (
-                <Badge variant="outline" className="text-yellow-600 border-yellow-300">
-                  Awaiting Payment
-                </Badge>
-              )}
-            </div>
-          </div>
+    <>
+      <div className="space-y-4">
+        {campaigns.map(campaign => {
+          const remaining = Number(campaign.total_budget) - Number(campaign.amount_spent) - Number(campaign.refunded_amount || 0);
+          const canRefund = campaign.payment_status === 'paid' && remaining >= 0.5 && campaign.status !== 'completed';
+          return (
+            <div key={campaign.id} className="bg-card rounded-lg border p-4 space-y-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="font-semibold">{campaign.campaign_name}</h3>
+                  <p className="text-sm text-muted-foreground">{campaign.business_name} · {campaign.ad_format.replace(/_/g, ' ')}</p>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap justify-end">
+                  <Badge className={statusColors[campaign.status] || ''}>{campaign.status.replace(/_/g, ' ')}</Badge>
+                  {campaign.payment_status === 'unpaid' && campaign.status === 'pending_payment' && (
+                    <Badge variant="outline" className="text-yellow-600 border-yellow-300">Awaiting Payment</Badge>
+                  )}
+                  {campaign.status === 'pending_review' && (
+                    <Badge variant="outline" className="text-blue-600 border-blue-300">Under Review</Badge>
+                  )}
+                </div>
+              </div>
 
-          <p className="text-sm italic">"{campaign.headline}"</p>
+              <p className="text-sm italic">"{campaign.headline}"</p>
 
-          {/* Stats */}
-          <div className="grid grid-cols-4 gap-3">
-            <div className="text-center p-2 bg-muted/50 rounded">
-              <Eye className="h-4 w-4 mx-auto text-muted-foreground mb-1" />
-              <div className="text-lg font-bold">{campaign.impressions.toLocaleString()}</div>
-              <div className="text-xs text-muted-foreground">Impressions</div>
-            </div>
-            <div className="text-center p-2 bg-muted/50 rounded">
-              <MousePointerClick className="h-4 w-4 mx-auto text-muted-foreground mb-1" />
-              <div className="text-lg font-bold">{campaign.clicks.toLocaleString()}</div>
-              <div className="text-xs text-muted-foreground">Clicks</div>
-            </div>
-            <div className="text-center p-2 bg-muted/50 rounded">
-              <BarChart3 className="h-4 w-4 mx-auto text-muted-foreground mb-1" />
-              <div className="text-lg font-bold">{(Number(campaign.ctr) * 100).toFixed(1)}%</div>
-              <div className="text-xs text-muted-foreground">CTR</div>
-            </div>
-            <div className="text-center p-2 bg-muted/50 rounded">
-              <div className="text-lg font-bold">${Number(campaign.amount_spent).toFixed(2)}</div>
-              <div className="text-xs text-muted-foreground">of ${Number(campaign.total_budget).toFixed(2)}</div>
-            </div>
-          </div>
+              <div className="grid grid-cols-4 gap-3">
+                <div className="text-center p-2 bg-muted/50 rounded"><Eye className="h-4 w-4 mx-auto text-muted-foreground mb-1" /><div className="text-lg font-bold">{campaign.impressions.toLocaleString()}</div><div className="text-xs text-muted-foreground">Impressions</div></div>
+                <div className="text-center p-2 bg-muted/50 rounded"><MousePointerClick className="h-4 w-4 mx-auto text-muted-foreground mb-1" /><div className="text-lg font-bold">{campaign.clicks.toLocaleString()}</div><div className="text-xs text-muted-foreground">Clicks</div></div>
+                <div className="text-center p-2 bg-muted/50 rounded"><BarChart3 className="h-4 w-4 mx-auto text-muted-foreground mb-1" /><div className="text-lg font-bold">{(Number(campaign.ctr) * 100).toFixed(1)}%</div><div className="text-xs text-muted-foreground">CTR</div></div>
+                <div className="text-center p-2 bg-muted/50 rounded"><div className="text-lg font-bold">${Number(campaign.amount_spent).toFixed(2)}</div><div className="text-xs text-muted-foreground">of ${Number(campaign.total_budget).toFixed(2)}</div></div>
+              </div>
 
-          {/* Actions */}
-          <div className="flex gap-2">
-            {(campaign.status === 'active' || campaign.status === 'paused') && (
+              <div className="flex gap-2 flex-wrap">
+                {campaign.payment_status === 'unpaid' && (
+                  <Button size="sm" onClick={() => setPayingCampaign(campaign)}>
+                    <CreditCard className="h-3 w-3 mr-1" /> Pay ${Number(campaign.total_budget).toFixed(2)}
+                  </Button>
+                )}
+                {(campaign.status === 'active' || campaign.status === 'paused') && (
+                  <Button variant="outline" size="sm" onClick={() => togglePause(campaign.id, campaign.status)}>
+                    {campaign.status === 'active' ? <Pause className="h-3 w-3 mr-1" /> : <Play className="h-3 w-3 mr-1" />}
+                    {campaign.status === 'active' ? 'Pause' : 'Resume'}
+                  </Button>
+                )}
+                {campaign.payment_status === 'paid' && ['active', 'paused', 'pending_review'].includes(campaign.status) && (
+                  <Button variant="outline" size="sm" onClick={() => startTopup(campaign)}>
+                    <Plus className="h-3 w-3 mr-1" /> Add budget
+                  </Button>
+                )}
+                {canRefund && (
+                  <Button variant="outline" size="sm" onClick={() => cancelWithRefund(campaign.id)} disabled={refundingId === campaign.id}>
+                    {refundingId === campaign.id ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <XCircle className="h-3 w-3 mr-1" />}
+                    Cancel & refund ${remaining.toFixed(2)}
+                  </Button>
+                )}
+                {campaign.status === 'draft' && (
+                  <Button variant="destructive" size="sm" onClick={() => deleteCampaign(campaign.id)}>
+                    <Trash2 className="h-3 w-3 mr-1" /> Delete
+                  </Button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Pay dialog */}
+      <Dialog open={!!payingCampaign} onOpenChange={(o) => { if (!o) { setPayingCampaign(null); fetchCampaigns(); } }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Pay for {payingCampaign?.campaign_name}</DialogTitle>
+            <DialogDescription>Charging ${payingCampaign && Number(payingCampaign.total_budget).toFixed(2)} — your campaign goes into review once payment succeeds.</DialogDescription>
+          </DialogHeader>
+          {payingCampaign && (
+            <CampaignCheckout
+              campaignId={payingCampaign.id}
+              mode="initial"
+              customAmountCents={Math.round(Number(payingCampaign.total_budget) * 100)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Top-up dialog */}
+      <Dialog open={!!topupCampaign} onOpenChange={(o) => { if (!o) { setTopupCampaign(null); setTopupCheckoutId(null); fetchCampaigns(); } }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add budget to {topupCampaign?.campaign_name}</DialogTitle>
+            <DialogDescription>Add funds to keep your campaign running. Minimum $5.00.</DialogDescription>
+          </DialogHeader>
+          {topupCampaign && !topupCheckoutId && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Amount ($) *</label>
+                <Input type="number" min="5" step="0.01" value={topupAmount} onChange={e => setTopupAmount(e.target.value)} />
+              </div>
               <Button
-                variant="outline"
-                size="sm"
-                onClick={() => togglePause(campaign.id, campaign.status)}
+                onClick={() => setTopupCheckoutId(topupCampaign.id)}
+                disabled={parseFloat(topupAmount) < 5}
+                className="w-full"
               >
-                {campaign.status === 'active' ? <Pause className="h-3 w-3 mr-1" /> : <Play className="h-3 w-3 mr-1" />}
-                {campaign.status === 'active' ? 'Pause' : 'Resume'}
+                <CreditCard className="h-4 w-4 mr-2" /> Continue to payment (${parseFloat(topupAmount).toFixed(2)})
               </Button>
-            )}
-            {campaign.status === 'draft' && (
-              <Button variant="destructive" size="sm" onClick={() => deleteCampaign(campaign.id)}>
-                <Trash2 className="h-3 w-3 mr-1" /> Delete
-              </Button>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
+            </div>
+          )}
+          {topupCampaign && topupCheckoutId && (
+            <CampaignCheckout
+              campaignId={topupCampaign.id}
+              mode="topup"
+              customAmountCents={Math.round(parseFloat(topupAmount) * 100)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
