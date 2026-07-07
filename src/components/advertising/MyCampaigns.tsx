@@ -141,11 +141,28 @@ export const MyCampaigns: React.FC = () => {
 
               <p className="text-sm italic">"{campaign.headline}"</p>
 
+              {(campaign as any).rejection_reason && campaign.status === 'rejected' && (
+                <div className="text-sm p-2 rounded bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900 text-red-800 dark:text-red-200">
+                  <strong>Rejected:</strong> {(campaign as any).rejection_reason}
+                </div>
+              )}
+              {(campaign as any).admin_notes && campaign.status === 'draft' && (
+                <div className="text-sm p-2 rounded bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 text-blue-800 dark:text-blue-200">
+                  <strong>Changes requested:</strong> {(campaign as any).admin_notes}
+                </div>
+              )}
+
               <div className="grid grid-cols-4 gap-3">
                 <div className="text-center p-2 bg-muted/50 rounded"><Eye className="h-4 w-4 mx-auto text-muted-foreground mb-1" /><div className="text-lg font-bold">{campaign.impressions.toLocaleString()}</div><div className="text-xs text-muted-foreground">Impressions</div></div>
                 <div className="text-center p-2 bg-muted/50 rounded"><MousePointerClick className="h-4 w-4 mx-auto text-muted-foreground mb-1" /><div className="text-lg font-bold">{campaign.clicks.toLocaleString()}</div><div className="text-xs text-muted-foreground">Clicks</div></div>
                 <div className="text-center p-2 bg-muted/50 rounded"><BarChart3 className="h-4 w-4 mx-auto text-muted-foreground mb-1" /><div className="text-lg font-bold">{(Number(campaign.ctr) * 100).toFixed(1)}%</div><div className="text-xs text-muted-foreground">CTR</div></div>
-                <div className="text-center p-2 bg-muted/50 rounded"><div className="text-lg font-bold">${Number(campaign.amount_spent).toFixed(2)}</div><div className="text-xs text-muted-foreground">of ${Number(campaign.total_budget).toFixed(2)}</div></div>
+                <div className="text-center p-2 bg-muted/50 rounded">
+                  <div className="text-lg font-bold">${Number(campaign.amount_spent).toFixed(2)}</div>
+                  <div className="text-xs text-muted-foreground">of ${Number(campaign.total_budget).toFixed(2)}</div>
+                  {Number(campaign.refunded_amount) > 0 && (
+                    <div className="text-[10px] text-green-600 mt-0.5">${Number(campaign.refunded_amount).toFixed(2)} refunded</div>
+                  )}
+                </div>
               </div>
 
               <div className="flex gap-2 flex-wrap">
