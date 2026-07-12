@@ -1,0 +1,2 @@
+UPDATE public.uploaded_videos SET category='other-sports' WHERE category='sports-other' AND subcategory IN ('tour-de-france','tour-de-france-stages-highlights','tour-de-france-riders-records-accidents');
+UPDATE public.uploaded_videos SET category='other-sports', subcategory='tour-de-france' WHERE id='37349568-f814-466c-a3ee-17b8c55e5a9d';
