@@ -1,0 +1,1 @@
+UPDATE public.uploaded_videos SET category='other-sports' WHERE category='sports-other';
