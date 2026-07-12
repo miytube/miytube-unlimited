@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public can view uploaded videos (no ip)" ON public.uploaded_videos;
