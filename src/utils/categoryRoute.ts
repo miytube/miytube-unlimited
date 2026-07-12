@@ -9,7 +9,7 @@ const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
 
 const CUSTOM_PAGE_CATEGORIES = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
 
-const CUSTOM_ONLY_CATEGORY_ROUTES = new Set(['soccer-and-football']);
+const CUSTOM_ONLY_CATEGORY_ROUTES = new Set(['soccer-and-football', 'other-sports']);
 
 const knownSidebarSlugs = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
 
