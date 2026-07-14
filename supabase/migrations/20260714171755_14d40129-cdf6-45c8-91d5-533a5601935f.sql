@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public rows visible via column-grants only" ON public.uploaded_videos;
