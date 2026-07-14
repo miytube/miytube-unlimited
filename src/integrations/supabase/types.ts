@@ -1035,6 +1035,39 @@ export type Database = {
         }
         Relationships: []
       }
+      uploaded_video_ips: {
+        Row: {
+          created_at: string
+          uploader_ip: string | null
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          uploader_ip?: string | null
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          uploader_ip?: string | null
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uploaded_video_ips_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: true
+            referencedRelation: "uploaded_videos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "uploaded_video_ips_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: true
+            referencedRelation: "uploaded_videos_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       uploaded_videos: {
         Row: {
           category: string | null
