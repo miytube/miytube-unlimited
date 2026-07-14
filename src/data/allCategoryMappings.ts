@@ -326,7 +326,7 @@ export const allCategoryMappings: Record<string, CategoryInfo> = {
   'music-artists-interviews': { title: 'Music Artists Interviews', description: 'Interviews with music artists', icon: Mic },
   'music-artists-news': { title: 'Music Artists News & Gossip', description: 'News and gossip about music artists', icon: Newspaper },
   'music-challenges': { title: 'Music Challenges', description: 'Music challenges and trends', icon: Trophy },
-  'music-christian': { title: 'Music Christian (Pop, Rap)', description: 'Christian pop and rap music', icon: Cross },
+  'music-christian': { title: 'Music Christian (Pop, Rap, Rock, R&B)', description: 'Christian pop, rap, rock, and R&B music', icon: Cross },
   'r-and-b': { title: 'R & B Music', description: 'Rhythm and blues music', icon: Music, parent: { route: '/music', name: 'Music' } },
   'musical-instruments': { title: 'Musical Instrument Players', description: 'Musical instrument performances', icon: Piano },
   
