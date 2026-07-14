@@ -1876,7 +1876,7 @@ export const newCategorySubcategories: SubcategoryMapping = {
     parent: { route: '/music', name: 'Music' }
   },
   '/music/christian': {
-    title: 'Christian (Pop, Rap, Rock)',
+    title: 'Christian (Pop, Rap, Rock, R&B)',
     description: 'Christian music',
     icon: Music,
     parent: { route: '/music', name: 'Music' }
