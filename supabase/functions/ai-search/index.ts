@@ -44,10 +44,6 @@ serve(async (req) => {
     let detectedCategory: string | null = category || null;
     let searchIntent = query;
 
-    let searchKeywords: string[] = [query];
-    let detectedCategory: string | null = category || null;
-    let searchIntent = query;
-
     // Step 1: Use AI to understand the search intent — authenticated callers only
     if (isAuthed && LOVABLE_API_KEY) {
       const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
