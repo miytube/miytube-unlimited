@@ -1,0 +1,1 @@
+CREATE POLICY "Public can view videos via public view" ON public.uploaded_videos FOR SELECT USING (true);
