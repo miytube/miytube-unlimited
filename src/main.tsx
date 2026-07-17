@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import { runStaleCacheCleanup } from './utils/staleCacheCleanup';
 import { installAdsenseOverlayBlocker } from './utils/adsenseOverlayBlocker';
+import { loadAdSenseIfHuman } from './utils/loadAdSense';
 
 // Render immediately — never block the UI on cache cleanup.
 createRoot(document.getElementById("root")!).render(
@@ -12,7 +13,7 @@ createRoot(document.getElementById("root")!).render(
   </React.StrictMode>
 );
 
-// Run cleanup in the background after first paint.
+// Run cleanup + gated AdSense load in the background after first paint.
 if (typeof window !== 'undefined') {
   const schedule = (cb: () => void) =>
     'requestIdleCallback' in window
@@ -21,5 +22,7 @@ if (typeof window !== 'undefined') {
   schedule(() => {
     runStaleCacheCleanup();
     installAdsenseOverlayBlocker();
+    // Only injects the AdSense script for verified real human visitors.
+    loadAdSenseIfHuman();
   });
 }
