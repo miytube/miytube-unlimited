@@ -75,6 +75,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
     setTargetCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
   };
 
+  const isSafeHttpUrl = (raw: string): boolean => {
+    try {
+      const u = new URL(raw.trim());
+      return u.protocol === 'https:' || u.protocol === 'http:';
+    } catch {
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
     if (!user) {
       toast({ title: 'Sign in required', description: 'Please sign in to create an ad campaign.', variant: 'destructive' });
@@ -85,8 +94,20 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
       toast({ title: 'Missing fields', description: 'Please fill in all required fields.', variant: 'destructive' });
       return;
     }
+    if (!isSafeHttpUrl(destinationUrl)) {
+      toast({ title: 'Invalid destination URL', description: 'Destination URL must start with https:// or http://', variant: 'destructive' });
+      return;
+    }
+    if (businessWebsite.trim() && !isSafeHttpUrl(businessWebsite)) {
+      toast({ title: 'Invalid business website', description: 'Business website must start with https:// or http://', variant: 'destructive' });
+      return;
+    }
     if (adFormat === 'vignette' && !mediaUrl.trim()) {
       toast({ title: 'Wallpaper media required', description: 'Vignette ads need an image or video URL.', variant: 'destructive' });
+      return;
+    }
+    if (mediaUrl.trim() && !isSafeHttpUrl(mediaUrl)) {
+      toast({ title: 'Invalid media URL', description: 'Media URL must start with https:// or http://', variant: 'destructive' });
       return;
     }
     if (pricing.amount < 10) {

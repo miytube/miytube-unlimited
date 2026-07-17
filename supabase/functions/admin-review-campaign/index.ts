@@ -72,7 +72,26 @@ Deno.serve(async (req) => {
       reviewed_by: user.id,
     };
 
+    const isSafeHttpUrl = (raw: unknown): boolean => {
+      if (typeof raw !== "string" || !raw) return false;
+      try {
+        const u = new URL(raw.trim());
+        return u.protocol === "https:" || u.protocol === "http:";
+      } catch {
+        return false;
+      }
+    };
+
     if (action === "approve") {
+      // Defense in depth: refuse to activate a campaign whose destination or
+      // media URL is not a plain http(s) link (blocks javascript:/data: XSS).
+      if (!isSafeHttpUrl(campaign.destination_url)) {
+        throw new Error("Campaign destination_url must be an http(s) URL");
+      }
+      if (campaign.media_url && !isSafeHttpUrl(campaign.media_url)) {
+        throw new Error("Campaign media_url must be an http(s) URL");
+      }
+
       await supabase
         .from("ad_campaigns")
         .update({
