@@ -24,7 +24,7 @@ const Upload = () => {
   const currentContentType = contentTypes[selectedContentType];
   
   const onUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
-    handleUpload(
+    return handleUpload(
       currentContentType.name,
       files,
       title,

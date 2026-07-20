@@ -124,7 +124,7 @@ const VideoUpload = () => {
     }
 
     if (successCount === 0) {
-      return;
+      throw new Error(failed.length > 0 ? `Upload failed: ${failed.join(', ')}` : 'No videos were published. Please try again.');
     }
 
     if (failed.length > 0) {
