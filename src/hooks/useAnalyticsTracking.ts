@@ -157,5 +157,5 @@ export const useAnalyticsTracking = () => {
       clearInterval(heartbeat);
       window.removeEventListener('beforeunload', cleanup);
     };
-  }, [location.pathname, user?.id, isAdmin, isLowQuality]);
+  }, [location.pathname, user?.id, isAdmin]);
 };
