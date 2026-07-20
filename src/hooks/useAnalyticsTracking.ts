@@ -51,13 +51,10 @@ export const useAnalyticsTracking = () => {
   }, [user?.id]);
 
   useEffect(() => {
-    // Skip all analytics for bots/crawlers — keeps quality signals clean
-    // for AdSense (high bounce rate from bots reduces ad fill rate).
+    // Skip all analytics for bots/crawlers so stats reflect real visitors.
     if (isBotRef.current) return;
 
-    // Skip datacenter/proxy/VPN traffic — these inflate pageview counts
-    // without producing real ad impressions and drag down RPM.
-    if (isLowQuality) return;
+
 
     // Skip tracking for admin users so owner visits don't inflate stats
     if (isAdmin) {
