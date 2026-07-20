@@ -177,12 +177,13 @@ export const useUploadHandler = () => {
       }
 
       if (successCount === 0) {
+        const message = finalFailed.length > 0
+          ? `Upload failed: ${finalFailed.map((f) => f.name).join(', ')}`
+          : 'No videos were published. Please try again.';
         failUpload(
-          finalFailed.length > 0
-            ? `Upload failed: ${finalFailed.map((f) => f.name).join(', ')}`
-            : 'No videos were published. Please try again.',
+          message,
         );
-        return;
+        throw new Error(message);
       }
       if (finalFailed.length > 0) {
         toast({
