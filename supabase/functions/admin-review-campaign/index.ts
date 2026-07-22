@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
         .update({
           ...reviewedFields,
           status: "draft",
-          payment_status: "unpaid", // ← force re-submission/re-pay
+          // Keep payment_status as-is so the advertiser doesn't have to pay again.
           admin_notes: reason,
         })
         .eq("id", campaignId);
