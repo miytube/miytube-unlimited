@@ -69,10 +69,11 @@ Deno.serve(async (req) => {
         campaignId,
         purpose: "campaign_topup",
         topupCents: String(amountCents),
-        managed_payments: "true",
+        managed_payments: "false",
       },
-      managed_payments: { enabled: true },
+      automatic_tax: { enabled: true },
     } as any);
+
 
     return new Response(JSON.stringify({ clientSecret: session.client_secret }), {
       status: 200,
