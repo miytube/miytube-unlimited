@@ -101,6 +101,10 @@ Deno.serve(async (req) => {
       ui_mode: "embedded_page",
       return_url: returnUrl,
       customer: customerId,
+      // Required by automatic_tax: save the billing address entered at
+      // checkout back to the Customer so Stripe can determine tax location.
+      customer_update: { address: "auto", name: "auto" },
+      billing_address_collection: "required",
       payment_intent_data: {
         description,
         metadata: {
