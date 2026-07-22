@@ -55,6 +55,8 @@ Deno.serve(async (req) => {
       ui_mode: "embedded_page",
       return_url: returnUrl,
       customer: customerId,
+      customer_update: { address: "auto", name: "auto" },
+      billing_address_collection: "required",
       payment_intent_data: {
         description: `Budget top-up — ${campaign.campaign_name}`,
         metadata: {
