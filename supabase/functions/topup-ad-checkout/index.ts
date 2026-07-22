@@ -55,6 +55,7 @@ Deno.serve(async (req) => {
       ui_mode: "embedded_page",
       return_url: returnUrl,
       customer: customerId,
+      payment_method_types: ["card"],
       customer_update: { address: "auto", name: "auto" },
       billing_address_collection: "required",
       payment_intent_data: {
