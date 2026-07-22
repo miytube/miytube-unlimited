@@ -190,7 +190,16 @@ export const MyCampaigns: React.FC = () => {
                     Cancel & refund ${remaining.toFixed(2)}
                   </Button>
                 )}
-                {campaign.status === 'draft' && (
+                {campaign.status === 'draft' && campaign.payment_status === 'paid' && (
+                  <Button size="sm" onClick={async () => {
+                    const { error } = await supabase.from('ad_campaigns').update({ status: 'pending_review', admin_notes: null }).eq('id', campaign.id);
+                    if (error) toast({ title: 'Error', description: error.message, variant: 'destructive' });
+                    else { toast({ title: 'Resubmitted', description: 'Campaign sent back for review.' }); fetchCampaigns(); }
+                  }}>
+                    Resubmit for review
+                  </Button>
+                )}
+                {campaign.status === 'draft' && campaign.payment_status !== 'paid' && (
                   <Button variant="destructive" size="sm" onClick={() => deleteCampaign(campaign.id)}>
                     <Trash2 className="h-3 w-3 mr-1" /> Delete
                   </Button>
