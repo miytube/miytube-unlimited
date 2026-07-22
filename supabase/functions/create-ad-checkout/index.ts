@@ -113,12 +113,13 @@ Deno.serve(async (req) => {
         userId: user.id,
         campaignId,
         purpose: "campaign_payment",
-        managed_payments: "true",
+        managed_payments: "false",
       },
-      // Full compliance handling: Stripe collects/files/remits tax + handles
-      // fraud, disputes, and transaction support for supported buyer countries.
-      managed_payments: { enabled: true },
+      // Advertising services aren't eligible for Managed Payments; use
+      // automatic_tax so Stripe still calculates/collects sales tax.
+      automatic_tax: { enabled: true },
     } as any);
+
 
     // Stash the session id on the campaign so webhooks / UI can correlate
     await supabase
