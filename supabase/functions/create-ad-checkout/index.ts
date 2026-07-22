@@ -82,7 +82,10 @@ Deno.serve(async (req) => {
       lineItem = {
         price_data: {
           currency: "usd",
-          product: "ad_campaign_custom",
+          product_data: {
+            name: "MiyTube Ad Campaign",
+            tax_code: "txcd_10103000",
+          },
           unit_amount: customAmountCents,
         },
         quantity: 1,
