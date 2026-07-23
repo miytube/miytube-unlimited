@@ -225,8 +225,27 @@ const Search = () => {
           </div>
         )}
 
+        {/* DB Fallback Results (works for anon users) */}
+        {!hasAIResults && dbVideos.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in">
+            {dbVideos.map((video: any) => (
+              <VideoCard
+                key={video.id}
+                id={video.id}
+                title={video.title}
+                thumbnail={video.thumbnail_url || video.cloud_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80'}
+                channelName={video.category || 'MiyTube'}
+                views={`${video.views || 0} views`}
+                timestamp={new Date(video.created_at).toLocaleDateString()}
+                duration={video.duration || '0:00'}
+                description={video.description || ''}
+              />
+            ))}
+          </div>
+        )}
+
         {/* Local Results Fallback */}
-        {!hasAIResults && localFilteredVideos.length > 0 && (
+        {!hasAIResults && dbVideos.length === 0 && localFilteredVideos.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in">
             {localFilteredVideos.slice(0, 20).map((video) => (
               <VideoCard
@@ -245,7 +264,7 @@ const Search = () => {
         )}
 
         {/* Empty State */}
-        {!isSearching && !hasAIResults && localFilteredVideos.length === 0 && (
+        {!isSearching && !isDbSearching && !hasAIResults && dbVideos.length === 0 && localFilteredVideos.length === 0 && (
           <div className="text-center py-12 bg-card rounded-lg">
             <SearchIcon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h2 className="text-xl font-medium mb-2">
