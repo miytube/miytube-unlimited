@@ -512,8 +512,9 @@ const Watch = () => {
 
           {/* Right Sidebar */}
           <div className="w-80 hidden lg:block space-y-4">
-            {/* Skyscraper (300x600) AdSense unit — top of right rail */}
-            <div className="flex justify-center">
+            {/* Skyscraper (300x600) AdSense unit — sticky so it stays on-screen
+                while the user watches the video (AdSense viewability recommendation). */}
+            <div className="sticky top-20 flex justify-center">
               <AdSlot
                 slot="8953833343"
                 format="vertical"
