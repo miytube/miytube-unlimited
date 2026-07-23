@@ -8,8 +8,10 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Loader2 } from 'lucide-react';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { supabase } from '@/integrations/supabase/client';
+import { z } from 'zod';
 
 const LOCAL_BUSINESS_JSONLD = {
   '@context': 'https://schema.org',
@@ -28,31 +30,96 @@ const LOCAL_BUSINESS_JSONLD = {
   },
 };
 
+const contactSchema = z.object({
+  name: z.string().trim().min(1, { message: 'Name is required' }).max(100, { message: 'Name must be less than 100 characters' }),
+  email: z.string().trim().email({ message: 'Invalid email address' }).max(255, { message: 'Email must be less than 255 characters' }),
+  subject: z.string().min(1, { message: 'Please select a subject' }),
+  message: z.string().trim().min(1, { message: 'Message is required' }).max(2000, { message: 'Message must be less than 2000 characters' }),
+});
+
+type ContactForm = z.infer<typeof contactSchema>;
+
 const Contact = () => {
   usePageSEO({
     title: 'Contact MiyTube — Get in touch with our team',
     description: 'Contact MiyTube support, business, or press. Email, phone, and headquarters address for help with your account or partnership inquiries.',
     path: '/contact',
   });
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
-  
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const [form, setForm] = useState<ContactForm>({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (field: keyof ContactForm, value: string) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // In a real app, this would send the form data to a server
-    toast({
-      title: "Message sent",
-      description: "We've received your message and will get back to you soon.",
-    });
-    
-    // Reset the form
-    setName('');
-    setEmail('');
-    setSubject('');
-    setMessage('');
+    setErrors({});
+
+    const result = contactSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: Partial<Record<keyof ContactForm, string>> = {};
+      result.error.errors.forEach(err => {
+        const field = err.path[0] as keyof ContactForm;
+        fieldErrors[field] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.functions.invoke('send-transactional-email', {
+        body: {
+          templateName: 'contact-form-submission',
+          recipientEmail: 'support@miytube.com',
+          idempotencyKey: `contact-${form.email}-${Date.now()}`,
+          templateData: {
+            name: form.name,
+            email: form.email,
+            subject: form.subject,
+            message: form.message,
+          },
+        },
+      });
+
+      if (error) {
+        console.error('Failed to send contact email:', error);
+        toast({
+          title: 'Message failed to send',
+          description: 'Please try again or email us directly at support@miytube.com.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Message sent',
+        description: "We've received your message and will get back to you soon.",
+      });
+
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (err) {
+      console.error('Contact form error:', err);
+      toast({
+        title: 'Message failed to send',
+        description: 'Please try again or email us directly at support@miytube.com.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,28 +147,32 @@ const Contact = () => {
                       <Label htmlFor="name">Your Name</Label>
                       <Input 
                         id="name" 
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        value={form.name}
+                        onChange={(e) => handleChange('name', e.target.value)}
                         placeholder="John Doe" 
                         required 
+                        maxLength={100}
                       />
+                      {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Address</Label>
                       <Input 
                         id="email" 
                         type="email" 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={form.email}
+                        onChange={(e) => handleChange('email', e.target.value)}
                         placeholder="john.doe@example.com" 
                         required 
+                        maxLength={255}
                       />
+                      {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
                     </div>
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="subject">Subject</Label>
-                    <Select value={subject} onValueChange={setSubject} required>
+                    <Select value={form.subject} onValueChange={(value) => handleChange('subject', value)} required>
                       <SelectTrigger id="subject">
                         <SelectValue placeholder="Select a subject" />
                       </SelectTrigger>
@@ -114,21 +185,33 @@ const Contact = () => {
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
+                    {errors.subject && <p className="text-sm text-destructive">{errors.subject}</p>}
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="message">Your Message</Label>
                     <Textarea 
                       id="message" 
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
+                      value={form.message}
+                      onChange={(e) => handleChange('message', e.target.value)}
                       placeholder="How can we help you?" 
                       rows={6} 
                       required 
+                      maxLength={2000}
                     />
+                    {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
                   </div>
                   
-                  <Button type="submit" className="w-full">Send Message</Button>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      'Send Message'
+                    )}
+                  </Button>
                 </form>
               </CardContent>
             </Card>
