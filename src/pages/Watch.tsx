@@ -24,6 +24,7 @@ import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
 import { subcategoryMappings } from '@/data/subcategoryMappings';
 import { sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { BannerAdSlot as WatchBannerAd } from '@/components/advertising/BannerAdSlot';
 import {
   AlertDialog,
   AlertDialogAction,
