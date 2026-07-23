@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
-import { Mail, Phone, MapPin, Loader2 } from 'lucide-react';
+import { Mail, Loader2 } from 'lucide-react';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
