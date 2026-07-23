@@ -396,9 +396,18 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <span className="text-muted-foreground">Campaign:</span><span>{campaignName}</span>
               <span className="text-muted-foreground">Format:</span><span>{selectedFormat?.name}</span>
-              <span className="text-muted-foreground">Rate:</span><span>{selectedFormat?.price}</span>
+              <span className="text-muted-foreground">Placement:</span>
+              <span>{placement === 'homepage' ? 'Homepage (Premium 5×)' : 'Watch pages'}</span>
               <span className="text-muted-foreground">Plan:</span><span>{pricingKind === 'tier' ? selectedTier.label : 'Custom'}</span>
-              <span className="text-muted-foreground">Total to charge:</span><span className="font-semibold text-primary">${pricing.amount.toFixed(2)}</span>
+              <span className="text-muted-foreground">Base price:</span><span>${pricing.amount.toFixed(2)}</span>
+              {placement === 'homepage' && (
+                <>
+                  <span className="text-muted-foreground">Homepage multiplier:</span>
+                  <span>× 5</span>
+                </>
+              )}
+              <span className="text-muted-foreground">Total to charge:</span>
+              <span className="font-semibold text-primary">${finalAmount.toFixed(2)}</span>
               <span className="text-muted-foreground">Categories:</span><span>{targetCategories.join(', ') || 'All'}</span>
             </div>
           </div>
@@ -407,7 +416,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <Button variant="outline" onClick={() => setStep(3)} className="flex-1">Back</Button>
             <Button onClick={handleSubmit} className="flex-1" disabled={isSubmitting || pricing.amount < 10}>
               {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <CreditCard className="h-4 w-4 mr-2" />}
-              {isSubmitting ? 'Saving...' : `Continue to Payment ($${pricing.amount.toFixed(2)})`}
+              {isSubmitting ? 'Saving...' : `Continue to Payment ($${finalAmount.toFixed(2)})`}
             </Button>
           </div>
         </div>
@@ -420,14 +429,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <h3 className="text-lg font-semibold">Complete Payment</h3>
           </div>
           <p className="text-sm text-muted-foreground">
-            Charging <strong>${pricing.amount.toFixed(2)}</strong> for your campaign. Card details are handled securely — MiyTube never sees them.
+            Charging <strong>${finalAmount.toFixed(2)}</strong> for your campaign. Card details are handled securely — MiyTube never sees them.
           </p>
           <CampaignCheckout
             campaignId={newCampaignId}
             mode="initial"
-            priceId={pricing.kind === 'tier' ? pricing.priceId : undefined}
-            customAmountCents={pricing.kind === 'custom' ? Math.round(pricing.amount * 100) : undefined}
+            priceId={placement === 'watch' && pricing.kind === 'tier' ? pricing.priceId : undefined}
+            customAmountCents={placement === 'homepage' || pricing.kind === 'custom' ? Math.round(finalAmount * 100) : undefined}
           />
+
           <div className="flex justify-between text-xs text-muted-foreground pt-2">
             <span>Ref: {newCampaignId.slice(0, 8)}</span>
             <button onClick={() => { onSuccess?.(); navigate('/advertising'); }} className="underline">Pay later</button>
