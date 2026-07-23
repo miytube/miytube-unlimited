@@ -49,7 +49,7 @@ export const template = {
     subject: 'General Inquiry',
     message: 'Hi, I love the platform and would like to learn more about advertising.',
   },
-  to: 'support@miytube.com',
+  to: 'miytubembh@gmail.com',
 } satisfies TemplateEntry
 
 const main = {
