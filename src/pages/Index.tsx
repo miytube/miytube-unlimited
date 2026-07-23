@@ -146,10 +146,12 @@ const Index = () => {
               ))}
             </div>
             {/* Above-the-fold responsive ad — sits at the bottom of the first viewport
-                on most screens so it's visible before the user scrolls. */}
+                on most screens so it's visible before the user scrolls.
+                Uses miytube-new-2 here (AdSense flagged it as low viewability in its
+                previous below-the-fold position, so we promoted it above the fold). */}
             <div className="my-6">
               <AdSlot
-                slot="1406515812"
+                slot="2074250134"
                 format="auto"
                 responsive
                 label="Sponsored"
@@ -250,7 +252,7 @@ const Index = () => {
             />
             {/* Second vertical unit below the fold in the rail for return-scroll impressions */}
             <AdSlot
-              slot="2074250134"
+              slot="1406515812"
               format="vertical"
               responsive
               label="Sponsored"
