@@ -1404,6 +1404,18 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_active_banner_ads: {
+        Args: { _placement?: string }
+        Returns: {
+          business_name: string
+          call_to_action: string
+          description: string
+          destination_url: string
+          headline: string
+          id: string
+          media_url: string
+        }[]
+      }
       get_discussion_like_counts: {
         Args: { _discussion_ids: string[] }
         Returns: {
@@ -1443,6 +1455,10 @@ export type Database = {
           msg_id: number
           read_ct: number
         }[]
+      }
+      record_ad_event: {
+        Args: { _campaign_id: string; _event: string }
+        Returns: undefined
       }
     }
     Enums: {
