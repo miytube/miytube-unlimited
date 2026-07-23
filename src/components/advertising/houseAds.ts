@@ -1,0 +1,60 @@
+// MiyTube "house ads" — internal promos for our own advertising program.
+// These rotate into the banner slot every HOUSE_AD_INTERVAL_HOURS hours,
+// independently of paid campaigns. Edit copy or interval here.
+
+export const HOUSE_AD_INTERVAL_HOURS = 2; // show a house ad once every N hours
+export const HOUSE_AD_ENABLED = true;
+
+export type HouseAd = {
+  id: string;
+  headline: string;
+  description: string;
+  businessName: string;
+  callToAction: string;
+  destinationUrl: string; // internal route or full URL
+  mediaUrl?: string;
+  placements: Array<'homepage' | 'watch'>;
+};
+
+export const HOUSE_ADS: HouseAd[] = [
+  {
+    id: 'house-advertise-launch',
+    headline: 'Advertise on MiyTube — Launch pricing, up to 40% off',
+    description:
+      'Get your business in front of MiyTube viewers. Fixed-duration packages from $160, homepage takeover from $1,500. Limited-time launch pricing.',
+    businessName: 'MiyTube Ads',
+    callToAction: 'Start a Campaign',
+    destinationUrl: '/advertising',
+    placements: ['homepage', 'watch'],
+  },
+  {
+    id: 'house-homepage-takeover',
+    headline: '24-Hour Homepage Takeover — $1,500 (normally $2,500)',
+    description:
+      'Own the top of MiyTube for a full day. Exclusive placement, thousands of impressions, one flat price.',
+    businessName: 'MiyTube Ads',
+    callToAction: 'Reserve Now',
+    destinationUrl: '/advertising',
+    placements: ['homepage'],
+  },
+];
+
+/**
+ * Returns a house ad if the current time-bucket is a "house window",
+ * otherwise null. Buckets flip every HOUSE_AD_INTERVAL_HOURS hours.
+ * Within a house window we deterministically pick one of the ads eligible
+ * for the given placement so it stays stable for that window.
+ */
+export function pickHouseAdForNow(placement: 'homepage' | 'watch'): HouseAd | null {
+  if (!HOUSE_AD_ENABLED) return null;
+  const eligible = HOUSE_ADS.filter(a => a.placements.includes(placement));
+  if (eligible.length === 0) return null;
+
+  const intervalMs = HOUSE_AD_INTERVAL_HOURS * 60 * 60 * 1000;
+  const bucket = Math.floor(Date.now() / intervalMs);
+  // Every other bucket is a "house window" — so a house ad shows every N hours.
+  const isHouseWindow = bucket % 2 === 0;
+  if (!isHouseWindow) return null;
+
+  return eligible[bucket % eligible.length];
+}
