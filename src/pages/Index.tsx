@@ -252,7 +252,7 @@ const Index = () => {
             />
             {/* Second vertical unit below the fold in the rail for return-scroll impressions */}
             <AdSlot
-              slot="2074250134"
+              slot="1406515812"
               format="vertical"
               responsive
               label="Sponsored"
