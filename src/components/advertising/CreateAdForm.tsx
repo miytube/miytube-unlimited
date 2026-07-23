@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, DollarSign, Target, Megaphone, Calendar, Image, CreditCard, Star } from 'lucide-react';
 import { CampaignCheckout } from './CampaignCheckout';
+import { BannerAdPreview } from './BannerAdPreview';
 
 const AD_FORMATS = [
   { id: 'discovery', name: 'Discovery Ad', description: 'Appears in search results and homepage', price: '$0.01/view' },
@@ -245,6 +246,29 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <p className="text-xs text-muted-foreground mt-1">Recommended: 1920×1080 or larger. Keep important content centered — the middle ~1400px is covered by the page.</p>
             </div>
           )}
+          {adFormat === 'banner' && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Banner Image URL <span className="text-xs text-muted-foreground font-normal">(optional — we auto-generate a banner from your text if empty)</span></label>
+              <Input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://yourcdn.com/banner.jpg" />
+              <p className="text-xs text-muted-foreground mt-1">Recommended: 1200×628. Leave blank to use an auto-generated colored banner with your business initials.</p>
+            </div>
+          )}
+
+          {/* Live preview */}
+          <div className="pt-2">
+            <div className="text-xs uppercase tracking-widest text-muted-foreground mb-2">Live preview</div>
+            <BannerAdPreview
+              headline={headline}
+              description={description}
+              businessName={businessName}
+              callToAction={callToAction}
+              mediaUrl={mediaUrl}
+            />
+            <p className="text-xs text-muted-foreground mt-2">
+              Approved banner ads appear at the top of the MiyTube homepage and directly below the video player on Watch pages.
+            </p>
+          </div>
+
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setStep(1)} className="flex-1">Back</Button>
             <Button onClick={() => setStep(3)} className="flex-1" disabled={!headline.trim() || !destinationUrl.trim()}>Next: Targeting</Button>
