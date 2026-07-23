@@ -70,6 +70,7 @@ export type Database = {
           payment_method: string | null
           payment_reference: string | null
           payment_status: string | null
+          placement: string
           refunded_amount: number
           rejection_reason: string | null
           reviewed_at: string | null
@@ -114,6 +115,7 @@ export type Database = {
           payment_method?: string | null
           payment_reference?: string | null
           payment_status?: string | null
+          placement?: string
           refunded_amount?: number
           rejection_reason?: string | null
           reviewed_at?: string | null
@@ -158,6 +160,7 @@ export type Database = {
           payment_method?: string | null
           payment_reference?: string | null
           payment_status?: string | null
+          placement?: string
           refunded_amount?: number
           rejection_reason?: string | null
           reviewed_at?: string | null

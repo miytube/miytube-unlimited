@@ -66,11 +66,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [mediaUrl, setMediaUrl] = useState('');
   const [pricingKind, setPricingKind] = useState<'tier' | 'custom'>('tier');
   const [selectedTier, setSelectedTier] = useState<typeof TIERS[number]>(TIERS[1]);
+  const [placement, setPlacement] = useState<'watch' | 'homepage'>('watch');
   const [newCampaignId, setNewCampaignId] = useState<string | null>(null);
 
   const pricing: PricingChoice = pricingKind === 'tier'
     ? selectedTier
     : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
+
+  const placementMultiplier = placement === 'homepage' ? 5 : 1;
+  const finalAmount = pricing.amount * placementMultiplier;
 
   const toggleCategory = (cat: string) => {
     setTargetCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
@@ -134,12 +138,13 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           target_audience: targetAudience.trim() || null,
           target_categories: targetCategories,
           daily_budget: parseFloat(dailyBudget) || 10,
-          total_budget: pricing.amount,
+          total_budget: finalAmount,
+          placement,
           start_date: startDate,
           end_date: endDate || null,
           status: 'pending_payment' as any,
           payment_status: 'unpaid',
-        })
+        } as any)
         .select('id')
         .single();
 
@@ -302,6 +307,32 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center gap-2 mb-4"><DollarSign className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Choose Your Budget</h3></div>
 
+          {/* Placement chooser */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Where should your ad appear? *</label>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setPlacement('watch')}
+                className={`text-left p-4 rounded-lg border transition-all ${placement === 'watch' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
+              >
+                <div className="font-semibold">Watch pages</div>
+                <div className="text-xs text-muted-foreground mt-1">Below the video player on every watch page.</div>
+                <div className="text-xs text-primary font-medium mt-2">Base price</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPlacement('homepage')}
+                className={`relative text-left p-4 rounded-lg border transition-all ${placement === 'homepage' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
+              >
+                <span className="absolute -top-2 right-3 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full">Premium</span>
+                <div className="font-semibold">Homepage banner</div>
+                <div className="text-xs text-muted-foreground mt-1">Top of the MiyTube homepage — highest traffic slot.</div>
+                <div className="text-xs text-primary font-medium mt-2">5× the base price</div>
+              </button>
+            </div>
+          </div>
+
           <div className="flex gap-2 p-1 bg-muted rounded-lg">
             <button
               onClick={() => setPricingKind('tier')}
@@ -365,9 +396,18 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <span className="text-muted-foreground">Campaign:</span><span>{campaignName}</span>
               <span className="text-muted-foreground">Format:</span><span>{selectedFormat?.name}</span>
-              <span className="text-muted-foreground">Rate:</span><span>{selectedFormat?.price}</span>
+              <span className="text-muted-foreground">Placement:</span>
+              <span>{placement === 'homepage' ? 'Homepage (Premium 5×)' : 'Watch pages'}</span>
               <span className="text-muted-foreground">Plan:</span><span>{pricingKind === 'tier' ? selectedTier.label : 'Custom'}</span>
-              <span className="text-muted-foreground">Total to charge:</span><span className="font-semibold text-primary">${pricing.amount.toFixed(2)}</span>
+              <span className="text-muted-foreground">Base price:</span><span>${pricing.amount.toFixed(2)}</span>
+              {placement === 'homepage' && (
+                <>
+                  <span className="text-muted-foreground">Homepage multiplier:</span>
+                  <span>× 5</span>
+                </>
+              )}
+              <span className="text-muted-foreground">Total to charge:</span>
+              <span className="font-semibold text-primary">${finalAmount.toFixed(2)}</span>
               <span className="text-muted-foreground">Categories:</span><span>{targetCategories.join(', ') || 'All'}</span>
             </div>
           </div>
@@ -376,7 +416,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <Button variant="outline" onClick={() => setStep(3)} className="flex-1">Back</Button>
             <Button onClick={handleSubmit} className="flex-1" disabled={isSubmitting || pricing.amount < 10}>
               {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <CreditCard className="h-4 w-4 mr-2" />}
-              {isSubmitting ? 'Saving...' : `Continue to Payment ($${pricing.amount.toFixed(2)})`}
+              {isSubmitting ? 'Saving...' : `Continue to Payment ($${finalAmount.toFixed(2)})`}
             </Button>
           </div>
         </div>
@@ -389,14 +429,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <h3 className="text-lg font-semibold">Complete Payment</h3>
           </div>
           <p className="text-sm text-muted-foreground">
-            Charging <strong>${pricing.amount.toFixed(2)}</strong> for your campaign. Card details are handled securely — MiyTube never sees them.
+            Charging <strong>${finalAmount.toFixed(2)}</strong> for your campaign. Card details are handled securely — MiyTube never sees them.
           </p>
           <CampaignCheckout
             campaignId={newCampaignId}
             mode="initial"
-            priceId={pricing.kind === 'tier' ? pricing.priceId : undefined}
-            customAmountCents={pricing.kind === 'custom' ? Math.round(pricing.amount * 100) : undefined}
+            priceId={placement === 'watch' && pricing.kind === 'tier' ? pricing.priceId : undefined}
+            customAmountCents={placement === 'homepage' || pricing.kind === 'custom' ? Math.round(finalAmount * 100) : undefined}
           />
+
           <div className="flex justify-between text-xs text-muted-foreground pt-2">
             <span>Ref: {newCampaignId.slice(0, 8)}</span>
             <button onClick={() => { onSuccess?.(); navigate('/advertising'); }} className="underline">Pay later</button>

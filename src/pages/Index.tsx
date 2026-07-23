@@ -122,7 +122,7 @@ const Index = () => {
 
         {/* Homepage banner from MiyTube advertisers */}
         <div className="mb-6">
-          <BannerAdSlot placement="banner" />
+          <BannerAdSlot placement="homepage" />
         </div>
 
         {/* Loading State */}
