@@ -307,6 +307,32 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center gap-2 mb-4"><DollarSign className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Choose Your Budget</h3></div>
 
+          {/* Placement chooser */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Where should your ad appear? *</label>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setPlacement('watch')}
+                className={`text-left p-4 rounded-lg border transition-all ${placement === 'watch' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
+              >
+                <div className="font-semibold">Watch pages</div>
+                <div className="text-xs text-muted-foreground mt-1">Below the video player on every watch page.</div>
+                <div className="text-xs text-primary font-medium mt-2">Base price</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPlacement('homepage')}
+                className={`relative text-left p-4 rounded-lg border transition-all ${placement === 'homepage' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
+              >
+                <span className="absolute -top-2 right-3 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full">Premium</span>
+                <div className="font-semibold">Homepage banner</div>
+                <div className="text-xs text-muted-foreground mt-1">Top of the MiyTube homepage — highest traffic slot.</div>
+                <div className="text-xs text-primary font-medium mt-2">5× the base price</div>
+              </button>
+            </div>
+          </div>
+
           <div className="flex gap-2 p-1 bg-muted rounded-lg">
             <button
               onClick={() => setPricingKind('tier')}
