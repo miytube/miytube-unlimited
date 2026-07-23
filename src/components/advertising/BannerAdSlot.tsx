@@ -13,13 +13,13 @@ interface Ad {
 }
 
 interface BannerAdSlotProps {
-  placement?: 'banner';
+  placement?: 'homepage' | 'watch';
   className?: string;
 }
 
 // Fetches an approved active banner campaign and renders it as an on-site ad.
 // Records an impression on mount and a click when the ad is clicked.
-export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'banner', className }) => {
+export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch', className }) => {
   const [ad, setAd] = useState<Ad | null>(null);
   const [tracked, setTracked] = useState(false);
 
