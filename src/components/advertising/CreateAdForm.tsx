@@ -66,11 +66,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [mediaUrl, setMediaUrl] = useState('');
   const [pricingKind, setPricingKind] = useState<'tier' | 'custom'>('tier');
   const [selectedTier, setSelectedTier] = useState<typeof TIERS[number]>(TIERS[1]);
+  const [placement, setPlacement] = useState<'watch' | 'homepage'>('watch');
   const [newCampaignId, setNewCampaignId] = useState<string | null>(null);
 
   const pricing: PricingChoice = pricingKind === 'tier'
     ? selectedTier
     : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
+
+  const placementMultiplier = placement === 'homepage' ? 5 : 1;
+  const finalAmount = pricing.amount * placementMultiplier;
 
   const toggleCategory = (cat: string) => {
     setTargetCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
@@ -134,12 +138,13 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           target_audience: targetAudience.trim() || null,
           target_categories: targetCategories,
           daily_budget: parseFloat(dailyBudget) || 10,
-          total_budget: pricing.amount,
+          total_budget: finalAmount,
+          placement,
           start_date: startDate,
           end_date: endDate || null,
           status: 'pending_payment' as any,
           payment_status: 'unpaid',
-        })
+        } as any)
         .select('id')
         .single();
 
