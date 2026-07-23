@@ -122,7 +122,15 @@ const Advertising = () => {
                   { name: 'Banner Ads', desc: 'Display banners shown on category pages and sidebars.', color: 'bg-primary/25' },
                   { name: 'Overlay Ads', desc: 'Semi-transparent overlays shown at the bottom of video players.', color: 'bg-primary/20' },
                 ].map(format => (
-                  <div key={format.name} className="flex gap-4 items-start">
+                  <button
+                    type="button"
+                    key={format.name}
+                    onClick={() => {
+                      if (!user) { navigate('/auth'); return; }
+                      setActiveTab('create');
+                    }}
+                    className="flex gap-4 items-start text-left p-2 -m-2 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                  >
                     <div className={`w-20 h-14 ${format.color} rounded-lg flex-shrink-0 flex items-center justify-center`}>
                       <Megaphone className="h-6 w-6 text-primary" />
                     </div>
@@ -130,7 +138,7 @@ const Advertising = () => {
                       <h3 className="font-medium mb-1">{format.name}</h3>
                       <p className="text-sm text-muted-foreground">{format.desc}</p>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
