@@ -477,7 +477,13 @@ const Watch = () => {
                 <VideoPlayer videoFile={video.file} title={video.title} />
               )}
             </div>
-            
+
+            {/* Banner ad from MiyTube advertisers, directly below the player */}
+            <div className="mt-3">
+              {/* Lazy import to avoid Watch.tsx top-of-file churn */}
+              <WatchBannerAd />
+            </div>
+
             <VideoInfo 
               title={video.title}
               channelName={video.channelName}

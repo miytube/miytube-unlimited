@@ -8,6 +8,7 @@ import { VideoGridSkeleton } from '@/components/skeletons';
 import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 import { usePageSEO } from '@/hooks/usePageSEO';
@@ -117,6 +118,11 @@ const Index = () => {
           <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">MiyTube — Watch and share trending videos</h1>
           </div>
+        </div>
+
+        {/* Homepage banner from MiyTube advertisers */}
+        <div className="mb-6">
+          <BannerAdSlot placement="banner" />
         </div>
 
         {/* Loading State */}
