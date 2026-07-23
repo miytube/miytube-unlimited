@@ -33,7 +33,7 @@ type ContactForm = z.infer<typeof contactSchema>;
 const Contact = () => {
   usePageSEO({
     title: 'Contact MiyTube — Get in touch with our team',
-    description: 'Contact MiyTube support, business, or press. Email, phone, and headquarters address for help with your account or partnership inquiries.',
+    description: 'Contact MiyTube support or business. Email us at miytube@aol.com or miytubembh@gmail.com for help with your account or partnership inquiries.',
     path: '/contact',
   });
 
