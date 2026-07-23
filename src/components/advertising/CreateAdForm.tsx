@@ -565,9 +565,14 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <CampaignCheckout
             campaignId={newCampaignId}
             mode="initial"
-            priceId={placement === 'watch' && pricing.kind === 'tier' ? pricing.priceId : undefined}
-            customAmountCents={placement === 'homepage' || pricing.kind === 'custom' ? Math.round(finalAmount * 100) : undefined}
+            priceId={pricingKind === 'tier' && placement === 'watch' ? (pricing as any).priceId : undefined}
+            customAmountCents={
+              pricingKind === 'package' || pricingKind === 'custom' || placement === 'homepage'
+                ? Math.round(finalAmount * 100)
+                : undefined
+            }
           />
+
 
           <div className="flex justify-between text-xs text-muted-foreground pt-2">
             <span>Ref: {newCampaignId.slice(0, 8)}</span>
