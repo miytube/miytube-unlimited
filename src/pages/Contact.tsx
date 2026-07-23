@@ -74,7 +74,7 @@ const Contact = () => {
       const { error } = await supabase.functions.invoke('send-transactional-email', {
         body: {
           templateName: 'contact-form-submission',
-          recipientEmail: 'support@miytube.com',
+          recipientEmail: 'miytubembh@gmail.com',
           idempotencyKey: `contact-${form.email}-${Date.now()}`,
           templateData: {
             name: form.name,
