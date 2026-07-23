@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { BannerAdPreview } from './BannerAdPreview';
+import { pickHouseAdForNow, HOUSE_AD_INTERVAL_HOURS } from './houseAds';
 
 interface Ad {
   id: string;
@@ -10,6 +11,7 @@ interface Ad {
   call_to_action: string | null;
   destination_url: string;
   media_url: string | null;
+  isHouse?: boolean;
 }
 
 interface BannerAdSlotProps {
@@ -18,13 +20,33 @@ interface BannerAdSlotProps {
 }
 
 // Fetches an approved active banner campaign and renders it as an on-site ad.
+// Rotates in a MiyTube "house ad" every HOUSE_AD_INTERVAL_HOURS hours.
 // Records an impression on mount and a click when the ad is clicked.
 export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch', className }) => {
   const [ad, setAd] = useState<Ad | null>(null);
   const [tracked, setTracked] = useState(false);
 
+  // Recompute the house-ad window periodically so the slot flips without a reload.
+  const houseAd = useMemo(() => pickHouseAdForNow(placement), [placement]);
+
   useEffect(() => {
     let cancelled = false;
+
+    // If we're currently in a house-ad window, show the house ad and skip the paid fetch.
+    if (houseAd) {
+      setAd({
+        id: houseAd.id,
+        headline: houseAd.headline,
+        description: houseAd.description,
+        business_name: houseAd.businessName,
+        call_to_action: houseAd.callToAction,
+        destination_url: houseAd.destinationUrl,
+        media_url: houseAd.mediaUrl ?? null,
+        isHouse: true,
+      });
+      return () => { cancelled = true; };
+    }
+
     (async () => {
       const { data, error } = await supabase.rpc('get_active_banner_ads', { _placement: placement });
       if (cancelled || error || !data || data.length === 0) return;
@@ -32,28 +54,44 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
       setAd(pick);
     })();
     return () => { cancelled = true; };
-  }, [placement]);
+  }, [placement, houseAd]);
+
+  // Re-render when a house-ad window boundary is crossed so the slot flips live.
+  useEffect(() => {
+    const intervalMs = HOUSE_AD_INTERVAL_HOURS * 60 * 60 * 1000;
+    const msUntilNextBoundary = intervalMs - (Date.now() % intervalMs) + 1000;
+    const timeout = window.setTimeout(() => {
+      // Force refresh by clearing the current ad; the memo/effect will re-run on next render tick.
+      setAd(null);
+      setTracked(false);
+    }, msUntilNextBoundary);
+    return () => window.clearTimeout(timeout);
+  }, [ad?.id]);
 
   useEffect(() => {
     if (!ad || tracked) return;
     setTracked(true);
+    if (ad.isHouse) return; // don't log paid-ad events for house ads
     supabase.rpc('record_ad_event', { _campaign_id: ad.id, _event: 'impression' }).then(() => {});
   }, [ad, tracked]);
 
   if (!ad) return null;
 
   const handleClick = () => {
+    if (ad.isHouse) return;
     supabase.rpc('record_ad_event', { _campaign_id: ad.id, _event: 'click' }).then(() => {});
   };
+
+  const isInternal = ad.destination_url.startsWith('/');
 
   return (
     <a
       href={ad.destination_url}
-      target="_blank"
-      rel="noopener noreferrer sponsored"
+      target={isInternal ? undefined : '_blank'}
+      rel={isInternal ? undefined : 'noopener noreferrer sponsored'}
       onClick={handleClick}
       className={`block ${className ?? ''}`}
-      aria-label={`Sponsored: ${ad.headline}`}
+      aria-label={`${ad.isHouse ? 'Promo' : 'Sponsored'}: ${ad.headline}`}
     >
       <BannerAdPreview
         headline={ad.headline}
