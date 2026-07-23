@@ -30,12 +30,38 @@ const CTA_OPTIONS = ['Learn More', 'Shop Now', 'Sign Up', 'Watch Now', 'Download
 
 type PricingChoice =
   | { kind: 'tier'; priceId: 'ad_starter_10' | 'ad_growth_50' | 'ad_enterprise_500'; amount: number; label: string }
-  | { kind: 'custom'; amount: number };
+  | { kind: 'custom'; amount: number }
+  | { kind: 'package'; amount: number };
 
 const TIERS: Array<Extract<PricingChoice, { kind: 'tier' }> & { recommended?: boolean; features: string[] }> = [
   { kind: 'tier', priceId: 'ad_starter_10', amount: 10, label: 'Starter', features: ['Discovery ads', 'Basic targeting', 'Up to 1,000 views/day'] },
   { kind: 'tier', priceId: 'ad_growth_50', amount: 50, label: 'Growth', recommended: true, features: ['All ad formats', 'Advanced targeting', 'Up to 10,000 views/day', 'Priority placement'] },
   { kind: 'tier', priceId: 'ad_enterprise_500', amount: 500, label: 'Enterprise', features: ['Premium placement', 'Unlimited views', 'Dedicated account manager', 'A/B testing'] },
+];
+
+// Launch promo: first 30 days from launch date get discounted pricing (already ~20%+ below
+// competitor rates). After promo ends, prices auto-revert to the normal column.
+const LAUNCH_PROMO_END = new Date('2026-08-22T23:59:59Z');
+const isPromoActive = () => new Date() <= LAUNCH_PROMO_END;
+
+type FixedPackage = {
+  id: string;
+  label: string;
+  placement: 'watch' | 'homepage';
+  days: number;
+  normalPrice: number;
+  launchPrice: number;
+  blurb: string;
+  highlight?: string;
+};
+
+const FIXED_PACKAGES: FixedPackage[] = [
+  { id: 'watch_7d',  label: '7-Day Watch Banner',  placement: 'watch',    days: 7,  normalPrice: 200,  launchPrice: 160,  blurb: 'Banner below every video player for 7 days.' },
+  { id: 'watch_14d', label: '14-Day Watch Banner', placement: 'watch',    days: 14, normalPrice: 350,  launchPrice: 280,  blurb: 'Two full weeks below every video player.' },
+  { id: 'watch_30d', label: '30-Day Watch Banner', placement: 'watch',    days: 30, normalPrice: 600,  launchPrice: 480,  blurb: 'A full month on every watch page.', highlight: 'Best value' },
+  { id: 'home_24h',  label: '24-Hour Homepage Takeover', placement: 'homepage', days: 1,  normalPrice: 2500, launchPrice: 1500, blurb: 'Full 24-hour exclusive top-of-homepage banner.', highlight: 'Launch deal' },
+  { id: 'home_7d',   label: '7-Day Homepage Banner',     placement: 'homepage', days: 7,  normalPrice: 2000, launchPrice: 1600, blurb: 'Homepage rotation slot for a full week.' },
+  { id: 'home_30d',  label: '30-Day Homepage Banner',    placement: 'homepage', days: 30, normalPrice: 6000, launchPrice: 4800, blurb: 'Month-long premium homepage presence.' },
 ];
 
 interface CreateAdFormProps {
@@ -64,17 +90,28 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState('');
   const [mediaUrl, setMediaUrl] = useState('');
-  const [pricingKind, setPricingKind] = useState<'tier' | 'custom'>('tier');
+  const [pricingKind, setPricingKind] = useState<'package' | 'tier' | 'custom'>('package');
   const [selectedTier, setSelectedTier] = useState<typeof TIERS[number]>(TIERS[1]);
+  const [selectedPackageId, setSelectedPackageId] = useState<string>(FIXED_PACKAGES[2].id);
   const [placement, setPlacement] = useState<'watch' | 'homepage'>('watch');
   const [newCampaignId, setNewCampaignId] = useState<string | null>(null);
 
-  const pricing: PricingChoice = pricingKind === 'tier'
-    ? selectedTier
-    : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
+  const selectedPackage = FIXED_PACKAGES.find(p => p.id === selectedPackageId)!;
+  const promoActive = isPromoActive();
+  const packagePrice = promoActive ? selectedPackage.launchPrice : selectedPackage.normalPrice;
 
-  const placementMultiplier = placement === 'homepage' ? 5 : 1;
+  const pricing: PricingChoice =
+    pricingKind === 'package'
+      ? { kind: 'package', amount: packagePrice }
+      : pricingKind === 'tier'
+      ? selectedTier
+      : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
+
+  // Packages already bake in placement pricing; tier/custom keep the 5× homepage multiplier.
+  const placementMultiplier = pricingKind === 'package' ? 1 : (placement === 'homepage' ? 5 : 1);
+  const effectivePlacement = pricingKind === 'package' ? selectedPackage.placement : placement;
   const finalAmount = pricing.amount * placementMultiplier;
+
 
   const toggleCategory = (cat: string) => {
     setTargetCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
