@@ -15,19 +15,10 @@ import { z } from 'zod';
 
 const LOCAL_BUSINESS_JSONLD = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': 'Organization',
   name: 'MiyTube',
   url: 'https://www.miytube.com/contact',
-  telephone: '+1-555-123-4567',
-  email: 'support@miytube.com',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '123 Tech Lane',
-    addressLocality: 'San Francisco',
-    addressRegion: 'CA',
-    postalCode: '94107',
-    addressCountry: 'US',
-  },
+  email: 'miytube@aol.com',
 };
 
 const contactSchema = z.object({
