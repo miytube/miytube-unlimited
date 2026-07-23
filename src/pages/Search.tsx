@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { supabase } from '@/integrations/supabase/client';
 
 
 const Search = () => {
@@ -19,6 +20,8 @@ const Search = () => {
   const [sortBy, setSortBy] = useState('relevance');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [hasSearchedAI, setHasSearchedAI] = useState(false);
+  const [dbVideos, setDbVideos] = useState<any[]>([]);
+  const [isDbSearching, setIsDbSearching] = useState(false);
 
   // Trigger AI search when query changes
   useEffect(() => {
@@ -29,6 +32,45 @@ const Search = () => {
         category: categoryFilter !== 'all' ? categoryFilter : undefined,
       });
     }
+  }, [query, sortBy, categoryFilter]);
+
+  // Direct DB search fallback (works for anon users too)
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      const q = query.trim();
+      if (!q) { setDbVideos([]); return; }
+      setIsDbSearching(true);
+      try {
+        const tokens = q.split(/\s+/).filter(Boolean).slice(0, 6);
+        // Build an OR filter that matches ANY token across title/description/category/subcategory/tags
+        const escape = (s: string) => s.replace(/[%,()]/g, ' ').trim();
+        const orParts: string[] = [];
+        tokens.forEach(t => {
+          const safe = escape(t);
+          if (!safe) return;
+          orParts.push(`title.ilike.%${safe}%`);
+          orParts.push(`description.ilike.%${safe}%`);
+          orParts.push(`category.ilike.%${safe}%`);
+          orParts.push(`subcategory.ilike.%${safe}%`);
+          orParts.push(`tags.cs.{${safe}}`);
+        });
+        let req = supabase.from('uploaded_videos_public').select('*').limit(60);
+        if (orParts.length) req = req.or(orParts.join(','));
+        if (categoryFilter !== 'all') req = req.eq('category', categoryFilter);
+        if (sortBy === 'newest') req = req.order('created_at', { ascending: false });
+        else if (sortBy === 'views') req = req.order('views', { ascending: false });
+        else req = req.order('created_at', { ascending: false });
+        const { data, error: dbErr } = await req;
+        if (cancelled) return;
+        if (dbErr) { console.warn('DB search error', dbErr); setDbVideos([]); }
+        else setDbVideos(data || []);
+      } finally {
+        if (!cancelled) setIsDbSearching(false);
+      }
+    };
+    run();
+    return () => { cancelled = true; };
   }, [query, sortBy, categoryFilter]);
 
   // Also filter local uploaded videos as fallback
@@ -183,8 +225,27 @@ const Search = () => {
           </div>
         )}
 
+        {/* DB Fallback Results (works for anon users) */}
+        {!hasAIResults && dbVideos.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in">
+            {dbVideos.map((video: any) => (
+              <VideoCard
+                key={video.id}
+                id={video.id}
+                title={video.title}
+                thumbnail={video.thumbnail_url || video.cloud_url || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=800&q=80'}
+                channelName={video.category || 'MiyTube'}
+                views={`${video.views || 0} views`}
+                timestamp={new Date(video.created_at).toLocaleDateString()}
+                duration={video.duration || '0:00'}
+                description={video.description || ''}
+              />
+            ))}
+          </div>
+        )}
+
         {/* Local Results Fallback */}
-        {!hasAIResults && localFilteredVideos.length > 0 && (
+        {!hasAIResults && dbVideos.length === 0 && localFilteredVideos.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-fade-in">
             {localFilteredVideos.slice(0, 20).map((video) => (
               <VideoCard
@@ -203,7 +264,7 @@ const Search = () => {
         )}
 
         {/* Empty State */}
-        {!isSearching && !hasAIResults && localFilteredVideos.length === 0 && (
+        {!isSearching && !isDbSearching && !hasAIResults && dbVideos.length === 0 && localFilteredVideos.length === 0 && (
           <div className="text-center py-12 bg-card rounded-lg">
             <SearchIcon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h2 className="text-xl font-medium mb-2">
