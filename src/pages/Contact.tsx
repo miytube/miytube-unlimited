@@ -89,7 +89,7 @@ const Contact = () => {
         console.error('Failed to send contact email:', error);
         toast({
           title: 'Message failed to send',
-          description: 'Please try again or email us directly at support@miytube.com.',
+          description: 'Please try again or email us directly at miytube@aol.com.',
           variant: 'destructive',
         });
         return;
@@ -105,7 +105,7 @@ const Contact = () => {
       console.error('Contact form error:', err);
       toast({
         title: 'Message failed to send',
-        description: 'Please try again or email us directly at support@miytube.com.',
+        description: 'Please try again or email us directly at miytube@aol.com.',
         variant: 'destructive',
       });
     } finally {
