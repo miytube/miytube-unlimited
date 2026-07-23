@@ -35,6 +35,7 @@ import Watchlist from "@/pages/Watchlist";
 import BreakingNews from "@/pages/BreakingNews";
 import CampaignCheckoutReturn from "@/pages/CampaignCheckoutReturn";
 import PaymentHistory from "@/pages/PaymentHistory";
+import Unsubscribe from "@/pages/Unsubscribe";
 
 // New pages to fix 404s
 import HowToStyle from "@/pages/HowToStyle";
@@ -116,6 +117,7 @@ export const mainRoutes = [
   <Route key="reset-password" path="/reset-password" element={<ResetPassword />} />,
   <Route key="account" path="/account" element={<Account />} />,
   <Route key="account-payments" path="/account/payments" element={<PaymentHistory />} />,
+  <Route key="unsubscribe" path="/unsubscribe" element={<Unsubscribe />} />,
   <Route key="admin" path="/admin" element={<Admin />} />,
   <Route key="monetization" path="/monetization" element={<Monetization />} />,
   <Route key="watchlist" path="/watchlist" element={<Watchlist />} />,
