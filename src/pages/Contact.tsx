@@ -221,44 +221,11 @@ const Contact = () => {
                   <Mail className="w-5 h-5 text-primary mt-0.5" />
                   <div>
                     <h3 className="font-medium">Email Us</h3>
-                    <p className="text-sm text-muted-foreground">support@miytube.com</p>
-                    <p className="text-sm text-muted-foreground">business@miytube.com</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <Phone className="w-5 h-5 text-primary mt-0.5" />
-                  <div>
-                    <h3 className="font-medium">Call Us</h3>
-                    <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
-                    <p className="text-sm text-muted-foreground">Mon-Fri, 9am-5pm PST</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-primary mt-0.5" />
-                  <div>
-                    <h3 className="font-medium">Visit Us</h3>
-                    <p className="text-sm text-muted-foreground">MiyTube Headquarters</p>
-                    <p className="text-sm text-muted-foreground">123 Tech Lane</p>
-                    <p className="text-sm text-muted-foreground">San Francisco, CA 94107</p>
+                    <p className="text-sm text-muted-foreground">miytube@aol.com</p>
+                    <p className="text-sm text-muted-foreground">miytubembh@gmail.com</p>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex flex-col items-start">
-                <h3 className="font-medium mb-2">Our Social Media</h3>
-                <div className="flex space-x-4">
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                    Twitter
-                  </a>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                    LinkedIn
-                  </a>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                    Instagram
-                  </a>
-                </div>
-              </CardFooter>
             </Card>
           </div>
         </div>
