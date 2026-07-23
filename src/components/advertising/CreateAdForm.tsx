@@ -159,6 +159,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
 
     setIsSubmitting(true);
     try {
+      // For fixed-duration packages, auto-compute end_date = start_date + days - 1
+      let resolvedEndDate: string | null = endDate || null;
+      if (pricingKind === 'package') {
+        const start = new Date(startDate + 'T00:00:00Z');
+        const end = new Date(start);
+        end.setUTCDate(end.getUTCDate() + selectedPackage.days - 1);
+        resolvedEndDate = end.toISOString().split('T')[0];
+      }
+
       const { data, error } = await supabase
         .from('ad_campaigns')
         .insert({
@@ -176,12 +185,13 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           target_categories: targetCategories,
           daily_budget: parseFloat(dailyBudget) || 10,
           total_budget: finalAmount,
-          placement,
+          placement: effectivePlacement,
           start_date: startDate,
-          end_date: endDate || null,
+          end_date: resolvedEndDate,
           status: 'pending_payment' as any,
           payment_status: 'unpaid',
         } as any)
+
         .select('id')
         .single();
 
