@@ -5,29 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/components/ui/use-toast';
-import { Mail, Phone, MapPin, Loader2 } from 'lucide-react';
+import { Mail, Loader2 } from 'lucide-react';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 
 const LOCAL_BUSINESS_JSONLD = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': 'Organization',
   name: 'MiyTube',
   url: 'https://www.miytube.com/contact',
-  telephone: '+1-555-123-4567',
-  email: 'support@miytube.com',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '123 Tech Lane',
-    addressLocality: 'San Francisco',
-    addressRegion: 'CA',
-    postalCode: '94107',
-    addressCountry: 'US',
-  },
+  email: 'miytube@aol.com',
 };
 
 const contactSchema = z.object({
@@ -42,7 +33,7 @@ type ContactForm = z.infer<typeof contactSchema>;
 const Contact = () => {
   usePageSEO({
     title: 'Contact MiyTube — Get in touch with our team',
-    description: 'Contact MiyTube support, business, or press. Email, phone, and headquarters address for help with your account or partnership inquiries.',
+    description: 'Contact MiyTube support or business. Email us at miytube@aol.com or miytubembh@gmail.com for help with your account or partnership inquiries.',
     path: '/contact',
   });
 
@@ -83,7 +74,7 @@ const Contact = () => {
       const { error } = await supabase.functions.invoke('send-transactional-email', {
         body: {
           templateName: 'contact-form-submission',
-          recipientEmail: 'support@miytube.com',
+          recipientEmail: 'miytubembh@gmail.com',
           idempotencyKey: `contact-${form.email}-${Date.now()}`,
           templateData: {
             name: form.name,
@@ -98,7 +89,7 @@ const Contact = () => {
         console.error('Failed to send contact email:', error);
         toast({
           title: 'Message failed to send',
-          description: 'Please try again or email us directly at support@miytube.com.',
+          description: 'Please try again or email us directly at miytube@aol.com.',
           variant: 'destructive',
         });
         return;
@@ -114,7 +105,7 @@ const Contact = () => {
       console.error('Contact form error:', err);
       toast({
         title: 'Message failed to send',
-        description: 'Please try again or email us directly at support@miytube.com.',
+        description: 'Please try again or email us directly at miytube@aol.com.',
         variant: 'destructive',
       });
     } finally {
@@ -230,44 +221,11 @@ const Contact = () => {
                   <Mail className="w-5 h-5 text-primary mt-0.5" />
                   <div>
                     <h3 className="font-medium">Email Us</h3>
-                    <p className="text-sm text-muted-foreground">support@miytube.com</p>
-                    <p className="text-sm text-muted-foreground">business@miytube.com</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <Phone className="w-5 h-5 text-primary mt-0.5" />
-                  <div>
-                    <h3 className="font-medium">Call Us</h3>
-                    <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
-                    <p className="text-sm text-muted-foreground">Mon-Fri, 9am-5pm PST</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <MapPin className="w-5 h-5 text-primary mt-0.5" />
-                  <div>
-                    <h3 className="font-medium">Visit Us</h3>
-                    <p className="text-sm text-muted-foreground">MiyTube Headquarters</p>
-                    <p className="text-sm text-muted-foreground">123 Tech Lane</p>
-                    <p className="text-sm text-muted-foreground">San Francisco, CA 94107</p>
+                    <p className="text-sm text-muted-foreground">miytube@aol.com</p>
+                    <p className="text-sm text-muted-foreground">miytubembh@gmail.com</p>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex flex-col items-start">
-                <h3 className="font-medium mb-2">Our Social Media</h3>
-                <div className="flex space-x-4">
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                    Twitter
-                  </a>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                    LinkedIn
-                  </a>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                    Instagram
-                  </a>
-                </div>
-              </CardFooter>
             </Card>
           </div>
         </div>
