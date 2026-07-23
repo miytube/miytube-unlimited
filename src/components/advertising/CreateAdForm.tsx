@@ -30,12 +30,38 @@ const CTA_OPTIONS = ['Learn More', 'Shop Now', 'Sign Up', 'Watch Now', 'Download
 
 type PricingChoice =
   | { kind: 'tier'; priceId: 'ad_starter_10' | 'ad_growth_50' | 'ad_enterprise_500'; amount: number; label: string }
-  | { kind: 'custom'; amount: number };
+  | { kind: 'custom'; amount: number }
+  | { kind: 'package'; amount: number };
 
 const TIERS: Array<Extract<PricingChoice, { kind: 'tier' }> & { recommended?: boolean; features: string[] }> = [
   { kind: 'tier', priceId: 'ad_starter_10', amount: 10, label: 'Starter', features: ['Discovery ads', 'Basic targeting', 'Up to 1,000 views/day'] },
   { kind: 'tier', priceId: 'ad_growth_50', amount: 50, label: 'Growth', recommended: true, features: ['All ad formats', 'Advanced targeting', 'Up to 10,000 views/day', 'Priority placement'] },
   { kind: 'tier', priceId: 'ad_enterprise_500', amount: 500, label: 'Enterprise', features: ['Premium placement', 'Unlimited views', 'Dedicated account manager', 'A/B testing'] },
+];
+
+// Launch promo: first 30 days from launch date get discounted pricing (already ~20%+ below
+// competitor rates). After promo ends, prices auto-revert to the normal column.
+const LAUNCH_PROMO_END = new Date('2026-08-22T23:59:59Z');
+const isPromoActive = () => new Date() <= LAUNCH_PROMO_END;
+
+type FixedPackage = {
+  id: string;
+  label: string;
+  placement: 'watch' | 'homepage';
+  days: number;
+  normalPrice: number;
+  launchPrice: number;
+  blurb: string;
+  highlight?: string;
+};
+
+const FIXED_PACKAGES: FixedPackage[] = [
+  { id: 'watch_7d',  label: '7-Day Watch Banner',  placement: 'watch',    days: 7,  normalPrice: 200,  launchPrice: 160,  blurb: 'Banner below every video player for 7 days.' },
+  { id: 'watch_14d', label: '14-Day Watch Banner', placement: 'watch',    days: 14, normalPrice: 350,  launchPrice: 280,  blurb: 'Two full weeks below every video player.' },
+  { id: 'watch_30d', label: '30-Day Watch Banner', placement: 'watch',    days: 30, normalPrice: 600,  launchPrice: 480,  blurb: 'A full month on every watch page.', highlight: 'Best value' },
+  { id: 'home_24h',  label: '24-Hour Homepage Takeover', placement: 'homepage', days: 1,  normalPrice: 2500, launchPrice: 1500, blurb: 'Full 24-hour exclusive top-of-homepage banner.', highlight: 'Launch deal' },
+  { id: 'home_7d',   label: '7-Day Homepage Banner',     placement: 'homepage', days: 7,  normalPrice: 2000, launchPrice: 1600, blurb: 'Homepage rotation slot for a full week.' },
+  { id: 'home_30d',  label: '30-Day Homepage Banner',    placement: 'homepage', days: 30, normalPrice: 6000, launchPrice: 4800, blurb: 'Month-long premium homepage presence.' },
 ];
 
 interface CreateAdFormProps {
@@ -64,17 +90,28 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState('');
   const [mediaUrl, setMediaUrl] = useState('');
-  const [pricingKind, setPricingKind] = useState<'tier' | 'custom'>('tier');
+  const [pricingKind, setPricingKind] = useState<'package' | 'tier' | 'custom'>('package');
   const [selectedTier, setSelectedTier] = useState<typeof TIERS[number]>(TIERS[1]);
+  const [selectedPackageId, setSelectedPackageId] = useState<string>(FIXED_PACKAGES[2].id);
   const [placement, setPlacement] = useState<'watch' | 'homepage'>('watch');
   const [newCampaignId, setNewCampaignId] = useState<string | null>(null);
 
-  const pricing: PricingChoice = pricingKind === 'tier'
-    ? selectedTier
-    : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
+  const selectedPackage = FIXED_PACKAGES.find(p => p.id === selectedPackageId)!;
+  const promoActive = isPromoActive();
+  const packagePrice = promoActive ? selectedPackage.launchPrice : selectedPackage.normalPrice;
 
-  const placementMultiplier = placement === 'homepage' ? 5 : 1;
+  const pricing: PricingChoice =
+    pricingKind === 'package'
+      ? { kind: 'package', amount: packagePrice }
+      : pricingKind === 'tier'
+      ? selectedTier
+      : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
+
+  // Packages already bake in placement pricing; tier/custom keep the 5× homepage multiplier.
+  const placementMultiplier = pricingKind === 'package' ? 1 : (placement === 'homepage' ? 5 : 1);
+  const effectivePlacement = pricingKind === 'package' ? selectedPackage.placement : placement;
   const finalAmount = pricing.amount * placementMultiplier;
+
 
   const toggleCategory = (cat: string) => {
     setTargetCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
@@ -122,6 +159,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
 
     setIsSubmitting(true);
     try {
+      // For fixed-duration packages, auto-compute end_date = start_date + days - 1
+      let resolvedEndDate: string | null = endDate || null;
+      if (pricingKind === 'package') {
+        const start = new Date(startDate + 'T00:00:00Z');
+        const end = new Date(start);
+        end.setUTCDate(end.getUTCDate() + selectedPackage.days - 1);
+        resolvedEndDate = end.toISOString().split('T')[0];
+      }
+
       const { data, error } = await supabase
         .from('ad_campaigns')
         .insert({
@@ -139,12 +185,13 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           target_categories: targetCategories,
           daily_budget: parseFloat(dailyBudget) || 10,
           total_budget: finalAmount,
-          placement,
+          placement: effectivePlacement,
           start_date: startDate,
-          end_date: endDate || null,
+          end_date: resolvedEndDate,
           status: 'pending_payment' as any,
           payment_status: 'unpaid',
         } as any)
+
         .select('id')
         .single();
 
@@ -307,44 +354,99 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
         <div className="space-y-4 animate-fade-in">
           <div className="flex items-center gap-2 mb-4"><DollarSign className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Choose Your Budget</h3></div>
 
-          {/* Placement chooser */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Where should your ad appear? *</label>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setPlacement('watch')}
-                className={`text-left p-4 rounded-lg border transition-all ${placement === 'watch' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
-              >
-                <div className="font-semibold">Watch pages</div>
-                <div className="text-xs text-muted-foreground mt-1">Below the video player on every watch page.</div>
-                <div className="text-xs text-primary font-medium mt-2">Base price</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => setPlacement('homepage')}
-                className={`relative text-left p-4 rounded-lg border transition-all ${placement === 'homepage' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
-              >
-                <span className="absolute -top-2 right-3 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full">Premium</span>
-                <div className="font-semibold">Homepage banner</div>
-                <div className="text-xs text-muted-foreground mt-1">Top of the MiyTube homepage — highest traffic slot.</div>
-                <div className="text-xs text-primary font-medium mt-2">5× the base price</div>
-              </button>
+          {/* Placement chooser — hidden for fixed packages (baked into the package) */}
+          {pricingKind !== 'package' && (
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Where should your ad appear? *</label>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setPlacement('watch')}
+                  className={`text-left p-4 rounded-lg border transition-all ${placement === 'watch' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                >
+                  <div className="font-semibold">Watch pages</div>
+                  <div className="text-xs text-muted-foreground mt-1">Below the video player on every watch page.</div>
+                  <div className="text-xs text-primary font-medium mt-2">Base price</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPlacement('homepage')}
+                  className={`relative text-left p-4 rounded-lg border transition-all ${placement === 'homepage' ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                >
+                  <span className="absolute -top-2 right-3 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full">Premium</span>
+                  <div className="font-semibold">Homepage banner</div>
+                  <div className="text-xs text-muted-foreground mt-1">Top of the MiyTube homepage — highest traffic slot.</div>
+                  <div className="text-xs text-primary font-medium mt-2">5× the base price</div>
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex gap-2 p-1 bg-muted rounded-lg">
             <button
+              onClick={() => setPricingKind('package')}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'package' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+            >Fixed-duration packages</button>
+            <button
               onClick={() => setPricingKind('tier')}
               className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'tier' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
-            >Packages</button>
+            >Tiers</button>
             <button
               onClick={() => setPricingKind('custom')}
               className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'custom' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
             >Custom budget</button>
           </div>
 
-          {pricingKind === 'tier' ? (
+          {pricingKind === 'package' && (
+            <>
+              {promoActive && (
+                <div className="rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
+                  <span className="font-semibold text-primary">Launch offer active:</span>{' '}
+                  Save up to 40% on every package through{' '}
+                  <strong>{LAUNCH_PROMO_END.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</strong>.
+                  Prices auto-return to normal after that.
+                </div>
+              )}
+              <div className="grid md:grid-cols-3 gap-3">
+                {FIXED_PACKAGES.map(p => {
+                  const price = promoActive ? p.launchPrice : p.normalPrice;
+                  const showStrike = promoActive && p.launchPrice < p.normalPrice;
+                  const isSelected = selectedPackageId === p.id;
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => setSelectedPackageId(p.id)}
+                      className={`relative text-left p-4 rounded-lg border transition-all ${
+                        isSelected ? 'border-primary ring-2 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/50'
+                      }`}
+                    >
+                      {p.highlight && (
+                        <span className="absolute -top-2 right-3 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full">
+                          {p.highlight}
+                        </span>
+                      )}
+                      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                        {p.placement === 'homepage' ? 'Homepage' : 'Watch pages'} · {p.days === 1 ? '24 hours' : `${p.days} days`}
+                      </div>
+                      <div className="font-semibold mt-1">{p.label}</div>
+                      <div className="flex items-baseline gap-2 my-1">
+                        <span className="text-2xl font-bold text-primary">${price.toLocaleString()}</span>
+                        {showStrike && (
+                          <span className="text-sm text-muted-foreground line-through">${p.normalPrice.toLocaleString()}</span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">{p.blurb}</p>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Fixed packages auto-set your end date. All packages are priced at least 20% below comparable Meta, LinkedIn and YouTube slots.
+              </p>
+            </>
+          )}
+
+          {pricingKind === 'tier' && (
             <div className="grid md:grid-cols-3 gap-3">
               {TIERS.map(t => (
                 <button
@@ -367,7 +469,9 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
                 </button>
               ))}
             </div>
-          ) : (
+          )}
+
+          {pricingKind === 'custom' && (
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Daily Budget ($) *</label>
@@ -386,8 +490,19 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <Input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> End Date</label>
-              <Input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} />
+              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> End Date {pricingKind === 'package' && <span className="text-xs text-muted-foreground font-normal">(auto)</span>}</label>
+              <Input
+                type="date"
+                value={endDate}
+                disabled={pricingKind === 'package'}
+                onChange={e => setEndDate(e.target.value)}
+                placeholder={pricingKind === 'package' ? 'Auto-set by package' : ''}
+              />
+              {pricingKind === 'package' && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Runs for {selectedPackage.days === 1 ? '24 hours' : `${selectedPackage.days} days`} from your start date.
+                </p>
+              )}
             </div>
           </div>
 
@@ -397,10 +512,25 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <span className="text-muted-foreground">Campaign:</span><span>{campaignName}</span>
               <span className="text-muted-foreground">Format:</span><span>{selectedFormat?.name}</span>
               <span className="text-muted-foreground">Placement:</span>
-              <span>{placement === 'homepage' ? 'Homepage (Premium 5×)' : 'Watch pages'}</span>
-              <span className="text-muted-foreground">Plan:</span><span>{pricingKind === 'tier' ? selectedTier.label : 'Custom'}</span>
+              <span>
+                {effectivePlacement === 'homepage'
+                  ? (pricingKind === 'package' ? 'Homepage' : 'Homepage (Premium 5×)')
+                  : 'Watch pages'}
+              </span>
+              <span className="text-muted-foreground">Plan:</span>
+              <span>
+                {pricingKind === 'package'
+                  ? `${selectedPackage.label}${promoActive ? ' (launch price)' : ''}`
+                  : pricingKind === 'tier' ? selectedTier.label : 'Custom'}
+              </span>
+              {pricingKind === 'package' && (
+                <>
+                  <span className="text-muted-foreground">Duration:</span>
+                  <span>{selectedPackage.days === 1 ? '24 hours' : `${selectedPackage.days} days`}</span>
+                </>
+              )}
               <span className="text-muted-foreground">Base price:</span><span>${pricing.amount.toFixed(2)}</span>
-              {placement === 'homepage' && (
+              {pricingKind !== 'package' && placement === 'homepage' && (
                 <>
                   <span className="text-muted-foreground">Homepage multiplier:</span>
                   <span>× 5</span>
@@ -411,6 +541,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <span className="text-muted-foreground">Categories:</span><span>{targetCategories.join(', ') || 'All'}</span>
             </div>
           </div>
+
 
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => setStep(3)} className="flex-1">Back</Button>
@@ -434,9 +565,14 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <CampaignCheckout
             campaignId={newCampaignId}
             mode="initial"
-            priceId={placement === 'watch' && pricing.kind === 'tier' ? pricing.priceId : undefined}
-            customAmountCents={placement === 'homepage' || pricing.kind === 'custom' ? Math.round(finalAmount * 100) : undefined}
+            priceId={pricingKind === 'tier' && placement === 'watch' ? (pricing as any).priceId : undefined}
+            customAmountCents={
+              pricingKind === 'package' || pricingKind === 'custom' || placement === 'homepage'
+                ? Math.round(finalAmount * 100)
+                : undefined
+            }
           />
+
 
           <div className="flex justify-between text-xs text-muted-foreground pt-2">
             <span>Ref: {newCampaignId.slice(0, 8)}</span>
