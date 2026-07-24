@@ -5,6 +5,15 @@ import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const SportsExtendedLinks: React.FC = () => {
   const sportsExtendedLinks = [
+    {
+      id: 'sports-boxing-main',
+      icon: Trophy,
+      label: 'Boxing',
+      path: '/c/sports/boxing',
+      subItems: [
+        { id: 'sports-boxing-heavyweight-fighting', label: 'Boxing (heavyweight, fighting)', path: '/c/sports/boxing/boxing-heavyweight-fighting' }
+      ]
+    },
     { 
       id: 'sports-nba', 
       icon: Trophy, 
