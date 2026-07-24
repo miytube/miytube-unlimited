@@ -47,6 +47,7 @@ export const HOUSE_ADS: HouseAd[] = [
     businessName: 'Work Force Coin',
     callToAction: 'Learn More',
     destinationUrl: 'https://workforce-coin-exchange.vercel.app',
+    mediaUrl: workforceCoinLogo.url,
     placements: ['homepage', 'watch'],
   },
 ];
