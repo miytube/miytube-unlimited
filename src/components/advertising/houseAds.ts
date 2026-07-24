@@ -37,6 +37,16 @@ export const HOUSE_ADS: HouseAd[] = [
     destinationUrl: '/advertising',
     placements: ['homepage'],
   },
+  {
+    id: 'house-workforce-coin',
+    headline: 'Invest in Real Estate. Work Force Coin Puts Your Crypto to Work.',
+    description:
+      'Work Force Coin connects cryptocurrency with real estate investment opportunities.',
+    businessName: 'Work Force Coin',
+    callToAction: 'Learn More',
+    destinationUrl: 'https://workforce-coin-exchange.vercel.app',
+    placements: ['homepage', 'watch'],
+  },
 ];
 
 /**
