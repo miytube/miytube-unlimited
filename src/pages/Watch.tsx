@@ -473,9 +473,13 @@ const Watch = () => {
                   </p>
                 </div>
               ) : isYouTubeVideo && youtubeVideoId ? (
-                <YouTubeEmbed videoId={youtubeVideoId} title={video.title} />
+                <PrerollAd>
+                  <YouTubeEmbed videoId={youtubeVideoId} title={video.title} />
+                </PrerollAd>
               ) : (
-                <VideoPlayer videoFile={video.file} title={video.title} />
+                <PrerollAd>
+                  <VideoPlayer videoFile={video.file} title={video.title} />
+                </PrerollAd>
               )}
             </div>
 
