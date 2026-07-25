@@ -461,7 +461,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             </div>
           )}
 
-          <div className="flex gap-2 p-1 bg-muted rounded-lg">
+          <div className={`flex gap-2 p-1 bg-muted rounded-lg ${isPreroll ? 'hidden' : ''}`}>
             <button
               onClick={() => setPricingKind('package')}
               className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${effectivePricingKind === 'package' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
