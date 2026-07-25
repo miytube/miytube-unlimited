@@ -594,6 +594,8 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <span>
                 {effectivePlacement === 'homepage'
                   ? (effectivePricingKind === 'package' ? 'Homepage' : 'Homepage (Premium 5×)')
+                  : effectivePlacement === 'preroll'
+                  ? 'Pre-roll before videos'
                   : 'Watch pages'}
               </span>
               <span className="text-muted-foreground">Plan:</span>
