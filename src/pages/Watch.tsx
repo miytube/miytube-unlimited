@@ -25,6 +25,7 @@ import { subcategoryMappings } from '@/data/subcategoryMappings';
 import { sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot as WatchBannerAd } from '@/components/advertising/BannerAdSlot';
+import { PrerollAd } from '@/components/advertising/PrerollAd';
 import {
   AlertDialog,
   AlertDialogAction,
