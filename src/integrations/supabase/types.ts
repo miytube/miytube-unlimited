@@ -1090,7 +1090,6 @@ export type Database = {
           thumbnail_url: string | null
           title: string
           updated_at: string
-          uploader_ip: string | null
           user_id: string | null
           video_url: string | null
           views: number | null
@@ -1114,7 +1113,6 @@ export type Database = {
           thumbnail_url?: string | null
           title: string
           updated_at?: string
-          uploader_ip?: string | null
           user_id?: string | null
           video_url?: string | null
           views?: number | null
@@ -1138,7 +1136,6 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
-          uploader_ip?: string | null
           user_id?: string | null
           video_url?: string | null
           views?: number | null
@@ -1474,6 +1471,10 @@ export type Database = {
       }
       record_ad_event: {
         Args: { _campaign_id: string; _event: string }
+        Returns: undefined
+      }
+      record_uploader_ip: {
+        Args: { _local_id: string; _uploader_ip: string }
         Returns: undefined
       }
     }
