@@ -44,10 +44,12 @@ const TIERS: Array<Extract<PricingChoice, { kind: 'tier' }> & { recommended?: bo
 const LAUNCH_PROMO_END = new Date('2026-08-22T23:59:59Z');
 const isPromoActive = () => new Date() <= LAUNCH_PROMO_END;
 
+type AdPlacement = 'watch' | 'homepage' | 'preroll';
+
 type FixedPackage = {
   id: string;
   label: string;
-  placement: 'watch' | 'homepage';
+  placement: AdPlacement;
   days: number;
   normalPrice: number;
   launchPrice: number;
@@ -63,6 +65,16 @@ const FIXED_PACKAGES: FixedPackage[] = [
   { id: 'home_7d',   label: '7-Day Homepage Banner',     placement: 'homepage', days: 7,  normalPrice: 2000, launchPrice: 1600, blurb: 'Homepage rotation slot for a full week.' },
   { id: 'home_30d',  label: '30-Day Homepage Banner',    placement: 'homepage', days: 30, normalPrice: 6000, launchPrice: 4800, blurb: 'Month-long premium homepage presence.' },
 ];
+
+// Pre-roll video ads play inside the player, before the viewer's video starts.
+const PREROLL_PACKAGES: FixedPackage[] = [
+  { id: 'preroll_7d',  label: '7-Day Pre-Roll',  placement: 'preroll', days: 7,  normalPrice: 450,  launchPrice: 360,  blurb: 'Your video ad plays before videos across MiyTube for 7 days.' },
+  { id: 'preroll_14d', label: '14-Day Pre-Roll', placement: 'preroll', days: 14, normalPrice: 800,  launchPrice: 640,  blurb: 'Two weeks of in-stream video ads before playback.' },
+  { id: 'preroll_30d', label: '30-Day Pre-Roll', placement: 'preroll', days: 30, normalPrice: 1400, launchPrice: 1120, blurb: 'A full month of in-stream video ads.', highlight: 'Best value' },
+];
+
+const PREROLL_FORMATS = ['skippable_instream', 'non_skippable_instream', 'bumper'];
+
 
 interface CreateAdFormProps {
   onSuccess?: () => void;
