@@ -288,7 +288,29 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <Input value={businessWebsite} onChange={e => setBusinessWebsite(e.target.value)} placeholder="https://yourbusiness.com" />
           </div>
           <div>
+            <label className="block text-sm font-medium mb-1">Campaign Type *</label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+              <button
+                type="button"
+                onClick={() => switchCampaignType('display')}
+                className={`p-3 rounded-lg border text-left transition-all ${!isPreroll ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border hover:border-primary/50'}`}
+              >
+                <div className="font-medium text-sm">Display / Banner Campaign</div>
+                <div className="text-xs text-muted-foreground mt-1">Banners and wallpapers on homepage and watch pages.</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => switchCampaignType('preroll')}
+                className={`p-3 rounded-lg border text-left transition-all ${isPreroll ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border hover:border-primary/50'}`}
+              >
+                <div className="font-medium text-sm">Pre-Roll Video Campaign</div>
+                <div className="text-xs text-muted-foreground mt-1">Your video ad plays inside the player before the viewer's video.</div>
+              </button>
+            </div>
+          </div>
+          <div>
             <label className="block text-sm font-medium mb-1">Ad Format *</label>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
               {availableFormats.map(fmt => (
                 <button
