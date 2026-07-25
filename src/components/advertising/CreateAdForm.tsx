@@ -505,7 +505,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
                         </span>
                       )}
                       <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                        {p.placement === 'homepage' ? 'Homepage' : 'Watch pages'} · {p.days === 1 ? '24 hours' : `${p.days} days`}
+                        {p.placement === 'homepage' ? 'Homepage' : p.placement === 'preroll' ? 'Pre-roll (in-stream)' : 'Watch pages'} · {p.days === 1 ? '24 hours' : `${p.days} days`}
                       </div>
                       <div className="font-semibold mt-1">{p.label}</div>
                       <div className="flex items-baseline gap-2 my-1">
