@@ -106,23 +106,48 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [selectedTier, setSelectedTier] = useState<typeof TIERS[number]>(TIERS[1]);
   const [selectedPackageId, setSelectedPackageId] = useState<string>(FIXED_PACKAGES[2].id);
   const [placement, setPlacement] = useState<'watch' | 'homepage'>('watch');
+  const [campaignType, setCampaignType] = useState<'display' | 'preroll'>('display');
   const [newCampaignId, setNewCampaignId] = useState<string | null>(null);
 
-  const selectedPackage = FIXED_PACKAGES.find(p => p.id === selectedPackageId)!;
+  const isPreroll = campaignType === 'preroll';
+  const availablePackages = isPreroll ? PREROLL_PACKAGES : FIXED_PACKAGES;
+  const availableFormats = isPreroll
+    ? AD_FORMATS.filter(f => PREROLL_FORMATS.includes(f.id))
+    : AD_FORMATS.filter(f => !PREROLL_FORMATS.includes(f.id));
+
+  // Pre-roll campaigns are sold only as fixed-duration in-stream packages.
+  const effectivePricingKind = isPreroll ? 'package' : pricingKind;
+
+  const selectedPackage =
+    availablePackages.find(p => p.id === selectedPackageId) ?? availablePackages[availablePackages.length - 1];
   const promoActive = isPromoActive();
   const packagePrice = promoActive ? selectedPackage.launchPrice : selectedPackage.normalPrice;
 
+  const switchCampaignType = (next: 'display' | 'preroll') => {
+    setCampaignType(next);
+    if (next === 'preroll') {
+      setAdFormat('skippable_instream');
+      setSelectedPackageId(PREROLL_PACKAGES[PREROLL_PACKAGES.length - 1].id);
+      setPricingKind('package');
+    } else {
+      setAdFormat('discovery');
+      setSelectedPackageId(FIXED_PACKAGES[2].id);
+    }
+  };
+
   const pricing: PricingChoice =
-    pricingKind === 'package'
+    effectivePricingKind === 'package'
       ? { kind: 'package', amount: packagePrice }
-      : pricingKind === 'tier'
+      : effectivePricingKind === 'tier'
       ? selectedTier
       : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
 
   // Packages already bake in placement pricing; tier/custom keep the 5× homepage multiplier.
-  const placementMultiplier = pricingKind === 'package' ? 1 : (placement === 'homepage' ? 5 : 1);
-  const effectivePlacement = pricingKind === 'package' ? selectedPackage.placement : placement;
+  const placementMultiplier = effectivePricingKind === 'package' ? 1 : (placement === 'homepage' ? 5 : 1);
+  const effectivePlacement: AdPlacement =
+    effectivePricingKind === 'package' ? selectedPackage.placement : placement;
   const finalAmount = pricing.amount * placementMultiplier;
+
 
 
   const toggleCategory = (cat: string) => {
