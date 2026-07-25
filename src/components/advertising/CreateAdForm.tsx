@@ -355,7 +355,22 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <label className="block text-sm font-medium mb-1">Destination URL *</label>
             <Input value={destinationUrl} onChange={e => setDestinationUrl(e.target.value)} placeholder="https://yourbusiness.com/landing-page" />
           </div>
+          {isPreroll && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Ad Video URL * <span className="text-xs text-muted-foreground font-normal">(.mp4 or .webm)</span></label>
+              <Input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://yourcdn.com/ad-15s.mp4" />
+              <p className="text-xs text-muted-foreground mt-1">
+                {adFormat === 'bumper'
+                  ? 'Bumper ads must be 6 seconds or shorter.'
+                  : adFormat === 'non_skippable_instream'
+                  ? 'Non-skippable ads should be 15–20 seconds.'
+                  : 'Skippable ads can be any length — viewers can skip after 5 seconds.'}{' '}
+                Recommended 1920×1080, H.264/AAC MP4.
+              </p>
+            </div>
+          )}
           {adFormat === 'vignette' && (
+
             <div>
               <label className="block text-sm font-medium mb-1">Wallpaper Media URL * <span className="text-xs text-muted-foreground font-normal">(image or .mp4/.webm video)</span></label>
               <Input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://yourcdn.com/wallpaper.jpg" />
