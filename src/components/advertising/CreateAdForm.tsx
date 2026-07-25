@@ -44,10 +44,12 @@ const TIERS: Array<Extract<PricingChoice, { kind: 'tier' }> & { recommended?: bo
 const LAUNCH_PROMO_END = new Date('2026-08-22T23:59:59Z');
 const isPromoActive = () => new Date() <= LAUNCH_PROMO_END;
 
+type AdPlacement = 'watch' | 'homepage' | 'preroll';
+
 type FixedPackage = {
   id: string;
   label: string;
-  placement: 'watch' | 'homepage';
+  placement: AdPlacement;
   days: number;
   normalPrice: number;
   launchPrice: number;
@@ -63,6 +65,16 @@ const FIXED_PACKAGES: FixedPackage[] = [
   { id: 'home_7d',   label: '7-Day Homepage Banner',     placement: 'homepage', days: 7,  normalPrice: 2000, launchPrice: 1600, blurb: 'Homepage rotation slot for a full week.' },
   { id: 'home_30d',  label: '30-Day Homepage Banner',    placement: 'homepage', days: 30, normalPrice: 6000, launchPrice: 4800, blurb: 'Month-long premium homepage presence.' },
 ];
+
+// Pre-roll video ads play inside the player, before the viewer's video starts.
+const PREROLL_PACKAGES: FixedPackage[] = [
+  { id: 'preroll_7d',  label: '7-Day Pre-Roll',  placement: 'preroll', days: 7,  normalPrice: 450,  launchPrice: 360,  blurb: 'Your video ad plays before videos across MiyTube for 7 days.' },
+  { id: 'preroll_14d', label: '14-Day Pre-Roll', placement: 'preroll', days: 14, normalPrice: 800,  launchPrice: 640,  blurb: 'Two weeks of in-stream video ads before playback.' },
+  { id: 'preroll_30d', label: '30-Day Pre-Roll', placement: 'preroll', days: 30, normalPrice: 1400, launchPrice: 1120, blurb: 'A full month of in-stream video ads.', highlight: 'Best value' },
+];
+
+const PREROLL_FORMATS = ['skippable_instream', 'non_skippable_instream', 'bumper'];
+
 
 interface CreateAdFormProps {
   onSuccess?: () => void;
@@ -94,23 +106,48 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
   const [selectedTier, setSelectedTier] = useState<typeof TIERS[number]>(TIERS[1]);
   const [selectedPackageId, setSelectedPackageId] = useState<string>(FIXED_PACKAGES[2].id);
   const [placement, setPlacement] = useState<'watch' | 'homepage'>('watch');
+  const [campaignType, setCampaignType] = useState<'display' | 'preroll'>('display');
   const [newCampaignId, setNewCampaignId] = useState<string | null>(null);
 
-  const selectedPackage = FIXED_PACKAGES.find(p => p.id === selectedPackageId)!;
+  const isPreroll = campaignType === 'preroll';
+  const availablePackages = isPreroll ? PREROLL_PACKAGES : FIXED_PACKAGES;
+  const availableFormats = isPreroll
+    ? AD_FORMATS.filter(f => PREROLL_FORMATS.includes(f.id))
+    : AD_FORMATS.filter(f => !PREROLL_FORMATS.includes(f.id));
+
+  // Pre-roll campaigns are sold only as fixed-duration in-stream packages.
+  const effectivePricingKind = isPreroll ? 'package' : pricingKind;
+
+  const selectedPackage =
+    availablePackages.find(p => p.id === selectedPackageId) ?? availablePackages[availablePackages.length - 1];
   const promoActive = isPromoActive();
   const packagePrice = promoActive ? selectedPackage.launchPrice : selectedPackage.normalPrice;
 
+  const switchCampaignType = (next: 'display' | 'preroll') => {
+    setCampaignType(next);
+    if (next === 'preroll') {
+      setAdFormat('skippable_instream');
+      setSelectedPackageId(PREROLL_PACKAGES[PREROLL_PACKAGES.length - 1].id);
+      setPricingKind('package');
+    } else {
+      setAdFormat('discovery');
+      setSelectedPackageId(FIXED_PACKAGES[2].id);
+    }
+  };
+
   const pricing: PricingChoice =
-    pricingKind === 'package'
+    effectivePricingKind === 'package'
       ? { kind: 'package', amount: packagePrice }
-      : pricingKind === 'tier'
+      : effectivePricingKind === 'tier'
       ? selectedTier
       : { kind: 'custom', amount: parseFloat(customTotalBudget) || 0 };
 
   // Packages already bake in placement pricing; tier/custom keep the 5× homepage multiplier.
-  const placementMultiplier = pricingKind === 'package' ? 1 : (placement === 'homepage' ? 5 : 1);
-  const effectivePlacement = pricingKind === 'package' ? selectedPackage.placement : placement;
+  const placementMultiplier = effectivePricingKind === 'package' ? 1 : (placement === 'homepage' ? 5 : 1);
+  const effectivePlacement: AdPlacement =
+    effectivePricingKind === 'package' ? selectedPackage.placement : placement;
   const finalAmount = pricing.amount * placementMultiplier;
+
 
 
   const toggleCategory = (cat: string) => {
@@ -148,6 +185,11 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
       toast({ title: 'Wallpaper media required', description: 'Vignette ads need an image or video URL.', variant: 'destructive' });
       return;
     }
+    if (isPreroll && !mediaUrl.trim()) {
+      toast({ title: 'Ad video required', description: 'Pre-roll campaigns need a hosted video URL (.mp4/.webm).', variant: 'destructive' });
+      return;
+    }
+
     if (mediaUrl.trim() && !isSafeHttpUrl(mediaUrl)) {
       toast({ title: 'Invalid media URL', description: 'Media URL must start with https:// or http://', variant: 'destructive' });
       return;
@@ -161,7 +203,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
     try {
       // For fixed-duration packages, auto-compute end_date = start_date + days - 1
       let resolvedEndDate: string | null = endDate || null;
-      if (pricingKind === 'package') {
+      if (effectivePricingKind === 'package') {
         const start = new Date(startDate + 'T00:00:00Z');
         const end = new Date(start);
         end.setUTCDate(end.getUTCDate() + selectedPackage.days - 1);
@@ -246,9 +288,31 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <Input value={businessWebsite} onChange={e => setBusinessWebsite(e.target.value)} placeholder="https://yourbusiness.com" />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Ad Format *</label>
+            <label className="block text-sm font-medium mb-1">Campaign Type *</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-              {AD_FORMATS.map(fmt => (
+              <button
+                type="button"
+                onClick={() => switchCampaignType('display')}
+                className={`p-3 rounded-lg border text-left transition-all ${!isPreroll ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border hover:border-primary/50'}`}
+              >
+                <div className="font-medium text-sm">Display / Banner Campaign</div>
+                <div className="text-xs text-muted-foreground mt-1">Banners and wallpapers on homepage and watch pages.</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => switchCampaignType('preroll')}
+                className={`p-3 rounded-lg border text-left transition-all ${isPreroll ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-border hover:border-primary/50'}`}
+              >
+                <div className="font-medium text-sm">Pre-Roll Video Campaign</div>
+                <div className="text-xs text-muted-foreground mt-1">Your video ad plays inside the player before the viewer's video.</div>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Ad Format *</label>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+              {availableFormats.map(fmt => (
                 <button
                   key={fmt.id}
                   onClick={() => setAdFormat(fmt.id)}
@@ -291,7 +355,22 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             <label className="block text-sm font-medium mb-1">Destination URL *</label>
             <Input value={destinationUrl} onChange={e => setDestinationUrl(e.target.value)} placeholder="https://yourbusiness.com/landing-page" />
           </div>
+          {isPreroll && (
+            <div>
+              <label className="block text-sm font-medium mb-1">Ad Video URL * <span className="text-xs text-muted-foreground font-normal">(.mp4 or .webm)</span></label>
+              <Input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://yourcdn.com/ad-15s.mp4" />
+              <p className="text-xs text-muted-foreground mt-1">
+                {adFormat === 'bumper'
+                  ? 'Bumper ads must be 6 seconds or shorter.'
+                  : adFormat === 'non_skippable_instream'
+                  ? 'Non-skippable ads should be 15–20 seconds.'
+                  : 'Skippable ads can be any length — viewers can skip after 5 seconds.'}{' '}
+                Recommended 1920×1080, H.264/AAC MP4.
+              </p>
+            </div>
+          )}
           {adFormat === 'vignette' && (
+
             <div>
               <label className="block text-sm font-medium mb-1">Wallpaper Media URL * <span className="text-xs text-muted-foreground font-normal">(image or .mp4/.webm video)</span></label>
               <Input value={mediaUrl} onChange={e => setMediaUrl(e.target.value)} placeholder="https://yourcdn.com/wallpaper.jpg" />
@@ -355,7 +434,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <div className="flex items-center gap-2 mb-4"><DollarSign className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Choose Your Budget</h3></div>
 
           {/* Placement chooser — hidden for fixed packages (baked into the package) */}
-          {pricingKind !== 'package' && (
+          {effectivePricingKind !== 'package' && (
             <div className="space-y-2">
               <label className="block text-sm font-medium">Where should your ad appear? *</label>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -382,22 +461,22 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             </div>
           )}
 
-          <div className="flex gap-2 p-1 bg-muted rounded-lg">
+          <div className={`flex gap-2 p-1 bg-muted rounded-lg ${isPreroll ? 'hidden' : ''}`}>
             <button
               onClick={() => setPricingKind('package')}
-              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'package' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${effectivePricingKind === 'package' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
             >Fixed-duration packages</button>
             <button
               onClick={() => setPricingKind('tier')}
-              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'tier' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${effectivePricingKind === 'tier' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
             >Tiers</button>
             <button
               onClick={() => setPricingKind('custom')}
-              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'custom' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${effectivePricingKind === 'custom' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
             >Custom budget</button>
           </div>
 
-          {pricingKind === 'package' && (
+          {effectivePricingKind === 'package' && (
             <>
               {promoActive && (
                 <div className="rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
@@ -408,7 +487,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
                 </div>
               )}
               <div className="grid md:grid-cols-3 gap-3">
-                {FIXED_PACKAGES.map(p => {
+                {availablePackages.map(p => {
                   const price = promoActive ? p.launchPrice : p.normalPrice;
                   const showStrike = promoActive && p.launchPrice < p.normalPrice;
                   const isSelected = selectedPackageId === p.id;
@@ -426,7 +505,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
                         </span>
                       )}
                       <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                        {p.placement === 'homepage' ? 'Homepage' : 'Watch pages'} · {p.days === 1 ? '24 hours' : `${p.days} days`}
+                        {p.placement === 'homepage' ? 'Homepage' : p.placement === 'preroll' ? 'Pre-roll (in-stream)' : 'Watch pages'} · {p.days === 1 ? '24 hours' : `${p.days} days`}
                       </div>
                       <div className="font-semibold mt-1">{p.label}</div>
                       <div className="flex items-baseline gap-2 my-1">
@@ -446,7 +525,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             </>
           )}
 
-          {pricingKind === 'tier' && (
+          {effectivePricingKind === 'tier' && (
             <div className="grid md:grid-cols-3 gap-3">
               {TIERS.map(t => (
                 <button
@@ -471,7 +550,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             </div>
           )}
 
-          {pricingKind === 'custom' && (
+          {effectivePricingKind === 'custom' && (
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Daily Budget ($) *</label>
@@ -490,15 +569,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <Input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> End Date {pricingKind === 'package' && <span className="text-xs text-muted-foreground font-normal">(auto)</span>}</label>
+              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> End Date {effectivePricingKind === 'package' && <span className="text-xs text-muted-foreground font-normal">(auto)</span>}</label>
               <Input
                 type="date"
                 value={endDate}
-                disabled={pricingKind === 'package'}
+                disabled={effectivePricingKind === 'package'}
                 onChange={e => setEndDate(e.target.value)}
-                placeholder={pricingKind === 'package' ? 'Auto-set by package' : ''}
+                placeholder={effectivePricingKind === 'package' ? 'Auto-set by package' : ''}
               />
-              {pricingKind === 'package' && (
+              {effectivePricingKind === 'package' && (
                 <p className="text-xs text-muted-foreground mt-1">
                   Runs for {selectedPackage.days === 1 ? '24 hours' : `${selectedPackage.days} days`} from your start date.
                 </p>
@@ -514,23 +593,25 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <span className="text-muted-foreground">Placement:</span>
               <span>
                 {effectivePlacement === 'homepage'
-                  ? (pricingKind === 'package' ? 'Homepage' : 'Homepage (Premium 5×)')
+                  ? (effectivePricingKind === 'package' ? 'Homepage' : 'Homepage (Premium 5×)')
+                  : effectivePlacement === 'preroll'
+                  ? 'Pre-roll before videos'
                   : 'Watch pages'}
               </span>
               <span className="text-muted-foreground">Plan:</span>
               <span>
-                {pricingKind === 'package'
+                {effectivePricingKind === 'package'
                   ? `${selectedPackage.label}${promoActive ? ' (launch price)' : ''}`
-                  : pricingKind === 'tier' ? selectedTier.label : 'Custom'}
+                  : effectivePricingKind === 'tier' ? selectedTier.label : 'Custom'}
               </span>
-              {pricingKind === 'package' && (
+              {effectivePricingKind === 'package' && (
                 <>
                   <span className="text-muted-foreground">Duration:</span>
                   <span>{selectedPackage.days === 1 ? '24 hours' : `${selectedPackage.days} days`}</span>
                 </>
               )}
               <span className="text-muted-foreground">Base price:</span><span>${pricing.amount.toFixed(2)}</span>
-              {pricingKind !== 'package' && placement === 'homepage' && (
+              {effectivePricingKind !== 'package' && placement === 'homepage' && (
                 <>
                   <span className="text-muted-foreground">Homepage multiplier:</span>
                   <span>× 5</span>
@@ -565,9 +646,9 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <CampaignCheckout
             campaignId={newCampaignId}
             mode="initial"
-            priceId={pricingKind === 'tier' && placement === 'watch' ? (pricing as any).priceId : undefined}
+            priceId={effectivePricingKind === 'tier' && placement === 'watch' ? (pricing as any).priceId : undefined}
             customAmountCents={
-              pricingKind === 'package' || pricingKind === 'custom' || placement === 'homepage'
+              effectivePricingKind === 'package' || effectivePricingKind === 'custom' || placement === 'homepage'
                 ? Math.round(finalAmount * 100)
                 : undefined
             }

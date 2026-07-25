@@ -25,6 +25,7 @@ import { subcategoryMappings } from '@/data/subcategoryMappings';
 import { sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot as WatchBannerAd } from '@/components/advertising/BannerAdSlot';
+import { PrerollAd } from '@/components/advertising/PrerollAd';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -473,9 +474,13 @@ const Watch = () => {
                   </p>
                 </div>
               ) : isYouTubeVideo && youtubeVideoId ? (
-                <YouTubeEmbed videoId={youtubeVideoId} title={video.title} />
+                <PrerollAd>
+                  <YouTubeEmbed videoId={youtubeVideoId} title={video.title} />
+                </PrerollAd>
               ) : (
-                <VideoPlayer videoFile={video.file} title={video.title} />
+                <PrerollAd>
+                  <VideoPlayer videoFile={video.file} title={video.title} />
+                </PrerollAd>
               )}
             </div>
 

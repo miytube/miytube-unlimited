@@ -1419,6 +1419,19 @@ export type Database = {
           media_url: string
         }[]
       }
+      get_active_preroll_ads: {
+        Args: never
+        Returns: {
+          ad_format: string
+          business_name: string
+          call_to_action: string
+          description: string
+          destination_url: string
+          headline: string
+          id: string
+          media_url: string
+        }[]
+      }
       get_discussion_like_counts: {
         Args: { _discussion_ids: string[] }
         Returns: {
