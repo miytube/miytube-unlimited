@@ -327,7 +327,6 @@ const saveVideoToSupabase = async (video: {
     file_name: video.fileName,
     file_size: video.fileSize,
     file_type: video.fileType,
-    uploader_ip: uploaderIp,
   });
   
   if (error) {
@@ -335,7 +334,16 @@ const saveVideoToSupabase = async (video: {
     throw new Error(`Upload saved to storage, but failed to publish to the video feed: ${error.message}`);
   }
 
-  console.log('Saved video to Supabase cloud backup with local_id:', video.localId, 'from IP:', uploaderIp);
+  // Record the uploader IP privately (never stored on the public videos table)
+  if (uploaderIp) {
+    const { error: ipError } = await supabase.rpc('record_uploader_ip', {
+      _local_id: video.localId,
+      _uploader_ip: uploaderIp,
+    });
+    if (ipError) console.warn('Could not record uploader IP:', ipError.message);
+  }
+
+  console.log('Saved video to Supabase cloud backup with local_id:', video.localId);
   return { isDuplicate: false };
 };
 
