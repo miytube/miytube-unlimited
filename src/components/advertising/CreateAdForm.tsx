@@ -198,7 +198,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
     try {
       // For fixed-duration packages, auto-compute end_date = start_date + days - 1
       let resolvedEndDate: string | null = endDate || null;
-      if (pricingKind === 'package') {
+      if (effectivePricingKind === 'package') {
         const start = new Date(startDate + 'T00:00:00Z');
         const end = new Date(start);
         end.setUTCDate(end.getUTCDate() + selectedPackage.days - 1);
@@ -285,7 +285,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <div>
             <label className="block text-sm font-medium mb-1">Ad Format *</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-              {AD_FORMATS.map(fmt => (
+              {availableFormats.map(fmt => (
                 <button
                   key={fmt.id}
                   onClick={() => setAdFormat(fmt.id)}
@@ -392,7 +392,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <div className="flex items-center gap-2 mb-4"><DollarSign className="h-5 w-5 text-primary" /><h3 className="text-lg font-semibold">Choose Your Budget</h3></div>
 
           {/* Placement chooser — hidden for fixed packages (baked into the package) */}
-          {pricingKind !== 'package' && (
+          {effectivePricingKind !== 'package' && (
             <div className="space-y-2">
               <label className="block text-sm font-medium">Where should your ad appear? *</label>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -422,19 +422,19 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <div className="flex gap-2 p-1 bg-muted rounded-lg">
             <button
               onClick={() => setPricingKind('package')}
-              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'package' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${effectivePricingKind === 'package' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
             >Fixed-duration packages</button>
             <button
               onClick={() => setPricingKind('tier')}
-              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'tier' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${effectivePricingKind === 'tier' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
             >Tiers</button>
             <button
               onClick={() => setPricingKind('custom')}
-              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${pricingKind === 'custom' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
+              className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${effectivePricingKind === 'custom' ? 'bg-background shadow-sm' : 'text-muted-foreground'}`}
             >Custom budget</button>
           </div>
 
-          {pricingKind === 'package' && (
+          {effectivePricingKind === 'package' && (
             <>
               {promoActive && (
                 <div className="rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm">
@@ -445,7 +445,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
                 </div>
               )}
               <div className="grid md:grid-cols-3 gap-3">
-                {FIXED_PACKAGES.map(p => {
+                {availablePackages.map(p => {
                   const price = promoActive ? p.launchPrice : p.normalPrice;
                   const showStrike = promoActive && p.launchPrice < p.normalPrice;
                   const isSelected = selectedPackageId === p.id;
@@ -483,7 +483,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             </>
           )}
 
-          {pricingKind === 'tier' && (
+          {effectivePricingKind === 'tier' && (
             <div className="grid md:grid-cols-3 gap-3">
               {TIERS.map(t => (
                 <button
@@ -508,7 +508,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
             </div>
           )}
 
-          {pricingKind === 'custom' && (
+          {effectivePricingKind === 'custom' && (
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Daily Budget ($) *</label>
@@ -527,15 +527,15 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <Input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> End Date {pricingKind === 'package' && <span className="text-xs text-muted-foreground font-normal">(auto)</span>}</label>
+              <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Calendar className="h-3 w-3" /> End Date {effectivePricingKind === 'package' && <span className="text-xs text-muted-foreground font-normal">(auto)</span>}</label>
               <Input
                 type="date"
                 value={endDate}
-                disabled={pricingKind === 'package'}
+                disabled={effectivePricingKind === 'package'}
                 onChange={e => setEndDate(e.target.value)}
-                placeholder={pricingKind === 'package' ? 'Auto-set by package' : ''}
+                placeholder={effectivePricingKind === 'package' ? 'Auto-set by package' : ''}
               />
-              {pricingKind === 'package' && (
+              {effectivePricingKind === 'package' && (
                 <p className="text-xs text-muted-foreground mt-1">
                   Runs for {selectedPackage.days === 1 ? '24 hours' : `${selectedPackage.days} days`} from your start date.
                 </p>
@@ -551,23 +551,23 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
               <span className="text-muted-foreground">Placement:</span>
               <span>
                 {effectivePlacement === 'homepage'
-                  ? (pricingKind === 'package' ? 'Homepage' : 'Homepage (Premium 5×)')
+                  ? (effectivePricingKind === 'package' ? 'Homepage' : 'Homepage (Premium 5×)')
                   : 'Watch pages'}
               </span>
               <span className="text-muted-foreground">Plan:</span>
               <span>
-                {pricingKind === 'package'
+                {effectivePricingKind === 'package'
                   ? `${selectedPackage.label}${promoActive ? ' (launch price)' : ''}`
-                  : pricingKind === 'tier' ? selectedTier.label : 'Custom'}
+                  : effectivePricingKind === 'tier' ? selectedTier.label : 'Custom'}
               </span>
-              {pricingKind === 'package' && (
+              {effectivePricingKind === 'package' && (
                 <>
                   <span className="text-muted-foreground">Duration:</span>
                   <span>{selectedPackage.days === 1 ? '24 hours' : `${selectedPackage.days} days`}</span>
                 </>
               )}
               <span className="text-muted-foreground">Base price:</span><span>${pricing.amount.toFixed(2)}</span>
-              {pricingKind !== 'package' && placement === 'homepage' && (
+              {effectivePricingKind !== 'package' && placement === 'homepage' && (
                 <>
                   <span className="text-muted-foreground">Homepage multiplier:</span>
                   <span>× 5</span>
@@ -602,9 +602,9 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           <CampaignCheckout
             campaignId={newCampaignId}
             mode="initial"
-            priceId={pricingKind === 'tier' && placement === 'watch' ? (pricing as any).priceId : undefined}
+            priceId={effectivePricingKind === 'tier' && placement === 'watch' ? (pricing as any).priceId : undefined}
             customAmountCents={
-              pricingKind === 'package' || pricingKind === 'custom' || placement === 'homepage'
+              effectivePricingKind === 'package' || effectivePricingKind === 'custom' || placement === 'homepage'
                 ? Math.round(finalAmount * 100)
                 : undefined
             }
