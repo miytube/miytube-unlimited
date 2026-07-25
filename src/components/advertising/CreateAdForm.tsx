@@ -185,6 +185,11 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
       toast({ title: 'Wallpaper media required', description: 'Vignette ads need an image or video URL.', variant: 'destructive' });
       return;
     }
+    if (isPreroll && !mediaUrl.trim()) {
+      toast({ title: 'Ad video required', description: 'Pre-roll campaigns need a hosted video URL (.mp4/.webm).', variant: 'destructive' });
+      return;
+    }
+
     if (mediaUrl.trim() && !isSafeHttpUrl(mediaUrl)) {
       toast({ title: 'Invalid media URL', description: 'Media URL must start with https:// or http://', variant: 'destructive' });
       return;
