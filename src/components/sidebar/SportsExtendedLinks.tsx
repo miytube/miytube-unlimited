@@ -14,6 +14,16 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-boxing-heavyweight-fighting', label: 'Boxing (heavyweight, fighting)', path: '/c/sports/boxing/boxing-heavyweight-fighting' }
       ]
     },
+    {
+      id: 'sports-moments-main',
+      icon: Trophy,
+      label: 'Sports Moments',
+      path: '/c/sports/sports-moments-all-sports-amateur-professional',
+      subItems: [
+        { id: 'sports-moments-all', label: 'Sports Moments (all sports, amateur, professional)', path: '/c/sports/sports-moments-all-sports-amateur-professional' }
+      ]
+    },
+
     { 
       id: 'sports-nba', 
       icon: Trophy, 
