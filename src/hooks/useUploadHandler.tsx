@@ -48,16 +48,18 @@ export const useUploadHandler = () => {
           if (!compatibility.isCompatible) {
             skippedFiles.push(file.name);
             const { data: authData } = await supabase.auth.getUser();
-            await supabase.from('blocked_uploads').insert({
-              user_id: authData?.user?.id ?? null,
-              file_name: file.name,
-              file_size: file.size,
-              title: title || file.name,
-              category: category ?? null,
-              subcategory: subcategory ?? null,
-              reason: 'incompatible_format',
-              details: compatibility.errorMessage || 'Video format not playable in browsers',
-            });
+            if (authData?.user?.id) {
+              await supabase.from('blocked_uploads').insert({
+                user_id: authData.user.id,
+                file_name: file.name,
+                file_size: file.size,
+                title: title || file.name,
+                category: category ?? null,
+                subcategory: subcategory ?? null,
+                reason: 'incompatible_format',
+                details: compatibility.errorMessage || 'Video format not playable in browsers',
+              });
+            }
             toast({
               title: `Skipped: ${file.name}`,
               description: compatibility.errorMessage || "This video cannot be played in browsers.",
