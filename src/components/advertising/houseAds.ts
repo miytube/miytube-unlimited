@@ -2,8 +2,6 @@
 // These rotate into the banner slot every HOUSE_AD_INTERVAL_HOURS hours,
 // independently of paid campaigns. Edit copy or interval here.
 
-import workforceCoinLogo from "@/assets/workforce-coin-logo.png.asset.json";
-
 export const HOUSE_AD_INTERVAL_HOURS = 2; // show a house ad once every N hours
 export const HOUSE_AD_ENABLED = true;
 
@@ -38,17 +36,6 @@ export const HOUSE_ADS: HouseAd[] = [
     callToAction: 'Reserve Now',
     destinationUrl: '/advertising',
     placements: ['homepage'],
-  },
-  {
-    id: 'house-workforce-coin',
-    headline: 'Invest in Real Estate. Work Force Coin Puts Your Crypto to Work.',
-    description:
-      'Work Force Coin connects cryptocurrency with real estate investment opportunities.',
-    businessName: 'Work Force Coin',
-    callToAction: 'Learn More',
-    destinationUrl: 'https://workforce-coin-exchange.vercel.app',
-    mediaUrl: workforceCoinLogo.url,
-    placements: ['homepage', 'watch'],
   },
 ];
 
