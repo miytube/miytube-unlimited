@@ -88,25 +88,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signUp = async (email: string, password: string, channelName?: string) => {
     const redirectUrl = `${window.location.origin}/`;
-    
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: redirectUrl
+        emailRedirectTo: redirectUrl,
+        data: channelName ? { channel_name: channelName.trim() } : undefined
       }
     });
 
-    if (!error && data.user && channelName) {
-      // Update profile with channel name
+    if (!error && data.session && channelName) {
+      // Session available (no email confirmation required) – ensure profile is set
       await supabase
         .from('profiles')
-        .update({ channel_name: channelName, display_name: channelName })
-        .eq('user_id', data.user.id);
+        .update({ channel_name: channelName.trim(), display_name: channelName.trim() })
+        .eq('user_id', data.user!.id);
     }
 
     return { error: error as Error | null };
   };
+
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
