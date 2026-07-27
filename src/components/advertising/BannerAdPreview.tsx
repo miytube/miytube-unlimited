@@ -14,12 +14,12 @@ interface BannerAdPreviewProps {
 // input, with an optional user-uploaded image. Deterministic gradient based on
 // business name so each advertiser gets a consistent look.
 const GRADIENTS = [
-  'from-indigo-600 via-purple-600 to-pink-600',
-  'from-emerald-500 via-teal-600 to-cyan-600',
-  'from-orange-500 via-red-500 to-pink-600',
-  'from-blue-600 via-sky-500 to-cyan-400',
-  'from-fuchsia-600 via-purple-600 to-indigo-700',
-  'from-amber-500 via-orange-600 to-rose-600',
+  'from-blue-700 via-blue-500 to-sky-400',
+  'from-sky-600 via-blue-600 to-indigo-700',
+  'from-indigo-700 via-blue-600 to-cyan-500',
+  'from-blue-600 via-cyan-500 to-teal-400',
+  'from-slate-800 via-blue-700 to-sky-500',
+  'from-cyan-600 via-sky-600 to-blue-700',
 ];
 
 const pickGradient = (seed: string) => {
