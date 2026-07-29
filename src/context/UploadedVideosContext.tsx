@@ -452,6 +452,7 @@ const loadVideosFromSupabase = async (): Promise<{
   const { data, error } = await supabase
     .from('uploaded_videos_public')
     .select(SELECT_COLS)
+    .eq('site', getCurrentSiteId())
     .order('created_at', { ascending: false })
     .range(0, PAGE_SIZE - 1);
 
