@@ -176,6 +176,7 @@ const MusicUpload = () => {
           video_url: videoUrl,
           traffic_organic: 1,
           user_id: user?.id,
+          site: getCurrentSiteId(),
         })
         .select()
         .single();
