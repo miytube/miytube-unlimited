@@ -43,9 +43,11 @@ const Index = () => {
   const prevVideoCountRef = useRef(uploadedVideos.length);
   const videosPerPage = 20;
 
+  const { site } = useSite();
+
   usePageSEO({
-    title: 'MiyTube — Watch and share trending videos',
-    description: 'Watch trending videos, shorts, music, sports, news, and more on MiyTube. Free video platform for creators and viewers.',
+    title: site.metaTitle,
+    description: site.metaDescription,
     path: '/',
   });
 
