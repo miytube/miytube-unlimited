@@ -332,6 +332,7 @@ const saveVideoToSupabase = async (video: {
     file_name: video.fileName,
     file_size: video.fileSize,
     file_type: video.fileType,
+    site: getCurrentSiteId(),
   });
   
   if (error) {
