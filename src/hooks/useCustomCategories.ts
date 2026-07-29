@@ -42,10 +42,11 @@ export const useCustomCategories = (includeInactive = false) => {
 
   const load = useCallback(async () => {
     setLoading(true);
+    const site = getCurrentSiteId();
     const [cats, subs, watches] = await Promise.all([
-      supabase.from('custom_categories').select('*').order('sort_order').order('name'),
-      supabase.from('custom_subcategories').select('*').order('sort_order').order('name'),
-      supabase.from('custom_watch_pages').select('*').order('sort_order').order('name'),
+      supabase.from('custom_categories').select('*').eq('site', site).order('sort_order').order('name'),
+      supabase.from('custom_subcategories').select('*').eq('site', site).order('sort_order').order('name'),
+      supabase.from('custom_watch_pages').select('*').eq('site', site).order('sort_order').order('name'),
     ]);
 
     const filterActive = <T extends { is_active: boolean }>(arr: T[] | null) =>
