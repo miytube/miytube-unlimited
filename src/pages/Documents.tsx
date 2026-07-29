@@ -95,6 +95,7 @@ const Documents = () => {
         file_type: ext.toUpperCase(),
         file_size: file.size,
         category,
+        site: getCurrentSiteId(),
       });
       if (insErr) throw insErr;
 
