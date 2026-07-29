@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSite } from '@/hooks/useSite';
 
 export const SidebarFooter: React.FC = () => {
+  const { site } = useSite();
   return (
     <div className="border-t mt-6 pt-4 text-xs text-muted-foreground">
       <div className="flex flex-wrap gap-x-2 px-3 mb-4">
@@ -13,7 +15,7 @@ export const SidebarFooter: React.FC = () => {
         <Link to="/terms" className="hover:underline">Terms</Link>
         <Link to="/privacy" className="hover:underline">Privacy</Link>
       </div>
-      <p className="px-3">© 2023 MiyTube</p>
+      <p className="px-3">© {new Date().getFullYear()} {site.name}</p>
     </div>
   );
 };
