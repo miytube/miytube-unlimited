@@ -121,6 +121,7 @@ const TalkAtCha = () => {
       category: newPost.category,
       title: newPost.title.trim(),
       content: newPost.content.trim(),
+      site: getCurrentSiteId(),
     });
 
     if (error) {
