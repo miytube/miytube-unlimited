@@ -60,6 +60,7 @@ const BlogCreate = () => {
         content: content.trim(),
         cover_image_url: coverUrl,
         is_published: true,
+        site: getCurrentSiteId(),
       });
       if (error) throw error;
 
