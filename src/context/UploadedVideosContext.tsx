@@ -479,6 +479,7 @@ const loadVideosFromSupabase = async (): Promise<{
       const { data: chunk, error: chunkErr } = await supabase
         .from('uploaded_videos_public')
         .select(SELECT_COLS)
+        .eq('site', getCurrentSiteId())
         .order('created_at', { ascending: false })
         .range(from, to);
       if (chunkErr) {
