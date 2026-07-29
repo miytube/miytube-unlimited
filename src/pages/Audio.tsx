@@ -87,7 +87,8 @@ const Audio = () => {
     const { data } = await supabase
       .from('custom_categories')
       .select('name, description')
-      .eq('is_active', true);
+      .eq('is_active', true)
+      .eq('site', getCurrentSiteId());
     // Only audio-flagged custom categories (description marker)
     const names = (data || [])
       .filter((r: any) => (r.description || '').toLowerCase().includes('[audio]'))
