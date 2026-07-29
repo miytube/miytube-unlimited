@@ -2,10 +2,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
+import { useSite } from '@/hooks/useSite';
 
 export const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
+  const { site } = useSite();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,9 +26,9 @@ export const SearchBar: React.FC = () => {
         type="text"
         value={query}
         onChange={e => setQuery(e.target.value)}
-        placeholder="Search MiyTube"
+        placeholder={`Search ${site.name}`}
         className="search-input transition-all duration-300 focus:shadow-lg w-full pl-4 pr-12 py-2 rounded-full border border-input bg-background"
-        aria-label="Search MiyTube"
+        aria-label={`Search ${site.name}`}
       />
       {query && (
         <button 
