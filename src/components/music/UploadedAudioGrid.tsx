@@ -31,6 +31,7 @@ export const UploadedAudioGrid: React.FC = () => {
         const { data, error } = await supabase
           .from('music_videos')
           .select('id, title, video_url, category, views, tags')
+          .eq('site', getCurrentSiteId())
           .contains('tags', ['audio-only'])
           .order('created_at', { ascending: false })
           .limit(500);
