@@ -39,6 +39,7 @@ export const CustomCategoriesManager: React.FC = () => {
       slug: slugify(newCat.name),
       description: newCat.description.trim() || null,
       created_by: user?.id,
+      site: getCurrentSiteId(),
     });
     if (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
