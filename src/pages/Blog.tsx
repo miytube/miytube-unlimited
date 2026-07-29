@@ -46,6 +46,7 @@ const Blog = () => {
         .from('blog_posts')
         .select('id, title, slug, excerpt, cover_image_url, views, created_at, user_id')
         .eq('is_published', true)
+        .eq('site', getCurrentSiteId())
         .order('created_at', { ascending: false })
         .limit(50);
       setPosts(data || []);
