@@ -9,6 +9,7 @@ import { TalkAtChaHeader } from '@/components/discussions/TalkAtChaHeader';
 import { FeaturedDiscussionVideo } from '@/components/discussions/FeaturedDiscussionVideo';
 import { CATEGORIES } from '@/components/discussions/discussionConstants';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
