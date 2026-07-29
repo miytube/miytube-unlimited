@@ -90,6 +90,7 @@ export const CustomCategoriesManager: React.FC = () => {
       name,
       slug,
       created_by: user?.id,
+      site: getCurrentSiteId(),
     });
     if (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
