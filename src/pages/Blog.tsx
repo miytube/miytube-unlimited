@@ -3,6 +3,7 @@ import { Layout } from '@/components/Layout';
 import { PenTool, Plus, Loader2, Calendar, Eye } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
