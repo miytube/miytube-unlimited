@@ -135,6 +135,7 @@ export const BreakingNewsManager = () => {
       is_breaking: formData.is_breaking,
       priority: formData.priority,
       expires_at: formData.expires_at ? new Date(formData.expires_at).toISOString() : null,
+      site: getCurrentSiteId(),
     };
 
     if (editingNews) {
