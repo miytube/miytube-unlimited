@@ -232,6 +232,7 @@ export const CreateAdForm: React.FC<CreateAdFormProps> = ({ onSuccess }) => {
           end_date: resolvedEndDate,
           status: 'pending_payment' as any,
           payment_status: 'unpaid',
+          site: getCurrentSiteId(),
         } as any)
 
         .select('id')
