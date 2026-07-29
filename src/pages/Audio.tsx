@@ -142,6 +142,7 @@ const Audio = () => {
     const { data, error } = await supabase
       .from('music_videos')
       .select('id, title, description, video_url, category, duration, user_id, views, created_at, tags')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false })
       .limit(1000);
 
