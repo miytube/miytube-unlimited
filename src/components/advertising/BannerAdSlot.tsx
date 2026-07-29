@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { BannerAdPreview } from './BannerAdPreview';
 import { pickHouseAdForNow, HOUSE_AD_INTERVAL_HOURS } from './houseAds';
 
