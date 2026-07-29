@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { AlertTriangle, X } from 'lucide-react';
 
 interface BreakingNews {
@@ -39,6 +40,7 @@ export const BreakingNewsTicker = () => {
       .from('breaking_news')
       .select('*')
       .eq('is_active', true)
+      .eq('site', getCurrentSiteId())
       .order('priority', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(10);

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { Button } from '@/components/ui/button';
 import { SkipForward, ExternalLink, Volume2, VolumeX } from 'lucide-react';
 
@@ -52,7 +53,7 @@ export const PrerollAd: React.FC<{ children: React.ReactNode; disabled?: boolean
     if (Date.now() - last < MIN_GAP_MS) return;
 
     (async () => {
-      const { data, error } = await supabase.rpc('get_active_preroll_ads');
+      const { data, error } = await supabase.rpc('get_active_preroll_ads', { _site: getCurrentSiteId() });
       if (cancelled || error || !data || data.length === 0) return;
       const pick = (data as PrerollCampaign[]).find(a => a.media_url && isSafeHttpUrl(a.media_url));
       if (!pick) return;

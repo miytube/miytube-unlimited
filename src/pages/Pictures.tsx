@@ -3,6 +3,7 @@ import { Layout } from '@/components/Layout';
 import { Image as ImageIcon, Upload, Loader2, Trash2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -39,6 +40,7 @@ const Pictures = () => {
     const { data } = await supabase
       .from('pictures')
       .select('id, title, description, image_url, user_id, views, created_at')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false })
       .limit(100);
     setPictures(data || []);
@@ -76,6 +78,7 @@ const Pictures = () => {
         title: title.trim(),
         description: description.trim() || null,
         image_url: url,
+        site: getCurrentSiteId(),
       });
       if (insErr) throw insErr;
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { AlertTriangle, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -37,6 +38,7 @@ export const BreakingNewsBanner = () => {
       .from('breaking_news')
       .select('*')
       .eq('is_active', true)
+      .eq('site', getCurrentSiteId())
       .order('priority', { ascending: false })
       .order('created_at', { ascending: false })
       .limit(5);

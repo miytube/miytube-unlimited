@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 
 export interface FeaturedMusicVideo {
   id: string;
@@ -34,6 +35,7 @@ export const useFeaturedMusicVideo = () => {
         const { data, error: fetchError } = await supabase
           .from('music_videos')
           .select('*')
+          .eq('site', getCurrentSiteId())
           .order('featured_score', { ascending: false })
           .limit(1)
           .maybeSingle();

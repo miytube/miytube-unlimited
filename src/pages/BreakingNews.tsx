@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { Layout } from '@/components/Layout';
 import { AlertTriangle, ExternalLink, Clock, Tag, MessageSquare, Share2, ChevronDown, ChevronUp } from 'lucide-react';
 import BreakingNewsRotator from '@/components/news/BreakingNewsRotator';
@@ -70,6 +71,7 @@ const BreakingNews = () => {
       .from('breaking_news')
       .select('*')
       .eq('is_active', true)
+      .eq('site', getCurrentSiteId())
       .order('priority', { ascending: false })
       .order('created_at', { ascending: false });
 

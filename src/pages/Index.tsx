@@ -12,6 +12,7 @@ import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { useSite } from '@/hooks/useSite';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
@@ -43,9 +44,11 @@ const Index = () => {
   const prevVideoCountRef = useRef(uploadedVideos.length);
   const videosPerPage = 20;
 
+  const { site } = useSite();
+
   usePageSEO({
-    title: 'MiyTube — Watch and share trending videos',
-    description: 'Watch trending videos, shorts, music, sports, news, and more on MiyTube. Free video platform for creators and viewers.',
+    title: site.metaTitle,
+    description: site.metaDescription,
     path: '/',
   });
 
@@ -113,10 +116,10 @@ const Index = () => {
         {/* Page Header */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground mb-2">
-            <span className="font-semibold text-primary">MiyTube</span> / Home
+            <span className="font-semibold text-primary">{site.name}</span> / Home
           </p>
           <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">MiyTube — Watch and share trending videos</h1>
+          <h1 className="text-3xl font-bold">{site.metaTitle}</h1>
           </div>
         </div>
 

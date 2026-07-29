@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { BannerAdPreview } from './BannerAdPreview';
 import { pickHouseAdForNow, HOUSE_AD_INTERVAL_HOURS } from './houseAds';
 
@@ -48,7 +49,7 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
     }
 
     (async () => {
-      const { data, error } = await supabase.rpc('get_active_banner_ads', { _placement: placement });
+      const { data, error } = await supabase.rpc('get_active_banner_ads', { _placement: placement, _site: getCurrentSiteId() });
       if (cancelled || error || !data || data.length === 0) return;
       const pick = data[Math.floor(Math.random() * data.length)] as Ad;
       setAd(pick);

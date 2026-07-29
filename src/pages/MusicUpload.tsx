@@ -9,6 +9,7 @@ import { contentTypes } from '@/data/contentTypes';
 import { useUploadHandler } from '@/hooks/useUploadHandler';
 import { MusicUploadRequirements } from '@/components/music/UploadRequirements';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { uploadVideoToCloud } from '@/utils/cloudVideoUpload';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { ToastAction } from '@/components/ui/toast';
@@ -176,6 +177,7 @@ const MusicUpload = () => {
           video_url: videoUrl,
           traffic_organic: 1,
           user_id: user?.id,
+          site: getCurrentSiteId(),
         })
         .select()
         .single();

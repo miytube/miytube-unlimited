@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { Button } from '@/components/ui/button';
@@ -38,6 +39,7 @@ export const CustomCategoriesManager: React.FC = () => {
       slug: slugify(newCat.name),
       description: newCat.description.trim() || null,
       created_by: user?.id,
+      site: getCurrentSiteId(),
     });
     if (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -56,6 +58,7 @@ export const CustomCategoriesManager: React.FC = () => {
       name,
       slug: slugify(name),
       created_by: user?.id,
+      site: getCurrentSiteId(),
     });
     if (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });
@@ -87,6 +90,7 @@ export const CustomCategoriesManager: React.FC = () => {
       name,
       slug,
       created_by: user?.id,
+      site: getCurrentSiteId(),
     });
     if (error) {
       toast({ title: 'Error', description: error.message, variant: 'destructive' });

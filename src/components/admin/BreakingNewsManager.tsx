@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -77,6 +78,7 @@ export const BreakingNewsManager = () => {
     const { data, error } = await supabase
       .from('breaking_news')
       .select('*')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -134,6 +136,7 @@ export const BreakingNewsManager = () => {
       is_breaking: formData.is_breaking,
       priority: formData.priority,
       expires_at: formData.expires_at ? new Date(formData.expires_at).toISOString() : null,
+      site: getCurrentSiteId(),
     };
 
     if (editingNews) {

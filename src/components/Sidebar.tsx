@@ -38,6 +38,8 @@ import { RealEstateLinks } from './sidebar/RealEstateLinks';
 import { GovernmentPoliticsLinks } from './sidebar/GovernmentPoliticsLinks';
 import { HistoryArtifactsLinks } from './sidebar/HistoryArtifactsLinks';
 import { KidsEducationLinks } from './sidebar/KidsEducationLinks';
+import { CustomCategoriesLinks } from './sidebar/CustomCategoriesLinks';
+import { useSite } from '@/hooks/useSite';
 
 
 
@@ -76,6 +78,7 @@ const CollapsibleGroup: React.FC<CollapsibleGroupProps> = ({ title, children, de
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { isMiyTube } = useSite();
   const [isCollapsed, setIsCollapsed] = useState(false);
   
   // Close sidebar when navigating on mobile
@@ -136,9 +139,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           {!effectiveCollapsed && <SidebarSearch />}
           <SidebarMainLinks collapsed={effectiveCollapsed} />
           
-          {!effectiveCollapsed && (
+          {!effectiveCollapsed && !isMiyTube && (
             <>
               <Separator className="my-3" />
+              <CollapsibleGroup title="Categories" defaultOpen={true}>
+                <CustomCategoriesLinks />
+              </CollapsibleGroup>
+              <SidebarFooter />
+            </>
+          )}
+
+          {!effectiveCollapsed && isMiyTube && (
+            <>
+              <Separator className="my-3" />
+
 
               {/* Entertainment & Media */}
               <CollapsibleGroup title="Entertainment & Media" defaultOpen={true}>

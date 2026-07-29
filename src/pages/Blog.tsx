@@ -3,6 +3,7 @@ import { Layout } from '@/components/Layout';
 import { PenTool, Plus, Loader2, Calendar, Eye } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -45,6 +46,7 @@ const Blog = () => {
         .from('blog_posts')
         .select('id, title, slug, excerpt, cover_image_url, views, created_at, user_id')
         .eq('is_published', true)
+        .eq('site', getCurrentSiteId())
         .order('created_at', { ascending: false })
         .limit(50);
       setPosts(data || []);

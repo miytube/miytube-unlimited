@@ -9,6 +9,7 @@ import { TalkAtChaHeader } from '@/components/discussions/TalkAtChaHeader';
 import { FeaturedDiscussionVideo } from '@/components/discussions/FeaturedDiscussionVideo';
 import { CATEGORIES } from '@/components/discussions/discussionConstants';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,6 +43,7 @@ const TalkAtCha = () => {
     const { data: posts, error } = await supabase
       .from('discussions')
       .select('id, category, title, content, author_name, created_at')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -119,6 +121,7 @@ const TalkAtCha = () => {
       category: newPost.category,
       title: newPost.title.trim(),
       content: newPost.content.trim(),
+      site: getCurrentSiteId(),
     });
 
     if (error) {

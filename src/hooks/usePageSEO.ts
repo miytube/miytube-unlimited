@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { getCurrentSite } from '@/config/sites';
 
 interface PageSEOOptions {
   title: string;
@@ -8,7 +9,7 @@ interface PageSEOOptions {
   ogType?: 'website' | 'article' | 'video.other';
 }
 
-const SITE_URL = 'https://www.miytube.com';
+const siteUrl = () => `https://www.${getCurrentSite().domain}`;
 const DEFAULT_OG_IMAGE = 'https://storage.googleapis.com/gpt-engineer-file-uploads/LGzo1U228xWhpQlYy8pM0UdbD403/social-images/social-1777144077591-miytube-final.webp';
 
 function setMeta(selector: string, attr: 'content' | 'href', value: string) {
@@ -47,7 +48,7 @@ export function usePageSEO({ title, description, path, ogImage, ogType = 'websit
     }
 
     const canonicalPath = path ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
-    const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+    const canonicalUrl = `${siteUrl()}${canonicalPath}`;
     setMeta('link[rel="canonical"]', 'href', canonicalUrl);
     setMeta('meta[property="og:url"]', 'content', canonicalUrl);
     setMeta('meta[property="og:title"]', 'content', fullTitle);

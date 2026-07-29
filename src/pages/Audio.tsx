@@ -3,6 +3,7 @@ import { Layout } from '@/components/Layout';
 import { Music, Upload, Play, Pause, Loader2, Search, Plus, Trash2 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -86,7 +87,8 @@ const Audio = () => {
     const { data } = await supabase
       .from('custom_categories')
       .select('name, description')
-      .eq('is_active', true);
+      .eq('is_active', true)
+      .eq('site', getCurrentSiteId());
     // Only audio-flagged custom categories (description marker)
     const names = (data || [])
       .filter((r: any) => (r.description || '').toLowerCase().includes('[audio]'))
@@ -119,6 +121,7 @@ const Audio = () => {
       description: '[audio] User-created audio category',
       is_active: true,
       created_by: user?.id,
+      site: getCurrentSiteId(),
     });
     setSavingCat(false);
     if (error) {
@@ -139,6 +142,7 @@ const Audio = () => {
     const { data, error } = await supabase
       .from('music_videos')
       .select('id, title, description, video_url, category, duration, user_id, views, created_at, tags')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false })
       .limit(1000);
 
@@ -234,6 +238,7 @@ const Audio = () => {
         category,
         video_url: publicUrl,
         tags: ['audio-only'],
+        site: getCurrentSiteId(),
       });
       if (insErr) throw insErr;
 

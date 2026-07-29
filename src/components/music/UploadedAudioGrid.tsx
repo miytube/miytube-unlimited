@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Play, Pause, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useToast } from '@/hooks/use-toast';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import miyTubeLogo from '@/assets/miytube-logo.png';
@@ -30,6 +31,7 @@ export const UploadedAudioGrid: React.FC = () => {
         const { data, error } = await supabase
           .from('music_videos')
           .select('id, title, video_url, category, views, tags')
+          .eq('site', getCurrentSiteId())
           .contains('tags', ['audio-only'])
           .order('created_at', { ascending: false })
           .limit(500);

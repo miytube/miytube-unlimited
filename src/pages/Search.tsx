@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 
 
 const Search = () => {
@@ -55,7 +56,7 @@ const Search = () => {
           orParts.push(`subcategory.ilike.%${safe}%`);
           orParts.push(`tags.cs.{${safe}}`);
         });
-        let req = supabase.from('uploaded_videos_public').select('*').limit(60);
+        let req = supabase.from('uploaded_videos_public').select('*').eq('site', getCurrentSiteId()).limit(60);
         if (orParts.length) req = req.or(orParts.join(','));
         if (categoryFilter !== 'all') req = req.eq('category', categoryFilter);
         if (sortBy === 'newest') req = req.order('created_at', { ascending: false });

@@ -3,6 +3,7 @@ import { Layout } from '@/components/Layout';
 import { FileText, Upload, Download, Loader2, Trash2, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -56,6 +57,7 @@ const Documents = () => {
     const { data } = await supabase
       .from('documents')
       .select('id, title, description, file_url, file_name, file_type, file_size, category, downloads, created_at, user_id')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false })
       .limit(200);
     setDocs(data || []);
@@ -93,6 +95,7 @@ const Documents = () => {
         file_type: ext.toUpperCase(),
         file_size: file.size,
         category,
+        site: getCurrentSiteId(),
       });
       if (insErr) throw insErr;
 

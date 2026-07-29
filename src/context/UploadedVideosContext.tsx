@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
+import { getCurrentSiteId } from '@/config/sites';
 
 type DuplicateCheckResult = { isDuplicate: false } | { isDuplicate: true; reason: 'session' | 'location' };
 
@@ -331,6 +332,7 @@ const saveVideoToSupabase = async (video: {
     file_name: video.fileName,
     file_size: video.fileSize,
     file_type: video.fileType,
+    site: getCurrentSiteId(),
   });
   
   if (error) {
@@ -450,6 +452,7 @@ const loadVideosFromSupabase = async (): Promise<{
   const { data, error } = await supabase
     .from('uploaded_videos_public')
     .select(SELECT_COLS)
+    .eq('site', getCurrentSiteId())
     .order('created_at', { ascending: false })
     .range(0, PAGE_SIZE - 1);
 
@@ -476,6 +479,7 @@ const loadVideosFromSupabase = async (): Promise<{
       const { data: chunk, error: chunkErr } = await supabase
         .from('uploaded_videos_public')
         .select(SELECT_COLS)
+        .eq('site', getCurrentSiteId())
         .order('created_at', { ascending: false })
         .range(from, to);
       if (chunkErr) {
