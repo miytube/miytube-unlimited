@@ -12,6 +12,7 @@ import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { useSite } from '@/hooks/useSite';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
