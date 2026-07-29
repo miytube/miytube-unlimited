@@ -71,6 +71,7 @@ const BreakingNews = () => {
       .from('breaking_news')
       .select('*')
       .eq('is_active', true)
+      .eq('site', getCurrentSiteId())
       .order('priority', { ascending: false })
       .order('created_at', { ascending: false });
 
