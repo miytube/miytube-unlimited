@@ -238,6 +238,7 @@ const Audio = () => {
         category,
         video_url: publicUrl,
         tags: ['audio-only'],
+        site: getCurrentSiteId(),
       });
       if (insErr) throw insErr;
 
