@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 
 export interface CustomCategory {
   id: string;
