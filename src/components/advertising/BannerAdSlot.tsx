@@ -49,7 +49,7 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
     }
 
     (async () => {
-      const { data, error } = await supabase.rpc('get_active_banner_ads', { _placement: placement });
+      const { data, error } = await supabase.rpc('get_active_banner_ads', { _placement: placement, _site: getCurrentSiteId() });
       if (cancelled || error || !data || data.length === 0) return;
       const pick = data[Math.floor(Math.random() * data.length)] as Ad;
       setAd(pick);
