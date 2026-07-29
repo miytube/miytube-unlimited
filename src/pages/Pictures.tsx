@@ -3,6 +3,7 @@ import { Layout } from '@/components/Layout';
 import { Image as ImageIcon, Upload, Loader2, Trash2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
