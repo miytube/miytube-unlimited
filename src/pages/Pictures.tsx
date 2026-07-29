@@ -40,6 +40,7 @@ const Pictures = () => {
     const { data } = await supabase
       .from('pictures')
       .select('id, title, description, image_url, user_id, views, created_at')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false })
       .limit(100);
     setPictures(data || []);
