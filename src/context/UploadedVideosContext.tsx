@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
+import { getCurrentSiteId } from '@/config/sites';
 
 type DuplicateCheckResult = { isDuplicate: false } | { isDuplicate: true; reason: 'session' | 'location' };
 
