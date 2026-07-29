@@ -78,6 +78,7 @@ export const BreakingNewsManager = () => {
     const { data, error } = await supabase
       .from('breaking_news')
       .select('*')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false });
 
     if (error) {
