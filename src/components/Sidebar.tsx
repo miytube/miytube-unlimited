@@ -136,9 +136,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           {!effectiveCollapsed && <SidebarSearch />}
           <SidebarMainLinks collapsed={effectiveCollapsed} />
           
-          {!effectiveCollapsed && (
+          {!effectiveCollapsed && !isMiyTube && (
             <>
               <Separator className="my-3" />
+              <CollapsibleGroup title="Categories" defaultOpen={true}>
+                <CustomCategoriesLinks />
+              </CollapsibleGroup>
+              <SidebarFooter />
+            </>
+          )}
+
+          {!effectiveCollapsed && isMiyTube && (
+            <>
+              <Separator className="my-3" />
+
 
               {/* Entertainment & Media */}
               <CollapsibleGroup title="Entertainment & Media" defaultOpen={true}>
