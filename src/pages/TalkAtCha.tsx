@@ -43,6 +43,7 @@ const TalkAtCha = () => {
     const { data: posts, error } = await supabase
       .from('discussions')
       .select('id, category, title, content, author_name, created_at')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false });
 
     if (error) {
