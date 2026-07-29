@@ -78,6 +78,7 @@ const CollapsibleGroup: React.FC<CollapsibleGroupProps> = ({ title, children, de
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { isMiyTube } = useSite();
   const [isCollapsed, setIsCollapsed] = useState(false);
   
   // Close sidebar when navigating on mobile
