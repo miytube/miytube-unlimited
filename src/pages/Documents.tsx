@@ -57,6 +57,7 @@ const Documents = () => {
     const { data } = await supabase
       .from('documents')
       .select('id, title, description, file_url, file_name, file_type, file_size, category, downloads, created_at, user_id')
+      .eq('site', getCurrentSiteId())
       .order('created_at', { ascending: false })
       .limit(200);
     setDocs(data || []);
