@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { Button } from '@/components/ui/button';
 import { SkipForward, ExternalLink, Volume2, VolumeX } from 'lucide-react';
 
