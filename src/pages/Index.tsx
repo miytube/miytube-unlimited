@@ -116,10 +116,10 @@ const Index = () => {
         {/* Page Header */}
         <div className="mb-6">
           <p className="text-sm text-muted-foreground mb-2">
-            <span className="font-semibold text-primary">MiyTube</span> / Home
+            <span className="font-semibold text-primary">{site.name}</span> / Home
           </p>
           <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">MiyTube — Watch and share trending videos</h1>
+          <h1 className="text-3xl font-bold">{site.metaTitle}</h1>
           </div>
         </div>
 
