@@ -78,6 +78,7 @@ const Pictures = () => {
         title: title.trim(),
         description: description.trim() || null,
         image_url: url,
+        site: getCurrentSiteId(),
       });
       if (insErr) throw insErr;
 
