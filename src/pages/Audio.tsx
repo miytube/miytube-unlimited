@@ -121,6 +121,7 @@ const Audio = () => {
       description: '[audio] User-created audio category',
       is_active: true,
       created_by: user?.id,
+      site: getCurrentSiteId(),
     });
     setSavingCat(false);
     if (error) {
