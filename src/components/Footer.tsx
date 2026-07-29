@@ -94,7 +94,7 @@ export const Footer = () => {
               <Link to="/contact" className="hover:text-foreground transition-colors">Contact Us</Link>
             </div>
             <div className="text-xs text-muted-foreground">
-              © 2023 MiyTube. All rights reserved.
+              © {new Date().getFullYear()} {site.name}. All rights reserved.
             </div>
           </div>
         </div>
