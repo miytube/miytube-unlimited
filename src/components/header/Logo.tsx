@@ -5,9 +5,9 @@ import miyTubeLogo from '@/assets/miytube-logo.png';
 import { useSite } from '@/hooks/useSite';
 
 export const Logo: React.FC = () => {
-  const site = useSite();
+  const { site, isMiyTube } = useSite();
 
-  if (site.id === 'miytube') {
+  if (isMiyTube) {
     return (
       <Link to="/" className="flex items-center gap-1">
         <img src={miyTubeLogo} alt="MiyTube Video Platform" className="h-8 object-contain" />
