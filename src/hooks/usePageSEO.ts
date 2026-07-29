@@ -48,7 +48,7 @@ export function usePageSEO({ title, description, path, ogImage, ogType = 'websit
     }
 
     const canonicalPath = path ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
-    const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+    const canonicalUrl = `${siteUrl()}${canonicalPath}`;
     setMeta('link[rel="canonical"]', 'href', canonicalUrl);
     setMeta('meta[property="og:url"]', 'content', canonicalUrl);
     setMeta('meta[property="og:title"]', 'content', fullTitle);
