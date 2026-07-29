@@ -75,6 +75,7 @@ export type Database = {
           rejection_reason: string | null
           reviewed_at: string | null
           reviewed_by: string | null
+          site: string
           start_date: string
           status: Database["public"]["Enums"]["ad_campaign_status"]
           stripe_customer_id: string | null
@@ -120,6 +121,7 @@ export type Database = {
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          site?: string
           start_date?: string
           status?: Database["public"]["Enums"]["ad_campaign_status"]
           stripe_customer_id?: string | null
@@ -165,6 +167,7 @@ export type Database = {
           rejection_reason?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          site?: string
           start_date?: string
           status?: Database["public"]["Enums"]["ad_campaign_status"]
           stripe_customer_id?: string | null
@@ -259,6 +262,7 @@ export type Database = {
           excerpt: string | null
           id: string
           is_published: boolean
+          site: string
           slug: string
           title: string
           updated_at: string
@@ -272,6 +276,7 @@ export type Database = {
           excerpt?: string | null
           id?: string
           is_published?: boolean
+          site?: string
           slug: string
           title: string
           updated_at?: string
@@ -285,6 +290,7 @@ export type Database = {
           excerpt?: string | null
           id?: string
           is_published?: boolean
+          site?: string
           slug?: string
           title?: string
           updated_at?: string
@@ -304,6 +310,7 @@ export type Database = {
           is_active: boolean | null
           is_breaking: boolean | null
           priority: number | null
+          site: string
           source: string | null
           source_url: string | null
           title: string
@@ -319,6 +326,7 @@ export type Database = {
           is_active?: boolean | null
           is_breaking?: boolean | null
           priority?: number | null
+          site?: string
           source?: string | null
           source_url?: string | null
           title: string
@@ -334,6 +342,7 @@ export type Database = {
           is_active?: boolean | null
           is_breaking?: boolean | null
           priority?: number | null
+          site?: string
           source?: string | null
           source_url?: string | null
           title?: string
@@ -379,6 +388,7 @@ export type Database = {
           id: string
           is_active: boolean
           name: string
+          site: string
           slug: string
           sort_order: number
           updated_at: string
@@ -391,6 +401,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           name: string
+          site?: string
           slug: string
           sort_order?: number
           updated_at?: string
@@ -403,6 +414,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           name?: string
+          site?: string
           slug?: string
           sort_order?: number
           updated_at?: string
@@ -418,6 +430,7 @@ export type Database = {
           id: string
           is_active: boolean
           name: string
+          site: string
           slug: string
           sort_order: number
           updated_at: string
@@ -430,6 +443,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           name: string
+          site?: string
           slug: string
           sort_order?: number
           updated_at?: string
@@ -442,6 +456,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           name?: string
+          site?: string
           slug?: string
           sort_order?: number
           updated_at?: string
@@ -464,6 +479,7 @@ export type Database = {
           id: string
           is_active: boolean
           name: string
+          site: string
           slug: string
           sort_order: number
           subcategory_id: string
@@ -476,6 +492,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           name: string
+          site?: string
           slug: string
           sort_order?: number
           subcategory_id: string
@@ -488,6 +505,7 @@ export type Database = {
           id?: string
           is_active?: boolean
           name?: string
+          site?: string
           slug?: string
           sort_order?: number
           subcategory_id?: string
@@ -577,6 +595,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          site: string
           title: string
           updated_at: string
           user_id: string
@@ -587,6 +606,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          site?: string
           title: string
           updated_at?: string
           user_id: string
@@ -597,6 +617,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          site?: string
           title?: string
           updated_at?: string
           user_id?: string
@@ -614,6 +635,7 @@ export type Database = {
           file_type: string | null
           file_url: string
           id: string
+          site: string
           title: string
           updated_at: string
           user_id: string
@@ -628,6 +650,7 @@ export type Database = {
           file_type?: string | null
           file_url: string
           id?: string
+          site?: string
           title: string
           updated_at?: string
           user_id: string
@@ -642,6 +665,7 @@ export type Database = {
           file_type?: string | null
           file_url?: string
           id?: string
+          site?: string
           title?: string
           updated_at?: string
           user_id?: string
@@ -783,6 +807,7 @@ export type Database = {
           is_featured: boolean | null
           likes: number
           shares: number
+          site: string
           subcategory: string | null
           tags: string[] | null
           thumbnail_quality_score: number | null
@@ -813,6 +838,7 @@ export type Database = {
           is_featured?: boolean | null
           likes?: number
           shares?: number
+          site?: string
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_quality_score?: number | null
@@ -843,6 +869,7 @@ export type Database = {
           is_featured?: boolean | null
           likes?: number
           shares?: number
+          site?: string
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_quality_score?: number | null
@@ -946,6 +973,7 @@ export type Database = {
           height: number | null
           id: string
           image_url: string
+          site: string
           tags: string[] | null
           title: string
           updated_at: string
@@ -959,6 +987,7 @@ export type Database = {
           height?: number | null
           id?: string
           image_url: string
+          site?: string
           tags?: string[] | null
           title: string
           updated_at?: string
@@ -972,6 +1001,7 @@ export type Database = {
           height?: number | null
           id?: string
           image_url?: string
+          site?: string
           tags?: string[] | null
           title?: string
           updated_at?: string
@@ -1085,6 +1115,7 @@ export type Database = {
           is_cloud_stored: boolean | null
           is_youtube_embed: boolean | null
           local_id: string | null
+          site: string
           subcategory: string | null
           tags: string[] | null
           thumbnail_url: string | null
@@ -1108,6 +1139,7 @@ export type Database = {
           is_cloud_stored?: boolean | null
           is_youtube_embed?: boolean | null
           local_id?: string | null
+          site?: string
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_url?: string | null
@@ -1131,6 +1163,7 @@ export type Database = {
           is_cloud_stored?: boolean | null
           is_youtube_embed?: boolean | null
           local_id?: string | null
+          site?: string
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_url?: string | null
@@ -1318,6 +1351,7 @@ export type Database = {
           is_cloud_stored: boolean | null
           is_youtube_embed: boolean | null
           local_id: string | null
+          site: string | null
           subcategory: string | null
           tags: string[] | null
           thumbnail_url: string | null
@@ -1341,6 +1375,7 @@ export type Database = {
           is_cloud_stored?: boolean | null
           is_youtube_embed?: boolean | null
           local_id?: string | null
+          site?: string | null
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_url?: string | null
@@ -1364,6 +1399,7 @@ export type Database = {
           is_cloud_stored?: boolean | null
           is_youtube_embed?: boolean | null
           local_id?: string | null
+          site?: string | null
           subcategory?: string | null
           tags?: string[] | null
           thumbnail_url?: string | null
@@ -1404,31 +1440,58 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
-      get_active_banner_ads: {
-        Args: { _placement?: string }
-        Returns: {
-          business_name: string
-          call_to_action: string
-          description: string
-          destination_url: string
-          headline: string
-          id: string
-          media_url: string
-        }[]
-      }
-      get_active_preroll_ads: {
-        Args: never
-        Returns: {
-          ad_format: string
-          business_name: string
-          call_to_action: string
-          description: string
-          destination_url: string
-          headline: string
-          id: string
-          media_url: string
-        }[]
-      }
+      get_active_banner_ads:
+        | {
+            Args: { _placement?: string }
+            Returns: {
+              business_name: string
+              call_to_action: string
+              description: string
+              destination_url: string
+              headline: string
+              id: string
+              media_url: string
+            }[]
+          }
+        | {
+            Args: { _placement?: string; _site?: string }
+            Returns: {
+              business_name: string
+              call_to_action: string
+              description: string
+              destination_url: string
+              headline: string
+              id: string
+              media_url: string
+            }[]
+          }
+      get_active_preroll_ads:
+        | {
+            Args: never
+            Returns: {
+              ad_format: string
+              business_name: string
+              call_to_action: string
+              description: string
+              destination_url: string
+              headline: string
+              id: string
+              media_url: string
+            }[]
+          }
+        | {
+            Args: { _site?: string }
+            Returns: {
+              ad_format: string
+              business_name: string
+              call_to_action: string
+              description: string
+              destination_url: string
+              headline: string
+              id: string
+              media_url: string
+            }[]
+          }
       get_discussion_like_counts: {
         Args: { _discussion_ids: string[] }
         Returns: {
