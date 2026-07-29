@@ -35,6 +35,7 @@ export const useFeaturedMusicVideo = () => {
         const { data, error: fetchError } = await supabase
           .from('music_videos')
           .select('*')
+          .eq('site', getCurrentSiteId())
           .order('featured_score', { ascending: false })
           .limit(1)
           .maybeSingle();
