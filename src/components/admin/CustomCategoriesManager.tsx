@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { Button } from '@/components/ui/button';
