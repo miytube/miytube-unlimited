@@ -2,36 +2,50 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Youtube, Linkedin } from 'lucide-react';
+import { useSite } from '@/hooks/useSite';
 
 export const Footer = () => {
+  const { site } = useSite();
+  const social = site.social ?? {};
+
   return (
     <footer className="bg-card border-t mt-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
             <Link to="/" className="flex items-center gap-1 mb-4">
-              <span className="text-primary font-bold text-xl">Miy</span>
-              <span className="font-bold text-xl">Tube</span>
+              <span className="text-primary font-bold text-xl">{site.wordmark[0]}</span>
+              <span className="font-bold text-xl">{site.wordmark[1]}</span>
             </Link>
             <p className="text-muted-foreground text-sm mb-6">
-              Your platform for unlimited video content. Upload, share, and discover with no restrictions.
+              {site.tagline}
             </p>
             <div className="flex items-center gap-4">
-              <a href="https://www.facebook.com/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on Facebook" className="text-muted-foreground hover:text-primary transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="https://x.com/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on X" className="text-muted-foreground hover:text-primary transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="https://www.instagram.com/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on Instagram" className="text-muted-foreground hover:text-primary transition-colors">
-                <Instagram size={20} />
-              </a>
-              <a href="https://www.youtube.com/@miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on YouTube" className="text-muted-foreground hover:text-primary transition-colors">
-                <Youtube size={20} />
-              </a>
-              <a href="https://www.linkedin.com/company/miytube" target="_blank" rel="noopener noreferrer" aria-label="MiyTube on LinkedIn" className="text-muted-foreground hover:text-primary transition-colors">
-                <Linkedin size={20} />
-              </a>
+              {social.facebook && (
+                <a href={social.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on Facebook`} className="text-muted-foreground hover:text-primary transition-colors">
+                  <Facebook size={20} />
+                </a>
+              )}
+              {social.twitter && (
+                <a href={social.twitter} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on X`} className="text-muted-foreground hover:text-primary transition-colors">
+                  <Twitter size={20} />
+                </a>
+              )}
+              {social.instagram && (
+                <a href={social.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on Instagram`} className="text-muted-foreground hover:text-primary transition-colors">
+                  <Instagram size={20} />
+                </a>
+              )}
+              {social.youtube && (
+                <a href={social.youtube} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on YouTube`} className="text-muted-foreground hover:text-primary transition-colors">
+                  <Youtube size={20} />
+                </a>
+              )}
+              {social.linkedin && (
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on LinkedIn`} className="text-muted-foreground hover:text-primary transition-colors">
+                  <Linkedin size={20} />
+                </a>
+              )}
             </div>
           </div>
           
