@@ -25,6 +25,7 @@ const App = () => (
             <Sonner />
             <UploadProgressIndicator />
             <BrowserRouter>
+              <AnalyticsTracker />
               <PaymentTestModeBanner />
               <VignetteAd />
               <AppRoutes />
