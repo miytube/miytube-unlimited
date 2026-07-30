@@ -66,21 +66,15 @@
     })(window, document, "clarity", "script", "na123du7fz");
   </script>
 
-  <!-- Google Analytics (GA4) - loaded per-domain so the two properties never collide -->
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SNLTDDVSNH"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    (function () {
-      var isIwin = window.location.hostname.indexOf('iwantinformationnow.com') !== -1;
-      var id = isIwin ? 'G-H0L57WJESR' : 'G-SNLTDDVSNH';
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
-      document.head.appendChild(s);
-      gtag('config', id);
-    })();
+    gtag('config', 'G-SNLTDDVSNH');
   </script>
+
 
 </head>
 
