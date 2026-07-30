@@ -50,21 +50,30 @@ export const useAnalyticsTracking = () => {
       .then(({ data }) => setIsAdmin(!!data));
   }, [user?.id]);
 
+  // GA4 page_view — always sent for real (non-bot) visitors, including admins.
+  // GA has its own internal-traffic filters; the "exclude me" flag only controls
+  // this app's own analytics tables.
+  useEffect(() => {
+    if (isBotRef.current) return;
+    (window as any)['ga-disable-G-SNLTDDVSNH'] = false;
+    if (typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'page_view', {
+        page_path: location.pathname + location.search,
+        page_location: window.location.href,
+        page_title: document.title,
+      });
+    }
+  }, [location.pathname, location.search]);
+
   useEffect(() => {
     // Skip all analytics for bots/crawlers so stats reflect real visitors.
     if (isBotRef.current) return;
 
-
-
-    // Skip tracking for admin users so owner visits don't inflate stats
-    if (isAdmin) {
-      // Also disable GA4 property so no hits leak through
-      (window as any)['ga-disable-G-SNLTDDVSNH'] = true;
-      return;
-    }
-    (window as any)['ga-disable-G-SNLTDDVSNH'] = false;
+    // Skip in-app tracking for admin users so owner visits don't inflate stats
+    if (isAdmin) return;
 
     const sessionId = sessionIdRef.current;
+
 
     // Helper: a per-call PostgREST request with x-session-id header so RLS
     // policies can verify ownership of the active_sessions row.
