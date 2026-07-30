@@ -50,19 +50,8 @@ export const SITES: Record<SiteId, SiteConfig> = {
     },
     contactEmail: 'miytube@aol.com',
   },
-  iwin: {
-    id: 'iwin',
-    name: 'IWantInformationNow',
-    wordmark: ['IWantInformation', 'Now'],
-    tagline: 'Articles, videos and shorts — the information you want, right now.',
-    domain: 'iwantinformationnow.com',
-    metaTitle: 'IWantInformationNow - Articles, Videos & Shorts',
-    metaDescription:
-      'IWantInformationNow brings you articles, videos, long-form features and shorts in one place. Watch, read, upload and share.',
-    hostnames: ['iwantinformationnow.com', 'www.iwantinformationnow.com'],
-    contactEmail: 'miytube@aol.com',
-  },
 };
+
 
 export const DEFAULT_SITE: SiteId = 'miytube';
 
