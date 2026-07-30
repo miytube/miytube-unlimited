@@ -53,9 +53,15 @@ export const useAnalyticsTracking = () => {
   // GA4 page_view — always sent for real (non-bot) visitors, including admins.
   // GA has its own internal-traffic filters; the "exclude me" flag only controls
   // this app's own analytics tables.
+  const gaFirstLoadRef = useRef(true);
   useEffect(() => {
     if (isBotRef.current) return;
     (window as any)['ga-disable-G-SNLTDDVSNH'] = false;
+    // The gtag config in index.html already sends the initial page_view.
+    if (gaFirstLoadRef.current) {
+      gaFirstLoadRef.current = false;
+      return;
+    }
     if (typeof (window as any).gtag === 'function') {
       (window as any).gtag('event', 'page_view', {
         page_path: location.pathname + location.search,

@@ -10,6 +10,8 @@ import { AuthProvider } from "./hooks/useAuth";
 import AppRoutes from "./routes";
 import { VignetteAd } from "./components/advertising/VignetteAd";
 import { PaymentTestModeBanner } from "./components/PaymentTestModeBanner";
+import { AnalyticsTracker } from "./components/AnalyticsTracker";
+
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,7 @@ const App = () => (
             <Sonner />
             <UploadProgressIndicator />
             <BrowserRouter>
+              <AnalyticsTracker />
               <PaymentTestModeBanner />
               <VignetteAd />
               <AppRoutes />
