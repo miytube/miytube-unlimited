@@ -66,22 +66,22 @@
     })(window, document, "clarity", "script", "na123du7fz");
   </script>
 
-  <!-- Google Analytics (GA4) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SNLTDDVSNH"></script>
+  <!-- Google Analytics (GA4) - loaded per-domain so the two properties never collide -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-SNLTDDVSNH');
+    (function () {
+      var isIwin = window.location.hostname.indexOf('iwantinformationnow.com') !== -1;
+      var id = isIwin ? 'G-H0L57WJESR' : 'G-SNLTDDVSNH';
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+      document.head.appendChild(s);
+      gtag('config', id);
+    })();
   </script>
 
-  <!-- Google Analytics (GA4) - iwantinformationnow.com -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H0L57WJESR"></script>
-  <script>
-    if (window.location.hostname.includes('iwantinformationnow.com')) {
-      gtag('config', 'G-H0L57WJESR');
-    }
-  </script>
 </head>
 
   <body>
