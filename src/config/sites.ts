@@ -6,7 +6,7 @@
  * (with a `?site=` override for previewing inside the Lovable editor).
  */
 
-export type SiteId = 'miytube' | 'iwin';
+export type SiteId = 'miytube';
 
 export interface SiteConfig {
   id: SiteId;
