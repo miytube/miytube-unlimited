@@ -1,0 +1,11 @@
+ALTER POLICY "Users can update their own campaigns" ON public.ad_campaigns WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Admins can update all campaigns" ON public.ad_campaigns WITH CHECK (has_role(auth.uid(), 'admin'::app_role));
+ALTER POLICY "Users can update their own videos" ON public.uploaded_videos WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own music videos" ON public.music_videos WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own comments" ON public.video_comments WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Users can update their own likes" ON public.video_likes WITH CHECK (auth.uid() = user_id);
+ALTER POLICY "Authors and admins can update blog posts" ON public.blog_posts WITH CHECK ((auth.uid() = user_id) OR has_role(auth.uid(), 'admin'::app_role));
+ALTER POLICY "Owners and admins can update documents" ON public.documents WITH CHECK ((auth.uid() = user_id) OR has_role(auth.uid(), 'admin'::app_role));
+ALTER POLICY "Owners and admins can update pictures" ON public.pictures WITH CHECK ((auth.uid() = user_id) OR has_role(auth.uid(), 'admin'::app_role));
+ALTER POLICY "Author or admin can update discussions" ON public.discussions WITH CHECK ((auth.uid() = user_id) OR has_role(auth.uid(), 'admin'::app_role));
+ALTER POLICY "Author or admin can update replies" ON public.discussion_replies WITH CHECK ((auth.uid() = user_id) OR has_role(auth.uid(), 'admin'::app_role));
