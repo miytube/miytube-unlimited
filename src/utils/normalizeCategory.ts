@@ -107,6 +107,16 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'car-repossession': 'cars-repo',
     'car-repossessions': 'cars-repo',
     'repossessions': 'cars-repo',
+    // Fitness / weightlifting — uploaders sometimes pick the bare leaf slug
+    // while the watch pages live under /fitness/<slug>.
+    'weightlifting-prank': 'fitness-weightlifting-prank',
+    'weight-lifting-prank': 'fitness-weightlifting-prank',
+    'weightlifting-pranks': 'fitness-weightlifting-prank',
+    'weightlifting-male': 'fitness-weightlifting-male',
+    'weightlifting-female': 'fitness-weightlifting-female',
+    'weightlifting': 'fitness-weight-lifting',
+    'weight-lifting': 'fitness-weight-lifting',
+    'physical-fitness': 'fitness-and-workout',
   };
 
   return aliases[cleaned] || cleaned || undefined;
