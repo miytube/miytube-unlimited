@@ -14,6 +14,7 @@ export type HouseAd = {
   destinationUrl: string; // internal route or full URL
   mediaUrl?: string;
   placements: Array<'homepage' | 'watch'>;
+  theme?: 'red' | 'blue';
 };
 
 export const HOUSE_ADS: HouseAd[] = [
@@ -26,6 +27,17 @@ export const HOUSE_ADS: HouseAd[] = [
     callToAction: 'Start a Campaign',
     destinationUrl: '/advertising',
     placements: ['homepage', 'watch'],
+  },
+  {
+    id: 'house-discount-product-ad',
+    headline: 'Want your product in front of customers?',
+    description:
+      'Use our discount ad — get started for just $15. Discovery ads from $0.01/view, banners from $0.005/impression, homepage takeovers from $1,500.',
+    businessName: 'MiyTube Ads',
+    callToAction: 'Advertise Now',
+    destinationUrl: '/advertising',
+    placements: ['homepage', 'watch'],
+    theme: 'red',
   },
   {
     id: 'house-homepage-takeover',
