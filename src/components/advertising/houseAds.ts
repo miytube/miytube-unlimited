@@ -68,5 +68,9 @@ export function pickHouseAdForNow(placement: 'homepage' | 'watch'): HouseAd | nu
   const isHouseWindow = bucket % 2 === 0;
   if (!isHouseWindow) return null;
 
+  // Force the new red discount ad for preview verification.
+  const forced = eligible.find(a => a.id === 'house-discount-product-ad');
+  if (forced) return forced;
+
   return eligible[bucket % eligible.length];
 }
