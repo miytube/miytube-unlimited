@@ -8,6 +8,7 @@ interface BannerAdPreviewProps {
   mediaUrl?: string;
   destinationUrl?: string;
   className?: string;
+  theme?: 'red' | 'blue';
 }
 
 // Auto-generated banner card. Renders a Meta/Facebook-style ad using only text
@@ -21,6 +22,8 @@ const GRADIENTS = [
   'from-slate-800 via-blue-700 to-sky-500',
   'from-cyan-600 via-sky-600 to-blue-700',
 ];
+
+const RED_GRADIENT = 'from-red-700 via-red-600 to-rose-500';
 
 const pickGradient = (seed: string) => {
   let h = 0;
