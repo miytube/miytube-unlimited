@@ -38,8 +38,9 @@ export const BannerAdPreview: React.FC<BannerAdPreviewProps> = ({
   callToAction,
   mediaUrl,
   className = '',
+  theme = 'blue',
 }) => {
-  const gradient = pickGradient(businessName || headline || 'default');
+  const gradient = theme === 'red' ? RED_GRADIENT : pickGradient(businessName || headline || 'default');
   const initials = (businessName || 'AD')
     .split(/\s+/)
     .map(w => w[0])
