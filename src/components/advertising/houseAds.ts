@@ -2,7 +2,7 @@
 // These rotate into the banner slot every HOUSE_AD_INTERVAL_HOURS hours,
 // independently of paid campaigns. Edit copy or interval here.
 
-export const HOUSE_AD_INTERVAL_HOURS = 1; // show a house ad once every N hours
+export const HOUSE_AD_INTERVAL_HOURS = 2; // show a house ad once every N hours
 export const HOUSE_AD_ENABLED = true;
 
 export type HouseAd = {
