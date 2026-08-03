@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, MessageSquare } from 'lucide-react';
+import { Film, MessageSquare, Megaphone } from 'lucide-react';
 import { ContentDropdown } from './ContentDropdown';
 import { BusinessDropdown } from './BusinessDropdown';
 
@@ -21,6 +21,14 @@ export const NavigationLinks: React.FC = () => {
       
       <ContentDropdown />
       <BusinessDropdown />
+
+      <Link
+        to="/advertising"
+        className="inline-flex items-center gap-1.5 rounded-md bg-destructive px-3 py-1.5 text-sm font-semibold text-destructive-foreground shadow-sm transition-colors hover:bg-destructive/90"
+      >
+        <Megaphone size={16} />
+        <span>Advertise</span>
+      </Link>
     </nav>
   );
 };
