@@ -62,6 +62,11 @@ export function pickHouseAdForNow(placement: 'homepage' | 'watch'): HouseAd | nu
   const eligible = HOUSE_ADS.filter(a => a.placements.includes(placement));
   if (eligible.length === 0) return null;
 
-  // Preview: force the red discount ad.
-  return eligible.find(a => a.id === 'house-discount-product-ad') ?? null;
+  const intervalMs = HOUSE_AD_INTERVAL_HOURS * 60 * 60 * 1000;
+  const bucket = Math.floor(Date.now() / intervalMs);
+  // Every other bucket is a "house window" — so a house ad shows every N hours.
+  const isHouseWindow = bucket % 2 === 0;
+  if (!isHouseWindow) return null;
+
+  return eligible[bucket % eligible.length];
 }
