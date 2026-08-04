@@ -63,12 +63,12 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
     const intervalMs = HOUSE_AD_INTERVAL_HOURS * 60 * 60 * 1000;
     const msUntilNextBoundary = intervalMs - (Date.now() % intervalMs) + 1000;
     const timeout = window.setTimeout(() => {
-      // Force refresh by clearing the current ad; the memo/effect will re-run on next render tick.
       setAd(null);
       setTracked(false);
+      setTick(t => t + 1);
     }, msUntilNextBoundary);
     return () => window.clearTimeout(timeout);
-  }, [ad?.id]);
+  }, [tick]);
 
   useEffect(() => {
     if (!ad || tracked) return;
