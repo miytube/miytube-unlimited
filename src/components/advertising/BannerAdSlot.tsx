@@ -26,9 +26,10 @@ interface BannerAdSlotProps {
 export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch', className }) => {
   const [ad, setAd] = useState<Ad | null>(null);
   const [tracked, setTracked] = useState(false);
+  const [tick, setTick] = useState(0);
 
   // Recompute the house-ad window periodically so the slot flips without a reload.
-  const houseAd = useMemo(() => pickHouseAdForNow(placement), [placement]);
+  const houseAd = useMemo(() => pickHouseAdForNow(placement), [placement, tick]);
 
   useEffect(() => {
     let cancelled = false;
@@ -62,12 +63,12 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
     const intervalMs = HOUSE_AD_INTERVAL_HOURS * 60 * 60 * 1000;
     const msUntilNextBoundary = intervalMs - (Date.now() % intervalMs) + 1000;
     const timeout = window.setTimeout(() => {
-      // Force refresh by clearing the current ad; the memo/effect will re-run on next render tick.
       setAd(null);
       setTracked(false);
+      setTick(t => t + 1);
     }, msUntilNextBoundary);
     return () => window.clearTimeout(timeout);
-  }, [ad?.id]);
+  }, [tick]);
 
   useEffect(() => {
     if (!ad || tracked) return;

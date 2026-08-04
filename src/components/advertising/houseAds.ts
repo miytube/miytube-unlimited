@@ -68,5 +68,8 @@ export function pickHouseAdForNow(placement: 'homepage' | 'watch'): HouseAd | nu
   const isHouseWindow = bucket % 2 === 0;
   if (!isHouseWindow) return null;
 
-  return eligible[bucket % eligible.length];
+  // Rotate by the house-window index (not the raw bucket), otherwise an even-only
+  // bucket number always lands on the same ad when there are 2 eligible ads.
+  const houseWindowIndex = Math.floor(bucket / 2);
+  return eligible[houseWindowIndex % eligible.length];
 }
