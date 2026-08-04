@@ -26,9 +26,10 @@ interface BannerAdSlotProps {
 export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch', className }) => {
   const [ad, setAd] = useState<Ad | null>(null);
   const [tracked, setTracked] = useState(false);
+  const [tick, setTick] = useState(0);
 
   // Recompute the house-ad window periodically so the slot flips without a reload.
-  const houseAd = useMemo(() => pickHouseAdForNow(placement), [placement]);
+  const houseAd = useMemo(() => pickHouseAdForNow(placement), [placement, tick]);
 
   useEffect(() => {
     let cancelled = false;
