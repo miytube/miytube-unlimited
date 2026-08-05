@@ -52,7 +52,21 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
   // Filter videos by slug (videos store normalized slugs in category/subcategory)
   const mostSpecificSlug = (watchPage?.slug || subcategory?.slug || category.slug).toLowerCase();
   const categorySlugLower = category.slug.toLowerCase();
-  const videos = getVideosByCategory(categorySlugLower, mostSpecificSlug !== categorySlugLower ? mostSpecificSlug : undefined);
+  const baseVideos = getVideosByCategory(
+    categorySlugLower,
+    mostSpecificSlug !== categorySlugLower ? mostSpecificSlug : undefined
+  );
+  // Some uploads store the category as "parent-subcategory" (e.g. "sports-boxing"),
+  // so also match on the most specific slug alone.
+  const norm = (v?: string) => (v || '').toLowerCase().trim();
+  const extraVideos = uploadedVideos.filter(
+    (v) =>
+      !baseVideos.some((b) => b.id === v.id) &&
+      (norm(v.subcategory) === mostSpecificSlug ||
+        (mostSpecificSlug !== categorySlugLower && norm(v.category) === mostSpecificSlug))
+  );
+  const videos = [...baseVideos, ...extraVideos];
+
 
   return (
     <Layout>
