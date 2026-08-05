@@ -9,7 +9,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 
 interface CategoryOption {
   id: string;
@@ -149,7 +149,7 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
           />
         </div>
         
-        <ScrollArea className="max-h-[200px]">
+        <div className="max-h-[300px] overflow-y-auto overscroll-contain">
           <div className="p-1">
             {filteredOptions.length === 0 && !inputValue.trim() && (
               <div className="py-6 text-center text-sm text-muted-foreground">
@@ -203,7 +203,7 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
               </div>
             )}
           </div>
-        </ScrollArea>
+        </div>
       </PopoverContent>
     </Popover>
   );
