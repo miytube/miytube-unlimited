@@ -217,3 +217,8 @@
 .animate-ticker:hover {
   animation-play-state: paused;
 }
+
+@keyframes slogan-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

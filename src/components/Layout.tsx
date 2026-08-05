@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { Sidebar } from './Sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { QuickCreatePageWidget } from './admin/QuickCreatePageWidget';
 import { AdSlot } from './ads/AdSlot';
+import { SloganTicker, SloganBanner } from './branding/SloganVariants';
 
 
 interface LayoutProps {
@@ -14,12 +16,18 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isHome = useLocation().pathname === '/';
 
   return (
     <div className="min-h-screen flex flex-col">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className={`flex flex-col flex-1 transition-all duration-300 ${isMobile ? '' : 'ml-60'}`}>
+        {/* Slogan preview — Variant B (top ticker) */}
+        {isHome && <SloganTicker />}
         <Header onMenuClick={() => setSidebarOpen((v) => !v)} />
+        {/* Slogan preview — Variant C (dedicated banner) */}
+        {isHome && <SloganBanner />}
+
         {/* Global Leaderboard (728x90) below main navigation. Hidden on mobile. */}
         <div className="hidden md:flex justify-center bg-background border-b border-border/60 py-2">
           <AdSlot

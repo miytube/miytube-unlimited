@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
+import { SloganHero } from '@/components/branding/SloganVariants';
+
 
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 import { usePageSEO } from '@/hooks/usePageSEO';
@@ -122,6 +124,13 @@ const Index = () => {
           <h1 className="text-3xl font-bold">{site.metaTitle}</h1>
           </div>
         </div>
+
+        {/* Slogan preview — Variant A (homepage hero) */}
+        <div className="mb-6">
+          <SloganHero />
+        </div>
+
+
 
         {/* Homepage banner from MiyTube advertisers */}
         <div className="mb-6">
