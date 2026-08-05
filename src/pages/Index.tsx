@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
+import { SloganHero } from '@/components/branding/SloganVariants';
+
 
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 import { usePageSEO } from '@/hooks/usePageSEO';
