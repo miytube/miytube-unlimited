@@ -16,7 +16,7 @@ interface Props {
 const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
   const params = useParams();
   const { tree, loading } = useCustomCategories();
-  const { getVideosByCategory } = useUploadedVideos();
+  const { getVideosByCategory, uploadedVideos } = useUploadedVideos();
 
   const category = useMemo(
     () => tree.find((c) => c.slug === params.categorySlug),
