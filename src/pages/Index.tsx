@@ -123,6 +123,13 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Slogan preview — Variant A (homepage hero) */}
+        <div className="mb-6">
+          <SloganHero />
+        </div>
+
+
+
         {/* Homepage banner from MiyTube advertisers */}
         <div className="mb-6">
           <BannerAdSlot placement="homepage" />
