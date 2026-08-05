@@ -11,6 +11,9 @@ export const SportsExtendedLinks: React.FC = () => {
       label: 'Boxing',
       path: '/c/sports/boxing',
       subItems: [
+        { id: 'sports-boxing-105-126', label: 'Boxing (105 - 126 weight)', path: '/c/sports/boxing/boxing-105-126-weight' },
+        { id: 'sports-boxing-130-154', label: 'Boxing (130 - 154 weight)', path: '/c/sports/boxing/boxing-130-154-weight' },
+        { id: 'sports-boxing-160-200', label: 'Boxing (160 - 200 weight)', path: '/c/sports/boxing/boxing-160-200-weight' },
         { id: 'sports-boxing-heavyweight-fighting', label: 'Boxing (heavyweight, fighting)', path: '/c/sports/boxing/boxing-heavyweight-fighting' }
       ]
     },
