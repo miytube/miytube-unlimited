@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Youtube, Linkedin } from 'lucide-react';
 import { useSite } from '@/hooks/useSite';
+import { NewsletterSignup } from '@/components/NewsletterSignup';
+
 
 export const Footer = () => {
   const { site } = useSite();
@@ -83,6 +85,13 @@ export const Footer = () => {
             </ul>
           </div>
         </div>
+
+        <NewsletterSignup
+          className="mb-8"
+          heading={`Subscribe to ${site.name}`}
+        />
+
+
         
         <div className="border-t pt-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
