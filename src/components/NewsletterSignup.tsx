@@ -57,10 +57,24 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
       return;
     }
 
+    // Notify the site owner (best-effort, never blocks the subscriber)
+    void supabase.functions.invoke('send-transactional-email', {
+      body: {
+        templateName: source === 'iwantinformationnow' ? 'new-subscriber-iwin' : 'new-subscriber-miytube',
+        idempotencyKey: `subscriber-${source}-${parsed.data.toLowerCase()}`,
+        templateData: {
+          subscriberEmail: parsed.data.toLowerCase(),
+          site: source,
+          subscribedAt: new Date().toISOString(),
+        },
+      },
+    });
+
     setDone(true);
     setEmail('');
     toast.success('Subscribed! Thanks for joining.');
   };
+
 
   if (done) {
     return (
