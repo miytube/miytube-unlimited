@@ -110,44 +110,67 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
     []
   );
 
+  // Normalize ids/names so "MMA & Fighting", "mma-and-fighting" and
+  // "mma & fighting" all resolve to the same category bucket.
+  const normKey = (value: string) =>
+    (value || '')
+      .toLowerCase()
+      .replace(/&/g, ' and ')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+
   // Combine built-in, known canonical, saved custom, and newly typed categories
   const allCategories = useMemo(() => {
     const merged = new Map<string, Category>();
     [...categories, ...knownParentCategories, ...savedCustomCategories, ...customCategories].forEach((cat) => {
-      const existing = merged.get(cat.id);
-      merged.set(cat.id, {
-        ...existing,
-        ...cat,
+      const key = normKey(cat.name) || normKey(cat.id);
+      const existing = merged.get(key);
+      merged.set(key, {
+        id: existing?.id || cat.id,
         name: existing?.name || cat.name,
         subcategories: [...(existing?.subcategories || []), ...(cat.subcategories || [])],
       });
     });
     return Array.from(merged.values());
   }, [categories, knownParentCategories, savedCustomCategories, customCategories]);
-  
-  const selectedCategoryObj = allCategories.find(cat => cat.id === selectedCategory);
+
+  // Match the selected category by id OR name (normalized), so the subcategory
+  // list always fills in even when the stored value is a slug or a typed name.
+  const selectedCategoryObj = useMemo(() => {
+    if (!selectedCategory) return undefined;
+    const key = normKey(selectedCategory);
+    return (
+      allCategories.find((cat) => cat.id === selectedCategory) ||
+      allCategories.find((cat) => normKey(cat.id) === key || normKey(cat.name) === key)
+    );
+  }, [allCategories, selectedCategory]);
+
   const builtInSubcategories = selectedCategoryObj?.subcategories || [];
-  
+
   // Get predefined subcategories from our comprehensive list
   const predefinedSubcategories = useMemo(() => {
     if (!selectedCategory) return [];
-    return getSubcategoryOptionsForCategory(selectedCategory);
-  }, [selectedCategory]);
-  
+    return [
+      ...getSubcategoryOptionsForCategory(selectedCategory),
+      ...(selectedCategoryObj ? getSubcategoryOptionsForCategory(selectedCategoryObj.id) : []),
+    ];
+  }, [selectedCategory, selectedCategoryObj]);
+
   // Merge all subcategory sources: built-in, predefined, and custom
   const allSubcategories = useMemo(() => {
     const merged = new Map<string, { id: string; name: string }>();
-    
-    // Add built-in subcategories
-    builtInSubcategories.forEach(sub => merged.set(sub.id, sub));
-    
-    // Add predefined subcategories
-    predefinedSubcategories.forEach(sub => merged.set(sub.id, sub));
-    
-    // Add custom subcategories
-    customSubcategories.forEach(sub => merged.set(sub.id, sub));
-    
-    return Array.from(merged.values());
+
+    const add = (sub: { id: string; name: string }) => {
+      const key = normKey(sub.name) || normKey(sub.id);
+      if (!key || merged.has(key)) return;
+      merged.set(key, sub);
+    };
+
+    builtInSubcategories.forEach(add);
+    predefinedSubcategories.forEach(add);
+    customSubcategories.forEach(add);
+
+    return Array.from(merged.values()).sort((a, b) => a.name.localeCompare(b.name));
   }, [builtInSubcategories, predefinedSubcategories, customSubcategories]);
 
   const handleAddCustomCategory = (customName: string) => {
