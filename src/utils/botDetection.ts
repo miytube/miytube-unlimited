@@ -62,5 +62,8 @@ export const isLikelyBot = (): boolean => {
   if (typeof window === 'undefined') return true;
   if (!('onscroll' in window)) return true;
 
+  // Spoofed headless bots with impossible Chrome versions
+  if (hasFakeChromeVersion(ua)) return true;
+
   return false;
 };
