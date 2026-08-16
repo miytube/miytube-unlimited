@@ -34,7 +34,19 @@ const BOT_PATTERNS = [
   /semrush/i,
   /mj12/i,
   /dotbot/i,
+  /Mediapartners-Google/i,
 ];
+
+const SUSPICIOUS_CHROME_VERSION_THRESHOLD = 140;
+
+const hasFakeChromeVersion = (ua: string): boolean => {
+  // Spoofed headless bots often report impossible Chrome versions (e.g., 148/150/151)
+  // while stable Chrome is still two-digit. Treat them as bots.
+  const match = ua.match(/Chrome\/(\d+)\.0\.0\.0/);
+  if (!match) return false;
+  const version = parseInt(match[1], 10);
+  return version >= SUSPICIOUS_CHROME_VERSION_THRESHOLD;
+};
 
 export const isLikelyBot = (): boolean => {
   if (typeof navigator === 'undefined') return true;
@@ -49,6 +61,9 @@ export const isLikelyBot = (): boolean => {
   // No real browser features
   if (typeof window === 'undefined') return true;
   if (!('onscroll' in window)) return true;
+
+  // Spoofed headless bots with impossible Chrome versions
+  if (hasFakeChromeVersion(ua)) return true;
 
   return false;
 };
