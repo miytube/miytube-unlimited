@@ -179,7 +179,11 @@ const Index = () => {
           </div>
         )}
 
+        {/* Latest Articles — new uploads appear on the first page like videos */}
+        {!isLoading && <LatestArticlesSection limit={8} />}
+
         {/* Ad slot removed — relying on AdSense Auto Ads */}
+
 
 
         {/* Trending Videos Section - Regular videos only */}
