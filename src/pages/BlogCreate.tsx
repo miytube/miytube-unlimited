@@ -141,11 +141,15 @@ const BlogCreate = () => {
 
           <div>
             <Label htmlFor="cover">Cover image (optional, max 5MB)</Label>
+            {existingCover && !coverFile && (
+              <img src={existingCover} alt="Current cover" className="w-40 aspect-video object-cover rounded mb-2" />
+            )}
             <div className="flex items-center gap-2">
               <ImageIcon className="h-5 w-5 text-muted-foreground" />
               <Input id="cover" type="file" accept="image/*" onChange={(e) => setCoverFile(e.target.files?.[0] || null)} />
             </div>
           </div>
+
 
           <div>
             <Label htmlFor="content">Article content * (markdown supported)</Label>
