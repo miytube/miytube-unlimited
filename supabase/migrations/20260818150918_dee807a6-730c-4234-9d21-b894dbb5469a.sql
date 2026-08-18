@@ -1,0 +1,2 @@
+DELETE FROM public.cha_room_messages WHERE author_name = 'Tester' OR (role = 'assistant' AND content LIKE 'I%m right here holding down the lounge%');
+DELETE FROM public.cha_conversations WHERE user_id = 'f00f8ce9-c38a-445a-af5a-864f4173b174';
