@@ -169,10 +169,11 @@ const BlogCreate = () => {
           <div className="flex gap-3">
             <Button type="submit" disabled={saving}>
               {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-              {saving ? 'Publishing…' : 'Publish Article'}
+              {saving ? (isEdit ? 'Saving…' : 'Publishing…') : (isEdit ? 'Save Changes' : 'Publish Article')}
             </Button>
-            <Button type="button" variant="outline" onClick={() => navigate('/blog')}>Cancel</Button>
+            <Button type="button" variant="outline" onClick={() => navigate(isEdit ? `/blog/${editSlug}` : '/blog')}>Cancel</Button>
           </div>
+
         </form>
       </div>
     </Layout>
