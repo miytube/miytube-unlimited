@@ -22,6 +22,8 @@ export const mediaRoutes = [
   <Route key="blog" path="/blog" element={<Blog />} />,
   <Route key="blog-create" path="/blog/create" element={<BlogCreate />} />,
   <Route key="blog-edit" path="/blog/edit/:slug" element={<BlogCreate />} />,
+  <Route key="blog-post" path="/blog/:slug" element={<BlogPost />} />,
+
 
   <Route key="long-videos" path="/long-videos" element={<LongVideos />} />,
   <Route key="talk-at-cha" path="/talk-at-cha" element={<TalkAtCha />} />,
