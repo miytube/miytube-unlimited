@@ -16,7 +16,7 @@ export const NavigationLinks: React.FC = () => {
       </Link>
       <Link to="/talk-at-cha" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
         <MessageSquare size={16} />
-        <span>TalkAtCha</span>
+        <span>MiyTube At Cha</span>
       </Link>
       
       <ContentDropdown />

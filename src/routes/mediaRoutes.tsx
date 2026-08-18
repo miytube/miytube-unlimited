@@ -8,6 +8,9 @@ import Blog from "@/pages/Blog";
 import BlogCreate from "@/pages/BlogCreate";
 import BlogPost from "@/pages/BlogPost";
 import LongVideos from "@/pages/LongVideos";
+import MiytubeAtCha from "@/pages/MiytubeAtCha";
+import ChaRooms from "@/pages/ChaRooms";
+import ChaRoom from "@/pages/ChaRoom";
 import TalkAtCha from "@/pages/TalkAtCha";
 import Shorts from "@/pages/Shorts";
 import ShortsWatch from "@/pages/ShortsWatch";
@@ -26,7 +29,10 @@ export const mediaRoutes = [
 
 
   <Route key="long-videos" path="/long-videos" element={<LongVideos />} />,
-  <Route key="talk-at-cha" path="/talk-at-cha" element={<TalkAtCha />} />,
+  <Route key="talk-at-cha" path="/talk-at-cha" element={<MiytubeAtCha />} />,
+  <Route key="talk-at-cha-boards" path="/talk-at-cha/boards" element={<TalkAtCha />} />,
+  <Route key="cha-rooms" path="/cha-rooms" element={<ChaRooms />} />,
+  <Route key="cha-room" path="/cha-rooms/:roomId" element={<ChaRoom />} />,
   
   /* Video Routes */
   <Route key="shorts" path="/shorts" element={<Shorts />} />,
