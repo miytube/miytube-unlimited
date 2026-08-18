@@ -122,10 +122,11 @@ const BlogCreate = () => {
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-3xl mx-auto px-4">
         <p className="text-sm text-muted-foreground mb-2">
-          <Link to="/" className="font-semibold text-primary">MiyTube</Link> / <Link to="/blog">Blog</Link> / Write
+          <Link to="/" className="font-semibold text-primary">MiyTube</Link> / <Link to="/blog">Blog</Link> / {isEdit ? 'Edit' : 'Write'}
         </p>
 
-        <h1 className="text-3xl font-bold mb-6">Write a New Article</h1>
+        <h1 className="text-3xl font-bold mb-6">{isEdit ? 'Edit Article' : 'Write a New Article'}</h1>
+
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
