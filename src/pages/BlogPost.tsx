@@ -110,10 +110,16 @@ const BlogPost = () => {
           <span className="flex items-center gap-1"><Calendar className="h-4 w-4" />{new Date(post.created_at).toLocaleDateString()}</span>
           <span className="flex items-center gap-1"><Eye className="h-4 w-4" />{post.views} views</span>
           {isAuthor && (
-            <Button size="sm" variant="ghost" onClick={handleDelete} className="ml-auto text-destructive">
-              <Trash2 className="h-4 w-4 mr-1" /> Delete
-            </Button>
+            <div className="ml-auto flex items-center gap-1">
+              <Button size="sm" variant="ghost" onClick={() => navigate(`/blog/edit/${slug}`)}>
+                <Pencil className="h-4 w-4 mr-1" /> Edit
+              </Button>
+              <Button size="sm" variant="ghost" onClick={handleDelete} className="text-destructive">
+                <Trash2 className="h-4 w-4 mr-1" /> Delete
+              </Button>
+            </div>
           )}
+
         </div>
 
         <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap leading-relaxed">
