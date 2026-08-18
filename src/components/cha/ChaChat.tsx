@@ -40,7 +40,7 @@ export const ChaChat: React.FC = () => {
   const { user, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const composerRef = useRef<HTMLDivElement | null>(null);
   const [input, setInput] = useState('');
   const [initialMessages, setInitialMessages] = useState<UIMessage[] | null>(null);
 
@@ -110,7 +110,7 @@ export const ChaChat: React.FC = () => {
   const isBusy = status === 'submitted' || status === 'streaming';
 
   useEffect(() => {
-    if (!isBusy) textareaRef.current?.focus();
+    if (!isBusy) composerRef.current?.querySelector('textarea')?.focus();
   }, [isBusy, initialMessages]);
 
   const send = useCallback(
@@ -209,6 +209,7 @@ export const ChaChat: React.FC = () => {
         </>
       )}
 
+      <div ref={composerRef}>
       <PromptInput
         onSubmit={(_message, event) => {
           event.preventDefault();
@@ -217,7 +218,6 @@ export const ChaChat: React.FC = () => {
         className="rounded-full"
       >
         <PromptInputTextarea
-          ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="say something..."
@@ -226,6 +226,7 @@ export const ChaChat: React.FC = () => {
           <PromptInputSubmit status={status} disabled={!input.trim() && !isBusy} />
         </PromptInputFooter>
       </PromptInput>
+      </div>
     </div>
   );
 };
