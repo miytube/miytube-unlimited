@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
+import { LatestArticlesSection } from '@/components/blog/LatestArticlesSection';
+
 
 
 
@@ -177,7 +179,11 @@ const Index = () => {
           </div>
         )}
 
+        {/* Latest Articles — new uploads appear on the first page like videos */}
+        {!isLoading && <LatestArticlesSection limit={8} />}
+
         {/* Ad slot removed — relying on AdSense Auto Ads */}
+
 
 
         {/* Trending Videos Section - Regular videos only */}
