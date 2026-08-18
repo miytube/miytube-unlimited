@@ -350,6 +350,145 @@ export type Database = {
         }
         Relationships: []
       }
+      cha_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          site: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          site?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          site?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cha_messages: {
+        Row: {
+          conversation_id: string
+          created_at: string
+          id: string
+          message_key: string | null
+          parts: Json
+          role: string
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          created_at?: string
+          id?: string
+          message_key?: string | null
+          parts?: Json
+          role: string
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          message_key?: string | null
+          parts?: Json
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cha_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "cha_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cha_room_messages: {
+        Row: {
+          author_name: string
+          content: string
+          created_at: string
+          id: string
+          role: string
+          room_id: string
+          user_id: string | null
+        }
+        Insert: {
+          author_name: string
+          content: string
+          created_at?: string
+          id?: string
+          role?: string
+          room_id: string
+          user_id?: string | null
+        }
+        Update: {
+          author_name?: string
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          room_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cha_room_messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "cha_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cha_rooms: {
+        Row: {
+          created_at: string
+          description: string | null
+          emoji: string
+          id: string
+          is_active: boolean
+          name: string
+          site: string
+          slug: string
+          sort_order: number
+          topic: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          emoji?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          site?: string
+          slug: string
+          sort_order?: number
+          topic?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          emoji?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          site?: string
+          slug?: string
+          sort_order?: number
+          topic?: string | null
+        }
+        Relationships: []
+      }
       comment_likes: {
         Row: {
           comment_id: string
