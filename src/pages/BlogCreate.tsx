@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,6 +16,8 @@ const slugify = (s: string) =>
 
 const BlogCreate = () => {
   const { user, loading: authLoading } = useAuth();
+  const { slug: editSlug } = useParams<{ slug: string }>();
+  const isEdit = Boolean(editSlug);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -23,11 +25,36 @@ const BlogCreate = () => {
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
   const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [existingCover, setExistingCover] = useState<string | null>(null);
+  const [postId, setPostId] = useState<string | null>(null);
+  const [loadingPost, setLoadingPost] = useState(isEdit);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate('/auth');
   }, [user, authLoading, navigate]);
+
+  useEffect(() => {
+    if (!isEdit || !editSlug) return;
+    (async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('id, title, excerpt, content, cover_image_url')
+        .eq('slug', editSlug)
+        .maybeSingle();
+      if (error || !data) {
+        toast({ title: 'Article not found', variant: 'destructive' });
+        navigate('/blog');
+        return;
+      }
+      setPostId(data.id);
+      setTitle(data.title);
+      setExcerpt(data.excerpt || '');
+      setContent(data.content);
+      setExistingCover(data.cover_image_url);
+      setLoadingPost(false);
+    })();
+  }, [isEdit, editSlug, navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +65,7 @@ const BlogCreate = () => {
     }
     setSaving(true);
     try {
-      let coverUrl: string | null = null;
+      let coverUrl: string | null = existingCover;
       if (coverFile) {
         if (!coverFile.type.startsWith('image/')) throw new Error('Cover must be an image');
         if (coverFile.size > 5 * 1024 * 1024) throw new Error('Cover image must be < 5MB');
@@ -47,6 +74,19 @@ const BlogCreate = () => {
         const { error: upErr } = await supabase.storage.from('pictures').upload(path, coverFile, { contentType: coverFile.type });
         if (upErr) throw upErr;
         coverUrl = supabase.storage.from('pictures').getPublicUrl(path).data.publicUrl;
+      }
+
+      if (isEdit && postId) {
+        const { error } = await supabase.from('blog_posts').update({
+          title: title.trim(),
+          excerpt: excerpt.trim() || null,
+          content: content.trim(),
+          cover_image_url: coverUrl,
+        }).eq('id', postId);
+        if (error) throw error;
+        toast({ title: 'Article updated!' });
+        navigate(`/blog/${editSlug}`);
+        return;
       }
 
       const baseSlug = slugify(title);
@@ -67,11 +107,16 @@ const BlogCreate = () => {
       toast({ title: 'Article published!' });
       navigate(`/blog/${slug}`);
     } catch (err: any) {
-      toast({ title: 'Could not publish', description: err.message, variant: 'destructive' });
+      toast({ title: isEdit ? 'Could not save' : 'Could not publish', description: err.message, variant: 'destructive' });
     } finally {
       setSaving(false);
     }
   };
+
+  if (loadingPost) {
+    return <Layout><div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></Layout>;
+  }
+
 
   return (
     <Layout>
