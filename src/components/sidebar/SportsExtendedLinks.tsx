@@ -18,6 +18,12 @@ export const SportsExtendedLinks: React.FC = () => {
       ]
     },
     {
+      id: 'sports-high-school-football',
+      icon: Trophy,
+      label: 'High School Football',
+      path: '/c/sports/high-school-football',
+    },
+    {
       id: 'sports-moments-main',
       icon: Trophy,
       label: 'Sports Moments',
@@ -26,6 +32,7 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-moments-all', label: 'Sports Moments (all sports, amateur, professional)', path: '/c/sports/sports-moments-all-sports-amateur-professional' }
       ]
     },
+
 
     { 
       id: 'sports-nba', 
