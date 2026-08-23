@@ -57,6 +57,7 @@ const Watch = () => {
   const [isMusicVideo, setIsMusicVideo] = useState(false);
   const [isYouTubeVideo, setIsYouTubeVideo] = useState(false);
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
+  const [creatorProfile, setCreatorProfile] = useState<{ channel_name?: string; display_name?: string; avatar_url?: string } | null>(null);
 
   const actualVideoIdForSEO = videoId || musicVideoId || video?.id;
   usePageSEO({
