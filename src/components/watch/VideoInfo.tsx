@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import WatchlistButton from '@/components/WatchlistButton';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { TipCreatorButton } from '@/components/tips/TipCreatorButton';
+import { useAuth } from '@/hooks/useAuth';
 
 interface VideoInfoProps {
   title: string;
