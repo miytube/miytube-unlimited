@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, Link, useParams, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,11 +19,14 @@ const BlogCreate = () => {
   const { slug: editSlug } = useParams<{ slug: string }>();
   const isEdit = Boolean(editSlug);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const generatedState = (location.state as { title?: string; excerpt?: string; content?: string; generatedFromVideoId?: string } | null);
 
-  const [title, setTitle] = useState('');
-  const [excerpt, setExcerpt] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState(generatedState?.title || '');
+  const [excerpt, setExcerpt] = useState(generatedState?.excerpt || '');
+  const [content, setContent] = useState(generatedState?.content || '');
+  const [generatedFromVideoId] = useState<string | undefined>(generatedState?.generatedFromVideoId);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [existingCover, setExistingCover] = useState<string | null>(null);
   const [postId, setPostId] = useState<string | null>(null);
@@ -101,6 +104,7 @@ const BlogCreate = () => {
         cover_image_url: coverUrl,
         is_published: true,
         site: getCurrentSiteId(),
+        ...(generatedFromVideoId ? { generated_from_video_id: generatedFromVideoId } : {}),
       });
       if (error) throw error;
 

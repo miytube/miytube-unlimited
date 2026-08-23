@@ -260,6 +260,7 @@ export type Database = {
           cover_image_url: string | null
           created_at: string
           excerpt: string | null
+          generated_from_video_id: string | null
           id: string
           is_published: boolean
           site: string
@@ -274,6 +275,7 @@ export type Database = {
           cover_image_url?: string | null
           created_at?: string
           excerpt?: string | null
+          generated_from_video_id?: string | null
           id?: string
           is_published?: boolean
           site?: string
@@ -288,6 +290,7 @@ export type Database = {
           cover_image_url?: string | null
           created_at?: string
           excerpt?: string | null
+          generated_from_video_id?: string | null
           id?: string
           is_published?: boolean
           site?: string

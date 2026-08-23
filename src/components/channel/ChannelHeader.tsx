@@ -2,8 +2,13 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Video, Upload, BarChart } from 'lucide-react';
+import { TipCreatorButton } from '@/components/tips/TipCreatorButton';
 
-export const ChannelHeader: React.FC = () => {
+interface ChannelHeaderProps {
+  creatorId?: string;
+}
+
+export const ChannelHeader: React.FC<ChannelHeaderProps> = ({ creatorId }) => {
   return (
     <div className="mb-8">
       <p className="text-sm text-muted-foreground mb-2">
@@ -27,6 +32,12 @@ export const ChannelHeader: React.FC = () => {
           <BarChart size={18} />
           Analytics
         </Button>
+        {creatorId && (
+          <TipCreatorButton
+            creatorId={creatorId}
+            className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-secondary transition-colors text-sm font-medium"
+          />
+        )}
       </div>
       
       <div className="h-0.5 w-full bg-muted"></div>
