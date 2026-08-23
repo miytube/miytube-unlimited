@@ -130,6 +130,45 @@ const Index = () => {
 
 
 
+        {/* Creator monetization CTA */}
+        <div className="mb-6 p-5 rounded-lg border bg-gradient-to-r from-primary/10 via-primary/5 to-background">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary">
+                <DollarSign size={24} />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold">Upload videos and earn money on {site.name}</h2>
+                <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+                  Get tipped directly by viewers, turn videos into SEO articles, and join the Partner Program for ad revenue. Keep more of what you make.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button asChild variant="outline" size="sm">
+                <Link to="/monetization">How it works</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link to="/upload">Start uploading</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Users size={14} className="text-primary" />
+              <span>Direct tips from fans</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Sparkles size={14} className="text-primary" />
+              <span>AI turns videos into articles</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <DollarSign size={14} className="text-primary" />
+              <span>Ad revenue & partner perks</span>
+            </div>
+          </div>
+        </div>
+
         {/* Homepage banner from MiyTube advertisers */}
         <div className="mb-6">
           <BannerAdSlot placement="homepage" />
