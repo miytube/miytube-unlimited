@@ -161,7 +161,7 @@ const Watch = () => {
             isYouTubeEmbed: uploadedVideo.isYouTubeEmbed,
             youtubeId: uploadedVideo.youtubeId,
             dbId: uploadedVideo.id,
-            dbUserId: uploadedVideo.user_id || user?.id,
+            dbUserId: uploadedVideo.user_id,
           });
           setLoading(false);
         } else {
