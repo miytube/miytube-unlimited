@@ -7,6 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import TipCreatorButton from '@/components/tips/TipCreatorButton';
+
 
 interface Post {
   id: string;
