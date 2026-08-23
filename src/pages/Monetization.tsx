@@ -39,8 +39,9 @@ const Monetization = () => {
             </div>
             <h3 className="font-semibold mb-2">Direct Tips</h3>
             <p className="text-sm text-muted-foreground">
-              Viewers can tip you directly from any video or channel page. 100% goes to your connected payment account.
+              Viewers can tip you directly from any video, channel, or article page — writers earn too. 100% goes to your connected payment account.
             </p>
+
           </div>
 
           <div className="p-5 rounded-lg border bg-card hover:border-primary/50 transition-colors">

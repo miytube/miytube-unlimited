@@ -7,6 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import TipCreatorButton from '@/components/tips/TipCreatorButton';
+
 
 interface Post {
   id: string;
@@ -125,7 +127,23 @@ const BlogPost = () => {
         <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap leading-relaxed">
           {post.content}
         </div>
+
+        {!isAuthor && (
+          <div className="mt-10 pt-6 border-t flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex-1">
+              <p className="font-semibold">Enjoyed this article?</p>
+              <p className="text-sm text-muted-foreground">
+                Send the writer a tip. 100% goes straight to them.
+              </p>
+            </div>
+            <TipCreatorButton
+              creatorId={post.user_id}
+              className="inline-flex items-center gap-1 px-5 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity"
+            />
+          </div>
+        )}
       </article>
+
     </Layout>
   );
 };
