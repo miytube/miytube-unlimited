@@ -1,18 +1,18 @@
-
 import React from 'react';
 import { Layout } from '@/components/Layout';
 import { CreatorSignup } from '@/components/channel/CreatorSignup';
 import { CreatorDashboard } from '@/components/channel/CreatorDashboard';
 import { ChannelHeader } from '@/components/channel/ChannelHeader';
+import { useAuth } from '@/hooks/useAuth';
 
 const Channel: React.FC = () => {
-  // In a real app, we would check if the user is logged in
-  const isLoggedIn = false;
+  const { user } = useAuth();
+  const isLoggedIn = !!user;
 
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <ChannelHeader />
+        <ChannelHeader creatorId={user?.id} />
         
         {isLoggedIn ? (
           <CreatorDashboard />

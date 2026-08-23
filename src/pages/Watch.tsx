@@ -7,6 +7,7 @@ import { VideoInfo } from '@/components/watch/VideoInfo';
 import { VideoDescription } from '@/components/watch/VideoDescription';
 import { VideoComments } from '@/components/watch/VideoComments';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
+import { GenerateArticleButton } from '@/components/blog/GenerateArticleButton';
 import { useVideos } from '@/hooks/useVideos';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useAuth } from '@/hooks/useAuth';
@@ -503,8 +504,25 @@ const Watch = () => {
               onEdit={() => setEditDialogOpen(true)}
               onDelete={() => setDeleteDialogOpen(true)}
               videoId={actualVideoId || undefined}
+              creatorId={video?.dbUserId || undefined}
             />
-            
+
+            {isOwner && video?.dbId && (
+              <div className="mt-2">
+                <GenerateArticleButton
+                  videoId={video.dbId}
+                  ownerId={video.dbUserId}
+                  video={{
+                    title: video.title,
+                    description: video.description,
+                    category: video.category,
+                    subcategory: video.subcategory,
+                    tags: video.tags,
+                  }}
+                />
+              </div>
+            )}
+
             <VideoDescription description={video.description} />
 
             {actualVideoId && <VideoComments videoId={actualVideoId} />}

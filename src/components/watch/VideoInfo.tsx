@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import WatchlistButton from '@/components/WatchlistButton';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
+import { TipCreatorButton } from '@/components/tips/TipCreatorButton';
 
 interface VideoInfoProps {
   title: string;
@@ -19,6 +20,7 @@ interface VideoInfoProps {
   onEdit?: () => void;
   onDelete?: () => void;
   videoId?: string;
+  creatorId?: string;
 }
 
 export const VideoInfo: React.FC<VideoInfoProps> = ({
@@ -34,6 +36,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
   onEdit,
   onDelete,
   videoId,
+  creatorId,
 }) => {
   const [userLikeStatus, setUserLikeStatus] = useState<'like' | 'dislike' | null>(null);
   const [likesCount, setLikesCount] = useState(parseInt(initialLikes) || 0);
@@ -254,6 +257,10 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
           
           {videoId && (
             <WatchlistButton videoId={videoId} videoType="video" variant="full" size="sm" />
+          )}
+
+          {creatorId && (
+            <TipCreatorButton creatorId={creatorId} videoId={videoId} />
           )}
           
           <button className="p-2 rounded-full hover:bg-secondary transition-colors">
