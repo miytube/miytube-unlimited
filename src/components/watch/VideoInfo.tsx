@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import WatchlistButton from '@/components/WatchlistButton';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { TipCreatorButton } from '@/components/tips/TipCreatorButton';
+import { useAuth } from '@/hooks/useAuth';
 
 interface VideoInfoProps {
   title: string;
@@ -42,6 +43,8 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
   const [likesCount, setLikesCount] = useState(parseInt(initialLikes) || 0);
   const [dislikesCount, setDislikesCount] = useState(0);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const isOwnVideo = !!(user && creatorId && user.id === creatorId);
 
   useEffect(() => {
     if (videoId) {
@@ -259,7 +262,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
             <WatchlistButton videoId={videoId} videoType="video" variant="full" size="sm" />
           )}
 
-          {creatorId && (
+          {creatorId && !isOwnVideo && (
             <TipCreatorButton creatorId={creatorId} videoId={videoId} />
           )}
           

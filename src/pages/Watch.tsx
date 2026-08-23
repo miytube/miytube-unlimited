@@ -158,7 +158,9 @@ const Watch = () => {
             category: normalizedAssignment.category || uploadedVideo.category,
             subcategory: normalizedAssignment.subcategory || uploadedVideo.subcategory,
             isYouTubeEmbed: uploadedVideo.isYouTubeEmbed,
-            youtubeId: uploadedVideo.youtubeId
+            youtubeId: uploadedVideo.youtubeId,
+            dbId: uploadedVideo.id,
+            dbUserId: user?.id,
           });
           setLoading(false);
         } else {

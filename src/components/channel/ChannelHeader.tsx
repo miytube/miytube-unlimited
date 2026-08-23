@@ -1,14 +1,16 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Video, Upload, BarChart } from 'lucide-react';
 import { TipCreatorButton } from '@/components/tips/TipCreatorButton';
+import { useAuth } from '@/hooks/useAuth';
 
 interface ChannelHeaderProps {
   creatorId?: string;
 }
 
 export const ChannelHeader: React.FC<ChannelHeaderProps> = ({ creatorId }) => {
+  const { user } = useAuth();
+  const isOwnChannel = !!(user && creatorId && user.id === creatorId);
   return (
     <div className="mb-8">
       <p className="text-sm text-muted-foreground mb-2">
@@ -32,7 +34,7 @@ export const ChannelHeader: React.FC<ChannelHeaderProps> = ({ creatorId }) => {
           <BarChart size={18} />
           Analytics
         </Button>
-        {creatorId && (
+        {creatorId && !isOwnChannel && (
           <TipCreatorButton
             creatorId={creatorId}
             className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-secondary transition-colors text-sm font-medium"
