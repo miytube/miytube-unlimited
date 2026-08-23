@@ -374,6 +374,7 @@ const saveVideoToSupabase = async (video: {
     duration: v.duration || '0:00',
     category: normalized.category || v.category || undefined,
     subcategory: normalized.subcategory || v.subcategory || undefined,
+    user_id: v.user_id || undefined,
     tags: v.tags || [],
   };
 };
