@@ -52,11 +52,16 @@ Deno.serve(async (req) => {
       .maybeSingle();
     const isAdmin = !!roleRow;
 
-    const { data: video, error: videoError } = await admin
+    const isUuid = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(videoId);
+    const videoQuery = admin
       .from("uploaded_videos")
-      .select("id, local_id, title, description, category, subcategory, tags, user_id")
-      .or(`id.eq.${videoId},local_id.eq.${videoId}`)
-      .maybeSingle();
+      .select("id, local_id, title, description, category, subcategory, tags, user_id");
+    if (isUuid) {
+      videoQuery.eq("id", videoId);
+    } else {
+      videoQuery.eq("local_id", videoId);
+    }
+    const { data: video, error: videoError } = await videoQuery.maybeSingle();
 
     if (videoError || !video) {
       return json({ error: "Video not found." }, 404);
