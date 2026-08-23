@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.guard_ad_campaign_owner_update() FROM PUBLIC, anon, authenticated;
