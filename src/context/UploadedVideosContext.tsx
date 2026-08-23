@@ -449,7 +449,7 @@ const loadVideosFromSupabase = async (): Promise<{
   const PAGE_SIZE = 60;
   const CHUNK_SIZE = 1000; // Supabase max per query
 
-  const SELECT_COLS = 'id, local_id, title, description, thumbnail_url, cloud_url, is_cloud_stored, is_youtube_embed, youtube_video_id, duration, category, subcategory, tags, views, created_at';
+  const SELECT_COLS = 'id, local_id, user_id, title, description, thumbnail_url, cloud_url, is_cloud_stored, is_youtube_embed, youtube_video_id, duration, category, subcategory, tags, views, created_at';
 
   const { data, error } = await supabase
     .from('uploaded_videos_public')
