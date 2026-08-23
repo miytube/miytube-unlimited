@@ -49,7 +49,30 @@ export const HOUSE_ADS: HouseAd[] = [
     destinationUrl: '/advertising',
     placements: ['homepage'],
   },
+  {
+    id: 'house-creator-earnings',
+    headline: 'Upload. Get tipped. Get paid.',
+    description:
+      'MiyTube creators keep 100% of viewer tips, turn any video into an SEO article with AI, and can apply for the Partner Program. Free to start.',
+    businessName: 'MiyTube Creators',
+    callToAction: 'See How It Works',
+    destinationUrl: '/monetization',
+    placements: ['homepage', 'watch'],
+    theme: 'blue',
+  },
+  {
+    id: 'house-video-to-article',
+    headline: 'New: turn your video into an article with AI',
+    description:
+      'One click on your own video creates a search-friendly blog post — more traffic, no extra writing. Only on MiyTube.',
+    businessName: 'MiyTube Creators',
+    callToAction: 'Start Uploading',
+    destinationUrl: '/monetization',
+    placements: ['homepage', 'watch'],
+    theme: 'blue',
+  },
 ];
+
 
 /**
  * Returns a house ad if the current time-bucket is a "house window",
