@@ -57,6 +57,7 @@ const Watch = () => {
   const [isMusicVideo, setIsMusicVideo] = useState(false);
   const [isYouTubeVideo, setIsYouTubeVideo] = useState(false);
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
+  const [creatorProfile, setCreatorProfile] = useState<{ channel_name?: string; display_name?: string; avatar_url?: string } | null>(null);
 
   const actualVideoIdForSEO = videoId || musicVideoId || video?.id;
   usePageSEO({
@@ -160,7 +161,7 @@ const Watch = () => {
             isYouTubeEmbed: uploadedVideo.isYouTubeEmbed,
             youtubeId: uploadedVideo.youtubeId,
             dbId: uploadedVideo.id,
-            dbUserId: user?.id,
+            dbUserId: uploadedVideo.user_id,
           });
           setLoading(false);
         } else {
@@ -344,12 +345,31 @@ const Watch = () => {
     }
   }, [video, isMusicVideo, navigate]);
 
+  // Fetch creator profile so the watch page shows the real channel name/avatar
+  useEffect(() => {
+    const creatorId = video?.dbUserId;
+    if (!creatorId) {
+      setCreatorProfile(null);
+      return;
+    }
+    let cancelled = false;
+    supabase
+      .from('profiles')
+      .select('channel_name, display_name, avatar_url')
+      .eq('user_id', creatorId)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) console.error('Error fetching creator profile:', error);
+        setCreatorProfile(data || null);
+      });
+    return () => { cancelled = true; };
+  }, [video?.dbUserId]);
+
   const isLocalUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
   const isOwner = !!(video?.dbUserId && user?.id && video.dbUserId === user.id);
-  // Edits/deletes hit Supabase, so the user MUST be signed in for RLS to allow
-  // the write. Without `user`, the request goes out as anon and silently fails
-  // (rows match=0), making the title appear to revert. Gate the controls on auth.
-  const isUserUpload = !!user && (isLocalUpload || isOwner || isAdmin);
+  // Edits/deletes hit Supabase, so only the owner or an admin can use them.
+  const isUserUpload = !!user && (isOwner || isAdmin);
   
   if (loading) {
     return (
@@ -495,8 +515,8 @@ const Watch = () => {
 
             <VideoInfo 
               title={video.title}
-              channelName={video.channelName}
-              channelAvatar={video.channelAvatar}
+              channelName={creatorProfile?.channel_name || creatorProfile?.display_name || video.channelName}
+              channelAvatar={creatorProfile?.avatar_url || video.channelAvatar}
               subscribers={video.subscribers}
               views={video.views}
               timestamp={video.timestamp}
