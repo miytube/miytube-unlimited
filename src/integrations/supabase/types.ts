@@ -300,7 +300,22 @@ export type Database = {
           user_id?: string
           views?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_generated_from_video_id_fkey"
+            columns: ["generated_from_video_id"]
+            isOneToOne: false
+            referencedRelation: "uploaded_videos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_posts_generated_from_video_id_fkey"
+            columns: ["generated_from_video_id"]
+            isOneToOne: false
+            referencedRelation: "uploaded_videos_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       breaking_news: {
         Row: {
@@ -1230,6 +1245,63 @@ export type Database = {
           reason?: string
         }
         Relationships: []
+      }
+      tips: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          creator_id: string
+          currency: string
+          id: string
+          message: string | null
+          payer_id: string | null
+          status: string
+          stripe_payment_intent_id: string | null
+          updated_at: string
+          video_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          creator_id: string
+          currency?: string
+          id?: string
+          message?: string | null
+          payer_id?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          updated_at?: string
+          video_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          creator_id?: string
+          currency?: string
+          id?: string
+          message?: string | null
+          payer_id?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          updated_at?: string
+          video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tips_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "uploaded_videos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tips_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "uploaded_videos_public"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       uploaded_video_ips: {
         Row: {
