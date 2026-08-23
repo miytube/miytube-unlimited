@@ -34,7 +34,7 @@ export const ChannelHeader: React.FC<ChannelHeaderProps> = ({ creatorId }) => {
           <BarChart size={18} />
           Analytics
         </Button>
-        {creatorId && (
+        {creatorId && !isOwnChannel && (
           <TipCreatorButton
             creatorId={creatorId}
             className="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-secondary transition-colors text-sm font-medium"
