@@ -262,7 +262,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
             <WatchlistButton videoId={videoId} videoType="video" variant="full" size="sm" />
           )}
 
-          {creatorId && (
+          {creatorId && !isOwnVideo && (
             <TipCreatorButton creatorId={creatorId} videoId={videoId} />
           )}
           
