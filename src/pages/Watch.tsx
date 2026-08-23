@@ -345,6 +345,27 @@ const Watch = () => {
     }
   }, [video, isMusicVideo, navigate]);
 
+  // Fetch creator profile so the watch page shows the real channel name/avatar
+  useEffect(() => {
+    const creatorId = video?.dbUserId;
+    if (!creatorId) {
+      setCreatorProfile(null);
+      return;
+    }
+    let cancelled = false;
+    supabase
+      .from('profiles')
+      .select('channel_name, display_name, avatar_url')
+      .eq('user_id', creatorId)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        if (error) console.error('Error fetching creator profile:', error);
+        setCreatorProfile(data || null);
+      });
+    return () => { cancelled = true; };
+  }, [video?.dbUserId]);
+
   const isLocalUpload = videoId ? isUploadedVideo(videoId) : isMusicVideo;
   const isOwner = !!(video?.dbUserId && user?.id && video.dbUserId === user.id);
   // Edits/deletes hit Supabase, so only the owner or an admin can use them.
