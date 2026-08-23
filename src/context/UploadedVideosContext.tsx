@@ -26,6 +26,7 @@ export interface UploadedVideo {
   duration: string;
   category?: string;
   subcategory?: string;
+  user_id?: string;
   tags: string[];
 }
 
