@@ -515,8 +515,8 @@ const Watch = () => {
 
             <VideoInfo 
               title={video.title}
-              channelName={video.channelName}
-              channelAvatar={video.channelAvatar}
+              channelName={creatorProfile?.channel_name || creatorProfile?.display_name || video.channelName}
+              channelAvatar={creatorProfile?.avatar_url || video.channelAvatar}
               subscribers={video.subscribers}
               views={video.views}
               timestamp={video.timestamp}
