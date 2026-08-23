@@ -1,54 +1,72 @@
-# Make iwantinformationnow.com work like MiyTube
+# Quick-win differentiators for MiyTube vs. TikTok/Facebook/YouTube
 
-Goal: retire the static SiteGround site and serve iwantinformationnow.com from this same app — real uploads, accounts, categories, watch-pages, search, ads — but with its own content and its own branding.
+Goal: Add creator monetization + content-format features that both MiyTube and IWIN can use, ship in days.
 
-## How it will work
+## Proposed quick wins
 
-One codebase, one database, two domains. Every piece of content gets a `site` tag (`miytube` or `iwin`). The app reads the browser hostname and shows only that site's content, logo, and colors.
+### 1. Creator Tip Jar (creator monetization)
+- One-click "Tip this creator" button on the watch page and channel page.
+- Pre-set amounts ($2 / $5 / $10) plus custom amount; paid via Stripe.
+- Creator gets paid to the same Stripe account used for ad campaigns / partner program.
+- Differentiator: YouTube/Facebook make fans buy subscriptions or memberships; a simple tip jar is faster and more casual.
 
-```text
-miytube.com ─────────────┐
-                         ├──> same React app ──> same database
-iwantinformationnow.com ─┘        (filters + brands by hostname)
-```
+### 2. AI Video-to-Article (content format)
+- "Generate article" button for each uploaded video.
+- Uses Cha/Gemini to summarize the video into a blog post with headings, key points, and a transcript excerpt.
+- Publishes to the existing `/blog` system and can also render on IWIN as a static article.
+- Differentiator: turns every video into searchable, SEO-friendly long-form content automatically.
 
-## Steps
+### 3. Creator Playlists / Series (content format + engagement)
+- Creators can group their own videos into named playlists/series.
+- Series page shows episodes in order, auto-plays next episode.
+- Embeddable into IWIN pages as a "5 across" grid or sidebar list.
+- Differentiator: YouTube has playlists, but TikTok/Facebook don't do episode-style series well.
 
-1. **Add site tagging (database)**
-   - Add a `site` column (default `miytube`) to: `uploaded_videos`, `music_videos`, `custom_categories`, `custom_subcategories`, `custom_watch_pages`, `blog_posts`, `breaking_news`, `discussions`, `pictures`, `documents`, `ad_campaigns`.
-   - Backfill all existing rows to `miytube` so nothing changes on the current site.
-   - Index `site` for fast filtering.
+### 4. Paid Video Requests (creator monetization)
+- Viewers can pay a creator to make a specific video topic (e.g., "$25 make a review of X").
+- Creator accepts/declines; if accepted, requester is notified when the video is uploaded.
+- Differentiator: direct fan-to-creator economy that YouTube/Facebook/TikTok don't offer.
 
-2. **Site context in the app**
-   - New `src/config/sites.ts` + `useSite()` hook: resolves the active site from `window.location.hostname` (with a `?site=` override for previewing).
-   - Each site gets its own name, tagline, logo, accent colors, and meta title/description.
+## Recommended first build
 
-3. **Filter every read by site**
-   - Home feed, trending, shorts, category/watch pages, search (including the `ai-search` edge function), sitemaps, and the creator dashboard all scope to the active site.
+Start with **Creator Tip Jar** + **AI Video-to-Article** because:
+- Both reuse existing Stripe and Cha infrastructure.
+- Both can be shipped in a few days.
+- Both work on MiyTube and can be exposed on IWIN without heavy backend changes.
 
-4. **Tag every write by site**
-   - Uploads, category/watch-page creation, blog posts, discussions and ad campaigns save the current site automatically.
+## Implementation notes
 
-5. **Branding + SEO per site**
-   - Header logo, favicon, footer, and page titles switch by site.
-   - Dynamic sitemap and robots output per domain.
+### Tip Jar
+- Add `tips` table: `id`, `payer_id` (nullable), `creator_id`, `video_id`, `amount_cents`, `currency`, `stripe_payment_intent_id`, `message`, `created_at`.
+- RLS: authenticated users can insert their own tips; creators can select tips they received.
+- Edge Function: `create-tip-intent` creates a Stripe PaymentIntent and returns `client_secret`.
+- Frontend: `<TipCreatorButton creatorId videoId />` on watch page and channel page.
 
-6. **Shared vs separate**
-   - Shared: user accounts, admin panel, ad system, Stripe, email. One login works on both.
-   - Separate: all content, categories, and watch-pages.
-   - Admin panel gets a site filter so you can moderate each site independently.
+### AI Video-to-Article
+- Add `blog_posts.generated_from_video_id` nullable FK to `uploaded_videos`.
+- Edge Function: `generate-video-article` calls Gemini 3.7 Flash with title, description, tags, and (if available) transcript.
+- Frontend: "Generate article" action on the video owner menu; publishes as a draft to the existing blog editor.
+- IWIN: static article HTML can embed the generated content.
 
-7. **Point the domain**
-   - Add `iwantinformationnow.com` as a second custom domain on this project and update DNS at SiteGround. The static files stay untouched until DNS flips, so there's no downtime.
+### Playlists / Series
+- Add `playlists` table: `id`, `creator_id`, `title`, `slug`, `description`, `created_at`.
+- Add `playlist_items` table: `id`, `playlist_id`, `video_id`, `position`.
+- RLS: creators manage own playlists; public read.
+- Frontend: playlist creation UI, playlist page with next/previous player, embeddable list for IWIN.
 
-## Technical notes
+## Testing plan
 
-- Filtering uses `.eq('site', site)` on the public views/tables; RLS is unchanged, so no new security surface.
-- The default `'miytube'` on the `site` column means any code path not yet updated keeps behaving exactly as today.
-- Local/offline video cache keys get namespaced by site so the two feeds don't mix in one browser.
-- Categories currently hardcoded in sidebar components (`SportsExtendedLinks.tsx` etc.) are MiyTube-specific; the iwin sidebar will be driven purely by its own `custom_categories` rows, which start empty and you populate.
+1. **Tip Jar**
+   - On a watch page, click "Tip", choose $5, complete Stripe test card.
+   - Verify `tips` row created and `stripe_payment_intent_id` populated.
+   - Verify creator can see tip in their account.
 
-## What you'll need to do
+2. **AI Video-to-Article**
+   - Upload a video, click "Generate article".
+   - Verify blog draft is created with title, summary, and embedded video.
+   - Publish and confirm it appears on homepage Latest Articles.
 
-- Confirm the iwantinformationnow.com branding (logo file, main color, tagline).
-- Add the domain in project settings and update its DNS.
+3. **Playlists / Series**
+   - Create a playlist, add 3 videos, reorder them.
+   - Visit playlist page, play first video, verify auto-advance to next.
+   - Embed playlist list on an IWIN page and verify links work.
