@@ -43,6 +43,8 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
   const [likesCount, setLikesCount] = useState(parseInt(initialLikes) || 0);
   const [dislikesCount, setDislikesCount] = useState(0);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const isOwnVideo = !!(user && creatorId && user.id === creatorId);
 
   useEffect(() => {
     if (videoId) {
