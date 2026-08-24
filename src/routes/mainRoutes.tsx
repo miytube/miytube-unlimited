@@ -101,6 +101,7 @@ export const mainRoutes = [
   <Route key="media-kit" path="/media-kit" element={<MediaKit />} />,
   <Route key="advertise-with-us" path="/advertise-with-us" element={<MediaKit />} />,
   <Route key="blog" path="/blog" element={<Blog />} />,
+  <Route key="gmatrader-articles" path="/gmatrader-articles" element={<GmaTraderArticles />} />,
   <Route key="blog-new" path="/blog/new" element={<Blog />} />,
   <Route key="long-videos" path="/long-videos" element={<LongVideos />} />,
   <Route key="news-politics" path="/news" element={<NewsAndPolitics />} />,
