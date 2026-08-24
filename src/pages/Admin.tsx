@@ -314,8 +314,17 @@ const Admin = () => {
               <Youtube className="h-4 w-4" />
               YouTube Restore
             </TabsTrigger>
+            <TabsTrigger value="accounts" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Accounts
+            </TabsTrigger>
           </TabsList>
           </div>
+
+          <TabsContent value="accounts" className="mt-6">
+            <AccountsManager />
+          </TabsContent>
+
 
           <TabsContent value="users" className="mt-6">
             <Card>
