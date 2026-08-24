@@ -16,7 +16,16 @@ export const BusinessFinanceLinks: React.FC = () => {
         { id: 'business-leaders', label: 'Leaders & Advice', path: '/business/leaders' },
         { id: 'business-money', label: 'Money, Taxes & Interest', path: '/business/money' },
         { id: 'business-services', label: 'Services & Drones', path: '/business/services' },
-        { id: 'business-farming', label: 'Farmers & Farming', path: '/business/farming' }
+        { id: 'business-farming', label: 'Farmers & Farming', path: '/business/farming' },
+        {
+          id: 'business-gmatrader',
+          label: 'GmaTrader Nasdaq Futures Markets, Articles and Videos',
+          path: '/c/business/gmatrader-nasdaq-futures-markets',
+          subItems: [
+            { id: 'business-gmatrader-articles', label: 'GmaTrader Articles', path: '/gmatrader-articles' },
+            { id: 'business-gmatrader-videos', label: 'GmaTrader Videos', path: '/c/business/gmatrader-nasdaq-futures-markets/gmatrader-videos' }
+          ]
+        }
       ]
     },
     { 
