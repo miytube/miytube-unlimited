@@ -1,0 +1,1 @@
+UPDATE public.custom_subcategories SET category_id = 'cd2d25c7-68a7-4113-b222-eafb735369ec', updated_at = now() WHERE id = 'b4bef214-6f59-413f-8d5b-583f9ef6ede4';
