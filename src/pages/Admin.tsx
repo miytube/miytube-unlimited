@@ -23,6 +23,7 @@ import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussion
 import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
 import { YouTubeRestoreManager } from '@/components/admin/YouTubeRestoreManager';
+import { AccountsManager } from '@/components/admin/AccountsManager';
 import { BandwidthHogs } from '@/components/admin/BandwidthHogs';
 import { ColdStorageCandidates } from '@/components/admin/ColdStorageCandidates';
 import { Database, FolderTree, Youtube, TrendingUp, Snowflake } from 'lucide-react';
