@@ -256,6 +256,7 @@ export type Database = {
       }
       blog_posts: {
         Row: {
+          category: string | null
           content: string
           cover_image_url: string | null
           created_at: string
@@ -271,6 +272,7 @@ export type Database = {
           views: number
         }
         Insert: {
+          category?: string | null
           content: string
           cover_image_url?: string | null
           created_at?: string
@@ -286,6 +288,7 @@ export type Database = {
           views?: number
         }
         Update: {
+          category?: string | null
           content?: string
           cover_image_url?: string | null
           created_at?: string
