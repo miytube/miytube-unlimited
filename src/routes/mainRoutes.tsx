@@ -19,6 +19,7 @@ import Copyright from "@/pages/Copyright";
 import Advertising from "@/pages/Advertising";
 import MediaKit from "@/pages/MediaKit";
 import Blog from "@/pages/Blog";
+import GmaTraderArticles from "@/pages/GmaTraderArticles";
 import LongVideos from "@/pages/LongVideos";
 import NewsAndPolitics from "@/pages/NewsAndPolitics";
 import MiytubeAtCha from "@/pages/MiytubeAtCha";
