@@ -23,6 +23,7 @@ import { FeaturedDiscussionManager } from '@/components/admin/FeaturedDiscussion
 import { VideoAuditManager } from '@/components/admin/VideoAuditManager';
 import { CustomCategoriesManager } from '@/components/admin/CustomCategoriesManager';
 import { YouTubeRestoreManager } from '@/components/admin/YouTubeRestoreManager';
+import { AccountsManager } from '@/components/admin/AccountsManager';
 import { BandwidthHogs } from '@/components/admin/BandwidthHogs';
 import { ColdStorageCandidates } from '@/components/admin/ColdStorageCandidates';
 import { Database, FolderTree, Youtube, TrendingUp, Snowflake } from 'lucide-react';
@@ -313,8 +314,17 @@ const Admin = () => {
               <Youtube className="h-4 w-4" />
               YouTube Restore
             </TabsTrigger>
+            <TabsTrigger value="accounts" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Accounts
+            </TabsTrigger>
           </TabsList>
           </div>
+
+          <TabsContent value="accounts" className="mt-6">
+            <AccountsManager />
+          </TabsContent>
+
 
           <TabsContent value="users" className="mt-6">
             <Card>
