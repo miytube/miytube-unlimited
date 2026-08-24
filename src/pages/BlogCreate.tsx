@@ -144,6 +144,19 @@ const BlogCreate = () => {
           </div>
 
           <div>
+            <Label htmlFor="category">Article section</Label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+            >
+              <option value="">General blog</option>
+              <option value="gmatrader">GmaTrader Nasdaq Futures Markets</option>
+            </select>
+          </div>
+
+          <div>
             <Label htmlFor="cover">Cover image (optional, max 5MB)</Label>
             {existingCover && !coverFile && (
               <img src={existingCover} alt="Current cover" className="w-40 aspect-video object-cover rounded mb-2" />
