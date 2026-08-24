@@ -27,6 +27,7 @@ const BlogCreate = () => {
   const [excerpt, setExcerpt] = useState(generatedState?.excerpt || '');
   const [content, setContent] = useState(generatedState?.content || '');
   const [generatedFromVideoId] = useState<string | undefined>(generatedState?.generatedFromVideoId);
+  const [category, setCategory] = useState<string>('');
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [existingCover, setExistingCover] = useState<string | null>(null);
   const [postId, setPostId] = useState<string | null>(null);
@@ -42,7 +43,7 @@ const BlogCreate = () => {
     (async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, excerpt, content, cover_image_url')
+        .select('id, title, excerpt, content, cover_image_url, category')
         .eq('slug', editSlug)
         .maybeSingle();
       if (error || !data) {
@@ -55,6 +56,7 @@ const BlogCreate = () => {
       setExcerpt(data.excerpt || '');
       setContent(data.content);
       setExistingCover(data.cover_image_url);
+      setCategory(data.category || '');
       setLoadingPost(false);
     })();
   }, [isEdit, editSlug, navigate, toast]);
@@ -85,6 +87,7 @@ const BlogCreate = () => {
           excerpt: excerpt.trim() || null,
           content: content.trim(),
           cover_image_url: coverUrl,
+          category: category || null,
         }).eq('id', postId);
         if (error) throw error;
         toast({ title: 'Article updated!' });
@@ -102,6 +105,7 @@ const BlogCreate = () => {
         excerpt: excerpt.trim() || null,
         content: content.trim(),
         cover_image_url: coverUrl,
+        category: category || null,
         is_published: true,
         site: getCurrentSiteId(),
         ...(generatedFromVideoId ? { generated_from_video_id: generatedFromVideoId } : {}),
@@ -141,6 +145,19 @@ const BlogCreate = () => {
           <div>
             <Label htmlFor="excerpt">Short summary (optional)</Label>
             <Input id="excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} maxLength={250} placeholder="A 1-2 sentence preview…" />
+          </div>
+
+          <div>
+            <Label htmlFor="category">Article section</Label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full h-10 rounded-md border border-input bg-background px-3 text-sm"
+            >
+              <option value="">General blog</option>
+              <option value="gmatrader">GmaTrader Nasdaq Futures Markets</option>
+            </select>
           </div>
 
           <div>
