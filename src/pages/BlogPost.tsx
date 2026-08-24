@@ -139,16 +139,12 @@ const BlogPost = () => {
                 : 'Send the writer a tip. 100% goes straight to them.'}
             </p>
           </div>
-          {isAuthor ? (
-            <span className="inline-flex items-center gap-1 px-5 py-2 rounded-full border text-sm text-muted-foreground">
-              Tip the writer (preview)
-            </span>
-          ) : (
+          <div className={isAuthor ? 'pointer-events-none opacity-70' : undefined}>
             <TipCreatorButton
               creatorId={post.user_id}
               className="inline-flex items-center gap-1 px-5 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity"
             />
-          )}
+          </div>
         </div>
       </article>
 
