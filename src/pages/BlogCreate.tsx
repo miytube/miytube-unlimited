@@ -27,6 +27,7 @@ const BlogCreate = () => {
   const [excerpt, setExcerpt] = useState(generatedState?.excerpt || '');
   const [content, setContent] = useState(generatedState?.content || '');
   const [generatedFromVideoId] = useState<string | undefined>(generatedState?.generatedFromVideoId);
+  const [category, setCategory] = useState<string>('');
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [existingCover, setExistingCover] = useState<string | null>(null);
   const [postId, setPostId] = useState<string | null>(null);
@@ -42,7 +43,7 @@ const BlogCreate = () => {
     (async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, excerpt, content, cover_image_url')
+        .select('id, title, excerpt, content, cover_image_url, category')
         .eq('slug', editSlug)
         .maybeSingle();
       if (error || !data) {
@@ -55,6 +56,7 @@ const BlogCreate = () => {
       setExcerpt(data.excerpt || '');
       setContent(data.content);
       setExistingCover(data.cover_image_url);
+      setCategory(data.category || '');
       setLoadingPost(false);
     })();
   }, [isEdit, editSlug, navigate, toast]);
@@ -85,6 +87,7 @@ const BlogCreate = () => {
           excerpt: excerpt.trim() || null,
           content: content.trim(),
           cover_image_url: coverUrl,
+          category: category || null,
         }).eq('id', postId);
         if (error) throw error;
         toast({ title: 'Article updated!' });
@@ -102,6 +105,7 @@ const BlogCreate = () => {
         excerpt: excerpt.trim() || null,
         content: content.trim(),
         cover_image_url: coverUrl,
+        category: category || null,
         is_published: true,
         site: getCurrentSiteId(),
         ...(generatedFromVideoId ? { generated_from_video_id: generatedFromVideoId } : {}),
