@@ -128,20 +128,28 @@ const BlogPost = () => {
           {post.content}
         </div>
 
-        {!isAuthor && (
-          <div className="mt-10 pt-6 border-t flex flex-col sm:flex-row sm:items-center gap-3">
-            <div className="flex-1">
-              <p className="font-semibold">Enjoyed this article?</p>
-              <p className="text-sm text-muted-foreground">
-                Send the writer a tip. 100% goes straight to them.
-              </p>
-            </div>
+        <div className="mt-10 pt-6 border-t flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="flex-1">
+            <p className="font-semibold">
+              {isAuthor ? 'Your tip jar is live on this article' : 'Enjoyed this article?'}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {isAuthor
+                ? 'Readers see this button at the end of your article. 100% of tips go to you.'
+                : 'Send the writer a tip. 100% goes straight to them.'}
+            </p>
+          </div>
+          {isAuthor ? (
+            <span className="inline-flex items-center gap-1 px-5 py-2 rounded-full border text-sm text-muted-foreground">
+              Tip the writer (preview)
+            </span>
+          ) : (
             <TipCreatorButton
               creatorId={post.user_id}
               className="inline-flex items-center gap-1 px-5 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity"
             />
-          </div>
-        )}
+          )}
+        </div>
       </article>
 
     </Layout>
