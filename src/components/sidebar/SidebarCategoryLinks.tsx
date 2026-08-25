@@ -57,7 +57,14 @@ const NestedSubItem: React.FC<{
         >
           <ChevronRight size={12} className={`transition-transform ${open ? 'rotate-90' : ''}`} />
         </button>
-        <Link to={subItem.path} className="flex-1">{subItem.label}</Link>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="flex-1 text-left"
+          aria-expanded={open}
+        >
+          {subItem.label}
+        </button>
       </div>
       {open && (
         <div className="pl-6 space-y-0.5 mt-0.5">
