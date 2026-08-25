@@ -142,7 +142,7 @@ const Sports = () => {
     
     // High School Sports
     { id: 'sports-high-school', name: 'Sports high school' },
-    { id: 'sports-high-school-football', name: 'Sports high school (football)' },
+    
     { id: 'sports-high-school-cif-football', name: 'Sports high school (CIF football)' },
     { id: 'sports-high-school-cif-basketball', name: 'Sports high school (CIF basketball)' },
     { id: 'sports-high-school-cif-baseball', name: 'Sports high school (CIF baseball)' },
