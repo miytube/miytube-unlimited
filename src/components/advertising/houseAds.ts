@@ -14,7 +14,7 @@ export type HouseAd = {
   destinationUrl: string; // internal route or full URL
   mediaUrl?: string;
   placements: Array<'homepage' | 'watch'>;
-  theme?: 'red' | 'blue';
+  theme?: 'red' | 'blue' | 'yellow';
 };
 
 export const HOUSE_ADS: HouseAd[] = [
@@ -27,6 +27,7 @@ export const HOUSE_ADS: HouseAd[] = [
     callToAction: 'Start a Campaign',
     destinationUrl: '/advertising',
     placements: ['homepage', 'watch'],
+    theme: 'yellow',
   },
   {
     id: 'house-discount-product-ad',
@@ -37,7 +38,7 @@ export const HOUSE_ADS: HouseAd[] = [
     callToAction: 'Advertise Now',
     destinationUrl: '/advertising',
     placements: ['homepage', 'watch'],
-    theme: 'red',
+    theme: 'yellow',
   },
   {
     id: 'house-homepage-takeover',
@@ -48,6 +49,7 @@ export const HOUSE_ADS: HouseAd[] = [
     callToAction: 'Reserve Now',
     destinationUrl: '/advertising',
     placements: ['homepage'],
+    theme: 'yellow',
   },
   {
     id: 'house-creator-earnings',

@@ -8,7 +8,7 @@ interface BannerAdPreviewProps {
   mediaUrl?: string;
   destinationUrl?: string;
   className?: string;
-  theme?: 'red' | 'blue';
+  theme?: 'red' | 'blue' | 'yellow';
 }
 
 // Auto-generated banner card. Renders a Meta/Facebook-style ad using only text
@@ -24,6 +24,8 @@ const GRADIENTS = [
 ];
 
 const RED_GRADIENT = 'from-red-700 via-red-600 to-rose-500';
+const YELLOW_GRADIENT = 'from-yellow-300 via-yellow-400 to-amber-300';
+
 
 const pickGradient = (seed: string) => {
   let h = 0;
@@ -40,7 +42,13 @@ export const BannerAdPreview: React.FC<BannerAdPreviewProps> = ({
   className = '',
   theme = 'blue',
 }) => {
-  const gradient = theme === 'red' ? RED_GRADIENT : pickGradient(businessName || headline || 'default');
+  const gradient =
+    theme === 'red'
+      ? RED_GRADIENT
+      : theme === 'yellow'
+      ? YELLOW_GRADIENT
+      : pickGradient(businessName || headline || 'default');
+
   const initials = (businessName || 'AD')
     .split(/\s+/)
     .map(w => w[0])
@@ -56,11 +64,12 @@ export const BannerAdPreview: React.FC<BannerAdPreviewProps> = ({
           {mediaUrl ? (
             <img src={mediaUrl} alt={businessName} className="absolute inset-0 h-full w-full object-cover" />
           ) : (
-            <div className="text-white text-center px-4">
-              <div className="text-4xl font-black tracking-tight drop-shadow">{initials}</div>
-              <div className="text-xs mt-2 uppercase tracking-widest opacity-90">Sponsored</div>
+            <div className="text-center px-4">
+              <div className={`text-4xl font-black tracking-tight drop-shadow ${theme === 'yellow' ? 'text-black' : 'text-white'}`}>{initials}</div>
+              <div className={`text-xs mt-2 uppercase tracking-widest opacity-90 ${theme === 'yellow' ? 'text-black/80' : 'text-white'}`}>Sponsored</div>
             </div>
           )}
+
         </div>
         {/* Content side */}
         <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
