@@ -59,6 +59,29 @@ const buildKnownSubcategories = (): KnownSubcategoryAssignment[] => {
 const knownSubcategories = buildKnownSubcategories();
 const knownParentSlugs = new Set(knownSubcategories.map((row) => row.parent));
 
+const getCategoryRouteAliases = (category?: string): Set<string> => {
+  const normalizedCategory = normalizeCategoryValue(category);
+  const aliases = new Set<string>();
+  if (!normalizedCategory) return aliases;
+
+  aliases.add(normalizedCategory);
+  const sidebarCategory = sidebarMainCategoryOptions.find((option) =>
+    normalizeCategoryValue(option.slug) === normalizedCategory ||
+    normalizeCategoryValue(option.name) === normalizedCategory
+  );
+  const sidebarRoute = normalizeRoute(sidebarCategory?.route);
+  if (sidebarRoute) aliases.add(sidebarRoute);
+
+  for (const [rawKey, info] of Object.entries(subcategoryMappings)) {
+    if (normalizeCategoryValue(info.title) === normalizedCategory) {
+      const mappingRoute = normalizeRoute(rawKey);
+      if (mappingRoute) aliases.add(mappingRoute);
+    }
+  }
+
+  return aliases;
+};
+
 const resolveSidebarCategorySlug = (value?: string): string | undefined => {
   const normalized = normalizeCategoryValue(value);
   if (!normalized) return undefined;
@@ -216,14 +239,30 @@ export const getKnownParentCategoryOptions = (): { id: string; name: string }[] 
 };
 
 export const getKnownSubcategoryOptionsForParent = (category?: string): { id: string; name: string }[] => {
-  const normalizedCategory = normalizeCategoryValue(category);
-  if (!normalizedCategory) return [];
+  const parentRoutes = getCategoryRouteAliases(category);
+  if (parentRoutes.size === 0) return [];
 
   const options = new Map<string, { id: string; name: string }>();
-  for (const row of knownSubcategories) {
-    if (row.parent === normalizedCategory && !options.has(row.child)) {
-      options.set(row.child, { id: row.child, name: row.title });
+  let foundNewParent = true;
+
+  // Include direct children and every nested watch page beneath them. This
+  // mirrors the sidebar hierarchy without maintaining a second upload list.
+  while (foundNewParent) {
+    foundNewParent = false;
+    for (const row of knownSubcategories) {
+      if (!parentRoutes.has(row.parent)) continue;
+      if (!options.has(row.child)) {
+        options.set(row.child, { id: row.child, name: row.title });
+      }
+
+      for (const alias of row.aliases) {
+        if (!parentRoutes.has(alias)) {
+          parentRoutes.add(alias);
+          foundNewParent = true;
+        }
+      }
     }
   }
-  return Array.from(options.values());
+
+  return Array.from(options.values()).sort((a, b) => a.name.localeCompare(b.name));
 };

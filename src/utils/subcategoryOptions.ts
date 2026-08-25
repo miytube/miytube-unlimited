@@ -1,4 +1,5 @@
 import { subcategoryMappings } from '@/data/subcategoryMappings';
+import { getKnownSubcategoryOptionsForParent } from '@/utils/categoryAssignment';
 
 // Extract all subcategories from mappings for autocomplete
 export const getAllSubcategoryOptions = () => {
@@ -203,20 +204,31 @@ export const subcategoryOptionsByCategory: Record<string, Array<{ id: string; na
 // Get subcategory options for a given category ID
 export const getSubcategoryOptionsForCategory = (categoryId: string): Array<{ id: string; name: string }> => {
   const normalizedId = categoryId.toLowerCase().replace(/[\s_]/g, '-');
-  
-  // Direct match
+  const merged = new Map<string, { id: string; name: string }>();
+  const addOptions = (options: Array<{ id: string; name: string }>) => {
+    options.forEach((option) => {
+      const key = option.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      if (key && !merged.has(key)) merged.set(key, option);
+    });
+  };
+
+  // Route-aware options are generated from the same hierarchy used by the
+  // category pages and sidebar, including nested watch pages.
+  addOptions(getKnownSubcategoryOptionsForParent(categoryId));
+
+  // Keep the small legacy lists as supplemental aliases, not replacements.
   if (subcategoryOptionsByCategory[normalizedId]) {
-    return subcategoryOptionsByCategory[normalizedId];
+    addOptions(subcategoryOptionsByCategory[normalizedId]);
   }
-  
-  // Try without hyphens
+
   const noHyphenId = normalizedId.replace(/-/g, '');
   for (const [key, value] of Object.entries(subcategoryOptionsByCategory)) {
     if (key.replace(/-/g, '') === noHyphenId) {
-      return value;
+      addOptions(value);
     }
   }
-  
-  // Try from subcategoryMappings
-  return getSubcategoriesByCategory(categoryId);
+
+  // Retain the legacy matcher only when no canonical hierarchy exists.
+  if (merged.size === 0) addOptions(getSubcategoriesByCategory(categoryId));
+  return Array.from(merged.values()).sort((a, b) => a.name.localeCompare(b.name));
 };
