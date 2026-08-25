@@ -24,6 +24,21 @@ export const SportsExtendedLinks: React.FC = () => {
       path: '/c/sports/high-school-football',
     },
     {
+      id: 'sports-high-school-sports',
+      icon: Trophy,
+      label: 'High School Sports',
+      path: '/c/high-school-sports',
+      subItems: [
+        { id: 'hs-football', label: 'Football', path: '/c/high-school-sports/high-school-football-hs' },
+        { id: 'hs-basketball', label: 'Basketball', path: '/c/high-school-sports/high-school-basketball' },
+        { id: 'hs-baseball', label: 'Baseball', path: '/c/high-school-sports/high-school-baseball' },
+        { id: 'hs-softball', label: 'Softball', path: '/c/high-school-sports/high-school-softball' },
+        { id: 'hs-track-field', label: 'Track & Field', path: '/c/high-school-sports/high-school-track-and-field' },
+        { id: 'hs-wrestling', label: 'Wrestling', path: '/c/high-school-sports/high-school-wrestling' },
+      ]
+    },
+
+    {
       id: 'sports-moments-main',
       icon: Trophy,
       label: 'Sports Moments',
