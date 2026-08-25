@@ -11,6 +11,7 @@ interface KnownSubcategoryAssignment {
   parent: string;
   parentName: string;
   child: string;
+  route: string;
   title: string;
   aliases: Set<string>;
 }
@@ -52,7 +53,7 @@ const buildKnownSubcategories = (): KnownSubcategoryAssignment[] => {
         .filter(Boolean) as string[]
     );
 
-    return [{ parent, parentName: info.parent.name, child, title: info.title, aliases }];
+    return [{ parent, parentName: info.parent.name, child, route: normalizedKey, title: info.title, aliases }];
   });
 };
 
@@ -255,11 +256,9 @@ export const getKnownSubcategoryOptionsForParent = (category?: string): { id: st
         options.set(row.child, { id: row.child, name: row.title });
       }
 
-      for (const alias of row.aliases) {
-        if (!parentRoutes.has(alias)) {
-          parentRoutes.add(alias);
-          foundNewParent = true;
-        }
+      if (!parentRoutes.has(row.route)) {
+        parentRoutes.add(row.route);
+        foundNewParent = true;
       }
     }
   }
