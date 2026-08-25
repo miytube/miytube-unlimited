@@ -1,0 +1,2 @@
+UPDATE public.uploaded_videos SET subcategory = 'drag-racing-vehicles-motorcycles' WHERE subcategory = 'vehicles-motorcycles-drag-racing';
+UPDATE public.music_videos SET subcategory = 'drag-racing-vehicles-motorcycles' WHERE subcategory = 'vehicles-motorcycles-drag-racing';
