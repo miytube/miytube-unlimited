@@ -18,12 +18,6 @@ export const SportsExtendedLinks: React.FC = () => {
       ]
     },
     {
-      id: 'sports-high-school-football',
-      icon: Trophy,
-      label: 'High School Football',
-      path: '/c/sports/high-school-football',
-    },
-    {
       id: 'sports-high-school-sports',
       icon: Trophy,
       label: 'High School Sports',
