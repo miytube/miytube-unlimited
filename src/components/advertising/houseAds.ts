@@ -20,9 +20,9 @@ export type HouseAd = {
 export const HOUSE_ADS: HouseAd[] = [
   {
     id: 'house-advertise-launch',
-    headline: 'Advertise on MiyTube — Launch pricing, up to 40% off',
+    headline: 'We have your Snapshot — advertise here at MiyTube',
     description:
-      'Get your business in front of MiyTube viewers. Fixed-duration packages from $160, homepage takeover from $1,500. Limited-time launch pricing.',
+      'Get your business in front of MiyTube viewers. Fixed-duration watch, homepage and pre-roll packages.',
     businessName: 'MiyTube Ads',
     callToAction: 'Start a Campaign',
     destinationUrl: '/advertising',
@@ -30,9 +30,9 @@ export const HOUSE_ADS: HouseAd[] = [
   },
   {
     id: 'house-discount-product-ad',
-    headline: 'Want your product in front of customers?',
+    headline: 'We have your Snapshot — advertise here at MiyTube',
     description:
-      'Use our discount ad — get started for just $15. Discovery ads from $0.01/view, banners from $0.005/impression, homepage takeovers from $1,500.',
+      'Put your product in front of customers. Discovery ads from $0.01/view and banners from $0.005/impression.',
     businessName: 'MiyTube Ads',
     callToAction: 'Advertise Now',
     destinationUrl: '/advertising',
@@ -41,7 +41,7 @@ export const HOUSE_ADS: HouseAd[] = [
   },
   {
     id: 'house-homepage-takeover',
-    headline: '24-Hour Homepage Takeover — $1,500 (normally $2,500)',
+    headline: '24-Hour Homepage Takeover — $2,500',
     description:
       'Own the top of MiyTube for a full day. Exclusive placement, thousands of impressions, one flat price.',
     businessName: 'MiyTube Ads',
