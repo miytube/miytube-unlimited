@@ -48,7 +48,11 @@ const GmaTraderArticles: React.FC = () => {
         <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1 flex-wrap">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link>
           <ChevronRight className="h-3 w-3" />
-          <Link to="/business" className="hover:text-foreground">Business &amp; Finance</Link>
+          <Link to="/stocks" className="hover:text-foreground">Stocks &amp; Money</Link>
+          <ChevronRight className="h-3 w-3" />
+          <Link to="/c/stocks/gmatrader-nasdaq-futures-markets" className="hover:text-foreground">
+            GmaTrader Nasdaq Futures Markets
+          </Link>
           <ChevronRight className="h-3 w-3" />
           <span className="text-foreground">GmaTrader Articles</span>
         </p>
@@ -63,13 +67,22 @@ const GmaTraderArticles: React.FC = () => {
               </p>
             </div>
           </div>
-          <Link
-            to="/c/business/gmatrader-nasdaq-futures-markets/gmatrader-videos"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-          >
-            <Video className="h-4 w-4" /> GmaTrader Videos
-          </Link>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link
+              to="/c/stocks/gmatrader-nasdaq-futures-markets/gmatrader-videos"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border hover:bg-muted transition-colors"
+            >
+              <Video className="h-4 w-4" /> GmaTrader Videos
+            </Link>
+            <Link
+              to="/blog/create"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              <Upload className="h-4 w-4" /> Upload Article
+            </Link>
+          </div>
         </div>
+
 
         {loading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
