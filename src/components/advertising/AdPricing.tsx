@@ -1,9 +1,9 @@
 import React from 'react';
 import { DollarSign, Users, TrendingUp, Star, Sparkles } from 'lucide-react';
 
-// Keep in sync with CreateAdForm's LAUNCH_PROMO_END.
+// Discounts are disabled — packages always bill at their standard rate.
 const LAUNCH_PROMO_END = new Date('2026-08-22T23:59:59Z');
-const isPromoActive = () => new Date() <= LAUNCH_PROMO_END;
+const isPromoActive = () => false;
 
 type PackageRow = {
   name: string;
@@ -18,7 +18,7 @@ const PACKAGES: PackageRow[] = [
   { name: '7-Day Watch Banner',  placement: 'Watch pages', duration: '7 days',   normalPrice: 200,  launchPrice: 160 },
   { name: '14-Day Watch Banner', placement: 'Watch pages', duration: '14 days',  normalPrice: 350,  launchPrice: 280 },
   { name: '30-Day Watch Banner', placement: 'Watch pages', duration: '30 days',  normalPrice: 600,  launchPrice: 480, highlight: 'Best value' },
-  { name: '24-Hour Homepage Takeover', placement: 'Homepage', duration: '24 hours', normalPrice: 2500, launchPrice: 1500, highlight: 'Launch deal' },
+  { name: '24-Hour Homepage Takeover', placement: 'Homepage', duration: '24 hours', normalPrice: 2500, launchPrice: 1500 },
   { name: '7-Day Homepage Banner',     placement: 'Homepage', duration: '7 days',   normalPrice: 2000, launchPrice: 1600 },
   { name: '30-Day Homepage Banner',    placement: 'Homepage', duration: '30 days',  normalPrice: 6000, launchPrice: 4800 },
 ];
@@ -36,8 +36,8 @@ export const AdPricing: React.FC = () => {
     <div>
       <h2 className="text-2xl font-semibold mb-2">Advertising Pricing</h2>
       <p className="text-muted-foreground mb-6">
-        Fixed-duration packages, flexible tiers, or a fully custom budget. Every price is set at least
-        20% below comparable Meta, LinkedIn and YouTube slots.
+        We have your Snapshot — advertise here at MiyTube. Fixed-duration packages, flexible tiers,
+        or a fully custom budget.
       </p>
 
       {promo && (
