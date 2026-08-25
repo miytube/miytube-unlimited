@@ -103,9 +103,34 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
           </Link>
         </div>
 
+        {/* Articles + Videos hub for the GmaTrader section */}
+        {subcategory?.slug === 'gmatrader-nasdaq-futures-markets' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+            <Link
+              to="/gmatrader-articles"
+              className="group block p-4 bg-card hover:bg-muted border rounded-lg transition-colors"
+            >
+              <h3 className="font-semibold text-base group-hover:text-primary">GmaTrader Articles</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Daily Nasdaq futures analysis, levels and trading playbooks
+              </p>
+            </Link>
+            <Link
+              to={`/c/${category.slug}/${subcategory.slug}/gmatrader-videos`}
+              className="group block p-4 bg-card hover:bg-muted border rounded-lg transition-colors"
+            >
+              <h3 className="font-semibold text-base group-hover:text-primary">GmaTrader Videos</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                Market recaps, trade reviews and futures session videos
+              </p>
+            </Link>
+          </div>
+        )}
+
         <div className="mb-6">
           <AdSlot slot="3247036478" format="auto" responsive label="Sponsored" />
         </div>
+
 
         {/* Subcategory list when on category page */}
         {mode === 'category' && category.subcategories.length > 0 && (
