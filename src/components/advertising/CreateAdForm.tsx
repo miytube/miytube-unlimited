@@ -40,10 +40,9 @@ const TIERS: Array<Extract<PricingChoice, { kind: 'tier' }> & { recommended?: bo
   { kind: 'tier', priceId: 'ad_enterprise_500', amount: 500, label: 'Enterprise', features: ['Premium placement', 'Unlimited views', 'Dedicated account manager', 'A/B testing'] },
 ];
 
-// Launch promo: first 30 days from launch date get discounted pricing (already ~20%+ below
-// competitor rates). After promo ends, prices auto-revert to the normal column.
+// Discounts/launch promos are disabled — every package bills at its standard rate.
 const LAUNCH_PROMO_END = new Date('2026-08-22T23:59:59Z');
-const isPromoActive = () => new Date() <= LAUNCH_PROMO_END;
+const isPromoActive = () => false;
 
 type AdPlacement = 'watch' | 'homepage' | 'preroll';
 
