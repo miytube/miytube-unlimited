@@ -18,7 +18,7 @@ const PACKAGES: PackageRow[] = [
   { name: '7-Day Watch Banner',  placement: 'Watch pages', duration: '7 days',   normalPrice: 200,  launchPrice: 160 },
   { name: '14-Day Watch Banner', placement: 'Watch pages', duration: '14 days',  normalPrice: 350,  launchPrice: 280 },
   { name: '30-Day Watch Banner', placement: 'Watch pages', duration: '30 days',  normalPrice: 600,  launchPrice: 480, highlight: 'Best value' },
-  { name: '24-Hour Homepage Takeover', placement: 'Homepage', duration: '24 hours', normalPrice: 2500, launchPrice: 1500, highlight: 'Launch deal' },
+  { name: '24-Hour Homepage Takeover', placement: 'Homepage', duration: '24 hours', normalPrice: 2500, launchPrice: 1500 },
   { name: '7-Day Homepage Banner',     placement: 'Homepage', duration: '7 days',   normalPrice: 2000, launchPrice: 1600 },
   { name: '30-Day Homepage Banner',    placement: 'Homepage', duration: '30 days',  normalPrice: 6000, launchPrice: 4800 },
 ];
