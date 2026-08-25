@@ -1,9 +1,9 @@
 import React from 'react';
 import { DollarSign, Users, TrendingUp, Star, Sparkles } from 'lucide-react';
 
-// Keep in sync with CreateAdForm's LAUNCH_PROMO_END.
+// Discounts are disabled — packages always bill at their standard rate.
 const LAUNCH_PROMO_END = new Date('2026-08-22T23:59:59Z');
-const isPromoActive = () => new Date() <= LAUNCH_PROMO_END;
+const isPromoActive = () => false;
 
 type PackageRow = {
   name: string;
