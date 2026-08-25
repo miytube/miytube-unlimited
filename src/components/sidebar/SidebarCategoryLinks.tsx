@@ -140,8 +140,8 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
 
         
         <div 
-          className={`overflow-hidden transition-all duration-300 ease-out ${
-            isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+          className={`overflow-hidden transition-opacity duration-300 ease-out ${
+            isExpanded ? 'max-h-none opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="pl-8 space-y-0.5 mt-1">
@@ -315,8 +315,8 @@ export const SidebarCategoryLinks: React.FC<SidebarCategoryProps> = ({ title, li
         />
       </button>
       <div 
-        className={`overflow-hidden transition-all duration-300 ease-out ${
-          isOpen ? 'max-h-[2000px] opacity-100 mt-2' : 'max-h-0 opacity-0'
+        className={`overflow-hidden transition-opacity duration-300 ease-out ${
+          isOpen ? 'max-h-none opacity-100 mt-2' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="space-y-1">
