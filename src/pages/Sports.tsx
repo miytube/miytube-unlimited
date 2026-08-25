@@ -198,7 +198,7 @@ const Sports = () => {
             {[
               { path: '/sports/drag-racing', name: 'Drag Racing' },
               { path: '/sports/drag-racing/dragster-funny-hotrod', name: 'Dragster, Funny Car & Hotrod' },
-              { path: '/sports/drag-racing/vehicles-motorcycles', name: 'Drag Racing — Vehicles & Motorcycles' },
+              { path: '/sports/drag-racing/vehicles-motorcycles', name: 'Vehicles / Motorcycles Challenges Competition Racing' },
               { path: '/sports/drag-racing/trucks-big-rigs', name: 'Drag Racing — Trucks & Big Rigs' },
               { path: '/sports-nhra', name: 'NHRA Drag Racing' },
               { path: '/sports-formula-one', name: 'Formula One (F1) Racing' },
