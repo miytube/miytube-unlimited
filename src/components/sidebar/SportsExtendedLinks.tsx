@@ -142,7 +142,7 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'sports-nhra', label: 'NHRA Drag Racing', path: '/sports/nhra' },
         { id: 'sports-drag-racing', label: 'Drag Racing', path: '/sports/drag-racing' },
         { id: 'sports-drag-racing-dragster', label: 'Dragster / Funny / Hotrod Cars', path: '/sports/drag-racing/dragster-funny-hotrod' },
-        { id: 'sports-drag-racing-vehicles', label: 'Vehicles / Motorcycles Drag Racing', path: '/sports/drag-racing/vehicles-motorcycles' },
+        { id: 'sports-drag-racing-vehicles', label: 'Vehicles / Motorcycles Challenges Competition Racing', path: '/sports/drag-racing/vehicles-motorcycles' },
         { id: 'sports-drag-racing-motorcycles', label: 'Motorcycles Drag Racing', path: '/sports/drag-racing/motorcycles' },
         { id: 'sports-drag-racing-trucks', label: 'Trucks / Big Rigs Drag Racing', path: '/sports/drag-racing/trucks-big-rigs' },
         { id: 'sports-motorcycle-racing', label: 'Motorcycle Superbike', path: '/sports/motorcycle-racing' },
