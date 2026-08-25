@@ -36,8 +36,8 @@ export const AdPricing: React.FC = () => {
     <div>
       <h2 className="text-2xl font-semibold mb-2">Advertising Pricing</h2>
       <p className="text-muted-foreground mb-6">
-        Fixed-duration packages, flexible tiers, or a fully custom budget. Every price is set at least
-        20% below comparable Meta, LinkedIn and YouTube slots.
+        We have your Snapshot — advertise here at MiyTube. Fixed-duration packages, flexible tiers,
+        or a fully custom budget.
       </p>
 
       {promo && (
