@@ -61,7 +61,7 @@ const FIXED_PACKAGES: FixedPackage[] = [
   { id: 'watch_7d',  label: '7-Day Watch Banner',  placement: 'watch',    days: 7,  normalPrice: 200,  launchPrice: 160,  blurb: 'Banner below every video player for 7 days.' },
   { id: 'watch_14d', label: '14-Day Watch Banner', placement: 'watch',    days: 14, normalPrice: 350,  launchPrice: 280,  blurb: 'Two full weeks below every video player.' },
   { id: 'watch_30d', label: '30-Day Watch Banner', placement: 'watch',    days: 30, normalPrice: 600,  launchPrice: 480,  blurb: 'A full month on every watch page.', highlight: 'Best value' },
-  { id: 'home_24h',  label: '24-Hour Homepage Takeover', placement: 'homepage', days: 1,  normalPrice: 2500, launchPrice: 1500, blurb: 'Full 24-hour exclusive top-of-homepage banner.', highlight: 'Launch deal' },
+  { id: 'home_24h',  label: '24-Hour Homepage Takeover', placement: 'homepage', days: 1,  normalPrice: 2500, launchPrice: 1500, blurb: 'Full 24-hour exclusive top-of-homepage banner.' },
   { id: 'home_7d',   label: '7-Day Homepage Banner',     placement: 'homepage', days: 7,  normalPrice: 2000, launchPrice: 1600, blurb: 'Homepage rotation slot for a full week.' },
   { id: 'home_30d',  label: '30-Day Homepage Banner',    placement: 'homepage', days: 30, normalPrice: 6000, launchPrice: 4800, blurb: 'Month-long premium homepage presence.' },
 ];
