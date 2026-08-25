@@ -101,8 +101,15 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
         businessName={ad.business_name}
         callToAction={ad.call_to_action ?? 'Learn More'}
         mediaUrl={ad.media_url ?? undefined}
-        theme={ad.isHouse ? (houseAd?.theme ?? 'blue') : 'blue'}
+        theme={
+          ad.business_name === 'MiyTube Ads'
+            ? 'yellow'
+            : ad.isHouse
+            ? (houseAd?.theme ?? 'blue')
+            : 'blue'
+        }
       />
+
     </a>
   );
 };
