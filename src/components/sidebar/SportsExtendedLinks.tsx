@@ -28,6 +28,7 @@ export const SportsExtendedLinks: React.FC = () => {
         { id: 'hs-baseball', label: 'Baseball', path: '/c/high-school-sports/high-school-baseball' },
         { id: 'hs-softball', label: 'Softball', path: '/c/high-school-sports/high-school-softball' },
         { id: 'hs-track-field', label: 'Track & Field', path: '/c/high-school-sports/high-school-track-and-field' },
+        { id: 'hs-cif-track-field', label: 'CIF Track & Field', path: '/c/high-school-sports/cif-track-field' },
         { id: 'hs-wrestling', label: 'Wrestling', path: '/c/high-school-sports/high-school-wrestling' },
       ]
     },
