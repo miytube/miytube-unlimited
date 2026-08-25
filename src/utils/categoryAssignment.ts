@@ -1,5 +1,5 @@
 import { subcategoryMappings } from '@/data/subcategoryMappings';
-import { sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
+import { sidebarMainCategoryOptions, sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
 
 export interface CanonicalCategoryAssignment {
