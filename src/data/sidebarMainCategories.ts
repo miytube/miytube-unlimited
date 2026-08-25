@@ -28,6 +28,8 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'college-sports', name: 'College Sports', route: '/sports/college' },
   { slug: 'track-field', name: 'Track & Field', route: '/sports/track-field' },
   { slug: 'high-school-track-field', name: 'High School Track & Field', route: '/sports/high-school-track-field' },
+  { slug: 'high-school-sports', name: 'High School Sports', route: '/c/high-school-sports' },
+
   { slug: 'cosmetics', name: 'Cosmetics' },
   { slug: 'courts', name: 'Courts' },
   { slug: 'crazy', name: 'Crazy & Amazing' },
