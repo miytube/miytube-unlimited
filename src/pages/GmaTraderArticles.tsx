@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 import { usePageSEO } from '@/hooks/usePageSEO';
-import { LineChart, Calendar, Eye, Loader2, ChevronRight, Video } from 'lucide-react';
+import { LineChart, Calendar, Eye, Loader2, ChevronRight, Video, Upload } from 'lucide-react';
 
 interface Post {
   id: string;
