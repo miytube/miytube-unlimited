@@ -554,8 +554,9 @@ const Watch = () => {
           {/* Right Sidebar */}
           <div className="w-80 hidden lg:block space-y-4">
             {/* Skyscraper (300x600) AdSense unit — sticky so it stays on-screen
-                while the user watches the video (AdSense viewability recommendation). */}
-            <div className="sticky top-20 flex justify-center">
+                while the user watches the video (AdSense viewability recommendation).
+                z-10 + bg-background keep it above any scrolling thumbnails. */}
+            <div className="sticky top-20 z-10 bg-background flex justify-center rounded-md">
               <AdSlot
                 slot="8953833343"
                 format="vertical"
