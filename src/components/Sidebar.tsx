@@ -40,6 +40,7 @@ import { HistoryArtifactsLinks } from './sidebar/HistoryArtifactsLinks';
 import { KidsEducationLinks } from './sidebar/KidsEducationLinks';
 import { CustomCategoriesLinks } from './sidebar/CustomCategoriesLinks';
 import { useSite } from '@/hooks/useSite';
+import { useSidebarContext } from '@/context/SidebarContext';
 
 
 
@@ -79,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const isMobile = useIsMobile();
   const { isMiyTube } = useSite();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, toggleCollapsed } = useSidebarContext();
   
   // Close sidebar when navigating on mobile
   useEffect(() => {
@@ -101,7 +102,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     isOpen && isMobile ? 'opacity-100' : 'opacity-0 pointer-events-none'
   }`;
 
-  const toggleCollapse = () => setIsCollapsed(prev => !prev);
+  const toggleCollapse = () => toggleCollapsed();
 
   return (
     <>
