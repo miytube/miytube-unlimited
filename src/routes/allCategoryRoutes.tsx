@@ -181,7 +181,7 @@ const categoryKeys = [
   'sports-wnba-champions', 'sports-wnba-coaches', 'sports-wnba-playoffs', 'sports-wnba-basketball',
   'sports-women-mma', 'sports-wwe-wrestling', 'sports-women-basketball-ncaa',
   'sports-high-school', 'sports-high-school-football', 'sports-high-school-football-cif-playoffs-games',
-  'sports-high-school-cif-football',
+  'sports-high-school-cif-basketball', 'sports-high-school-cif-baseball',
   'sports-high-school-cif-basketball', 'sports-high-school-cif-baseball',
   'sports-high-school-basketball', 'sports-high-school-baseball',
   
@@ -290,6 +290,7 @@ const categoryKeys = [
 export const allCategoryRoutes = [
   <Route key="music-mexican-spanish-redirect" path="/music-mexican-spanish" element={<Navigate to="/music/spanish" replace />} />,
   <Route key="travel-cities-redirect" path="/travel-cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
+  <Route key="sports-high-school-cif-football-redirect" path="/sports-high-school-cif-football" element={<Navigate to="/sports-high-school-football-cif-playoffs-games" replace />} />,
   ...categoryKeys.map(key => (
     <Route key={key} path={`/${key}`} element={<GenericSubcategoryPage />} />
   )),
