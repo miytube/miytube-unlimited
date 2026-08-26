@@ -339,8 +339,30 @@ const Search = () => {
           </div>
         )}
 
+        {/* Articles */}
+        {blogHits.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-lg font-medium mb-3">Articles ({blogHits.length})</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {blogHits.map((post) => (
+                <Link key={post.id} to={`/blog/${post.slug}`} className="block bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                  {post.cover_image_url && (
+                    <img src={post.cover_image_url} alt={post.title} loading="lazy" className="w-full aspect-video object-cover" />
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-semibold line-clamp-2">{post.title}</h3>
+                    {post.excerpt && <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{post.excerpt}</p>}
+                    <p className="text-xs text-muted-foreground mt-2">{post.views} views • {new Date(post.created_at).toLocaleDateString()}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Empty State */}
-        {!isSearching && !isDbSearching && !hasAIResults && dbVideos.length === 0 && localFilteredVideos.length === 0 && (
+        {!isSearching && !isDbSearching && !hasAIResults && dbVideos.length === 0 && blogHits.length === 0 && localFilteredVideos.length === 0 && (
+
           <div className="text-center py-12 bg-card rounded-lg">
             <SearchIcon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h2 className="text-xl font-medium mb-2">
