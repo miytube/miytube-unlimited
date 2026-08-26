@@ -16,13 +16,14 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
+  const { isCollapsed } = useSidebarContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isHome = useLocation().pathname === '/';
 
   return (
     <div className="min-h-screen flex flex-col">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className={`flex flex-col flex-1 transition-all duration-300 ${isMobile ? '' : 'ml-60'}`}>
+      <div className={`flex flex-col flex-1 transition-all duration-300 ${isMobile ? '' : isCollapsed ? 'ml-16' : 'ml-60'}`}>
         {/* Slogan preview — Variant B (top ticker) */}
         {isHome && <SloganTicker />}
         <Header onMenuClick={() => setSidebarOpen((v) => !v)} />
