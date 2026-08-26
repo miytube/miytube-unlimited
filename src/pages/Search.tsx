@@ -123,7 +123,34 @@ const Search = () => {
     return () => { cancelled = true; };
   }, [query, sortBy, categoryFilter]);
 
+  // Blog/article search
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const q = query.trim();
+      if (!q) { setBlogHits([]); return; }
+      const tokens = q.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(t => t.length >= 3).slice(0, 6);
+      const slugGuess = rawQuery.trim().split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || '';
+      const orParts = [
+        ...tokens.flatMap(t => [`title.ilike.%${t}%`, `excerpt.ilike.%${t}%`, `content.ilike.%${t}%`, `slug.ilike.%${t}%`]),
+      ];
+      if (slugGuess) orParts.push(`slug.eq.${slugGuess}`);
+      if (!orParts.length) { setBlogHits([]); return; }
+      const { data } = await supabase
+        .from('blog_posts')
+        .select('id, title, slug, excerpt, cover_image_url, created_at, views')
+        .eq('is_published', true)
+        .eq('site', getCurrentSiteId())
+        .or(orParts.join(','))
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (!cancelled) setBlogHits(data || []);
+    })();
+    return () => { cancelled = true; };
+  }, [query, rawQuery]);
+
   // Also filter local uploaded videos as fallback (exact phrase only — avoids noise)
+
   const localFilteredVideos = query
     ? uploadedVideos.filter(video =>
         video.title.toLowerCase().includes(query.toLowerCase()) ||
