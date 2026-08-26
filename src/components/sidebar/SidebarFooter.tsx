@@ -9,6 +9,7 @@ export const SidebarFooter: React.FC = () => {
     <div className="border-t mt-6 pt-4 text-xs text-muted-foreground">
       <div className="flex flex-wrap gap-x-2 px-3 mb-4">
         <Link to="/about" className="hover:underline">About</Link>
+        <Link to="/about-mark-hayes" className="hover:underline">Founder</Link>
         <Link to="/copyright" className="hover:underline">Copyright</Link>
         <Link to="/contact" className="hover:underline">Contact</Link>
         <Link to="/media-kit" className="hover:underline">Advertise</Link>
