@@ -13,9 +13,28 @@ import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 
 
+interface BlogHit {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  cover_image_url: string | null;
+  created_at: string;
+  views: number;
+}
+
+// A pasted URL / path like "/blog/some-title-78392" should search the words in it.
+const normalizeQuery = (raw: string) => {
+  const q = raw.trim();
+  if (!/[\/]|^https?:/i.test(q)) return q;
+  const last = q.split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || q;
+  return last.replace(/-\d{3,}$/, '').replace(/[-_]+/g, ' ').trim();
+};
+
 const Search = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
+  const rawQuery = searchParams.get('q') || '';
+  const query = normalizeQuery(rawQuery);
   const { uploadedVideos } = useUploadedVideos();
   const { search, isSearching, results, error } = useAISearch();
   const [sortBy, setSortBy] = useState('relevance');
@@ -23,6 +42,8 @@ const Search = () => {
   const [hasSearchedAI, setHasSearchedAI] = useState(false);
   const [dbVideos, setDbVideos] = useState<any[]>([]);
   const [isDbSearching, setIsDbSearching] = useState(false);
+  const [blogHits, setBlogHits] = useState<BlogHit[]>([]);
+
 
   // Trigger AI search when query changes
   useEffect(() => {
@@ -102,7 +123,34 @@ const Search = () => {
     return () => { cancelled = true; };
   }, [query, sortBy, categoryFilter]);
 
+  // Blog/article search
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const q = query.trim();
+      if (!q) { setBlogHits([]); return; }
+      const tokens = q.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(t => t.length >= 3).slice(0, 6);
+      const slugGuess = rawQuery.trim().split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || '';
+      const orParts = [
+        ...tokens.flatMap(t => [`title.ilike.%${t}%`, `excerpt.ilike.%${t}%`, `content.ilike.%${t}%`, `slug.ilike.%${t}%`]),
+      ];
+      if (slugGuess) orParts.push(`slug.eq.${slugGuess}`);
+      if (!orParts.length) { setBlogHits([]); return; }
+      const { data } = await supabase
+        .from('blog_posts')
+        .select('id, title, slug, excerpt, cover_image_url, created_at, views')
+        .eq('is_published', true)
+        .eq('site', getCurrentSiteId())
+        .or(orParts.join(','))
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (!cancelled) setBlogHits(data || []);
+    })();
+    return () => { cancelled = true; };
+  }, [query, rawQuery]);
+
   // Also filter local uploaded videos as fallback (exact phrase only — avoids noise)
+
   const localFilteredVideos = query
     ? uploadedVideos.filter(video =>
         video.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -291,8 +339,30 @@ const Search = () => {
           </div>
         )}
 
+        {/* Articles */}
+        {blogHits.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-lg font-medium mb-3">Articles ({blogHits.length})</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {blogHits.map((post) => (
+                <Link key={post.id} to={`/blog/${post.slug}`} className="block bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                  {post.cover_image_url && (
+                    <img src={post.cover_image_url} alt={post.title} loading="lazy" className="w-full aspect-video object-cover" />
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-semibold line-clamp-2">{post.title}</h3>
+                    {post.excerpt && <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{post.excerpt}</p>}
+                    <p className="text-xs text-muted-foreground mt-2">{post.views} views • {new Date(post.created_at).toLocaleDateString()}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Empty State */}
-        {!isSearching && !isDbSearching && !hasAIResults && dbVideos.length === 0 && localFilteredVideos.length === 0 && (
+        {!isSearching && !isDbSearching && !hasAIResults && dbVideos.length === 0 && blogHits.length === 0 && localFilteredVideos.length === 0 && (
+
           <div className="text-center py-12 bg-card rounded-lg">
             <SearchIcon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
             <h2 className="text-xl font-medium mb-2">
