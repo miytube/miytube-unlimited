@@ -213,11 +213,8 @@ const GenericSubcategoryPage = () => {
           </div>
         )}
 
-        {/* Multiplex horizontal AdSense unit (miytube-new-5) */}
-        <div className="my-8">
-          <h2 className="text-xl font-medium mb-4">More for you</h2>
-          <AdSlot slot="8276166178" format="autorelaxed" responsive={false} label="Sponsored" />
-        </div>
+
+
 
 
         <AboutSection title={displayTitle} />
