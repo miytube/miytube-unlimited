@@ -102,13 +102,20 @@ const Search = () => {
         // Relevance gate: a single weak token match is not enough for long queries.
         const norm = (v: unknown) => String(v || '').toLowerCase();
         const needed = tokens.length >= 4 ? 2 : 1;
+        // Latin tokens must match at a word start so "weather" doesn't hit "Mayweather".
+        const matches = (haystack: string, token: string) => {
+          if (isCjk(token)) return haystack.includes(token);
+          const esc = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          return new RegExp(`(^|[^\\p{L}\\p{N}])${esc}`, 'u').test(haystack);
+        };
         const scored = (data || []).map((v: any) => {
           const primary = `${norm(v.title)} ${norm(v.file_name)}`;
           const secondary = `${norm(v.description)} ${(v.tags || []).map(norm).join(' ')}`;
-          const primaryHits = tokens.filter(t => primary.includes(t)).length;
-          const secondaryHits = tokens.filter(t => secondary.includes(t)).length;
+          const primaryHits = tokens.filter(t => matches(primary, t)).length;
+          const secondaryHits = tokens.filter(t => matches(secondary, t)).length;
           return { v, primaryHits, secondaryHits, score: primaryHits * 100 + secondaryHits * 20 };
         }).filter(x => x.primaryHits >= Math.min(needed, tokens.length) || x.primaryHits + x.secondaryHits >= tokens.length);
+
 
         const ranked = (sortBy === 'relevance'
           ? scored.sort((a, b) => b.score - a.score)
