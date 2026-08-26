@@ -180,7 +180,8 @@ const categoryKeys = [
   'sports-volleyball-professional', 'sports-volleyball-tournament', 'sports-wnba-players',
   'sports-wnba-champions', 'sports-wnba-coaches', 'sports-wnba-playoffs', 'sports-wnba-basketball',
   'sports-women-mma', 'sports-wwe-wrestling', 'sports-women-basketball-ncaa',
-  'sports-high-school', 'sports-high-school-football', 'sports-high-school-cif-football',
+  'sports-high-school', 'sports-high-school-football', 'sports-high-school-football-cif-playoffs-games',
+  'sports-high-school-cif-football',
   'sports-high-school-cif-basketball', 'sports-high-school-cif-baseball',
   'sports-high-school-basketball', 'sports-high-school-baseball',
   
