@@ -15,7 +15,6 @@ import { sortByName } from '@/lib/sortByName';
 import { auditShortsDurations } from '@/utils/auditShortsDuration';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { getPerFileUploadMetadata } from '@/utils/uploadMetadata';
-import { AdSlot } from '@/components/ads/AdSlot';
 
 const Shorts = () => {
   usePageSEO({
