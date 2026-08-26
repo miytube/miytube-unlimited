@@ -246,12 +246,6 @@ const Index = () => {
         {/* Shorts Section - below Trending */}
         {!isLoading && <ShortVideosSection />}
 
-        {/* Horizontal AdSense unit (miytube-new-2) */}
-        {!isLoading && displayVideos.length > 0 && (
-          <div className="my-8">
-            <AdSlot slot="4004758990" format="horizontal" responsive label="Sponsored" />
-          </div>
-        )}
 
         {/* Page counter below trending section */}
         {!isLoading && displayVideos.length > 0 && (
@@ -302,16 +296,6 @@ const Index = () => {
               className="!rounded-none"
               style={{ minHeight: 600 }}
               insStyle={{ display: 'block', width: '100%', minHeight: 600 }}
-            />
-            {/* Second vertical unit below the fold in the rail for return-scroll impressions */}
-            <AdSlot
-              slot="1406515812"
-              format="vertical"
-              responsive
-              label="Sponsored"
-              className="!rounded-none"
-              style={{ minHeight: 250 }}
-              insStyle={{ display: 'block', width: '100%', minHeight: 250 }}
             />
           </div>
         </aside>
