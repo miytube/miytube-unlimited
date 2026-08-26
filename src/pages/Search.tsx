@@ -13,9 +13,28 @@ import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 
 
+interface BlogHit {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  cover_image_url: string | null;
+  created_at: string;
+  views: number;
+}
+
+// A pasted URL / path like "/blog/some-title-78392" should search the words in it.
+const normalizeQuery = (raw: string) => {
+  const q = raw.trim();
+  if (!/[\/]|^https?:/i.test(q)) return q;
+  const last = q.split('?')[0].split('#')[0].split('/').filter(Boolean).pop() || q;
+  return last.replace(/-\d{3,}$/, '').replace(/[-_]+/g, ' ').trim();
+};
+
 const Search = () => {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
+  const rawQuery = searchParams.get('q') || '';
+  const query = normalizeQuery(rawQuery);
   const { uploadedVideos } = useUploadedVideos();
   const { search, isSearching, results, error } = useAISearch();
   const [sortBy, setSortBy] = useState('relevance');
@@ -23,6 +42,8 @@ const Search = () => {
   const [hasSearchedAI, setHasSearchedAI] = useState(false);
   const [dbVideos, setDbVideos] = useState<any[]>([]);
   const [isDbSearching, setIsDbSearching] = useState(false);
+  const [blogHits, setBlogHits] = useState<BlogHit[]>([]);
+
 
   // Trigger AI search when query changes
   useEffect(() => {
