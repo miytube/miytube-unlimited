@@ -10,6 +10,8 @@ import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 import { LatestArticlesSection } from '@/components/blog/LatestArticlesSection';
+import { HomeHero } from '@/components/home/HomeHero';
+import { CommunityStrip } from '@/components/home/CommunityStrip';
 
 
 
