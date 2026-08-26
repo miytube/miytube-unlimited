@@ -43,8 +43,21 @@ const Search = () => {
       if (!q) { setDbVideos([]); return; }
       setIsDbSearching(true);
       try {
-        const tokens = q.split(/\s+/).filter(Boolean).slice(0, 6);
-        // Build an OR filter that matches ANY token across title/description/category/subcategory/tags
+        // Split on ANY non alphanumeric (handles pasted filenames full of hyphens),
+        // keep CJK runs as their own tokens.
+        const GENERIC = new Set([
+          'the','and','for','with','from','official','video','videos','audio','lyrics','lyric',
+          'version','hd','4k','mv','feat','ft','remix','mix','full','live','part','ep','episode','www','com','mp4',
+        ]);
+        const rawTokens = q
+          .toLowerCase()
+          .split(/[^\p{L}\p{N}]+/u)
+          .filter(Boolean)
+          .flatMap(t => t.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+|[a-z0-9]+/gu) || []);
+        const isCjk = (t: string) => /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u.test(t);
+        const meaningful = rawTokens.filter(t => isCjk(t) || (t.length >= 3 && !GENERIC.has(t)));
+        const tokens = (meaningful.length ? meaningful : rawTokens).slice(0, 8);
+
         const escape = (s: string) => s.replace(/[%,()]/g, ' ').trim();
         const orParts: string[] = [];
         tokens.forEach(t => {
@@ -52,11 +65,10 @@ const Search = () => {
           if (!safe) return;
           orParts.push(`title.ilike.%${safe}%`);
           orParts.push(`description.ilike.%${safe}%`);
-          orParts.push(`category.ilike.%${safe}%`);
-          orParts.push(`subcategory.ilike.%${safe}%`);
-          orParts.push(`tags.cs.{${safe}}`);
+          orParts.push(`file_name.ilike.%${safe}%`);
+          if (/^[a-z0-9][a-z0-9_-]*$/i.test(safe)) orParts.push(`tags.cs.{${safe}}`);
         });
-        let req = supabase.from('uploaded_videos_public').select('*').eq('site', getCurrentSiteId()).limit(60);
+        let req = supabase.from('uploaded_videos_public').select('*').eq('site', getCurrentSiteId()).limit(200);
         if (orParts.length) req = req.or(orParts.join(','));
         if (categoryFilter !== 'all') req = req.eq('category', categoryFilter);
         if (sortBy === 'newest') req = req.order('created_at', { ascending: false });
@@ -64,8 +76,24 @@ const Search = () => {
         else req = req.order('created_at', { ascending: false });
         const { data, error: dbErr } = await req;
         if (cancelled) return;
-        if (dbErr) { console.warn('DB search error', dbErr); setDbVideos([]); }
-        else setDbVideos(data || []);
+        if (dbErr) { console.warn('DB search error', dbErr); setDbVideos([]); return; }
+
+        // Relevance gate: a single weak token match is not enough for long queries.
+        const norm = (v: unknown) => String(v || '').toLowerCase();
+        const needed = tokens.length >= 4 ? 2 : 1;
+        const scored = (data || []).map((v: any) => {
+          const primary = `${norm(v.title)} ${norm(v.file_name)}`;
+          const secondary = `${norm(v.description)} ${(v.tags || []).map(norm).join(' ')}`;
+          const primaryHits = tokens.filter(t => primary.includes(t)).length;
+          const secondaryHits = tokens.filter(t => secondary.includes(t)).length;
+          return { v, primaryHits, secondaryHits, score: primaryHits * 100 + secondaryHits * 20 };
+        }).filter(x => x.primaryHits >= Math.min(needed, tokens.length) || x.primaryHits + x.secondaryHits >= tokens.length);
+
+        const ranked = (sortBy === 'relevance'
+          ? scored.sort((a, b) => b.score - a.score)
+          : scored
+        ).slice(0, 60).map(x => x.v);
+        setDbVideos(ranked);
       } finally {
         if (!cancelled) setIsDbSearching(false);
       }
@@ -74,15 +102,14 @@ const Search = () => {
     return () => { cancelled = true; };
   }, [query, sortBy, categoryFilter]);
 
-  // Also filter local uploaded videos as fallback
+  // Also filter local uploaded videos as fallback (exact phrase only — avoids noise)
   const localFilteredVideos = query
     ? uploadedVideos.filter(video =>
         video.title.toLowerCase().includes(query.toLowerCase()) ||
-        video.category?.toLowerCase().includes(query.toLowerCase()) ||
-        video.subcategory?.toLowerCase().includes(query.toLowerCase()) ||
-        video.tags?.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+        video.tags?.some(tag => tag.toLowerCase() === query.toLowerCase())
       )
     : uploadedVideos;
+
 
   // Merge AI results with local results
   const aiVideos = results?.videos || [];
