@@ -100,7 +100,7 @@ serve(async (req) => {
       'music','song','video','official','feat','ft','mix','remix','version','live','hd','4k',
       'show','part','ep','episode','season',
     ]);
-    const rawTerms = rawQuery.split(/[\s,_\-|/]+/).filter(w => w.length >= 2);
+    const rawTerms = rawQuery.split(/[^\p{L}\p{N}]+/u).filter(w => w.length >= 2);
     const importantTerms = rawTerms.filter(w => !genericTerms.has(w) && w.length >= 3);
     const termsForDbSearch = importantTerms.length > 0 ? importantTerms : rawTerms;
     const keywordSet = new Set<string>([
@@ -170,7 +170,12 @@ serve(async (req) => {
     // Substring matcher — "ball" should also surface "basketball", "softball", etc.
     // Whole-word match still gives a relevance boost so exact word hits rank higher.
     const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const hasSubstring = (haystack: string, term: string) => haystack.includes(term);
+    // Match on word start (prefix) rather than an arbitrary substring so short
+    // terms like "gem" can't match inside unrelated words.
+    const hasSubstring = (haystack: string, term: string) =>
+      term.length >= 6
+        ? haystack.includes(term)
+        : new RegExp(`(?:^|\\s)${escapeRe(term)}`).test(haystack);
     const hasWord = (haystack: string, term: string) =>
       new RegExp(`(?:^|\\s)${escapeRe(term)}(?:\\s|$)`).test(haystack);
 
@@ -201,7 +206,10 @@ serve(async (req) => {
     // match to appear in the TITLE/file_name — not just description or tags — to
     // avoid returning unrelated videos that only mention the word in passing.
     const isShortQuery = requiredTerms.length > 0 && requiredTerms.length <= 2;
-    const minRequiredMatches = requiredTerms.length > 1 ? Math.min(2, requiredTerms.length) : 1;
+    // Long pasted queries (filenames etc.) must match more than one stray word.
+    const minRequiredMatches = requiredTerms.length >= 5
+      ? 3
+      : requiredTerms.length > 1 ? 2 : 1;
     const rankedVideos = (videos || [])
       .map(video => ({ video, ...scoreVideo(video as Record<string, unknown>) }))
       .filter(item => {
