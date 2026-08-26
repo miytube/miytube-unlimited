@@ -73,22 +73,34 @@ Deno.serve(async (req) => {
 
     const tags = Array.isArray(video.tags) ? video.tags.join(", ") : (video.tags || "");
 
-    const prompt = `You are a skilled content writer for MiyTube, a video platform. Write a blog article based on the following video metadata:
+    const watchUrl = `https://www.miytube.com/watch?v=${video.local_id || video.id}`;
+
+    const prompt = `You are an SEO content writer for MiyTube, a video platform. Turn this video into a search-friendly article.
 
 Title: ${video.title || "Untitled video"}
 Description: ${video.description || "No description provided."}
 Category: ${video.category || "General"}
 Subcategory: ${video.subcategory || "N/A"}
 Tags: ${tags || "N/A"}
+Watch URL: ${watchUrl}
 
-Write a ~400-800 word article in Markdown format that includes:
-- A single H1 title (can be similar to but more engaging than the video title)
-- 2-4 H2/H3 headings organizing the content
-- A "Key Takeaways" section with a bulleted list
-- A short transcript-style excerpt paragraph presented as if quoting highlights from the video (clearly framed as illustrative, based on the description/title, not a verbatim transcript)
-- A 1-paragraph summary at the end
+Return ONLY a JSON object (no code fences, no commentary) with these keys:
+{
+  "seoTitle": "compelling title under 60 characters, includes the main keyword",
+  "metaDescription": "under 155 characters, includes the main keyword, reads naturally",
+  "keywords": ["5-8 realistic search keywords people would type"],
+  "markdown": "the full article in Markdown"
+}
 
-Output ONLY the Markdown article, nothing else.`;
+The "markdown" article must:
+- start with a single H1 matching the seoTitle
+- open with a 2-3 sentence answer-first intro that a search engine could use as a snippet
+- use 3-5 H2/H3 sections with concrete, specific detail (no filler, no invented facts or statistics)
+- include a "Key Takeaways" bulleted list
+- include a short "Frequently Asked Questions" section with 3 Q&A pairs using H3 questions
+- include a line linking to the video: [Watch the full video on MiyTube](${watchUrl})
+- end with a one-paragraph summary
+- be roughly 600-900 words`;
 
     const gateway = createLovableAiGatewayProvider(apiKey);
 
@@ -97,20 +109,36 @@ Output ONLY the Markdown article, nothing else.`;
       prompt,
     });
 
-    const content = (text || "").trim();
-    if (!content) return json({ error: "AI did not return any content." }, 500);
+    const raw = (text || "").trim();
+    if (!raw) return json({ error: "AI did not return any content." }, 500);
 
+    let parsed: {
+      seoTitle?: string;
+      metaDescription?: string;
+      keywords?: string[];
+      markdown?: string;
+    } | null = null;
+    try {
+      const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+      parsed = JSON.parse(cleaned);
+    } catch {
+      parsed = null;
+    }
+
+    const content = (parsed?.markdown || raw).trim();
     const titleMatch = content.match(/^#\s+(.+)$/m);
-    const title = titleMatch ? titleMatch[1].trim() : (video.title || "Untitled Article");
+    const title = (parsed?.seoTitle || titleMatch?.[1] || video.title || "Untitled Article").trim();
 
     const withoutTitle = titleMatch ? content.replace(titleMatch[0], "").trim() : content;
     const firstParagraph = withoutTitle
       .split(/\n\s*\n/)
       .map((p: string) => p.trim())
       .find((p: string) => p && !p.startsWith("#")) || "";
-    const excerpt = firstParagraph.replace(/[#*_`]/g, "").slice(0, 250);
+    const excerpt = (parsed?.metaDescription || firstParagraph.replace(/[#*_`]/g, "")).slice(0, 250);
 
-    return json({ title, excerpt, content, videoId: video.id });
+    const keywords = Array.isArray(parsed?.keywords) ? parsed!.keywords!.slice(0, 8) : [];
+
+    return json({ title, excerpt, content, keywords, watchUrl, videoId: video.id });
   } catch (error) {
     console.error("generate-video-article error", error);
     return json({ error: error instanceof Error ? error.message : "Unexpected error" }, 500);

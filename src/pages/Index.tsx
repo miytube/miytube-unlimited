@@ -10,6 +10,8 @@ import { ShortVideosSection } from '@/components/video/ShortVideosSection';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 import { LatestArticlesSection } from '@/components/blog/LatestArticlesSection';
+import { HomeHero } from '@/components/home/HomeHero';
+import { CommunityStrip } from '@/components/home/CommunityStrip';
 
 
 
@@ -117,62 +119,22 @@ const Index = () => {
       <OrganizationStructuredData />
       <div className="py-4 w-full flex gap-6">
         <div className="flex-1 min-w-0">
-        {/* Page Header */}
-        <div className="mb-6">
-          <p className="text-sm text-muted-foreground mb-2">
-            <span className="font-semibold text-primary">{site.name}</span> / Home
-          </p>
-          <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">{site.metaTitle}</h1>
-          </div>
-        </div>
+        {/* Breadcrumb */}
+        <p className="text-sm text-muted-foreground mb-3">
+          <span className="font-semibold text-primary">{site.name}</span> / Home
+        </p>
 
+        {/* Positioning hero — creator payouts first, feed second */}
+        <HomeHero siteName={site.name} />
 
-
-
-        {/* Creator monetization CTA */}
-        <div className="mb-6 p-5 rounded-lg border bg-gradient-to-r from-primary/10 via-primary/5 to-background">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex items-start gap-4">
-              <div className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary">
-                <DollarSign size={24} />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold">Upload videos and earn money on {site.name}</h2>
-                <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
-                  Get tipped directly by viewers, turn videos into SEO articles, and join the Partner Program for ad revenue. Keep more of what you make.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button asChild variant="outline" size="sm">
-                <Link to="/monetization">How it works</Link>
-              </Button>
-              <Button asChild size="sm">
-                <Link to="/upload">Start uploading</Link>
-              </Button>
-            </div>
-          </div>
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Users size={14} className="text-primary" />
-              <span>Direct tips from fans</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Sparkles size={14} className="text-primary" />
-              <span>AI turns videos into articles</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <DollarSign size={14} className="text-primary" />
-              <span>Ad revenue & partner perks</span>
-            </div>
-          </div>
-        </div>
+        {/* Focused communities */}
+        <CommunityStrip />
 
         {/* Homepage banner from MiyTube advertisers */}
         <div className="mb-6">
           <BannerAdSlot placement="homepage" />
         </div>
+
 
         {/* Loading State */}
         {isLoading && (
@@ -266,13 +228,6 @@ const Index = () => {
 
 
 
-        {/* Multiplex AdSense unit (miytube-new-3) — "More content you might like" */}
-        {!isLoading && displayVideos.length > 0 && (
-          <div className="my-8">
-            <h2 className="text-xl font-medium mb-4">More for you</h2>
-            <AdSlot slot="3008057853" format="autorelaxed" responsive={false} label="Sponsored" />
-          </div>
-        )}
 
         {!isLoading && allVideos.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">

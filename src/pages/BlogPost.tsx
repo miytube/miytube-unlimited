@@ -19,6 +19,14 @@ interface Post {
   views: number;
   created_at: string;
   user_id: string;
+  generated_from_video_id: string | null;
+}
+
+interface SourceVideo {
+  id: string;
+  local_id: string | null;
+  title: string;
+  thumbnail_url: string | null;
 }
 
 const BlogJsonLd = ({ data }: { data: object }) => {
@@ -37,6 +45,7 @@ const BlogPost = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [sourceVideo, setSourceVideo] = useState<SourceVideo | null>(null);
 
   usePageSEO({
     title: post ? `${post.title} — MiyTube Blog` : 'MiyTube Blog',
@@ -51,7 +60,7 @@ const BlogPost = () => {
     (async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, content, excerpt, cover_image_url, views, created_at, user_id')
+        .select('id, title, content, excerpt, cover_image_url, views, created_at, user_id, generated_from_video_id')
         .eq('slug', slug)
         .maybeSingle();
       if (error || !data) {
@@ -61,6 +70,17 @@ const BlogPost = () => {
       }
       setPost(data);
       setLoading(false);
+
+      if (data.generated_from_video_id) {
+        supabase
+          .from('uploaded_videos')
+          .select('id, local_id, title, thumbnail_url')
+          .eq('id', data.generated_from_video_id)
+          .maybeSingle()
+          .then(({ data: v }) => {
+            if (v) setSourceVideo(v as SourceVideo);
+          });
+      }
       // Increment views (fire-and-forget)
       supabase.from('blog_posts').update({ views: (data.views || 0) + 1 }).eq('id', data.id).then(() => {});
     })();
@@ -91,7 +111,20 @@ const BlogPost = () => {
     datePublished: post.created_at,
     url: `https://www.miytube.com/blog/${slug}`,
     mainEntityOfPage: `https://www.miytube.com/blog/${slug}`,
+    ...(sourceVideo
+      ? {
+          video: {
+            '@type': 'VideoObject',
+            name: sourceVideo.title,
+            thumbnailUrl: sourceVideo.thumbnail_url || undefined,
+            uploadDate: post.created_at,
+            contentUrl: `https://www.miytube.com/watch?v=${sourceVideo.local_id || sourceVideo.id}`,
+          },
+        }
+      : {}),
   };
+
+  const watchPath = sourceVideo ? `/watch?v=${sourceVideo.local_id || sourceVideo.id}` : null;
 
   return (
     <Layout>
@@ -127,6 +160,26 @@ const BlogPost = () => {
         <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap leading-relaxed">
           {post.content}
         </div>
+
+        {watchPath && sourceVideo && (
+          <Link
+            to={watchPath}
+            className="mt-8 flex items-center gap-4 rounded-lg border p-3 transition-colors hover:border-primary/60 hover:bg-primary/5"
+          >
+            {sourceVideo.thumbnail_url && (
+              <img
+                src={sourceVideo.thumbnail_url}
+                alt={sourceVideo.title}
+                loading="lazy"
+                className="h-20 w-32 flex-shrink-0 rounded object-cover"
+              />
+            )}
+            <div>
+              <p className="text-xs uppercase tracking-wide text-primary font-semibold">Watch the video</p>
+              <p className="font-medium leading-tight">{sourceVideo.title}</p>
+            </div>
+          </Link>
+        )}
 
         <div className="mt-10 pt-6 border-t flex flex-col sm:flex-row sm:items-center gap-3">
           <div className="flex-1">

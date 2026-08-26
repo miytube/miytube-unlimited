@@ -71,30 +71,58 @@ export const AdSlot = ({
   insStyle,
 }: AdSlotProps) => {
   const insRef = useRef<HTMLModElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const pushedRef = useRef(false);
   const isLikelyChina = useIsLikelyChina();
 
+  // Lazy request: only ask AdSense to fill the slot once it is close to the
+  // viewport. Requesting ads that are never seen drags viewability (and with
+  // it, fill rate and RPM) down.
   useEffect(() => {
     if (pushedRef.current || isLikelyChina) return;
+    const el = wrapperRef.current;
+    if (!el) return;
 
     let cancelled = false;
-    loadAdSenseScript()
-      .then(() => {
-        if (cancelled || pushedRef.current) return;
-        try {
-          // @ts-ignore – adsbygoogle is injected by the AdSense script
-          (window.adsbygoogle = window.adsbygoogle || []).push({});
-          pushedRef.current = true;
-        } catch (err) {
-          console.debug('AdSlot push failed (likely ad blocker):', err);
+
+    const request = () => {
+      if (cancelled || pushedRef.current) return;
+      pushedRef.current = true;
+      loadAdSenseScript()
+        .then(() => {
+          try {
+            // @ts-ignore – adsbygoogle is injected by the AdSense script
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          } catch (err) {
+            console.debug('AdSlot push failed (likely ad blocker):', err);
+          }
+        })
+        .catch((err) => {
+          console.debug('AdSense script load failed:', err);
+        });
+    };
+
+    if (typeof IntersectionObserver === 'undefined') {
+      request();
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer.disconnect();
+          request();
         }
-      })
-      .catch((err) => {
-        console.debug('AdSense script load failed:', err);
-      });
+      },
+      { rootMargin: '300px 0px' },
+    );
+    observer.observe(el);
 
     return () => {
       cancelled = true;
+      observer.disconnect();
     };
   }, [isLikelyChina]);
 
@@ -106,6 +134,7 @@ export const AdSlot = ({
 
   return (
     <div
+      ref={wrapperRef}
       data-ad-slot-wrapper
       className={`w-full overflow-hidden rounded-md ${className}`}
       aria-label={label || 'Advertisement'}
