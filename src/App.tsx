@@ -7,6 +7,7 @@ import { UploadedVideosProvider } from "@/context/UploadedVideosContext";
 import { UploadProgressProvider } from "@/context/UploadProgressContext";
 import { UploadProgressIndicator } from "./components/upload/UploadProgressIndicator";
 import { AuthProvider } from "./hooks/useAuth";
+import { SidebarProvider } from "@/context/SidebarContext";
 import AppRoutes from "./routes";
 import { VignetteAd } from "./components/advertising/VignetteAd";
 import { PaymentTestModeBanner } from "./components/PaymentTestModeBanner";

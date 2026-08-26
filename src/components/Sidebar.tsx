@@ -79,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const isMobile = useIsMobile();
   const { isMiyTube } = useSite();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, toggleCollapsed } = useSidebarContext();
   
   // Close sidebar when navigating on mobile
   useEffect(() => {
