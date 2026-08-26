@@ -658,9 +658,9 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
-  'sports-high-school-cif-football': {
-    title: 'CIF Football',
-    description: 'CIF high school football',
+  'sports-high-school-football-cif-playoffs-games': {
+    title: 'High school Football (CIF, playoffs games)',
+    description: 'CIF high school football and playoff games',
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
