@@ -249,10 +249,6 @@ const Shorts = () => {
                 ))}
               </div>
 
-              <div className="my-6">
-                <AdSlot slot="7525496759" format="autorelaxed" responsive label="Sponsored" />
-              </div>
-
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
