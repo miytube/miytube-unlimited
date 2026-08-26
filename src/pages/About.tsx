@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { usePageSEO } from '@/hooks/usePageSEO';
 
@@ -49,6 +50,9 @@ const About = () => {
               <div className="bg-card p-4 rounded-lg border">
                 <h3 className="font-medium">Mark Hayes</h3>
                 <p className="text-sm text-muted-foreground">Owner & Chief Executive Officer</p>
+                <Link to="/about-mark-hayes" className="text-sm text-primary hover:underline mt-2 inline-block">
+                  About the Founder
+                </Link>
               </div>
             </div>
           </section>

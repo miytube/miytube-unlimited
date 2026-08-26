@@ -12,6 +12,7 @@ import BlockedUploads from "@/pages/BlockedUploads";
 import Shorts from "@/pages/Shorts";
 import Trending from "@/pages/Trending";
 import About from "@/pages/About";
+import AboutMarkHayes from "@/pages/AboutMarkHayes";
 import Contact from "@/pages/Contact";
 import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
@@ -93,6 +94,7 @@ export const mainRoutes = [
   <Route key="shorts" path="/shorts" element={<Shorts />} />,
   <Route key="trending" path="/trending" element={<Trending />} />,
   <Route key="about" path="/about" element={<About />} />,
+  <Route key="about-mark-hayes" path="/about-mark-hayes" element={<AboutMarkHayes />} />,
   <Route key="contact" path="/contact" element={<Contact />} />,
   <Route key="terms" path="/terms" element={<Terms />} />,
   <Route key="privacy" path="/privacy" element={<Privacy />} />,
