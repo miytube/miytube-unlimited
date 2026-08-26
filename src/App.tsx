@@ -26,10 +26,12 @@ const App = () => (
             <Sonner />
             <UploadProgressIndicator />
             <BrowserRouter>
-              <AnalyticsTracker />
-              <PaymentTestModeBanner />
-              <VignetteAd />
-              <AppRoutes />
+              <SidebarProvider>
+                <AnalyticsTracker />
+                <PaymentTestModeBanner />
+                <VignetteAd />
+                <AppRoutes />
+              </SidebarProvider>
             </BrowserRouter>
           </UploadedVideosProvider>
         </UploadProgressProvider>

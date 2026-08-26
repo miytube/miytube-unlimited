@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { Sidebar } from './Sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useSidebarContext } from '@/context/SidebarContext';
 import { QuickCreatePageWidget } from './admin/QuickCreatePageWidget';
 import { AdSlot } from './ads/AdSlot';
 import { SloganTicker, SloganBanner } from './branding/SloganVariants';
