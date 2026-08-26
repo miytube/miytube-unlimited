@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { LineChart, Trophy, Newspaper, Music2, Radio, MessageCircle } from 'lucide-react';
 
 const COMMUNITIES = [
-  { to: '/category/gmatrader', label: 'GmaTrader', blurb: 'Nasdaq futures, markets', Icon: LineChart },
-  { to: '/high-school-sports', label: 'High School Sports', blurb: 'CIF games & playoffs', Icon: Trophy },
+  { to: '/gmatrader-articles', label: 'GmaTrader', blurb: 'Nasdaq futures, markets', Icon: LineChart },
+  { to: '/sports-high-school', label: 'High School Sports', blurb: 'CIF games & playoffs', Icon: Trophy },
   { to: '/breaking-news', label: 'Breaking News', blurb: 'What just happened', Icon: Newspaper },
   { to: '/music', label: 'Music', blurb: 'Videos, genres, live sets', Icon: Music2 },
   { to: '/podcasts', label: 'Podcasts', blurb: 'Talk, news, gossip', Icon: Radio },
-  { to: '/miytube-at-cha', label: 'MiyTube At Cha', blurb: 'AI chat rooms', Icon: MessageCircle },
+  { to: '/talk-at-cha', label: 'MiyTube At Cha', blurb: 'AI chat rooms', Icon: MessageCircle },
 ];
 
 /** Focused communities — the reason to come back, versus a generic feed. */
