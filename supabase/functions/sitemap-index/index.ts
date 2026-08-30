@@ -28,6 +28,10 @@ Deno.serve(async (req) => {
     <lastmod>${today}</lastmod>
   </sitemap>
   <sitemap>
+    <loc>${FUNCTIONS_URL}/sitemap-articles</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+  <sitemap>
     <loc>${FUNCTIONS_URL}/sitemap-music</loc>
     <lastmod>${today}</lastmod>
   </sitemap>

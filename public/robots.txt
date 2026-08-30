@@ -9,6 +9,7 @@ Sitemap: https://www.miytube.com/sitemap.xml
 Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-index
 Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-static
 Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-videos
+Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-articles
 Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-music
 
 # Disallow admin and private pages
