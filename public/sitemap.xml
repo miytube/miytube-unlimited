@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- Main Pages -->
   <url><loc>https://www.miytube.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
   <url><loc>https://www.miytube.com/videos</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
@@ -390,5 +391,346 @@
   <url><loc>https://www.miytube.com/audio/music</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.miytube.com/audio/podcasts</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.miytube.com/audio/audiobooks</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <!-- Blog Articles -->
+  <url>
+    <loc>https://www.miytube.com/blog/nq-open-soft-below-settlement-uhiwl</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1788133229700.png</image:loc>
+      <image:title>NQ open soft below Settlement</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/funniest-live-tv-fails-news-bloopers-to-watch-f6109</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1788130220507.jpg</image:loc>
+      <image:title>Funniest Live TV Fails &amp; News Bloopers to Watch</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/nepal-flash-flood-how-rocks-mud-and-water-struck-rxbor</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1788061149252.jpg</image:loc>
+      <image:title>Nepal Flash Flood: How Rocks, Mud, and Water Struck</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/naughty-by-nature---opp-music-video-song-guide-mn2vc</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1788053742181.jpg</image:loc>
+      <image:title>Naughty by Nature - O.P.P. Music Video &amp; Song Guide</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/hootie-the-blowfish-hold-my-hand-music-video-o114o</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1788053575055.jpg</image:loc>
+      <image:title>Hootie &amp; The Blowfish: Hold My Hand Music Video</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/tupac-thugz-mansion-legacy-lyrics-and-impact-fsx1n</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1787846619364.jpg</image:loc>
+      <image:title>Tupac Thugz Mansion: Legacy, Lyrics, and Impact</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/nvidia-gap-meets-a-post-data-pullback-7yphz</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787836030934.png</image:loc>
+      <image:title>Nvidia gap meets a post data pullback</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/nvidia-ignite-a-post-close-repricing-wazwu</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787785555679.png</image:loc>
+      <image:title>Nvidia ignite a post close repricing</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/hotter-inflation-breaks-overnight-support-qf7f5</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787750048396.png</image:loc>
+      <image:title>Hotter inflation breaks overnight support</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/post-rally-form-near-settlement-t35ed</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787699230004.png</image:loc>
+      <image:title>Post rally form near settlement</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/the-high-stakes-world-of-big-rim-racing-how-donkmaster-cleaned-up-a-30000-pot-r9xjn</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1787680267789.jpg</image:loc>
+      <image:title>The High-Stakes World of Big Rim Racing: How Donkmaster Cleaned Up a $30,000 Pot</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/overnight-recovery-tests-upper-liquidity-dvcme</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787664156710.png</image:loc>
+      <image:title>Overnight recovery tests upper liquidity</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/post-sell-off-balance-form-above-settlement-cdyeo</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787612673141.jpg</image:loc>
+      <image:title>Post sell-off balance form above settlement</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/reliving-an-80s-masterpiece-tears-for-fears-everybody-wants-to-rule-the-world-np8xp</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1787581493598.jpg</image:loc>
+      <image:title>Reliving an 80s Masterpiece: Tears For Fears – &quot;Everybody Wants To Rule The World&quot;</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/10y-affects-nq-futures-dbo2r</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787578327417.png</image:loc>
+      <image:title>10Y affects NQ futures</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/gap-down-pressure-test-overnight-low-v5raz</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787577882926.png</image:loc>
+      <image:title>Gap Down pressure test overnight low</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/unleashing-the-beast-taking-the-legendary-bugatti-bolide-to-its-very-first-car-s-0wvwy</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1787542071226.jpg</image:loc>
+      <image:title>Unleashing the Beast: Taking the Legendary Bugatti Bolide to Its Very First Car Show</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/reliving-soul-royalty-the-ojays-deliver-pure-emotion-in-cry-together-on-soul-tra-kpol5</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1787525770377.jpg</image:loc>
+      <image:title>Reliving Soul Royalty: The O&apos;Jays Deliver Pure Emotion in &quot;Cry Together&quot; on Soul Train</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/nq-weekly-rates-trading-playbook-gv1iv</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787503093852.png</image:loc>
+      <image:title>NQ Weekly Rates Trading Playbook</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/recovery-auction-retest-upper-range-u3odp</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787318997570.png</image:loc>
+      <image:title>Recovery auction retest upper range</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/post-sell-off-balance-test-settlment-hkf7l</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787267494854.png</image:loc>
+      <image:title>Post sell-off balance test settlment</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/post-settlement-gap-hold-above-value-83gkj</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787181004350.png</image:loc>
+      <image:title>Post settlement gap hold above value.</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/overnight-recovery-test-upper-range-8glqu</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787145830123.png</image:loc>
+      <image:title>Overnight recovery test upper range</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/aug-18-nq-l5fd0</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/262efb9e-d2f5-4e52-b3e6-5e0916092b9b/blog-1787061620205.png</image:loc>
+      <image:title>Aug 18 NQ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/you-want-to-be-a-dictator-not-so-fast-586tj</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1780212011447.jpg</image:loc>
+      <image:title>You want to be a Dictator? Not so Fast!!</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/why-cats-capture-our-hearts-the-timeless-bond-between-humans-and-felines-tdrps</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1780157177794.jpg</image:loc>
+      <image:title>Why Cats Capture Our Hearts: The Timeless Bond Between Humans and Felines</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/kobe-bryant-the-pied-piper-of-laker-nation-xee7l</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1780155200596.jpg</image:loc>
+      <image:title>Kobe Bryant the Pied Piper of Laker Nation</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/dogs-are-mans-best-friend-7u99d</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1780154162681.jpg</image:loc>
+      <image:title>Dogs are man&apos;s best friend</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/the-us-constitution-what-is-it-good-for-if-its-purpose-isnt-upheld-dql9e</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1779071822901.jpg</image:loc>
+      <image:title>The U.S. Constitution: What Is It Good For If Its Purpose Isn’t Upheld?</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/americas-resolve-standing-up-or-lying-down-in-the-face-of-wrong-brzwz</loc>
+    <lastmod>2026-05-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1779001896413.jpg</image:loc>
+      <image:title>America’s Resolve: Standing Up or Lying Down in the Face of Wrong?</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/american-stable-genius-who-is-he-trying-to-convince-78392</loc>
+    <lastmod>2026-05-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1778990117063.jpg</image:loc>
+      <image:title>American! Stable Genius: Who Is He Trying to Convince?</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/how-to-make-money-practical-steps-to-making-money-2bzx4</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1778966858816.jpg</image:loc>
+      <image:title>How to Make Money: Practical Steps to Making Money</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/the-unbeatable-value-of-time-xgcrj</loc>
+    <lastmod>2026-05-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1778961645805.jpg</image:loc>
+      <image:title>The Unbeatable Value Of Time</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.miytube.com/blog/flirting-what-are-the-basic-rules-when-flirting-gd1mj</loc>
+    <lastmod>2026-05-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://dfwbddmckfzfocpruvtj.supabase.co/storage/v1/object/public/pictures/ca1dd9ce-a87c-414c-8efb-83570e2cde9b/blog-1778961284769.jpg</image:loc>
+      <image:title>Flirting: What Are the Basic Rules When Flirting?</image:title>
+    </image:image>
+  </url>
 </urlset>
 
