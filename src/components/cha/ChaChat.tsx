@@ -113,6 +113,22 @@ export const ChaChat: React.FC = () => {
     if (!isBusy) composerRef.current?.querySelector('textarea')?.focus();
   }, [isBusy, initialMessages]);
 
+  // Watchdog: if Cha stalls with no new output, stop waiting instead of hanging forever.
+  const lastChunk = JSON.stringify(messages[messages.length - 1]?.parts ?? []);
+  useEffect(() => {
+    if (!isBusy) return;
+    const limit = status === 'submitted' ? 45_000 : 25_000;
+    const timer = window.setTimeout(() => {
+      stop();
+      toast({
+        title: 'Cha went quiet',
+        description: 'That one timed out. Tap retry or send it again.',
+        variant: 'destructive',
+      });
+    }, limit);
+    return () => window.clearTimeout(timer);
+  }, [isBusy, status, lastChunk, stop, toast]);
+
   const send = useCallback(
     (text: string) => {
       const trimmed = text.trim();
