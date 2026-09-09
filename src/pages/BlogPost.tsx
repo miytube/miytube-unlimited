@@ -178,6 +178,33 @@ const BlogPost = () => {
 
         </div>
 
+        {(summary || isAuthor) && (
+          <section className="mb-8 rounded-lg border bg-muted/40 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <h2 className="font-semibold">AI breakdown</h2>
+              {isAuthor && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="ml-auto"
+                  disabled={summarizing}
+                  onClick={() => handleSummarize(Boolean(summary))}
+                >
+                  {summarizing ? <Loader2 className="h-4 w-4 animate-spin" /> : summary ? 'Regenerate' : 'Generate'}
+                </Button>
+              )}
+            </div>
+            {summary ? (
+              <div className="whitespace-pre-wrap text-sm leading-relaxed">{summary}</div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Create a short AI summary with the key takeaways from this article. Readers will see it here.
+              </p>
+            )}
+          </section>
+        )}
+
         <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap leading-relaxed">
           {post.content}
         </div>
