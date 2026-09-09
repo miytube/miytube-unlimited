@@ -215,8 +215,19 @@ export const ChaChat: React.FC = () => {
                 </Message>
               ))}
               {status === 'submitted' && (
-                <div className="pl-1">
+                <div className="flex items-center gap-3 pl-1">
                   <Shimmer>Cha is thinking...</Shimmer>
+                  <Button variant="ghost" size="sm" onClick={() => stop()} className="text-muted-foreground">
+                    Stop
+                  </Button>
+                </div>
+              )}
+              {status === 'error' && (
+                <div className="flex items-center gap-3 pl-1 text-sm text-muted-foreground">
+                  <span>{error?.message || 'Cha could not answer that.'}</span>
+                  <Button variant="outline" size="sm" onClick={() => regenerate()}>
+                    Retry
+                  </Button>
                 </div>
               )}
             </ConversationContent>
