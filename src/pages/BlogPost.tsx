@@ -47,6 +47,8 @@ const BlogPost = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [sourceVideo, setSourceVideo] = useState<SourceVideo | null>(null);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [summarizing, setSummarizing] = useState(false);
 
   usePageSEO({
     title: post ? `${post.title} — MiyTube Blog` : 'MiyTube Blog',
