@@ -61,7 +61,7 @@ const BlogPost = () => {
     (async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, content, excerpt, cover_image_url, views, created_at, user_id, generated_from_video_id')
+        .select('id, title, content, excerpt, cover_image_url, views, created_at, user_id, generated_from_video_id, ai_summary')
         .eq('slug', slug)
         .maybeSingle();
       if (error || !data) {
