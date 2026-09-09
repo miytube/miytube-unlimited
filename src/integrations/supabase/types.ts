@@ -256,6 +256,8 @@ export type Database = {
       }
       blog_posts: {
         Row: {
+          ai_summary: string | null
+          ai_summary_generated_at: string | null
           category: string | null
           content: string
           cover_image_url: string | null
@@ -272,6 +274,8 @@ export type Database = {
           views: number
         }
         Insert: {
+          ai_summary?: string | null
+          ai_summary_generated_at?: string | null
           category?: string | null
           content: string
           cover_image_url?: string | null
@@ -288,6 +292,8 @@ export type Database = {
           views?: number
         }
         Update: {
+          ai_summary?: string | null
+          ai_summary_generated_at?: string | null
           category?: string | null
           content?: string
           cover_image_url?: string | null

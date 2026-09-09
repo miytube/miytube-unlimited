@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, Calendar, Eye, Trash2, Pencil } from 'lucide-react';
+import { Loader2, Calendar, Eye, Trash2, Pencil, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -20,6 +20,7 @@ interface Post {
   created_at: string;
   user_id: string;
   generated_from_video_id: string | null;
+  ai_summary: string | null;
 }
 
 interface SourceVideo {
@@ -46,6 +47,8 @@ const BlogPost = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [sourceVideo, setSourceVideo] = useState<SourceVideo | null>(null);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [summarizing, setSummarizing] = useState(false);
 
   usePageSEO({
     title: post ? `${post.title} — MiyTube Blog` : 'MiyTube Blog',
@@ -60,7 +63,7 @@ const BlogPost = () => {
     (async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, content, excerpt, cover_image_url, views, created_at, user_id, generated_from_video_id')
+        .select('id, title, content, excerpt, cover_image_url, views, created_at, user_id, generated_from_video_id, ai_summary')
         .eq('slug', slug)
         .maybeSingle();
       if (error || !data) {
@@ -69,6 +72,7 @@ const BlogPost = () => {
         return;
       }
       setPost(data);
+      setSummary(data.ai_summary || null);
       setLoading(false);
 
       if (data.generated_from_video_id) {
@@ -95,6 +99,23 @@ const BlogPost = () => {
     }
     toast({ title: 'Article deleted' });
     navigate('/blog');
+  };
+
+  const handleSummarize = async (force = false) => {
+    if (!slug) return;
+    setSummarizing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('summarize-article', {
+        body: { slug, force },
+      });
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      setSummary((data as any)?.summary || null);
+    } catch (err: any) {
+      toast({ title: 'Could not create the breakdown', description: err.message, variant: 'destructive' });
+    } finally {
+      setSummarizing(false);
+    }
   };
 
   if (loading) return <Layout><div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></Layout>;
@@ -156,6 +177,33 @@ const BlogPost = () => {
           )}
 
         </div>
+
+        {(summary || isAuthor) && (
+          <section className="mb-8 rounded-lg border bg-muted/40 p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <h2 className="font-semibold">AI breakdown</h2>
+              {isAuthor && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="ml-auto"
+                  disabled={summarizing}
+                  onClick={() => handleSummarize(Boolean(summary))}
+                >
+                  {summarizing ? <Loader2 className="h-4 w-4 animate-spin" /> : summary ? 'Regenerate' : 'Generate'}
+                </Button>
+              )}
+            </div>
+            {summary ? (
+              <div className="whitespace-pre-wrap text-sm leading-relaxed">{summary}</div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Create a short AI summary with the key takeaways from this article. Readers will see it here.
+              </p>
+            )}
+          </section>
+        )}
 
         <div className="prose prose-lg dark:prose-invert max-w-none whitespace-pre-wrap leading-relaxed">
           {post.content}

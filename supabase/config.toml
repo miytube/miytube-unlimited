@@ -65,3 +65,6 @@ verify_jwt = false
 
 [functions.admin-manage-users]
 verify_jwt = true
+
+[functions.summarize-article]
+verify_jwt = false
