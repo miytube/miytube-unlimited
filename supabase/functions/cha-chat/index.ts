@@ -82,15 +82,33 @@ Deno.serve(async (req) => {
 
     const gateway = createLovableAiGatewayProvider(apiKey);
 
+    // Keep only the recent turns so a long history can never stall the model.
+    const recentMessages = messages.slice(-20);
+
     const result = streamText({
       model: gateway(CHA_MODEL),
       system: CHA_PERSONA,
-      messages: await convertToModelMessages(messages),
+      messages: await convertToModelMessages(recentMessages),
+      abortSignal: AbortSignal.timeout(45_000),
+      onError: ({ error }) => console.error("cha-chat stream error", error),
     });
 
     return result.toUIMessageStreamResponse({
       originalMessages: messages,
       headers: corsHeaders,
+      onError: (error: unknown) => {
+        const message = error instanceof Error ? error.message : String(error ?? "");
+        if (/429|rate limit/i.test(message)) {
+          return "Cha is getting a lot of messages right now. Give it a few seconds and try again.";
+        }
+        if (/402|credit/i.test(message)) {
+          return "Cha is out of AI credits right now. Please try again later.";
+        }
+        if (/abort|timeout|timed out/i.test(message)) {
+          return "Cha took too long to answer. Try sending that again.";
+        }
+        return "Cha hit a snag answering that. Try again.";
+      },
       onFinish: async ({ responseMessage }) => {
         const { error } = await admin.from("cha_messages").insert({
           conversation_id: conversationId,
