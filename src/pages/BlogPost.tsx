@@ -72,6 +72,7 @@ const BlogPost = () => {
         return;
       }
       setPost(data);
+      setSummary(data.ai_summary || null);
       setLoading(false);
 
       if (data.generated_from_video_id) {
