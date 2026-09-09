@@ -95,7 +95,7 @@ export const ChaChat: React.FC = () => {
     []
   );
 
-  const { messages, sendMessage, status, setMessages } = useChat({
+  const { messages, sendMessage, status, setMessages, stop, error, regenerate } = useChat({
     id: `cha-${user?.id ?? 'guest'}`,
     messages: initialMessages ?? [],
     transport,
