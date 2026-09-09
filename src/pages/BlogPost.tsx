@@ -101,6 +101,23 @@ const BlogPost = () => {
     navigate('/blog');
   };
 
+  const handleSummarize = async (force = false) => {
+    if (!slug) return;
+    setSummarizing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('summarize-article', {
+        body: { slug, force },
+      });
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      setSummary((data as any)?.summary || null);
+    } catch (err: any) {
+      toast({ title: 'Could not create the breakdown', description: err.message, variant: 'destructive' });
+    } finally {
+      setSummarizing(false);
+    }
+  };
+
   if (loading) return <Layout><div className="flex justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div></Layout>;
   if (notFound || !post) return <Layout><div className="py-16 text-center"><h1 className="text-2xl font-bold mb-2">Article not found</h1><Link to="/blog" className="text-primary underline">Back to Blog</Link></div></Layout>;
 
