@@ -20,6 +20,7 @@ interface Post {
   created_at: string;
   user_id: string;
   generated_from_video_id: string | null;
+  ai_summary: string | null;
 }
 
 interface SourceVideo {
