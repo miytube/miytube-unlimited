@@ -95,7 +95,7 @@ export const ChaChat: React.FC = () => {
     []
   );
 
-  const { messages, sendMessage, status, setMessages } = useChat({
+  const { messages, sendMessage, status, setMessages, stop, error, regenerate } = useChat({
     id: `cha-${user?.id ?? 'guest'}`,
     messages: initialMessages ?? [],
     transport,
@@ -112,6 +112,22 @@ export const ChaChat: React.FC = () => {
   useEffect(() => {
     if (!isBusy) composerRef.current?.querySelector('textarea')?.focus();
   }, [isBusy, initialMessages]);
+
+  // Watchdog: if Cha stalls with no new output, stop waiting instead of hanging forever.
+  const lastChunk = JSON.stringify(messages[messages.length - 1]?.parts ?? []);
+  useEffect(() => {
+    if (!isBusy) return;
+    const limit = status === 'submitted' ? 45_000 : 25_000;
+    const timer = window.setTimeout(() => {
+      stop();
+      toast({
+        title: 'Cha went quiet',
+        description: 'That one timed out. Tap retry or send it again.',
+        variant: 'destructive',
+      });
+    }, limit);
+    return () => window.clearTimeout(timer);
+  }, [isBusy, status, lastChunk, stop, toast]);
 
   const send = useCallback(
     (text: string) => {
@@ -199,8 +215,19 @@ export const ChaChat: React.FC = () => {
                 </Message>
               ))}
               {status === 'submitted' && (
-                <div className="pl-1">
+                <div className="flex items-center gap-3 pl-1">
                   <Shimmer>Cha is thinking...</Shimmer>
+                  <Button variant="ghost" size="sm" onClick={() => stop()} className="text-muted-foreground">
+                    Stop
+                  </Button>
+                </div>
+              )}
+              {status === 'error' && (
+                <div className="flex items-center gap-3 pl-1 text-sm text-muted-foreground">
+                  <span>{error?.message || 'Cha could not answer that.'}</span>
+                  <Button variant="outline" size="sm" onClick={() => regenerate()}>
+                    Retry
+                  </Button>
                 </div>
               )}
             </ConversationContent>
