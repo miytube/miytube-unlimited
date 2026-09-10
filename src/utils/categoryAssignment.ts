@@ -250,6 +250,19 @@ export const getKnownParentCategoryOptions = (): { id: string; name: string }[] 
       options.set(row.parent, { id: row.parent, name: row.parentName });
     }
   }
+
+  // Mid-level hubs that are themselves subcategory rows but should also be
+  // selectable as parent categories in the upload form.
+  const midLevelParents: { id: string; name: string }[] = [
+    { id: 'nfl', name: 'NFL' },
+    { id: 'nfl-football', name: 'NFL Football' },
+  ];
+  for (const parent of midLevelParents) {
+    if (!options.has(parent.id)) {
+      options.set(parent.id, parent);
+    }
+  }
+
   return Array.from(options.values());
 };
 
