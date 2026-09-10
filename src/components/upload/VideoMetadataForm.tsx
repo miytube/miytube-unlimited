@@ -184,10 +184,11 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
 
     builtInSubcategories.forEach(add);
     predefinedSubcategories.forEach(add);
+    nestedCustomSubcategories.forEach(add);
     customSubcategories.forEach(add);
 
     return Array.from(merged.values()).sort((a, b) => a.name.localeCompare(b.name));
-  }, [builtInSubcategories, predefinedSubcategories, customSubcategories]);
+  }, [builtInSubcategories, predefinedSubcategories, nestedCustomSubcategories, customSubcategories]);
 
   const handleAddCustomCategory = (customName: string) => {
     const newCategory: Category = {
