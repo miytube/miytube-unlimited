@@ -80,6 +80,20 @@ const getCategoryRouteAliases = (category?: string): Set<string> => {
     }
   }
 
+  // A mid-level page (e.g. "NFL" under Sports) is itself a subcategory row.
+  // Treat it as a parent so its own child pages show up in the picker.
+  for (const row of knownSubcategories) {
+    if (
+      row.child === normalizedCategory ||
+      row.route === normalizedCategory ||
+      normalizeCategoryValue(row.title) === normalizedCategory ||
+      row.aliases.has(normalizedCategory)
+    ) {
+      aliases.add(row.route);
+      aliases.add(row.child);
+    }
+  }
+
   return aliases;
 };
 
