@@ -270,6 +270,7 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
             emptyText={!selectedCategory ? "Select a category first" : "No subcategories found."}
             disabled={!selectedCategory}
             onAddCustom={handleAddCustomSubcategory}
+            autoOpenKey={selectedCategory}
           />
         </div>
       </div>

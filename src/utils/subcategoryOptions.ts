@@ -62,6 +62,22 @@ export const subcategoryOptionsByCategory: Record<string, Array<{ id: string; na
     { id: 'hockey', name: 'Hockey' },
     { id: 'cricket', name: 'Cricket' },
   ],
+  'nfl': [
+    { id: 'games', name: 'NFL Games' },
+    { id: 'east-playoffs', name: 'AFL East Playoffs' },
+    { id: 'west-playoffs', name: 'NFL West Playoffs' },
+    { id: 'superbowl', name: 'Superbowl Game' },
+    { id: 'afl-players', name: 'AFL Players & Coaches' },
+    { id: 'players', name: 'NFL Players & Coaches' },
+  ],
+  'nfl-football': [
+    { id: 'games', name: 'NFL Games' },
+    { id: 'east-playoffs', name: 'AFL East Playoffs' },
+    { id: 'west-playoffs', name: 'NFL West Playoffs' },
+    { id: 'superbowl', name: 'Superbowl Game' },
+    { id: 'afl-players', name: 'AFL Players & Coaches' },
+    { id: 'players', name: 'NFL Players & Coaches' },
+  ],
   'business': [
     { id: 'finance', name: 'Finance' },
     { id: 'marketing', name: 'Marketing' },

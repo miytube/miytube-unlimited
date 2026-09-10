@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Check, ChevronsUpDown, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ interface CategoryComboboxProps {
   emptyText?: string;
   disabled?: boolean;
   onAddCustom?: (customValue: string) => void;
+  autoOpenKey?: string;
 }
 
 export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
@@ -34,12 +35,19 @@ export const CategoryCombobox: React.FC<CategoryComboboxProps> = ({
   emptyText = "No options found.",
   disabled = false,
   onAddCustom,
+  autoOpenKey,
 }) => {
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   
   const selectedOption = options.find(opt => opt.id === value);
   const displayValue = selectedOption?.name || value || '';
+
+  useEffect(() => {
+    if (!autoOpenKey || disabled || options.length === 0) return;
+    const timer = window.setTimeout(() => setOpen(true), 0);
+    return () => window.clearTimeout(timer);
+  }, [autoOpenKey, disabled, options.length]);
 
   // Proper Levenshtein-based similarity for typo detection.
   // Character-set overlap was too permissive (e.g. "how to" vs "tv shows" shared letters).
