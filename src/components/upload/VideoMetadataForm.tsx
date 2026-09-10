@@ -147,6 +147,22 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
 
   const builtInSubcategories = selectedCategoryObj?.subcategories || [];
 
+  // If the typed category is actually a saved subcategory (e.g. "NFL" under
+  // Sports), offer its watch pages instead of an empty list.
+  const nestedCustomSubcategories = useMemo<Array<{ id: string; name: string }>>(() => {
+    if (!selectedCategory) return [];
+    const key = normKey(selectedCategory);
+    const results: Array<{ id: string; name: string }> = [];
+    savedCustomCategoryTree.forEach((cat) => {
+      cat.subcategories.forEach((sub) => {
+        if (normKey(sub.slug) === key || normKey(sub.name) === key) {
+          sub.watch_pages.forEach((w) => results.push({ id: w.slug, name: w.name }));
+        }
+      });
+    });
+    return results;
+  }, [savedCustomCategoryTree, selectedCategory]);
+
   // Get predefined subcategories from our comprehensive list
   const predefinedSubcategories = useMemo(() => {
     if (!selectedCategory) return [];
@@ -168,10 +184,11 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
 
     builtInSubcategories.forEach(add);
     predefinedSubcategories.forEach(add);
+    nestedCustomSubcategories.forEach(add);
     customSubcategories.forEach(add);
 
     return Array.from(merged.values()).sort((a, b) => a.name.localeCompare(b.name));
-  }, [builtInSubcategories, predefinedSubcategories, customSubcategories]);
+  }, [builtInSubcategories, predefinedSubcategories, nestedCustomSubcategories, customSubcategories]);
 
   const handleAddCustomCategory = (customName: string) => {
     const newCategory: Category = {
