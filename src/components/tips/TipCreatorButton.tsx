@@ -91,6 +91,9 @@ export const TipCreatorButton: React.FC<TipCreatorButtonProps> = ({
     setLoading(false);
   }, []);
 
+  // Remembers the amount being tipped so the success handler can report value.
+  const lastAmountRef = useRef<number>(0);
+
   const handleOpen = () => {
     if (!user) {
       toast({
