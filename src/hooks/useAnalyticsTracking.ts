@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { isLikelyBot } from '@/utils/botDetection';
+import { gaSetUser, contentGroupFromPath } from '@/lib/ga';
 
 const generateSessionId = (): string => {
   const stored = sessionStorage.getItem('analytics_session_id');
@@ -57,6 +58,15 @@ export const useAnalyticsTracking = () => {
   useEffect(() => {
     if (isBotRef.current) return;
     (window as any)['ga-disable-G-SNLTDDVSNH'] = false;
+
+    // Tag the session with the signed-in user for cross-device reporting.
+    gaSetUser(user?.id || null);
+
+    const contentGroup = contentGroupFromPath(location.pathname);
+    if (typeof (window as any).gtag === 'function') {
+      (window as any).gtag('set', { content_group: contentGroup });
+    }
+
     // The gtag config in index.html already sends the initial page_view.
     if (gaFirstLoadRef.current) {
       gaFirstLoadRef.current = false;
@@ -67,9 +77,10 @@ export const useAnalyticsTracking = () => {
         page_path: location.pathname + location.search,
         page_location: window.location.href,
         page_title: document.title,
+        content_group: contentGroup,
       });
     }
-  }, [location.pathname, location.search]);
+  }, [location.pathname, location.search, user?.id]);
 
   useEffect(() => {
     // Skip all analytics for bots/crawlers so stats reflect real visitors.
