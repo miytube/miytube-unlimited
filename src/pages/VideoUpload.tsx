@@ -1,4 +1,5 @@
 
+import { gaEvent } from '@/lib/ga';
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';

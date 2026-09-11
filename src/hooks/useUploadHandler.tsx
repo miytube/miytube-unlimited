@@ -1,3 +1,4 @@
+import { gaEvent } from '@/lib/ga';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
