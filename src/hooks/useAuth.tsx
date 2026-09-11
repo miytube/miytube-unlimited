@@ -98,6 +98,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     });
 
+    // GA4 conversion: new account created.
+    if (!error) gaEvent('sign_up', { method: 'email' });
+
     if (!error && data.session && channelName) {
       // Session available (no email confirmation required) – ensure profile is set
       await supabase

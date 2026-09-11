@@ -136,6 +136,9 @@ const VideoUpload = () => {
       });
     }
 
+    // GA4 conversion: a creator finished publishing a video.
+    gaEvent('upload_complete', { content_type: 'video', category, subcategory });
+
     const destinationRoute = getUploadDestinationRoute(category, subcategory);
     const destinationLabel = destinationRoute === '/' ? 'Home' : destinationRoute.substring(1);
 
