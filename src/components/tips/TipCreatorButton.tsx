@@ -131,6 +131,12 @@ export const TipCreatorButton: React.FC<TipCreatorButtonProps> = ({
         throw new Error(error?.message || data?.error || 'Failed to start tip');
       }
 
+      lastAmountRef.current = amountCents;
+      gaEvent('begin_checkout', {
+        currency: 'USD',
+        value: amountCents / 100,
+        item_category: 'creator_tip',
+      });
       setClientSecret(data.clientSecret);
     } catch (e: any) {
       toast({
@@ -144,6 +150,13 @@ export const TipCreatorButton: React.FC<TipCreatorButtonProps> = ({
   };
 
   const handleSuccess = () => {
+    // GA4 conversion: tip paid successfully.
+    gaEvent('purchase', {
+      currency: 'USD',
+      value: (lastAmountRef.current || 0) / 100,
+      item_category: 'creator_tip',
+      transaction_id: `tip-${Date.now()}`,
+    });
     setOpen(false);
     resetState();
   };
