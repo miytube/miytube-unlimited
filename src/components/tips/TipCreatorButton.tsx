@@ -1,5 +1,5 @@
 import { gaEvent } from '@/lib/ga';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { Coins } from 'lucide-react';
