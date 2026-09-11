@@ -1,4 +1,5 @@
 
+import { gaEvent } from '@/lib/ga';
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
 import { FileUploader } from '@/components/upload/FileUploader';
@@ -135,6 +136,9 @@ const VideoUpload = () => {
         duration: 30000,
       });
     }
+
+    // GA4 conversion: a creator finished publishing a video.
+    gaEvent('upload_complete', { content_type: 'video', category, subcategory });
 
     const destinationRoute = getUploadDestinationRoute(category, subcategory);
     const destinationLabel = destinationRoute === '/' ? 'Home' : destinationRoute.substring(1);

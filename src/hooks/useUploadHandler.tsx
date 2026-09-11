@@ -1,3 +1,4 @@
+import { gaEvent } from '@/lib/ga';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
@@ -197,6 +198,13 @@ export const useUploadHandler = () => {
       }
     }
     
+    // GA4 conversion: a creator finished publishing content.
+    gaEvent('upload_complete', {
+      content_type: contentTypeId,
+      category,
+      subcategory,
+    });
+
     let redirectPath = getUploadDestinationRoute(category, subcategory);
     if (contentTypeId === 'shorts') redirectPath = '/shorts';
     else if (contentTypeId === 'music') redirectPath = '/music';

@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import { gaEvent } from '@/lib/ga';
+import React, { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { Coins } from 'lucide-react';
@@ -90,6 +91,9 @@ export const TipCreatorButton: React.FC<TipCreatorButtonProps> = ({
     setLoading(false);
   }, []);
 
+  // Remembers the amount being tipped so the success handler can report value.
+  const lastAmountRef = useRef<number>(0);
+
   const handleOpen = () => {
     if (!user) {
       toast({
@@ -130,6 +134,12 @@ export const TipCreatorButton: React.FC<TipCreatorButtonProps> = ({
         throw new Error(error?.message || data?.error || 'Failed to start tip');
       }
 
+      lastAmountRef.current = amountCents;
+      gaEvent('begin_checkout', {
+        currency: 'USD',
+        value: amountCents / 100,
+        item_category: 'creator_tip',
+      });
       setClientSecret(data.clientSecret);
     } catch (e: any) {
       toast({
@@ -143,6 +153,13 @@ export const TipCreatorButton: React.FC<TipCreatorButtonProps> = ({
   };
 
   const handleSuccess = () => {
+    // GA4 conversion: tip paid successfully.
+    gaEvent('purchase', {
+      currency: 'USD',
+      value: (lastAmountRef.current || 0) / 100,
+      item_category: 'creator_tip',
+      transaction_id: `tip-${Date.now()}`,
+    });
     setOpen(false);
     resetState();
   };
