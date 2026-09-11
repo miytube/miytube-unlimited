@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import { useSite } from '@/hooks/useSite';
+import { gaEvent } from '@/lib/ga';
 
 export const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -12,6 +13,8 @@ export const SearchBar: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
+      // GA4 recommended event — powers the "site search" reports.
+      gaEvent('search', { search_term: query.trim().slice(0, 100) });
       navigate(`/search?q=${encodeURIComponent(query.trim())}`);
     }
   };
