@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { gaEvent } from '@/lib/ga';
 
 type EventType = 'view' | 'click' | 'like' | 'share' | 'play';
 type VideoTable = 'uploaded_videos' | 'music_videos' | 'featured_discussion_video';
@@ -21,6 +22,25 @@ export const trackEngagement = async (
   videoTable: VideoTable = 'uploaded_videos'
 ): Promise<void> => {
   if (!videoId) return;
+
+  // Mirror every engagement into GA4 so plays/likes/shares show up there too,
+  // using GA4's recommended names where they exist.
+  const gaName =
+    eventType === 'play'
+      ? 'video_start'
+      : eventType === 'share'
+      ? 'share'
+      : eventType === 'click'
+      ? 'select_content'
+      : eventType === 'like'
+      ? 'video_like'
+      : 'video_view';
+  gaEvent(gaName, {
+    content_type: 'video',
+    item_id: videoId,
+    source_table: videoTable,
+  });
+
   try {
     const { data: sessionData } = await supabase.auth.getSession();
     await supabase.from('video_engagement_events').insert({
