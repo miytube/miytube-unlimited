@@ -19,6 +19,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'bible', name: 'Bible & Religion' },
   { slug: 'bloopers', name: 'Bloopers' },
   { slug: 'boats', name: 'Boats' },
+  { slug: 'boxing', name: 'Boxing', route: '/c/boxing' },
   { slug: 'business', name: 'Business' },
   { slug: 'cell-phone', name: 'Cell Phone' },
   { slug: 'celebrities', name: 'Celebrities' },
