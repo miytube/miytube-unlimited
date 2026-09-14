@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { DollarSign, Sparkles, Users } from 'lucide-react';
+import { PromoVideo } from '@/components/branding/PromoVideo';
 
 interface HomeHeroProps {
   siteName: string;
