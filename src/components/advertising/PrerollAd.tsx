@@ -67,10 +67,16 @@ export const PrerollAd: React.FC<{ children: React.ReactNode; disabled?: boolean
 
     (async () => {
       const { data, error } = await supabase.rpc('get_active_preroll_ads', { _site: getCurrentSiteId() });
-      if (cancelled || error || !data || data.length === 0) return;
-      const pick = (data as PrerollCampaign[]).find(a => a.media_url && isSafeHttpUrl(a.media_url));
-      if (!pick) return;
+      if (cancelled) return;
+      const pick = (!error && data ? (data as PrerollCampaign[]) : []).find(
+        a => a.media_url && isSafeHttpUrl(a.media_url),
+      );
       sessionStorage.setItem(SESSION_KEY, String(Date.now()));
+      if (!pick) {
+        // No paid ad filled the slot — run MiyTube's own promo instead.
+        setAd(HOUSE_PREROLL);
+        return;
+      }
       setAd(pick);
       supabase.rpc('record_ad_event', { _campaign_id: pick.id, _event: 'impression' }).then(() => {});
     })();
@@ -83,8 +89,16 @@ export const PrerollAd: React.FC<{ children: React.ReactNode; disabled?: boolean
   const skippable = ad.ad_format === 'skippable_instream';
   const canSkip = skippable && elapsed >= SKIP_AFTER_SECONDS;
 
+  const isHouse = ad.id === HOUSE_PREROLL.id;
+
   const handleClickThrough = () => {
-    supabase.rpc('record_ad_event', { _campaign_id: ad.id, _event: 'click' }).then(() => {});
+    if (!isHouse) {
+      supabase.rpc('record_ad_event', { _campaign_id: ad.id, _event: 'click' }).then(() => {});
+    }
+    if (ad.destination_url.startsWith('/')) {
+      window.location.assign(ad.destination_url);
+      return;
+    }
     window.open(ad.destination_url, '_blank', 'noopener,noreferrer');
   };
 
