@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 import { Button } from '@/components/ui/button';
 import { SkipForward, ExternalLink, Volume2, VolumeX } from 'lucide-react';
+import { PROMO_VIDEO_URL } from '@/components/branding/PromoVideo';
 
 interface PrerollCampaign {
   id: string;
@@ -18,6 +19,18 @@ interface PrerollCampaign {
 const SKIP_AFTER_SECONDS = 5;
 const SESSION_KEY = 'miytube_preroll_last_shown';
 const MIN_GAP_MS = 10 * 60 * 1000; // at most one pre-roll per 10 minutes
+
+// MiyTube's own promo, used when no paid pre-roll fills the slot.
+const HOUSE_PREROLL: PrerollCampaign = {
+  id: 'house-preroll',
+  headline: 'We have your Snapshot — advertise here at MiyTube',
+  description: null,
+  business_name: 'MiyTube Ads',
+  call_to_action: 'Start a Campaign',
+  destination_url: '/advertising',
+  media_url: PROMO_VIDEO_URL,
+  ad_format: 'skippable_instream',
+};
 
 const isSafeHttpUrl = (raw: string) => {
   try {
