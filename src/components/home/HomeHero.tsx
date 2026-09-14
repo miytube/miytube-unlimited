@@ -15,7 +15,8 @@ interface HomeHeroProps {
  * creator payouts and focused communities. The hero leads with that.
  */
 export const HomeHero: React.FC<HomeHeroProps> = ({ siteName }) => (
-  <section className="mb-8 overflow-hidden rounded-xl border bg-gradient-to-br from-primary/15 via-primary/5 to-background p-6 md:p-8">
+  <section className="mb-8 overflow-hidden rounded-xl border bg-gradient-to-br from-primary/15 via-primary/5 to-background p-6 md:p-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center">
+    <div>
     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
       We Got Your Snapshot
     </p>
