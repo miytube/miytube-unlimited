@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { DollarSign, Sparkles, Users } from 'lucide-react';
+import { PromoVideo } from '@/components/branding/PromoVideo';
 
 interface HomeHeroProps {
   siteName: string;
@@ -14,7 +15,8 @@ interface HomeHeroProps {
  * creator payouts and focused communities. The hero leads with that.
  */
 export const HomeHero: React.FC<HomeHeroProps> = ({ siteName }) => (
-  <section className="mb-8 overflow-hidden rounded-xl border bg-gradient-to-br from-primary/15 via-primary/5 to-background p-6 md:p-8">
+  <section className="mb-8 overflow-hidden rounded-xl border bg-gradient-to-br from-primary/15 via-primary/5 to-background p-6 md:p-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center">
+    <div>
     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
       We Got Your Snapshot
     </p>
@@ -52,6 +54,11 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ siteName }) => (
         <DollarSign size={16} className="text-primary" />
         <span>Ad revenue and partner perks</span>
       </div>
+    </div>
+    </div>
+
+    <div className="overflow-hidden rounded-xl border bg-background/60 shadow-sm aspect-video">
+      <PromoVideo label="MiyTube promo — creators get paid by viewers" />
     </div>
   </section>
 );

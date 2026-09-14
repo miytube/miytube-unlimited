@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 import { Button } from '@/components/ui/button';
 import { SkipForward, ExternalLink, Volume2, VolumeX } from 'lucide-react';
+import { PROMO_VIDEO_URL } from '@/components/branding/PromoVideo';
 
 interface PrerollCampaign {
   id: string;
@@ -18,6 +19,18 @@ interface PrerollCampaign {
 const SKIP_AFTER_SECONDS = 5;
 const SESSION_KEY = 'miytube_preroll_last_shown';
 const MIN_GAP_MS = 10 * 60 * 1000; // at most one pre-roll per 10 minutes
+
+// MiyTube's own promo, used when no paid pre-roll fills the slot.
+const HOUSE_PREROLL: PrerollCampaign = {
+  id: 'house-preroll',
+  headline: 'We have your Snapshot — advertise here at MiyTube',
+  description: null,
+  business_name: 'MiyTube Ads',
+  call_to_action: 'Start a Campaign',
+  destination_url: '/advertising',
+  media_url: PROMO_VIDEO_URL,
+  ad_format: 'skippable_instream',
+};
 
 const isSafeHttpUrl = (raw: string) => {
   try {
@@ -54,10 +67,16 @@ export const PrerollAd: React.FC<{ children: React.ReactNode; disabled?: boolean
 
     (async () => {
       const { data, error } = await supabase.rpc('get_active_preroll_ads', { _site: getCurrentSiteId() });
-      if (cancelled || error || !data || data.length === 0) return;
-      const pick = (data as PrerollCampaign[]).find(a => a.media_url && isSafeHttpUrl(a.media_url));
-      if (!pick) return;
+      if (cancelled) return;
+      const pick = (!error && data ? (data as PrerollCampaign[]) : []).find(
+        a => a.media_url && isSafeHttpUrl(a.media_url),
+      );
       sessionStorage.setItem(SESSION_KEY, String(Date.now()));
+      if (!pick) {
+        // No paid ad filled the slot — run MiyTube's own promo instead.
+        setAd(HOUSE_PREROLL);
+        return;
+      }
       setAd(pick);
       supabase.rpc('record_ad_event', { _campaign_id: pick.id, _event: 'impression' }).then(() => {});
     })();
@@ -70,8 +89,16 @@ export const PrerollAd: React.FC<{ children: React.ReactNode; disabled?: boolean
   const skippable = ad.ad_format === 'skippable_instream';
   const canSkip = skippable && elapsed >= SKIP_AFTER_SECONDS;
 
+  const isHouse = ad.id === HOUSE_PREROLL.id;
+
   const handleClickThrough = () => {
-    supabase.rpc('record_ad_event', { _campaign_id: ad.id, _event: 'click' }).then(() => {});
+    if (!isHouse) {
+      supabase.rpc('record_ad_event', { _campaign_id: ad.id, _event: 'click' }).then(() => {});
+    }
+    if (ad.destination_url.startsWith('/')) {
+      window.location.assign(ad.destination_url);
+      return;
+    }
     window.open(ad.destination_url, '_blank', 'noopener,noreferrer');
   };
 

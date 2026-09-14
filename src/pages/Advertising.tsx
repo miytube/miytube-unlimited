@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Megaphone, BarChart3, DollarSign, Plus, Globe, Headset } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { PromoVideo } from '@/components/branding/PromoVideo';
 
 const Advertising = () => {
   const { user } = useAuth();
@@ -60,6 +61,10 @@ const Advertising = () => {
 
           {/* Overview Tab */}
           <TabsContent value="overview">
+            <div className="mb-8 overflow-hidden rounded-lg border shadow-md aspect-video max-w-3xl">
+              <PromoVideo label="MiyTube advertising promo" />
+            </div>
+
             <div className="bg-card p-6 rounded-lg shadow-md mb-8">
               <h2 className="text-xl font-semibold mb-4">Advertise on MiyTube</h2>
               <p className="text-muted-foreground mb-6">
