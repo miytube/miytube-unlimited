@@ -55,5 +55,10 @@ export const HomeHero: React.FC<HomeHeroProps> = ({ siteName }) => (
         <span>Ad revenue and partner perks</span>
       </div>
     </div>
+    </div>
+
+    <div className="overflow-hidden rounded-xl border bg-background/60 shadow-sm aspect-video">
+      <PromoVideo label="MiyTube promo — creators get paid by viewers" />
+    </div>
   </section>
 );
