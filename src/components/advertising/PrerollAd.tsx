@@ -55,7 +55,9 @@ export const PrerollAd: React.FC<{ children: React.ReactNode; disabled?: boolean
   const [finished, setFinished] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [remaining, setRemaining] = useState<number | null>(null);
-  const [muted, setMuted] = useState(true);
+  // Ad opens with sound ON; if the browser blocks audible autoplay, we fall back
+  // to muted automatically and the user can unmute with the button.
+  const [muted, setMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -83,6 +85,20 @@ export const PrerollAd: React.FC<{ children: React.ReactNode; disabled?: boolean
 
     return () => { cancelled = true; };
   }, [disabled]);
+
+  // Try to play with sound; if the browser refuses audible autoplay, retry muted.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!ad || !el) return;
+    el.volume = 1;
+    el.muted = muted;
+    el.play().catch(() => {
+      if (!muted) {
+        setMuted(true);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ad]);
 
   if (!ad || finished) return <>{children}</>;
 
