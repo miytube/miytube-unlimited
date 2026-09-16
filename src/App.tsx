@@ -12,6 +12,7 @@ import AppRoutes from "./routes";
 import { VignetteAd } from "./components/advertising/VignetteAd";
 import { PaymentTestModeBanner } from "./components/PaymentTestModeBanner";
 import { AnalyticsTracker } from "./components/AnalyticsTracker";
+import { CookieBanner } from "./components/consent/CookieBanner";
 
 
 const queryClient = new QueryClient();

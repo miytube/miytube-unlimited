@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Youtube, Linkedin } from 'lucide-react';
 import { useSite } from '@/hooks/useSite';
 import { NewsletterSignup } from '@/components/NewsletterSignup';
+import { openCookiePreferences } from '@/utils/consent';
 
 
 export const Footer = () => {
