@@ -32,6 +32,7 @@ const App = () => (
                 <PaymentTestModeBanner />
                 <VignetteAd />
                 <AppRoutes />
+                <CookieBanner />
               </SidebarProvider>
             </BrowserRouter>
           </UploadedVideosProvider>

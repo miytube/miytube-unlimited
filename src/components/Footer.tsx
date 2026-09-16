@@ -101,7 +101,13 @@ export const Footer = () => {
               <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
               <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
               <a href="#" className="hover:text-foreground transition-colors">Accessibility</a>
-              <a href="#" className="hover:text-foreground transition-colors">Cookie Preferences</a>
+              <button
+                type="button"
+                onClick={openCookiePreferences}
+                className="hover:text-foreground transition-colors"
+              >
+                Cookie Preferences
+              </button>
               <Link to="/contact" className="hover:text-foreground transition-colors">Contact Us</Link>
             </div>
             <div className="text-xs text-muted-foreground">
