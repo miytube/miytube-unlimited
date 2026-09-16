@@ -29,8 +29,39 @@ const Privacy = () => {
               We may also collect information about how the Service is accessed and used ("Usage Data"). This Usage Data may include information such as your computer's Internet Protocol address (IP address), browser type, browser version, the pages of our Service that you visit, the time and date of your visit, the time spent on those pages, unique device identifiers, and other diagnostic data.
             </p>
             <h3 className="text-xl font-medium mb-2">C. Cookies and Tracking</h3>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-4">
               We use cookies and similar tracking technologies to track activity on our Service and hold certain information. Cookies are files with a small amount of data which may include an anonymous unique identifier. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Beyond the cookies strictly necessary to run the site, we use the following
+              third-party services:
+            </p>
+            <ul className="list-disc pl-6 text-muted-foreground mb-4 space-y-1">
+              <li>
+                <strong>Google Analytics</strong> (Google LLC, USA) — audience measurement:
+                pages viewed, searches, uploads, referrer, approximate location and device data.
+              </li>
+              <li>
+                <strong>Microsoft Clarity</strong> (Microsoft Corporation, USA) — anonymised
+                session and interaction analysis to improve the site.
+              </li>
+              <li>
+                <strong>Google AdSense</strong> (Google LLC, USA) — serving and measuring
+                advertising, including personalised advertising where permitted.
+              </li>
+            </ul>
+            <p className="text-muted-foreground mb-4">
+              These providers receive your IP address and browser information, and may transfer,
+              store or process that data in the United States and other countries outside the
+              EEA/UK under the applicable Standard Contractual Clauses and the EU–U.S. Data
+              Privacy Framework.
+            </p>
+            <p className="text-muted-foreground">
+              If you are in the EEA, the United Kingdom or Switzerland, none of these services
+              load until you accept them in our cookie banner. Everywhere else they are active by
+              default and you may opt out at any time. You can review, change or withdraw your
+              choice whenever you like through the <strong>Cookie Preferences</strong> link in the
+              site footer; withdrawal takes effect immediately for all future processing.
             </p>
           </section>
           
