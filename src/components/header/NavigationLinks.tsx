@@ -22,6 +22,11 @@ export const NavigationLinks: React.FC = () => {
       <ContentDropdown />
       <BusinessDropdown />
 
+      <Link to="/the-room" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+        <Armchair size={16} />
+        <span>The Room</span>
+      </Link>
+
       <Link
         to="/monetization"
         className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
