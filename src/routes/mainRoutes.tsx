@@ -27,6 +27,7 @@ import MiytubeAtCha from "@/pages/MiytubeAtCha";
 import ChaRooms from "@/pages/ChaRooms";
 import ChaRoom from "@/pages/ChaRoom";
 import TalkAtCha from "@/pages/TalkAtCha";
+import TheRoom from "@/pages/TheRoom";
 import Educational from "@/pages/Educational";
 import Channel from "@/pages/Channel";
 import Auth from "@/pages/Auth";
@@ -241,6 +242,9 @@ export const mainRoutes = [
   // Isle of Man TT Motorcycle Racing
   <Route key="isle-of-man-tt" path="/sports/isle-of-man-tt" element={<IsleOfManTT />} />,
   <Route key="isle-of-man-tt-alt" path="/sports-isle-of-man-tt" element={<IsleOfManTT />} />,
+
+  // The Room — MiyTube interview series
+  <Route key="the-room" path="/the-room" element={<TheRoom />} />,
 
 
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,
