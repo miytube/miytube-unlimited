@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, MessageSquare, Megaphone, Users } from 'lucide-react';
+import { Film, MessageSquare, Megaphone, Users, Armchair } from 'lucide-react';
 import { ContentDropdown } from './ContentDropdown';
 import { BusinessDropdown } from './BusinessDropdown';
 
