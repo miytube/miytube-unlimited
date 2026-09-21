@@ -241,6 +241,8 @@ export const mainRoutes = [
 
   // Isle of Man TT Motorcycle Racing
   <Route key="isle-of-man-tt" path="/sports/isle-of-man-tt" element={<IsleOfManTT />} />,
+  <Route key="isle-of-man-tt-alt" path="/sports-isle-of-man-tt" element={<IsleOfManTT />} />,
+
   // The Room — MiyTube interview series
   <Route key="the-room" path="/the-room" element={<TheRoom />} />,
 
