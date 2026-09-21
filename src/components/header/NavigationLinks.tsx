@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, MessageSquare, Megaphone, Users } from 'lucide-react';
+import { Film, MessageSquare, Megaphone, Users, Armchair } from 'lucide-react';
 import { ContentDropdown } from './ContentDropdown';
 import { BusinessDropdown } from './BusinessDropdown';
 
@@ -21,6 +21,11 @@ export const NavigationLinks: React.FC = () => {
       
       <ContentDropdown />
       <BusinessDropdown />
+
+      <Link to="/the-room" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+        <Armchair size={16} />
+        <span>The Room</span>
+      </Link>
 
       <Link
         to="/monetization"
