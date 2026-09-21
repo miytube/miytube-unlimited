@@ -19,6 +19,17 @@ export type HouseAd = {
 
 export const HOUSE_ADS: HouseAd[] = [
   {
+    id: 'house-the-room-interviews',
+    headline: 'The Room — everyone has a story',
+    description:
+      'Watch honest conversations with creators, locals and unforgettable characters — or step into The Room and tell your own story.',
+    businessName: 'The Room on MiyTube',
+    callToAction: 'Enter The Room',
+    destinationUrl: '/the-room',
+    placements: ['homepage', 'watch'],
+    theme: 'red',
+  },
+  {
     id: 'house-advertise-launch',
     headline: 'We have your Snapshot — advertise here at MiyTube',
     description:
