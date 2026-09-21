@@ -17,6 +17,9 @@ export type HouseAd = {
   theme?: 'red' | 'blue' | 'yellow';
 };
 
+// Promos that get priority in the rotation (shown roughly every other house window).
+export const FEATURED_HOUSE_AD_IDS: string[] = ['house-the-room-interviews'];
+
 export const HOUSE_ADS: HouseAd[] = [
   {
     id: 'house-the-room-interviews',
