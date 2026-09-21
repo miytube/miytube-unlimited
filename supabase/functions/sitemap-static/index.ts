@@ -25,6 +25,7 @@ const staticRoutes = [
   { path: '/travel-events', priority: '0.7', changefreq: 'weekly' },
   { path: '/how-to-style', priority: '0.7', changefreq: 'weekly' },
   { path: '/blog', priority: '0.7', changefreq: 'weekly' },
+  { path: '/the-room', priority: '0.7', changefreq: 'weekly' },
   { path: '/about', priority: '0.5', changefreq: 'monthly' },
   { path: '/contact', priority: '0.5', changefreq: 'monthly' },
   { path: '/terms', priority: '0.3', changefreq: 'yearly' },

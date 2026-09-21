@@ -16,7 +16,8 @@
   <url><loc>https://www.miytube.com/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
   <url><loc>https://www.miytube.com/copyright</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
   <url><loc>https://www.miytube.com/advertising</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.miytube.com/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://www.miytube.com/blog</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://www.miytube.com/the-room</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.miytube.com/long-videos</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.miytube.com/news</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.miytube.com/talk-at-cha</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
