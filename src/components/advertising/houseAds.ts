@@ -104,8 +104,16 @@ export function pickHouseAdForNow(placement: 'homepage' | 'watch'): HouseAd | nu
   const isHouseWindow = bucket % 2 === 0;
   if (!isHouseWindow) return null;
 
-  // Rotate by the house-window index (not the raw bucket), otherwise an even-only
-  // bucket number always lands on the same ad when there are 2 eligible ads.
   const houseWindowIndex = Math.floor(bucket / 2);
-  return eligible[houseWindowIndex % eligible.length];
+
+  // Featured promos take every other house window so they surface daily,
+  // not once per full rotation. The rest share the remaining windows.
+  const featured = eligible.filter(a => FEATURED_HOUSE_AD_IDS.includes(a.id));
+  const rest = eligible.filter(a => !FEATURED_HOUSE_AD_IDS.includes(a.id));
+
+  if (featured.length > 0 && houseWindowIndex % 2 === 0) {
+    return featured[Math.floor(houseWindowIndex / 2) % featured.length];
+  }
+  const pool = rest.length > 0 ? rest : featured;
+  return pool[Math.floor(houseWindowIndex / 2) % pool.length];
 }
