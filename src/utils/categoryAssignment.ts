@@ -182,8 +182,13 @@ export const canonicalizeCategoryAssignment = (
 
   // Mathematics is presented as a top-level page and upload choice, while its
   // existing videos remain stored under the original Education / Math bucket.
+  // Specific Mathematics sub-pages (e.g. Algorithms and Computation) keep
+  // their own subcategory so their watch page shows the upload.
   if (normalizedCategory === 'mathematics') {
-    return { category: 'education', subcategory: 'math' };
+    if (!normalizedSubcategory || ['math', 'mathematics', 'maths'].includes(normalizedSubcategory)) {
+      return { category: 'education', subcategory: 'math' };
+    }
+    return { category: 'mathematics', subcategory: normalizedSubcategory };
   }
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 
