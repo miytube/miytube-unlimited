@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
 
 export const newSubcategoryRoutes = [
@@ -51,7 +51,7 @@ export const newSubcategoryRoutes = [
   <Route key="music-artists-works" path="/music-artists/works" element={<GenericSubcategoryPage />} />,
 
   // Education routes
-  <Route key="education-math" path="/education/math" element={<GenericSubcategoryPage />} />,
+  <Route key="education-math" path="/education/math" element={<Navigate to="/mathematics" replace />} />,
   <Route key="education-science" path="/education/science" element={<GenericSubcategoryPage />} />,
   <Route key="education-music" path="/education/music-education" element={<GenericSubcategoryPage />} />,
 

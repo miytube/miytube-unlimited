@@ -22,6 +22,7 @@
   <url><loc>https://www.miytube.com/news</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.miytube.com/talk-at-cha</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.miytube.com/educational</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.miytube.com/mathematics</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.miytube.com/monetization</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.miytube.com/watchlist</loc><changefreq>daily</changefreq><priority>0.6</priority></url>
   

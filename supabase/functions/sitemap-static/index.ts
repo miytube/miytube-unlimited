@@ -16,6 +16,7 @@ const staticRoutes = [
   { path: '/film-animation', priority: '0.8', changefreq: 'weekly' },
   { path: '/comedy', priority: '0.8', changefreq: 'weekly' },
   { path: '/educational', priority: '0.8', changefreq: 'weekly' },
+  { path: '/mathematics', priority: '0.8', changefreq: 'weekly' },
   { path: '/news', priority: '0.8', changefreq: 'daily' },
   { path: '/audio', priority: '0.8', changefreq: 'weekly' },
   { path: '/meditation', priority: '0.8', changefreq: 'weekly' },

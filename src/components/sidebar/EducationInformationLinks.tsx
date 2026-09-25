@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { GraduationCap, Scissors, Microscope } from 'lucide-react';
+import { Calculator, GraduationCap, Scissors, Microscope } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EducationInformationLinks: React.FC = () => {
@@ -21,10 +21,15 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'religion', label: 'Religion', path: '/education/religion' },
         { id: 'nursing', label: 'Nursing & Healthcare', path: '/education/nursing' },
         { id: 'learn', label: 'Learning Techniques', path: '/education/learn' },
-        { id: 'math', label: 'Mathematics', path: '/education/math' },
         { id: 'science', label: 'Science', path: '/education/science' },
         { id: 'music-education', label: 'Music Education', path: '/education/music-education' }
       ]
+    },
+    {
+      id: 'mathematics',
+      icon: Calculator,
+      label: 'Mathematics',
+      path: '/mathematics',
     },
     { 
       id: 'how-to-style', 

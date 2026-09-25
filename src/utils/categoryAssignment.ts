@@ -179,6 +179,12 @@ export const canonicalizeCategoryAssignment = (
   const normalizedSubcategory = normalizedCategory && rawNormalizedSubcategory
     ? subcategoryAliasesByParent[normalizedCategory]?.[rawNormalizedSubcategory] || rawNormalizedSubcategory
     : rawNormalizedSubcategory;
+
+  // Mathematics is presented as a top-level page and upload choice, while its
+  // existing videos remain stored under the original Education / Math bucket.
+  if (normalizedCategory === 'mathematics') {
+    return { category: 'education', subcategory: 'math' };
+  }
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 
   // Sidebar label "Cars & Vehicles" points at /autos-vehicles, but every
@@ -254,6 +260,7 @@ export const getKnownParentCategoryOptions = (): { id: string; name: string }[] 
   // Mid-level hubs that are themselves subcategory rows but should also be
   // selectable as parent categories in the upload form.
   const midLevelParents: { id: string; name: string }[] = [
+    { id: 'mathematics', name: 'Mathematics' },
     { id: 'nfl', name: 'NFL' },
     { id: 'nfl-football', name: 'NFL Football' },
   ];

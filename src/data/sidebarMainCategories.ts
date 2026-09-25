@@ -75,6 +75,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'magic-tricks', name: 'Magic Tricks' },
   { slug: 'mammals', name: 'Mammals' },
   { slug: 'martial-arts', name: 'Martial Arts' },
+  { slug: 'mathematics', name: 'Mathematics' },
   { slug: 'meditation', name: 'Meditation' },
   { slug: 'military', name: 'Military' },
   { slug: 'models', name: 'Models' },

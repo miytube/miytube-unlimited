@@ -1202,7 +1202,7 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="education-biblical-history" path="/education/biblical-history" element={<GenericSubcategoryPage />} />,
   <Route key="education-bible-quotes" path="/education/bible-quotes" element={<GenericSubcategoryPage />} />,
   <Route key="education-learn" path="/education/learn" element={<GenericSubcategoryPage />} />,
-  <Route key="education-math" path="/education/math" element={<GenericSubcategoryPage />} />,
+  <Route key="education-math" path="/education/math" element={<Navigate to="/mathematics" replace />} />,
   <Route key="education-science" path="/education/science" element={<GenericSubcategoryPage />} />,
   <Route key="education-music-education" path="/education/music-education" element={<GenericSubcategoryPage />} />,
   <Route key="machines" path="/machines" element={<GenericSubcategoryPage />} />,

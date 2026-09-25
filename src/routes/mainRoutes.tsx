@@ -29,6 +29,7 @@ import ChaRoom from "@/pages/ChaRoom";
 import TalkAtCha from "@/pages/TalkAtCha";
 import TheRoom from "@/pages/TheRoom";
 import Educational from "@/pages/Educational";
+import Mathematics from "@/pages/Mathematics";
 import Channel from "@/pages/Channel";
 import Auth from "@/pages/Auth";
 import Account from "@/pages/Account";
@@ -115,6 +116,7 @@ export const mainRoutes = [
   <Route key="cha-rooms" path="/cha-rooms" element={<ChaRooms />} />,
   <Route key="cha-room" path="/cha-rooms/:roomId" element={<ChaRoom />} />,
   <Route key="educational" path="/educational" element={<Educational />} />,
+  <Route key="mathematics" path="/mathematics" element={<Mathematics />} />,
   <Route key="channel" path="/channel" element={<Channel />} />,
   <Route key="channel-id" path="/channel/:id" element={<Channel />} />,
   <Route key="channel-handle" path="/@:handle" element={<Channel />} />,
