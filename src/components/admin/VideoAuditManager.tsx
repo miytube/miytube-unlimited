@@ -108,6 +108,15 @@ export const VideoAuditManager = () => {
         query = query.or(`title.ilike.${term},file_name.ilike.${term},cloud_url.ilike.${term}`);
       }
 
+      // Server-side backend filter so pagination only covers matching rows
+      if (backendFilter === 'supabase') {
+        query = query.ilike('cloud_url', '%supabase.co/storage%');
+      } else if (backendFilter === 'aws_s3') {
+        query = query.or('cloud_url.ilike.%amazonaws.com%,cloud_url.ilike.%.s3.%');
+      } else if (backendFilter === 'missing') {
+        query = query.is('cloud_url', null);
+      }
+
       const { data, error, count } = await query;
       if (error) throw error;
       setVideos((data || []) as VideoRow[]);
@@ -128,7 +137,7 @@ export const VideoAuditManager = () => {
   useEffect(() => {
     fetchVideos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, backendFilter]);
 
   const handleSearch = () => {
     setPage(0);
@@ -400,7 +409,10 @@ export const VideoAuditManager = () => {
                 key={b}
                 size="sm"
                 variant={backendFilter === b ? 'default' : 'outline'}
-                onClick={() => setBackendFilter(b)}
+                onClick={() => {
+                  setBackendFilter(b);
+                  setPage(0);
+                }}
               >
                 {label}
               </Button>
