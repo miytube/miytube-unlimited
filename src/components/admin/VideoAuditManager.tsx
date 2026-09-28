@@ -137,7 +137,7 @@ export const VideoAuditManager = () => {
   useEffect(() => {
     fetchVideos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, backendFilter]);
 
   const handleSearch = () => {
     setPage(0);
@@ -409,7 +409,10 @@ export const VideoAuditManager = () => {
                 key={b}
                 size="sm"
                 variant={backendFilter === b ? 'default' : 'outline'}
-                onClick={() => setBackendFilter(b)}
+                onClick={() => {
+                  setBackendFilter(b);
+                  setPage(0);
+                }}
               >
                 {label}
               </Button>
