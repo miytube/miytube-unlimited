@@ -355,7 +355,7 @@ const TheRoom = () => {
                     onChange={(e) => setTopicInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleLaunch()}
                     placeholder="Enter a single keyword or topic..."
-                    className="h-12 text-base rounded-full px-5"
+                    className="dark h-12 text-base rounded-full px-5 text-foreground caret-primary"
                   />
                   <Button
                     onClick={() => handleLaunch()}
@@ -574,7 +574,7 @@ const TheRoom = () => {
                   onChange={(e) => setGuestInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder={`Say something about ${topic}...`}
-                  className="h-11 rounded-full px-5"
+                  className="dark h-11 rounded-full px-5 text-foreground caret-primary"
                   disabled={hostThinking}
                 />
                 <Button onClick={handleSend} disabled={hostThinking || !guestInput.trim()} className="h-11 rounded-full px-5">
