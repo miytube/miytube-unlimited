@@ -89,6 +89,7 @@ const TheRoom = () => {
   const [hostThinking, setHostThinking] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
   const [roomError, setRoomError] = useState<string | null>(null);
+  const [themeVibe, setThemeVibe] = useState<'INTENSE' | 'DEFAULT'>('DEFAULT');
   const feedRef = useRef<HTMLDivElement>(null);
 
   // Blind-hook teaser (cinematic intro)
@@ -197,6 +198,7 @@ const TheRoom = () => {
 
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
+      if (data?.appliedTheme) setThemeVibe(data.appliedTheme);
       if (data?.reply) {
         setMessages((prev) => [...prev, { sender: 'AI_HOST', text: data.reply }]);
       }
@@ -216,6 +218,7 @@ const TheRoom = () => {
     setIsLaunched(true);
     setMessages([]);
     setCameraReady(false);
+    setThemeVibe('DEFAULT');
     setRoomError(null);
     window.setTimeout(() => setCameraReady(true), 1200);
     askHost(chosen, []);
@@ -492,6 +495,9 @@ const TheRoom = () => {
                 <div className="min-w-0">
                   <p className="text-xs uppercase tracking-widest text-neutral-500">Topic Canvas</p>
                   <span className="mt-1 inline-block max-w-full truncate bg-emerald-950/30 border border-emerald-800/40 text-emerald-400 font-mono tracking-wider px-3 py-1 rounded-md text-xs uppercase">{topic}</span>
+                  {themeVibe === 'INTENSE' && (
+                    <span className="ml-2 inline-block font-mono text-[10px] tracking-widest uppercase px-2 py-1 rounded-md border border-amber-700/50 bg-amber-950/30 text-amber-400">Intense</span>
+                  )}
                 </div>
                 <Button variant="ghost" size="sm" onClick={exitRoom} className="rounded-full shrink-0">
                   <X className="mr-1 h-4 w-4" /> Exit Room
@@ -499,16 +505,24 @@ const TheRoom = () => {
               </div>
 
               <div ref={feedRef} className="flex-1 overflow-y-auto px-5 py-6 space-y-5 max-h-[520px]">
+                {messages.length === 0 && hostThinking && (
+                  <div className="flex flex-col items-center justify-center py-20 font-mono text-center space-y-4 animate-pulse">
+                    <div className="h-2 w-24 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
+                    <p className="text-xs uppercase tracking-widest text-neutral-400">Allocating Studio Shutter Feed...</p>
+                    <p className="text-[10px] text-neutral-600">Initializing unique network pipeline context</p>
+                  </div>
+                )}
+
                 {messages.map((m, i) => (
                   <div key={i} className={m.sender === 'AI_HOST' ? '' : 'text-right'}>
-                    <p className="text-[11px] uppercase tracking-widest text-muted-foreground mb-1">
-                      {m.sender === 'AI_HOST' ? 'Host Response' : 'You'}
+                    <p className="text-[11px] font-mono uppercase tracking-widest text-neutral-500 mb-1">
+                      {m.sender === 'AI_HOST' ? 'HOST' : 'USER'}
                     </p>
                     <div
-                      className={`inline-block max-w-[85%] text-left rounded-2xl px-4 py-3 leading-relaxed ${
+                      className={`inline-block max-w-[85%] text-left px-4 py-3 leading-relaxed ${
                         m.sender === 'AI_HOST'
-                          ? 'bg-secondary text-secondary-foreground'
-                          : 'bg-primary text-primary-foreground'
+                          ? 'rounded-2xl bg-neutral-900/60 border border-neutral-800 text-neutral-100'
+                          : 'rounded-r-2xl rounded-l-md bg-emerald-950/20 border-l-2 border-emerald-500 text-neutral-100'
                       }`}
                     >
                       {m.text}
@@ -516,9 +530,9 @@ const TheRoom = () => {
                   </div>
                 ))}
 
-                {hostThinking && (
-                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                    <Loader2 className="h-4 w-4 animate-spin" /> The host is talking...
+                {hostThinking && messages.length > 0 && (
+                  <div className="flex items-center gap-2 text-neutral-500 text-sm font-mono">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Host is typing...
                   </div>
                 )}
 

@@ -44,12 +44,16 @@ Deno.serve(async (req) => {
         .map((m) => ({ role: m.role, content: m.content.slice(0, 4000) })),
     ];
 
+    const intense = /\b(sport|sports|boxing|mma|ufc|fight|nfl|nba|wnba|mlb|football|basketball|baseball|soccer|racing|wrestling|hockey|tennis|golf)\b/i.test(topic);
+    const appliedTheme = intense ? "INTENSE" : "DEFAULT";
+
     if (messages.length === 1) {
       messages.push({
         role: "user",
-        content: `Open the show. Welcome me into the room and kick off the conversation about "${topic}" with one opening question. Two sentences max.`,
+        content: `Cold open the show on "${topic}". No hello, no welcome — seize the topic immediately with one sharp, analytical statement, then one opening question. ${intense ? "Bring high-energy, fight-night intensity." : "Calm, precise, cinematic tone."} Two sentences max.`,
       });
     }
+
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -74,7 +78,7 @@ Deno.serve(async (req) => {
     const reply = data?.choices?.[0]?.message?.content?.trim();
     if (!reply) return json({ error: "The host went quiet. Try that again." }, 500);
 
-    return json({ reply });
+    return json({ success: true, reply, openingStatement: reply, appliedTheme });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error ?? "");
     console.error("the-room-host error", message);
