@@ -1,0 +1,1 @@
+- Keep The Room's structured media canvas as a validated optional AI response rendered in session state; this avoids storing conversations and prevents malformed model output from breaking the page.

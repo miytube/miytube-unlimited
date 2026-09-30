@@ -1,0 +1,2 @@
+- [x] Add optional structured media canvas output to The Room's AI host.
+- [x] Render and verify the canvas in the live room, resetting it when a new room begins.

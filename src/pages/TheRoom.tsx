@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { VideoCard } from '@/components/VideoCard';
+import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
 
 interface RoomVideo {
   id: string;
@@ -85,6 +86,7 @@ const TheRoom = () => {
   const [topic, setTopic] = useState('');
   const [isLaunched, setIsLaunched] = useState(false);
   const [messages, setMessages] = useState<RoomMessage[]>([]);
+  const [activeCanvasBlock, setActiveCanvasBlock] = useState<CanvasBlockData | null>(null);
   const [guestInput, setGuestInput] = useState('');
   const [hostThinking, setHostThinking] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
@@ -179,8 +181,10 @@ const TheRoom = () => {
   }, []);
 
   useEffect(() => {
-    feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
-  }, [messages, hostThinking]);
+    const feed = feedRef.current;
+    if (!feed) return;
+    feed.scrollTo({ top: activeCanvasBlock && !hostThinking ? 0 : feed.scrollHeight, behavior: 'smooth' });
+  }, [messages, hostThinking, activeCanvasBlock]);
 
   const askHost = async (nextTopic: string, history: RoomMessage[], actionType?: string) => {
     setHostThinking(true);
@@ -202,6 +206,7 @@ const TheRoom = () => {
       if (data?.appliedTheme) setThemeVibe(data.appliedTheme);
       if (data?.reply) {
         setMessages((prev) => [...prev, { sender: 'AI_HOST', text: data.reply }]);
+        setActiveCanvasBlock(data.canvasBlock ?? null);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'The host hit a snag. Try again.';
@@ -218,6 +223,7 @@ const TheRoom = () => {
     setTopicInput(chosen);
     setIsLaunched(true);
     setMessages([]);
+    setActiveCanvasBlock(null);
     setCameraReady(false);
     setThemeVibe('DEFAULT');
     setRoomError(null);
@@ -246,6 +252,7 @@ const TheRoom = () => {
     setTopic('');
     setTopicInput('');
     setMessages([]);
+    setActiveCanvasBlock(null);
     setGuestInput('');
     setRoomError(null);
     setCameraReady(false);
@@ -496,9 +503,9 @@ const TheRoom = () => {
           </>
         ) : (
           /* Live room */
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-5 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-5 mb-12">
             {/* Topic canvas */}
-            <div className="flex flex-col min-h-[600px] rounded-xl border border-neutral-900 bg-gradient-to-b from-neutral-950 via-neutral-900/10 to-neutral-950 shadow-[0_0_50px_-12px_rgba(16,185,129,0.05)] transition-all duration-500 focus-within:border-emerald-500/50">
+            <div className="flex flex-col min-w-0 min-h-[600px] rounded-xl border border-neutral-900 bg-gradient-to-b from-neutral-950 via-neutral-900/10 to-neutral-950 shadow-[0_0_50px_-12px_rgba(16,185,129,0.05)] transition-all duration-500 focus-within:border-emerald-500/50">
               <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border">
                 <div className="min-w-0">
                   <p className="text-xs uppercase tracking-widest text-neutral-500">Topic Canvas</p>
@@ -513,6 +520,7 @@ const TheRoom = () => {
               </div>
 
               <div ref={feedRef} className="flex-1 overflow-y-auto px-5 py-6 space-y-5 max-h-[520px]">
+                <MediaCanvasRenderer block={activeCanvasBlock} />
                 {messages.length === 0 && hostThinking && (
                   <div className="flex flex-col items-center justify-center py-20 font-mono text-center space-y-4 animate-pulse">
                     <div className="h-2 w-24 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
