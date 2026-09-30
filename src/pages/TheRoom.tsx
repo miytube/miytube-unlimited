@@ -323,7 +323,7 @@ const TheRoom = () => {
     <Layout>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
-      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4 bg-neutral-950 text-neutral-100 font-sans selection:bg-emerald-500/20 selection:text-emerald-300 rounded-xl">
+      <div className="dark py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4 bg-neutral-950 text-neutral-100 font-sans selection:bg-emerald-500/20 selection:text-emerald-300 rounded-xl">
         <p className="text-sm text-muted-foreground mb-2">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link> / The Room
         </p>
@@ -566,14 +566,15 @@ const TheRoom = () => {
                   ['CHALLENGE', 'Opposing Critique'],
                   ['SYNTHESIZE', 'Synthesize Data'],
                 ] as const).map(([id, label]) => (
-                  <button
+                  <Button
                     key={id}
+                    variant="outline"
                     disabled={hostThinking || messages.length === 0}
                     onClick={() => handleModifier(id, label)}
-                    className="px-3 py-1.5 rounded-lg border border-border bg-card/40 text-xs font-mono text-muted-foreground transition-all hover:border-primary/50 hover:text-primary active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
+                    className="h-auto px-3 py-1.5 rounded-md border-border bg-card text-xs font-mono text-card-foreground hover:border-primary/50 hover:text-primary disabled:opacity-70"
                   >
                     {label}
-                  </button>
+                  </Button>
                 ))}
               </div>
               <div className="px-4 pb-4 pt-2 flex gap-2">
