@@ -182,13 +182,14 @@ const TheRoom = () => {
     feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, hostThinking]);
 
-  const askHost = async (nextTopic: string, history: RoomMessage[]) => {
+  const askHost = async (nextTopic: string, history: RoomMessage[], actionType?: string) => {
     setHostThinking(true);
     setRoomError(null);
     try {
       const { data, error } = await supabase.functions.invoke('the-room-host', {
         body: {
           topic: nextTopic,
+          actionType,
           messages: history.map((m) => ({
             role: m.sender === 'AI_HOST' ? 'assistant' : 'user',
             content: m.text,
@@ -231,6 +232,13 @@ const TheRoom = () => {
     setMessages(next);
     setGuestInput('');
     askHost(topic, next);
+  };
+
+  const handleModifier = (actionType: string, label: string) => {
+    if (hostThinking) return;
+    const history = messages;
+    setMessages([...history, { sender: 'GUEST', text: `[${label}]` }]);
+    askHost(topic, history, actionType);
   };
 
   const exitRoom = () => {
@@ -543,7 +551,24 @@ const TheRoom = () => {
                 )}
               </div>
 
-              <div className="border-t border-border p-4 flex gap-2">
+              <div className="border-t border-border px-4 pt-3 flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-mono tracking-widest text-muted-foreground uppercase mr-1">Modifiers:</span>
+                {([
+                  ['DEEPEN', 'Deepen Analysis'],
+                  ['CHALLENGE', 'Opposing Critique'],
+                  ['SYNTHESIZE', 'Synthesize Data'],
+                ] as const).map(([id, label]) => (
+                  <button
+                    key={id}
+                    disabled={hostThinking || messages.length === 0}
+                    onClick={() => handleModifier(id, label)}
+                    className="px-3 py-1.5 rounded-lg border border-border bg-card/40 text-xs font-mono text-muted-foreground transition-all hover:border-primary/50 hover:text-primary active:scale-95 disabled:opacity-40 disabled:pointer-events-none"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className="px-4 pb-4 pt-2 flex gap-2">
                 <Input
                   value={guestInput}
                   onChange={(e) => setGuestInput(e.target.value)}
