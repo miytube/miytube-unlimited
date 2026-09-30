@@ -91,6 +91,29 @@ const TheRoom = () => {
   const [roomError, setRoomError] = useState<string | null>(null);
   const feedRef = useRef<HTMLDivElement>(null);
 
+  // Blind-hook teaser (cinematic intro)
+  const [showTeaser, setShowTeaser] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return sessionStorage.getItem('the-room-teaser-seen') !== '1';
+  });
+  const [teaserStep, setTeaserStep] = useState(0);
+
+  const dismissTeaser = () => {
+    try { sessionStorage.setItem('the-room-teaser-seen', '1'); } catch { /* ignore */ }
+    setShowTeaser(false);
+  };
+
+  useEffect(() => {
+    if (!showTeaser) return;
+    const timers = [
+      window.setTimeout(() => setTeaserStep(1), 2500),
+      window.setTimeout(() => setTeaserStep(2), 5500),
+      window.setTimeout(() => setTeaserStep(3), 8500),
+    ];
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, [showTeaser]);
+
+
   usePageSEO({
     title: 'The Room — You name the topic. We build the room. | MiyTube',
     description:
