@@ -240,8 +240,70 @@ const TheRoom = () => {
     setCameraReady(false);
   };
 
+  if (showTeaser) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-neutral-950 px-6 text-center select-none overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{
+            background:
+              'radial-gradient(ellipse 60% 60% at 50% 40%, hsl(var(--primary) / 0.18), transparent 70%)',
+          }}
+        />
+
+        <div className="relative max-w-2xl w-full">
+          {teaserStep === 0 && (
+            <p className="animate-fade-in text-xl sm:text-3xl font-light tracking-wide text-neutral-400 leading-relaxed">
+              The internet gave you infinite streams to watch<span className="animate-pulse">...</span>
+            </p>
+          )}
+
+          {teaserStep === 1 && (
+            <p className="animate-fade-in text-xl sm:text-3xl font-light tracking-wide text-neutral-200 leading-relaxed">
+              ...but it never built a space specifically for your mind.
+            </p>
+          )}
+
+          {teaserStep === 2 && (
+            <div className="animate-fade-in flex flex-col items-center gap-4">
+              <span className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.35em] text-neutral-500">
+                <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" /> Camera initializing
+              </span>
+              <p className="text-lg sm:text-2xl font-light text-neutral-400">
+                Immediate. Immersive. Fully interactive.
+              </p>
+            </div>
+          )}
+
+          {teaserStep >= 3 && (
+            <div className="animate-fade-in flex flex-col items-center gap-6">
+              <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-white">The Room</h1>
+              <p className="text-lg sm:text-2xl font-light text-neutral-300">
+                You name the topic. We build the room.
+              </p>
+              <Button onClick={dismissTeaser} className="h-12 rounded-full px-8 text-base">
+                <Sparkles className="mr-2 h-4 w-4" /> Step Inside
+              </Button>
+              <p className="text-[11px] font-mono uppercase tracking-[0.3em] text-neutral-600">miytube.com</p>
+            </div>
+          )}
+        </div>
+
+        {teaserStep < 3 && (
+          <button
+            onClick={dismissTeaser}
+            className="absolute bottom-8 right-8 text-xs uppercase tracking-widest text-neutral-500 hover:text-neutral-200 transition-colors"
+          >
+            Skip intro
+          </button>
+        )}
+      </div>
+    );
+  }
+
   return (
     <Layout>
+
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
         <p className="text-sm text-muted-foreground mb-2">
