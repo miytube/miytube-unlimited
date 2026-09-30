@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { VideoCard } from '@/components/VideoCard';
+import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
 
 interface RoomVideo {
   id: string;
@@ -85,6 +86,7 @@ const TheRoom = () => {
   const [topic, setTopic] = useState('');
   const [isLaunched, setIsLaunched] = useState(false);
   const [messages, setMessages] = useState<RoomMessage[]>([]);
+  const [activeCanvasBlock, setActiveCanvasBlock] = useState<CanvasBlockData | null>(null);
   const [guestInput, setGuestInput] = useState('');
   const [hostThinking, setHostThinking] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
@@ -202,6 +204,7 @@ const TheRoom = () => {
       if (data?.appliedTheme) setThemeVibe(data.appliedTheme);
       if (data?.reply) {
         setMessages((prev) => [...prev, { sender: 'AI_HOST', text: data.reply }]);
+        setActiveCanvasBlock(data.canvasBlock ?? null);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'The host hit a snag. Try again.';
@@ -218,6 +221,7 @@ const TheRoom = () => {
     setTopicInput(chosen);
     setIsLaunched(true);
     setMessages([]);
+    setActiveCanvasBlock(null);
     setCameraReady(false);
     setThemeVibe('DEFAULT');
     setRoomError(null);
@@ -246,6 +250,7 @@ const TheRoom = () => {
     setTopic('');
     setTopicInput('');
     setMessages([]);
+    setActiveCanvasBlock(null);
     setGuestInput('');
     setRoomError(null);
     setCameraReady(false);
@@ -513,6 +518,7 @@ const TheRoom = () => {
               </div>
 
               <div ref={feedRef} className="flex-1 overflow-y-auto px-5 py-6 space-y-5 max-h-[520px]">
+                <MediaCanvasRenderer block={activeCanvasBlock} />
                 {messages.length === 0 && hostThinking && (
                   <div className="flex flex-col items-center justify-center py-20 font-mono text-center space-y-4 animate-pulse">
                     <div className="h-2 w-24 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />

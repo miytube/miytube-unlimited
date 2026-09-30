@@ -1,8 +1,19 @@
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { z } from "npm:zod@3";
+
+const requestSchema = z.object({
+  topic: z.string().trim().min(1).max(120),
+  actionType: z.enum(["DEEPEN", "CHALLENGE", "SYNTHESIZE"]).optional(),
+  messages: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(4000) })).max(100).default([]),
+});
+
+const shortText = z.string().trim().min(1).max(500);
+const canvasSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("METRICS_GRID"), title: shortText.max(80), payload: z.object({ metrics: z.array(z.object({ label: shortText, value: shortText, variance: z.string().max(100).optional() })).min(1).max(9) }) }),
+  z.object({ type: z.literal("COMPARISON_TABLE"), title: shortText.max(80), payload: z.object({ headers: z.array(shortText).min(2).max(5), rows: z.array(z.array(z.string().max(500))).min(1).max(12) }) }),
+  z.object({ type: z.literal("CODE_SANDBOX"), title: shortText.max(80), payload: z.object({ language: shortText.max(30), snippets: z.string().min(1).max(5000) }) }),
+]);
+const answerSchema = z.object({ text: z.string().trim().min(1).max(12000), canvasBlock: canvasSchema.nullable().optional() });
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -21,27 +32,28 @@ How you host:
 - Stay on the room's topic unless the guest clearly changes it.
 - Never claim to be human. If asked, you're The Room's AI host on MiyTube.
 
+Always respond as a JSON object with "text" (your conversational reply) and "canvasBlock" (null unless a visual breakdown truly helps). If the user's topic or request calls for a deep analytical breakdown, a structural comparison, or heavy metrics tracking, include exactly one optional canvasBlock:
+{"type":"METRICS_GRID","title":"UPPERCASE TITLE","payload":{"metrics":[{"label":"...","value":"...","variance":"..."}]}}
+or {"type":"COMPARISON_TABLE","title":"UPPERCASE TITLE","payload":{"headers":["...","..."],"rows":[["...","..."]]}}
+or {"type":"CODE_SANDBOX","title":"UPPERCASE TITLE","payload":{"language":"...","snippets":"..."}}.
+Use METRICS_GRID for grounded numerical measures, COMPARISON_TABLE for side-by-side evaluation, CODE_SANDBOX for code examples only. Never invent measurements or imply live data access. Label estimates explicitly. Code is display-only and never executed. Keep canvasBlock null for normal conversation. Put your spoken reply in text, not inside the canvas.
+
 Boundaries: no hate speech, no harassment, no medical/legal/financial advice presented as fact, no explicit sexual content. If someone sounds in crisis, drop the showmanship and gently point them to real help.`;
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
     const apiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!apiKey) return json({ error: "The host is not configured yet." }, 500);
 
-    const body = await req.json().catch(() => null);
-    const topic = typeof body?.topic === "string" ? body.topic.slice(0, 120).trim() : "";
-    const history: { role: string; content: string }[] = Array.isArray(body?.messages) ? body.messages : [];
-
-    if (!topic) return json({ error: "Name a topic first." }, 400);
+    const parsed = requestSchema.safeParse(await req.json().catch(() => null));
+    if (!parsed.success) return json({ error: "Name a topic first, or shorten your message." }, 400);
+    const { topic, messages: history, actionType } = parsed.data;
 
     const messages = [
       { role: "system", content: persona(topic) },
-      ...history
-        .filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
-        .slice(-16)
-        .map((m) => ({ role: m.role, content: m.content.slice(0, 4000) })),
+      ...history.slice(-16),
     ];
 
     const intense = /\b(sport|sports|boxing|mma|ufc|fight|nfl|nba|wnba|mlb|football|basketball|baseball|soccer|racing|wrestling|hockey|tennis|golf)\b/i.test(topic);
@@ -52,9 +64,7 @@ Deno.serve(async (req) => {
       CHALLENGE: "Play devil's advocate. Present a strong, compelling counter-argument or structural critique to the position currently being discussed.",
       SYNTHESIZE: "Synthesize everything discussed so far into a razor-sharp breakdown: 3-5 short bullet points, no fluff.",
     };
-    const actionType = typeof body?.actionType === "string" ? body.actionType : "";
-
-    if (modifiers[actionType]) {
+    if (actionType && modifiers[actionType]) {
       messages.push({ role: "user", content: `[Modifier: ${actionType}] ${modifiers[actionType]}` });
     } else if (messages.length === 1) {
       messages.push({
@@ -71,7 +81,7 @@ Deno.serve(async (req) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ model: "openai/gpt-6-astra", messages }),
+      body: JSON.stringify({ model: "openai/gpt-6-astra", messages, response_format: { type: "json_object" } }),
       signal: AbortSignal.timeout(45_000),
     });
 
@@ -85,10 +95,20 @@ Deno.serve(async (req) => {
     }
 
     const data = await res.json();
-    const reply = data?.choices?.[0]?.message?.content?.trim();
-    if (!reply) return json({ error: "The host went quiet. Try that again." }, 500);
-
-    return json({ success: true, reply, openingStatement: reply, appliedTheme });
+    const raw = data?.choices?.[0]?.message?.content;
+    if (typeof raw !== "string" || !raw.trim()) return json({ error: "The host went quiet. Try that again." }, 500);
+    let answer: unknown;
+    try { answer = JSON.parse(raw); } catch { answer = { text: raw, canvasBlock: null }; }
+    const validated = answerSchema.safeParse(answer);
+    if (!validated.success) {
+      // Preserve the spoken response if only the optional visualization is malformed.
+      const text = typeof answer === "object" && answer !== null && "text" in answer && typeof answer.text === "string" ? answer.text.trim() : "";
+      if (!text) return json({ error: "The host went quiet. Try that again." }, 500);
+      return json({ success: true, reply: text.slice(0, 12000), canvasBlock: null, appliedTheme });
+    }
+    const { text, canvasBlock } = validated.data;
+    const safeBlock = canvasBlock?.type === "COMPARISON_TABLE" && canvasBlock.payload.rows.some((row) => row.length !== canvasBlock.payload.headers.length) ? null : canvasBlock ?? null;
+    return json({ success: true, reply: text, openingStatement: text, canvasBlock: safeBlock, appliedTheme });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error ?? "");
     console.error("the-room-host error", message);
