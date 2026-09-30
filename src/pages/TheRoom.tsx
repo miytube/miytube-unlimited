@@ -181,8 +181,10 @@ const TheRoom = () => {
   }, []);
 
   useEffect(() => {
-    feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight, behavior: 'smooth' });
-  }, [messages, hostThinking]);
+    const feed = feedRef.current;
+    if (!feed) return;
+    feed.scrollTo({ top: activeCanvasBlock && !hostThinking ? 0 : feed.scrollHeight, behavior: 'smooth' });
+  }, [messages, hostThinking, activeCanvasBlock]);
 
   const askHost = async (nextTopic: string, history: RoomMessage[], actionType?: string) => {
     setHostThinking(true);
@@ -501,9 +503,9 @@ const TheRoom = () => {
           </>
         ) : (
           /* Live room */
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-5 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-5 mb-12">
             {/* Topic canvas */}
-            <div className="flex flex-col min-h-[600px] rounded-xl border border-neutral-900 bg-gradient-to-b from-neutral-950 via-neutral-900/10 to-neutral-950 shadow-[0_0_50px_-12px_rgba(16,185,129,0.05)] transition-all duration-500 focus-within:border-emerald-500/50">
+            <div className="flex flex-col min-w-0 min-h-[600px] rounded-xl border border-neutral-900 bg-gradient-to-b from-neutral-950 via-neutral-900/10 to-neutral-950 shadow-[0_0_50px_-12px_rgba(16,185,129,0.05)] transition-all duration-500 focus-within:border-emerald-500/50">
               <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border">
                 <div className="min-w-0">
                   <p className="text-xs uppercase tracking-widest text-neutral-500">Topic Canvas</p>
