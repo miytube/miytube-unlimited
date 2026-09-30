@@ -47,12 +47,22 @@ Deno.serve(async (req) => {
     const intense = /\b(sport|sports|boxing|mma|ufc|fight|nfl|nba|wnba|mlb|football|basketball|baseball|soccer|racing|wrestling|hockey|tennis|golf)\b/i.test(topic);
     const appliedTheme = intense ? "INTENSE" : "DEFAULT";
 
-    if (messages.length === 1) {
+    const modifiers: Record<string, string> = {
+      DEEPEN: "Cut past surface-level points. Drill into the technical, advanced, underlying mechanics of the concept being discussed. Keep it tight.",
+      CHALLENGE: "Play devil's advocate. Present a strong, compelling counter-argument or structural critique to the position currently being discussed.",
+      SYNTHESIZE: "Synthesize everything discussed so far into a razor-sharp breakdown: 3-5 short bullet points, no fluff.",
+    };
+    const actionType = typeof body?.actionType === "string" ? body.actionType : "";
+
+    if (modifiers[actionType]) {
+      messages.push({ role: "user", content: `[Modifier: ${actionType}] ${modifiers[actionType]}` });
+    } else if (messages.length === 1) {
       messages.push({
         role: "user",
         content: `Cold open the show on "${topic}". No hello, no welcome — seize the topic immediately with one sharp, analytical statement, then one opening question. ${intense ? "Bring high-energy, fight-night intensity." : "Calm, precise, cinematic tone."} Two sentences max.`,
       });
     }
+
 
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
