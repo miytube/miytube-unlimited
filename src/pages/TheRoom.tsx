@@ -242,7 +242,7 @@ const TheRoom = () => {
 
   if (showTeaser) {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-neutral-950 px-6 text-center select-none overflow-hidden">
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-neutral-950 text-neutral-100 font-sans selection:bg-emerald-500/20 selection:text-emerald-300 px-6 text-center select-none overflow-hidden">
         <div
           className="absolute inset-0 opacity-60"
           style={{
@@ -266,9 +266,9 @@ const TheRoom = () => {
 
           {teaserStep === 2 && (
             <div className="animate-fade-in flex flex-col items-center gap-4">
-              <span className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.35em] text-neutral-500">
-                <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" /> Camera initializing
-              </span>
+                <span className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.35em] text-neutral-500">
+                  <span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b] animate-pulse" /> Camera initializing
+                </span>
               <p className="text-lg sm:text-2xl font-light text-neutral-400">
                 Immediate. Immersive. Fully interactive.
               </p>
@@ -305,7 +305,7 @@ const TheRoom = () => {
     <Layout>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }} />
-      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
+      <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4 bg-neutral-950 text-neutral-100 font-sans selection:bg-emerald-500/20 selection:text-emerald-300 rounded-xl">
         <p className="text-sm text-muted-foreground mb-2">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link> / The Room
         </p>
@@ -313,18 +313,26 @@ const TheRoom = () => {
         {!isLaunched ? (
           <>
             {/* Launch screen */}
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-card mb-10">
+            <div className="relative overflow-hidden rounded-xl border border-neutral-900 bg-neutral-900/40 shadow-[0_0_50px_-12px_rgba(16,185,129,0.05)] transition-all duration-500 mb-10">
+              <div
+                className="absolute inset-0 opacity-[0.07]"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(rgba(16,185,129,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.6) 1px, transparent 1px)',
+                  backgroundSize: '40px 40px',
+                }}
+              />
               <div
                 className="absolute inset-0 opacity-70"
                 style={{
                   background:
-                    'radial-gradient(ellipse 60% 80% at 50% -10%, hsl(var(--primary) / 0.28), transparent 60%)',
+                    'radial-gradient(ellipse 60% 80% at 50% -10%, rgba(16,185,129,0.18), transparent 60%)',
                 }}
               />
               <div className="relative px-6 sm:px-10 py-12 sm:py-16 text-center">
                 <Armchair className="h-10 w-10 mx-auto text-primary mb-4" />
                 <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">
-                  The <span className="text-primary">Room</span>
+                  The <span className="text-emerald-400">Room</span>
                 </h1>
                 <p className="text-muted-foreground mt-4 text-lg sm:text-xl font-medium">
                   You name the topic. We build the room.
@@ -477,13 +485,13 @@ const TheRoom = () => {
           </>
         ) : (
           /* Live room */
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-5 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-5 mb-12">
             {/* Topic canvas */}
-            <div className="rounded-2xl border border-border bg-card flex flex-col min-h-[600px]">
+            <div className="flex flex-col min-h-[600px] rounded-xl border border-neutral-900 bg-gradient-to-b from-neutral-950 via-neutral-900/10 to-neutral-950 shadow-[0_0_50px_-12px_rgba(16,185,129,0.05)] transition-all duration-500 focus-within:border-emerald-500/50">
               <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border">
                 <div className="min-w-0">
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">Topic Canvas</p>
-                  <h1 className="text-xl sm:text-2xl font-bold truncate">{topic}</h1>
+                  <p className="text-xs uppercase tracking-widest text-neutral-500">Topic Canvas</p>
+                  <span className="mt-1 inline-block max-w-full truncate bg-emerald-950/30 border border-emerald-800/40 text-emerald-400 font-mono tracking-wider px-3 py-1 rounded-md text-xs uppercase">{topic}</span>
                 </div>
                 <Button variant="ghost" size="sm" onClick={exitRoom} className="rounded-full shrink-0">
                   <X className="mr-1 h-4 w-4" /> Exit Room
@@ -537,24 +545,24 @@ const TheRoom = () => {
             </div>
 
             {/* AI Host feed */}
-            <div className="rounded-2xl border border-border bg-card overflow-hidden h-fit lg:sticky lg:top-20">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">AI Host Feed</p>
-                <span className="flex items-center gap-2 text-xs font-semibold">
-                  <span className="h-2 w-2 rounded-full bg-destructive animate-pulse" />
+            <div className="overflow-hidden h-fit lg:sticky lg:top-20 bg-neutral-950 border border-neutral-900/80 rounded-2xl">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900/80">
+                <p className="text-xs uppercase tracking-widest text-neutral-500">AI Host Feed</p>
+                <span className="flex items-center gap-2 text-xs font-semibold text-amber-400">
+                  <span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b] animate-pulse" />
                   {cameraReady ? 'STREAMING LIVE' : 'CAMERA INITIALIZING...'}
                 </span>
               </div>
-              <div className="relative aspect-video bg-muted flex items-center justify-center">
+              <div className="relative aspect-video m-4 bg-black border border-neutral-900 rounded-2xl overflow-hidden shadow-[0_0_80px_-20px_rgba(245,158,11,0.08)]">
                 <div
                   className="absolute inset-0 opacity-60"
                   style={{
                     background:
-                      'radial-gradient(ellipse 70% 70% at 50% 30%, hsl(var(--primary) / 0.3), transparent 65%)',
+                      'radial-gradient(ellipse 70% 70% at 50% 30%, rgba(245,158,11,0.18), transparent 65%)',
                   }}
                 />
                 <Video
-                  className={`relative h-16 w-16 text-primary ${cameraReady ? 'animate-pulse' : 'opacity-40'}`}
+                  className={`relative h-16 w-16 text-amber-500/70 ${cameraReady ? 'animate-pulse' : 'opacity-40'}`}
                 />
               </div>
               <div className="px-4 py-4">
