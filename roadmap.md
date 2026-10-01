@@ -1,2 +1,3 @@
 - [x] Add optional structured media canvas output to The Room's AI host.
 - [x] Render and verify the canvas in the live room, resetting it when a new room begins.
+- [x] Integrate the uploaded Room studio layout and launch/reply/wrap-up flow without simulated recordings or canned host replies.
