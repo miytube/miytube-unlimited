@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { VideoCard } from '@/components/VideoCard';
 import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
+import { useHeyGenAvatar } from '@/hooks/useHeyGenAvatar';
 
 interface RoomVideo {
   id: string;
@@ -94,6 +95,7 @@ const TheRoom = () => {
   const [roomError, setRoomError] = useState<string | null>(null);
   const [themeVibe, setThemeVibe] = useState<'INTENSE' | 'DEFAULT'>('DEFAULT');
   const feedRef = useRef<HTMLDivElement>(null);
+  const { videoRef: avatarVideoRef, status: avatarStatus, startAvatar, stopAvatar, speak } = useHeyGenAvatar();
 
   // Blind-hook teaser (cinematic intro)
   const [showTeaser, setShowTeaser] = useState(() => {
@@ -218,6 +220,7 @@ const TheRoom = () => {
       if (data?.reply) {
         setMessages((prev) => [...prev, { sender: 'AI_HOST', text: data.reply }]);
         setActiveCanvasBlock(data.canvasBlock ?? null);
+        void speak(data.reply);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'The host hit a snag. Try again.';
@@ -240,6 +243,7 @@ const TheRoom = () => {
     setThemeVibe('DEFAULT');
     setRoomError(null);
     window.setTimeout(() => setCameraReady(true), 1200);
+    void startAvatar();
     askHost(chosen, []);
   };
 
@@ -260,6 +264,7 @@ const TheRoom = () => {
   };
 
   const exitRoom = () => {
+    void stopAvatar();
     setIsLaunched(false);
     setTopic('');
     setTopicInput('');
@@ -595,12 +600,27 @@ const TheRoom = () => {
                 <p className="text-xs uppercase text-muted-foreground">AI Host Feed</p>
                 <span className="flex items-center gap-2 text-xs font-semibold text-primary">
                   <span className="h-2 w-2 rounded-full bg-primary animate-pulse motion-reduce:animate-none" />
-                  {cameraReady && messages.length > 0 ? 'HOST CONNECTED' : 'CONNECTING HOST...'}
+                  {avatarStatus === 'connected'
+                    ? 'LIVE AVATAR'
+                    : cameraReady && messages.length > 0
+                      ? 'HOST CONNECTED'
+                      : 'CONNECTING HOST...'}
                 </span>
               </div>
               <div className="relative aspect-video m-4 bg-background border border-border rounded-md overflow-hidden flex flex-col gap-3 items-center justify-center text-center p-5">
-                <Video className="h-12 w-12 text-primary" aria-hidden="true" />
-                <p className="text-sm font-semibold text-foreground">Maya · AI Host</p>
+                <video
+                  ref={avatarVideoRef}
+                  autoPlay
+                  playsInline
+                  className={`absolute inset-0 h-full w-full object-cover ${avatarStatus === 'connected' ? '' : 'hidden'}`}
+                  aria-label="Maya, the AI host, on live avatar video"
+                />
+                {avatarStatus !== 'connected' && (
+                  <>
+                    <Video className="h-12 w-12 text-primary" aria-hidden="true" />
+                    <p className="text-sm font-semibold text-foreground">Maya · AI Host</p>
+                  </>
+                )}
                 {messages.length === 0 && hostThinking && (
                   <div className="absolute inset-0 bg-background/95 flex flex-col gap-4 items-center justify-center" role="status">
                     <Loader2 className="h-12 w-12 text-primary animate-spin motion-reduce:animate-none" />
