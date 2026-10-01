@@ -13,6 +13,8 @@ import {
   Send,
   X,
   Sparkles,
+  Mic,
+  MicOff,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -24,6 +26,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { VideoCard } from '@/components/VideoCard';
 import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
 import { useHeyGenAvatar } from '@/hooks/useHeyGenAvatar';
+import { useSpeechInput } from '@/hooks/useSpeechInput';
 
 interface RoomVideo {
   id: string;
@@ -89,6 +92,7 @@ const TheRoom = () => {
   const [messages, setMessages] = useState<RoomMessage[]>([]);
   const [activeCanvasBlock, setActiveCanvasBlock] = useState<CanvasBlockData | null>(null);
   const [guestInput, setGuestInput] = useState('');
+  const mic = useSpeechInput(setGuestInput);
   const [hostThinking, setHostThinking] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
@@ -250,6 +254,7 @@ const TheRoom = () => {
   const handleSend = () => {
     const text = guestInput.trim();
     if (!text || hostThinking) return;
+    mic.stop(); // pause the mic so Maya's voice isn't picked up
     const next: RoomMessage[] = [...messages, { sender: 'GUEST', text }];
     setMessages(next);
     setGuestInput('');
@@ -264,6 +269,7 @@ const TheRoom = () => {
   };
 
   const exitRoom = () => {
+    mic.stop();
     void stopAvatar();
     setIsLaunched(false);
     setTopic('');
@@ -639,12 +645,25 @@ const TheRoom = () => {
               </div>
               </div>
               <div className="flex flex-wrap sm:flex-nowrap gap-2 border border-border bg-card rounded-md p-3">
+                {mic.supported && (
+                  <Button
+                    variant={mic.isRecording ? 'destructive' : 'secondary'}
+                    onClick={mic.toggle}
+                    disabled={hostThinking}
+                    className={`h-11 shrink-0 ${mic.isRecording ? 'animate-pulse' : ''}`}
+                    aria-label={mic.isRecording ? 'Turn microphone off' : 'Turn microphone on'}
+                    aria-pressed={mic.isRecording}
+                    title={mic.isRecording ? 'Mic on — tap to stop' : 'Speak your answer'}
+                  >
+                    {mic.isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  </Button>
+                )}
                 <Input
                   aria-label="Your reply"
                   value={guestInput}
                   onChange={(e) => setGuestInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder={`Speak or type about ${topic}...`}
+                  placeholder={mic.isRecording ? 'Listening...' : `Speak or type about ${topic}...`}
                   className="dark h-11 min-w-0 flex-1 text-foreground caret-primary"
                   disabled={hostThinking}
                 />
