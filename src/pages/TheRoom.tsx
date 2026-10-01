@@ -90,6 +90,7 @@ const TheRoom = () => {
   const [guestInput, setGuestInput] = useState('');
   const [hostThinking, setHostThinking] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
   const [roomError, setRoomError] = useState<string | null>(null);
   const [themeVibe, setThemeVibe] = useState<'INTENSE' | 'DEFAULT'>('DEFAULT');
   const feedRef = useRef<HTMLDivElement>(null);
@@ -186,6 +187,16 @@ const TheRoom = () => {
     feed.scrollTo({ top: activeCanvasBlock && !hostThinking ? 0 : feed.scrollHeight, behavior: 'smooth' });
   }, [messages, hostThinking, activeCanvasBlock]);
 
+  useEffect(() => {
+    if (!isLaunched || messages.length > 0 || !hostThinking) return;
+    setLoadingStep(0);
+    const timers = [
+      window.setTimeout(() => setLoadingStep(1), 800),
+      window.setTimeout(() => setLoadingStep(2), 1600),
+    ];
+    return () => timers.forEach(window.clearTimeout);
+  }, [isLaunched, messages.length, hostThinking]);
+
   const askHost = async (nextTopic: string, history: RoomMessage[], actionType?: string) => {
     setHostThinking(true);
     setRoomError(null);
@@ -225,6 +236,7 @@ const TheRoom = () => {
     setMessages([]);
     setActiveCanvasBlock(null);
     setCameraReady(false);
+    setLoadingStep(0);
     setThemeVibe('DEFAULT');
     setRoomError(null);
     window.setTimeout(() => setCameraReady(true), 1200);
@@ -256,6 +268,7 @@ const TheRoom = () => {
     setGuestInput('');
     setRoomError(null);
     setCameraReady(false);
+    setLoadingStep(0);
   };
 
   if (showTeaser) {
@@ -503,42 +516,38 @@ const TheRoom = () => {
           </>
         ) : (
           /* Live room */
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-5 mb-12">
-            {/* Topic canvas */}
-            <div className="flex flex-col min-w-0 min-h-[600px] rounded-xl border border-neutral-900 bg-gradient-to-b from-neutral-950 via-neutral-900/10 to-neutral-950 shadow-[0_0_50px_-12px_rgba(16,185,129,0.05)] transition-all duration-500 focus-within:border-emerald-500/50">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(320px,45%)] gap-5 mb-12">
+            {/* Interview transcript */}
+            <div className="flex flex-col min-w-0 min-h-[540px] rounded-md border border-border bg-card text-card-foreground transition-colors focus-within:border-primary/50">
               <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border">
                 <div className="min-w-0">
-                  <p className="text-xs uppercase tracking-widest text-neutral-500">Topic Canvas</p>
-                  <span className="mt-1 inline-block max-w-full truncate bg-emerald-950/30 border border-emerald-800/40 text-emerald-400 font-mono tracking-wider px-3 py-1 rounded-md text-xs uppercase">{topic}</span>
+                  <p className="text-xs uppercase text-muted-foreground">The Room / Transcript</p>
+                  <span className="mt-1 inline-block max-w-full truncate border border-border bg-muted text-foreground font-mono px-3 py-1 rounded-md text-xs uppercase">{topic}</span>
                   {themeVibe === 'INTENSE' && (
-                    <span className="ml-2 inline-block font-mono text-[10px] tracking-widest uppercase px-2 py-1 rounded-md border border-amber-700/50 bg-amber-950/30 text-amber-400">Intense</span>
+                    <span className="ml-2 inline-block font-mono text-[10px] uppercase px-2 py-1 rounded-md border border-primary/50 bg-primary/10 text-primary">Intense</span>
                   )}
                 </div>
-                <Button variant="ghost" size="sm" onClick={exitRoom} className="rounded-full shrink-0">
-                  <X className="mr-1 h-4 w-4" /> Exit Room
-                </Button>
               </div>
 
-              <div ref={feedRef} className="flex-1 overflow-y-auto px-5 py-6 space-y-5 max-h-[520px]">
+              <div ref={feedRef} role="log" aria-label="Interview transcript" className="flex-1 overflow-y-auto px-5 py-6 space-y-5 max-h-[520px]">
                 <MediaCanvasRenderer block={activeCanvasBlock} />
                 {messages.length === 0 && hostThinking && (
-                  <div className="flex flex-col items-center justify-center py-20 font-mono text-center space-y-4 animate-pulse">
-                    <div className="h-2 w-24 bg-emerald-500 rounded-full shadow-[0_0_10px_#10b981]" />
-                    <p className="text-xs uppercase tracking-widest text-neutral-400">Allocating Studio Shutter Feed...</p>
-                    <p className="text-[10px] text-neutral-600">Initializing unique network pipeline context</p>
+                  <div className="flex flex-col items-center justify-center py-20 font-mono text-center space-y-4" role="status">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary motion-reduce:animate-none" />
+                    <p className="text-xs uppercase text-primary">{['Prepping Studio Config...', 'Analyzing Topic Matrix...', 'Connecting AI Host...'][loadingStep]}</p>
                   </div>
                 )}
 
                 {messages.map((m, i) => (
                   <div key={i} className={m.sender === 'AI_HOST' ? '' : 'text-right'}>
-                    <p className="text-[11px] font-mono uppercase tracking-widest text-neutral-500 mb-1">
+                    <p className="text-[11px] font-mono uppercase text-muted-foreground mb-1">
                       {m.sender === 'AI_HOST' ? 'HOST' : 'USER'}
                     </p>
                     <div
                       className={`inline-block max-w-[85%] text-left px-4 py-3 leading-relaxed ${
                         m.sender === 'AI_HOST'
-                          ? 'rounded-2xl bg-neutral-900/60 border border-neutral-800 text-neutral-100'
-                          : 'rounded-r-2xl rounded-l-md bg-emerald-950/20 border-l-2 border-emerald-500 text-neutral-100'
+                          ? 'rounded-md bg-muted border-l-4 border-primary text-foreground'
+                          : 'rounded-md bg-secondary border-l-4 border-accent-foreground text-secondary-foreground'
                       }`}
                     >
                       {m.text}
@@ -547,7 +556,7 @@ const TheRoom = () => {
                 ))}
 
                 {hostThinking && messages.length > 0 && (
-                  <div className="flex items-center gap-2 text-neutral-500 text-sm font-mono">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm font-mono">
                     <Loader2 className="h-4 w-4 animate-spin" /> Host is typing...
                   </div>
                 )}
@@ -577,52 +586,54 @@ const TheRoom = () => {
                   </Button>
                 ))}
               </div>
-              <div className="px-4 pb-4 pt-2 flex gap-2">
-                <Input
-                  value={guestInput}
-                  onChange={(e) => setGuestInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder={`Say something about ${topic}...`}
-                  className="dark h-11 rounded-full px-5 text-foreground caret-primary"
-                  disabled={hostThinking}
-                />
-                <Button onClick={handleSend} disabled={hostThinking || !guestInput.trim()} className="h-11 rounded-full px-5">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
             </div>
 
-            {/* AI Host feed */}
-            <div className="overflow-hidden h-fit lg:sticky lg:top-20 bg-neutral-950 border border-neutral-900/80 rounded-2xl">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-900/80">
-                <p className="text-xs uppercase tracking-widest text-neutral-500">AI Host Feed</p>
-                <span className="flex items-center gap-2 text-xs font-semibold text-amber-400">
-                  <span className="h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_10px_#f59e0b] animate-pulse" />
-                  {cameraReady ? 'STREAMING LIVE' : 'CAMERA INITIALIZING...'}
+            {/* Studio feed and session controls */}
+            <div className="flex flex-col gap-4 min-w-0 h-fit lg:sticky lg:top-20">
+              <div className="overflow-hidden border border-border bg-card text-card-foreground rounded-md">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                <p className="text-xs uppercase text-muted-foreground">AI Host Feed</p>
+                <span className="flex items-center gap-2 text-xs font-semibold text-primary">
+                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse motion-reduce:animate-none" />
+                  {cameraReady && messages.length > 0 ? 'HOST CONNECTED' : 'CONNECTING HOST...'}
                 </span>
               </div>
-              <div className="relative aspect-video m-4 bg-black border border-neutral-900 rounded-2xl overflow-hidden shadow-[0_0_80px_-20px_rgba(245,158,11,0.08)]">
-                <div
-                  className="absolute inset-0 opacity-60"
-                  style={{
-                    background:
-                      'radial-gradient(ellipse 70% 70% at 50% 30%, rgba(245,158,11,0.18), transparent 65%)',
-                  }}
-                />
-                <Video
-                  className={`relative h-16 w-16 text-amber-500/70 ${cameraReady ? 'animate-pulse' : 'opacity-40'}`}
-                />
+              <div className="relative aspect-video m-4 bg-background border border-border rounded-md overflow-hidden flex flex-col gap-3 items-center justify-center text-center p-5">
+                <Video className="h-12 w-12 text-primary" aria-hidden="true" />
+                <p className="text-sm font-semibold text-foreground">Maya · AI Host</p>
+                {messages.length === 0 && hostThinking && (
+                  <div className="absolute inset-0 bg-background/95 flex flex-col gap-4 items-center justify-center" role="status">
+                    <Loader2 className="h-12 w-12 text-primary animate-spin motion-reduce:animate-none" />
+                    <p className="text-xs font-semibold uppercase text-primary">{['Prepping Studio Config...', 'Analyzing Topic Matrix...', 'Connecting AI Host...'][loadingStep]}</p>
+                  </div>
+                )}
               </div>
               <div className="px-4 py-4">
-                <p className="font-semibold">The Room — Live Host</p>
+                <p className="font-semibold">The Room — Maya</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  {cameraReady
-                    ? `On air, talking ${topic}. Ask anything.`
-                    : 'Warming up the lights and rolling camera...'}
+                  {messages.length > 0 ? `Talking ${topic}. Ask anything.` : 'Waiting for the host to answer...'}
                 </p>
                 <p className="text-xs text-muted-foreground mt-3">
                   This conversation lives in this session only — nothing is saved.
                 </p>
+              </div>
+              </div>
+              <div className="flex flex-wrap sm:flex-nowrap gap-2 border border-border bg-card rounded-md p-3">
+                <Input
+                  aria-label="Your reply"
+                  value={guestInput}
+                  onChange={(e) => setGuestInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                  placeholder={`Speak or type about ${topic}...`}
+                  className="dark h-11 min-w-0 flex-1 text-foreground caret-primary"
+                  disabled={hostThinking}
+                />
+                <Button onClick={handleSend} disabled={hostThinking || !guestInput.trim()} className="h-11 shrink-0" aria-label="Reply" title="Reply">
+                  <Send className="h-4 w-4" />
+                </Button>
+                <Button variant="destructive" onClick={exitRoom} className="h-11 shrink-0" title="End this session without saving">
+                  <X className="mr-1 h-4 w-4" /> Wrap Up
+                </Button>
               </div>
             </div>
           </div>
