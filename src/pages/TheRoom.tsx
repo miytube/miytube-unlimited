@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { VideoCard } from '@/components/VideoCard';
 import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
+import { useHeyGenAvatar } from '@/hooks/useHeyGenAvatar';
 
 interface RoomVideo {
   id: string;
@@ -94,6 +95,7 @@ const TheRoom = () => {
   const [roomError, setRoomError] = useState<string | null>(null);
   const [themeVibe, setThemeVibe] = useState<'INTENSE' | 'DEFAULT'>('DEFAULT');
   const feedRef = useRef<HTMLDivElement>(null);
+  const { videoRef: avatarVideoRef, status: avatarStatus, startAvatar, stopAvatar, speak } = useHeyGenAvatar();
 
   // Blind-hook teaser (cinematic intro)
   const [showTeaser, setShowTeaser] = useState(() => {
@@ -218,6 +220,7 @@ const TheRoom = () => {
       if (data?.reply) {
         setMessages((prev) => [...prev, { sender: 'AI_HOST', text: data.reply }]);
         setActiveCanvasBlock(data.canvasBlock ?? null);
+        void speak(data.reply);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'The host hit a snag. Try again.';
@@ -240,6 +243,7 @@ const TheRoom = () => {
     setThemeVibe('DEFAULT');
     setRoomError(null);
     window.setTimeout(() => setCameraReady(true), 1200);
+    void startAvatar();
     askHost(chosen, []);
   };
 
@@ -260,6 +264,7 @@ const TheRoom = () => {
   };
 
   const exitRoom = () => {
+    void stopAvatar();
     setIsLaunched(false);
     setTopic('');
     setTopicInput('');
