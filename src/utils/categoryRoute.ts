@@ -78,6 +78,17 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     };
     if (cleanSubcategory && carRepairRoutes[cleanSubcategory]) return carRepairRoutes[cleanSubcategory];
   }
+  if (cleanCategory === 'sports-mlb' || cleanCategory === 'mlb') {
+    // Videos uploaded with category "sports-mlb" carry free-form subcategory
+    // slugs (e.g. "mlb-nl-playoffs-best-of-3") that don't match the static
+    // routes. Map them onto the real MLB pages so breadcrumb links work.
+    if (!cleanSubcategory) return '/sports/mlb';
+    if (cleanSubcategory.includes('nl') && cleanSubcategory.includes('playoff')) return '/sports/mlb/nl-playoffs';
+    if (cleanSubcategory.includes('al') && cleanSubcategory.includes('playoff')) return '/sports/mlb/al-playoffs';
+    if (cleanSubcategory.includes('world-series')) return '/sports/mlb/world-series';
+    if (cleanSubcategory.includes('player') || cleanSubcategory.includes('coach')) return '/sports/mlb/players';
+    return '/sports/mlb';
+  }
   if (cleanCategory === 'news' && cleanSubcategory === 'news-and-politics') {
     return '/news';
   }
