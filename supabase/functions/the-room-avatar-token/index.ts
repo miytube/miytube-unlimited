@@ -1,4 +1,5 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -12,6 +13,16 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
+    // Live avatar is Premium-only: verify the signed-in user's subscription.
+    const env = new URL(req.url).searchParams.get("env") === "live" ? "live" : "sandbox";
+    const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+    const jwt = req.headers.get("Authorization")?.replace("Bearer ", "");
+    const { data: { user } } = await sb.auth.getUser(jwt);
+    if (!user) return json({ error: "premium_required" }, 403);
+    const { data: isAdmin } = await sb.rpc("has_role", { _user_id: user.id, _role: "admin" });
+    const { data: active } = await sb.rpc("has_active_subscription", { _user_id: user.id, _env: env });
+    if (!active && !isAdmin) return json({ error: "premium_required" }, 403);
+
     const apiKey = Deno.env.get("HEYGEN_API_KEY");
     if (!apiKey) {
       // Not configured yet — the page falls back to text-only mode.
