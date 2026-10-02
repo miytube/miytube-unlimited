@@ -50,13 +50,30 @@ export const RoomPremiumCard = ({ signedIn }: { signedIn: boolean }) => {
         </Button>
       )}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader><DialogTitle>The Room Premium</DialogTitle></DialogHeader>
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto border-2 border-primary">
+          <DialogHeader className="items-center text-center space-y-2">
+            <span className="inline-block rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold text-primary">
+              MiyTube Premium
+            </span>
+            <DialogTitle className="text-2xl">Unlock The Live Studio Host</DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Step inside a live broadcast. Watch Maya react and interview you face-to-face in real time.
+            </p>
+          </DialogHeader>
+          <ul className="space-y-1 rounded-md bg-muted p-3 text-sm text-foreground">
+            <li>✓ Live streaming video host</li>
+            <li>✓ Split-screen interview downloads, ready for social sharing</li>
+            <li>✓ Cancel anytime</li>
+          </ul>
+          <p className="text-center text-3xl font-bold text-primary">
+            $9.99 <span className="text-sm font-normal text-muted-foreground">/ month</span>
+          </p>
           {open && (
             <EmbeddedCheckoutProvider stripe={getStripe()} options={{ fetchClientSecret }}>
               <EmbeddedCheckout />
             </EmbeddedCheckoutProvider>
           )}
+          <p className="text-center text-xs text-muted-foreground">🔒 Secure checkout by Stripe. Cancel anytime.</p>
         </DialogContent>
       </Dialog>
     </div>
