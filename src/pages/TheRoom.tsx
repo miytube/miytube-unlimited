@@ -28,6 +28,7 @@ import { VideoCard } from '@/components/VideoCard';
 import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
 import { useHeyGenAvatar } from '@/hooks/useHeyGenAvatar';
 import { speakFreeVoice, stopFreeVoice } from '@/lib/freeVoice';
+import { RoomPremiumCard, useRoomPremium } from '@/components/the-room/RoomPremiumCard';
 import { useSpeechInput } from '@/hooks/useSpeechInput';
 import { useRoomRecorder } from '@/hooks/useRoomRecorder';
 
@@ -81,7 +82,8 @@ const formatViews = (views: number) =>
   views >= 1000 ? `${(views / 1000).toFixed(1).replace(/\.0$/, '')}K views` : `${views} views`;
 
 const TheRoom = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
+  const { isPremium } = useRoomPremium(user?.id);
   const navigate = useNavigate();
   const [videos, setVideos] = useState<RoomVideo[]>([]);
   const [articles, setArticles] = useState<RoomArticle[]>([]);
@@ -252,7 +254,7 @@ const TheRoom = () => {
     setThemeVibe('DEFAULT');
     setRoomError(null);
     window.setTimeout(() => setCameraReady(true), 1200);
-    void startAvatar();
+    if (isPremium || isAdmin) void startAvatar();
     askHost(chosen, []);
   };
 
@@ -647,6 +649,7 @@ const TheRoom = () => {
                   <span className="h-2 w-2 rounded-full bg-destructive-foreground animate-pulse motion-reduce:animate-none" /> REC
                 </span>
               </div>
+              {!isPremium && !isAdmin && <RoomPremiumCard signedIn={!!user} />}
               {recorder.supported && (
                 <div className="px-4 pt-4">
                   <Button
