@@ -1,1 +1,2 @@
 - Keep The Room's structured media canvas as a validated optional AI response rendered in session state; this avoids storing conversations and prevents malformed model output from breaking the page.- The Room avatar: @heygen/streaming-avatar is pinned to 2.0.16 (2.1.x tarballs ship without lib/); token minted server-side by the the-room-avatar-token edge function using the HEYGEN_API_KEY secret.
+- The Room live avatar is gated server-side: the-room-avatar-token checks has_active_subscription (or admin) before minting a HeyGen token; why: streaming minutes cost real money.

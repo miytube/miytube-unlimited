@@ -71,3 +71,6 @@ verify_jwt = false
 
 [functions.the-room-host]
 verify_jwt = false
+
+[functions.create-room-checkout]
+verify_jwt = false

@@ -38,7 +38,8 @@ export const useHeyGenAvatar = () => {
     if (avatarRef.current) return true;
     setStatus('connecting');
     try {
-      const { data, error } = await supabase.functions.invoke('the-room-avatar-token');
+      const env = (import.meta.env.VITE_PAYMENTS_CLIENT_TOKEN as string | undefined)?.startsWith('pk_live_') ? 'live' : 'sandbox';
+      const { data, error } = await supabase.functions.invoke(`the-room-avatar-token?env=${env}`);
       if (error || !data?.token) {
         setStatus('unavailable');
         return false;

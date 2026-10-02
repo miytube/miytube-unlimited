@@ -259,10 +259,37 @@ async function handlePaymentFailed(pi: any) {
   console.log("Recorded payment failure for", campaignId, err);
 }
 
+async function upsertSubscription(sub: any, env: StripeEnv) {
+  const userId = sub.metadata?.userId;
+  if (!userId) {
+    console.warn("Subscription without userId metadata:", sub.id);
+    return;
+  }
+  const item = sub.items?.data?.[0];
+  const price = item?.price;
+  const periodEnd = item?.current_period_end ?? sub.current_period_end;
+  await getSupabase().from("subscriptions").upsert({
+    user_id: userId,
+    stripe_subscription_id: sub.id,
+    stripe_customer_id: typeof sub.customer === "string" ? sub.customer : sub.customer?.id,
+    price_id: price?.lookup_key || price?.metadata?.lovable_external_id || price?.id,
+    status: sub.status,
+    current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
+    cancel_at_period_end: !!sub.cancel_at_period_end,
+    environment: env,
+    updated_at: new Date().toISOString(),
+  }, { onConflict: "stripe_subscription_id" });
+}
+
 async function handleWebhook(req: Request, env: StripeEnv) {
   const event = await verifyWebhook(req, env);
 
   switch (event.type) {
+    case "customer.subscription.created":
+    case "customer.subscription.updated":
+    case "customer.subscription.deleted":
+      await upsertSubscription(event.data.object, env);
+      break;
     case "checkout.session.completed": {
       const session = event.data.object;
       const purpose = session.metadata?.purpose;
@@ -270,6 +297,9 @@ async function handleWebhook(req: Request, env: StripeEnv) {
         await handleCampaignPayment(session, env, false);
       } else if (purpose === "campaign_topup") {
         await handleCampaignPayment(session, env, true);
+      } else if (purpose === "room_premium" && session.subscription) {
+        const stripe = createStripeClient(env);
+        await upsertSubscription(await stripe.subscriptions.retrieve(session.subscription), env);
       } else {
         console.log("Unhandled session purpose:", purpose);
       }
