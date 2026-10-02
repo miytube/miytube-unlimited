@@ -15,6 +15,7 @@ import {
   Sparkles,
   Mic,
   MicOff,
+  Circle,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,6 +28,7 @@ import { VideoCard } from '@/components/VideoCard';
 import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
 import { useHeyGenAvatar } from '@/hooks/useHeyGenAvatar';
 import { useSpeechInput } from '@/hooks/useSpeechInput';
+import { useRoomRecorder } from '@/hooks/useRoomRecorder';
 
 interface RoomVideo {
   id: string;
@@ -100,6 +102,7 @@ const TheRoom = () => {
   const [themeVibe, setThemeVibe] = useState<'INTENSE' | 'DEFAULT'>('DEFAULT');
   const feedRef = useRef<HTMLDivElement>(null);
   const { videoRef: avatarVideoRef, status: avatarStatus, startAvatar, stopAvatar, speak } = useHeyGenAvatar();
+  const recorder = useRoomRecorder(avatarVideoRef);
 
   // Blind-hook teaser (cinematic intro)
   const [showTeaser, setShowTeaser] = useState(() => {
@@ -270,6 +273,7 @@ const TheRoom = () => {
 
   const exitRoom = () => {
     mic.stop();
+    recorder.stop();
     void stopAvatar();
     setIsLaunched(false);
     setTopic('');
@@ -634,6 +638,26 @@ const TheRoom = () => {
                   </div>
                 )}
               </div>
+              <div className={`relative aspect-video mx-4 bg-background border border-border rounded-md overflow-hidden ${recorder.isRecording ? '' : 'hidden'}`}>
+                <video ref={recorder.userVideoRef} muted playsInline className="absolute inset-0 h-full w-full object-cover -scale-x-100" aria-label="Your camera" />
+                <span className="absolute top-2 left-2 flex items-center gap-1 rounded bg-destructive px-2 py-0.5 text-xs font-semibold text-destructive-foreground">
+                  <span className="h-2 w-2 rounded-full bg-destructive-foreground animate-pulse motion-reduce:animate-none" /> REC
+                </span>
+              </div>
+              {recorder.supported && (
+                <div className="px-4 pt-4">
+                  <Button
+                    variant={recorder.isRecording ? 'destructive' : 'secondary'}
+                    className="w-full"
+                    onClick={() => (recorder.isRecording ? recorder.stop() : void recorder.start(topic))}
+                  >
+                    <Circle className="mr-2 h-4 w-4" />
+                    {recorder.isRecording ? 'Stop & Download Video' : 'Record Split-Screen Interview'}
+                  </Button>
+                  {recorder.error && <p className="text-xs text-destructive mt-2">{recorder.error}</p>}
+                  <p className="text-xs text-muted-foreground mt-2">Recording saves to your device only — never uploaded.</p>
+                </div>
+              )}
               <div className="px-4 py-4">
                 <p className="font-semibold">The Room — Maya</p>
                 <p className="text-sm text-muted-foreground mt-1">
