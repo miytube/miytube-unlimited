@@ -18,6 +18,7 @@ import {
   Circle,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getOpeningHook } from '@/lib/mayaLibrary';
 import { supabase } from '@/integrations/supabase/client';
 import { getCurrentSiteId } from '@/config/sites';
 import { useAuth } from '@/hooks/useAuth';
@@ -255,7 +256,13 @@ const TheRoom = () => {
     setRoomError(null);
     window.setTimeout(() => setCameraReady(true), 1200);
     if (isPremium || isAdmin) void startAvatar();
-    askHost(chosen, []);
+    const hook = getOpeningHook(chosen);
+    if (hook) {
+      setMessages([{ sender: 'AI_HOST', text: hook }]);
+      speakFreeVoice(hook);
+    } else {
+      askHost(chosen, []);
+    }
   };
 
   const handleSend = () => {
