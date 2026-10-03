@@ -2,3 +2,4 @@
 - [x] Render and verify the canvas in the live room, resetting it when a new room begins.
 - [x] Integrate the uploaded Room studio layout and launch/reply/wrap-up flow without simulated recordings or canned host replies.- [ ] Activate the HeyGen live avatar in The Room — blocked on the user providing a HeyGen API key (add as HEYGEN_API_KEY secret); integration is built and falls back to text-only until then.
 - The Room Premium: $9.99/mo Stripe subscription (room_premium_monthly) unlocks the live HeyGen avatar; free tier uses browser voice. Avatar also blocked on HEYGEN_API_KEY.
+- [x] Upgrade Maya's free voice to ElevenLabs TTS (the-room-voice edge function; 503 voice_not_configured → browser voice fallback). Blocked on user adding ELEVENLABS_API_KEY (ElevenLabs connector or secret) — falls back to browser voice until then.
