@@ -28,7 +28,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { VideoCard } from '@/components/VideoCard';
 import MediaCanvasRenderer, { type CanvasBlockData } from '@/components/the-room/MediaCanvasRenderer';
 import { useHeyGenAvatar } from '@/hooks/useHeyGenAvatar';
-import { speakFreeVoice, stopFreeVoice } from '@/lib/freeVoice';
+import { speakMayaVoice, stopMayaVoice } from '@/lib/freeVoice';
 import { RoomPremiumCard, useRoomPremium } from '@/components/the-room/RoomPremiumCard';
 import { useSpeechInput } from '@/hooks/useSpeechInput';
 import { useRoomRecorder } from '@/hooks/useRoomRecorder';
@@ -232,7 +232,7 @@ const TheRoom = () => {
         setMessages((prev) => [...prev, { sender: 'AI_HOST', text: data.reply }]);
         setActiveCanvasBlock(data.canvasBlock ?? null);
         if (avatarStatus === 'connected') void speak(data.reply);
-        else speakFreeVoice(data.reply);
+        else void speakMayaVoice(data.reply);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'The host hit a snag. Try again.';
@@ -259,7 +259,7 @@ const TheRoom = () => {
     const hook = getOpeningHook(chosen);
     if (hook) {
       setMessages([{ sender: 'AI_HOST', text: hook }]);
-      speakFreeVoice(hook);
+      void speakMayaVoice(hook);
     } else {
       askHost(chosen, []);
     }
@@ -285,7 +285,7 @@ const TheRoom = () => {
   const exitRoom = () => {
     mic.stop();
     recorder.stop();
-    stopFreeVoice();
+    stopMayaVoice();
     void stopAvatar();
     setIsLaunched(false);
     setTopic('');
