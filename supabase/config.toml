@@ -74,3 +74,6 @@ verify_jwt = false
 
 [functions.create-room-checkout]
 verify_jwt = false
+
+[functions.the-room-voice]
+verify_jwt = false
