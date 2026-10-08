@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LineChart, Trophy, Newspaper, Music2, Radio, MessageCircle } from 'lucide-react';
+import { LineChart, Trophy, Newspaper, Music2, Radio, MonitorPlay } from 'lucide-react';
 
 const COMMUNITIES = [
   { to: '/gmatrader-articles', label: 'GmaTrader', blurb: 'Nasdaq futures, markets', Icon: LineChart },
@@ -8,7 +8,7 @@ const COMMUNITIES = [
   { to: '/breaking-news', label: 'Breaking News', blurb: 'What just happened', Icon: Newspaper },
   { to: '/music', label: 'Music', blurb: 'Videos, genres, live sets', Icon: Music2 },
   { to: '/podcasts', label: 'Podcasts', blurb: 'Talk, news, gossip', Icon: Radio },
-  { to: '/talk-at-cha', label: 'MiyTube At Cha', blurb: 'AI chat rooms', Icon: MessageCircle },
+  { to: '/the-room', label: 'The Room', blurb: 'You name the topic. We build the room.', Icon: MonitorPlay },
 ];
 
 /** Focused communities — the reason to come back, versus a generic feed. */
