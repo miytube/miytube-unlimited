@@ -27,6 +27,7 @@ const extractYouTubeId = (url: string): string | null => {
 
 export const UrlImportSection: React.FC<UrlImportSectionProps> = ({
   onUrlImport,
+  onLoomFile,
   disabled = false
 }) => {
   const [videoUrl, setVideoUrl] = useState('');
@@ -170,10 +171,10 @@ export const UrlImportSection: React.FC<UrlImportSectionProps> = ({
         </div>
         <Button 
           onClick={handleImport}
-          disabled={disabled || (urlStatus !== 'valid' && urlStatus !== 'youtube')}
+          disabled={disabled || loomBusy || (urlStatus !== 'valid' && urlStatus !== 'youtube')}
           variant="secondary"
         >
-          Import
+          {loomBusy ? "Converting..." : isLoom ? "Convert Loom to MP4" : "Import"}
         </Button>
       </div>
       
@@ -192,7 +193,7 @@ export const UrlImportSection: React.FC<UrlImportSectionProps> = ({
       )}
       
       <p className="text-xs text-muted-foreground mt-3">
-        Supports: YouTube links, Google Drive, Dropbox, and direct video file URLs
+        Supports: Loom links (converted to MP4), YouTube links, Google Drive, Dropbox, and direct video file URLs
       </p>
     </div>
   );
