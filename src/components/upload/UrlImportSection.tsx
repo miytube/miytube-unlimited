@@ -5,6 +5,7 @@ import { Link2, CheckCircle, AlertCircle, Loader2, Youtube } from 'lucide-react'
 
 interface UrlImportSectionProps {
   onUrlImport: (url: string, isYouTube?: boolean, youtubeId?: string) => void;
+  onLoomFile?: (file: File) => void;
   disabled?: boolean;
 }
 
@@ -93,7 +94,45 @@ export const UrlImportSection: React.FC<UrlImportSectionProps> = ({
     }, 300);
   };
 
+  const [loomBusy, setLoomBusy] = useState(false);
+  const isLoom = /loom\.com\/(share|embed)\/[a-f0-9]{32}/i.test(videoUrl);
+
+  const handleLoom = async () => {
+    setLoomBusy(true);
+    setErrorMessage('');
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/loom-download`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY },
+        body: JSON.stringify({ url: videoUrl.trim() }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error(j.message || 'Could not convert this Loom video.');
+      }
+      const title = decodeURIComponent(res.headers.get('x-loom-title') || 'Loom video');
+      const blob = await res.blob();
+      const safe = title.replace(/[^\w\s-]/g, '').trim() || 'loom-video';
+      const file = new File([blob], `${safe}.mp4`, { type: 'video/mp4' });
+      if (onLoomFile) {
+        onLoomFile(file);
+      } else {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(file);
+        a.download = file.name;
+        a.click();
+      }
+      setVideoUrl('');
+      setUrlStatus('idle');
+    } catch (e) {
+      setErrorMessage(e instanceof Error ? e.message : 'Loom conversion failed.');
+    } finally {
+      setLoomBusy(false);
+    }
+  };
+
   const handleImport = () => {
+    if (isLoom) { void handleLoom(); return; }
     if ((urlStatus === 'valid' || urlStatus === 'youtube') && videoUrl.trim()) {
       onUrlImport(videoUrl.trim(), urlStatus === 'youtube', youtubeId || undefined);
       setVideoUrl('');
