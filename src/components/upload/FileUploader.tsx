@@ -363,6 +363,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
       {showUrlImport && (
         <UrlImportSection
           onUrlImport={handleUrlImport}
+          onLoomFile={(file) => { setImportedUrl(null); setMetadataFromFile(file); setVideoTitle(file.name.replace(/\.mp4$/, "")); handleFiles([file]); toast({ title: "Loom video converted", description: "Ready to publish as MP4." }); }}
           disabled={uploading}
         />
       )}
