@@ -1,5 +1,5 @@
 
-import { Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import CategoryPage from "@/pages/CategoryPage";
 import Videos from "@/pages/Videos";
 import Audio from "@/pages/Audio";
@@ -9,7 +9,6 @@ import Comedy from "@/pages/Comedy";
 import Educational from "@/pages/Educational";
 import Music from "@/pages/Music";
 import News from "@/pages/NewsAndPolitics";
-import Podcasts from "@/pages/Podcasts";
 import Shorts from "@/pages/Shorts";
 import Sports from "@/pages/Sports";
 import Weather from "@/pages/Weather";
@@ -58,7 +57,7 @@ export const categoryRoutes = [
   <Route key="funny" path="/funny" element={<CategoryPage category="Funny" icon="Laugh" />} />,
   <Route key="music" path="/music" element={<Music />} />,
   <Route key="news" path="/news" element={<News />} />,
-  <Route key="podcasts" path="/podcasts" element={<Podcasts />} />,
+  <Route key="podcasts" path="/podcasts" element={<Navigate to="/c/podcasts" replace />} />,
   <Route key="shorts" path="/shorts" element={<Shorts />} />,
   <Route key="sports" path="/sports" element={<Sports />} />,
   <Route key="weather" path="/weather" element={<Weather />} />,

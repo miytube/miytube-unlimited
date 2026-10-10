@@ -1,10 +1,9 @@
 
-import { Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import Music from "@/pages/Music";
 import MusicUpload from "@/pages/MusicUpload";
 import Sports from "@/pages/Sports";
 import Gaming from "@/pages/Gaming";
-import Podcasts from "@/pages/Podcasts";
 import Audiobooks from "@/pages/Audiobooks";
 import Meditation from "@/pages/Meditation";
 import Educational from "@/pages/Educational";
@@ -25,8 +24,8 @@ export const contentRoutes = [
   <Route key="sports-category" path="/sports/:category" element={<GenericSubcategoryPage />} />,
   <Route key="gaming" path="/gaming" element={<Gaming />} />,
   <Route key="gaming-category" path="/gaming/:category" element={<GenericSubcategoryPage />} />,
-  <Route key="podcasts" path="/podcasts" element={<Podcasts />} />,
-  <Route key="podcasts-category" path="/podcasts/:category" element={<GenericSubcategoryPage />} />,
+  <Route key="podcasts" path="/podcasts" element={<Navigate to="/c/podcasts" replace />} />,
+  <Route key="podcasts-category" path="/podcasts/:category" element={<Navigate to="/c/podcasts" replace />} />,
   <Route key="audiobooks" path="/audiobooks" element={<Audiobooks />} />,
   <Route key="audiobooks-category" path="/audiobooks/:category" element={<GenericSubcategoryPage />} />,
   <Route key="meditation" path="/meditation" element={<Meditation />} />,
