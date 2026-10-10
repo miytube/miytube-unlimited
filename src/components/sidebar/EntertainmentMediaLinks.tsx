@@ -92,6 +92,12 @@ export const EntertainmentMediaLinks: React.FC = () => {
         { id: 'radio-rc', label: 'RC Cars & Airplanes', path: '/radio/rc' }
       ]
     },
+    { 
+      id: 'podcasts', 
+      icon: Mic, 
+      label: 'Podcasts', 
+      path: '/c/podcasts'
+    },
   ];
 
   return <SidebarCategoryLinks title="ENTERTAINMENT & MEDIA" links={entertainmentMediaLinks} />;
