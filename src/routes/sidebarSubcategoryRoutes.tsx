@@ -21,11 +21,6 @@ export const sidebarSubcategoryRoutes = [
   <Route key="gaming-streaming" path="/gaming/streaming" element={<GenericSubcategoryPage />} />,
   <Route key="gaming-reviews" path="/gaming/reviews" element={<GenericSubcategoryPage />} />,
   
-  // Podcasts subcategories
-  <Route key="podcasts-news" path="/podcasts/news" element={<GenericSubcategoryPage />} />,
-  <Route key="podcasts-comedy" path="/podcasts/comedy" element={<GenericSubcategoryPage />} />,
-  <Route key="podcasts-interview" path="/podcasts/interview" element={<GenericSubcategoryPage />} />,
-  <Route key="podcasts-educational" path="/podcasts/educational" element={<GenericSubcategoryPage />} />,
   
   // Audiobooks subcategories
   <Route key="audiobooks-fiction" path="/audiobooks/fiction" element={<GenericSubcategoryPage />} />,

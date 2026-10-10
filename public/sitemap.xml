@@ -151,7 +151,7 @@
   
   <!-- Audio -->
   <url><loc>https://www.miytube.com/audio</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.miytube.com/podcasts</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.miytube.com/c/podcasts</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.miytube.com/audiobooks</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.miytube.com/sound-effects</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.miytube.com/asmr</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
