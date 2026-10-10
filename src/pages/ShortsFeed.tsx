@@ -61,14 +61,20 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [userLiked, setUserLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [viewsCount, setViewsCount] = useState(0);
+  const viewRecordedRef = useRef(false);
 
-  // Load like count + user's like status
+  // Load like count, view count + user's like status
   useEffect(() => {
     (async () => {
       const { data: counts } = await supabase.rpc('get_video_like_counts', {
         _video_ids: [short.id],
       });
       setLikesCount(Number((counts || [])[0]?.likes ?? 0));
+      const { data: viewCounts } = await supabase.rpc('get_video_view_counts', {
+        _video_ids: [short.id],
+      });
+      setViewsCount(Number((viewCounts || [])[0]?.views ?? 0));
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data: own } = await supabase
