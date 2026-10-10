@@ -114,6 +114,13 @@ const ShortsWatch = () => {
     })();
   }, [id]);
 
+  // Record a view once per page load
+  useEffect(() => {
+    if (video) trackEngagement(video.id || id, 'view');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [video?.id]);
+
+
 
 
   const handleLike = async () => {

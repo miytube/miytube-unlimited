@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Layout } from '@/components/Layout';
 import { useNavigate } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
-import { Play, Volume2, VolumeX, ThumbsUp, MessageCircle, Share, Film, ChevronUp, ChevronDown } from 'lucide-react';
+import { Play, Volume2, VolumeX, ThumbsUp, MessageCircle, Share, Film, ChevronUp, ChevronDown, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
@@ -92,6 +92,12 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           vid.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+          // Count one view per short per visit, the first time it comes on screen
+          if (!viewRecordedRef.current) {
+            viewRecordedRef.current = true;
+            trackEngagement(short.id, 'view');
+            setViewsCount((c) => c + 1);
+          }
         } else {
           vid.pause();
           setIsPlaying(false);
@@ -198,6 +204,10 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
         <div className="absolute bottom-4 left-4 right-16 text-white">
           <h3 className="font-semibold text-lg line-clamp-2">{short.title}</h3>
+          <div className="flex items-center gap-1.5 mt-1 text-sm opacity-80">
+            <Eye className="h-3.5 w-3.5" />
+            <span>{viewsCount} view{viewsCount === 1 ? '' : 's'}</span>
+          </div>
           {short.description && (
             <p className="text-sm opacity-70 mt-1 line-clamp-2">{short.description}</p>
           )}
