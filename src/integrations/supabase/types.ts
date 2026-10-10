@@ -1793,6 +1793,13 @@ export type Database = {
           video_id: string
         }[]
       }
+      get_video_view_counts: {
+        Args: { _video_ids: string[] }
+        Returns: {
+          video_id: string
+          views: number
+        }[]
+      }
       has_active_subscription: {
         Args: { _env: string; _user_id: string }
         Returns: boolean
