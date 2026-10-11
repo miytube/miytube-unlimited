@@ -397,7 +397,7 @@ const ShortsWatch = () => {
                       <h4 className="text-xs font-medium line-clamp-2 group-hover:text-primary">
                         {vid.title}
                       </h4>
-                      <p className="text-[10px] text-muted-foreground mt-1">{vid.views} views</p>
+                      <p className="text-[10px] text-muted-foreground mt-1">{viewCounts[vid.id] ?? 0} views</p>
                     </div>
                   </Link>
                 ))}
