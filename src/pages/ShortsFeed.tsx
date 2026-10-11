@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Layout } from '@/components/Layout';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Play, Volume2, VolumeX, ThumbsUp, MessageCircle, Share, Film, ChevronUp, ChevronDown, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -15,6 +15,19 @@ import { trackEngagement } from '@/hooks/useTrackEngagement';
 const ShortsFeed = () => {
   const { uploadedVideos, isLoading } = useUploadedVideos();
   const shorts = uploadedVideos.filter((v) => v.category === 'shorts');
+  const [searchParams] = useSearchParams();
+  const startId = searchParams.get('v');
+  const jumpedRef = useRef(false);
+
+  // Open the feed at the short the visitor clicked or was sent (?v=<id>)
+  useEffect(() => {
+    if (jumpedRef.current || !startId || shorts.length === 0) return;
+    const el = document.getElementById(`short-${startId}`);
+    if (el) {
+      jumpedRef.current = true;
+      el.scrollIntoView({ behavior: 'auto' });
+    }
+  }, [startId, shorts.length]);
 
   if (isLoading) {
     return (
@@ -156,7 +169,7 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
   };
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/shorts/${short.id}`;
+    const url = `${window.location.origin}/shorts/feed?v=${short.id}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: short.title || 'Short', url });
@@ -184,6 +197,7 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
   return (
     <div
       ref={containerRef}
+      id={`short-${short.id}`}
       className="relative h-[calc(100vh-64px)] snap-start flex items-center justify-center bg-black"
     >
       <div className="relative h-full max-h-full aspect-[9/16] max-w-full">

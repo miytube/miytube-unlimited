@@ -96,7 +96,7 @@ export const ShortCard: React.FC<ShortCardProps> = ({
   return (
     <div className="group relative flex flex-col rounded-lg overflow-hidden hover:shadow-md transition-all bg-card">
       <Link 
-        to={`/shorts/${id}`} 
+        to={`/shorts/feed?v=${id}`} 
         className="flex flex-col flex-1"
         onClick={() => trackEngagement(id, 'click')}
       >
