@@ -19,6 +19,7 @@ import { CommunityStrip } from '@/components/home/CommunityStrip';
 import { OrganizationStructuredData } from '@/components/seo/OrganizationStructuredData';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { useSite } from '@/hooks/useSite';
+import { supabase } from '@/integrations/supabase/client';
 
 const SimpleVideoCard = ({ id, title, thumbnail, channelName, views, timestamp, duration, category }: {
   id: string;
@@ -94,6 +95,24 @@ const Index = () => {
   const startIndex = (currentPage - 1) * videosPerPage;
   const endIndex = startIndex + videosPerPage;
   const displayVideos = allVideos.slice(startIndex, endIndex);
+
+  // Real view counts — the stored views column stays 0, so read engagement events
+  const [viewCounts, setViewCounts] = useState<Record<string, number>>({});
+  const displayIds = displayVideos.map(v => v.id).join(',');
+  useEffect(() => {
+    const ids = displayIds ? displayIds.split(',') : [];
+    if (ids.length === 0) return;
+    (async () => {
+      const { data } = await supabase.rpc('get_video_view_counts', { _video_ids: ids });
+      const map: Record<string, number> = {};
+      (data || []).forEach((row: any) => { map[row.video_id] = Number(row.views ?? 0); });
+      setViewCounts(prev => ({ ...prev, ...map }));
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayIds]);
+
+  const realViews = (video: { id: string; views: string }) =>
+    viewCounts[video.id] !== undefined ? String(viewCounts[video.id]) : video.views;
 
   // Trending section - first 8 videos, stable order
   const trendingVideos = useMemo(() => {
