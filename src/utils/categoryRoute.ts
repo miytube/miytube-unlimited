@@ -92,6 +92,12 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   if (cleanCategory === 'news' && cleanSubcategory === 'news-and-politics') {
     return '/news';
   }
+  if (cleanCategory === 'stocks' && cleanSubcategory.includes('gmatrader')) {
+    // GmaTrader uploads carry subcategory "gmatrader-videos", but the real
+    // watch page lives one level deeper under the GmaTrader hub.
+    if (cleanSubcategory.includes('video')) return '/c/stocks/gmatrader-nasdaq-futures-markets/gmatrader-videos';
+    return '/c/stocks/gmatrader-nasdaq-futures-markets';
+  }
   if (cleanCategory === 'travel-events') {
     const citiesRoutes = new Set(['cities', 'towns', 'cities-towns', 'travel-cities', 'travel-events-cities-towns', 'travel-cities-towns']);
     if (cleanSubcategory && citiesRoutes.has(cleanSubcategory)) return '/travel-events/cities-towns';
