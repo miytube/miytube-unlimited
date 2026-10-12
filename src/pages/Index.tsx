@@ -172,7 +172,7 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {displayVideos.slice(0, 8).map((video) => (
-                <SimpleVideoCard key={video.id} {...video} />
+                <SimpleVideoCard key={video.id} {...video} views={realViews(video)} />
               ))}
             </div>
             {/* Above-the-fold responsive ad — sits at the bottom of the first viewport
@@ -192,7 +192,7 @@ const Index = () => {
             {displayVideos.length > 8 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {displayVideos.slice(8).map((video) => (
-                  <SimpleVideoCard key={video.id} {...video} />
+                  <SimpleVideoCard key={video.id} {...video} views={realViews(video)} />
                 ))}
               </div>
             )}
@@ -218,7 +218,7 @@ const Index = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {trendingVideos.map((video) => (
-                <SimpleVideoCard key={video.id} {...video} />
+                <SimpleVideoCard key={video.id} {...video} views={realViews(video)} />
               ))}
             </div>
           </div>
