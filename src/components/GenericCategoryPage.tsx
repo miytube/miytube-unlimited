@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Upload, LucideIcon } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 
 
 interface GenericCategoryPageProps {
@@ -45,6 +46,9 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
     const start = (currentPage - 1) * VIDEOS_PER_PAGE;
     return categoryVideos.slice(start, start + VIDEOS_PER_PAGE);
   }, [categoryVideos, currentPage]);
+
+  // Real view counts — the stored views column stays 0
+  const { viewsFor } = useVideoViewCounts(displayVideos.map((v) => v.id));
 
   return (
     <Layout>
