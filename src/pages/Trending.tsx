@@ -325,7 +325,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     creator={item.channelName}
-                    views={item.views}
+                    views={musicViewsFor(item.id, item.views)}
                   />
                 ) : (
                   <VideoCard
@@ -334,7 +334,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     channelName={item.channelName}
-                    views={item.views}
+                    views={musicViewsFor(item.id, item.views)}
                     timestamp={item.timestamp}
                     duration={item.duration}
                   />
@@ -375,7 +375,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     creator={item.channelName}
-                    views={item.views}
+                    views={podcastViewsFor(item.id, item.views)}
                   />
                 ) : (
                   <VideoCard
@@ -384,7 +384,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     channelName={item.channelName}
-                    views={item.views}
+                    views={podcastViewsFor(item.id, item.views)}
                     timestamp={item.timestamp}
                     duration={item.duration}
                   />
