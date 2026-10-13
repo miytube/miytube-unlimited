@@ -105,6 +105,9 @@ const Trending: React.FC = () => {
   const endIndex = startIndex + videosPerPage;
   const displayVideos = trendingVideos.slice(startIndex, endIndex);
 
+  // Real view counts — the stored views column stays 0
+  const { viewsFor } = useVideoViewCounts(displayVideos.map((v) => v.id));
+
   // Helper: detect whether an uploaded video is truly a short (≤60s)
   const isShortVideo = (v: typeof musicVideosRaw[number]) => {
     if (v.category?.toLowerCase() === 'shorts') return true;
