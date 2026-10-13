@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { Pagination, PageInfo } from '@/components/Pagination';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 
 const Videos = () => {
   const { category } = useParams();
@@ -92,6 +93,12 @@ const Videos = () => {
   const startIndex = (currentPage - 1) * videosPerPage;
   const videosToShow = allVideosToShow.slice(startIndex, startIndex + videosPerPage);
   const shortsToShow = displayedShortVideos.slice(0, 8);
+
+  // Real view counts — the stored views column stays 0
+  const { viewsFor } = useVideoViewCounts([
+    ...videosToShow.map((v) => v.id),
+    ...shortsToShow.map((v) => v.id),
+  ]);
 
   return (
     <Layout>
@@ -181,7 +188,7 @@ const Videos = () => {
                     title={video.title}
                     thumbnail={video.thumbnail}
                     channelName="Your Channel"
-                    views={video.views}
+                    views={viewsFor(video.id, video.views)}
                     timestamp={video.timestamp}
                     duration={video.duration}
                     description={video.description}
@@ -236,7 +243,7 @@ const Videos = () => {
                   title={video.title}
                   thumbnail={video.thumbnail}
                   creator="Your Channel"
-                  views={video.views}
+                  views={viewsFor(video.id, video.views)}
                   description={video.description}
                   category={video.category}
                   subcategory={video.subcategory}

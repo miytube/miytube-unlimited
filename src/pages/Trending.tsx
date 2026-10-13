@@ -7,6 +7,7 @@ import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
 import { Pagination, PageInfo } from '@/components/Pagination';
@@ -105,6 +106,9 @@ const Trending: React.FC = () => {
   const endIndex = startIndex + videosPerPage;
   const displayVideos = trendingVideos.slice(startIndex, endIndex);
 
+  // Real view counts — the stored views column stays 0
+  const { viewsFor } = useVideoViewCounts(displayVideos.map((v) => v.id));
+
   // Helper: detect whether an uploaded video is truly a short (≤60s)
   const isShortVideo = (v: typeof musicVideosRaw[number]) => {
     if (v.category?.toLowerCase() === 'shorts') return true;
@@ -130,6 +134,7 @@ const Trending: React.FC = () => {
   const musicTotalPages = Math.ceil(musicVideos.length / videosPerPage);
   const musicStartIndex = (musicPage - 1) * videosPerPage;
   const displayMusic = musicVideos.slice(musicStartIndex, musicStartIndex + videosPerPage);
+  const { viewsFor: musicViewsFor } = useVideoViewCounts(displayMusic.map((v) => v.id));
 
   // Get uploaded podcasts with pagination
   const podcastVideos = podcastVideosRaw.map(video => ({
@@ -145,6 +150,7 @@ const Trending: React.FC = () => {
   const podcastTotalPages = Math.ceil(podcastVideos.length / videosPerPage);
   const podcastStartIndex = (podcastPage - 1) * videosPerPage;
   const displayPodcasts = podcastVideos.slice(podcastStartIndex, podcastStartIndex + videosPerPage);
+  const { viewsFor: podcastViewsFor } = useVideoViewCounts(displayPodcasts.map((v) => v.id));
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach((file) => {
@@ -261,7 +267,7 @@ const Trending: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayVideos.map(video => (
-                <VideoCard key={video.id} {...video} />
+                <VideoCard key={video.id} {...video} views={viewsFor(video.id, video.views)} />
               ))}
             </div>
             
@@ -319,7 +325,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     creator={item.channelName}
-                    views={item.views}
+                    views={musicViewsFor(item.id, item.views)}
                   />
                 ) : (
                   <VideoCard
@@ -328,7 +334,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     channelName={item.channelName}
-                    views={item.views}
+                    views={musicViewsFor(item.id, item.views)}
                     timestamp={item.timestamp}
                     duration={item.duration}
                   />
@@ -369,7 +375,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     creator={item.channelName}
-                    views={item.views}
+                    views={podcastViewsFor(item.id, item.views)}
                   />
                 ) : (
                   <VideoCard
@@ -378,7 +384,7 @@ const Trending: React.FC = () => {
                     title={item.title}
                     thumbnail={item.thumbnail}
                     channelName={item.channelName}
-                    views={item.views}
+                    views={podcastViewsFor(item.id, item.views)}
                     timestamp={item.timestamp}
                     duration={item.duration}
                   />
