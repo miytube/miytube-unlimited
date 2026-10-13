@@ -188,7 +188,7 @@ const Videos = () => {
                     title={video.title}
                     thumbnail={video.thumbnail}
                     channelName="Your Channel"
-                    views={video.views}
+                    views={viewsFor(video.id, video.views)}
                     timestamp={video.timestamp}
                     duration={video.duration}
                     description={video.description}
@@ -243,7 +243,7 @@ const Videos = () => {
                   title={video.title}
                   thumbnail={video.thumbnail}
                   creator="Your Channel"
-                  views={video.views}
+                  views={viewsFor(video.id, video.views)}
                   description={video.description}
                   category={video.category}
                   subcategory={video.subcategory}
