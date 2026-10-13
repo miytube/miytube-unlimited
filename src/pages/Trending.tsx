@@ -7,6 +7,7 @@ import { VideoCard } from '@/components/VideoCard';
 import { ShortCard } from '@/components/ShortCard';
 import { TrendingShortVideosSection } from '@/components/video/TrendingShortVideosSection';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 import { FileUploader } from '@/components/upload/FileUploader';
 import { useToast } from '@/hooks/use-toast';
 import { Pagination, PageInfo } from '@/components/Pagination';
@@ -264,7 +265,7 @@ const Trending: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {displayVideos.map(video => (
-                <VideoCard key={video.id} {...video} />
+                <VideoCard key={video.id} {...video} views={viewsFor(video.id, video.views)} />
               ))}
             </div>
             
