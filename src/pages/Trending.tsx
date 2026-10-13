@@ -134,6 +134,7 @@ const Trending: React.FC = () => {
   const musicTotalPages = Math.ceil(musicVideos.length / videosPerPage);
   const musicStartIndex = (musicPage - 1) * videosPerPage;
   const displayMusic = musicVideos.slice(musicStartIndex, musicStartIndex + videosPerPage);
+  const { viewsFor: musicViewsFor } = useVideoViewCounts(displayMusic.map((v) => v.id));
 
   // Get uploaded podcasts with pagination
   const podcastVideos = podcastVideosRaw.map(video => ({
@@ -149,6 +150,7 @@ const Trending: React.FC = () => {
   const podcastTotalPages = Math.ceil(podcastVideos.length / videosPerPage);
   const podcastStartIndex = (podcastPage - 1) * videosPerPage;
   const displayPodcasts = podcastVideos.slice(podcastStartIndex, podcastStartIndex + videosPerPage);
+  const { viewsFor: podcastViewsFor } = useVideoViewCounts(displayPodcasts.map((v) => v.id));
 
   const handleUpload = (files: File[], title: string, description: string, category?: string, subcategory?: string, tags?: string[]) => {
     files.forEach((file) => {
