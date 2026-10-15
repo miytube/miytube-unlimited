@@ -34,14 +34,14 @@ const PhysicalFitness = () => {
         <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
           <span className="font-semibold text-primary">MiyTube</span>
           <ChevronRight size={14} />
-          <span className="text-foreground">Physical Fitness</span>
+          <span className="text-foreground">Fitness & Workout</span>
         </div>
         
         <div className="flex items-center justify-between gap-3 mb-8">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-3">
               <Dumbbell className="h-8 w-8 text-primary" />
-              <h1 className="text-3xl font-bold">Physical Fitness</h1>
+              <h1 className="text-3xl font-bold">Fitness & Workout</h1>
             </div>
             <p className="text-muted-foreground">
               Workout videos, weightlifting, yoga, and fitness content
@@ -75,7 +75,7 @@ const PhysicalFitness = () => {
         {/* Videos */}
         {fitnessVideos.length > 0 ? (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Physical Fitness Videos</h2>
+            <h2 className="text-xl font-semibold mb-4">Fitness & Workout Videos</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {fitnessVideos.slice(0, 20).map((video) => (
                 <VideoCard 
@@ -107,7 +107,7 @@ const PhysicalFitness = () => {
         )}
 
         <div className="bg-card p-6 rounded-lg shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">About Physical Fitness</h2>
+          <h2 className="text-xl font-semibold mb-4">About Fitness & Workout</h2>
           <p className="text-muted-foreground">
             Discover workout routines, weightlifting techniques, yoga sessions, and fitness inspiration.
             Whether you're into bodybuilding, calisthenics, or general fitness, find content to help you reach your goals.

@@ -151,7 +151,7 @@ const allItems: SearchItem[] = [
   { label: 'Poker (News & Gossip)', path: '/c/wsop/poker-news-gossip', category: 'WSOP' },
   
   // Fitness & Health
-  { label: 'Physical Fitness', path: '/physical-fitness', category: 'Fitness & Health' },
+  { label: 'Fitness & Workout', path: '/physical-fitness', category: 'Fitness & Health' },
   { label: 'Calisthenics', path: '/calisthenics', category: 'Fitness & Health' },
   { label: 'Weight Lifting', path: '/weight-lifting', category: 'Fitness & Health' },
   { label: 'Yoga Workout', path: '/yoga-workout', category: 'Fitness & Health' },
