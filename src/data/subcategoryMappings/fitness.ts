@@ -2,7 +2,7 @@
 import { Dumbbell } from 'lucide-react';
 import { SubcategoryMapping } from './types';
 
-const physicalFitnessParent = { route: '/physical-fitness', name: 'Physical Fitness' };
+const physicalFitnessParent = { route: '/physical-fitness', name: 'Fitness & Workout' };
 
 const physicalFitnessEntries: SubcategoryMapping = {
   'fitness-weight-lifting': { title: 'Weight Lifting', description: 'Weight lifting videos, pranks, and amazing feats', icon: Dumbbell, parent: physicalFitnessParent },
