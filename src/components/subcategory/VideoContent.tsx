@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { VideoCard } from '@/components/VideoCard';
 import { MockVideo } from '@/data/mockVideos';
 import { Pagination, PageInfo } from '@/components/Pagination';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 
 interface VideoContentProps {
   title: string;
@@ -16,6 +17,7 @@ const VideoContent: React.FC<VideoContentProps> = ({ title, videos, videosPerPag
   const startIndex = (currentPage - 1) * videosPerPage;
   const endIndex = startIndex + videosPerPage;
   const displayVideos = videos.slice(startIndex, endIndex);
+  const { viewsFor } = useVideoViewCounts(displayVideos.map((v) => v.id));
   
   return (
     <div className="mb-8">
@@ -31,7 +33,7 @@ const VideoContent: React.FC<VideoContentProps> = ({ title, videos, videosPerPag
       
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {displayVideos.map((video) => (
-          <VideoCard key={video.id} {...video} />
+          <VideoCard key={video.id} {...video} views={viewsFor(video.id, video.views)} />
         ))}
       </div>
       
