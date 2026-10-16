@@ -64,7 +64,7 @@ export default function Advertising() {
               <Figure value="86,000" label="First-time visits" />
               <Figure value="31,000" label="Video views" />
               <Figure value="33,000" label="Watch-page views" />
-              <Figure value="25,000" label="Internal searches" />
+              <Figure value="25,000" label="Search-box interactions" />
             </div>
             <p style={{ opacity: 0.7, fontSize: "13px", marginTop: "16px" }}>
               These are the only audience figures we publish. We do not describe this
