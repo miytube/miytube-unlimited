@@ -223,7 +223,7 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
           <h3 className="font-semibold text-lg line-clamp-2">{short.title}</h3>
           <div className="flex items-center gap-1.5 mt-1 text-sm opacity-80">
             <Eye className="h-3.5 w-3.5" />
-            <span>{viewsCount} view{viewsCount === 1 ? '' : 's'}</span>
+            <span>{viewsCount} view{viewsCount === '1' ? '' : 's'}</span>
           </div>
           {short.description && (
             <p className="text-sm opacity-70 mt-1 line-clamp-2">{short.description}</p>

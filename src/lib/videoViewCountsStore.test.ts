@@ -1,4 +1,5 @@
-import { describe, test, expect } from 'bun:test';
+import { describe, test } from 'node:test';
+import assert from 'node:assert/strict';
 import { createVideoViewCountsStore } from './videoViewCountsStore';
 
 describe('sitewide video view totals', () => {
@@ -9,8 +10,8 @@ describe('sitewide video view totals', () => {
     const a = store.subscribe(['atlanta'], () => { first = store.get('atlanta'); });
     const b = store.subscribe(['atlanta'], () => { second = store.get('atlanta'); });
     await store.refresh();
-    expect(first).toBe(7);
-    expect(second).toBe(7);
+    assert.equal(first, 7);
+    assert.equal(second, 7);
     a(); b();
   });
 
@@ -24,8 +25,8 @@ describe('sitewide video view totals', () => {
     await store.refresh();
     total++;
     await store.refresh();
-    expect(first).toEqual([7, 8]);
-    expect(second).toEqual([7, 8]);
+    assert.deepEqual(first, [7, 8]);
+    assert.deepEqual(second, [7, 8]);
     a(); b();
   });
 
@@ -40,10 +41,10 @@ describe('sitewide video view totals', () => {
     const a = store.subscribe(['one'], () => {});
     const b = store.subscribe(['two'], () => {});
     await store.refresh();
-    expect(requested).toEqual(['one', 'two']);
+    assert.deepEqual(requested, ['one', 'two']);
     fail = true;
     await store.refresh();
-    expect(store.get('one')).toBe(9);
+    assert.equal(store.get('one'), 9);
     a(); b();
   });
 });
