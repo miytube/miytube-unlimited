@@ -24,6 +24,7 @@ import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useToast } from '@/hooks/use-toast';
 import WatchlistButton from '@/components/WatchlistButton';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 
 interface VideoCardProps {
   id: string;
@@ -59,6 +60,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
   const { isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { viewsFor } = useVideoViewCounts([id]);
 
   useEffect(() => {
     setUnavailable(isVideoUnavailable(id));
@@ -174,7 +176,7 @@ export const VideoCard: React.FC<VideoCardProps> = ({
           <div className="mt-1 text-sm text-muted-foreground">
             <p>{channelName}</p>
             <div className="flex items-center gap-1 text-xs">
-              <span>{views} views</span>
+              <span>{viewsFor(id, views)} views</span>
               <span>•</span>
               <span>{timestamp}</span>
             </div>

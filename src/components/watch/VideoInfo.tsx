@@ -7,6 +7,7 @@ import WatchlistButton from '@/components/WatchlistButton';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { TipCreatorButton } from '@/components/tips/TipCreatorButton';
 import { useAuth } from '@/hooks/useAuth';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 
 interface VideoInfoProps {
   title: string;
@@ -44,6 +45,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
   const [dislikesCount, setDislikesCount] = useState(0);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { viewsFor } = useVideoViewCounts(videoId ? [videoId] : []);
   const isOwnVideo = !!(user && creatorId && user.id === creatorId);
 
   useEffect(() => {
@@ -287,7 +289,7 @@ export const VideoInfo: React.FC<VideoInfoProps> = ({
       
       <div className="mt-4 p-4 bg-secondary/50 rounded-lg">
         <div className="flex items-center gap-2 mb-2">
-          <span className="font-medium">{views}</span>
+          <span className="font-medium">{videoId ? `${viewsFor(videoId)} views` : views}</span>
           <span className="text-xs">•</span>
           <span>{timestamp}</span>
         </div>
