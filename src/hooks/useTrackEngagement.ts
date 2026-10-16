@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import { gaEvent } from '@/lib/ga';
+import { videoViewCounts } from '@/lib/videoViewCounts';
 
 type EventType = 'view' | 'click' | 'like' | 'share' | 'play';
 type VideoTable = 'uploaded_videos' | 'music_videos' | 'featured_discussion_video';
@@ -43,13 +44,15 @@ export const trackEngagement = async (
 
   try {
     const { data: sessionData } = await supabase.auth.getSession();
-    await supabase.from('video_engagement_events').insert({
+    const { error } = await supabase.from('video_engagement_events').insert({
       video_id: videoId,
       video_table: videoTable,
       event_type: eventType,
       user_id: sessionData?.session?.user?.id || null,
       session_id: getSessionId(),
     });
+    if (error) throw error;
+    if (eventType === 'view') videoViewCounts.schedule();
   } catch (err) {
     // non-blocking
     console.warn('engagement track failed', err);

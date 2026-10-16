@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from 'react-router-dom';
+import { VideoViewCount } from '@/components/video/VideoViewCount';
 
 export const FeaturedMusicVideo: React.FC = () => {
   const { featuredVideo, loading, trackView, trackLike, trackShare } = useFeaturedMusicVideo();
@@ -126,7 +127,7 @@ export const FeaturedMusicVideo: React.FC = () => {
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
                 <span className="flex items-center gap-1">
                   <Eye className="h-4 w-4" />
-                  {featuredVideo.views.toLocaleString()} views
+                  <VideoViewCount id={featuredVideo.id} />
                 </span>
                 <span className="flex items-center gap-1">
                   <Heart className="h-4 w-4" />

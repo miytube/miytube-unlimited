@@ -6,6 +6,7 @@ import { Play, Volume2, VolumeX, ThumbsUp, MessageCircle, Share, Film, ChevronUp
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 
 /**
  * Full-screen swipe-up Shorts feed (Instagram Reels style).
@@ -74,7 +75,8 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [userLiked, setUserLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
-  const [viewsCount, setViewsCount] = useState(0);
+  const { viewsFor } = useVideoViewCounts([short.id]);
+  const viewsCount = viewsFor(short.id);
   const viewRecordedRef = useRef(false);
 
   // Load like count, view count + user's like status
@@ -84,10 +86,6 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
         _video_ids: [short.id],
       });
       setLikesCount(Number((counts || [])[0]?.likes ?? 0));
-      const { data: viewCounts } = await supabase.rpc('get_video_view_counts', {
-        _video_ids: [short.id],
-      });
-      setViewsCount(Number((viewCounts || [])[0]?.views ?? 0));
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         const { data: own } = await supabase
@@ -115,7 +113,6 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
           if (!viewRecordedRef.current) {
             viewRecordedRef.current = true;
             trackEngagement(short.id, 'view');
-            setViewsCount((c) => c + 1);
           }
         } else {
           vid.pause();
@@ -226,7 +223,7 @@ const ShortSlide: React.FC<{ short: any }> = ({ short }) => {
           <h3 className="font-semibold text-lg line-clamp-2">{short.title}</h3>
           <div className="flex items-center gap-1.5 mt-1 text-sm opacity-80">
             <Eye className="h-3.5 w-3.5" />
-            <span>{viewsCount} view{viewsCount === 1 ? '' : 's'}</span>
+            <span>{viewsCount} view{viewsCount === '1' ? '' : 's'}</span>
           </div>
           {short.description && (
             <p className="text-sm opacity-70 mt-1 line-clamp-2">{short.description}</p>

@@ -23,6 +23,7 @@ import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useToast } from '@/hooks/use-toast';
+import { useVideoViewCounts } from '@/hooks/useVideoViewCounts';
 
 interface ShortCardProps {
   id: string;
@@ -52,6 +53,7 @@ export const ShortCard: React.FC<ShortCardProps> = ({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { isUploadedVideo, updateUploadedVideo, deleteUploadedVideo } = useUploadedVideos();
   const { toast } = useToast();
+  const { viewsFor } = useVideoViewCounts([id]);
 
   const isUploaded = isUploadedVideo(id);
 
@@ -124,7 +126,7 @@ export const ShortCard: React.FC<ShortCardProps> = ({
           <div className="mt-auto text-xs text-muted-foreground">
             <div className="flex items-center justify-between">
               <span>{creator}</span>
-              <span>{views} views</span>
+              <span>{viewsFor(id, views)} views</span>
             </div>
           </div>
         </div>
