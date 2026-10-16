@@ -14,7 +14,7 @@ const schema = z.object({
 });
 
 export const CONFIRMATION =
-  "Thank you. We'll send the rate card the same day, along with a 15-minute walkthrough of your own tour run through the placement.";
+  "Thank you. Your request has been received. We'll be in touch shortly with the rate card.";
 
 export default function RateCardRequestModal({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const [form, setForm] = useState({ name: "", company: "", email: "", role: "" });
