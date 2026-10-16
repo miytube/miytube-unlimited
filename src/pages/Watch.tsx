@@ -4,6 +4,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { VideoPlayer } from '@/components/video/VideoPlayer';
 import { YouTubeEmbed } from '@/components/video/YouTubeEmbed';
 import { VideoInfo } from '@/components/watch/VideoInfo';
+import { VideoViewCount } from '@/components/video/VideoViewCount';
 import { VideoDescription } from '@/components/watch/VideoDescription';
 import { VideoComments } from '@/components/watch/VideoComments';
 import { VideoEditDialog } from '@/components/watch/VideoEditDialog';
@@ -592,7 +593,7 @@ const Watch = () => {
                     {regularVideos[0].title}
                   </h4>
                   <p className="text-xs text-muted-foreground mt-1">Your Channel</p>
-                  <p className="text-xs text-muted-foreground">{regularVideos[0].views} views</p>
+                  <p className="text-xs text-muted-foreground"><VideoViewCount id={regularVideos[0].id} /></p>
                 </div>
               </Link>
             )}
@@ -647,7 +648,7 @@ const Watch = () => {
                         {vid.title}
                       </h4>
                       <p className="text-xs text-muted-foreground mt-1">Your Channel</p>
-                      <p className="text-xs text-muted-foreground">{vid.views} views</p>
+                      <p className="text-xs text-muted-foreground"><VideoViewCount id={vid.id} /></p>
                     </div>
                   </Link>
                 ))}
@@ -687,7 +688,7 @@ const Watch = () => {
                         {rec.title}
                       </h4>
                       <p className="text-xs text-muted-foreground mt-1">{rec.category || 'MiyTube'}</p>
-                      <p className="text-xs text-muted-foreground">{rec.views || 0} views</p>
+                      <p className="text-xs text-muted-foreground"><VideoViewCount id={rec.id} /></p>
                     </div>
                   </Link>
                 ))}
