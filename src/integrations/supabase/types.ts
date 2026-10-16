@@ -1231,6 +1231,33 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_card_requests: {
+        Row: {
+          company: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          role: string | null
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          role?: string | null
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          role?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean
