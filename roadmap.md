@@ -10,4 +10,4 @@
 - [ ] User to build subject watchpages under Podcasts in the admin panel (e.g. Sports, News, Comedy, Interviews).
 - [x] Shorts Feed opens at the short a visitor clicked or was sent (?v=<id>), and Share copies that link; published and verified live on miytube.com (link jumped to the right short).
 - [x] Fixed the Shorts Feed view counter always reading 0: the app names videos by local_id but get_video_view_counts matched only the UUID; the function now matches both (migration 0002). Live on miytube.com with no republish needed.
-- [ ] Correct double-counted view totals and verify shared live counters across Home, categories, watch pages, search, and Shorts.
+- [x] Correct double-counted totals and unify video displays across Home, categories, watch pages, search, Shorts, and featured music; tests passed and Atlanta Teacher verified at 9 on Home/Crime, then 10 on both after exactly one watch. Frontend changes await publishing.
