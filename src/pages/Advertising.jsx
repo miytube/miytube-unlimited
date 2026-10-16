@@ -100,7 +100,7 @@ export default function Advertising() {
           <p style={{ marginBottom: "25px", lineHeight: "1.6", maxWidth: "70ch" }}>
             Inventory is sold on CPM and CPC against a one-page rate card. We do not
             publish a number here, and we will not improvise one in a meeting — request
-            the rate card and we will send it the same day.
+            the rate card and we'll send it shortly.
           </p>
 
           <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "30px" }}>
