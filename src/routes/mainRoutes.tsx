@@ -24,8 +24,6 @@ import Blog from "@/pages/Blog";
 import GmaTraderArticles from "@/pages/GmaTraderArticles";
 import LongVideos from "@/pages/LongVideos";
 import NewsAndPolitics from "@/pages/NewsAndPolitics";
-import ChaRooms from "@/pages/ChaRooms";
-import ChaRoom from "@/pages/ChaRoom";
 import TalkAtCha from "@/pages/TalkAtCha";
 import TheRoom from "@/pages/TheRoom";
 import Educational from "@/pages/Educational";
