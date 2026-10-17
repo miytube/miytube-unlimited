@@ -24,8 +24,6 @@ import Blog from "@/pages/Blog";
 import GmaTraderArticles from "@/pages/GmaTraderArticles";
 import LongVideos from "@/pages/LongVideos";
 import NewsAndPolitics from "@/pages/NewsAndPolitics";
-import ChaRooms from "@/pages/ChaRooms";
-import ChaRoom from "@/pages/ChaRoom";
 import TalkAtCha from "@/pages/TalkAtCha";
 import TheRoom from "@/pages/TheRoom";
 import Educational from "@/pages/Educational";
@@ -114,8 +112,8 @@ export const mainRoutes = [
   <Route key="news-politics-legacy" path="/news-and-politics" element={<Navigate to="/news" replace />} />,
   <Route key="talk-at-cha" path="/talk-at-cha" element={<Navigate to="/shorts/feed" replace />} />,
   <Route key="talk-at-cha-boards" path="/talk-at-cha/boards" element={<TalkAtCha />} />,
-  <Route key="cha-rooms" path="/cha-rooms" element={<ChaRooms />} />,
-  <Route key="cha-room" path="/cha-rooms/:roomId" element={<ChaRoom />} />,
+  <Route key="cha-rooms" path="/cha-rooms" element={<Navigate to="/the-room" replace />} />,
+  <Route key="cha-room" path="/cha-rooms/:roomId" element={<Navigate to="/the-room" replace />} />,
   <Route key="educational" path="/educational" element={<Educational />} />,
   <Route key="mathematics" path="/mathematics" element={<Mathematics />} />,
   <Route key="channel" path="/channel" element={<Channel />} />,
