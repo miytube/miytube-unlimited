@@ -11,4 +11,4 @@
 - [x] Shorts Feed opens at the short a visitor clicked or was sent (?v=<id>), and Share copies that link; published and verified live on miytube.com (link jumped to the right short).
 - [x] Fixed the Shorts Feed view counter always reading 0: the app names videos by local_id but get_video_view_counts matched only the UUID; the function now matches both (migration 0002). Live on miytube.com with no republish needed.
 - [x] Correct double-counted totals and unify video displays across Home, categories, watch pages, search, Shorts, and featured music; tests passed and Atlanta Teacher verified at 9 on Home/Crime, then 10 on both after exactly one watch. Frontend changes await publishing.
-- [ ] Complete Google Search Console setup: add the account's META verification tag, correct sitemap hostnames to the active origin, publish, verify ownership, add the property, and submit the live sitemap.
+- [x] Complete Google Search Console setup: account META tag live, 375 sitemap page URLs corrected to miytube.com, published, ownership verified as siteOwner, property added, and https://miytube.com/sitemap.xml submitted successfully.
