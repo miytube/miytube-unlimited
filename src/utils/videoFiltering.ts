@@ -318,7 +318,7 @@ export const filterVideosBySubcategory = (
     // include child videos stored under sports-nba-<child>. We deliberately do
     // NOT strip the top-level segment here — doing so caused pages like
     // /music-artists/news to absorb every "news-*" video on the site.
-    if (isMultiSegment) {
+    if (isMultiSegment && !collegeChild) {
       const hubPrefixes = [`${keyHyphenated}-`].filter(p => p.length > 1);
       // Only allow stripping the top segment when the path is deep (>=3 segments),
       // e.g. /sports/nba/east-playoffs → also accept "nba-east-playoffs".
