@@ -293,6 +293,19 @@ export const filterVideosBySubcategory = (
   const norm = (s: string) => normalizeCategoryValue(s) || s.toLowerCase().trim().replace(/^\/+/, '');
   const normNoSep = (s: string) => norm(s).replace(/[-\s/]/g, '');
 
+  // College Sports: pages live under /sports/college/<child> (or the legacy
+  // /sports/college-<child>), but uploads are stored as category
+  // "college-sports" + subcategory "<child>". Match that storage shape
+  // directly so e.g. /sports/college/football shows every video saved as
+  // college-sports/football. Playoff/championship subcategories keep their
+  // own slugs, so they stay off the regular-season page automatically.
+  const collegeChild =
+    keySegments[0] === 'sports' && keySegments[1] === 'college' && keySegments.length >= 3
+      ? keySegments.slice(2).join('-')
+      : keyHyphenated.startsWith('sports-college-')
+        ? keyHyphenated.slice('sports-college-'.length)
+        : undefined;
+
   return videos.filter(video => {
     const vidCategory = norm(video.category || '');
     const vidSubcategory = norm(video.subcategory || '');
