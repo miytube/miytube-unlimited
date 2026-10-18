@@ -145,6 +145,13 @@ const routeValueAliases: Record<string, string[]> = {
   // under category 'sports-mlb' or 'mlb-baseball'.
   'sports/mlb/world-series': ['world-series', 'mlb-world-series', 'sports-mlb-world-series', 'mlb-baseball-world-series', 'world-series-mlb'],
   'sports-mlb-world-series': ['world-series', 'mlb-world-series', 'mlb-baseball-world-series', 'world-series-mlb'],
+  // College Sports hub — uploads are stored as category "college-sports".
+  'sports/college': ['college-sports'],
+  'sports-college': ['college-sports'],
+  // College Football Playoffs (CFP) watch page — playoff and championship
+  // games are stored with their own subcategories under "college-sports".
+  'sports/college/cfp': ['college-football-playoffs-games', 'college-football-playoffs', 'college-football-championship-game', 'regular-season-college-football-championship-game', 'regualr-season-college-football-championship-game', 'cfp'],
+  'sports-college-cfp': ['college-football-playoffs-games', 'college-football-playoffs', 'college-football-championship-game', 'regular-season-college-football-championship-game', 'regualr-season-college-football-championship-game', 'cfp'],
 };
 
 
@@ -286,6 +293,19 @@ export const filterVideosBySubcategory = (
   const norm = (s: string) => normalizeCategoryValue(s) || s.toLowerCase().trim().replace(/^\/+/, '');
   const normNoSep = (s: string) => norm(s).replace(/[-\s/]/g, '');
 
+  // College Sports: pages live under /sports/college/<child> (or the legacy
+  // /sports/college-<child>), but uploads are stored as category
+  // "college-sports" + subcategory "<child>". Match that storage shape
+  // directly so e.g. /sports/college/football shows every video saved as
+  // college-sports/football. Playoff/championship subcategories keep their
+  // own slugs, so they stay off the regular-season page automatically.
+  const collegeChild =
+    keySegments[0] === 'sports' && keySegments[1] === 'college' && keySegments.length >= 3
+      ? keySegments.slice(2).join('-')
+      : keyHyphenated.startsWith('sports-college-')
+        ? keyHyphenated.slice('sports-college-'.length)
+        : undefined;
+
   return videos.filter(video => {
     const vidCategory = norm(video.category || '');
     const vidSubcategory = norm(video.subcategory || '');
@@ -311,7 +331,7 @@ export const filterVideosBySubcategory = (
     // include child videos stored under sports-nba-<child>. We deliberately do
     // NOT strip the top-level segment here — doing so caused pages like
     // /music-artists/news to absorb every "news-*" video on the site.
-    if (isMultiSegment) {
+    if (isMultiSegment && !collegeChild) {
       const hubPrefixes = [`${keyHyphenated}-`].filter(p => p.length > 1);
       // Only allow stripping the top segment when the path is deep (>=3 segments),
       // e.g. /sports/nba/east-playoffs → also accept "nba-east-playoffs".
@@ -321,6 +341,12 @@ export const filterVideosBySubcategory = (
       for (const prefix of hubPrefixes) {
         if (vidCategory.startsWith(prefix) || vidSubcategory.startsWith(prefix)) return true;
       }
+    }
+
+    // 1c) College Sports storage-shape match (collegeChild computed above).
+    if (collegeChild && vidCategory === 'college-sports') {
+      const childNoSep = collegeChild.replace(/[-\s]/g, '');
+      if (vidSubcategory === collegeChild || vidSubcategoryNoSep === childNoSep) return true;
     }
 
     // 2) Parent + child match: video.category == parent AND video.subcategory == child
