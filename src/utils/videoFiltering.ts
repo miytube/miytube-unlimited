@@ -145,6 +145,13 @@ const routeValueAliases: Record<string, string[]> = {
   // under category 'sports-mlb' or 'mlb-baseball'.
   'sports/mlb/world-series': ['world-series', 'mlb-world-series', 'sports-mlb-world-series', 'mlb-baseball-world-series', 'world-series-mlb'],
   'sports-mlb-world-series': ['world-series', 'mlb-world-series', 'mlb-baseball-world-series', 'world-series-mlb'],
+  // College Sports hub — uploads are stored as category "college-sports".
+  'sports/college': ['college-sports'],
+  'sports-college': ['college-sports'],
+  // College Football Playoffs (CFP) watch page — playoff and championship
+  // games are stored with their own subcategories under "college-sports".
+  'sports/college/cfp': ['college-football-playoffs-games', 'college-football-playoffs', 'college-football-championship-game', 'regular-season-college-football-championship-game', 'regualr-season-college-football-championship-game', 'cfp'],
+  'sports-college-cfp': ['college-football-playoffs-games', 'college-football-playoffs', 'college-football-championship-game', 'regular-season-college-football-championship-game', 'regualr-season-college-football-championship-game', 'cfp'],
 };
 
 
