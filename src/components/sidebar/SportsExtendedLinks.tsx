@@ -116,6 +116,7 @@ export const SportsExtendedLinks: React.FC = () => {
       path: '/sports/college',
       subItems: [
         { id: 'sports-college-football', label: 'College Football', path: '/sports/college/football' },
+        { id: 'sports-college-cfp', label: 'College Football Playoffs (CFP)', path: '/sports/college/cfp' },
         { id: 'sports-college-basketball', label: 'College Basketball', path: '/sports/college/basketball' },
         { id: 'sports-college-baseball', label: 'College Baseball', path: '/sports/college/baseball' },
         { id: 'sports-college-women', label: 'Women Basketball', path: '/sports/college/women-basketball' },

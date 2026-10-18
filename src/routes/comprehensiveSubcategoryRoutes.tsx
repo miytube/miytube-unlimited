@@ -803,6 +803,7 @@ export const comprehensiveSubcategoryRoutes = [
   // College sports nested routes
   <Route key="sports-college-nested" path="/sports/college" element={<GenericSubcategoryPage />} />,
   <Route key="sports-college-football-nested" path="/sports/college/football" element={<GenericSubcategoryPage />} />,
+  <Route key="sports-college-cfp-nested" path="/sports/college/cfp" element={<GenericSubcategoryPage />} />,
   <Route key="sports-college-basketball-nested" path="/sports/college/basketball" element={<GenericSubcategoryPage />} />,
   <Route key="sports-college-baseball-nested" path="/sports/college/baseball" element={<GenericSubcategoryPage />} />,
   <Route key="sports-college-women-basketball-nested" path="/sports/college/women-basketball" element={<GenericSubcategoryPage />} />,

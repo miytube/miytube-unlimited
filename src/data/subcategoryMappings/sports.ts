@@ -224,6 +224,12 @@ export const sportsSubcategories: SubcategoryMapping = {
     icon: Trophy,
     parent: { route: '/sports', name: 'Sports' }
   },
+  'sports-college-cfp': {
+    title: 'College Football Playoffs (CFP)',
+    description: 'College Football Playoff and national championship games',
+    icon: Trophy,
+    parent: { route: '/sports/college', name: 'College Sports' }
+  },
   'sports-college-football-bowl': {
     title: 'College Football Bowl Games',
     description: 'College football bowl games and championships',
