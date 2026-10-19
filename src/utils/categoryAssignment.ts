@@ -193,9 +193,11 @@ export const canonicalizeCategoryAssignment = (
   // NFL is a mid-level hub under Sports. Its generic child slugs (e.g. "games")
   // must never be re-mapped to another section like Kids Content / Games.
   if (normalizedCategory === 'nfl' || normalizedCategory === 'nfl-football' || normalizedCategory === 'sports-nfl') {
-    const sub = normalizedSubcategory?.replace(/^(sports-)?nfl-/, '');
-    if (!sub || sub === 'nfl' || sub === 'football') return { category: 'nfl', subcategory: 'nfl-games' };
-    return { category: 'nfl', subcategory: `nfl-${sub}` };
+    const sub = normalizedSubcategory;
+    if (!sub || ['games', 'nfl', 'football', 'game'].includes(sub)) {
+      return { category: normalizedCategory, subcategory: 'nfl-games' };
+    }
+    return { category: normalizedCategory, subcategory: sub };
   }
   const categoryIsReserved = !!normalizedCategory && RESERVED_TOP_LEVEL_CATEGORIES.has(normalizedCategory);
 

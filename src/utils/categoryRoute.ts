@@ -78,8 +78,8 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     };
     if (cleanSubcategory && carRepairRoutes[cleanSubcategory]) return carRepairRoutes[cleanSubcategory];
   }
-  if (cleanCategory === 'nfl') {
-    const sub = cleanSubcategory.replace(/^nfl-/, '');
+  if (cleanCategory === 'nfl' || cleanCategory === 'nfl-football' || cleanCategory === 'sports-nfl') {
+    const sub = cleanSubcategory.replace(/^(nfl-football-|nfl-)/, '');
     const nflRoutes: Record<string, string> = {
       games: '/sports/nfl/games', superbowl: '/sports/nfl/superbowl', players: '/sports/nfl/players',
       'east-playoffs': '/sports/nfl/east-playoffs', 'west-playoffs': '/sports/nfl/west-playoffs',
