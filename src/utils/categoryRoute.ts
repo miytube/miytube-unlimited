@@ -78,6 +78,14 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     };
     if (cleanSubcategory && carRepairRoutes[cleanSubcategory]) return carRepairRoutes[cleanSubcategory];
   }
+  if (cleanCategory === 'nfl') {
+    const sub = cleanSubcategory.replace(/^nfl-/, '');
+    const nflRoutes: Record<string, string> = {
+      games: '/sports/nfl/games', superbowl: '/sports/nfl/superbowl', players: '/sports/nfl/players',
+      'east-playoffs': '/sports/nfl/east-playoffs', 'west-playoffs': '/sports/nfl/west-playoffs',
+    };
+    return nflRoutes[sub] || '/sports/nfl';
+  }
   if (cleanCategory === 'sports-mlb' || cleanCategory === 'mlb') {
     // Videos uploaded with category "sports-mlb" carry free-form subcategory
     // slugs (e.g. "mlb-nl-playoffs-best-of-3") that don't match the static
