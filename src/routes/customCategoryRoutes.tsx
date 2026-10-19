@@ -6,6 +6,8 @@ export const customCategoryRoutes = [
   <Route key="cc-travel-events-cities" path="/c/travel-events/cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   <Route key="cc-travel-events-cities-towns" path="/c/travel-events/cities-towns" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   <Route key="cc-travel-events-travel-cities" path="/c/travel-events/travel-cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
+  <Route key="cc-cfp-legacy" path="/c/college-sports/college-football-playoffs-games" element={<Navigate to="/sports/college/cfp" replace />} />,
+  <Route key="cc-cfp-legacy-2" path="/c/college-sports/college-football-playoffs" element={<Navigate to="/sports/college/cfp" replace />} />,
   <Route key="cc-cat" path="/c/:categorySlug" element={<CustomCategoryPage mode="category" />} />,
   <Route
     key="cc-sub"
