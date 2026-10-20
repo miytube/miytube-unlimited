@@ -24,6 +24,18 @@ import {
 } from 'lucide-react';
 
 export const newCategorySubcategories: SubcategoryMapping = {
+  // ============ PARENT HUBS (prevent redirect to Home) ============
+  '/ai': { title: 'AI & Technology', description: 'AI, chatbots, agents and robots', icon: Bot },
+  '/internet': { title: 'Internet & Programming', description: 'Programming tutorials, coding guides, and web development content', icon: Globe },
+  '/internet-programming': { title: 'Internet & Programming', description: 'Programming tutorials, coding guides, and web development content', icon: Globe, parent: { route: '/internet', name: 'Internet & Programming' } },
+
+  // ============ BOOKS & LITERATURE (partner: booksem.com) ============
+  '/books': { title: 'Books & Literature', description: 'Book reviews, public-domain classics and author talks. Read more on Booksem.com', icon: BookOpen },
+  '/books/classics': { title: 'Public Domain Classics', description: 'Timeless public-domain books and their video breakdowns', icon: BookOpen, parent: { route: '/books', name: 'Books & Literature' } },
+  '/books/the-art-of-war': { title: 'The Art of War (Sun Tzu)', description: '13 chapters on strategy, psychology and leadership — reviews, breakdowns and quotes', icon: BookOpen, parent: { route: '/books', name: 'Books & Literature' } },
+  '/books/reviews': { title: 'Book Reviews & Summaries', description: 'Video book reviews, summaries and breakdowns', icon: BookOpen, parent: { route: '/books', name: 'Books & Literature' } },
+  '/books/discussions': { title: 'Author & Strategy Discussions', description: 'Author interviews and book discussions', icon: BookOpen, parent: { route: '/books', name: 'Books & Literature' } },
+
   // ============ AI & TECHNOLOGY ============
   '/ai/chatbots': {
     title: 'ChatGPT, Gemini, Microsoft',
