@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Calculator, GraduationCap, Scissors, Microscope } from 'lucide-react';
+import { Calculator, GraduationCap, Scissors, Microscope, BookOpen } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const EducationInformationLinks: React.FC = () => {
@@ -23,6 +23,19 @@ export const EducationInformationLinks: React.FC = () => {
         { id: 'learn', label: 'Learning Techniques', path: '/education/learn' },
         { id: 'science', label: 'Science', path: '/education/science' },
         { id: 'music-education', label: 'Music Education', path: '/education/music-education' }
+      ]
+    },
+    {
+      id: 'books',
+      icon: BookOpen,
+      label: 'Books & Literature',
+      path: '/books',
+      subItems: [
+        { id: 'books-art-of-war', label: 'The Art of War', path: '/books/the-art-of-war' },
+        { id: 'books-classics', label: 'Public Domain Classics', path: '/books/classics' },
+        { id: 'books-reviews', label: 'Book Reviews & Summaries', path: '/books/reviews' },
+        { id: 'books-discussions', label: 'Author Discussions', path: '/books/discussions' },
+        { id: 'books-audiobooks', label: 'Audiobooks', path: '/audiobooks' },
       ]
     },
     {

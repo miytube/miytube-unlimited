@@ -28,6 +28,11 @@ export const comprehensiveSubcategoryRoutes = [
   <Route key="sports-afl-players" path="/sports/afl/players" element={<AFLPlayersCoachesPage />} />,
   // AI & Technology routes (nested and flat for search)
   <Route key="ai" path="/ai" element={<GenericSubcategoryPage />} />,
+  <Route key="books" path="/books" element={<GenericSubcategoryPage />} />,
+  <Route key="books-classics" path="/books/classics" element={<GenericSubcategoryPage />} />,
+  <Route key="books-art-of-war" path="/books/the-art-of-war" element={<GenericSubcategoryPage />} />,
+  <Route key="books-reviews" path="/books/reviews" element={<GenericSubcategoryPage />} />,
+  <Route key="books-discussions" path="/books/discussions" element={<GenericSubcategoryPage />} />,
   <Route key="ai-chatbots" path="/ai/chatbots" element={<GenericSubcategoryPage />} />,
   <Route key="ai-agents" path="/ai/agents" element={<GenericSubcategoryPage />} />,
   <Route key="ai-agents-software" path="/ai-agents-software" element={<GenericSubcategoryPage />} />,

@@ -140,6 +140,21 @@ const GenericSubcategoryPage = () => {
 
         {/* Ad slot removed — relying on AdSense Auto Ads */}
 
+        {categorySlug === 'books' && (
+          <a
+            href="https://booksem.com"
+            target="_blank"
+            rel="noopener"
+            className="mb-8 flex items-center justify-between gap-4 rounded-lg border border-primary/40 bg-primary/5 p-4 transition-colors hover:bg-primary/10"
+          >
+            <div>
+              <p className="font-semibold">Read the full book on Booksem.com</p>
+              <p className="text-sm text-muted-foreground">Our partner library for books, classics and authors.</p>
+            </div>
+            <span className="shrink-0 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground">Visit Booksem →</span>
+          </a>
+        )}
+
         {customSubs.length > 0 && !customSubSlug && !customWatchSlug && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">Pages in {pageTitle}</h2>

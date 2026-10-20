@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LineChart, Trophy, Newspaper, Music2, PlaySquare, MonitorPlay } from 'lucide-react';
+import { LineChart, Trophy, Newspaper, Music2, PlaySquare, MonitorPlay, BookOpen } from 'lucide-react';
 
 const COMMUNITIES = [
   { to: '/gmatrader-articles', label: 'GmaTrader', blurb: 'Nasdaq futures, markets', Icon: LineChart },
   { to: '/sports-high-school', label: 'High School Sports', blurb: 'CIF games & playoffs', Icon: Trophy },
+  { to: '/books', label: 'Books & Booksem', blurb: 'Reviews, classics, The Art of War', Icon: BookOpen },
   { to: '/breaking-news', label: 'Breaking News', blurb: 'What just happened', Icon: Newspaper },
   { to: '/music', label: 'Music', blurb: 'Videos, genres, live sets', Icon: Music2 },
   { to: '/shorts/feed', label: 'Shorts Feed', blurb: 'Swipe up for the next one', Icon: PlaySquare },
@@ -15,7 +16,7 @@ const COMMUNITIES = [
 export const CommunityStrip: React.FC = () => (
   <section className="mb-8">
     <h2 className="text-xl font-medium mb-3">Where people hang out</h2>
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
       {COMMUNITIES.map(({ to, label, blurb, Icon }) => (
         <Link
           key={to}
