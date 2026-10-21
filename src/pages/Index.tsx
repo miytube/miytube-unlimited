@@ -12,6 +12,7 @@ import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 import { LatestArticlesSection } from '@/components/blog/LatestArticlesSection';
 import { HomeHero } from '@/components/home/HomeHero';
 import { CommunityStrip } from '@/components/home/CommunityStrip';
+import { CeoAnnouncement } from '@/components/home/CeoAnnouncement';
 
 
 
@@ -129,6 +130,8 @@ const Index = () => {
         <p className="text-sm text-muted-foreground mb-3">
           <span className="font-semibold text-primary">{site.name}</span> / Home
         </p>
+
+        <CeoAnnouncement />
 
         {/* Positioning hero — creator payouts first, feed second */}
         <HomeHero siteName={site.name} />
