@@ -215,6 +215,27 @@ export type Database = {
         }
         Relationships: []
       }
+      announcement_views: {
+        Row: {
+          announcement_key: string
+          created_at: string
+          id: string
+          viewer_key: string
+        }
+        Insert: {
+          announcement_key: string
+          created_at?: string
+          id?: string
+          viewer_key: string
+        }
+        Update: {
+          announcement_key?: string
+          created_at?: string
+          id?: string
+          viewer_key?: string
+        }
+        Relationships: []
+      }
       blocked_uploads: {
         Row: {
           category: string | null
@@ -1859,6 +1880,10 @@ export type Database = {
       record_ad_event: {
         Args: { _campaign_id: string; _event: string }
         Returns: undefined
+      }
+      record_announcement_view: {
+        Args: { _key: string; _viewer: string }
+        Returns: number
       }
       record_uploader_ip: {
         Args: { _local_id: string; _uploader_ip: string }
