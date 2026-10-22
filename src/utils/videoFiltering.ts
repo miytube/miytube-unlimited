@@ -36,6 +36,18 @@ const editDistance = (a: string, b: string): number => {
  * Tight typo tolerance: allow 1 edit for words ≥6 chars, 2 edits for ≥10 chars.
  * NEVER matches substrings or different-length strings beyond that budget.
  */
+// Confusable pairs: words one edit apart with unrelated meanings must never
+// fuzzy-match. "state" vs "statue" leaked college football games tagged
+// "Fresno State" onto /statues. Exact forms still match upstream; only the
+// fuzzy fallback is blocked.
+const stripPlural = (s: string) => (s.endsWith('s') ? s.slice(0, -1) : s);
+const confusablePairs: [string, string][] = [['state', 'statue']];
+const isConfusablePair = (a: string, b: string): boolean =>
+  confusablePairs.some(([x, y]) => {
+    const ax = stripPlural(a), bx = stripPlural(b);
+    return (ax === x && bx === y) || (ax === y && bx === x);
+  });
+
 const isFuzzyMatch = (input: string, target: string): boolean => {
   const a = input.toLowerCase().trim();
   const b = target.toLowerCase().trim();
@@ -43,6 +55,7 @@ const isFuzzyMatch = (input: string, target: string): boolean => {
   if (a === b) return true;
   // Length must be close
   if (Math.abs(a.length - b.length) > 2) return false;
+  if (isConfusablePair(a, b)) return false;
   const longer = Math.max(a.length, b.length);
   if (longer < 6) return false; // too short, would cause false positives
   const budget = longer >= 10 ? 2 : 1;
@@ -84,6 +97,7 @@ const routeValueAliases: Record<string, string[]> = {
   'music-rnb': ['randb', 'r-and-b', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
   'music/r-and-b': ['randb', 'rnb', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
   'music-r-and-b': ['randb', 'rnb', 'randb-and-soul', 'r-and-b-and-soul', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b'],
+  'statues': ['statues-and-sculpture', 'statues-sculpture', 'statue'],
   'court-trials': ['courts-trials', 'courts-police-trails', 'courts-police-trials'],
   'courts-trials': ['court-trials', 'courts-police-trails', 'courts-police-trials'],
   'courts/courts-trials': ['courts-trials', 'court-trials', 'courts-police-trails', 'courts-police-trials'],
@@ -448,9 +462,9 @@ export const filterVideosBySubcategory = (
       for (const tag of vidTags) {
         const tagNoSep = tag.replace(/[-\s]/g, '');
         for (const v of variants) {
+          // Exact singular/plural only — fuzzy tag matching leaked generic
+          // tags like "state" onto the /statues page (1 edit from "statue").
           if (tag === v || tagNoSep === v) return true;
-          // Tight typo/plural via fuzzy (length-bounded, edit-budget tight)
-          if (isFuzzyMatch(tag, v) || isFuzzyMatch(tagNoSep, v)) return true;
         }
       }
     }
