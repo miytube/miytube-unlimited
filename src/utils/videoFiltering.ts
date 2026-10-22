@@ -6,6 +6,7 @@
 
 import { UploadedVideo } from '@/context/UploadedVideosContext';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
+import { debateWatchSlug, debateWatchTitle } from '@/data/subcategoryMappings/debate';
 
 /**
  * True Levenshtein edit distance — used for tight typo tolerance only.
@@ -232,6 +233,20 @@ export const filterVideosBySubcategory = (
 ): UploadedVideo[] => {
   const titleLower = pageTitle.toLowerCase().trim();
   const keyLower = mappingKey.toLowerCase().trim();
+
+  // Debate has an explicit category boundary: tags and approximate words must
+  // never pull sports or unrelated news into its new watchpage.
+  if (keyLower === 'debate' || keyLower === `debate/${debateWatchSlug}`) {
+    const acceptedChildren = new Set([
+      debateWatchSlug,
+      `debate-${debateWatchSlug}`,
+      normalizeCategoryValue(debateWatchTitle),
+    ]);
+    return videos.filter((video) =>
+      normalizeCategoryValue(video.category) === 'debate' &&
+      (keyLower === 'debate' || acceptedChildren.has(normalizeCategoryValue(video.subcategory)))
+    );
+  }
 
   const keySegments = keyLower.split('/');
   const lastSegment = keySegments[keySegments.length - 1];

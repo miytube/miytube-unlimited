@@ -1,10 +1,20 @@
 
 import React from 'react';
-import { Landmark, Flag, Megaphone, Users, Newspaper, Radio, Mic } from 'lucide-react';
+import { Landmark, Flag, Megaphone, Users, Newspaper, Radio, Mic, MessagesSquare } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
+import { debateWatchRoute, debateWatchTitle } from '@/data/subcategoryMappings/debate';
 
 export const GovernmentPoliticsLinks: React.FC = () => {
   const governmentPoliticsLinks = [
+    {
+      id: 'debate',
+      icon: MessagesSquare,
+      label: 'Debate',
+      path: '/debate',
+      subItems: [
+        { id: 'debate-politics', label: debateWatchTitle, path: debateWatchRoute },
+      ],
+    },
     { 
       id: 'news-politics', 
       icon: Newspaper, 
