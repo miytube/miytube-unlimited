@@ -46,6 +46,7 @@ import { familySubcategories } from './family';
 import { royalGuardsSubcategories } from './royalGuards';
 import { airportsSubcategories } from './airports';
 import { engineeringDisastersSubcategories } from './engineeringDisasters';
+import { debateSubcategories } from './debate';
 
 // Merge all subcategory mappings
 export const subcategoryMappings: SubcategoryMapping = {
@@ -95,6 +96,7 @@ export const subcategoryMappings: SubcategoryMapping = {
   ...royalGuardsSubcategories,
   ...airportsSubcategories,
   ...engineeringDisastersSubcategories,
+  ...debateSubcategories,
 };
 
 // Re-export types

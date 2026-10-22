@@ -1,6 +1,8 @@
 
 import { Navigate, Route } from "react-router-dom";
 import GenericSubcategoryPage from "@/pages/categories/GenericSubcategoryPage";
+import Debate from '@/pages/Debate';
+import { debateWatchRoute } from '@/data/subcategoryMappings/debate';
 
 // Generate routes for all categories from the mapping
 const categoryKeys = [
@@ -288,6 +290,8 @@ const categoryKeys = [
 ];
 
 export const allCategoryRoutes = [
+  <Route key="debate" path="/debate" element={<Debate />} />,
+  <Route key="debate-politics" path={debateWatchRoute} element={<Debate />} />,
   <Route key="music-mexican-spanish-redirect" path="/music-mexican-spanish" element={<Navigate to="/music/spanish" replace />} />,
   <Route key="travel-cities-redirect" path="/travel-cities" element={<Navigate to="/travel-events/cities-towns" replace />} />,
   <Route key="sports-high-school-cif-football-redirect" path="/sports-high-school-cif-football" element={<Navigate to="/sports-high-school-football-cif-playoffs-games" replace />} />,

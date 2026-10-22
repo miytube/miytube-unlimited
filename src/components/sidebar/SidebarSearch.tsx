@@ -14,6 +14,8 @@ interface SearchItem {
 
 // Consolidated list of all searchable items
 const allItems: SearchItem[] = [
+  { label: 'Debate', path: '/debate', category: 'Government & Politics' },
+  { label: 'Debate (politics, governors, attorney generals, others)', path: '/debate/politics-governors-attorney-generals-others', category: 'Government & Politics' },
   // AI & Technology
   { label: 'AI Agents & Software', path: '/ai-agents-software', category: 'AI & Technology' },
   { label: 'ChatGPT, Gemini, Microsoft', path: '/ai-chatgpt-gemini', category: 'AI & Technology' },

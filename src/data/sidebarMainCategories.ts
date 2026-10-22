@@ -36,6 +36,7 @@ export const sidebarMainCategoryOptions: SidebarMainCategoryOption[] = [
   { slug: 'crazy', name: 'Crazy & Amazing' },
   { slug: 'crime', name: 'Crime' },
   { slug: 'dances', name: 'Dances' },
+  { slug: 'debate', name: 'Debate' },
   { slug: 'disasters', name: 'Disasters' },
   { slug: 'documentaries', name: 'Documentaries' },
   { slug: 'documents', name: 'Documents' },
