@@ -163,6 +163,27 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
     return results;
   }, [savedCustomCategoryTree, selectedCategory]);
 
+  // Saved subcategories/watch pages from ANY admin category matching the
+  // selection by slug OR name, so differently named parents that share a slug
+  // (e.g. "How To" vs "How-to & Style", both how-to-style) are never dropped.
+  const savedSubcategoriesForSelection = useMemo<Array<{ id: string; name: string }>>(() => {
+    if (!selectedCategory) return [];
+    const keys = new Set(
+      [selectedCategory, selectedCategoryObj?.id, selectedCategoryObj?.name]
+        .filter(Boolean)
+        .map((v) => normKey(v as string))
+    );
+    const results: Array<{ id: string; name: string }> = [];
+    savedCustomCategoryTree.forEach((cat) => {
+      if (!keys.has(normKey(cat.slug)) && !keys.has(normKey(cat.name))) return;
+      cat.subcategories.forEach((sub) => {
+        results.push({ id: sub.slug, name: sub.name });
+        sub.watch_pages.forEach((w) => results.push({ id: w.slug, name: w.name }));
+      });
+    });
+    return results;
+  }, [savedCustomCategoryTree, selectedCategory, selectedCategoryObj]);
+
   // Get predefined subcategories from our comprehensive list
   const predefinedSubcategories = useMemo(() => {
     if (!selectedCategory) return [];
@@ -183,12 +204,13 @@ export const VideoMetadataForm: React.FC<VideoMetadataFormProps> = ({
     };
 
     builtInSubcategories.forEach(add);
+    savedSubcategoriesForSelection.forEach(add);
     predefinedSubcategories.forEach(add);
     nestedCustomSubcategories.forEach(add);
     customSubcategories.forEach(add);
 
     return Array.from(merged.values()).sort((a, b) => a.name.localeCompare(b.name));
-  }, [builtInSubcategories, predefinedSubcategories, nestedCustomSubcategories, customSubcategories]);
+  }, [builtInSubcategories, savedSubcategoriesForSelection, predefinedSubcategories, nestedCustomSubcategories, customSubcategories]);
 
   const handleAddCustomCategory = (customName: string) => {
     const newCategory: Category = {
