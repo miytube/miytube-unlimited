@@ -13,6 +13,7 @@ import { LatestArticlesSection } from '@/components/blog/LatestArticlesSection';
 import { HomeHero } from '@/components/home/HomeHero';
 import { CommunityStrip } from '@/components/home/CommunityStrip';
 import { CeoAnnouncement } from '@/components/home/CeoAnnouncement';
+import { TheRoomSpotlight } from '@/components/home/TheRoomSpotlight';
 
 
 
@@ -135,6 +136,8 @@ const Index = () => {
 
         {/* Positioning hero — creator payouts first, feed second */}
         <HomeHero siteName={site.name} />
+
+        <TheRoomSpotlight />
 
         {/* Focused communities */}
         <CommunityStrip />
