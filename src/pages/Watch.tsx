@@ -15,7 +15,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAIRecommendations } from '@/hooks/useAIRecommendations';
 import { usePageSEO } from '@/hooks/usePageSEO';
 
 import { trackEngagement } from '@/hooks/useTrackEngagement';
