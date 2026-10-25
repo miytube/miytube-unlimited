@@ -135,6 +135,9 @@ const Index = () => {
 
         <CeoAnnouncement />
 
+        {/* 3-pillar gateway — monetization, The Room, Booksem */}
+        <FeatureGateways />
+
         {/* Positioning hero — creator payouts first, feed second */}
         <HomeHero siteName={site.name} />
 
