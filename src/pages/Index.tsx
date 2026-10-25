@@ -12,6 +12,7 @@ import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 import { LatestArticlesSection } from '@/components/blog/LatestArticlesSection';
 import { HomeHero } from '@/components/home/HomeHero';
 import { CommunityStrip } from '@/components/home/CommunityStrip';
+import { FeatureGateways } from '@/components/home/FeatureGateways';
 import { CeoAnnouncement } from '@/components/home/CeoAnnouncement';
 import { TheRoomSpotlight } from '@/components/home/TheRoomSpotlight';
 
@@ -133,6 +134,9 @@ const Index = () => {
         </p>
 
         <CeoAnnouncement />
+
+        {/* 3-pillar gateway — monetization, The Room, Booksem */}
+        <FeatureGateways />
 
         {/* Positioning hero — creator payouts first, feed second */}
         <HomeHero siteName={site.name} />
