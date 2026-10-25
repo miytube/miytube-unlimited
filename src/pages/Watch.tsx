@@ -15,7 +15,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAIRecommendations } from '@/hooks/useAIRecommendations';
 import { usePageSEO } from '@/hooks/usePageSEO';
 
 import { trackEngagement } from '@/hooks/useTrackEngagement';
@@ -74,12 +73,8 @@ const Watch = () => {
   const regularVideos = uploadedVideos.filter(v => v.category !== 'shorts' && v.id !== actualVideoId);
   const shortVideos = uploadedVideos.filter(v => v.category === 'shorts');
 
-  // AI Recommendations
-  const { recommendations: aiRecommendations, isLoading: aiLoading } = useAIRecommendations(
-    actualVideoId || undefined,
-    video?.category,
-    video?.tags
-  );
+  // AI Recommendations disabled: no SEO value and it spent AI credits on every signed-in watch.
+  const aiRecommendations: any[] = [];
   
   useEffect(() => {
     const fetchVideo = async () => {
