@@ -347,6 +347,30 @@ export type Database = {
           },
         ]
       }
+      booksem_purchases: {
+        Row: {
+          book_id: string
+          created_at: string
+          id: string
+          source: string
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          created_at?: string
+          id?: string
+          source?: string
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          created_at?: string
+          id?: string
+          source?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       breaking_news: {
         Row: {
           category: string | null
