@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Eye, Megaphone } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Eye, Megaphone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import videoAsset from '@/assets/ceo-thank-you.mp4.asset.json';
 
@@ -50,6 +51,18 @@ export const CeoAnnouncement: React.FC = () => {
             <Eye size={16} /> {views === null ? '…' : `${views.toLocaleString()} ${views === 1 ? 'person has' : 'people have'} seen this`}
           </p>
         </div>
+      </div>
+      <div className="flex flex-col items-start justify-between gap-3 border-t bg-muted/40 px-6 py-4 sm:flex-row sm:items-center md:px-10">
+        <p className="text-sm text-foreground md:text-base">
+          <span className="font-semibold">Brands &amp; businesses:</span>{' '}
+          <span className="text-muted-foreground">put your message in front of an audience that's actually watching.</span>
+        </p>
+        <Link
+          to="/advertise"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+        >
+          Advertise with MiyTube <ArrowRight size={16} />
+        </Link>
       </div>
     </section>
   );
