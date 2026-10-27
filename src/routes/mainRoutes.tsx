@@ -20,6 +20,7 @@ import Copyright from "@/pages/Copyright";
 import Advertising from "@/pages/Advertising";
 import MediaKit from "@/pages/MediaKit";
 import Advertise from "@/pages/Advertise";
+import SponsorHomepage from "@/pages/SponsorHomepage";
 import Blog from "@/pages/Blog";
 import GmaTraderArticles from "@/pages/GmaTraderArticles";
 import LongVideos from "@/pages/LongVideos";
@@ -104,6 +105,7 @@ export const mainRoutes = [
   <Route key="media-kit" path="/media-kit" element={<MediaKit />} />,
   <Route key="advertise-with-us" path="/advertise-with-us" element={<MediaKit />} />,
   <Route key="advertise" path="/advertise" element={<Advertise />} />,
+  <Route key="sponsor" path="/sponsor" element={<SponsorHomepage />} />,
   <Route key="blog" path="/blog" element={<Blog />} />,
   <Route key="gmatrader-articles" path="/gmatrader-articles" element={<GmaTraderArticles />} />,
   <Route key="blog-new" path="/blog/new" element={<Blog />} />,

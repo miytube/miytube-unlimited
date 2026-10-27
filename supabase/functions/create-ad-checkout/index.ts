@@ -2,6 +2,13 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { type StripeEnv, createStripeClient, resolveOrCreateCustomer } from "../_shared/stripe.ts";
 
+// Mirrors src/lib/heroSponsorPackages.ts — server is the price authority.
+const HERO_PACKAGES: Record<string, { label: string; cents: number }> = {
+  hero_3d: { label: "Homepage Hero Sponsor — 3 days", cents: 19900 },
+  hero_7d: { label: "Homepage Hero Sponsor — 7 days", cents: 49900 },
+  hero_30d: { label: "Homepage Hero Sponsor — 30 days", cents: 149900 },
+};
+
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL")!,
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -30,12 +37,14 @@ Deno.serve(async (req) => {
     const {
       campaignId,
       priceId,           // for fixed tiers: 'ad_starter_10' | 'ad_growth_50' | 'ad_enterprise_500'
+      packageId,         // homepage hero package: 'hero_3d' | 'hero_7d' | 'hero_30d'
       customAmountCents, // for custom-budget checkout, integer cents (>= 1000)
       returnUrl,
       environment,
     } = body as {
       campaignId: string;
       priceId?: string;
+      packageId?: string;
       customAmountCents?: number;
       returnUrl: string;
       environment: StripeEnv;
@@ -69,7 +78,19 @@ Deno.serve(async (req) => {
     let lineItem: any;
     let description: string;
 
-    if (priceId) {
+    if (packageId) {
+      const hp = HERO_PACKAGES[packageId];
+      if (!hp) throw new Error("Unknown package");
+      lineItem = {
+        price_data: {
+          currency: "usd",
+          product_data: { name: hp.label, tax_code: "txcd_10103000" },
+          unit_amount: hp.cents,
+        },
+        quantity: 1,
+      };
+      description = `${hp.label} — ${campaign.campaign_name}`;
+    } else if (priceId) {
       const prices = await stripe.prices.list({ lookup_keys: [priceId] });
       if (!prices.data.length) throw new Error("Price not found");
       lineItem = { price: prices.data[0].id, quantity: 1 };

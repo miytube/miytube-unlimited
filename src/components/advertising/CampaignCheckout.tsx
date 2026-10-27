@@ -9,6 +9,8 @@ interface CampaignCheckoutProps {
   priceId?: string;
   /** Custom budget in cents. Ignored if priceId provided. */
   customAmountCents?: number;
+  /** Server-priced homepage hero package id (e.g. 'hero_7d'). */
+  packageId?: string;
   /** 'initial' → create-ad-checkout; 'topup' → topup-ad-checkout */
   mode: "initial" | "topup";
   returnUrl?: string;
@@ -18,6 +20,7 @@ export function CampaignCheckout({
   campaignId,
   priceId,
   customAmountCents,
+  packageId,
   mode,
   returnUrl,
 }: CampaignCheckoutProps) {
@@ -32,6 +35,8 @@ export function CampaignCheckout({
     };
     if (mode === "topup") {
       body.amountCents = customAmountCents;
+    } else if (packageId) {
+      body.packageId = packageId;
     } else if (priceId) {
       body.priceId = priceId;
     } else if (customAmountCents) {
@@ -43,7 +48,7 @@ export function CampaignCheckout({
       throw new Error(error?.message || data?.error || "Failed to start checkout");
     }
     return data.clientSecret;
-  }, [campaignId, priceId, customAmountCents, mode, returnUrl]);
+  }, [campaignId, priceId, customAmountCents, packageId, mode, returnUrl]);
 
   return (
     <div id="checkout">

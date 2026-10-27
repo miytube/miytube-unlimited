@@ -58,10 +58,10 @@ export const CeoAnnouncement: React.FC = () => {
           <span className="text-muted-foreground">put your message in front of an audience that's actually watching.</span>
         </p>
         <Link
-          to="/advertise"
+          to="/sponsor"
           className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
         >
-          Advertise with MiyTube <ArrowRight size={16} />
+          Book this spot — from $199 <ArrowRight size={16} />
         </Link>
       </div>
     </section>
