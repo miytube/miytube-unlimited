@@ -32,6 +32,7 @@ import { speakMayaVoice, stopMayaVoice } from '@/lib/freeVoice';
 import { RoomPremiumCard, useRoomPremium } from '@/components/the-room/RoomPremiumCard';
 import { useSpeechInput } from '@/hooks/useSpeechInput';
 import { useRoomRecorder } from '@/hooks/useRoomRecorder';
+import { createRoomAmbience } from '@/lib/roomAmbience';
 
 interface RoomVideo {
   id: string;
@@ -129,6 +130,24 @@ const TheRoom = () => {
     ];
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [showTeaser]);
+
+  // Ambient score for the intro: fades in over the teaser, fades out on exit.
+  // Browsers block sound until the visitor interacts, so the first tap/click/keypress
+  // also (re)starts it.
+  useEffect(() => {
+    if (!showTeaser) return;
+    const ambience = createRoomAmbience();
+    ambience.start();
+    const kick = () => ambience.start();
+    window.addEventListener('pointerdown', kick);
+    window.addEventListener('keydown', kick);
+    return () => {
+      window.removeEventListener('pointerdown', kick);
+      window.removeEventListener('keydown', kick);
+      ambience.stop(1.4);
+    };
+  }, [showTeaser]);
+
 
 
   usePageSEO({
