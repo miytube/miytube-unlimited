@@ -27,6 +27,7 @@ import { sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { BannerAdSlot as WatchBannerAd } from '@/components/advertising/BannerAdSlot';
 import { PrerollAd } from '@/components/advertising/PrerollAd';
+import { RoomActivityCard } from '@/components/the-room/RoomActivityCard';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -563,6 +564,8 @@ const Watch = () => {
                 insStyle={{ display: 'inline-block', width: 300, height: 600 }}
               />
             </div>
+
+            <RoomActivityCard />
 
             <h3 className="text-sm font-semibold">Up Next</h3>
             
