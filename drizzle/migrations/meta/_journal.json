@@ -36,6 +36,13 @@
       "when": 1792595631782,
       "tag": "0004_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793140651983,
+      "tag": "0005_create_booksem_purchases",
+      "breakpoints": true
     }
   ]
 }
