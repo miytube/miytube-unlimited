@@ -12,30 +12,30 @@ export const swimmingSubcategories: SubcategoryMapping = {
     title: 'Diving',
     description: 'Diving competitions and techniques',
     icon: Waves,
-    parent: { route: '/swim', name: 'Swimming' }
+    parent: { route: '/swim', name: 'Swim' }
   },
   'swim-plunge': {
     title: 'Plunge',
     description: 'Plunge diving and water entry videos',
     icon: Waves,
-    parent: { route: '/swim', name: 'Swimming' }
+    parent: { route: '/swim', name: 'Swim' }
   },
   'swim-plummet': {
     title: 'Plummet',
     description: 'High diving and extreme water jumps',
     icon: Waves,
-    parent: { route: '/swim', name: 'Swimming' }
+    parent: { route: '/swim', name: 'Swim' }
   },
   'swim-jump': {
     title: 'Jump',
     description: 'Water jumping and cliff diving videos',
     icon: Waves,
-    parent: { route: '/swim', name: 'Swimming' }
+    parent: { route: '/swim', name: 'Swim' }
   },
   'swim-freestyle': {
     title: 'Freestyle Swimming',
     description: 'Freestyle swimming techniques and races',
     icon: Waves,
-    parent: { route: '/swim', name: 'Swimming' }
+    parent: { route: '/swim', name: 'Swim' }
   },
 };

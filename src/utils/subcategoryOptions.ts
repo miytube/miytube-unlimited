@@ -195,6 +195,7 @@ export const subcategoryOptionsByCategory: Record<string, Array<{ id: string; na
     { id: 'freestyle-swimming', name: 'Freestyle Swimming' },
   ],
   'swim': [
+    { id: 'swim', name: 'Swim' },
     { id: 'diving', name: 'Diving' },
     { id: 'plunge', name: 'Plunge' },
     { id: 'plummet', name: 'Plummet' },
