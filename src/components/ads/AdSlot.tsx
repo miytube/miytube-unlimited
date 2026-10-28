@@ -18,6 +18,8 @@ interface AdSlotProps {
   slot?: string;
   format?: 'auto' | 'fluid' | 'rectangle' | 'horizontal' | 'vertical' | 'autorelaxed';
   layout?: string;
+  /** Google-provided layout key for fluid in-feed units. */
+  layoutKey?: string;
   className?: string;
   /** When true, ad uses full container width and responsive layout. */
   responsive?: boolean;
@@ -64,6 +66,7 @@ export const AdSlot = ({
   slot = '0000000000',
   format = 'auto',
   layout,
+  layoutKey,
   className = '',
   responsive = true,
   label,
@@ -148,6 +151,7 @@ export const AdSlot = ({
         data-ad-slot={slot}
         data-ad-format={format}
         data-ad-layout={layout}
+        data-ad-layout-key={layoutKey}
         data-full-width-responsive={responsive ? 'true' : 'false'}
       />
     </div>

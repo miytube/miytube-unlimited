@@ -168,31 +168,23 @@ const Index = () => {
               <h2 className="text-xl font-medium">Recommended</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {displayVideos.slice(0, 8).map((video) => (
-                <SimpleVideoCard key={video.id} {...video} views={realViews(video)} />
+              {displayVideos.map((video, index) => (
+                <React.Fragment key={video.id}>
+                  <SimpleVideoCard {...video} views={realViews(video)} />
+                  {index === 3 && (
+                    <AdSlot
+                      key={`in-feed-${currentPage}`}
+                      slot="9537257784"
+                      format="fluid"
+                      layoutKey="-7t+dy+2w-18-3z"
+                      responsive={false}
+                      label="Advertisement"
+                      className="min-w-0 self-start"
+                    />
+                  )}
+                </React.Fragment>
               ))}
             </div>
-            {/* Above-the-fold responsive ad — sits at the bottom of the first viewport
-                on most screens so it's visible before the user scrolls.
-                Uses miytube-new-2 here (AdSense flagged it as low viewability in its
-                previous below-the-fold position, so we promoted it above the fold). */}
-            <div className="my-6">
-              <AdSlot
-                slot="2074250134"
-                format="auto"
-                responsive
-                label="Sponsored"
-                style={{ minHeight: 250 }}
-                insStyle={{ display: 'block', minHeight: 250 }}
-              />
-            </div>
-            {displayVideos.length > 8 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {displayVideos.slice(8).map((video) => (
-                  <SimpleVideoCard key={video.id} {...video} views={realViews(video)} />
-                ))}
-              </div>
-            )}
           </div>
         )}
 
