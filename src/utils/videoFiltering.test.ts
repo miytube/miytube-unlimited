@@ -18,6 +18,17 @@ const makeVideo = (over: Partial<UploadedVideo> & { id: string }): UploadedVideo
   }) as unknown as UploadedVideo;
 
 describe('subcategory filtering integrity', () => {
+  test('both Calisthenics upload batches reach both watchpage aliases without unrelated workouts', () => {
+    const videos = [
+      makeVideo({ id: 'earlier', category: 'fitness-and-workout', subcategory: 'fitness-calisthenics' }),
+      makeVideo({ id: 'newer', category: 'fitness-and-workout', subcategory: 'calisthenics-workout' }),
+      makeVideo({ id: 'yoga', category: 'fitness-and-workout', subcategory: 'fitness-yoga-workout', tags: ['calisthenics'] }),
+      makeVideo({ id: 'weights', category: 'fitness-and-workout', subcategory: 'fitness-weight-lifting' }),
+    ];
+    for (const key of ['physical-fitness/calisthenics', 'fitness/calisthenics', 'physical-fitness-calisthenics', 'fitness-calisthenics']) {
+      assert.deepEqual(filterVideosBySubcategory(videos, 'Calisthenics Workout', key).map((v) => v.id), ['earlier', 'newer']);
+    }
+  });
   test('Debate uploads retain their category and reach the requested watchpage', () => {
     assert.ok(getKnownParentCategoryOptions().some((option) => option.id === 'debate'));
     const choices = getSubcategoryOptionsForCategory('debate');
