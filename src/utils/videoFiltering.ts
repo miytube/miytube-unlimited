@@ -88,6 +88,11 @@ const detectConference = (text: string): 'east' | 'west' | undefined => {
 };
 
 const routeValueAliases: Record<string, string[]> = {
+  // Both Calisthenics upload batches belong on either sidebar watchpage.
+  'physical-fitness/calisthenics': ['fitness-calisthenics', 'calisthenics-workout'],
+  'physical-fitness-calisthenics': ['fitness-calisthenics', 'calisthenics-workout'],
+  'fitness/calisthenics': ['fitness-calisthenics', 'calisthenics-workout'],
+  'fitness-calisthenics': ['fitness-calisthenics', 'calisthenics-workout'],
   'music/rock': ['randb-pop-soul-rock', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
   'music-rock': ['randb-pop-soul-rock', 'rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop'],
   'music/pop': ['rock-soul-pop-randb', 'rock-soul-pop-and-randb', 'rock-soul-pop-r-and-b', 'music-rock-soul-pop', 'rock-soul-pop', 'pop-rnb'],
