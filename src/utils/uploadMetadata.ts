@@ -43,10 +43,19 @@ export const getPerFileTags = (
   perFileTitle: string,
   commonTags: string[] | undefined,
   totalFiles: number,
+  allFiles: File[] = [],
 ): string[] => {
   if (totalFiles <= 1) return commonTags ?? [];
   const derived = deriveTagsFromTitle(perFileTitle || getFileBaseName(file));
-  const base = commonTags ?? [];
+  // Drop shared tags that were auto-filled from another file's name in this batch
+  const words = (n: string) => new Set(n.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean));
+  const own = words(getFileBaseName(file));
+  const others = new Set<string>();
+  allFiles.filter((f) => f !== file).forEach((f) => words(getFileBaseName(f)).forEach((w) => others.add(w)));
+  const base = (commonTags ?? []).filter((t) => {
+    const k = t.trim().toLowerCase();
+    return own.has(k) || !others.has(k);
+  });
   const merged: string[] = [];
   for (const t of [...derived, ...base]) {
     const v = t.trim();

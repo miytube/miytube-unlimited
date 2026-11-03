@@ -1,4 +1,5 @@
 
+import { getPerFileTags } from '@/utils/uploadMetadata';
 import { gaEvent } from '@/lib/ga';
 import React, { useState } from 'react';
 import { Layout } from '@/components/Layout';
@@ -109,7 +110,7 @@ const VideoUpload = () => {
         files.length,
       );
       try {
-        await addUploadedVideo(file, perFileTitle, perFileDescription, category, subcategory, tags);
+        await addUploadedVideo(file, perFileTitle, perFileDescription, category, subcategory, getPerFileTags(file, perFileTitle, tags, files.length, files));
         successCount++;
       } catch (error) {
         const msg = error instanceof Error ? error.message : 'Upload failed';
