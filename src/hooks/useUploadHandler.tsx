@@ -123,7 +123,7 @@ export const useUploadHandler = () => {
           description,
           files.length,
         );
-        const perFileTags = getPerFileTags(file, perFileTitle, tags, files.length);
+        const perFileTags = getPerFileTags(file, perFileTitle, tags, files.length, files);
 
         let uploadCategory = category;
         let uploadSubcategory = subcategory;
