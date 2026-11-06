@@ -5,7 +5,7 @@ User-agent: *
 Allow: /
 
 # Sitemap Index (recommended - splits into separate sitemaps)
-Sitemap: https://www.miytube.com/sitemap.xml
+Sitemap: https://miytube.com/sitemap.xml
 Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-index
 Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-static
 Sitemap: https://dfwbddmckfzfocpruvtj.supabase.co/functions/v1/sitemap-videos
