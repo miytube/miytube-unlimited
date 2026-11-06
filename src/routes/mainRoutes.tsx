@@ -120,6 +120,8 @@ export const mainRoutes = [
   <Route key="mathematics" path="/mathematics" element={<Mathematics />} />,
   <Route key="channel" path="/channel" element={<Channel />} />,
   <Route key="channel-id" path="/channel/:id" element={<Channel />} />,
+  <Route key="official-handle" path="/@miytube" element={<Navigate to="/" replace />} />,
+  <Route key="official-handle-lower" path="/@MiyTube" element={<Navigate to="/" replace />} />,
   <Route key="channel-handle" path="/@:handle" element={<Channel />} />,
   <Route key="channel-handle-shorts" path="/@:handle/shorts" element={<Shorts />} />,
   <Route key="channel-handle-videos" path="/@:handle/videos" element={<Channel />} />,
