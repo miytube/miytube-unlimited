@@ -64,6 +64,8 @@ const WatchlistButton = ({
         className
       )}
       title={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
+      aria-label={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
+      aria-pressed={inWatchlist}
     >
       {inWatchlist ? (
         <BookmarkCheck className="w-5 h-5" />

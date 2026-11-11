@@ -115,9 +115,9 @@ export const NewsletterSignup: React.FC<NewsletterSignupProps> = ({
     <section className={`rounded-lg border bg-card p-5 ${className}`} aria-labelledby={`newsletter-heading-${source}`}>
       <div className="flex items-center gap-2 mb-1">
         <Mail className="h-4 w-4 text-primary" aria-hidden="true" />
-        <h3 id={`newsletter-heading-${source}`} className="font-semibold">
+        <h2 id={`newsletter-heading-${source}`} className="text-base font-semibold">
           {heading}
-        </h3>
+        </h2>
       </div>
       <p className="text-sm text-muted-foreground mb-4">{description}</p>
       {form}

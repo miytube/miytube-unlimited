@@ -53,7 +53,8 @@ const NestedSubItem: React.FC<{
           type="button"
           onClick={(e) => { e.preventDefault(); setOpen(!open); }}
           className="p-0.5 hover:text-foreground"
-          aria-label={open ? 'Collapse' : 'Expand'}
+          aria-label={`${open ? 'Collapse' : 'Expand'} ${subItem.label}`}
+          aria-expanded={open}
         >
           <ChevronRight size={12} className={`transition-transform ${open ? 'rotate-90' : ''}`} />
         </button>
@@ -127,7 +128,8 @@ const CollapsibleNavLink: React.FC<CollapsibleNavLinkProps> = ({ item, location 
             type="button"
             onClick={handleToggle}
             className="p-1 text-muted-foreground hover:text-foreground"
-            aria-label={isExpanded ? 'Collapse' : 'Expand'}
+            aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${item.label}`}
+            aria-expanded={isExpanded}
           >
             <ChevronDown
               size={16}

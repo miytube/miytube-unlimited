@@ -27,6 +27,8 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
   legacyFilterSubcategories = [],
 }) => {
   const { getVideosByCategory } = useUploadedVideos();
+  // Make the page heading name the video subject, e.g. "Military" -> "Military Videos"
+  const headingTitle = /\bvideos?\b/i.test(title) ? title : `${title} Videos`;
   
   // Filter videos for this category using the context's improved matching
   const primaryVideos = getVideosByCategory(filterCategory || title, filterSubcategory);
@@ -61,8 +63,8 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-3">
-                {Icon && <Icon className="h-8 w-8 text-primary" />}
-                <h1 className="text-3xl font-bold">{title}</h1>
+                {Icon && <Icon className="h-8 w-8 text-primary" aria-hidden="true" />}
+                <h1 className="text-3xl font-bold">{headingTitle}</h1>
               </div>
               <p className="text-muted-foreground">{description}</p>
             </div>
@@ -70,8 +72,8 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
               to="/upload" 
               className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
             >
-              <Upload size={18} />
-              <span>Upload</span>
+              <Upload size={18} aria-hidden="true" />
+              <span>Upload {title} Video</span>
             </Link>
           </div>
         </div>
@@ -79,7 +81,7 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
         {categoryVideos.length > 0 ? (
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-medium">{title} Videos</h2>
+              <h2 className="text-xl font-medium">Latest {headingTitle}</h2>
               <PageInfo
                 currentPage={currentPage}
                 totalPages={totalPages}
@@ -114,8 +116,8 @@ const GenericCategoryPage: React.FC<GenericCategoryPageProps> = ({
 
         ) : (
           <div className="text-center py-12 bg-card rounded-lg mb-8">
-            {Icon && <Icon className="h-16 w-16 mx-auto text-muted-foreground mb-4" />}
-            <h3 className="text-xl font-semibold mb-2">No {title} Videos Yet</h3>
+            {Icon && <Icon className="h-16 w-16 mx-auto text-muted-foreground mb-4" aria-hidden="true" />}
+            <h2 className="text-xl font-semibold mb-2">No {headingTitle} Yet</h2>
             <p className="text-muted-foreground mb-4">Be the first to upload {title.toLowerCase()} content!</p>
             <Link 
               to="/upload" 

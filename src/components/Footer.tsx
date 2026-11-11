@@ -16,7 +16,7 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
-            <Link to="/" className="flex items-center gap-1 mb-4">
+            <Link to="/" className="flex items-center gap-1 mb-4" aria-label={`${site.name} home`}>
               <span className="text-primary font-bold text-xl">{site.wordmark[0]}</span>
               <span className="font-bold text-xl">{site.wordmark[1]}</span>
             </Link>
@@ -26,34 +26,34 @@ export const Footer = () => {
             <div className="flex items-center gap-4">
               {social.facebook && (
                 <a href={social.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on Facebook`} className="text-muted-foreground hover:text-primary transition-colors">
-                  <Facebook size={20} />
+                  <Facebook size={20} aria-hidden="true" />
                 </a>
               )}
               {social.twitter && (
                 <a href={social.twitter} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on X`} className="text-muted-foreground hover:text-primary transition-colors">
-                  <Twitter size={20} />
+                  <Twitter size={20} aria-hidden="true" />
                 </a>
               )}
               {social.instagram && (
                 <a href={social.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on Instagram`} className="text-muted-foreground hover:text-primary transition-colors">
-                  <Instagram size={20} />
+                  <Instagram size={20} aria-hidden="true" />
                 </a>
               )}
               {social.youtube && (
                 <a href={social.youtube} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on YouTube`} className="text-muted-foreground hover:text-primary transition-colors">
-                  <Youtube size={20} />
+                  <Youtube size={20} aria-hidden="true" />
                 </a>
               )}
               {social.linkedin && (
                 <a href={social.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${site.name} on LinkedIn`} className="text-muted-foreground hover:text-primary transition-colors">
-                  <Linkedin size={20} />
+                  <Linkedin size={20} aria-hidden="true" />
                 </a>
               )}
             </div>
           </div>
           
           <div>
-            <h3 className="font-medium mb-4">Content</h3>
+            <h2 className="text-base font-medium mb-4">Content</h2>
             <ul className="space-y-2 text-sm">
               <li><Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">Videos</Link></li>
               <li><Link to="/long-videos" className="text-muted-foreground hover:text-foreground transition-colors">Long Videos</Link></li>
@@ -65,7 +65,7 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-medium mb-4">Business</h3>
+            <h2 className="text-base font-medium mb-4">Business</h2>
             <ul className="space-y-2 text-sm">
               <li><Link to="/monetization" className="text-muted-foreground hover:text-foreground transition-colors">Monetization</Link></li>
               <li><Link to="/advertising" className="text-muted-foreground hover:text-foreground transition-colors">Advertising</Link></li>
@@ -76,7 +76,7 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-medium mb-4">Resources</h3>
+            <h2 className="text-base font-medium mb-4">Resources</h2>
             <ul className="space-y-2 text-sm">
               <li><Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Help Center</Link></li>
               <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Community</a></li>
@@ -106,6 +106,7 @@ export const Footer = () => {
               <button
                 type="button"
                 onClick={openCookiePreferences}
+                aria-label="Open cookie preferences"
                 className="hover:text-foreground transition-colors"
               >
                 Cookie Preferences

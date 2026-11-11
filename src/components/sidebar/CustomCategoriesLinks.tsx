@@ -36,7 +36,7 @@ export const CustomCategoriesLinks: React.FC = () => {
             </NavLink>
             {cat.subcategories.length > 0 && (
               <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-7 w-7">
+                <Button variant="ghost" size="icon" className="h-7 w-7" aria-label={`${openId === cat.id ? 'Hide' : 'Show'} ${cat.name} subcategories`}>
                   <ChevronDown
                     className={`h-3 w-3 transition-transform ${
                       openId === cat.id ? 'rotate-180' : ''
@@ -66,7 +66,7 @@ export const CustomCategoriesLinks: React.FC = () => {
                   </NavLink>
                   {sub.watch_pages.length > 0 && (
                     <CollapsibleTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
+                      <Button variant="ghost" size="icon" className="h-6 w-6" aria-label={`${openSubId === sub.id ? 'Hide' : 'Show'} ${sub.name} pages`}>
                         <ChevronDown
                           className={`h-3 w-3 transition-transform ${
                             openSubId === sub.id ? 'rotate-180' : ''
