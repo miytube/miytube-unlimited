@@ -83,6 +83,8 @@ export const Footer = () => {
               <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Creator Academy</a></li>
               <li><Link to="/copyright" className="text-muted-foreground hover:text-foreground transition-colors">Copyright</Link></li>
               <li><Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About Us</Link></li>
+              <li><a href="https://sportsbeginend.com/?utm_source=miytube&utm_medium=referral&utm_campaign=footer" target="_blank" rel="noopener" className="text-muted-foreground hover:text-foreground transition-colors">Sports Begins End</a></li>
+              <li><a href="https://booksem.com" target="_blank" rel="noopener" className="text-muted-foreground hover:text-foreground transition-colors">Booksem</a></li>
               <li><Link to="/about-mark-hayes" className="text-muted-foreground hover:text-foreground transition-colors">About the Founder</Link></li>
             </ul>
           </div>

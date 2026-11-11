@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LineChart, Trophy, Newspaper, Music2, PlaySquare, MonitorPlay, BookOpen } from 'lucide-react';
+import { LineChart, Trophy, Newspaper, Music2, PlaySquare, MonitorPlay, BookOpen, Medal } from 'lucide-react';
 
-const COMMUNITIES = [
+const COMMUNITIES: { to?: string; href?: string; label: string; blurb: string; Icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
   { to: '/gmatrader-articles', label: 'GmaTrader', blurb: 'Nasdaq futures, markets', Icon: LineChart },
   { to: '/sports-high-school', label: 'High School Sports', blurb: 'CIF games & playoffs', Icon: Trophy },
+  { href: 'https://sportsbeginend.com/?utm_source=miytube&utm_medium=referral&utm_campaign=community_strip', label: 'Sports Begins End', blurb: 'Legends from childhood to retirement', Icon: Medal },
   { to: '/books', label: 'Books & Booksem', blurb: 'Reviews, classics, The Art of War', Icon: BookOpen },
   { to: '/breaking-news', label: 'Breaking News', blurb: 'What just happened', Icon: Newspaper },
   { to: '/music', label: 'Music', blurb: 'Videos, genres, live sets', Icon: Music2 },
@@ -16,18 +17,16 @@ const COMMUNITIES = [
 export const CommunityStrip: React.FC = () => (
   <section className="mb-8">
     <h2 className="text-xl font-medium mb-3">Where people hang out</h2>
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
-      {COMMUNITIES.map(({ to, label, blurb, Icon }) => (
-        <Link
-          key={to}
-          to={to}
-          className="group rounded-lg border bg-card p-3 transition-colors hover:border-primary/60 hover:bg-primary/5"
-        >
-          <Icon size={18} className="text-primary" />
-          <p className="mt-2 text-sm font-medium leading-tight">{label}</p>
-          <p className="text-xs text-muted-foreground leading-tight">{blurb}</p>
-        </Link>
-      ))}
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-3">
+      {COMMUNITIES.map(({ to, href, label, blurb, Icon }) => {
+        const cls = "group rounded-lg border bg-card p-3 transition-colors hover:border-primary/60 hover:bg-primary/5";
+        const inner = (<><Icon size={18} className="text-primary" /><p className="mt-2 text-sm font-medium leading-tight">{label}</p><p className="text-xs text-muted-foreground leading-tight">{blurb}</p></>);
+        return href ? (
+          <a key={href} href={href} target="_blank" rel="noopener" className={cls}>{inner}</a>
+        ) : (
+          <Link key={to} to={to!} className={cls}>{inner}</Link>
+        );
+      })}
     </div>
   </section>
 );
