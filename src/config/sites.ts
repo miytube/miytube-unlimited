@@ -37,9 +37,9 @@ export const SITES: Record<SiteId, SiteConfig> = {
     wordmark: ['Miy', 'Tube'],
     tagline: 'Your platform for unlimited video content. Upload, share, and discover with no restrictions.',
     domain: 'miytube.com',
-    metaTitle: 'MiyTube - Watch, Upload & Share Videos',
+    metaTitle: 'MiyTube – Upload Videos & Get Tipped by Your Viewers',
     metaDescription:
-      'MiyTube is a free video platform. Watch, upload and share videos, shorts, music and live moments with no restrictions.',
+      'Watch and upload videos on MiyTube. Creators get direct tips from viewers, and AI turns every upload into a searchable article. Free to join.',
     hostnames: ['miytube.com', 'www.miytube.com', 'miytube-com.lovable.app'],
     social: {
       facebook: 'https://www.facebook.com/miytube',
