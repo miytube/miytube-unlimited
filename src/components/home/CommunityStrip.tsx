@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { LineChart, Trophy, Newspaper, Music2, PlaySquare, MonitorPlay, BookOpen, Medal } from 'lucide-react';
 
-const COMMUNITIES: { to?: string; href?: string; label: string; blurb: string; Icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
+const COMMUNITIES: { to?: string; href?: string; label: string; blurb: string; Icon: typeof Medal }[] = [
   { to: '/gmatrader-articles', label: 'GmaTrader', blurb: 'Nasdaq futures, markets', Icon: LineChart },
   { to: '/sports-high-school', label: 'High School Sports', blurb: 'CIF games & playoffs', Icon: Trophy },
   { href: 'https://sportsbeginend.com/?utm_source=miytube&utm_medium=referral&utm_campaign=community_strip', label: 'Sports Begins End', blurb: 'Legends from childhood to retirement', Icon: Medal },
