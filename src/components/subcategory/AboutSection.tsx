@@ -16,6 +16,22 @@ const AboutSection: React.FC<AboutSectionProps> = ({ title }) => {
         Explore videos, shorts, and more from creators specializing in this area.
         If you're a content creator in this space, consider uploading your own content.
       </p>
+      {/sports\s*begin/i.test(title) && (
+        <ul className="mt-4 space-y-1">
+          {['Sports Begin End', 'Sports Beginning to End', 'Sports Begin to End'].map((label) => (
+            <li key={label}>
+              <a
+                href="https://sportsbeginend.com/?utm_source=miytube&utm_medium=referral&utm_campaign=legends_about"
+                target="_blank"
+                rel="noopener"
+                className="font-medium text-primary hover:underline"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="mt-4">
         <Link to="/upload" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
           <Upload size={18} />
