@@ -155,6 +155,21 @@ const GenericSubcategoryPage = () => {
           </a>
         )}
 
+        {(categorySlug === 'sports-begin-end-legends' || pathParts.includes('legends-sports-begin-end')) && (
+          <a
+            href="https://sportsbeginend.com/?utm_source=miytube&utm_medium=referral&utm_campaign=legends_watchpage"
+            target="_blank"
+            rel="noopener"
+            className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg border border-primary/40 bg-primary/5 p-4 transition-colors hover:bg-primary/10"
+          >
+            <div>
+              <p className="font-semibold">🏅 Sports Begins End — From first whistle to final buzzer.</p>
+              <p className="text-sm text-muted-foreground">See childhood photos, high school years and full career timelines of these legends on sportsbeginend.com.</p>
+            </div>
+            <span className="shrink-0 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground">Explore Full Timelines →</span>
+          </a>
+        )}
+
         {customSubs.length > 0 && !customSubSlug && !customWatchSlug && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-4">Pages in {pageTitle}</h2>
