@@ -34,6 +34,13 @@ export const SportsExtendedLinks: React.FC = () => {
     },
 
     {
+      id: 'sports-begin-end-legends',
+      icon: Medal,
+      label: 'Legends (Sports Begins End)',
+      path: '/c/sports-begin-end-legends/legends-sports-begin-end',
+    },
+
+    {
       id: 'sports-moments-main',
       icon: Trophy,
       label: 'Sports Moments',
