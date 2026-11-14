@@ -27,21 +27,20 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Slogan preview — Variant B (top ticker) */}
         {isHome && <SloganTicker />}
         <Header onMenuClick={() => setSidebarOpen((v) => !v)} />
-        {/* Slogan preview — Variant C (dedicated banner) */}
-        {isHome && <SloganBanner />}
-
-        {/* Global Leaderboard (728x90) below main navigation. Hidden on mobile. */}
-        <div className="hidden md:flex justify-center bg-background border-b border-border/60 py-2">
+        {/* Top ad stays below navigation on every screen size. */}
+        <div className="flex min-w-0 justify-center bg-background border-b border-border/60 px-2 py-2">
           <AdSlot
             slot="4004758990"
             format="horizontal"
             responsive={false}
             label="Sponsored"
-            className="!rounded-none"
-            style={{ width: 728, height: 90 }}
-            insStyle={{ display: 'inline-block', width: 728, height: 90 }}
+            className="!rounded-none max-w-[728px]"
+            style={{ width: '100%', maxWidth: isMobile ? 320 : 728, height: isMobile ? 100 : 90, minHeight: isMobile ? 100 : 90 }}
+            insStyle={{ height: isMobile ? 100 : 90, minHeight: isMobile ? 100 : 90 }}
           />
         </div>
+        {/* Slogan preview — Variant C (dedicated banner) */}
+        {isHome && <SloganBanner />}
         <main className="flex-1">
           {/* bg-background on the centered column so vignette wallpaper ads can show in the side gutters.
               Shadow + ring give the column a clear edge so videos stay readable over any ad color. */}
