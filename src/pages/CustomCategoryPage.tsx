@@ -13,6 +13,37 @@ interface Props {
   mode: Mode;
 }
 
+const SPORTS_BEGIN_END_URL =
+  'https://sportsbeginend.com/?utm_source=miytube&utm_medium=referral&utm_campaign=legends_about';
+
+const SPORTS_BEGIN_END_LINKS = [
+  'Sports Begin End',
+  'Sports Beginning to End',
+  'Sports Begin to End',
+];
+
+const SPORTS_BEGIN_END_RE =
+  /(Sports Beginning to End|Sports Begin to End|Sports Begin End)/g;
+
+const renderDescription = (text: string) => {
+  const parts = text.split(SPORTS_BEGIN_END_RE);
+  return parts.map((part, i) =>
+    SPORTS_BEGIN_END_LINKS.includes(part) ? (
+      <a
+        key={i}
+        href={SPORTS_BEGIN_END_URL}
+        target="_blank"
+        rel="noopener"
+        className="font-medium text-primary hover:underline"
+      >
+        {part}
+      </a>
+    ) : (
+      <React.Fragment key={i}>{part}</React.Fragment>
+    )
+  );
+};
+
 const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
   const params = useParams();
   const { tree, loading } = useCustomCategories();
@@ -194,9 +225,9 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
 
 
         {description && (
-          <div className="bg-card p-6 rounded-lg shadow-sm mb-8">
+          <div className="bg-card p-6 rounded-lg shadow-sm mb-8 google-anno-skip">
             <h2 className="text-xl font-semibold mb-4">About {title}</h2>
-            <p className="text-muted-foreground whitespace-pre-line">{description}</p>
+            <p className="text-muted-foreground whitespace-pre-line">{renderDescription(description)}</p>
           </div>
         )}
       </div>
