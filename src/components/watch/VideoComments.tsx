@@ -3,6 +3,22 @@ import { MessageSquare, ThumbsUp, ThumbsDown, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
+import { AdSlot } from '@/components/ads/AdSlot';
+
+/** Below this many comments, the empty discussion space shows an ad. */
+export const COMMENT_AD_THRESHOLD = 5;
+/** With an active discussion, the ad sits after this many comments. */
+export const COMMENT_AD_AFTER_INDEX = 2;
+
+const CommentAd = () => (
+  <div className="google-anno-skip my-4">
+    <BannerAdSlot
+      placement="watch"
+      fallback={<AdSlot slot="3247036478" format="auto" responsive label="Sponsored" />}
+    />
+  </div>
+);
 
 interface Comment {
   id: string;
@@ -267,11 +283,15 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
         </div>
       ) : (
         <div className="space-y-4">
-          {comments.length === 0 ? (
+          {comments.length === 0 && (
             <p className="text-muted-foreground text-center py-4">No comments yet. Be the first to comment!</p>
-          ) : (
-            comments.map((c) => (
-              <div key={c.id} className="flex gap-3">
+          )}
+          {comments.length < COMMENT_AD_THRESHOLD && <CommentAd />}
+          {comments.length > 0 && (
+            comments.map((c, i) => (
+              <React.Fragment key={c.id}>
+              {comments.length >= COMMENT_AD_THRESHOLD && i === COMMENT_AD_AFTER_INDEX && <CommentAd />}
+              <div className="flex gap-3">
                 <div className="w-8 h-8 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center text-sm">
                   U
                 </div>
@@ -308,6 +328,7 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
                   </div>
                 </div>
               </div>
+              </React.Fragment>
             ))
           )}
         </div>

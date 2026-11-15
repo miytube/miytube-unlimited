@@ -18,15 +18,18 @@ interface Ad {
 interface BannerAdSlotProps {
   placement?: 'homepage' | 'watch';
   className?: string;
+  /** Rendered when no paid or house ad is available (e.g. an AdSense unit). */
+  fallback?: React.ReactNode;
 }
 
 // Fetches an approved active banner campaign and renders it as an on-site ad.
 // Rotates in a MiyTube "house ad" every HOUSE_AD_INTERVAL_HOURS hours.
 // Records an impression on mount and a click when the ad is clicked.
-export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch', className }) => {
+export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch', className, fallback }) => {
   const [ad, setAd] = useState<Ad | null>(null);
   const [tracked, setTracked] = useState(false);
   const [tick, setTick] = useState(0);
+  const [empty, setEmpty] = useState(false);
 
   // Recompute the house-ad window periodically so the slot flips without a reload.
   const houseAd = useMemo(() => pickHouseAdForNow(placement), [placement, tick]);
@@ -51,7 +54,8 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
 
     (async () => {
       const { data, error } = await supabase.rpc('get_active_banner_ads', { _placement: placement, _site: getCurrentSiteId() });
-      if (cancelled || error || !data || data.length === 0) return;
+      if (cancelled) return;
+      if (error || !data || data.length === 0) { setEmpty(true); return; }
       const pick = data[Math.floor(Math.random() * data.length)] as Ad;
       setAd(pick);
     })();
@@ -77,7 +81,7 @@ export const BannerAdSlot: React.FC<BannerAdSlotProps> = ({ placement = 'watch',
     supabase.rpc('record_ad_event', { _campaign_id: ad.id, _event: 'impression' }).then(() => {});
   }, [ad, tracked]);
 
-  if (!ad) return null;
+  if (!ad) return empty && fallback ? <>{fallback}</> : null;
 
   const handleClick = () => {
     if (ad.isHouse) return;
