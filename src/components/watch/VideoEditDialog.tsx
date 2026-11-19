@@ -89,7 +89,10 @@ export const VideoEditDialog: React.FC<VideoEditDialogProps> = ({
       }));
     const knownSubcats = getKnownSubcategoryOptionsForParent(category);
     const dbCat = customTree.find(c => c.slug === category);
-    const fromDb = (dbCat?.subcategories || []).map(s => ({ id: s.slug, name: s.name }));
+    const fromDb = (dbCat?.subcategories || []).flatMap(s => [
+      { id: s.slug, name: s.name },
+      ...s.watch_pages.map(w => ({ id: w.slug, name: w.name })),
+    ]);
     const custom = customSubcategories.map(c => ({ id: c.toLowerCase().replace(/\s+/g, '-'), name: c }));
     const merged = new Map<string, { id: string; name: string }>();
     [...baseSubcats, ...knownSubcats, ...fromDb, ...custom].forEach(o => {

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Trophy, Bike, Dumbbell, Target, Medal, Timer, Waves } from 'lucide-react';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
+import { SPORTS_LEGENDS_ALPHABETICAL, LEGENDS_BASE_PATH } from '@/data/sportsBeginEndLegends';
 
 export const SportsExtendedLinks: React.FC = () => {
   const sportsExtendedLinks = [
@@ -37,7 +38,14 @@ export const SportsExtendedLinks: React.FC = () => {
       id: 'sports-begin-end-legends',
       icon: Medal,
       label: 'Legends (Sports Begins End)',
-      path: '/c/sports-begin-end-legends/legends-sports-begin-end',
+      path: LEGENDS_BASE_PATH,
+      subItems: [
+        ...SPORTS_LEGENDS_ALPHABETICAL.map((l) => ({
+          id: `sbe-${l.slug}`,
+          label: l.name,
+          path: `${LEGENDS_BASE_PATH}/${l.slug}`,
+        })),
+      ],
     },
 
     {

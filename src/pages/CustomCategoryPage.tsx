@@ -6,6 +6,9 @@ import { Folder, Upload, ChevronRight } from 'lucide-react';
 import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { LegendsShelves, LegendTimelineBanner } from '@/components/legends/LegendsShelves';
+import { isLegendsVideo, resolveVideoLegend } from '@/utils/legendsGrouping';
+import { LEGENDS_SUBCATEGORY_SLUG, getLegendBySlug } from '@/data/sportsBeginEndLegends';
 
 type Mode = 'category' | 'subcategory' | 'watch';
 
@@ -96,7 +99,16 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
       (norm(v.subcategory) === mostSpecificSlug ||
         (mostSpecificSlug !== categorySlugLower && norm(v.category) === mostSpecificSlug))
   );
-  const videos = [...baseVideos, ...extraVideos];
+  // Sports Begins End Legends: every legends video is grouped under its legend.
+  const isLegendsHub = mode === 'subcategory' && subcategory?.slug === LEGENDS_SUBCATEGORY_SLUG;
+  const activeLegend =
+    mode === 'watch' && subcategory?.slug === LEGENDS_SUBCATEGORY_SLUG ? getLegendBySlug(watchPage?.slug) : undefined;
+  const legendsVideos = isLegendsHub || activeLegend ? uploadedVideos.filter(isLegendsVideo) : [];
+  const videos = isLegendsHub
+    ? legendsVideos
+    : activeLegend
+      ? legendsVideos.filter((v) => resolveVideoLegend(v)?.id === activeLegend.id)
+      : [...baseVideos, ...extraVideos];
 
 
   return (
@@ -182,7 +194,7 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
         )}
 
         {/* Watch page list when on subcategory page */}
-        {mode === 'subcategory' && subcategory && subcategory.watch_pages.length > 0 && (
+        {mode === 'subcategory' && !isLegendsHub && subcategory && subcategory.watch_pages.length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-medium mb-3">Watch Pages</h2>
             <div className="flex flex-wrap gap-2">
@@ -199,7 +211,11 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
           </div>
         )}
 
-        {videos.length > 0 ? (
+        {activeLegend && <LegendTimelineBanner legend={activeLegend} />}
+
+        {isLegendsHub && videos.length > 0 ? (
+          <LegendsShelves videos={videos} />
+        ) : videos.length > 0 ? (
           <VideosPaginated videos={videos} title={title} />
         ) : (
           <div className="text-center py-12 bg-card rounded-lg mb-8">
