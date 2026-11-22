@@ -5,6 +5,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { BannerAdSlot } from '@/components/advertising/BannerAdSlot';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { AvatarBubble } from '@/components/avatar/UserAvatarBubble';
+import { useSavedAvatars } from '@/hooks/useAvatars';
 
 /** Below this many comments, the empty discussion space shows an ad. */
 export const COMMENT_AD_THRESHOLD = 5;
@@ -41,6 +43,8 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
   const [submitting, setSubmitting] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const { toast } = useToast();
+  const commenterIds = Array.from(new Set(comments.map((c) => c.user_id))).sort();
+  const commenterAvatars = useSavedAvatars(commenterIds);
 
   useEffect(() => {
     fetchComments();
@@ -292,9 +296,15 @@ export const VideoComments: React.FC<VideoCommentsProps> = ({ videoId }) => {
               <React.Fragment key={c.id}>
               {comments.length >= COMMENT_AD_THRESHOLD && i === COMMENT_AD_AFTER_INDEX && <CommentAd />}
               <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center text-sm">
-                  U
-                </div>
+                <AvatarBubble
+                  avatar={commenterAvatars[c.user_id]}
+                  className="h-8 w-8 flex-shrink-0"
+                  fallback={
+                    <div className="w-8 h-8 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center text-sm">
+                      U
+                    </div>
+                  }
+                />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-medium">User</span>

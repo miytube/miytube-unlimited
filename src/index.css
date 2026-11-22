@@ -42,6 +42,12 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --rarity-common: 215 16% 47%;
+    --rarity-rare: 210 100% 45%;
+    --rarity-epic: 280 70% 50%;
+    --rarity-legendary: 38 95% 48%;
+    --studio-stage: linear-gradient(160deg, hsl(222 47% 11%), hsl(224 71% 4%));
   }
 
   .dark {

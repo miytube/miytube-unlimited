@@ -19,12 +19,21 @@ export default {
 			}
 		},
 		extend: {
+			backgroundImage: {
+				'studio-stage': 'var(--studio-stage)'
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				rarity: {
+					common: 'hsl(var(--rarity-common))',
+					rare: 'hsl(var(--rarity-rare))',
+					epic: 'hsl(var(--rarity-epic))',
+					legendary: 'hsl(var(--rarity-legendary))'
+				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'

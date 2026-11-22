@@ -236,6 +236,63 @@ export type Database = {
         }
         Relationships: []
       }
+      avatar_items: {
+        Row: {
+          asset_uri: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          is_starter: boolean
+          legend_id: number | null
+          metadata: Json
+          name: string
+          price_credits: number
+          rarity: string
+          sku: string
+          slot: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          asset_uri: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_starter?: boolean
+          legend_id?: number | null
+          metadata?: Json
+          name: string
+          price_credits?: number
+          rarity?: string
+          sku: string
+          slot: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          asset_uri?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_starter?: boolean
+          legend_id?: number | null
+          metadata?: Json
+          name?: string
+          price_credits?: number
+          rarity?: string
+          sku?: string
+          slot?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       blocked_uploads: {
         Row: {
           category: string | null
@@ -1534,6 +1591,71 @@ export type Database = {
         }
         Relationships: []
       }
+      user_avatar_inventory: {
+        Row: {
+          acquired_at: string
+          acquired_via: string
+          chain: string | null
+          id: string
+          item_id: string
+          token_id: string | null
+          user_id: string
+          wallet_address: string | null
+        }
+        Insert: {
+          acquired_at?: string
+          acquired_via?: string
+          chain?: string | null
+          id?: string
+          item_id: string
+          token_id?: string | null
+          user_id: string
+          wallet_address?: string | null
+        }
+        Update: {
+          acquired_at?: string
+          acquired_via?: string
+          chain?: string | null
+          id?: string
+          item_id?: string
+          token_id?: string | null
+          user_id?: string
+          wallet_address?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_avatar_inventory_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "avatar_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_avatars: {
+        Row: {
+          config: Json
+          created_at: string
+          equipped: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          equipped?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          equipped?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1789,6 +1911,7 @@ export type Database = {
           title: string
         }[]
       }
+      claim_starter_avatar_items: { Args: never; Returns: number }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, User, LogIn, LogOut, Shield, Settings } from 'lucide-react';
+import { Bell, User, LogIn, LogOut, Shield, Settings, Sparkles } from 'lucide-react';
+import { UserAvatarBubble } from '@/components/avatar/UserAvatarBubble';
 import { UploadDropdown } from './UploadDropdown';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
@@ -41,7 +42,7 @@ export const UserActions: React.FC = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" aria-label="User menu">
-              <User size={20} />
+              <UserAvatarBubble userId={user.id} className="h-8 w-8" fallback={<User size={20} />} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -49,6 +50,12 @@ export const UserActions: React.FC = () => {
               <Link to="/channel" className="flex items-center gap-2">
                 <User size={16} />
                 My Channel
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/avatar" className="flex items-center gap-2">
+                <Sparkles size={16} />
+                Avatar Studio
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

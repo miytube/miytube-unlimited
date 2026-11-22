@@ -50,6 +50,13 @@
       "when": 1794489792172,
       "tag": "0006_validate_public_form_inserts",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795381612430,
+      "tag": "0007_avatar_studio",
+      "breakpoints": true
     }
   ]
 }

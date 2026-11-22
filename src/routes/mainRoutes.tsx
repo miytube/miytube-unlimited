@@ -27,6 +27,7 @@ import LongVideos from "@/pages/LongVideos";
 import NewsAndPolitics from "@/pages/NewsAndPolitics";
 import TalkAtCha from "@/pages/TalkAtCha";
 import TheRoom from "@/pages/TheRoom";
+import AvatarStudio from "@/pages/AvatarStudio";
 import Educational from "@/pages/Educational";
 import Mathematics from "@/pages/Mathematics";
 import Channel from "@/pages/Channel";
@@ -250,6 +251,9 @@ export const mainRoutes = [
 
   // The Room — MiyTube interview series
   <Route key="the-room" path="/the-room" element={<TheRoom />} />,
+
+  // Avatar Studio — MiyTube Passport characters
+  <Route key="avatar-studio" path="/avatar" element={<AvatarStudio />} />,
 
 
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,
