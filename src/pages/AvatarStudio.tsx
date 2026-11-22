@@ -451,7 +451,7 @@ const GearCard: React.FC<{
             </Button>
           )
         ) : (
-          <Button size="sm" variant={isOn ? 'secondary' : 'default'} className="mt-auto" onClick={onToggle}>
+          <Button size="sm" variant={isOn ? 'outline' : 'default'} className="mt-auto" onClick={onToggle}>
             {isOn ? 'Take off' : 'Wear'}
           </Button>
         )}

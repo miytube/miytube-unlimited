@@ -618,6 +618,48 @@ export type Database = {
         }
         Relationships: []
       }
+      coin_pack_orders: {
+        Row: {
+          amount_cents: number
+          coins: number
+          created_at: string
+          environment: string
+          id: string
+          pack_id: string
+          status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          coins: number
+          created_at?: string
+          environment: string
+          id?: string
+          pack_id: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          coins?: number
+          created_at?: string
+          environment?: string
+          id?: string
+          pack_id?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       coin_transactions: {
         Row: {
           amount: number
@@ -2062,6 +2104,18 @@ export type Database = {
           views: number
         }[]
       }
+      grant_coin_pack: {
+        Args: {
+          _amount_cents: number
+          _coins: number
+          _env: string
+          _pack_id: string
+          _payment_intent_id: string
+          _session_id: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
       has_active_subscription: {
         Args: { _env: string; _user_id: string }
         Returns: boolean
@@ -2103,6 +2157,10 @@ export type Database = {
       record_uploader_ip: {
         Args: { _local_id: string; _uploader_ip: string }
         Returns: undefined
+      }
+      revoke_coin_pack: {
+        Args: { _payment_intent_id: string }
+        Returns: boolean
       }
     }
     Enums: {

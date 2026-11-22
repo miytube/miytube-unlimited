@@ -1,5 +1,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { type StripeEnv, verifyWebhook, createStripeClient } from "../_shared/stripe.ts";
+import { COIN_PACKS } from "../_shared/coinPacks.ts";
 
 let _supabase: ReturnType<typeof createClient> | null = null;
 function getSupabase() {
@@ -135,11 +136,44 @@ async function handleCampaignPayment(session: any, env: StripeEnv, isTopup: bool
   }
 }
 
+async function handleCoinPack(session: any, env: StripeEnv) {
+  const userId = session.metadata?.userId;
+  const packId = session.metadata?.packId;
+  const pack = packId ? COIN_PACKS[packId] : undefined;
+  if (!userId || !pack) {
+    console.warn("Coin pack session missing user or pack:", session.id);
+    return;
+  }
+  if (session.payment_status !== "paid") {
+    console.log("Coin pack session not paid yet:", session.id, session.payment_status);
+    return;
+  }
+  const intentId = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id;
+  const { data, error } = await getSupabase().rpc("grant_coin_pack", {
+    _user_id: userId,
+    _session_id: session.id,
+    _payment_intent_id: intentId ?? null,
+    _pack_id: packId,
+    _coins: pack.coins,
+    _amount_cents: Number(session.amount_total ?? 0),
+    _env: env,
+  });
+  if (error) throw error;
+  console.log(data ? "Granted coin pack" : "Coin pack already granted", session.id);
+}
+
 async function handleChargeRefunded(charge: any) {
   const piId = typeof charge.payment_intent === "string"
     ? charge.payment_intent
     : charge.payment_intent?.id;
   if (!piId) return;
+
+  // Coin pack refunds take the coins back.
+  const { data: revoked } = await getSupabase().rpc("revoke_coin_pack", { _payment_intent_id: piId });
+  if (revoked) {
+    console.log("Revoked coin pack for refunded PI:", piId);
+    return;
+  }
 
   // Find the campaign that has this PI in its budget_payments
   const { data: campaigns } = await getSupabase()
@@ -297,6 +331,8 @@ async function handleWebhook(req: Request, env: StripeEnv) {
         await handleCampaignPayment(session, env, false);
       } else if (purpose === "campaign_topup") {
         await handleCampaignPayment(session, env, true);
+      } else if (purpose === "coin_pack") {
+        await handleCoinPack(session, env);
       } else if (purpose === "room_premium" && session.subscription) {
         const stripe = createStripeClient(env);
         await upsertSubscription(await stripe.subscriptions.retrieve(session.subscription), env);
@@ -318,6 +354,11 @@ async function handleWebhook(req: Request, env: StripeEnv) {
     case "payment_intent.payment_failed":
       await handlePaymentFailed(event.data.object);
       break;
+    case "checkout.session.async_payment_succeeded": {
+      const session = event.data.object;
+      if (session.metadata?.purpose === "coin_pack") await handleCoinPack(session, env);
+      break;
+    }
     case "checkout.session.async_payment_failed":
       console.log("Async payment failed:", (event.data.object as any)?.id);
       break;

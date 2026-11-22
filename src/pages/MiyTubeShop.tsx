@@ -331,7 +331,7 @@ const ShopCard: React.FC<{
             </Link>
           </Button>
         ) : status === 'owned' ? (
-          <Button size="sm" variant={wearing ? 'secondary' : 'default'} disabled={busy} onClick={onWear}>
+          <Button size="sm" variant={wearing ? 'outline' : 'default'} disabled={busy} onClick={onWear}>
             {busy && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
             {wearing ? 'Take off' : 'Wear it'}
           </Button>

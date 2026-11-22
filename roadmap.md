@@ -13,6 +13,9 @@
 - [x] Correct double-counted totals and unify video displays across Home, categories, watch pages, search, Shorts, and featured music; tests passed and Atlanta Teacher verified at 9 on Home/Crime, then 10 on both after exactly one watch. Frontend changes await publishing.
 - [x] Complete Google Search Console setup: account META tag live, 375 sitemap page URLs corrected to miytube.com, published, ownership verified as siteOwner, property added, and https://miytube.com/sitemap.xml submitted successfully.
 
+- [x] MiyTube Shop (/shop): free MiyTube Coins (500 join bonus, 50 daily), 3 kiosks, 23 items, buy + one-tap wear; Avatar Studio links to the shop.
+- [ ] MiyTube Shop coin packs: members buy extra coins by card.
+
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.
 - [x] College football watchpage fix: /sports/college/* now matches category college-sports + child subcategory; 201 regular-season games on College Football, CFP/championships moved to new /sports/college/cfp page (sidebar link added), 2 mislabeled bowl games recategorized to football-bowl-games. Verified via Playwright, build OK. Not yet published.

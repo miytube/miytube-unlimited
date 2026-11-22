@@ -64,6 +64,13 @@
       "when": 1795382641019,
       "tag": "0008_miytube_shop_coins",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795383141247,
+      "tag": "0009_coin_pack_orders",
+      "breakpoints": true
     }
   ]
 }
