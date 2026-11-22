@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, User, LogIn, LogOut, Shield, Settings, Sparkles } from 'lucide-react';
+import { Bell, User, LogIn, LogOut, Shield, Settings, Sparkles, Store } from 'lucide-react';
 import { UserAvatarBubble } from '@/components/avatar/UserAvatarBubble';
 import { UploadDropdown } from './UploadDropdown';
 import { Button } from '@/components/ui/button';
@@ -56,6 +56,12 @@ export const UserActions: React.FC = () => {
               <Link to="/avatar" className="flex items-center gap-2">
                 <Sparkles size={16} />
                 Avatar Studio
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/shop" className="flex items-center gap-2">
+                <Store size={16} />
+                MiyTube Shop
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

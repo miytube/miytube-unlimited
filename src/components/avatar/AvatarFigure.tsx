@@ -64,6 +64,7 @@ export const AvatarFigure: React.FC<AvatarFigureProps> = ({ config, items = {}, 
       {/* Backdrop */}
       <rect x="0" y="0" width="200" height="200" fill={`url(#bg-${uid})`} />
       {bgItem?.style === 'arena' && <ArenaLights trim={bgItem.trim ?? '#F2C14E'} />}
+      {bgItem?.style === 'ring' && <RingRopes trim={bgItem.trim ?? '#D7263D'} />}
       {!bgItem && backdrop.id === 'court' && (
         <g opacity="0.18" stroke="#000" strokeWidth="1">
           {[20, 50, 80, 110, 140, 170].map((x) => <line key={x} x1={x} y1="0" x2={x} y2="200" />)}
@@ -167,6 +168,8 @@ const Top: React.FC<{ meta: AvatarItem['metadata'] }> = ({ meta }) => {
   const primary = meta.primary ?? '#333';
   const trim = meta.trim ?? '#111';
   const text = meta.text ?? '#FFF';
+  if (meta.style === 'polo') return <Polo primary={primary} trim={trim} />;
+  if (meta.style === 'jacket') return <Jacket primary={primary} trim={trim} />;
   const isJersey = meta.style === 'jersey';
   const label = meta.label ?? '';
   const labelSize = label.length > 9 ? 7 : label.length > 6 ? 8.5 : 10;
@@ -198,6 +201,27 @@ const Top: React.FC<{ meta: AvatarItem['metadata'] }> = ({ meta }) => {
     </g>
   );
 };
+
+const Polo: React.FC<{ primary: string; trim: string }> = ({ primary, trim }) => (
+  <g>
+    <path d={TORSO} fill={primary} />
+    <path d="M84 140 L100 156 L92 166 L78 146 Z" fill={trim} />
+    <path d="M116 140 L100 156 L108 166 L122 146 Z" fill={trim} />
+    <line x1="100" y1="156" x2="100" y2="184" stroke={trim} strokeWidth="2" />
+    <circle cx="100" cy="164" r="1.8" fill="#FFFFFF" opacity="0.85" />
+    <circle cx="100" cy="174" r="1.8" fill="#FFFFFF" opacity="0.85" />
+  </g>
+);
+
+const Jacket: React.FC<{ primary: string; trim: string }> = ({ primary, trim }) => (
+  <g>
+    <path d={TORSO} fill={primary} />
+    <path d="M88 142 L100 200 L112 142 Q100 150 88 142 Z" fill="#F2F2F2" />
+    <path d="M86 141 L100 182 L94 186 L76 148 Z" fill={darken(primary)} stroke={trim} strokeWidth="1.5" />
+    <path d="M114 141 L100 182 L106 186 L124 148 Z" fill={darken(primary)} stroke={trim} strokeWidth="1.5" />
+    <rect x="128" y="168" width="14" height="3" rx="1.5" fill={trim} />
+  </g>
+);
 
 const Headwear: React.FC<{ meta: AvatarItem['metadata'] }> = ({ meta }) => {
   const primary = meta.primary ?? '#111';
@@ -240,6 +264,17 @@ const Accessory: React.FC<{ meta: AvatarItem['metadata'] }> = ({ meta }) => {
 const Gloves: React.FC<{ meta: AvatarItem['metadata'] }> = ({ meta }) => {
   const primary = meta.primary ?? '#D7263D';
   const trim = meta.trim ?? '#FFF';
+  if (meta.style === 'wraps') {
+    const wrap = (cx: number) => (
+      <g key={cx}>
+        <rect x={cx - 12} y="160" width="24" height="30" rx="9" fill={primary} />
+        {[166, 174, 182].map((y) => (
+          <line key={y} x1={cx - 12} y1={y} x2={cx + 12} y2={y + 3} stroke={trim} strokeWidth="2.5" />
+        ))}
+      </g>
+    );
+    return <g>{[52, 148].map(wrap)}</g>;
+  }
   const glove = (cx: number, flip: boolean) => (
     <g transform={flip ? `translate(${cx * 2} 0) scale(-1 1)` : undefined}>
       <rect x={cx - 13} y="172" width="26" height="22" rx="4" fill={trim} />
@@ -267,6 +302,17 @@ const ArenaLights: React.FC<{ trim: string }> = ({ trim }) => (
     </g>
     <circle cx="30" cy="10" r="6" fill={trim} opacity="0.9" />
     <circle cx="170" cy="10" r="6" fill={trim} opacity="0.9" />
+  </g>
+);
+
+const RingRopes: React.FC<{ trim: string }> = ({ trim }) => (
+  <g>
+    <circle cx="100" cy="-10" r="90" fill="#FFFFFF" opacity="0.08" />
+    {[118, 138, 158].map((y) => (
+      <line key={y} x1="0" y1={y} x2="200" y2={y} stroke={trim} strokeWidth="3.5" opacity="0.9" />
+    ))}
+    <rect x="4" y="104" width="10" height="96" fill="#D9D9D9" opacity="0.7" />
+    <rect x="186" y="104" width="10" height="96" fill="#D9D9D9" opacity="0.7" />
   </g>
 );
 

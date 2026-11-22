@@ -24,6 +24,8 @@ export interface AvatarItemMetadata {
   text?: string;
   number?: string;
   label?: string;
+  /** Which shop kiosk sells the item. */
+  kiosk?: string;
 }
 
 export interface AvatarItem {
@@ -206,4 +208,34 @@ export function toAvatarItem(row: Record<string, unknown>): AvatarItem {
     metadata: (row.metadata && typeof row.metadata === 'object' ? row.metadata : {}) as AvatarItemMetadata,
     sort_order: Number(row.sort_order ?? 0),
   };
+}
+
+// ---- MiyTube Shop ----
+
+/** Coin amounts granted by the backend (get_coin_wallet / claim_daily_coins). */
+export const COIN_WELCOME_BONUS = 500;
+export const COIN_DAILY_BONUS = 50;
+
+export const SHOP_KIOSKS = [
+  { id: 'legends', label: 'Legends Locker', blurb: 'Jerseys and gear from the 27 Sports Begins End legends.' },
+  { id: 'fitness', label: 'Fight & Fitness', blurb: 'Gloves, wraps, headbands and the title-fight ring.' },
+  { id: 'miytube', label: 'MiyTube Exclusives', blurb: 'Gold, chains, shades and creator gear.' },
+] as const;
+export type ShopKiosk = (typeof SHOP_KIOSKS)[number]['id'];
+
+/** Items sold for coins: priced, not part of the free starter pack. */
+export function shopItems(items: AvatarItem[]): AvatarItem[] {
+  return items.filter((i) => !i.is_starter && i.price_credits > 0).sort((a, b) => a.sort_order - b.sort_order);
+}
+
+export function itemsInKiosk(items: AvatarItem[], kiosk: ShopKiosk): AvatarItem[] {
+  return shopItems(items).filter((i) => (i.metadata.kiosk ?? 'miytube') === kiosk);
+}
+
+export type ShopStatus = 'owned' | 'affordable' | 'short';
+
+/** What the buy button should offer for one item. */
+export function shopStatus(item: Pick<AvatarItem, 'sku' | 'price_credits'>, ownedSkus: Set<string>, balance: number): ShopStatus {
+  if (ownedSkus.has(item.sku)) return 'owned';
+  return balance >= item.price_credits ? 'affordable' : 'short';
 }

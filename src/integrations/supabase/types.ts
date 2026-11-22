@@ -618,6 +618,44 @@ export type Database = {
         }
         Relationships: []
       }
+      coin_transactions: {
+        Row: {
+          amount: number
+          balance_after: number
+          created_at: string
+          id: string
+          item_id: string | null
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          balance_after: number
+          created_at?: string
+          id?: string
+          item_id?: string | null
+          reason: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          id?: string
+          item_id?: string | null
+          reason?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coin_transactions_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "avatar_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comment_likes: {
         Row: {
           comment_id: string
@@ -1656,6 +1694,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_coin_wallets: {
+        Row: {
+          balance: number
+          created_at: string
+          last_daily_bonus_on: string | null
+          updated_at: string
+          user_id: string
+          welcome_granted_at: string | null
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          last_daily_bonus_on?: string | null
+          updated_at?: string
+          user_id: string
+          welcome_granted_at?: string | null
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          last_daily_bonus_on?: string | null
+          updated_at?: string
+          user_id?: string
+          welcome_granted_at?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1911,6 +1976,7 @@ export type Database = {
           title: string
         }[]
       }
+      claim_daily_coins: { Args: never; Returns: Json }
       claim_starter_avatar_items: { Args: never; Returns: number }
       delete_email: {
         Args: { message_id: number; queue_name: string }
@@ -1973,6 +2039,7 @@ export type Database = {
               media_url: string
             }[]
           }
+      get_coin_wallet: { Args: never; Returns: Json }
       get_discussion_like_counts: {
         Args: { _discussion_ids: string[] }
         Returns: {
@@ -2016,6 +2083,7 @@ export type Database = {
         Returns: number
       }
       normalize_category_value: { Args: { val: string }; Returns: string }
+      purchase_avatar_item: { Args: { _sku: string }; Returns: Json }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
         Returns: {

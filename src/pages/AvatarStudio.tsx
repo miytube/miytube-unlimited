@@ -106,11 +106,15 @@ const AvatarStudio = () => {
   );
   const itemsBySlot = useMemo(() => {
     const groups: Partial<Record<AvatarSlot, AvatarItem[]>> = {};
-    allItems.forEach((item) => {
-      (groups[item.slot] ??= []).push(item);
-    });
+    // Gear the member can wear comes first; shop gear they don't own follows.
+    const canWear = (i: AvatarItem) => (ownedSkus ? ownedSkus.has(i.sku) : i.is_starter);
+    [...allItems]
+      .sort((a, b) => Number(canWear(b)) - Number(canWear(a)) || a.sort_order - b.sort_order)
+      .forEach((item) => {
+        (groups[item.slot] ??= []).push(item);
+      });
     return groups;
-  }, [allItems]);
+  }, [allItems, ownedSkus]);
 
   const resolved = catalog ? resolveEquippedItems(equipped, catalog) : {};
   const isDirty = JSON.stringify({ c: config, e: equipped }) !== savedSnapshot;
@@ -275,8 +279,11 @@ const AvatarStudio = () => {
                   </div>
                 ))}
                 <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-                  More legend gear drops in the MiyTube Shop soon. Every item has its own permanent item code, ready to move
-                  to a crypto wallet later.
+                  Want more? Legend jerseys, fight gear and gold drops are in the{' '}
+                  <Link to="/shop" className="font-medium text-primary hover:underline">
+                    MiyTube Shop
+                  </Link>
+                  . Every item has its own permanent item code, ready to move to a crypto wallet later.
                 </p>
               </TabsContent>
 
@@ -431,17 +438,23 @@ const GearCard: React.FC<{
           </a>
         )}
         <p className="font-mono text-[10px] text-muted-foreground">{item.sku}</p>
-        <Button size="sm" variant={isOn ? 'secondary' : 'default'} className="mt-auto" disabled={!canWear} onClick={onToggle}>
-          {!canWear ? (
-            <>
+        {!canWear ? (
+          item.is_starter ? (
+            <Button size="sm" variant="outline" className="mt-auto" disabled>
               <Lock className="mr-1 h-3 w-3" /> Locked
-            </>
-          ) : isOn ? (
-            'Take off'
+            </Button>
           ) : (
-            'Wear'
-          )}
-        </Button>
+            <Button asChild size="sm" variant="outline" className="mt-auto">
+              <Link to="/shop">
+                <Lock className="mr-1 h-3 w-3" /> Get it in the Shop · {item.price_credits.toLocaleString()} coins
+              </Link>
+            </Button>
+          )
+        ) : (
+          <Button size="sm" variant={isOn ? 'secondary' : 'default'} className="mt-auto" onClick={onToggle}>
+            {isOn ? 'Take off' : 'Wear'}
+          </Button>
+        )}
       </div>
     </div>
   );

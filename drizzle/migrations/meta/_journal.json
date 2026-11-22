@@ -57,6 +57,13 @@
       "when": 1795381612430,
       "tag": "0007_avatar_studio",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1795382641019,
+      "tag": "0008_miytube_shop_coins",
+      "breakpoints": true
     }
   ]
 }

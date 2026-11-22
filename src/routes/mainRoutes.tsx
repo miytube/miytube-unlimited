@@ -28,6 +28,7 @@ import NewsAndPolitics from "@/pages/NewsAndPolitics";
 import TalkAtCha from "@/pages/TalkAtCha";
 import TheRoom from "@/pages/TheRoom";
 import AvatarStudio from "@/pages/AvatarStudio";
+import MiyTubeShop from "@/pages/MiyTubeShop";
 import Educational from "@/pages/Educational";
 import Mathematics from "@/pages/Mathematics";
 import Channel from "@/pages/Channel";
@@ -254,6 +255,7 @@ export const mainRoutes = [
 
   // Avatar Studio — MiyTube Passport characters
   <Route key="avatar-studio" path="/avatar" element={<AvatarStudio />} />,
+  <Route key="miytube-shop" path="/shop" element={<MiyTubeShop />} />,
 
 
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,

@@ -45,3 +45,39 @@ describe('Avatar Studio rules', () => {
     assert.deepEqual(toggleEquip({ top: 'MIY-AV-0001' }, owned[0]), {});
   });
 });
+
+import { COIN_DAILY_BONUS, COIN_WELCOME_BONUS, itemsInKiosk, shopItems, shopStatus } from './avatar';
+import type { AvatarItem } from './avatar';
+
+const shopItem = (sku: string, price: number, kiosk: string | undefined, is_starter = false): AvatarItem => ({
+  id: sku, sku, slug: sku, name: sku, description: null, slot: 'top', rarity: 'epic', legend_id: null,
+  is_starter, price_credits: price, asset_uri: `miytube://avatar/items/${sku}`, metadata: { kiosk }, sort_order: 0,
+});
+
+describe('MiyTube Shop rules', () => {
+  test('new members get 500 coins and 50 more each day', () => {
+    assert.equal(COIN_WELCOME_BONUS, 500);
+    assert.equal(COIN_DAILY_BONUS, 50);
+  });
+
+  test('free starter gear is never sold in the shop', () => {
+    const items = [shopItem('STARTER', 0, 'legends', true), shopItem('PAID', 300, 'legends')];
+    assert.deepEqual(shopItems(items).map((i) => i.sku), ['PAID']);
+  });
+
+  test('items show up only in their own kiosk', () => {
+    const items = [shopItem('A', 300, 'legends'), shopItem('B', 150, 'fitness')];
+    assert.deepEqual(itemsInKiosk(items, 'fitness').map((i) => i.sku), ['B']);
+  });
+
+  test('a 500-coin item is buyable with exactly 500 coins but not 499', () => {
+    const item = shopItem('JERSEY', 500, 'legends');
+    assert.equal(shopStatus(item, new Set(), 500), 'affordable');
+    assert.equal(shopStatus(item, new Set(), 499), 'short');
+  });
+
+  test('owned items cannot be bought again', () => {
+    const item = shopItem('JERSEY', 500, 'legends');
+    assert.equal(shopStatus(item, new Set(['JERSEY']), 10000), 'owned');
+  });
+});
