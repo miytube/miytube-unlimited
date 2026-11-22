@@ -81,3 +81,19 @@ describe('MiyTube Shop rules', () => {
     assert.equal(shopStatus(item, new Set(['JERSEY']), 10000), 'owned');
   });
 });
+
+import { COIN_PACKS, coinsPerDollar, formatUsd } from './coinPacks';
+
+describe('MiyTube Coin packs', () => {
+  test('packs are 500 coins for $4.99, 1,200 for $9.99 and 3,000 for $19.99', () => {
+    assert.deepEqual(
+      COIN_PACKS.map((p) => [p.coins, formatUsd(p.priceCents)]),
+      [[500, '$4.99'], [1200, '$9.99'], [3000, '$19.99']],
+    );
+  });
+
+  test('bigger packs give more coins per dollar', () => {
+    const rates = COIN_PACKS.map(coinsPerDollar);
+    assert.ok(rates[0] < rates[1] && rates[1] < rates[2], `rates ${rates.join(', ')}`);
+  });
+});

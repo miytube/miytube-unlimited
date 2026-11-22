@@ -31,10 +31,13 @@ Deno.serve(async (req) => {
     const stripe = createStripeClient(environment);
     const prices = await stripe.prices.list({ lookup_keys: [pack.priceLookupKey] });
     if (!prices.data.length) throw new Error("Coin pack price not found");
+    const stripePrice = prices.data[0];
+    const productId = typeof stripePrice.product === "string" ? stripePrice.product : stripePrice.product.id;
+    const product = await stripe.products.retrieve(productId);
     const customerId = await resolveOrCreateCustomer(stripe, { email: user.email, userId: user.id });
 
-    const session = await stripe.checkout.sessions.create({
-      line_items: [{ price: prices.data[0].id, quantity: 1 }],
+    const params: Record<string, unknown> = {
+      line_items: [{ price: stripePrice.id, quantity: 1 }],
       mode: "payment",
       ui_mode: "embedded_page",
       return_url: returnUrl,
@@ -43,8 +46,20 @@ Deno.serve(async (req) => {
       billing_address_collection: "required",
       automatic_tax: { enabled: true },
       metadata: { userId: user.id, purpose: "coin_pack", packId },
-      payment_intent_data: { metadata: { userId: user.id, purpose: "coin_pack", packId } },
-    } as any);
+      payment_intent_data: { description: product.name, metadata: { userId: user.id, purpose: "coin_pack", packId } },
+    };
+
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create(params as any);
+    } catch (e: any) {
+      // Test accounts without a head office address can't calculate tax yet.
+      // Let test purchases through; live checkouts always keep tax on.
+      if (environment !== "sandbox" || !/head office address/i.test(e?.message ?? "")) throw e;
+      console.warn("Sandbox tax settings incomplete; creating test checkout without automatic tax.");
+      const { automatic_tax: _tax, ...rest } = params;
+      session = await stripe.checkout.sessions.create(rest as any);
+    }
 
     return json({ clientSecret: session.client_secret });
   } catch (e: any) {

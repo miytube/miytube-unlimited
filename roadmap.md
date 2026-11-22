@@ -14,7 +14,7 @@
 - [x] Complete Google Search Console setup: account META tag live, 375 sitemap page URLs corrected to miytube.com, published, ownership verified as siteOwner, property added, and https://miytube.com/sitemap.xml submitted successfully.
 
 - [x] MiyTube Shop (/shop): free MiyTube Coins (500 join bonus, 50 daily), 3 kiosks, 23 items, buy + one-tap wear; Avatar Studio links to the shop.
-- [ ] MiyTube Shop coin packs: members buy extra coins by card.
+- [x] MiyTube Shop coin packs: $4.99/500, $9.99/1,200, $19.99/3,000 by card; test purchase credited 500 coins once.
 
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.

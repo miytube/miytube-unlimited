@@ -144,7 +144,7 @@ async function handleCoinPack(session: any, env: StripeEnv) {
     console.warn("Coin pack session missing user or pack:", session.id);
     return;
   }
-  if (session.payment_status !== "paid") {
+  if (session.payment_status === "unpaid") {
     console.log("Coin pack session not paid yet:", session.id, session.payment_status);
     return;
   }

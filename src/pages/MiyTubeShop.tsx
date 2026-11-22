@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Check, Coins, ExternalLink, Gift, Loader2, Lock, ShoppingBag, Sparkles, Store } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,8 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { supabase } from '@/integrations/supabase/client';
 import { AvatarFigure } from '@/components/avatar/AvatarFigure';
 import { setCachedAvatar, useAvatarCatalog, useSavedAvatars } from '@/hooks/useAvatars';
-import { setCoinBalance, useCoinWallet } from '@/hooks/useCoinWallet';
+import { refreshCoinWallet, setCoinBalance, useCoinWallet } from '@/hooks/useCoinWallet';
+import { CoinPacks } from '@/components/shop/CoinPacks';
 import { SPORTS_LEGENDS } from '@/data/sportsBeginEndLegends';
 import {
   AvatarConfig,
@@ -65,6 +66,37 @@ const MiyTubeShop = () => {
   const [confirmItem, setConfirmItem] = useState<AvatarItem | null>(null);
   const [busySku, setBusySku] = useState<string | null>(null);
   const [claiming, setClaiming] = useState(false);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const returnedFromCheckout = searchParams.get('coins') === 'success';
+
+  // Back from a coin-pack checkout: the payment confirmation can take a few
+  // seconds to reach the backend, so re-check the balance until it rises.
+  useEffect(() => {
+    if (!returnedFromCheckout || !user || wallet.balance === null) return;
+    const start = wallet.balance;
+    let tries = 0;
+    let alive = true;
+    const tick = async () => {
+      if (!alive) return;
+      tries += 1;
+      const next = await refreshCoinWallet();
+      if (next !== null && next > start) {
+        toast({ title: `+${(next - start).toLocaleString()} coins`, description: 'Thanks! Your coins are ready to spend.' });
+      } else if (tries < 10) {
+        setTimeout(tick, 2000);
+        return;
+      } else {
+        toast({ title: 'Payment received', description: 'Your coins are on the way. Refresh in a minute if they have not appeared.' });
+      }
+      setSearchParams({}, { replace: true });
+    };
+    tick();
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [returnedFromCheckout, user?.id, wallet.balance === null]);
 
   const allItems = useMemo(() => (catalog ? Array.from(catalog.values()) : []), [catalog]);
 
@@ -232,6 +264,8 @@ const MiyTubeShop = () => {
             </TabsContent>
           ))}
         </Tabs>
+
+        <CoinPacks signedIn={Boolean(user)} />
 
         <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
           Every item carries its own permanent item code, so it can move to a crypto wallet later. Your look and the rest of your

@@ -80,3 +80,6 @@ verify_jwt = false
 
 [functions.loom-download]
 verify_jwt = false
+
+[functions.create-coin-checkout]
+verify_jwt = false

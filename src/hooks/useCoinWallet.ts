@@ -32,6 +32,13 @@ async function load(userId: string) {
   set({ balance: w.balance ?? 0, dailyAvailable: Boolean(w.daily_available), welcomeJustGranted: Boolean(w.welcome_granted) });
 }
 
+/** Re-read the balance from the backend (e.g. after a card purchase). */
+export async function refreshCoinWallet(): Promise<number | null> {
+  if (!state.userId) return null;
+  await load(state.userId);
+  return state.balance;
+}
+
 export function setCoinBalance(balance: number) {
   set({ balance });
 }
