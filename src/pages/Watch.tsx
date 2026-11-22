@@ -21,6 +21,7 @@ import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
 import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData';
 import { getUploadDestinationRoute } from '@/utils/categoryRoute';
+import { getLegendBySlug } from '@/data/sportsBeginEndLegends';
 import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
 import { subcategoryMappings } from '@/data/subcategoryMappings';
 import { sidebarMainCategoryOptions } from '@/data/sidebarMainCategories';
@@ -430,6 +431,8 @@ const Watch = () => {
   };
   const prettySubcategoryLabel = (category?: string, subcategory?: string) => {
     if (!subcategory) return subcategory;
+    const legendItem = getLegendBySlug(subcategory);
+    if (legendItem) return legendItem.name;
     const route = getUploadDestinationRoute(category, subcategory);
     const mapping = subcategoryMappings[route] || subcategoryMappings[route.replace(/^\//, '')];
     return mapping?.title || CATEGORY_DISPLAY_LABELS[labelKey(subcategory)!] || formatSlugLabel(subcategory) || subcategory;

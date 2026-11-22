@@ -54,3 +54,17 @@ describe('Sports Begins End legends', () => {
     assert.equal(getLegendBySlug('LEGEND-PELE')?.id, 20);
   });
 });
+
+import { getUploadDestinationRoute as legendRoute } from './categoryRoute';
+
+test('legend watchpage links use the real 3-tier legend page, not the hub', () => {
+  assert.equal(legendRoute('sports-begin-end-legends', 'legend-caitlin-clark'),
+    '/c/sports-begin-end-legends/legends-sports-begin-end/legend-caitlin-clark'
+  );
+  assert.equal(legendRoute('sports-begin-end-legends', 'legend-walter-payton'),
+    '/c/sports-begin-end-legends/legends-sports-begin-end/legend-walter-payton'
+  );
+  assert.equal(legendRoute('sports-begin-end-legends', 'legends-sports-begin-end'),
+    '/c/sports-begin-end-legends/legends-sports-begin-end'
+  );
+});

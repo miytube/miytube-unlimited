@@ -4,6 +4,12 @@ import {
   getSidebarMainCategoryRoute,
 } from '@/data/sidebarMainCategories';
 import { canonicalizeCategoryAssignment } from '@/utils/categoryAssignment';
+import {
+  LEGENDS_BASE_PATH,
+  LEGENDS_CATEGORY_SLUG,
+  LEGENDS_SUBCATEGORY_SLUG,
+  getLegendBySlug,
+} from '@/data/sportsBeginEndLegends';
 
 const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
 
@@ -37,6 +43,15 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
   const cleanSubcategory = canonical.subcategory ? trimSlashes(canonical.subcategory) : (subcategory ? trimSlashes(subcategory) : '');
 
   if (!cleanCategory) return '/';
+
+  // Sports Begins End legends are 3-tier: category -> Legends subcategory ->
+  // per-legend watch page. A 2-tier link bounces back to the category hub.
+  const rawSubcategory = subcategory ? trimSlashes(subcategory).toLowerCase() : '';
+  const legendItem = getLegendBySlug(cleanSubcategory) || getLegendBySlug(rawSubcategory);
+  if (cleanCategory === LEGENDS_CATEGORY_SLUG || legendItem) {
+    if (legendItem) return `${LEGENDS_BASE_PATH}/${legendItem.slug}`;
+    if (cleanSubcategory === LEGENDS_SUBCATEGORY_SLUG) return LEGENDS_BASE_PATH;
+  }
 
   if (CUSTOM_ONLY_CATEGORY_ROUTES.has(cleanCategory)) {
     return cleanSubcategory ? `/c/${cleanCategory}/${cleanSubcategory}` : `/c/${cleanCategory}`;
