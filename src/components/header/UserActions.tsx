@@ -33,6 +33,10 @@ export const UserActions: React.FC = () => {
   return (
     <div className="flex items-center gap-4">
       <UploadDropdown />
+
+      <Button variant="ghost" size="icon" asChild className="md:hidden">
+        <Link to="/shop" aria-label="MiyTube Shop"><Store size={20} /></Link>
+      </Button>
       
       <Button variant="ghost" size="icon" aria-label="Notifications">
         <Bell size={20} />
