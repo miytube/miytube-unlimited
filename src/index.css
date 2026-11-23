@@ -61,6 +61,25 @@
     --jade: 150 70% 28%;
     --tile-blue: 212 75% 40%;
     --table-felt: radial-gradient(ellipse at 50% 30%, hsl(152 50% 28%), hsl(156 58% 12%) 75%);
+    /* Casino tables: padded leather rail, mahogany bumper, card backs, clay chips */
+    --rail-leather: 18 22% 9%;
+    --rail-leather-highlight: 20 16% 24%;
+    --rail-wood: 18 58% 20%;
+    --rail-wood-light: 24 52% 34%;
+    --card-back: 350 62% 30%;
+    --card-back-deep: 350 66% 17%;
+    --court-blue: 218 62% 34%;
+    --court-skin: 28 62% 84%;
+    --chip-stripe: 45 45% 95%;
+    --chip-ink: 45 45% 97%;
+    --chip-1: 45 28% 92%;
+    --chip-5: 356 72% 44%;
+    --chip-10: 212 75% 42%;
+    --chip-25: 150 60% 30%;
+    --chip-50: 24 88% 50%;
+    --chip-100: 222 22% 13%;
+    --chip-250: 330 65% 46%;
+    --chip-500: 270 50% 38%;
   }
 
   .dark {
@@ -240,4 +259,165 @@
 @keyframes slogan-marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+/* ---------- Gaming Room casino tables ---------- */
+@layer components {
+  /* Padded leather armrest with stitching and a mahogany bumper */
+  .casino-rail {
+    position: relative;
+    background:
+      linear-gradient(180deg,
+        hsl(var(--rail-leather-highlight)) 0%,
+        hsl(var(--rail-leather)) 30%,
+        hsl(var(--rail-leather)) 72%,
+        hsl(var(--rail-leather-highlight) / 0.7) 100%);
+    box-shadow:
+      0 0 0 3px hsl(var(--rail-wood)),
+      0 0 0 5px hsl(var(--rail-wood-light) / 0.7),
+      0 0 0 6px hsl(var(--rail-wood) / 0.9),
+      0 34px 60px -24px hsl(var(--suit-black) / 0.75),
+      inset 0 2px 1px hsl(var(--chip-stripe) / 0.14),
+      inset 0 -4px 8px hsl(var(--suit-black) / 0.6);
+  }
+  .casino-rail::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: inherit;
+    border: 1.5px dashed hsl(var(--gold) / 0.32);
+    pointer-events: none;
+  }
+
+  /* Brushed felt under a warm overhead spotlight, with a brass inlay */
+  .casino-felt {
+    position: relative;
+    background-image:
+      radial-gradient(ellipse 65% 55% at 50% 38%, hsl(var(--gold) / 0.13), transparent 70%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+      var(--table-felt);
+    box-shadow:
+      0 0 0 2px hsl(var(--gold) / 0.75),
+      0 0 0 4px hsl(var(--suit-black) / 0.55),
+      inset 0 0 70px hsl(var(--suit-black) / 0.55),
+      inset 0 10px 24px hsl(var(--suit-black) / 0.35);
+  }
+
+  /* Leather action console below a table */
+  .casino-console {
+    background: linear-gradient(180deg, hsl(var(--rail-leather-highlight)), hsl(var(--rail-leather)));
+    box-shadow:
+      0 0 0 1px hsl(var(--gold) / 0.35),
+      0 20px 40px -24px hsl(var(--suit-black) / 0.8),
+      inset 0 1px 0 hsl(var(--chip-stripe) / 0.1);
+  }
+
+  /* Playing cards: linen cardstock face, lattice back, 3D flip */
+  .playing-card-face {
+    background-color: hsl(var(--playing-card));
+    background-image:
+      repeating-linear-gradient(0deg, hsl(var(--suit-black) / 0.028) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, hsl(var(--suit-black) / 0.028) 0 1px, transparent 1px 3px),
+      linear-gradient(160deg, hsl(var(--playing-card)) 55%, hsl(var(--gold) / 0.12));
+    box-shadow:
+      inset 0 0 0 1px hsl(var(--suit-black) / 0.14),
+      inset 0 1px 0 hsl(var(--chip-stripe) / 0.9);
+  }
+  .playing-card-back {
+    background-color: hsl(var(--playing-card));
+    padding: 6cqw;
+    box-shadow: inset 0 0 0 1px hsl(var(--suit-black) / 0.14);
+  }
+  .playing-card-back-inner {
+    background-image:
+      radial-gradient(circle at 50% 50%, hsl(var(--card-back-deep)) 0 17cqw, hsl(var(--gold) / 0.9) 17cqw 19cqw, transparent 19cqw),
+      repeating-linear-gradient(45deg, hsl(var(--gold) / 0.38) 0 1px, transparent 1px 7cqw),
+      repeating-linear-gradient(-45deg, hsl(var(--gold) / 0.38) 0 1px, transparent 1px 7cqw),
+      linear-gradient(160deg, hsl(var(--card-back)), hsl(var(--card-back-deep)));
+    box-shadow: inset 0 0 0 1.5cqw hsl(var(--card-back-deep)), inset 0 0 0 2.2cqw hsl(var(--gold) / 0.7);
+  }
+  .card-3d { perspective: 900px; }
+  .card-3d-inner {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.3, 0.7, 0.2, 1);
+  }
+  .card-3d-inner.is-down { transform: rotateY(180deg); }
+  .card-3d-side {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .card-3d-back { transform: rotateY(180deg); }
+  .card-shadow {
+    filter: drop-shadow(0 1px 1px hsl(var(--suit-black) / 0.35)) drop-shadow(0 8px 10px hsl(var(--suit-black) / 0.35));
+  }
+
+  /* Molded clay chip: striped edge, inlaid center */
+  .casino-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    container-type: inline-size;
+    color: hsl(var(--chip-ink-local, var(--chip-ink)));
+    background: repeating-conic-gradient(from 11.25deg,
+      hsl(var(--chip-stripe-local, var(--chip-stripe))) 0deg 22.5deg,
+      hsl(var(--chip)) 22.5deg 45deg);
+    box-shadow:
+      inset 0 0 0 1.5px hsl(var(--suit-black) / 0.3),
+      0 2px 0 hsl(var(--suit-black) / 0.5),
+      0 5px 8px -2px hsl(var(--suit-black) / 0.55);
+  }
+  .casino-chip::before {
+    content: "";
+    position: absolute;
+    inset: 15%;
+    border-radius: 9999px;
+    background:
+      radial-gradient(circle at 35% 28%, hsl(var(--chip-stripe) / 0.28), transparent 60%),
+      hsl(var(--chip));
+    border: 1.5px dashed hsl(var(--chip-stripe-local, var(--chip-stripe)) / 0.8);
+    box-shadow: inset 0 1px 3px hsl(var(--suit-black) / 0.45);
+  }
+  .casino-chip > span { position: relative; }
+
+  /* Dealer chip rack column (chips seen edge-on) */
+  .chip-column {
+    background: repeating-linear-gradient(180deg,
+      hsl(var(--chip)) 0 3px,
+      hsl(var(--chip-stripe-local, var(--chip-stripe)) / 0.85) 3px 4px,
+      hsl(var(--chip)) 4px 6px,
+      hsl(var(--suit-black) / 0.35) 6px 7px);
+    box-shadow: inset 2px 0 2px hsl(var(--chip-stripe) / 0.25), inset -2px 0 3px hsl(var(--suit-black) / 0.45);
+  }
+
+  @keyframes deal-in {
+    0% { opacity: 0; transform: translate(150%, -190%) rotate(-22deg) scale(0.92); }
+    70% { opacity: 1; }
+    100% { opacity: 1; transform: none; }
+  }
+  .animate-deal-in { animation: deal-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+  @keyframes chip-drop {
+    0% { opacity: 0; transform: translateY(-28px) scale(1.08); }
+    100% { opacity: 1; transform: none; }
+  }
+  .animate-chip-drop { animation: chip-drop 0.35s cubic-bezier(0.3, 0.9, 0.3, 1.2) both; }
+
+  @keyframes payout-slide {
+    0% { opacity: 0; transform: translate(0, -120px); }
+    100% { opacity: 1; transform: none; }
+  }
+  .animate-payout-slide { animation: payout-slide 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-deal-in, .animate-chip-drop, .animate-payout-slide { animation: none; }
+    .card-3d-inner { transition: none; }
+  }
 }
