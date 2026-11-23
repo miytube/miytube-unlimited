@@ -1518,6 +1518,45 @@ export type Database = {
         }
         Relationships: []
       }
+      pgtiles_hands: {
+        Row: {
+          bet: number
+          created_at: string
+          dealer_high: number[] | null
+          id: string
+          payout: number
+          player_high: number[] | null
+          settled_at: string | null
+          status: string
+          tiles: number[]
+          user_id: string
+        }
+        Insert: {
+          bet: number
+          created_at?: string
+          dealer_high?: number[] | null
+          id?: string
+          payout?: number
+          player_high?: number[] | null
+          settled_at?: string | null
+          status?: string
+          tiles: number[]
+          user_id: string
+        }
+        Update: {
+          bet?: number
+          created_at?: string
+          dealer_high?: number[] | null
+          id?: string
+          payout?: number
+          player_high?: number[] | null
+          settled_at?: string | null
+          status?: string
+          tiles?: number[]
+          user_id?: string
+        }
+        Relationships: []
+      }
       pictures: {
         Row: {
           created_at: string
@@ -2419,6 +2458,25 @@ export type Database = {
       paigow_set: { Args: { _hand_id: string; _low: number[] }; Returns: Json }
       paigow_view: {
         Args: { _h: Database["public"]["Tables"]["paigow_hands"]["Row"] }
+        Returns: Json
+      }
+      pgtiles_current: { Args: never; Returns: Json }
+      pgtiles_deal: { Args: { _bet: number }; Returns: Json }
+      pgtiles_high_of: {
+        Args: { _pair: number[]; _t: number[] }
+        Returns: number[]
+      }
+      pgtiles_house_high: { Args: { _t: number[] }; Returns: number[] }
+      pgtiles_pips: { Args: { _t: number }; Returns: number }
+      pgtiles_rank: { Args: { _t: number }; Returns: number }
+      pgtiles_score: { Args: { _a: number; _b: number }; Returns: number }
+      pgtiles_score2: { Args: { _h: number[] }; Returns: number }
+      pgtiles_set: {
+        Args: { _hand_id: string; _pair: number[] }
+        Returns: Json
+      }
+      pgtiles_view: {
+        Args: { _h: Database["public"]["Tables"]["pgtiles_hands"]["Row"] }
         Returns: Json
       }
       poker_best: { Args: { _c: number[] }; Returns: number }

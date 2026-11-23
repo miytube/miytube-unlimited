@@ -127,6 +127,13 @@
       "when": 1795472520332,
       "tag": "0017_gaming_room_pai_gow",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1795472891318,
+      "tag": "0018_gaming_room_pai_gow_tiles",
+      "breakpoints": true
     }
   ]
 }
