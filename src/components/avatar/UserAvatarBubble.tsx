@@ -17,6 +17,13 @@ export const AvatarBubble: React.FC<BubbleProps> = ({ avatar, fallback, classNam
   if (!avatar) {
     return <>{fallback ?? null}</>;
   }
+  if (avatar.portraitUrl) {
+    return (
+      <span className={cn('inline-block overflow-hidden rounded-full bg-secondary ring-1 ring-border', className)}>
+        <img src={avatar.portraitUrl} alt={title ?? 'Member portrait'} loading="lazy" className="h-full w-full object-cover" />
+      </span>
+    );
+  }
   const items = catalog ? resolveEquippedItems(avatar.equipped, catalog) : {};
   return (
     <span className={cn('inline-block overflow-hidden rounded-full bg-secondary ring-1 ring-border', className)}>

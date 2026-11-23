@@ -293,6 +293,27 @@ export type Database = {
         }
         Relationships: []
       }
+      avatar_portraits: {
+        Row: {
+          created_at: string
+          image_url: string
+          look: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          image_url: string
+          look?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          image_url?: string
+          look?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       blocked_uploads: {
         Row: {
           category: string | null
@@ -2001,6 +2022,10 @@ export type Database = {
       }
     }
     Functions: {
+      charge_portrait: {
+        Args: { _price: number; _user_id: string }
+        Returns: Json
+      }
       check_upload_duplicate_by_ip: {
         Args: {
           _category: string
@@ -2094,6 +2119,7 @@ export type Database = {
         Returns: {
           config: Json
           equipped: Json
+          portrait_url: string
           user_id: string
         }[]
       }
@@ -2166,6 +2192,7 @@ export type Database = {
         Args: { _local_id: string; _uploader_ip: string }
         Returns: undefined
       }
+      refund_portrait: { Args: { _transaction_id: string }; Returns: Json }
       revoke_coin_pack: {
         Args: { _payment_intent_id: string }
         Returns: boolean

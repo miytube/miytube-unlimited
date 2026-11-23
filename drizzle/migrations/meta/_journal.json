@@ -78,6 +78,13 @@
       "when": 1795412292950,
       "tag": "0010_user_avatars_owner_read",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1795451373156,
+      "tag": "0011_avatar_portraits",
+      "breakpoints": true
     }
   ]
 }

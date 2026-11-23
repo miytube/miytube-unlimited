@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { supabase } from '@/integrations/supabase/client';
 import { AvatarFigure } from '@/components/avatar/AvatarFigure';
+import { PortraitPanel } from '@/components/avatar/PortraitPanel';
 import { setCachedAvatar, useAvatarCatalog } from '@/hooks/useAvatars';
 import { SPORTS_LEGENDS } from '@/data/sportsBeginEndLegends';
 import {
@@ -234,6 +235,13 @@ const AvatarStudio = () => {
                 </Button>
               </div>
             </div>
+            {user && (
+              <PortraitPanel
+                userId={user.id}
+                savedAvatar={savedSnapshot ? (() => { const v = JSON.parse(savedSnapshot); return { config: v.c, equipped: v.e }; })() : null}
+                hasUnsavedChanges={isDirty}
+              />
+            )}
           </section>
 
           {/* Controls */}

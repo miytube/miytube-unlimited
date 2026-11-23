@@ -16,6 +16,8 @@ import {
 export interface SavedAvatar {
   config: AvatarConfig;
   equipped: AvatarEquipped;
+  /** Photo-real AI portrait, when the member has made one. */
+  portraitUrl?: string | null;
 }
 
 let catalogPromise: Promise<Map<string, AvatarItem>> | null = null;
@@ -77,7 +79,7 @@ function queue(userIds: string[]) {
     batchTimer = null;
     const ids = Array.from(pending);
     pending.clear();
-    const rows: { user_id: string; config: unknown; equipped: unknown }[] = [];
+    const rows: { user_id: string; config: unknown; equipped: unknown; portrait_url?: string | null }[] = [];
     for (let i = 0; i < ids.length; i += 100) {
       const { data } = await supabase.rpc('get_user_avatars', { _user_ids: ids.slice(i, i + 100) });
       rows.push(...(data ?? []));
@@ -88,6 +90,7 @@ function queue(userIds: string[]) {
       avatarCache.set(row.user_id, {
         config: sanitizeAvatarConfig(row.config),
         equipped: (row.equipped ?? {}) as AvatarEquipped,
+        portraitUrl: row.portrait_url ?? null,
       });
     });
     notify();
@@ -96,7 +99,11 @@ function queue(userIds: string[]) {
 
 /** Update the shared cache right after a member saves, so every bubble refreshes. */
 export function setCachedAvatar(userId: string, avatar: SavedAvatar | null) {
-  avatarCache.set(userId, avatar);
+  const prev = avatarCache.get(userId);
+  avatarCache.set(
+    userId,
+    avatar && avatar.portraitUrl === undefined ? { ...avatar, portraitUrl: prev?.portraitUrl ?? null } : avatar,
+  );
   notify();
 }
 

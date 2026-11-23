@@ -97,3 +97,13 @@ describe('MiyTube Coin packs', () => {
     assert.ok(rates[0] < rates[1] && rates[1] < rates[2], `rates ${rates.join(', ')}`);
   });
 });
+
+import { PORTRAIT_PRICE_COINS } from './avatar';
+import { PORTRAIT_PRICE_COINS as SERVER_PORTRAIT_PRICE } from '../../supabase/functions/_shared/avatarPortrait';
+
+describe('AI portraits', () => {
+  test('one portrait costs 100 coins, and the shown price matches what the server charges', () => {
+    assert.equal(PORTRAIT_PRICE_COINS, 100);
+    assert.equal(SERVER_PORTRAIT_PRICE, PORTRAIT_PRICE_COINS);
+  });
+});

@@ -215,6 +215,9 @@ export function toAvatarItem(row: Record<string, unknown>): AvatarItem {
 /** Coin amounts granted by the backend (get_coin_wallet / claim_daily_coins). */
 export const COIN_WELCOME_BONUS = 500;
 export const COIN_DAILY_BONUS = 50;
+/** Coins one AI photo portrait costs. Keep in sync with supabase/functions/_shared/avatarPortrait.ts. */
+export const PORTRAIT_PRICE_COINS = 100;
+export const PORTRAIT_DAILY_LIMIT = 5;
 
 export const SHOP_KIOSKS = [
   { id: 'legends', label: 'Legends Locker', blurb: 'Jerseys and gear from the 27 Sports Begins End legends.' },
