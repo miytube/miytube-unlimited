@@ -33,6 +33,7 @@ import { RoomPremiumCard, useRoomPremium } from '@/components/the-room/RoomPremi
 import { useSpeechInput } from '@/hooks/useSpeechInput';
 import { useRoomRecorder } from '@/hooks/useRoomRecorder';
 import { createRoomAmbience } from '@/lib/roomAmbience';
+import { RoomGuestBubble, RoomGuestSeat, useRoomGuest } from '@/components/the-room/RoomGuestSeat';
 
 interface RoomVideo {
   id: string;
@@ -86,6 +87,7 @@ const formatViews = (views: number) =>
 const TheRoom = () => {
   const { user, isAdmin } = useAuth();
   const { isPremium } = useRoomPremium(user?.id);
+  const guest = useRoomGuest(user?.id);
   const navigate = useNavigate();
   const [videos, setVideos] = useState<RoomVideo[]>([]);
   const [articles, setArticles] = useState<RoomArticle[]>([]);
@@ -432,6 +434,17 @@ const TheRoom = () => {
                   </Button>
                 </div>
 
+                {user && (
+                  <div className="mt-5 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <RoomGuestBubble guest={guest} className="h-8 w-8" />
+                    {guest.avatar ? (
+                      <span>You'll walk in as <span className="font-medium text-foreground">{guest.name ?? 'your avatar'}</span>.</span>
+                    ) : (
+                      <span><Link to="/avatar" className="font-medium text-primary hover:underline">Make your avatar</Link> to take the guest chair.</span>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
                   {SUGGESTED_TOPICS.map((t) => (
                     <button
@@ -586,8 +599,13 @@ const TheRoom = () => {
 
                 {messages.map((m, i) => (
                   <div key={i} className={m.sender === 'AI_HOST' ? '' : 'text-right'}>
-                    <p className="text-[11px] font-mono uppercase text-muted-foreground mb-1">
-                      {m.sender === 'AI_HOST' ? 'HOST' : 'USER'}
+                    <p className={`text-[11px] font-mono uppercase text-muted-foreground mb-1 flex items-center gap-2 ${m.sender === 'AI_HOST' ? '' : 'justify-end'}`}>
+                      {m.sender === 'AI_HOST' ? 'HOST' : (
+                        <>
+                          <span className="max-w-[12rem] truncate">{user ? guest.name ?? 'You' : 'Guest'}</span>
+                          <RoomGuestBubble guest={guest} className="h-6 w-6" />
+                        </>
+                      )}
                     </p>
                     <div
                       className={`inline-block max-w-[85%] text-left px-4 py-3 leading-relaxed ${
@@ -669,7 +687,8 @@ const TheRoom = () => {
                   </div>
                 )}
               </div>
-              <div className={`relative aspect-video mx-4 bg-background border border-border rounded-md overflow-hidden ${recorder.isRecording ? '' : 'hidden'}`}>
+              <RoomGuestSeat guest={guest} signedIn={!!user} speaking={mic.isRecording || guestInput.trim().length > 0} />
+              <div className={`relative aspect-video mx-4 mt-4 bg-background border border-border rounded-md overflow-hidden ${recorder.isRecording ? '' : 'hidden'}`}>
                 <video ref={recorder.userVideoRef} muted playsInline className="absolute inset-0 h-full w-full object-cover -scale-x-100" aria-label="Your camera" />
                 <span className="absolute top-2 left-2 flex items-center gap-1 rounded bg-destructive px-2 py-0.5 text-xs font-semibold text-destructive-foreground">
                   <span className="h-2 w-2 rounded-full bg-destructive-foreground animate-pulse motion-reduce:animate-none" /> REC
