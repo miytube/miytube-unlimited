@@ -23,6 +23,7 @@ import { AvatarFigure } from '@/components/avatar/AvatarFigure';
 import { setCachedAvatar, useAvatarCatalog, useSavedAvatars } from '@/hooks/useAvatars';
 import { refreshCoinWallet, setCoinBalance, useCoinWallet } from '@/hooks/useCoinWallet';
 import { CoinPacks } from '@/components/shop/CoinPacks';
+import { BooksemPassCard } from '@/components/shop/BooksemPassCard';
 import { SPORTS_LEGENDS } from '@/data/sportsBeginEndLegends';
 import {
   AvatarConfig,
@@ -264,6 +265,8 @@ const MiyTubeShop = () => {
             </TabsContent>
           ))}
         </Tabs>
+
+        <BooksemPassCard userId={user?.id ?? null} balance={balance} />
 
         <CoinPacks signedIn={Boolean(user)} />
 

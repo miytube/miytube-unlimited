@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { LogIn, UserPlus, Mail, Lock, User } from 'lucide-react';
+import { LogIn, UserPlus, Mail, Lock, User, BookOpen } from 'lucide-react';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -196,6 +196,13 @@ const Auth = () => {
 
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4 mt-4">
+                <div className="flex items-start gap-3 rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm">
+                  <BookOpen className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  <p>
+                    <span className="font-semibold">500 free MiyTube Coins</span> when you join. Trade 250 of them for{' '}
+                    <span className="font-semibold">50% off a book</span> on Booksem.com — same account works there.
+                  </p>
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-channel">Username</Label>
                   <div className="relative">

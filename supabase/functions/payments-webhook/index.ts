@@ -162,6 +162,21 @@ async function handleCoinPack(session: any, env: StripeEnv) {
   console.log(data ? "Granted coin pack" : "Coin pack already granted", session.id);
 }
 
+async function handleBooksemPass(session: any) {
+  const bookId = session.metadata?.bookId;
+  if (!bookId) {
+    console.warn("Booksem pass session missing book:", session.id);
+    return;
+  }
+  if (session.payment_status === "unpaid") {
+    console.log("Booksem pass session not paid yet:", session.id);
+    return;
+  }
+  const { data, error } = await getSupabase().rpc("complete_booksem_pass", { _session_id: session.id, _book_id: bookId });
+  if (error) throw error;
+  console.log(data ? "Booksem pass redeemed" : "No pass for session", session.id);
+}
+
 async function handleChargeRefunded(charge: any) {
   const piId = typeof charge.payment_intent === "string"
     ? charge.payment_intent
@@ -333,6 +348,8 @@ async function handleWebhook(req: Request, env: StripeEnv) {
         await handleCampaignPayment(session, env, true);
       } else if (purpose === "coin_pack") {
         await handleCoinPack(session, env);
+      } else if (purpose === "booksem_pass") {
+        await handleBooksemPass(session);
       } else if (purpose === "room_premium" && session.subscription) {
         const stripe = createStripeClient(env);
         await upsertSubscription(await stripe.subscriptions.retrieve(session.subscription), env);
@@ -357,6 +374,7 @@ async function handleWebhook(req: Request, env: StripeEnv) {
     case "checkout.session.async_payment_succeeded": {
       const session = event.data.object;
       if (session.metadata?.purpose === "coin_pack") await handleCoinPack(session, env);
+      if (session.metadata?.purpose === "booksem_pass") await handleBooksemPass(session);
       break;
     }
     case "checkout.session.async_payment_failed":

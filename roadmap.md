@@ -16,6 +16,10 @@
 - [x] MiyTube Shop (/shop): free MiyTube Coins (500 join bonus, 50 daily), 3 kiosks, 23 items, buy + one-tap wear; Avatar Studio links to the shop.
 - [x] MiyTube Shop coin packs: $4.99/500, $9.99/1,200, $19.99/3,000 by card; test purchase credited 500 coins once.
 
+- [x] Booksem 50% Off Pass: 250 coins in the Shop, half-price checkout for Booksem audiobooks, book unlocks on the member's Booksem account; signup form promotes it. Tested end to end with a test payment.
+- [ ] Booksem button "Use my MiyTube pass" — waiting on the user to put the prepared App.jsx into the Booksem repo (separate app, can't be changed from here).
+- [ ] Live Booksem pass checkouts need the Stripe head office address (same blocker as live coin packs).
+
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.
 - [x] College football watchpage fix: /sports/college/* now matches category college-sports + child subcategory; 201 regular-season games on College Football, CFP/championships moved to new /sports/college/cfp page (sidebar link added), 2 mislabeled bowl games recategorized to football-bowl-games. Verified via Playwright, build OK. Not yet published.

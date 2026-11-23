@@ -425,6 +425,51 @@ export type Database = {
           },
         ]
       }
+      booksem_passes: {
+        Row: {
+          book_id: string | null
+          code: string
+          coins_spent: number
+          created_at: string
+          discount_percent: number
+          id: string
+          redeemed_at: string | null
+          reserved_until: string | null
+          status: string
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          book_id?: string | null
+          code: string
+          coins_spent: number
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          redeemed_at?: string | null
+          reserved_until?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          book_id?: string | null
+          code?: string
+          coins_spent?: number
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          redeemed_at?: string | null
+          reserved_until?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       booksem_purchases: {
         Row: {
           book_id: string
@@ -2022,6 +2067,10 @@ export type Database = {
       }
     }
     Functions: {
+      attach_booksem_session: {
+        Args: { _pass_id: string; _session_id: string }
+        Returns: undefined
+      }
       charge_portrait: {
         Args: { _price: number; _user_id: string }
         Returns: Json
@@ -2045,6 +2094,10 @@ export type Database = {
       }
       claim_daily_coins: { Args: never; Returns: Json }
       claim_starter_avatar_items: { Args: never; Returns: number }
+      complete_booksem_pass: {
+        Args: { _book_id: string; _session_id: string }
+        Returns: boolean
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -2192,7 +2245,10 @@ export type Database = {
         Args: { _local_id: string; _uploader_ip: string }
         Returns: undefined
       }
+      redeem_booksem_pass: { Args: never; Returns: Json }
       refund_portrait: { Args: { _transaction_id: string }; Returns: Json }
+      release_booksem_pass: { Args: { _pass_id: string }; Returns: undefined }
+      reserve_booksem_pass: { Args: { _user_id: string }; Returns: string }
       revoke_coin_pack: {
         Args: { _payment_intent_id: string }
         Returns: boolean
