@@ -24,8 +24,8 @@
 - [x] Gaming Room: Sic Bo (Chinese dice) table.
 - [x] Gaming Room: Texas Hold'em table.
 - [x] Gaming Room: Mahjong table.
-- [ ] Gaming Room: Pai Gow table.
-- [ ] Gaming Room: Mini Golf and Bowling — later, after the card/tile tables.
+- [x] Gaming Room: Pai Gow table (Pai Gow Poker).
+- [ ] Gaming Room: Mini Golf and Bowling — waiting on the user to say when to start.
 
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.

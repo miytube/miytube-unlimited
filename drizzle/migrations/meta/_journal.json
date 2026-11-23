@@ -120,6 +120,13 @@
       "when": 1795471992228,
       "tag": "0016_gaming_room_holdem",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1795472520332,
+      "tag": "0017_gaming_room_pai_gow",
+      "breakpoints": true
     }
   ]
 }

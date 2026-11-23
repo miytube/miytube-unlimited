@@ -1431,6 +1431,45 @@ export type Database = {
         }
         Relationships: []
       }
+      paigow_hands: {
+        Row: {
+          bet: number
+          cards: number[]
+          created_at: string
+          dealer_low: number[] | null
+          id: string
+          payout: number
+          player_low: number[] | null
+          settled_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          bet: number
+          cards: number[]
+          created_at?: string
+          dealer_low?: number[] | null
+          id?: string
+          payout?: number
+          player_low?: number[] | null
+          settled_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          bet?: number
+          cards?: number[]
+          created_at?: string
+          dealer_low?: number[] | null
+          id?: string
+          payout?: number
+          player_low?: number[] | null
+          settled_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       partner_applications: {
         Row: {
           admin_notes: string | null
@@ -2373,7 +2412,17 @@ export type Database = {
         Returns: number
       }
       normalize_category_value: { Args: { val: string }; Returns: string }
+      paigow_current: { Args: never; Returns: Json }
+      paigow_deal: { Args: { _bet: number }; Returns: Json }
+      paigow_house_low: { Args: { _c: number[] }; Returns: number[] }
+      paigow_rest: { Args: { _c: number[]; _low: number[] }; Returns: number[] }
+      paigow_set: { Args: { _hand_id: string; _low: number[] }; Returns: Json }
+      paigow_view: {
+        Args: { _h: Database["public"]["Tables"]["paigow_hands"]["Row"] }
+        Returns: Json
+      }
       poker_best: { Args: { _c: number[] }; Returns: number }
+      poker_score2: { Args: { _c: number[] }; Returns: number }
       poker_score5: { Args: { _c: number[] }; Returns: number }
       purchase_avatar_item: { Args: { _sku: string }; Returns: Json }
       read_email_batch: {
