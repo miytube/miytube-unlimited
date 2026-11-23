@@ -48,6 +48,17 @@
     --rarity-epic: 280 70% 50%;
     --rarity-legendary: 38 95% 48%;
     --studio-stage: linear-gradient(160deg, hsl(222 47% 11%), hsl(224 71% 4%));
+
+    /* Gaming Room: green felt, gold trim, ivory cards */
+    --felt: 152 52% 24%;
+    --felt-deep: 156 58% 12%;
+    --felt-foreground: 45 45% 93%;
+    --gold: 43 88% 56%;
+    --gold-foreground: 30 60% 10%;
+    --playing-card: 42 33% 97%;
+    --suit-red: 356 74% 44%;
+    --suit-black: 222 30% 12%;
+    --table-felt: radial-gradient(ellipse at 50% 30%, hsl(152 50% 28%), hsl(156 58% 12%) 75%);
   }
 
   .dark {

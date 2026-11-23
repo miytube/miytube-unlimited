@@ -1,13 +1,13 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Film, PlaySquare, Megaphone, Users, Armchair, Sparkles, Store } from 'lucide-react';
+import { Film, PlaySquare, Megaphone, Users, Armchair, Sparkles, Store, Spade } from 'lucide-react';
 import { ContentDropdown } from './ContentDropdown';
 import { BusinessDropdown } from './BusinessDropdown';
 
 export const NavigationLinks: React.FC = () => {
   return (
-    <nav className="hidden md:flex items-center gap-6">
+    <nav className="hidden md:flex flex-wrap items-center justify-center gap-x-4 gap-y-2 xl:gap-x-6 [&>a]:whitespace-nowrap">
       <Link to="/" className="text-foreground hover:text-primary transition-colors">Home</Link>
       <Link to="/search" className="text-foreground hover:text-primary transition-colors">Search</Link>
       <Link to="/shorts" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
@@ -34,6 +34,10 @@ export const NavigationLinks: React.FC = () => {
       <Link to="/shop" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
         <Store size={16} />
         <span>Shop</span>
+      </Link>
+      <Link to="/game-room" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
+        <Spade size={16} />
+        <span>Games</span>
       </Link>
 
       <Link

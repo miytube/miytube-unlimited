@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, User, LogIn, LogOut, Shield, Settings, Sparkles, Store } from 'lucide-react';
+import { Bell, User, LogIn, LogOut, Shield, Settings, Sparkles, Store, Spade } from 'lucide-react';
 import { UserAvatarBubble } from '@/components/avatar/UserAvatarBubble';
 import { UploadDropdown } from './UploadDropdown';
 import { Button } from '@/components/ui/button';
@@ -37,6 +37,9 @@ export const UserActions: React.FC = () => {
       <Button variant="ghost" size="icon" asChild className="md:hidden">
         <Link to="/shop" aria-label="MiyTube Shop"><Store size={20} /></Link>
       </Button>
+      <Button variant="ghost" size="icon" asChild className="md:hidden">
+        <Link to="/game-room" aria-label="Gaming Room"><Spade size={20} /></Link>
+      </Button>
       
       <Button variant="ghost" size="icon" aria-label="Notifications">
         <Bell size={20} />
@@ -66,6 +69,12 @@ export const UserActions: React.FC = () => {
               <Link to="/shop" className="flex items-center gap-2">
                 <Store size={16} />
                 MiyTube Shop
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/game-room" className="flex items-center gap-2">
+                <Spade size={16} />
+                Gaming Room
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

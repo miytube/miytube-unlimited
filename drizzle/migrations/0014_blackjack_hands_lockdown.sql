@@ -1,0 +1,1 @@
+REVOKE ALL ON public.blackjack_hands FROM PUBLIC, anon, authenticated;

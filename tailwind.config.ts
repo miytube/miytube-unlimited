@@ -20,7 +20,8 @@ export default {
 		},
 		extend: {
 			backgroundImage: {
-				'studio-stage': 'var(--studio-stage)'
+				'studio-stage': 'var(--studio-stage)',
+				'table-felt': 'var(--table-felt)'
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -28,6 +29,20 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				felt: {
+					DEFAULT: 'hsl(var(--felt))',
+					deep: 'hsl(var(--felt-deep))',
+					foreground: 'hsl(var(--felt-foreground))'
+				},
+				gold: {
+					DEFAULT: 'hsl(var(--gold))',
+					foreground: 'hsl(var(--gold-foreground))'
+				},
+				'playing-card': 'hsl(var(--playing-card))',
+				suit: {
+					red: 'hsl(var(--suit-red))',
+					black: 'hsl(var(--suit-black))'
+				},
 				rarity: {
 					common: 'hsl(var(--rarity-common))',
 					rare: 'hsl(var(--rarity-rare))',

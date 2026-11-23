@@ -29,6 +29,8 @@ import TalkAtCha from "@/pages/TalkAtCha";
 import TheRoom from "@/pages/TheRoom";
 import AvatarStudio from "@/pages/AvatarStudio";
 import MiyTubeShop from "@/pages/MiyTubeShop";
+import GameRoom from "@/pages/GameRoom";
+import Blackjack from "@/pages/Blackjack";
 import Educational from "@/pages/Educational";
 import Mathematics from "@/pages/Mathematics";
 import Channel from "@/pages/Channel";
@@ -256,6 +258,9 @@ export const mainRoutes = [
   // Avatar Studio — MiyTube Passport characters
   <Route key="avatar-studio" path="/avatar" element={<AvatarStudio />} />,
   <Route key="miytube-shop" path="/shop" element={<MiyTubeShop />} />,
+  // Gaming Room — coin table games
+  <Route key="game-room" path="/game-room" element={<GameRoom />} />,
+  <Route key="game-room-blackjack" path="/game-room/blackjack" element={<Blackjack />} />,
 
 
   <Route key="category-fallback" path="/:category" element={<GenericSubcategoryPage />} />,

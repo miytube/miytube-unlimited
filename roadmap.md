@@ -20,6 +20,9 @@
 - [ ] Booksem button "Use my MiyTube pass" — waiting on the user to put the prepared App.jsx into the Booksem repo (separate app, can't be changed from here).
 - [ ] Live Booksem pass checkouts need the Stripe head office address (same blocker as live coin packs).
 
+- [x] Gaming Room (/game-room) with Blackjack for MiyTube Coins; poker, Sic Bo, Pai Gow, Mahjong, golf, bowling shown as coming soon. Tested with a test member.
+- [ ] Next Gaming Room tables (Sic Bo, poker, Chinese games, golf, bowling) — waiting on the user to pick the next one.
+
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.
 - [x] College football watchpage fix: /sports/college/* now matches category college-sports + child subcategory; 201 regular-season games on College Football, CFP/championships moved to new /sports/college/cfp page (sidebar link added), 2 mislabeled bowl games recategorized to football-bowl-games. Verified via Playwright, build OK. Not yet published.

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Compass, Film, Upload, UserCircle, TrendingUp, Clock, Armchair, Sparkles, Store } from 'lucide-react';
+import { Home, Compass, Film, Upload, UserCircle, TrendingUp, Clock, Armchair, Sparkles, Store, Spade } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface SidebarMainLinksProps {
@@ -19,6 +19,7 @@ export const SidebarMainLinks: React.FC<SidebarMainLinksProps> = ({ className, c
     { id: 'the-room', icon: Armchair, label: 'The Room', path: '/the-room' },
     { id: 'avatar', icon: Sparkles, label: 'Avatar Studio', path: '/avatar' },
     { id: 'shop', icon: Store, label: 'MiyTube Shop', path: '/shop' },
+    { id: 'game-room', icon: Spade, label: 'Gaming Room', path: '/game-room' },
     { id: 'watchlist', icon: Clock, label: 'Watchlist', path: '/watchlist' },
     { id: 'upload', icon: Upload, label: 'Universal Upload', path: '/upload' },
     { id: 'channel', icon: UserCircle, label: 'Your Channel', path: '/channel' },

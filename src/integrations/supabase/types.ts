@@ -314,6 +314,48 @@ export type Database = {
         }
         Relationships: []
       }
+      blackjack_hands: {
+        Row: {
+          bet: number
+          created_at: string
+          dealer: number[]
+          deck: number[]
+          doubled: boolean
+          id: string
+          payout: number
+          player: number[]
+          settled_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          bet: number
+          created_at?: string
+          dealer: number[]
+          deck: number[]
+          doubled?: boolean
+          id?: string
+          payout?: number
+          player: number[]
+          settled_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          bet?: number
+          created_at?: string
+          dealer?: number[]
+          deck?: number[]
+          doubled?: boolean
+          id?: string
+          payout?: number
+          player?: number[]
+          settled_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       blocked_uploads: {
         Row: {
           category: string | null
@@ -2071,6 +2113,38 @@ export type Database = {
         Args: { _pass_id: string; _session_id: string }
         Returns: undefined
       }
+      bj_hand_value: { Args: { _cards: number[] }; Returns: number }
+      bj_settle: {
+        Args: { _hand_id: string }
+        Returns: {
+          bet: number
+          created_at: string
+          dealer: number[]
+          deck: number[]
+          doubled: boolean
+          id: string
+          payout: number
+          player: number[]
+          settled_at: string | null
+          status: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "blackjack_hands"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      bj_view: {
+        Args: { _h: Database["public"]["Tables"]["blackjack_hands"]["Row"] }
+        Returns: Json
+      }
+      blackjack_current: { Args: never; Returns: Json }
+      blackjack_deal: { Args: { _bet: number }; Returns: Json }
+      blackjack_double: { Args: { _hand_id: string }; Returns: Json }
+      blackjack_hit: { Args: { _hand_id: string }; Returns: Json }
+      blackjack_stand: { Args: { _hand_id: string }; Returns: Json }
       charge_portrait: {
         Args: { _price: number; _user_id: string }
         Returns: Json

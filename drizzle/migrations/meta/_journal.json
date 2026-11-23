@@ -92,6 +92,20 @@
       "when": 1795469895183,
       "tag": "0012_booksem_pass",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1795471360586,
+      "tag": "0013_gaming_room_blackjack",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1795471667996,
+      "tag": "0014_blackjack_hands_lockdown",
+      "breakpoints": true
     }
   ]
 }
