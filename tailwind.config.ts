@@ -39,6 +39,8 @@ export default {
 					foreground: 'hsl(var(--gold-foreground))'
 				},
 				'playing-card': 'hsl(var(--playing-card))',
+				jade: 'hsl(var(--jade))',
+				'tile-blue': 'hsl(var(--tile-blue))',
 				suit: {
 					red: 'hsl(var(--suit-red))',
 					black: 'hsl(var(--suit-black))'

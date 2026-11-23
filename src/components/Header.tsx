@@ -14,7 +14,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   return (
     <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b w-full">
       {/* Top row: Logo + centered SearchBar + UserActions */}
-      <div className="mx-auto flex items-center px-4 h-16 gap-4">
+      <div className="mx-auto flex items-center px-4 h-16 gap-2 sm:gap-4">
         <div className="flex items-center gap-2 flex-shrink-0">
           {onMenuClick && (
             <Button variant="ghost" size="icon" onClick={onMenuClick} className="md:hidden" aria-label="Open menu">
@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           )}
           <Logo />
         </div>
-        <div className="flex-1 flex justify-center px-4">
+        <div className="flex-1 flex justify-center md:px-4">
           <div className="w-full max-w-2xl hidden md:block">
             <SearchBar />
           </div>

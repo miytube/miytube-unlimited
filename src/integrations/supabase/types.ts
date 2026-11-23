@@ -1248,6 +1248,42 @@ export type Database = {
         }
         Relationships: []
       }
+      holdem_hands: {
+        Row: {
+          ante: number
+          call_bet: number
+          cards: number[]
+          created_at: string
+          id: string
+          payout: number
+          settled_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          ante: number
+          call_bet?: number
+          cards: number[]
+          created_at?: string
+          id?: string
+          payout?: number
+          settled_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          ante?: number
+          call_bet?: number
+          cards?: number[]
+          created_at?: string
+          id?: string
+          payout?: number
+          settled_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       music_videos: {
         Row: {
           category: string | null
@@ -1545,6 +1581,36 @@ export type Database = {
           id?: string
           name?: string
           role?: string | null
+        }
+        Relationships: []
+      }
+      sicbo_rounds: {
+        Row: {
+          bets: Json
+          created_at: string
+          dice: number[]
+          id: string
+          payout: number
+          stake: number
+          user_id: string
+        }
+        Insert: {
+          bets: Json
+          created_at?: string
+          dice: number[]
+          id?: string
+          payout?: number
+          stake: number
+          user_id: string
+        }
+        Update: {
+          bets?: Json
+          created_at?: string
+          dice?: number[]
+          id?: string
+          payout?: number
+          stake?: number
+          user_id?: string
         }
         Relationships: []
       }
@@ -2288,6 +2354,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      holdem_ante_odds: { Args: { _score: number }; Returns: number }
+      holdem_call: { Args: { _hand_id: string }; Returns: Json }
+      holdem_current: { Args: never; Returns: Json }
+      holdem_deal: { Args: { _ante: number }; Returns: Json }
+      holdem_fold: { Args: { _hand_id: string }; Returns: Json }
+      holdem_view: {
+        Args: { _h: Database["public"]["Tables"]["holdem_hands"]["Row"] }
+        Returns: Json
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -2298,6 +2373,8 @@ export type Database = {
         Returns: number
       }
       normalize_category_value: { Args: { val: string }; Returns: string }
+      poker_best: { Args: { _c: number[] }; Returns: number }
+      poker_score5: { Args: { _c: number[] }; Returns: number }
       purchase_avatar_item: { Args: { _sku: string }; Returns: Json }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
@@ -2327,6 +2404,17 @@ export type Database = {
         Args: { _payment_intent_id: string }
         Returns: boolean
       }
+      sicbo_bet_return: {
+        Args: {
+          _amount: number
+          _dice: number[]
+          _type: string
+          _value: number
+        }
+        Returns: number
+      }
+      sicbo_die: { Args: never; Returns: number }
+      sicbo_roll: { Args: { _bets: Json }; Returns: Json }
     }
     Enums: {
       ad_campaign_status:

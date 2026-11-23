@@ -21,7 +21,11 @@
 - [ ] Live Booksem pass checkouts need the Stripe head office address (same blocker as live coin packs).
 
 - [x] Gaming Room (/game-room) with Blackjack for MiyTube Coins; poker, Sic Bo, Pai Gow, Mahjong, golf, bowling shown as coming soon. Tested with a test member.
-- [ ] Next Gaming Room tables (Sic Bo, poker, Chinese games, golf, bowling) — waiting on the user to pick the next one.
+- [x] Gaming Room: Sic Bo (Chinese dice) table.
+- [x] Gaming Room: Texas Hold'em table.
+- [x] Gaming Room: Mahjong table.
+- [ ] Gaming Room: Pai Gow table.
+- [ ] Gaming Room: Mini Golf and Bowling — later, after the card/tile tables.
 
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.

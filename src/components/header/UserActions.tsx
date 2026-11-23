@@ -31,7 +31,7 @@ export const UserActions: React.FC = () => {
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-1 sm:gap-4">
       <UploadDropdown />
 
       <Button variant="ghost" size="icon" asChild className="md:hidden">
@@ -41,7 +41,7 @@ export const UserActions: React.FC = () => {
         <Link to="/game-room" aria-label="Gaming Room"><Spade size={20} /></Link>
       </Button>
       
-      <Button variant="ghost" size="icon" aria-label="Notifications">
+      <Button variant="ghost" size="icon" aria-label="Notifications" className="hidden sm:inline-flex">
         <Bell size={20} />
       </Button>
       
@@ -100,9 +100,9 @@ export const UserActions: React.FC = () => {
         </DropdownMenu>
       ) : (
         <Button variant="ghost" size="sm" asChild>
-          <Link to="/auth" className="flex items-center gap-2">
+          <Link to="/auth" className="flex items-center gap-2" aria-label="Sign In">
             <LogIn size={16} />
-            Sign In
+            <span className="hidden sm:inline">Sign In</span>
           </Link>
         </Button>
       )}

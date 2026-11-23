@@ -58,6 +58,8 @@
     --playing-card: 42 33% 97%;
     --suit-red: 356 74% 44%;
     --suit-black: 222 30% 12%;
+    --jade: 150 70% 28%;
+    --tile-blue: 212 75% 40%;
     --table-felt: radial-gradient(ellipse at 50% 30%, hsl(152 50% 28%), hsl(156 58% 12%) 75%);
   }
 
