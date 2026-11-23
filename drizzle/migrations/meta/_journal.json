@@ -71,6 +71,13 @@
       "when": 1795383141247,
       "tag": "0009_coin_pack_orders",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1795412292950,
+      "tag": "0010_user_avatars_owner_read",
+      "breakpoints": true
     }
   ]
 }

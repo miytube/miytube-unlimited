@@ -77,7 +77,12 @@ function queue(userIds: string[]) {
     batchTimer = null;
     const ids = Array.from(pending);
     pending.clear();
-    const { data } = await supabase.from('user_avatars').select('user_id, config, equipped').in('user_id', ids);
+    const rows: { user_id: string; config: unknown; equipped: unknown }[] = [];
+    for (let i = 0; i < ids.length; i += 100) {
+      const { data } = await supabase.rpc('get_user_avatars', { _user_ids: ids.slice(i, i + 100) });
+      rows.push(...(data ?? []));
+    }
+    const data = rows;
     ids.forEach((id) => avatarCache.set(id, null));
     (data ?? []).forEach((row) => {
       avatarCache.set(row.user_id, {

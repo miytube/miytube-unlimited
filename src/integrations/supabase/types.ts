@@ -2089,6 +2089,14 @@ export type Database = {
           likes: number
         }[]
       }
+      get_user_avatars: {
+        Args: { _user_ids: string[] }
+        Returns: {
+          config: Json
+          equipped: Json
+          user_id: string
+        }[]
+      }
       get_video_like_counts: {
         Args: { _video_ids: string[] }
         Returns: {
