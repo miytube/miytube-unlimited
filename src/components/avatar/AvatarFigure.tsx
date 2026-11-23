@@ -14,7 +14,7 @@ import {
 /**
  * Layered 2D avatar drawn as a human, athletic bust: shaped skull and jaw,
  * almond eyes with lids, nose with nostrils, full lips, neck muscles,
- * collarbones and broad shoulders. Look colors and gear colors are artwork
+ * collarbones and lean athletic shoulders. Look colors and gear colors are artwork
  * data (skin tones, team colors), so they come straight from the avatar
  * palettes and item metadata rather than from the site theme.
  */
@@ -29,18 +29,18 @@ interface AvatarFigureProps {
 
 // ---- Anatomy (200 x 200 canvas, face centred on x = 100) ----
 const HEAD =
-  'M100 42 C121 42 136 56 137 80 C137.6 90 136 99 133 107 C129.5 117 122 125 113 130 C108 133 92 133 87 130 C78 125 70.5 117 67 107 C64 99 62.4 90 63 80 C64 56 79 42 100 42 Z';
-const NECK = 'M84 110 C86 126 85 138 78 150 L122 150 C115 138 114 126 116 110 Z';
+  'M100 42 C121 42 135 56 136 80 C136.5 90 135 98 132.5 105 L124.5 119.5 C119 127 110 132 100 132.4 C90 132 81 127 75.5 119.5 L67.5 105 C65 98 63.5 90 64 80 C65 56 79 42 100 42 Z';
+const NECK = 'M88 112 C89 126 88 138 84 150 L116 150 C112 138 111 126 112 112 Z';
 const BODY =
-  'M80 142 C72 147 56 149 42 155 C26 162 18 178 15 200 L185 200 C182 178 174 162 158 155 C144 149 128 147 120 142 Z';
+  'M84 143 C77 147 65 149 54 154 C41 160 34 176 32 200 L168 200 C166 176 159 160 146 154 C135 149 123 147 116 143 Z';
 const EAR = 'M65 85 C58 81 53.5 87 55.5 95 C57 103 61 108.5 66.5 106 Z';
 const EAR_INNER = 'M63 89.5 C59.5 88.5 58.5 93 60 98.5 C61 101 62.5 102 63.5 101';
 
 // ---- Clothing ----
 const TEE =
-  'M81 144 C70 148 55 149 41 155 C25 162 17 178 14 200 L186 200 C183 178 175 162 159 155 C145 149 130 148 119 144 C112 155 88 155 81 144 Z';
+  'M84 144 C76 148 64 149 53 154 C40 160 33 176 31 200 L169 200 C167 176 160 160 147 154 C136 149 124 148 116 144 C110 154 90 154 84 144 Z';
 const JERSEY =
-  'M81 145 L68 149 C69 166 63 180 49 188 L48 200 L152 200 L151 188 C137 180 131 166 132 149 L119 145 C114 160 86 160 81 145 Z';
+  'M84 145 L72 149 C73 166 68 180 56 188 L55 200 L145 200 L144 188 C132 180 127 166 128 149 L116 145 C112 159 88 159 84 145 Z';
 
 export const AvatarFigure: React.FC<AvatarFigureProps> = ({ config, items = {}, crop = 'full', className, title }) => {
   const uid = useId().replace(/:/g, '');
@@ -196,29 +196,29 @@ const Body: React.FC<{ tone: SkinTone; round: string; neckShade: string }> = ({ 
     <path d={BODY} fill={round} />
     {/* Deltoids and the line between arm and chest (seen with sleeveless tops) */}
     <g stroke={tone.deep} strokeOpacity="0.4" strokeWidth="1.4" fill="none" strokeLinecap="round">
-      <path d="M44 157 C54 161 60 172 61 186" />
-      <path d="M156 157 C146 161 140 172 139 186" />
-      <path d="M50 184 C48 190 48 195 49 200" />
-      <path d="M150 184 C152 190 152 195 151 200" />
+      <path d="M55 156 C62 161 67 172 68 186" />
+      <path d="M145 156 C138 161 133 172 132 186" />
+      <path d="M58 184 C56 190 56 195 57 200" />
+      <path d="M142 184 C144 190 144 195 143 200" />
     </g>
     <g fill="#FFF" opacity="0.07">
-      <ellipse cx="40" cy="166" rx="8" ry="5" transform="rotate(-35 40 166)" />
-      <ellipse cx="160" cy="166" rx="8" ry="5" transform="rotate(35 160 166)" />
+      <ellipse cx="51" cy="165" rx="7" ry="4.5" transform="rotate(-35 51 165)" />
+      <ellipse cx="149" cy="165" rx="7" ry="4.5" transform="rotate(35 149 165)" />
     </g>
     {/* Neck with jaw shadow and the two neck muscles */}
     <path d={NECK} fill={tone.base} />
     <path d={NECK} fill={neckShade} />
     <g stroke={tone.deep} strokeOpacity="0.28" strokeWidth="1.3" fill="none" strokeLinecap="round">
-      <path d="M88 122 C91 134 95 142 97 149" />
-      <path d="M112 122 C109 134 105 142 103 149" />
+      <path d="M91 122 C93 134 96 142 98 149" />
+      <path d="M109 122 C107 134 104 142 102 149" />
     </g>
     <ellipse cx="100" cy="146" rx="3.4" ry="2.4" fill={tone.deep} opacity="0.22" />
     {/* Collarbones */}
     <g fill="none" strokeLinecap="round">
-      <path d="M96 151.5 C86 149.5 74 149 61 152" stroke={tone.deep} strokeOpacity="0.45" strokeWidth="1.5" />
-      <path d="M104 151.5 C114 149.5 126 149 139 152" stroke={tone.deep} strokeOpacity="0.45" strokeWidth="1.5" />
-      <path d="M95 149.5 C86 147.5 75 147 63 149.5" stroke={tone.light} strokeOpacity="0.5" strokeWidth="1" />
-      <path d="M105 149.5 C114 147.5 125 147 137 149.5" stroke={tone.light} strokeOpacity="0.5" strokeWidth="1" />
+      <path d="M96 151.5 C88 149.5 79 149 70 152" stroke={tone.deep} strokeOpacity="0.45" strokeWidth="1.5" />
+      <path d="M104 151.5 C112 149.5 121 149 130 152" stroke={tone.deep} strokeOpacity="0.45" strokeWidth="1.5" />
+      <path d="M95 149.5 C88 147.5 80 147 72 149.5" stroke={tone.light} strokeOpacity="0.5" strokeWidth="1" />
+      <path d="M105 149.5 C112 147.5 120 147 128 149.5" stroke={tone.light} strokeOpacity="0.5" strokeWidth="1" />
     </g>
   </g>
 );
@@ -236,14 +236,18 @@ const Ear: React.FC<{ tone: SkinTone }> = ({ tone }) => (
 const Contours: React.FC<{ tone: SkinTone; blush: string }> = ({ tone, blush }) => (
   <g>
     <ellipse cx="100" cy="64" rx="18" ry="9" fill="#FFF" opacity="0.1" />
-    <ellipse cx="79" cy="108" rx="10" ry="6.5" fill={blush} />
-    <ellipse cx="121" cy="108" rx="10" ry="6.5" fill={blush} />
+    <ellipse cx="80" cy="106" rx="7" ry="4" fill={blush} />
+    <ellipse cx="120" cy="106" rx="7" ry="4" fill={blush} />
     <ellipse cx="80" cy="102" rx="7" ry="2.6" fill="#FFF" opacity="0.13" transform="rotate(-12 80 102)" />
     <ellipse cx="120" cy="102" rx="7" ry="2.6" fill="#FFF" opacity="0.13" transform="rotate(12 120 102)" />
     {/* Jaw contour */}
-    <path d="M70 108 C74 119 82 127 92 131" stroke={tone.deep} strokeOpacity="0.22" strokeWidth="2" fill="none" strokeLinecap="round" />
-    <path d="M130 108 C126 119 118 127 108 131" stroke={tone.deep} strokeOpacity="0.22" strokeWidth="2" fill="none" strokeLinecap="round" />
+    <path d="M69 106 L76.5 119 C81 125.5 88 129.5 95 131" stroke={tone.deep} strokeOpacity="0.22" strokeWidth="2" fill="none" strokeLinecap="round" />
+    <path d="M131 106 L123.5 119 C119 125.5 112 129.5 105 131" stroke={tone.deep} strokeOpacity="0.22" strokeWidth="2" fill="none" strokeLinecap="round" />
     <ellipse cx="100" cy="127.5" rx="5" ry="2.4" fill="#FFF" opacity="0.13" />
+    {/* Hollow under the cheekbones for a lean face */}
+    <path d="M74 104 C77 111 81 116 86 119" stroke={tone.deep} strokeOpacity="0.14" strokeWidth="3" fill="none" strokeLinecap="round" />
+    <path d="M126 104 C123 111 119 116 114 119" stroke={tone.deep} strokeOpacity="0.14" strokeWidth="3" fill="none" strokeLinecap="round" />
+    <path d="M94 129.5 C97 131 103 131 106 129.5" stroke={tone.deep} strokeOpacity="0.18" strokeWidth="1" fill="none" />
   </g>
 );
 
@@ -585,21 +589,21 @@ const Top: React.FC<{ meta: AvatarItem['metadata']; round: string }> = ({ meta, 
         <>
           <path d={JERSEY} fill={primary} />
           <path d={JERSEY} fill={round} />
-          <path d="M81 145 C86 160 114 160 119 145" stroke={trim} strokeWidth="4" fill="none" />
-          <path d="M68 149 C69 166 63 180 49 188" stroke={trim} strokeWidth="3" fill="none" />
-          <path d="M132 149 C131 166 137 180 151 188" stroke={trim} strokeWidth="3" fill="none" />
+          <path d="M84 145 C88 159 112 159 116 145" stroke={trim} strokeWidth="4" fill="none" />
+          <path d="M72 149 C73 166 68 180 56 188" stroke={trim} strokeWidth="3" fill="none" />
+          <path d="M128 149 C127 166 132 180 144 188" stroke={trim} strokeWidth="3" fill="none" />
           <path d="M84 170 C90 176 110 176 116 170" stroke="#000" strokeOpacity="0.1" strokeWidth="1.2" fill="none" />
         </>
       ) : (
         <>
           <path d={TEE} fill={primary} />
           <path d={TEE} fill={round} />
-          <path d="M81 144 C88 155.5 112 155.5 119 144" stroke={trim} strokeWidth="3.5" fill="none" />
+          <path d="M84 144 C90 154.5 110 154.5 116 144" stroke={trim} strokeWidth="3.5" fill="none" />
           <g stroke="#000" strokeOpacity="0.16" strokeWidth="1.2" fill="none" strokeLinecap="round">
-            <path d="M58 153 C52 166 48 182 48 200" />
-            <path d="M142 153 C148 166 152 182 152 200" />
-            <path d="M70 182 C78 186 86 184 92 190" />
-            <path d="M130 182 C122 186 114 184 108 190" />
+            <path d="M64 153 C59 166 56 182 56 200" />
+            <path d="M136 153 C141 166 144 182 144 200" />
+            <path d="M74 182 C80 186 87 184 92 190" />
+            <path d="M126 182 C120 186 113 184 108 190" />
           </g>
         </>
       )}
@@ -624,12 +628,12 @@ const Polo: React.FC<{ primary: string; trim: string; round: string }> = ({ prim
     <path d="M100 152 L100 184" stroke={darken(primary)} strokeWidth="2" />
     <circle cx="100" cy="162" r="1.7" fill="#FFFFFF" opacity="0.85" />
     <circle cx="100" cy="172" r="1.7" fill="#FFFFFF" opacity="0.85" />
-    <path d="M83 142 L100 156 L92 167 L76 147 Z" fill={trim} />
-    <path d="M117 142 L100 156 L108 167 L124 147 Z" fill={trim} />
-    <path d="M83 142 L100 156 L117 142" stroke="#000" strokeOpacity="0.2" strokeWidth="1" fill="none" />
+    <path d="M85 142 L100 156 L93 166 L79 147 Z" fill={trim} />
+    <path d="M115 142 L100 156 L107 166 L121 147 Z" fill={trim} />
+    <path d="M85 142 L100 156 L115 142" stroke="#000" strokeOpacity="0.2" strokeWidth="1" fill="none" />
     <g stroke="#000" strokeOpacity="0.16" strokeWidth="1.2" fill="none">
-      <path d="M58 153 C52 166 48 182 48 200" />
-      <path d="M142 153 C148 166 152 182 152 200" />
+      <path d="M64 153 C59 166 56 182 56 200" />
+      <path d="M136 153 C141 166 144 182 144 200" />
     </g>
   </g>
 );
@@ -639,12 +643,12 @@ const Jacket: React.FC<{ primary: string; trim: string; round: string }> = ({ pr
     <path d={TEE} fill={primary} />
     <path d={TEE} fill={round} />
     <path d="M88 146 L100 200 L112 146 Q100 154 88 146 Z" fill="#F2F2F2" />
-    <path d="M86 140 L100 184 L93 188 L74 147 Z" fill={darken(primary)} stroke={trim} strokeWidth="1.5" />
-    <path d="M114 140 L100 184 L107 188 L126 147 Z" fill={darken(primary)} stroke={trim} strokeWidth="1.5" />
-    <rect x="128" y="170" width="15" height="3" rx="1.5" fill={trim} />
+    <path d="M87 140 L100 184 L94 188 L77 147 Z" fill={darken(primary)} stroke={trim} strokeWidth="1.5" />
+    <path d="M113 140 L100 184 L106 188 L123 147 Z" fill={darken(primary)} stroke={trim} strokeWidth="1.5" />
+    <rect x="122" y="170" width="14" height="3" rx="1.5" fill={trim} />
     <g stroke="#000" strokeOpacity="0.18" strokeWidth="1.2" fill="none">
-      <path d="M58 153 C52 166 48 182 48 200" />
-      <path d="M142 153 C148 166 152 182 152 200" />
+      <path d="M64 153 C59 166 56 182 56 200" />
+      <path d="M136 153 C141 166 144 182 144 200" />
     </g>
   </g>
 );
@@ -713,12 +717,52 @@ const Accessory: React.FC<{ meta: AvatarItem['metadata'] }> = ({ meta }) => {
 /** Forearms come up into a fighter's guard when gloves or wraps are worn. */
 const Forearm: React.FC<{ cx: number; tone: SkinTone }> = ({ cx, tone }) => {
   const s = cx < 100 ? 1 : -1;
-  const d = `M${cx - 24 * s} 200 C${cx - 20 * s} 188 ${cx - 14 * s} 178 ${cx - 9 * s} 172 L${cx + 11 * s} 176 C${cx + 8 * s} 184 ${cx + 6 * s} 192 ${cx + 6 * s} 200 Z`;
+  const d = `M${cx - 18 * s} 200 C${cx - 16 * s} 190 ${cx - 12 * s} 181 ${cx - 9 * s} 176 L${cx + 9 * s} 178 C${cx + 8 * s} 186 ${cx + 7 * s} 193 ${cx + 7 * s} 200 Z`;
   return (
     <g>
       <path d={d} fill={tone.base} />
       <path d={d} fill="#000" opacity="0.1" />
+      {/* Forearm muscle and the ulna ridge */}
       <path d={`M${cx - 4 * s} 182 C${cx - 6 * s} 188 ${cx - 7 * s} 194 ${cx - 7 * s} 200`} stroke={tone.light} strokeOpacity="0.5" strokeWidth="1.6" fill="none" />
+      <path d={`M${cx + 6 * s} 182 C${cx + 5 * s} 189 ${cx + 5 * s} 195 ${cx + 5 * s} 200`} stroke={tone.deep} strokeOpacity="0.35" strokeWidth="1" fill="none" />
+    </g>
+  );
+};
+
+/**
+ * A closed fist seen from the front: four fingers curled with knuckle crests
+ * and the nail tips, the thumb folded across the middle fingers.
+ */
+const Fist: React.FC<{ cx: number; tone: SkinTone }> = ({ cx, tone }) => {
+  const s = cx < 100 ? 1 : -1;
+  const fingers = [-7.5, -2.5, 2.5, 7.5];
+  return (
+    <g>
+      <path
+        d={`M${cx - 11} 162 C${cx - 12} 155 ${cx - 8} 152 ${cx} 152 C${cx + 8} 152 ${cx + 12} 155 ${cx + 11} 162 L${cx + 10} 176 C${cx + 4} 179 ${cx - 4} 179 ${cx - 10} 176 Z`}
+        fill={tone.base}
+      />
+      {fingers.map((dx, i) => (
+        <g key={dx}>
+          <rect x={cx + dx - 2.5} y={154 + Math.abs(dx) * 0.15} width="5" height={13 - (i === 3 || i === 0 ? 1.5 : 0)} rx="2.4" fill={tone.base} stroke={tone.deep} strokeOpacity="0.45" strokeWidth="0.7" />
+          {/* knuckle crest highlight */}
+          <ellipse cx={cx + dx} cy={155.6 + Math.abs(dx) * 0.15} rx="1.7" ry="1" fill={tone.light} opacity="0.7" />
+          {/* middle finger joint crease */}
+          <path d={`M${cx + dx - 1.8} 161 Q${cx + dx} 162 ${cx + dx + 1.8} 161`} stroke={tone.deep} strokeOpacity="0.45" strokeWidth="0.6" fill="none" />
+          {/* nail tip curled into the palm */}
+          <path d={`M${cx + dx - 1.6} 166 Q${cx + dx} 164.6 ${cx + dx + 1.6} 166`} stroke={tone.lip} strokeOpacity="0.6" strokeWidth="0.8" fill="none" />
+        </g>
+      ))}
+      {/* Thumb folded across the index and middle fingers */}
+      <path
+        d={`M${cx - 12 * s} 165 C${cx - 10 * s} 172 ${cx - 2 * s} 172 ${cx + 4 * s} 168.5 C${cx + 6 * s} 167.5 ${cx + 5.5 * s} 165 ${cx + 3 * s} 165 C${cx - 2 * s} 165.5 ${cx - 6 * s} 164 ${cx - 12 * s} 160 Z`}
+        fill={tone.base}
+        stroke={tone.deep}
+        strokeOpacity="0.5"
+        strokeWidth="0.7"
+      />
+      <path d={`M${cx + 1 * s} 166 Q${cx + 3.5 * s} 165.6 ${cx + 4 * s} 167.6`} stroke={tone.lip} strokeOpacity="0.6" strokeWidth="0.8" fill="none" />
+      <path d={`M${cx - 10} 174 C${cx - 4} 176.5 ${cx + 4} 176.5 ${cx + 10} 174`} stroke={tone.deep} strokeOpacity="0.3" strokeWidth="1" fill="none" />
     </g>
   );
 };
@@ -727,44 +771,56 @@ const Gloves: React.FC<{ meta: AvatarItem['metadata']; tone: SkinTone; sheen: st
   const primary = meta.primary ?? '#D7263D';
   const trim = meta.trim ?? '#FFF';
   if (meta.style === 'wraps') {
-    const wrap = (cx: number) => {
-      const fist = `M${cx - 13} 168 C${cx - 14} 156 ${cx - 8} 151 ${cx} 151 C${cx + 9} 151 ${cx + 14} 156 ${cx + 13} 168 L${cx + 11} 188 C${cx + 4} 191 ${cx - 4} 191 ${cx - 11} 188 Z`;
-      return (
-        <g key={cx}>
-          <Forearm cx={cx} tone={tone} />
-          <path d={fist} fill={primary} />
-          <path d={fist} fill={sheen} />
-          {[160, 168, 176, 184].map((y) => (
-            <path key={y} d={`M${cx - 12} ${y} L${cx + 12} ${y + 4}`} stroke={trim} strokeWidth="2.2" />
-          ))}
-          <path d={`M${cx - 8} 154 C${cx - 3} 152 ${cx + 3} 152 ${cx + 8} 154`} stroke="#000" strokeOpacity="0.2" strokeWidth="1" fill="none" />
-        </g>
-      );
-    };
-    return <g>{[50, 150].map(wrap)}</g>;
+    // Calisthenics / hand wraps: real fingers stay bare, the tape covers
+    // the palm, knuckles' base and wrist in overlapping diagonal turns.
+    const wrap = (cx: number) => (
+      <g key={cx}>
+        <Forearm cx={cx} tone={tone} />
+        <Fist cx={cx} tone={tone} />
+        <path d={`M${cx - 10.5} 163 L${cx + 10.5} 163 L${cx + 10} 186 C${cx + 4} 188 ${cx - 4} 188 ${cx - 10} 186 Z`} fill={primary} opacity="0.94" />
+        {[166, 171, 176, 181].map((y, i) => (
+          <path key={y} d={`M${cx - 10.5} ${y + (i % 2 ? 3 : 0)} L${cx + 10.5} ${y + (i % 2 ? 0 : 3)}`} stroke={trim} strokeOpacity="0.55" strokeWidth="1" />
+        ))}
+        {/* tape between the fingers */}
+        {[-5, 0, 5].map((dx) => (
+          <path key={dx} d={`M${cx + dx} 163 L${cx + dx} 158`} stroke={primary} strokeWidth="1.4" />
+        ))}
+        <path d={`M${cx - 10.5} 163 L${cx + 10.5} 163 L${cx + 10} 186 C${cx + 4} 188 ${cx - 4} 188 ${cx - 10} 186 Z`} fill={sheen} />
+      </g>
+    );
+    return <g>{[64, 136].map(wrap)}</g>;
   }
   const glove = (cx: number) => {
     const s = cx < 100 ? 1 : -1;
-    const fist = `M${cx - 19 * s} 152 C${cx - 19 * s} 138 ${cx + 17 * s} 136 ${cx + 20 * s} 151 C${cx + 22 * s} 165 ${cx + 16 * s} 176 ${cx} 176 C${cx - 14 * s} 176 ${cx - 21 * s} 166 ${cx - 19 * s} 152 Z`;
-    const thumb = `M${cx - 19 * s} 156 C${cx - 26 * s} 160 ${cx - 23 * s} 172 ${cx - 11 * s} 172 C${cx - 14 * s} 166 ${cx - 15 * s} 160 ${cx - 19 * s} 156 Z`;
+    const fist = `M${cx - 16 * s} 154 C${cx - 17 * s} 140 ${cx + 15 * s} 138 ${cx + 17 * s} 152 C${cx + 19 * s} 165 ${cx + 14 * s} 175 ${cx} 175 C${cx - 12 * s} 175 ${cx - 18 * s} 166 ${cx - 16 * s} 154 Z`;
+    const thumb = `M${cx - 16 * s} 157 C${cx - 22 * s} 161 ${cx - 20 * s} 171 ${cx - 9 * s} 171 C${cx - 12 * s} 166 ${cx - 13 * s} 161 ${cx - 16 * s} 157 Z`;
     return (
       <g key={cx}>
         <Forearm cx={cx} tone={tone} />
-        <path d={`M${cx - 13} 172 L${cx + 13} 172 L${cx + 12} 194 L${cx - 12} 194 Z`} fill={trim} />
-        <path d={`M${cx - 12.5} 186 L${cx + 12.5} 186`} stroke={primary} strokeWidth="2.4" />
+        {/* Wrist cuff with velcro strap */}
+        <path d={`M${cx - 11} 171 L${cx + 11} 171 L${cx + 10} 193 L${cx - 10} 193 Z`} fill={primary} />
+        <path d={`M${cx - 11} 177 L${cx + 11} 177 L${cx + 10.6} 187 L${cx - 10.6} 187 Z`} fill={trim} />
+        <path d={`M${cx - 10.6} 182 L${cx + 10.6} 182`} stroke="#000" strokeOpacity="0.15" strokeWidth="0.8" strokeDasharray="1.4 1" />
         <path d={fist} fill={primary} />
         <path d={fist} fill={sheen} />
+        {/* Padded knuckle bulge with the four finger seams under the leather */}
+        <path d={`M${cx - 13 * s} 150 C${cx - 4 * s} 144 ${cx + 7 * s} 144 ${cx + 15 * s} 151`} stroke="#000" strokeOpacity="0.22" strokeWidth="1.2" fill="none" />
+        {[-6, -1, 4, 9].map((dx) => (
+          <path key={dx} d={`M${cx + dx * s} 145 C${cx + (dx + 0.6) * s} 150 ${cx + (dx + 0.6) * s} 155 ${cx + dx * s} 159`} stroke="#000" strokeOpacity="0.12" strokeWidth="0.9" fill="none" />
+        ))}
         <path d={thumb} fill={primary} />
         <path d={thumb} fill="#000" opacity="0.14" />
-        <path d={`M${cx - 14 * s} 150 C${cx - 4 * s} 146 ${cx + 8 * s} 146 ${cx + 17 * s} 152`} stroke="#000" strokeOpacity="0.2" strokeWidth="1.2" fill="none" />
-        <path d={`M${cx - 10 * s} 143 Q${cx} 139 ${cx + 11 * s} 144`} stroke="#FFF" strokeOpacity="0.45" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+        {/* Thumb-lock seam joining thumb to the fist */}
+        <path d={`M${cx - 15 * s} 158 C${cx - 14 * s} 164 ${cx - 12 * s} 168 ${cx - 9 * s} 171`} stroke="#000" strokeOpacity="0.3" strokeWidth="0.9" fill="none" />
+        <path d={`M${cx - 9 * s} 144 Q${cx} 140 ${cx + 10 * s} 145`} stroke="#FFF" strokeOpacity="0.5" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        <ellipse cx={cx + 2 * s} cy="162" rx="7" ry="5" fill="#FFF" opacity="0.06" />
       </g>
     );
   };
   return (
     <g>
-      {glove(52)}
-      {glove(148)}
+      {glove(64)}
+      {glove(136)}
     </g>
   );
 };
