@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Film, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePageSEO } from '@/hooks/usePageSEO';
+import { videoWatchPath } from '@/lib/seo';
 
 import { trackEngagement } from '@/hooks/useTrackEngagement';
 import { VideoStructuredData } from '@/components/seo/VideoStructuredData';
@@ -61,11 +62,12 @@ const Watch = () => {
   const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
   const [creatorProfile, setCreatorProfile] = useState<{ channel_name?: string; display_name?: string; avatar_url?: string } | null>(null);
 
-  const actualVideoIdForSEO = videoId || musicVideoId || video?.id;
+  const actualVideoIdForSEO = video?.id || videoId || musicVideoId;
+  const canonicalWatchPath = actualVideoIdForSEO ? videoWatchPath(actualVideoIdForSEO, isMusicVideo) : '/watch';
   usePageSEO({
     title: video?.title ? `${video.title} — MiyTube` : 'Watch on MiyTube',
     description: (video?.description || (video?.title ? `Watch ${video.title} on MiyTube.` : 'Watch videos on MiyTube.')).slice(0, 155),
-    path: actualVideoIdForSEO ? `/watch?v=${actualVideoIdForSEO}` : '/watch',
+    path: canonicalWatchPath,
     ogImage: (video as any)?.thumbnail,
     ogType: 'video.other',
   });
@@ -105,6 +107,9 @@ const Watch = () => {
               channelAvatar: 'https://ui-avatars.com/api/?name=Music&background=random',
               views: `${data.views} views`,
               timestamp: new Date(data.created_at).toLocaleDateString(),
+              createdAt: data.created_at,
+              thumbnail: data.thumbnail_url,
+              duration: data.duration,
               likes: data.likes.toString(),
               subscribers: '0',
               file: data.video_url, // This is the video data URL
@@ -150,6 +155,9 @@ const Watch = () => {
             channelAvatar: 'https://ui-avatars.com/api/?name=Your+Channel&background=random',
             views: '0 views',
             timestamp: 'Just now',
+            createdAt: uploadedVideo.createdAt,
+            thumbnail: uploadedVideo.thumbnail,
+            duration: uploadedVideo.duration,
             likes: '0',
             subscribers: '0',
             file: videoSource,
@@ -206,6 +214,9 @@ const Watch = () => {
                     channelAvatar: 'https://ui-avatars.com/api/?name=Music&background=random',
                     views: `${musicByUUID.views || 0} views`,
                     timestamp: new Date(musicByUUID.created_at).toLocaleDateString(),
+                    createdAt: musicByUUID.created_at,
+                    thumbnail: musicByUUID.thumbnail_url,
+                    duration: musicByUUID.duration,
                     likes: (musicByUUID.likes || 0).toString(),
                     subscribers: '0',
                     file: musicByUUID.video_url,
@@ -242,6 +253,9 @@ const Watch = () => {
                 channelAvatar: 'https://ui-avatars.com/api/?name=Your+Channel&background=random',
                 views: `${cloudVideo.views || 0} views`,
                 timestamp: new Date(cloudVideo.created_at).toLocaleDateString(),
+                createdAt: cloudVideo.created_at,
+                thumbnail: cloudVideo.thumbnail_url,
+                duration: cloudVideo.duration,
                 likes: '0',
                 subscribers: '0',
                 file: videoSource,
@@ -444,10 +458,13 @@ const Watch = () => {
     <Layout>
       
       <VideoStructuredData
-        videoId={actualVideoId || video.id}
+        videoId={video.id}
         title={video.title}
         description={video.description}
         thumbnailUrl={(video as any).thumbnail}
+        uploadDate={video.createdAt}
+        youtubeId={isYouTubeVideo ? youtubeVideoId || undefined : undefined}
+        watchPath={canonicalWatchPath}
         contentUrl={typeof video.file === 'string' ? video.file : undefined}
         duration={(video as any).duration}
         tags={video.tags}
@@ -455,10 +472,11 @@ const Watch = () => {
       <BreadcrumbStructuredData
         items={[
           { name: 'Home', path: '/' },
-          ...(video.category
-            ? [{ name: categoryLabel!, path: categoryRoute }]
+          ...(video.category && categoryLabel
+            ? [{ name: categoryLabel, path: categoryRoute }]
             : []),
-          { name: video.title, path: `/watch/${actualVideoId || video.id}` },
+          ...(video.subcategory && subcategoryLabel ? [{ name: subcategoryLabel, path: subcategoryRoute }] : []),
+          { name: video.title, path: canonicalWatchPath },
         ]}
       />
       <div className="py-6 animate-fade-in">

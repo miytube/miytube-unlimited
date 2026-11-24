@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-
-const DOMAIN = 'https://www.miytube.com';
+import { Helmet } from 'react-helmet-async';
+import { SEO_ORIGIN, serializeJsonLd } from '@/lib/seo';
 
 interface Crumb {
   name: string;
@@ -16,9 +15,7 @@ interface Props {
  * Helps Google show category breadcrumbs in search results.
  */
 export const BreadcrumbStructuredData: React.FC<Props> = ({ items }) => {
-  useEffect(() => {
-    if (!items.length) return;
-
+    if (!items.length) return null;
     const data = {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
@@ -26,25 +23,9 @@ export const BreadcrumbStructuredData: React.FC<Props> = ({ items }) => {
         '@type': 'ListItem',
         position: i + 1,
         name: c.name,
-        item: `${DOMAIN}${c.path}`,
+        item: `${SEO_ORIGIN}${c.path}`,
       })),
     };
 
-    const id = 'breadcrumb-jsonld';
-    let script = document.getElementById(id) as HTMLScriptElement | null;
-    if (!script) {
-      script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.id = id;
-      document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify(data);
-
-    return () => {
-      const el = document.getElementById(id);
-      if (el) el.remove();
-    };
-  }, [items]);
-
-  return null;
+    return <Helmet><script id="breadcrumb-jsonld" type="application/ld+json">{serializeJsonLd(data)}</script></Helmet>;
 };

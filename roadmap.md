@@ -32,6 +32,11 @@
 - [ ] Casino look for Sic Bo (3D dice, shaker); table sounds — waiting on the user to say go.
 - [x] Gaming Room admin analytics: admin-only rounds, players, table popularity, visits, wagers/returns/net flow, and Today/7-day/30-day/all-time filters; real totals checked on desktop and phone, access denied for guests and ordinary members; 101 tests passed.
 
+## Legends search upgrade
+- [x] Add accurate legend titles, descriptions, canonical URLs, athlete/collection and breadcrumb structured data, matching only the visible videos; all 27 routes checked in the preview, with page transitions and pagination verified. Frontend awaits publishing.
+- [x] Correct individual video structured data to use real thumbnails, upload dates, durations and playable sources; verified the Caitlin Clark documentary source and 21:43 playback.
+- [x] Include the hub and all 27 legends in the sitemap from the shared roster; live dynamic sitemap verified, 12,506 video links use real destinations, and the submitted static sitemap copy awaits publishing.
+
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.
 - [x] College football watchpage fix: /sports/college/* now matches category college-sports + child subcategory; 201 regular-season games on College Football, CFP/championships moved to new /sports/college/cfp page (sidebar link added), 2 mislabeled bowl games recategorized to football-bowl-games. Verified via Playwright, build OK. Not yet published.

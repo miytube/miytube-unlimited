@@ -13,11 +13,14 @@ import { VignetteAd } from "./components/advertising/VignetteAd";
 import { PaymentTestModeBanner } from "./components/PaymentTestModeBanner";
 import { AnalyticsTracker } from "./components/AnalyticsTracker";
 import { CookieBanner } from "./components/consent/CookieBanner";
+import { HelmetProvider } from 'react-helmet-async';
+import { PageSEOHead } from './components/seo/PageSEOHead';
 
 
 const queryClient = new QueryClient();
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
@@ -27,6 +30,7 @@ const App = () => (
             <Sonner />
             <UploadProgressIndicator />
             <BrowserRouter>
+              <PageSEOHead />
               <SidebarProvider>
                 <AnalyticsTracker />
                 <PaymentTestModeBanner />
@@ -40,6 +44,7 @@ const App = () => (
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;

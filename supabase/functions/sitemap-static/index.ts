@@ -1,3 +1,5 @@
+import { LEGENDS_SITEMAP_PATHS } from '../_shared/sportsBeginEndLegends.ts';
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -95,7 +97,8 @@ const staticRoutes = [
   { path: '/relationships', priority: '0.6', changefreq: 'weekly' },
 ]
 
-const DOMAIN = 'https://www.miytube.com'
+const DOMAIN = 'https://miytube.com'
+const legendsRoutes = LEGENDS_SITEMAP_PATHS.map((path) => ({ path, priority: '0.8', changefreq: 'weekly' }));
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -110,11 +113,10 @@ Deno.serve(async (req) => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 `
 
-    for (const route of staticRoutes) {
+    for (const route of [...staticRoutes, ...legendsRoutes]) {
       xml += `  <url>
     <loc>${DOMAIN}${route.path}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${route.changefreq}</changefreq>
+${LEGENDS_SITEMAP_PATHS.includes(route.path) ? '' : `    <lastmod>${today}</lastmod>\n`}    <changefreq>${route.changefreq}</changefreq>
     <priority>${route.priority}</priority>
   </url>
 `
@@ -122,7 +124,7 @@ Deno.serve(async (req) => {
 
     xml += `</urlset>`
 
-    console.log(`Static sitemap generated with ${staticRoutes.length} routes`)
+    console.log(`Static sitemap generated with ${staticRoutes.length + legendsRoutes.length} routes`)
 
     return new Response(xml, {
       headers: {

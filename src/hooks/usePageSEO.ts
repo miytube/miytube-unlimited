@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { getCurrentSite } from '@/config/sites';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
+import { useLocation } from 'react-router-dom';
 
-interface PageSEOOptions {
+export interface PageSEOOptions {
   title: string;
   description?: string;
   path?: string; // canonical path, e.g. "/about"
@@ -9,52 +9,31 @@ interface PageSEOOptions {
   ogType?: 'website' | 'article' | 'video.other';
 }
 
-const siteUrl = () => `https://www.${getCurrentSite().domain}`;
-const DEFAULT_OG_IMAGE = 'https://storage.googleapis.com/gpt-engineer-file-uploads/LGzo1U228xWhpQlYy8pM0UdbD403/social-images/social-1777144077591-miytube-final.webp';
-
-function setMeta(selector: string, attr: 'content' | 'href', value: string) {
-  let el = document.head.querySelector(selector) as HTMLMetaElement | HTMLLinkElement | null;
-  if (!el) {
-    if (selector.startsWith('link')) {
-      el = document.createElement('link');
-      const rel = selector.match(/rel="([^"]+)"/)?.[1];
-      if (rel) (el as HTMLLinkElement).rel = rel;
-    } else {
-      el = document.createElement('meta');
-      const prop = selector.match(/property="([^"]+)"/)?.[1];
-      const name = selector.match(/name="([^"]+)"/)?.[1];
-      if (prop) (el as HTMLMetaElement).setAttribute('property', prop);
-      if (name) (el as HTMLMetaElement).name = name;
-    }
-    document.head.appendChild(el);
-  }
-  el.setAttribute(attr, value);
-}
+interface PageSEOEntry extends PageSEOOptions { locationKey: string; }
+const entries = new Map<symbol, PageSEOEntry>();
+const listeners = new Set<() => void>();
+let snapshot: PageSEOEntry | undefined;
+const publish = () => {
+  snapshot = [...entries.values()].at(-1);
+  listeners.forEach((listener) => listener());
+};
+const subscribe = (listener: () => void) => {
+  listeners.add(listener);
+  return () => { listeners.delete(listener); };
+};
+export const usePageSEOState = () => useSyncExternalStore(subscribe, () => snapshot, () => undefined);
 
 /**
- * Sets per-route document title, meta description, canonical link,
- * and Open Graph / Twitter social preview tags.
+ * Registers route metadata for the single Helmet-backed PageSEOHead.
+ * Existing page callers retain this hook; unmounting clears their metadata.
  */
 export function usePageSEO({ title, description, path, ogImage, ogType = 'website' }: PageSEOOptions) {
+  const owner = useRef(Symbol('page-seo'));
+  const { key: locationKey, pathname } = useLocation();
   useEffect(() => {
-    const fullTitle = title.length > 60 ? title.slice(0, 57) + '...' : title;
-    document.title = fullTitle;
-
-    const desc = (description || '').slice(0, 160);
-    if (desc) {
-      setMeta('meta[name="description"]', 'content', desc);
-      setMeta('meta[name="twitter:description"]', 'content', desc);
-      setMeta('meta[property="og:description"]', 'content', desc);
-    }
-
-    const canonicalPath = path ?? (typeof window !== 'undefined' ? window.location.pathname : '/');
-    const canonicalUrl = `${siteUrl()}${canonicalPath}`;
-    setMeta('link[rel="canonical"]', 'href', canonicalUrl);
-    setMeta('meta[property="og:url"]', 'content', canonicalUrl);
-    setMeta('meta[property="og:title"]', 'content', fullTitle);
-    setMeta('meta[name="twitter:title"]', 'content', fullTitle);
-    setMeta('meta[property="og:type"]', 'content', ogType);
-    setMeta('meta[property="og:image"]', 'content', ogImage || DEFAULT_OG_IMAGE);
-    setMeta('meta[name="twitter:image"]', 'content', ogImage || DEFAULT_OG_IMAGE);
-  }, [title, description, path, ogImage, ogType]);
+    const id = owner.current;
+    entries.set(id, { title, description, path: path ?? pathname, ogImage, ogType, locationKey });
+    publish();
+    return () => { entries.delete(id); publish(); };
+  }, [title, description, path, ogImage, ogType, locationKey, pathname]);
 }

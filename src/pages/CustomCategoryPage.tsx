@@ -7,8 +7,9 @@ import { useUploadedVideos } from '@/context/UploadedVideosContext';
 import { useCustomCategories } from '@/hooks/useCustomCategories';
 import { AdSlot } from '@/components/ads/AdSlot';
 import { LegendsShelves, LegendTimelineBanner } from '@/components/legends/LegendsShelves';
-import { isLegendsVideo, resolveVideoLegend } from '@/utils/legendsGrouping';
-import { LEGENDS_SUBCATEGORY_SLUG, getLegendBySlug } from '@/data/sportsBeginEndLegends';
+import { groupVideosByLegend, isLegendsVideo, resolveVideoLegend } from '@/utils/legendsGrouping';
+import { LEGENDS_SUBCATEGORY_SLUG, getLegendBySlug, type SportsLegend } from '@/data/sportsBeginEndLegends';
+import { LegendPageSEO } from '@/components/seo/LegendPageSEO';
 
 type Mode = 'category' | 'subcategory' | 'watch';
 
@@ -78,7 +79,7 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
   if (!category) return <Navigate to="/" replace />;
   if (mode !== 'category' && !subcategory) return <Navigate to={`/c/${category.slug}`} replace />;
   if (mode === 'watch' && !watchPage)
-    return <Navigate to={`/c/${category.slug}/${subcategory!.slug}`} replace />;
+    return <Navigate to={`/c/${category.slug}/${subcategory?.slug || ''}`} replace />;
 
   const title = watchPage?.name || subcategory?.name || category.name;
   const description = watchPage?.description || subcategory?.description || category.description;
@@ -109,10 +110,15 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
     : activeLegend
       ? legendsVideos.filter((v) => resolveVideoLegend(v)?.id === activeLegend.id)
       : [...baseVideos, ...extraVideos];
-
+  const hubGroups = isLegendsHub ? groupVideosByLegend(videos) : undefined;
+  const visibleHubVideos = hubGroups
+    ? [...hubGroups.shelves.flatMap((shelf) => shelf.videos.slice(0, 4)), ...hubGroups.unassigned]
+    : [];
 
   return (
     <Layout>
+      {isLegendsHub && <LegendPageSEO visibleVideos={visibleHubVideos} totalVideos={videos.length} />}
+      {activeLegend && videos.length === 0 && <LegendPageSEO legend={activeLegend} visibleVideos={[]} totalVideos={0} />}
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-2 sm:px-4">
         <p className="text-sm text-muted-foreground mb-2 flex items-center gap-1 flex-wrap">
           <Link to="/" className="font-semibold text-primary">MiyTube</Link>
@@ -216,7 +222,7 @@ const CustomCategoryPage: React.FC<Props> = ({ mode }) => {
         {isLegendsHub && videos.length > 0 ? (
           <LegendsShelves videos={videos} />
         ) : videos.length > 0 ? (
-          <VideosPaginated videos={videos} title={title} />
+          <VideosPaginated key={mostSpecificSlug} videos={videos} title={title} legend={activeLegend} />
         ) : (
           <div className="text-center py-12 bg-card rounded-lg mb-8">
             <Folder className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
@@ -255,7 +261,7 @@ export default CustomCategoryPage;
 
 const PAGE_SIZE = 20;
 
-const VideosPaginated: React.FC<{ videos: any[]; title: string }> = ({ videos, title }) => {
+const VideosPaginated: React.FC<{ videos: any[]; title: string; legend?: SportsLegend }> = ({ videos, title, legend }) => {
   const [page, setPage] = useState(1);
   const totalPages = Math.max(1, Math.ceil(videos.length / PAGE_SIZE));
 
@@ -266,6 +272,7 @@ const VideosPaginated: React.FC<{ videos: any[]; title: string }> = ({ videos, t
 
   return (
     <div className="mb-8">
+      {legend && <LegendPageSEO legend={legend} visibleVideos={pageVideos} totalVideos={videos.length} offset={(page - 1) * PAGE_SIZE} />}
       <div className="flex items-baseline justify-between mb-4 flex-wrap gap-2">
         <h2 className="text-xl font-medium">{title} Videos</h2>
         <span className="text-sm text-muted-foreground">
