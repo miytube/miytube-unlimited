@@ -35,12 +35,12 @@ const PIPS: Record<string, [number, number][]> = {
 const CornerIndex: React.FC<{ rank: string; suit: ReturnType<typeof cardSuit>; flipped?: boolean }> = ({ rank, suit, flipped }) => (
   <div
     className={cn(
-      'absolute flex w-[15cqw] flex-col items-center leading-none',
-      flipped ? 'bottom-[4cqw] right-[3.5cqw] rotate-180' : 'left-[3.5cqw] top-[4cqw]',
+      'absolute z-10 flex w-[36cqw] flex-col items-center leading-none',
+      flipped ? 'bottom-[3cqw] right-[2cqw] rotate-180' : 'left-[2cqw] top-[3cqw]',
     )}
   >
-    <span className={cn('font-serif font-bold', rank === '10' ? 'text-[16cqw] tracking-[-0.12em]' : 'text-[19cqw]')}>{rank}</span>
-    <SuitIcon suit={suit} className="mt-[1.5cqw] w-[13cqw]" />
+    <span className="playing-card-rank font-serif font-bold">{rank}</span>
+    <SuitIcon suit={suit} className="mt-[2cqw] !h-auto !w-[18cqw]" />
   </div>
 );
 
@@ -54,26 +54,28 @@ const CardFace: React.FC<{ card: number }> = ({ card }) => {
       <CornerIndex rank={rank} suit={suit} />
       <CornerIndex rank={rank} suit={suit} flipped />
       {court ? (
-        <CourtFigure rank={rank} suit={suit} className="absolute inset-x-[18cqw] inset-y-[16%] h-[68%] w-[64cqw]" />
+        <CourtFigure rank={rank} suit={suit} className="absolute inset-x-[25cqw] inset-y-[25%] !h-[50%] !w-[50cqw]" />
       ) : rank === 'A' ? (
         <div className="absolute inset-0 flex items-center justify-center">
           {suit === 'spades' ? (
             <span className="relative flex h-[56cqw] w-[56cqw] items-center justify-center rounded-full border-[1.2cqw] border-double border-gold">
-              <SuitIcon suit={suit} className="w-[40cqw]" />
+              <SuitIcon suit={suit} className="!h-auto !w-[40cqw]" />
             </span>
           ) : (
-            <SuitIcon suit={suit} className="w-[40cqw]" />
+            <SuitIcon suit={suit} className="!h-auto !w-[40cqw]" />
           )}
         </div>
       ) : (
-        PIPS[rank]?.map(([x, y], i) => (
+        <div className="absolute inset-x-[28cqw] inset-y-[16%]">
+        {PIPS[rank]?.map(([x, y], i) => (
           <SuitIcon
             key={i}
             suit={suit}
-            className={cn('absolute w-[20cqw] -translate-x-1/2 -translate-y-1/2', y > 50 && 'rotate-180')}
+            className={cn('absolute !h-auto !w-[15cqw] -translate-x-1/2 -translate-y-1/2', y > 50 && 'rotate-180')}
             style={{ left: `${x}%`, top: `${y}%` }}
           />
-        ))
+        ))}
+        </div>
       )}
     </div>
   );
@@ -95,7 +97,7 @@ export const PlayingCard: React.FC<PlayingCardProps> = ({ card, faceDown, index 
   // The slide-in plays once per card; later prop changes must not re-time it.
   const [deal] = useState(() => dealDelay ?? index * 90);
   const down = faceDown || card === undefined;
-  const label = down ? 'Face-down card' : `${cardRank(card!)} of ${cardSuit(card!)}`;
+  const label = down || card === undefined ? 'Face-down card' : `${cardRank(card)} of ${cardSuit(card)}`;
 
   return (
     <div

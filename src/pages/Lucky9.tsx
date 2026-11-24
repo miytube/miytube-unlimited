@@ -118,12 +118,12 @@ export default function Lucky9() {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-4xl px-4 py-6">
+      <div className="game-page mx-auto max-w-4xl px-4 py-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          <Link to="/game-room" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft size={16} /> Gaming Room</Link>
+          <Link to="/game-room" className="inline-flex items-center gap-1 text-base text-muted-foreground hover:text-foreground"><ArrowLeft size={16} /> Gaming Room</Link>
           {user && <div className="flex flex-wrap items-center gap-2">
-            {wallet.dailyAvailable && <Button size="sm" variant="outline" onClick={claim} disabled={Boolean(busy)} className="gap-1"><Gift size={14} /> Claim {COIN_DAILY_BONUS}</Button>}
-            <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-semibold"><Coins size={16} className="text-gold" /><span data-testid="coin-balance">{wallet.balance === null ? '…' : balance.toLocaleString()}</span></span>
+            {wallet.dailyAvailable && <Button data-game-command size="sm" variant="outline" onClick={claim} disabled={Boolean(busy)} className="gap-1"><Gift size={14} /> Claim {COIN_DAILY_BONUS}</Button>}
+            <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-base font-semibold"><Coins size={16} className="text-gold" /><span data-testid="coin-balance">{wallet.balance === null ? '…' : balance.toLocaleString()}</span></span>
           </div>}
         </div>
 
@@ -131,7 +131,7 @@ export default function Lucky9() {
           <div className="flex flex-col items-center px-3 pb-6 pt-2 sm:px-8">
             <ChipRack />
             <h1 className="mt-3 font-serif text-3xl font-bold sm:text-4xl">Lucky <span className="text-gold">9</span></h1>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-widest text-gold">MiyTube Gaming Room</p>
+            <p className="mt-1 text-base font-semibold uppercase text-gold">MiyTube Gaming Room</p>
             <div className="mt-5 flex flex-col items-center gap-2">
               <SeatTag label="Banker" value={hand && !live ? String(hand.dealer_total) : '?'} />
               <CardRow label="Banker cards" cards={hand?.dealer ?? []} hidden={!hand || live} handId={`banker-${hand?.id ?? 'empty'}`} />
@@ -139,13 +139,13 @@ export default function Lucky9() {
             <div className="my-3 flex min-h-20 w-full items-center justify-center px-1 text-center" aria-live="polite" data-testid="lucky9-result">
               {result ? <div className={cn('max-w-full rounded-lg px-4 py-2 font-serif text-lg font-bold',
                 hand?.status === 'win' ? 'bg-gold text-gold-foreground' : 'bg-rail-leather/80 text-felt-foreground')}>
-                {hand?.natural && <span className="mb-1 block text-xs font-semibold uppercase tracking-widest">Natural {Math.max(hand.player_total, hand.dealer_total ?? 0)}</span>}
+                {hand?.natural && <span className="mb-1 block text-base font-semibold uppercase">Natural {Math.max(hand.player_total, hand.dealer_total ?? 0)}</span>}
                 {result}
-              </div> : <p className="text-xs font-semibold uppercase tracking-widest text-gold/80">{live ? 'Draw or stand' : 'Closest to nine wins'}</p>}
+              </div> : <p className="text-base font-semibold uppercase text-gold">{live ? 'Draw or stand' : 'Closest to nine wins'}</p>}
             </div>
             <div className="flex flex-col items-center gap-2">
               <CardRow label="Your cards" cards={hand?.player ?? []} hidden={!hand} handId={`player-${hand?.id ?? 'empty'}`} />
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {user && <UserAvatarBubble userId={user.id} className="h-8 w-8 ring-2 ring-gold" fallback={<span className="flex h-8 w-8 items-center justify-center rounded-full bg-felt-deep ring-2 ring-gold"><User size={16} /></span>} />}
                 <SeatTag label="You" value={hand ? String(hand.player_total) : '—'} />
               </div>
@@ -158,20 +158,20 @@ export default function Lucky9() {
 
         <div className="casino-console mt-5 rounded-lg px-3 py-5 text-felt-foreground sm:px-6">
           {authLoading ? <div className="flex h-28 items-center justify-center"><Loader2 className="animate-spin" aria-label="Loading account" /></div>
-            : !user ? <div className="flex flex-col items-center gap-3 text-center"><p>Sign in to play Lucky 9.</p><Button asChild className="bg-gold text-gold-foreground hover:bg-gold/90"><Link to="/auth">Sign in to play</Link></Button></div>
-              : loadError ? <div role="alert" className="flex flex-col items-center gap-3 text-center"><p>Couldn't load your saved hand.</p><Button variant="outline" onClick={() => setRetry(value => value + 1)} className="gap-2"><RefreshCw size={16} /> Try again</Button></div>
+            : !user ? <div className="flex flex-col items-center gap-3 text-center"><p>Sign in to play Lucky 9.</p><Button data-game-command asChild className="bg-gold text-gold-foreground hover:bg-gold/90"><Link to="/auth">Sign in to play</Link></Button></div>
+              : loadError ? <div role="alert" className="flex flex-col items-center gap-3 text-center"><p>Couldn't load your saved hand.</p><Button data-game-command variant="outline" onClick={() => setRetry(value => value + 1)} className="gap-2"><RefreshCw size={16} /> Try again</Button></div>
                 : !loaded ? <div className="flex h-28 items-center justify-center"><Loader2 className="animate-spin" aria-label="Loading saved hand" /></div>
                   : live ? <div className="flex flex-wrap items-center justify-center gap-3 py-3">
-                    <Button size="lg" disabled={Boolean(busy)} onClick={() => play('draw')} className="min-w-32 gap-2 bg-gold text-gold-foreground hover:bg-gold/90">{busy === 'draw' ? <Loader2 className="animate-spin" size={18} /> : <Layers size={18} />} Draw</Button>
-                    <Button size="lg" disabled={Boolean(busy)} onClick={() => play('stand')} variant="outline" className="min-w-32 gap-2 border-gold/60 bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground">{busy === 'stand' ? <Loader2 className="animate-spin" size={18} /> : <Hand size={18} />} Stand</Button>
+                    <Button data-game-command size="lg" disabled={Boolean(busy)} onClick={() => play('draw')} className="min-w-32 gap-2 bg-gold text-gold-foreground hover:bg-gold/90">{busy === 'draw' ? <Loader2 className="animate-spin" size={18} /> : <Layers size={18} />} Draw</Button>
+                    <Button data-game-command size="lg" disabled={Boolean(busy)} onClick={() => play('stand')} variant="outline" className="min-w-32 gap-2 border-gold/60 bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground">{busy === 'stand' ? <Loader2 className="animate-spin" size={18} /> : <Hand size={18} />} Stand</Button>
                   </div> : <div className="flex flex-col items-center gap-4">
                     <ChipPicker values={LUCKY9_CHIPS} value={bet} onChange={setBet} disabled={Boolean(busy)} isAffordable={value => value <= balance} label="Choose your bet" />
-                    <Button size="lg" disabled={Boolean(busy) || balance < bet || wallet.balance === null} onClick={() => play('deal')} className="min-w-48 gap-2 bg-gold text-lg font-bold text-gold-foreground hover:bg-gold/90">{busy === 'deal' ? <Loader2 className="animate-spin" size={18} /> : <Layers size={18} />}{hand ? 'Deal again' : 'Deal'} · {bet} coins</Button>
-                    {wallet.balance !== null && balance < bet && <Link to="/shop" className="text-sm text-gold underline">Get more coins</Link>}
+                    <Button data-game-command size="lg" disabled={Boolean(busy) || balance < bet || wallet.balance === null} onClick={() => play('deal')} className="min-w-48 gap-2 bg-gold text-lg font-bold text-gold-foreground hover:bg-gold/90">{busy === 'deal' ? <Loader2 className="animate-spin" size={18} /> : <Layers size={18} />}{hand ? 'Deal again' : 'Deal'} · {bet} coins</Button>
+                    {wallet.balance !== null && balance < bet && <Link to="/shop" className="text-base text-gold underline">Get more coins</Link>}
                   </div>}
         </div>
 
-        <div className="mt-8 grid gap-6 border-t pt-5 text-sm md:grid-cols-2">
+        <div className="mt-8 grid gap-6 border-t pt-5 text-base md:grid-cols-2">
           <section>
             <h2 className="mb-3 font-serif text-lg font-bold">House rules</h2>
             <ul className="space-y-2 text-muted-foreground">
@@ -191,7 +191,7 @@ export default function Lucky9() {
             </ol>}
           </section>
         </div>
-        <p className="mt-6 text-center text-xs text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
+        <p className="mt-6 text-center text-base text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
       </div>
     </Layout>
   );

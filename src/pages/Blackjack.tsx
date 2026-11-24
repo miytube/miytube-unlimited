@@ -146,19 +146,19 @@ const Blackjack = () => {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="game-page mx-auto max-w-5xl px-4 py-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <Link to="/game-room" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link to="/game-room" className="inline-flex items-center gap-1 text-base text-muted-foreground hover:text-foreground">
             <ArrowLeft size={16} /> Gaming Room
           </Link>
           {user && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {wallet.dailyAvailable && (
-                <Button size="sm" variant="outline" onClick={claimDaily} className="gap-1">
+                <Button data-game-command size="sm" variant="outline" onClick={claimDaily} className="gap-1">
                   <Gift size={14} /> Claim {COIN_DAILY_BONUS}
                 </Button>
               )}
-              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-semibold">
+              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-base font-semibold">
                 <Coins size={16} className="text-gold" />
                 <span data-testid="coin-balance">{wallet.balance === null ? '…' : balance.toLocaleString()}</span>
               </span>
@@ -173,12 +173,12 @@ const Blackjack = () => {
               <ChipRack className="justify-self-center" />
               <DealerShoe className="mt-4 hidden justify-self-end sm:block" />
             </div>
-            <h1 className="mt-2 text-center font-serif text-2xl font-bold uppercase tracking-[0.3em] text-gold drop-shadow sm:text-3xl">Blackjack</h1>
+            <h1 className="mt-2 text-center font-serif text-2xl font-bold uppercase text-gold drop-shadow sm:text-3xl">Blackjack</h1>
 
             {/* Dealer */}
             <div className="mt-3 flex flex-col items-center gap-2">
               <SeatTag label="Dealer" value={hand ? `${hand.dealer_total}${live ? ' showing' : ''}` : undefined} />
-              <div className="flex min-h-28 gap-2 sm:min-h-36">
+              <div className="flex min-h-28 flex-wrap justify-center gap-2 sm:min-h-36">
                 {hand ? (
                   dealerSlots.map((c, i) => (
                     <PlayingCard
@@ -198,7 +198,7 @@ const Blackjack = () => {
               </div>
             </div>
 
-            <TableArc lines={['BLACKJACK PAYS 3 TO 2', 'DEALER MUST DRAW TO 16 AND STAND ON ALL 17s']} className="mx-auto -mb-3 mt-1" />
+            <TableArc lines={['BLACKJACK PAYS 3 TO 2', 'DEALER MUST DRAW TO 16 AND STAND ON ALL 17s']} className="mx-auto mt-1" />
 
             {/* Result */}
             <div className="flex min-h-12 items-center justify-center" aria-live="polite">
@@ -208,7 +208,7 @@ const Blackjack = () => {
             {/* Player */}
             <div className="mt-1 flex flex-col items-center gap-3">
               {hand && isSplit ? (
-                <div className="grid w-full grid-cols-2 gap-2 sm:gap-6" data-testid="split-hands">
+                <div className="grid w-full grid-cols-1 gap-4 min-[480px]:grid-cols-2 sm:gap-6" data-testid="split-hands">
                   {[
                     { n: 1 as const, cards: hand.player, stake: hand.bet, total: hand.player_total, doubled: hand.doubled, status: !live ? hand.status : null, payout: hand.payout },
                     { n: 2 as const, cards: hand.split!, stake: hand.split_bet, total: hand.split_total ?? 0, doubled: hand.split_doubled, status: hand.split_status, payout: hand.split_payout },
@@ -244,7 +244,7 @@ const Blackjack = () => {
                           payout={won ? h.payout - h.stake : 0}
                           payoutDelay={resultDelay}
                           lost={lost}
-                          className="-my-3 scale-75 sm:my-0 sm:scale-100"
+                          className="my-0"
                         />
                         <SeatTag
                           label={`Hand ${h.n}`}
@@ -256,7 +256,7 @@ const Blackjack = () => {
                 </div>
               ) : (
                 <>
-                  <div className="flex min-h-28 gap-2 sm:min-h-36">
+                  <div className="flex min-h-28 flex-wrap justify-center gap-2 sm:min-h-36">
                     {hand?.player.map((c, i) => (
                       <PlayingCard key={`p-${hand.id}-${c}`} card={c} dealDelay={dealDelay('player', i)} />
                     ))}
@@ -270,7 +270,7 @@ const Blackjack = () => {
                   />
                 </>
               )}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {user && (
                   <UserAvatarBubble
                     userId={user.id}
@@ -301,26 +301,26 @@ const Blackjack = () => {
         <div className="casino-console mt-4 rounded-2xl px-2 py-5 text-felt-foreground sm:px-4">
           {authLoading ? null : !user ? (
             <div className="flex flex-col items-center gap-3 text-center">
-              <p className="text-felt-foreground/85">Sign in to play. New members get 500 free coins.</p>
-              <Button asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
+              <p className="text-felt-foreground">Sign in to play. New members get 500 free coins.</p>
+              <Button data-game-command asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
                 <Link to="/auth">Sign in to play</Link>
               </Button>
             </div>
           ) : live ? (
             <div className="flex flex-col items-center gap-3">
             {isSplit && (
-              <p className="font-serif text-sm font-semibold uppercase tracking-widest text-gold" aria-live="polite">
+              <p className="font-serif text-base font-semibold uppercase text-gold" aria-live="polite">
                 Playing hand {hand!.active_hand} of 2
               </p>
             )}
             <div className="flex flex-wrap justify-center gap-3">
-              <Button size="lg" onClick={() => run('hit')} disabled={!!busy} className="min-w-28 bg-gold text-gold-foreground hover:bg-gold/90">
+              <Button data-game-command size="lg" onClick={() => run('hit')} disabled={!!busy} className="min-w-28 bg-gold text-gold-foreground hover:bg-gold/90">
                 {busy === 'hit' ? <Loader2 className="animate-spin" /> : 'Hit'}
               </Button>
-              <Button size="lg" onClick={() => run('stand')} disabled={!!busy} className="min-w-28 bg-felt-foreground text-felt-deep hover:bg-felt-foreground/90">
+              <Button data-game-command size="lg" onClick={() => run('stand')} disabled={!!busy} className="min-w-28 bg-felt-foreground text-felt-deep hover:bg-felt-foreground/90">
                 {busy === 'stand' ? <Loader2 className="animate-spin" /> : 'Stand'}
               </Button>
-              <Button
+              <Button data-game-command
                 size="lg"
                 variant="outline"
                 onClick={() => run('double')}
@@ -330,7 +330,7 @@ const Blackjack = () => {
                 {busy === 'double' ? <Loader2 className="animate-spin" /> : `Double (${activeStake.toLocaleString()})`}
               </Button>
               {showSplit && (
-                <Button
+                <Button data-game-command
                   size="lg"
                   variant="outline"
                   onClick={() => run('split')}
@@ -353,7 +353,7 @@ const Blackjack = () => {
                 isAffordable={(v) => v <= balance}
                 label="Choose your bet"
               />
-              <Button
+              <Button data-game-command
                 size="lg"
                 onClick={() => run('deal')}
                 disabled={!!busy || !loaded || !canAffordBet}
@@ -362,7 +362,7 @@ const Blackjack = () => {
                 {busy === 'deal' ? <Loader2 className="animate-spin" /> : `${hand ? 'Deal again' : 'Deal'} · ${bet} coins`}
               </Button>
               {!canAffordBet && wallet.balance !== null && (
-                <p className="text-sm text-felt-foreground/85">
+                <p className="text-base text-felt-foreground">
                   Not enough coins for this bet.{' '}
                   <Link to="/shop" className="font-semibold text-gold underline">
                     Get more coins
@@ -374,7 +374,7 @@ const Blackjack = () => {
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">House rules</h2>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
               <li>Bets from {BET_MIN} to {BET_MAX} coins. One deck, shuffled fresh every hand.</li>
@@ -385,7 +385,7 @@ const Blackjack = () => {
               <li>Split aces get one card each. Double after split is allowed. 21 after a split pays 1 to 1.</li>
             </ul>
           </div>
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">Your last hands</h2>
             {recent.length === 0 ? (
               <p className="text-muted-foreground">No hands yet. Pick a chip and deal.</p>
@@ -394,7 +394,7 @@ const Blackjack = () => {
                 {recent.map((r, i) => {
                   const net = r.payout - r.bet;
                   return (
-                    <li key={i} className="flex justify-between">
+                    <li key={i} className="flex flex-wrap justify-between gap-2">
                       <span className="capitalize text-muted-foreground">{r.status.replace('_', ' ')}</span>
                       <span className={cn('font-semibold', net > 0 ? 'text-felt' : net < 0 ? 'text-destructive' : 'text-muted-foreground')}>
                         {net > 0 ? '+' : ''}
@@ -408,7 +408,7 @@ const Blackjack = () => {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">
+        <p className="mt-6 text-center text-base text-muted-foreground">
           For fun only. MiyTube Coins have no cash value and can't be cashed out.
         </p>
       </div>

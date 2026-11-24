@@ -22,8 +22,8 @@ const cellStyle = (t: Tile, zIndex: number): React.CSSProperties => ({
 
 const Stat: React.FC<{ label: string; value: React.ReactNode; className?: string; testId?: string }> = ({ label, value, className, testId }) => (
   <div className={cn('min-w-[4.5rem] rounded-xl border border-gold/40 bg-mj-night/60 px-3 py-1.5 text-center', className)}>
-    <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/80">{label}</div>
-    <div className="font-serif text-lg font-bold leading-tight" data-testid={testId}>
+    <div className="text-base font-semibold uppercase text-gold">{label}</div>
+    <div className="font-serif text-2xl font-bold leading-tight" data-testid={testId}>
       {value}
     </div>
   </div>
@@ -31,10 +31,10 @@ const Stat: React.FC<{ label: string; value: React.ReactNode; className?: string
 
 const Booster: React.FC<{ label: string; onClick: () => void; disabled?: boolean; children: React.ReactNode }> = ({ label, onClick, disabled, children }) => (
   <div className="flex flex-col items-center gap-1.5">
-    <button type="button" className="mj-booster" onClick={onClick} disabled={disabled} aria-label={label}>
+    <Button variant="ghost" type="button" className="mj-booster p-0 text-base hover:bg-transparent hover:text-gold-foreground [&_svg]:size-7" onClick={onClick} disabled={disabled} aria-label={label}>
       {children}
-    </button>
-    <span className="text-xs font-semibold uppercase tracking-wider text-felt-foreground/90">{label}</span>
+    </Button>
+    <span className="text-base font-semibold text-felt-foreground">{label}</span>
   </div>
 );
 
@@ -137,18 +137,18 @@ const Mahjong = () => {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-6xl px-3 py-5 sm:px-4">
-        <Link to="/game-room" className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+      <div className="game-page mx-auto max-w-6xl px-3 py-5 sm:px-4">
+        <Link to="/game-room" className="mb-3 inline-flex items-center gap-1 text-base text-muted-foreground hover:text-foreground">
           <ArrowLeft size={16} /> Gaming Room
         </Link>
 
         <section className="mj-board overflow-hidden rounded-[2rem] px-2 pb-6 pt-5 text-felt-foreground sm:px-8">
           <div className="flex flex-wrap items-center justify-between gap-3 px-2">
             <div>
-              <h1 className="font-serif text-3xl font-bold tracking-wide text-gold sm:text-4xl">
-                Mahjong <span className="text-felt-foreground/90">麻將</span>
+              <h1 className="font-serif text-3xl font-bold text-gold sm:text-4xl">
+                Mahjong <span className="text-felt-foreground">麻將</span>
               </h1>
-              <p className="text-xs uppercase tracking-[0.25em] text-felt-foreground/70">Match two free tiles · Free to play</p>
+              <p className="text-base uppercase text-felt-foreground">Match two free tiles · Free to play</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <Stat label="Tiles" value={tiles.length} testId="tiles-left" />
@@ -167,13 +167,14 @@ const Mahjong = () => {
                 const free = freeKeys.has(t.key);
                 const isSel = selected === t.key;
                 return (
-                  <button
+                  <Button
+                    variant="ghost"
                     key={t.key}
                     type="button"
                     onClick={() => click(t)}
                     aria-label={`${faceLabel(t.face)}${free ? '' : ', blocked'}`}
                     aria-pressed={isSel}
-                    className={cn('absolute outline-none', free ? 'cursor-pointer' : 'cursor-default')}
+                    className={cn('absolute h-auto rounded-none bg-transparent p-0 text-base outline-none hover:bg-transparent', free ? 'cursor-pointer' : 'cursor-default')}
                     style={cellStyle(t, t.z * 10 + (isSel ? 5 : 1))}
                   >
                     <div
@@ -185,7 +186,7 @@ const Mahjong = () => {
                     >
                       <TileArt face={t.face} />
                     </div>
-                  </button>
+                  </Button>
                 );
               })}
 
@@ -199,24 +200,24 @@ const Mahjong = () => {
 
               {(won || stuck) && (
                 <div className="absolute inset-0 z-[100] flex items-center justify-center p-4">
-                  <div className="flex flex-col items-center gap-3 rounded-2xl border border-gold/60 bg-mj-night/90 px-8 py-6 text-center shadow-2xl animate-in fade-in zoom-in-95" aria-live="polite">
+                  <div className="flex max-w-full flex-col items-center gap-3 rounded-lg border border-gold/60 bg-mj-night/90 px-3 py-4 text-center shadow-2xl animate-in fade-in zoom-in-95 sm:px-8 sm:py-6" aria-live="polite">
                     {won ? (
                       <>
                         <Sparkles className="h-10 w-10 text-gold" />
                         <p className="font-serif text-3xl font-bold text-gold">Board cleared!</p>
-                        <p className="text-felt-foreground/85">
+                        <p className="text-felt-foreground">
                           Time {fmt(seconds)}
                           {best === seconds ? ' · New best' : ''}
                         </p>
-                        <Button onClick={restart} size="lg" className="bg-gold text-gold-foreground hover:bg-gold/90">
+                        <Button data-game-command onClick={restart} size="lg" className="bg-gold text-gold-foreground hover:bg-gold/90">
                           Play again
                         </Button>
                       </>
                     ) : (
                       <>
                         <p className="font-serif text-2xl font-bold text-gold">No matches left</p>
-                        <p className="text-sm text-felt-foreground/85">Shuffle the tiles still on the board to keep going.</p>
-                        <Button onClick={doShuffle} size="lg" className="gap-2 bg-gold text-gold-foreground hover:bg-gold/90">
+                        <p className="text-base text-felt-foreground">Shuffle the tiles still on the board to keep going.</p>
+                        <Button data-game-command onClick={doShuffle} size="lg" className="gap-2 bg-gold text-gold-foreground hover:bg-gold/90">
                           <Shuffle size={18} /> Shuffle
                         </Button>
                       </>
@@ -227,7 +228,7 @@ const Mahjong = () => {
             </div>
           </div>
 
-          <div className="mx-auto mt-7 flex max-w-md items-end justify-center gap-6 sm:gap-10">
+          <div className="mx-auto mt-7 flex max-w-md items-end justify-center gap-3 sm:gap-10">
             <Booster label="Hint" onClick={showHint} disabled={won || stuck}>
               <Lightbulb size={26} />
             </Booster>
@@ -243,7 +244,7 @@ const Mahjong = () => {
           </div>
         </section>
 
-        <div className="mt-6 rounded-xl border bg-card p-4 text-sm">
+        <div className="mt-6 rounded-xl border bg-card p-4 text-base">
           <h2 className="mb-2 font-serif text-lg font-bold">How to play</h2>
           <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
             <li>Tap two matching tiles to clear them. Bright tiles are free to take; dimmed tiles are blocked.</li>

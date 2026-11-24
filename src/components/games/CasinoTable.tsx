@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React from 'react';
 import { cn } from '@/lib/utils';
 import { chipStyle } from './CasinoChip';
 
@@ -25,28 +25,13 @@ export const CasinoTable: React.FC<{ shape?: 'half-moon' | 'oval' | 'rounded'; c
   );
 };
 
-/** Gold lettering printed along a curve on the felt, like a real layout. */
+/** Printed house rules stay readable instead of shrinking with an SVG viewport. */
 export const TableArc: React.FC<{ lines: [string, string?]; className?: string }> = ({ lines, className }) => {
-  const id = useId().replace(/:/g, '');
   return (
-    <svg viewBox="0 0 600 120" className={cn('w-full max-w-2xl text-gold', className)} aria-hidden="true">
-      <defs>
-        <path id={`${id}-a`} d="M20 12 Q300 112 580 12" />
-        <path id={`${id}-b`} d="M30 50 Q300 150 570 50" />
-      </defs>
-      <text fill="currentColor" fontSize="25" fontWeight="700" letterSpacing="5" fontFamily="Georgia, 'Times New Roman', serif" textAnchor="middle">
-        <textPath href={`#${id}-a`} startOffset="50%">
-          {lines[0]}
-        </textPath>
-      </text>
-      {lines[1] && (
-        <text fill="currentColor" fillOpacity="0.75" fontSize="13" letterSpacing="2.5" fontFamily="Georgia, 'Times New Roman', serif" textAnchor="middle">
-          <textPath href={`#${id}-b`} startOffset="50%">
-            {lines[1]}
-          </textPath>
-        </text>
-      )}
-    </svg>
+    <div className={cn('w-full max-w-2xl py-4 text-center text-gold', className)}>
+      <p className="font-serif text-lg font-bold">{lines[0]}</p>
+      {lines[1] && <p className="mt-1 text-base font-semibold text-felt-foreground">{lines[1]}</p>}
+    </div>
   );
 };
 
@@ -88,7 +73,7 @@ export const ResultBanner: React.FC<{ title: string; tone: 'win' | 'push' | 'los
   <div
     style={{ animationDelay: `${delay}ms` }}
     className={cn(
-      'rounded-full px-6 py-2 font-serif text-lg font-bold shadow-xl animate-in zoom-in-75 fade-in fill-mode-both duration-300',
+      'max-w-full rounded-lg px-5 py-3 text-center font-serif text-xl font-bold shadow-xl animate-in zoom-in-75 fade-in fill-mode-both duration-300',
       tone === 'win' && 'bg-gold text-gold-foreground ring-2 ring-playing-card/60',
       tone === 'push' && 'bg-felt-foreground text-felt-deep',
       tone === 'lose' && 'bg-rail-leather text-felt-foreground ring-1 ring-gold/40',
@@ -100,7 +85,7 @@ export const ResultBanner: React.FC<{ title: string; tone: 'win' | 'push' | 'los
 
 /** Small leather tag naming a seat and its total or hand. */
 export const SeatTag: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
-  <span className="rounded-full bg-rail-leather/70 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-felt-foreground/90 shadow-inner">
+  <span className="max-w-full rounded-lg bg-rail-leather px-3 py-2 text-center text-lg font-semibold text-felt-foreground shadow-inner">
     {label}
     {value && <span className="ml-1.5 text-gold">{value}</span>}
   </span>

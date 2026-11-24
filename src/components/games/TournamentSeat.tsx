@@ -15,18 +15,18 @@ export function TournamentSeat({ seat, active, dealer, winner, hand, userId }: {
       <div className="tournament-seat-label">
         {human && userId ? <UserAvatarBubble userId={userId} className="h-[22px] w-[22px] shrink-0 sm:h-8 sm:w-8" fallback={avatar} /> : avatar}
         <div className="min-w-0">
-          <p className="truncate text-xs font-bold sm:text-sm">{seat.name}</p>
-          <p className="truncate text-[10px] text-felt-foreground/60">{human ? 'Your seat' : `${seat.style} bot`}</p>
+          <p className="tournament-name font-bold">{seat.name}</p>
+          <p className="tournament-role text-felt-foreground">{human ? 'Your seat' : `${seat.style} bot`}</p>
         </div>
         {dealer && <span className="tournament-button" title="Dealer button" aria-label="Dealer button">D</span>}
         {winner && <Crown size={14} className="shrink-0 text-gold" aria-label="Hand winner" />}
       </div>
-      <p className="mt-1 text-center font-bold tabular-nums text-gold" data-testid={`stack-${seat.seat}`}>T${seat.stack.toLocaleString()}</p>
+      <p className="mt-1 text-center text-xl font-bold tabular-nums text-gold" data-testid={`stack-${seat.seat}`}>T${seat.stack.toLocaleString()}</p>
       <div className="tournament-hole">
         {(!seat.eliminated || seat.cards.length > 0) && [0, 1].map(i => (
           <PlayingCard key={`${hand}-${seat.seat}-${i}`} card={seat.cards[i]} faceDown={seat.cards[i] === undefined} index={i} className={seat.folded ? 'opacity-30' : ''} />
         ))}
-        {seat.eliminated && seat.cards.length === 0 && <span className="text-xs text-felt-foreground/50">{seat.place ? `${seat.place}${seat.place === 1 ? 'st' : seat.place === 2 ? 'nd' : seat.place === 3 ? 'rd' : 'th'} place` : 'Out'}</span>}
+        {seat.eliminated && seat.cards.length === 0 && <span className="text-base text-felt-foreground">{seat.place ? `${seat.place}${seat.place === 1 ? 'st' : seat.place === 2 ? 'nd' : seat.place === 3 ? 'rd' : 'th'} place` : 'Out'}</span>}
       </div>
       <p className={cn('tournament-action', seat.allIn && 'text-gold font-bold')} aria-live={human ? 'polite' : undefined}>
         {seat.allIn ? 'ALL-IN' : active ? human ? 'Your turn' : 'Thinking…' : seat.action || (seat.bet > 0 ? `Posted ${seat.bet}` : '')}

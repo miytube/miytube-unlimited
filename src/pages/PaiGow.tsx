@@ -40,13 +40,13 @@ interface RecentHand {
 }
 
 const HandRow: React.FC<{ label: string; cards: number[]; name: string; outcome?: 'win' | 'lose' | null }> = ({ label, cards, name, outcome }) => (
-  <div className="flex flex-col items-center gap-1">
-    <span className="text-xs font-semibold uppercase tracking-widest text-felt-foreground/80">
+  <div className="flex min-w-0 flex-col items-center gap-1">
+    <span className="text-center text-base font-semibold text-felt-foreground">
       {label}
       {name ? ` · ${name}` : ''}
       {outcome === 'win' && <span className="ml-1 text-gold">✓</span>}
     </span>
-    <div className="flex gap-1">
+    <div className="flex flex-wrap justify-center gap-1">
       {cards.map((c, i) => (
         <PlayingCard key={`${label}-${c}`} card={c} index={i} className="h-20 w-14 sm:h-28 sm:w-20" />
       ))}
@@ -162,19 +162,19 @@ const PaiGow = () => {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="game-page mx-auto max-w-5xl px-4 py-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <Link to="/game-room" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link to="/game-room" className="inline-flex items-center gap-1 text-base text-muted-foreground hover:text-foreground">
             <ArrowLeft size={16} /> Gaming Room
           </Link>
           {user && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {wallet.dailyAvailable && (
-                <Button size="sm" variant="outline" onClick={claimDaily} className="gap-1">
+                <Button data-game-command size="sm" variant="outline" onClick={claimDaily} className="gap-1">
                   <Gift size={14} /> Claim {COIN_DAILY_BONUS}
                 </Button>
               )}
-              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-semibold">
+              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-base font-semibold">
                 <Coins size={16} className="text-gold" />
                 <span data-testid="coin-balance">{wallet.balance === null ? '…' : balance.toLocaleString()}</span>
               </span>
@@ -184,10 +184,10 @@ const PaiGow = () => {
 
         <CasinoTable shape="rounded">
         <div className="px-3 py-6 sm:px-10">
-          <h1 className="text-center font-serif text-3xl font-bold tracking-wide">
+          <h1 className="text-center font-serif text-3xl font-bold">
             Pai Gow Poker <span className="text-gold">牌九</span>
           </h1>
-          <p className="text-center text-xs uppercase tracking-[0.25em] text-gold">Seven cards · Two hands · Beat the banker</p>
+          <p className="text-center text-base uppercase text-gold">Seven cards · Two hands · Beat the banker</p>
 
           {settled ? (
             <div className="mt-5 grid gap-5 md:grid-cols-2">
@@ -204,41 +204,42 @@ const PaiGow = () => {
             </div>
           ) : (
             <div className="mt-5 flex flex-col items-center gap-3">
-              <div className="flex gap-1">
+              <div className="flex flex-wrap justify-center gap-1">
                 {[0, 1, 2, 3, 4, 5, 6].map((i) => (
                   <PlayingCard key={i} faceDown className={cn('h-20 w-14 sm:h-28 sm:w-20', !hand && 'opacity-40')} />
                 ))}
               </div>
-              <span className="text-xs font-semibold uppercase tracking-widest text-felt-foreground/80">Banker</span>
+              <span className="text-center text-base font-semibold text-felt-foreground">Banker</span>
 
               {hand && live && (
                 <>
-                  <p className="mt-3 text-sm text-felt-foreground/85">Tap 2 cards for your low hand. The other 5 are your high hand.</p>
+                  <p className="mt-3 text-base text-felt-foreground">Tap 2 cards for your low hand. The other 5 are your high hand.</p>
                   <div className="flex flex-wrap justify-center gap-1.5" role="group" aria-label="Your seven cards">
                     {hand.player.map((c, i) => (
-                      <button
+                      <Button
+                        variant="ghost"
                         key={c}
                         type="button"
                         onClick={() => toggle(c)}
                         aria-pressed={low.includes(c)}
-                        className={cn('rounded-lg transition-transform', low.includes(c) && '-translate-y-3 ring-4 ring-gold')}
+                        className={cn('h-auto rounded-lg bg-transparent p-0 transition-transform hover:bg-transparent', low.includes(c) && '-translate-y-3 ring-4 ring-gold')}
                       >
                         <PlayingCard card={c} index={i} className="h-24 w-16 sm:h-32 sm:w-[5.5rem]" />
-                      </button>
+                      </Button>
                     ))}
                   </div>
-                  <div className="grid w-full max-w-lg grid-cols-2 gap-2 text-center text-sm">
+                  <div className="grid w-full max-w-lg grid-cols-1 gap-2 text-center min-[480px]:grid-cols-2 text-base">
                     <div className="rounded-lg bg-felt-deep/50 p-2">
-                      <div className="text-xs uppercase tracking-widest text-gold">High hand (5)</div>
+                      <div className="text-base uppercase text-gold">High hand (5)</div>
                       <div className="font-semibold">{low.length === 2 ? handName(score5(high)) : '—'}</div>
                     </div>
                     <div className="rounded-lg bg-felt-deep/50 p-2">
-                      <div className="text-xs uppercase tracking-widest text-gold">Low hand (2)</div>
+                      <div className="text-base uppercase text-gold">Low hand (2)</div>
                       <div className="font-semibold">{low.length === 2 ? lowName(score2(low)) : `${low.length}/2 picked`}</div>
                     </div>
                   </div>
                   {low.length === 2 && !valid && (
-                    <p className="text-sm font-semibold text-gold">Your 5-card hand must beat your 2-card hand. Try another pair.</p>
+                    <p className="text-base font-semibold text-gold">Your 5-card hand must beat your 2-card hand. Try another pair.</p>
                   )}
                 </>
               )}
@@ -271,24 +272,24 @@ const PaiGow = () => {
                   </span>
                 }
               />
-              {hand && <span className="text-sm font-semibold uppercase tracking-widest text-felt-foreground/80">Bet {hand.bet.toLocaleString()}</span>}
+              {hand && <span className="text-center text-base font-semibold text-felt-foreground">Bet {hand.bet.toLocaleString()}</span>}
             </div>
           )}
 
           <div className="mt-5 border-t border-gold/30 pt-5">
             {authLoading ? null : !user ? (
               <div className="flex flex-col items-center gap-3 text-center">
-                <p className="text-felt-foreground/85">Sign in to play. New members get 500 free coins.</p>
-                <Button asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
+                <p className="text-felt-foreground">Sign in to play. New members get 500 free coins.</p>
+                <Button data-game-command asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
                   <Link to="/auth">Sign in to play</Link>
                 </Button>
               </div>
             ) : live ? (
               <div className="flex flex-wrap justify-center gap-3">
-                <Button size="lg" onClick={setHands} disabled={!!busy || !valid} className="min-w-40 bg-gold text-gold-foreground hover:bg-gold/90">
+                <Button data-game-command size="lg" onClick={setHands} disabled={!!busy || !valid} className="min-w-40 bg-gold text-gold-foreground hover:bg-gold/90">
                   {busy === 'set' ? <Loader2 className="animate-spin" /> : 'Set my hands'}
                 </Button>
-                <Button
+                <Button data-game-command
                   size="lg"
                   variant="outline"
                   onClick={() => setLow(hand!.suggested_low)}
@@ -308,7 +309,7 @@ const PaiGow = () => {
                   isAffordable={(v) => v <= balance}
                   label="Choose your bet"
                 />
-                <Button
+                <Button data-game-command
                   size="lg"
                   onClick={deal}
                   disabled={!!busy || !loaded || balance < bet}
@@ -323,7 +324,7 @@ const PaiGow = () => {
         </CasinoTable>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">How to play</h2>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
               <li>Bet {PAIGOW_BET_MIN}–{PAIGOW_BET_MAX} coins. You and the banker each get 7 cards.</li>
@@ -332,7 +333,7 @@ const PaiGow = () => {
               <li>Ties go to the banker. Not sure? Tap House way and we'll split it for you.</li>
             </ul>
           </div>
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">Your last hands</h2>
             {recent.length === 0 ? (
               <p className="text-muted-foreground">No hands yet.</p>
@@ -341,7 +342,7 @@ const PaiGow = () => {
                 {recent.map((r, i) => {
                   const n = r.payout - r.bet;
                   return (
-                    <li key={i} className="flex justify-between">
+                    <li key={i} className="flex flex-wrap justify-between gap-2">
                       <span className="capitalize text-muted-foreground">{r.status}</span>
                       <span className={cn('font-semibold', n > 0 ? 'text-felt' : n < 0 ? 'text-destructive' : 'text-muted-foreground')}>
                         {n > 0 ? '+' : ''}
@@ -355,7 +356,7 @@ const PaiGow = () => {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
+        <p className="mt-6 text-center text-base text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
       </div>
     </Layout>
   );

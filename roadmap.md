@@ -1,3 +1,7 @@
+## Gaming table readability
+- [ ] Enlarge text, card values, wagers and action controls across all seven tables without changing game rules.
+- [ ] Verify real play, contrast and unclipped layouts on desktop and phone.
+
 ## Lucky 9
 - [x] Add secure 10–500 coin bets, two-card natural 8/9, one optional draw, banker draws on 0–5, even-money wins and returned ties.
 - [x] Add casino table, lobby link, hand history, refresh resume and admin analytics; frontend awaits publishing.

@@ -102,7 +102,7 @@ export const TileArt: React.FC<{ face: TileFace }> = ({ face }) => {
       break;
   }
   return (
-    <svg viewBox="0 0 30 40" className="pointer-events-none h-[86%] w-[86%]" aria-hidden="true">
+    <svg viewBox="0 0 30 40" className="pointer-events-none !h-[92%] !w-[92%]" aria-hidden="true">
       {art}
     </svg>
   );

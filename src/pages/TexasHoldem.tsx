@@ -142,19 +142,19 @@ const TexasHoldem = () => {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="game-page mx-auto max-w-5xl px-4 py-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <Link to="/game-room" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link to="/game-room" className="inline-flex items-center gap-1 text-base text-muted-foreground hover:text-foreground">
             <ArrowLeft size={16} /> Gaming Room
           </Link>
           {user && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {wallet.dailyAvailable && (
-                <Button size="sm" variant="outline" onClick={claimDaily} className="gap-1">
+                <Button data-game-command size="sm" variant="outline" onClick={claimDaily} className="gap-1">
                   <Gift size={14} /> Claim {COIN_DAILY_BONUS}
                 </Button>
               )}
-              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-semibold">
+              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-base font-semibold">
                 <Coins size={16} className="text-gold" />
                 <span data-testid="coin-balance">{wallet.balance === null ? '…' : balance.toLocaleString()}</span>
               </span>
@@ -164,8 +164,8 @@ const TexasHoldem = () => {
 
         <CasinoTable shape="oval">
           <div className="px-3 py-6 sm:px-16 sm:py-9">
-            <h1 className="text-center font-serif text-2xl font-bold uppercase tracking-[0.25em] text-gold drop-shadow sm:text-3xl">Texas Hold'em</h1>
-            <p className="text-center text-[11px] uppercase tracking-[0.25em] text-felt-foreground/70">You vs the dealer · Royal flush pays 100 to 1</p>
+            <h1 className="text-center font-serif text-2xl font-bold uppercase text-gold drop-shadow sm:text-3xl">Texas Hold'em</h1>
+            <p className="text-center text-base uppercase text-felt-foreground">You vs the dealer · Royal flush pays 100 to 1</p>
 
             {/* Dealer */}
             <div className="mt-4 flex flex-col items-center gap-2">
@@ -187,7 +187,7 @@ const TexasHoldem = () => {
             {/* Board */}
             <div className="my-4 flex flex-col items-center gap-2">
               <div className="relative flex flex-wrap justify-center gap-1.5 rounded-[1.25rem] border-2 border-gold/45 p-2 pt-4 sm:gap-2 sm:p-3 sm:pt-5">
-                <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-felt-deep px-3 font-serif text-[10px] font-bold uppercase tracking-[0.3em] text-gold sm:text-xs">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-felt-deep px-3 font-serif text-base font-bold uppercase text-gold sm:text-base">
                   The board
                 </span>
                 {boardSlots.map((c, i) =>
@@ -211,7 +211,7 @@ const TexasHoldem = () => {
               <div className="flex gap-2">
                 {hand?.player.map((c, i) => <PlayingCard key={`p-${hand.id}-${i}`} card={c} dealDelay={i * 2 * DEAL_STEP} />)}
               </div>
-              <div className="flex items-end justify-center gap-4 sm:gap-8">
+              <div className="flex flex-wrap items-end justify-center gap-4 sm:gap-8">
                 <BetSpot label="Ante" amount={hand ? hand.ante : ante} lost={result?.tone === 'lose'} payoutDelay={resultDelay} />
                 <BetSpot
                   label="Call"
@@ -221,7 +221,7 @@ const TexasHoldem = () => {
                   lost={result?.tone === 'lose'}
                 />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {user && (
                   <UserAvatarBubble
                     userId={user.id}
@@ -243,19 +243,19 @@ const TexasHoldem = () => {
         <div className="casino-console mt-4 rounded-2xl px-2 py-5 text-felt-foreground sm:px-4">
           {authLoading ? null : !user ? (
             <div className="flex flex-col items-center gap-3 text-center">
-              <p className="text-felt-foreground/85">Sign in to play. New members get 500 free coins.</p>
-              <Button asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
+              <p className="text-felt-foreground">Sign in to play. New members get 500 free coins.</p>
+              <Button data-game-command asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
                 <Link to="/auth">Sign in to play</Link>
               </Button>
             </div>
           ) : live ? (
             <div className="flex flex-col items-center gap-3">
-              <p className="text-sm text-felt-foreground/85">Like your hand? Call to see the turn and river, or fold.</p>
+              <p className="text-base text-felt-foreground">Like your hand? Call to see the turn and river, or fold.</p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Button size="lg" onClick={() => run('call')} disabled={!!busy || !hand?.can_call} className="min-w-36 bg-gold text-gold-foreground hover:bg-gold/90">
+                <Button data-game-command size="lg" onClick={() => run('call')} disabled={!!busy || !hand?.can_call} className="min-w-36 bg-gold text-gold-foreground hover:bg-gold/90">
                   {busy === 'call' ? <Loader2 className="animate-spin" /> : `Call (${(hand!.ante * 2).toLocaleString()})`}
                 </Button>
-                <Button
+                <Button data-game-command
                   size="lg"
                   variant="outline"
                   onClick={() => run('fold')}
@@ -266,7 +266,7 @@ const TexasHoldem = () => {
                 </Button>
               </div>
               {!hand?.can_call && (
-                <p className="text-sm text-felt-foreground/85">
+                <p className="text-base text-felt-foreground">
                   Not enough coins to call.{' '}
                   <Link to="/shop" className="font-semibold text-gold underline">
                     Get more coins
@@ -284,7 +284,7 @@ const TexasHoldem = () => {
                 isAffordable={(v) => v * 3 <= balance}
                 label="Choose your ante"
               />
-              <Button
+              <Button data-game-command
                 size="lg"
                 onClick={() => run('deal')}
                 disabled={!!busy || !loaded || balance < ante}
@@ -292,13 +292,13 @@ const TexasHoldem = () => {
               >
                 {busy === 'deal' ? <Loader2 className="animate-spin" /> : `${hand ? 'Deal again' : 'Deal'} · ante ${ante}`}
               </Button>
-              <p className="text-xs text-felt-foreground/75">Calling costs 2× your ante, so keep {ante * 3} coins to play the full hand.</p>
+              <p className="text-base text-felt-foreground">Calling costs 2× your ante, so keep {ante * 3} coins to play the full hand.</p>
             </div>
           )}
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <div className="rounded-xl border bg-card p-4 text-sm md:col-span-1">
+          <div className="rounded-xl border bg-card p-4 text-base md:col-span-1">
             <h2 className="mb-2 font-serif text-lg font-bold">How to play</h2>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
               <li>Put up an ante ({HOLDEM_ANTE_MIN}–{HOLDEM_ANTE_MAX} coins). You get 2 cards and see the flop.</li>
@@ -307,7 +307,7 @@ const TexasHoldem = () => {
               <li>Beat a qualifying dealer: ante pays by the table, call pays 1 to 1.</li>
             </ul>
           </div>
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">Ante pays</h2>
             <ul className="space-y-1">
               {HOLDEM_PAYTABLE.map((r) => (
@@ -318,7 +318,7 @@ const TexasHoldem = () => {
               ))}
             </ul>
           </div>
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">Your last hands</h2>
             {recent.length === 0 ? (
               <p className="text-muted-foreground">No hands yet.</p>
@@ -327,7 +327,7 @@ const TexasHoldem = () => {
                 {recent.map((r, i) => {
                   const net = r.payout - r.staked;
                   return (
-                    <li key={i} className="flex justify-between">
+                    <li key={i} className="flex flex-wrap justify-between gap-2">
                       <span className="capitalize text-muted-foreground">{r.status === 'dealer_no_qualify' ? 'Dealer no qualify' : r.status}</span>
                       <span className={cn('font-semibold', net > 0 ? 'text-felt' : net < 0 ? 'text-destructive' : 'text-muted-foreground')}>
                         {net > 0 ? '+' : ''}
@@ -341,7 +341,7 @@ const TexasHoldem = () => {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
+        <p className="mt-6 text-center text-base text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
       </div>
     </Layout>
   );

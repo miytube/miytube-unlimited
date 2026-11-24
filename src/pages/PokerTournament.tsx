@@ -80,16 +80,16 @@ export default function PokerTournament() {
   const ordinal = place ? `${place}${place === 1 ? 'st' : place === 2 ? 'nd' : place === 3 ? 'rd' : 'th'}` : '';
   return (
     <Layout>
-      <div className="mx-auto max-w-6xl px-3 py-6 sm:px-6">
+      <div className="game-page mx-auto max-w-6xl px-3 py-6 sm:px-6">
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          <Button asChild variant="ghost" size="sm"><Link to="/game-room"><ArrowLeft size={16} /> Gaming Room</Link></Button>
-          <Button asChild variant="outline" size="sm"><Link to="/game-room/texas-holdem"><Spade size={15} /> Dealer poker</Link></Button>
+          <Button data-game-command asChild variant="ghost" size="sm"><Link to="/game-room"><ArrowLeft size={16} /> Gaming Room</Link></Button>
+          <Button data-game-command asChild variant="outline" size="sm"><Link to="/game-room/texas-holdem"><Spade size={15} /> Dealer poker</Link></Button>
         </div>
         <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
-          <div><p className="mb-1 text-xs font-semibold uppercase text-muted-foreground">MiyTube • No-limit Texas Hold’em</p><h1 className="font-serif text-3xl font-bold sm:text-4xl">Championship Poker</h1></div>
-          <span className="inline-flex items-center gap-2 text-sm font-semibold"><Trophy size={18} className="text-gold" /> Free Sit & Go <span className="text-muted-foreground">• 6 seats</span></span>
+          <div><p className="mb-1 text-base font-semibold uppercase text-muted-foreground">MiyTube • No-limit Texas Hold’em</p><h1 className="font-serif text-3xl font-bold sm:text-4xl">Championship Poker</h1></div>
+          <span className="inline-flex items-center gap-2 text-base font-semibold"><Trophy size={18} className="text-gold" /> Free Sit & Go <span className="text-muted-foreground">• 6 seats</span></span>
         </header>
-        <div className="mb-3 flex flex-wrap justify-between gap-x-4 gap-y-2 border-y py-3 text-xs sm:text-sm">
+        <div className="mb-3 flex flex-wrap justify-between gap-x-4 gap-y-2 border-y py-3 text-base sm:text-base">
           <span>Hand <b data-testid="tournament-hand">{table?.hand ?? '—'}</b> · Level <b>{table?.level ?? 1}</b></span>
           <span>Blinds <b>{table?.smallBlind.toLocaleString() ?? '50'} / {table?.bigBlind.toLocaleString() ?? '100'}</b></span>
           <span><Users size={14} className="mr-1 inline" />{table ? table.seats.filter(s => !s.eliminated).length : 6} players left</span>
@@ -102,46 +102,46 @@ export default function PokerTournament() {
             ))}
             <div className="tournament-board">
               <Trophy size={25} className="mb-1 text-gold/65" aria-hidden />
-              <p className="font-serif text-sm font-bold uppercase text-gold sm:text-lg">MiyTube Championship</p>
-              <p className="mb-3 text-[10px] uppercase text-felt-foreground/55">{table?.street ?? 'Final table'}</p>
+              <p className="font-serif text-center text-lg font-bold text-gold">MiyTube Championship</p>
+              <p className="mb-3 text-base font-semibold uppercase text-felt-foreground">{table?.street ?? 'Final table'}</p>
               <div className="tournament-community">
                 {Array.from({ length: 5 }, (_, i) => table?.board[i]).map((card, i) => card === undefined ? <div className="tournament-empty-card" key={`empty-${i}`} /> : <PlayingCard key={`${table?.hand}-board-${i}`} card={card} index={i} />)}
               </div>
-              <div className="mt-3 flex items-center gap-2 text-sm font-bold text-gold"><CasinoChip value={100} size="sm" /><span data-testid="tournament-pot">Pot T${(table?.pot ?? 0).toLocaleString()}</span></div>
-              {table && table.pots.length > 1 && <p className="mt-1 text-[10px] text-felt-foreground/70">Main T${table.pots[0].size.toLocaleString()} · {table.pots.length - 1} side {table.pots.length === 2 ? 'pot' : 'pots'}</p>}
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-2xl font-bold text-gold"><CasinoChip value={100} size="sm" label={false} /><span data-testid="tournament-pot">Pot T${(table?.pot ?? 0).toLocaleString()}</span></div>
+              {table && table.pots.length > 1 && <p className="mt-1 text-center text-base text-felt-foreground">Main T${table.pots[0].size.toLocaleString()} · {table.pots.length - 1} side {table.pots.length === 2 ? 'pot' : 'pots'}</p>}
             </div>
           </div>
         </CasinoTable>
         <section className="casino-console mt-4 rounded-lg px-3 py-5 text-felt-foreground sm:px-6" aria-label="Poker actions">
-          {error && <div role="alert" className="mb-4 flex flex-wrap items-center justify-center gap-2 text-sm"><span>{error}</span><Button variant="outline" size="sm" disabled={busy} onClick={() => void request('current')}><RefreshCw size={14} /> Reconnect</Button></div>}
+          {error && <div role="alert" className="mb-4 flex flex-wrap items-center justify-center gap-2 text-base"><span>{error}</span><Button data-game-command variant="outline" size="sm" disabled={busy} onClick={() => void request('current')}><RefreshCw size={14} /> Reconnect</Button></div>}
           {authLoading || (user && !loaded && !error) ? <p className="flex items-center justify-center gap-2"><Loader2 className="animate-spin" size={18} /> Loading your table…</p> : !user ? (
-            <div className="flex flex-col items-center gap-3"><p>Free entry · T$10,000 starting chips</p><Button asChild className={GOLD_BUTTON}><Link to="/auth"><Users size={16} /> Sign in to take a seat</Link></Button></div>
-          ) : !table ? <div className="text-center"><Button size="lg" className={GOLD_BUTTON} disabled={busy || !loaded} onClick={() => void request('start')}><Trophy size={19} /> Take a seat — free</Button></div> : table.status !== 'playing' ? (
-            <div className="text-center" data-testid="tournament-finish"><Trophy size={38} className="mx-auto mb-2 text-gold" /><h2 className="font-serif text-2xl font-bold text-gold">{table.status === 'champion' ? 'You are the champion' : `${ordinal} place`}</h2><p className="my-3 text-sm text-felt-foreground/75">{table.status === 'champion' ? 'The final table is yours.' : `Tournament complete · ${table.hand} hands played`}</p><Button disabled={busy} onClick={() => void request('start')} className={GOLD_BUTTON}><RefreshCw size={16} /> New tournament</Button></div>
+            <div className="flex flex-col items-center gap-3"><p>Free entry · T$10,000 starting chips</p><Button data-game-command asChild className={GOLD_BUTTON}><Link to="/auth"><Users size={16} /> Sign in to take a seat</Link></Button></div>
+          ) : !table ? <div className="text-center"><Button data-game-command size="lg" className={GOLD_BUTTON} disabled={busy || !loaded} onClick={() => void request('start')}><Trophy size={19} /> Take a seat — free</Button></div> : table.status !== 'playing' ? (
+            <div className="text-center" data-testid="tournament-finish"><Trophy size={38} className="mx-auto mb-2 text-gold" /><h2 className="font-serif text-2xl font-bold text-gold">{table.status === 'champion' ? 'You are the champion' : `${ordinal} place`}</h2><p className="my-3 text-base text-felt-foreground">{table.status === 'champion' ? 'The final table is yours.' : `Tournament complete · ${table.hand} hands played`}</p><Button data-game-command disabled={busy} onClick={() => void request('start')} className={GOLD_BUTTON}><RefreshCw size={16} /> New tournament</Button></div>
           ) : table.finished ? (
-            <div className="text-center"><p className="mb-4 min-h-6 font-serif font-bold text-gold" role="status">{table.result}</p><Button disabled={busy} onClick={() => void request('next')} className={GOLD_BUTTON}>Next hand <ArrowRight size={16} /></Button></div>
+            <div className="text-center"><p className="mb-4 min-h-6 font-serif font-bold text-gold" role="status">{table.result}</p><Button data-game-command disabled={busy} onClick={() => void request('next')} className={GOLD_BUTTON}>Next hand <ArrowRight size={16} /></Button></div>
           ) : (
             <div>
-              <p className="mb-4 text-center text-sm" role="status">{yourTurn ? 'Your turn' : `${table.seats[table.actor ?? 0]?.name} is thinking…`}</p>
+              <p className="mb-4 text-center text-base" role="status">{yourTurn ? 'Your turn' : `${table.seats[table.actor ?? 0]?.name} is thinking…`}</p>
               <div className="flex flex-wrap justify-center gap-2">
-                <Button variant="outline" disabled={busy || !yourTurn || !table.legal.includes('fold')} onClick={() => void request('action','fold')} className="border-gold/40 bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground">Fold</Button>
-                <Button disabled={busy || !yourTurn || (!table.legal.includes('check') && !table.legal.includes('call'))} onClick={() => void request('action',table.legal.includes('check')?'check':'call')} className={GOLD_BUTTON}>{table.legal.includes('check') ? 'Check' : `Call T$${table.callAmount.toLocaleString()}`}</Button>
-                <Button variant="outline" disabled={busy || !canRaise} onClick={() => void request('action',table.legal.includes('raise')?'raise':'bet',max)} className="border-gold/40 bg-transparent text-gold hover:bg-felt-deep hover:text-gold">All-in</Button>
+                <Button data-game-command variant="outline" disabled={busy || !yourTurn || !table.legal.includes('fold')} onClick={() => void request('action','fold')} className="border-gold/40 bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground">Fold</Button>
+                <Button data-game-command disabled={busy || !yourTurn || (!table.legal.includes('check') && !table.legal.includes('call'))} onClick={() => void request('action',table.legal.includes('check')?'check':'call')} className={GOLD_BUTTON}>{table.legal.includes('check') ? 'Check' : `Call T$${table.callAmount.toLocaleString()}`}</Button>
+                <Button data-game-command variant="outline" disabled={busy || !canRaise} onClick={() => void request('action',table.legal.includes('raise')?'raise':'bet',max)} className="border-gold/40 bg-transparent text-gold hover:bg-felt-deep hover:text-gold">All-in</Button>
               </div>
               {canRaise && <div className="mx-auto mt-5 max-w-xl border-t border-gold/20 pt-4">
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><label htmlFor="raise-total" className="text-xs">{table.legal.includes('raise') ? 'Raise to' : 'Bet'} · total this round</label><Input id="raise-total" aria-label="Raise total" type="number" min={min} max={max} step={1} value={raise} disabled={busy} onChange={e => setRaise(Number(e.target.value))} className="w-32 border-gold/30 bg-felt-deep text-felt-foreground" /></div>
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-2"><label htmlFor="raise-total" className="text-base">{table.legal.includes('raise') ? 'Raise to' : 'Bet'} · total this round</label><Input id="raise-total" aria-label="Raise total" type="number" min={min} max={max} step={1} value={raise} disabled={busy} onChange={e => setRaise(Number(e.target.value))} className="w-32 border-gold/30 bg-felt-deep text-felt-foreground" /></div>
                 <Slider aria-label="Raise amount" min={min} max={max} step={1} value={[Math.min(max, Math.max(min, raise))]} onValueChange={v => setRaise(v[0])} disabled={busy || min === max} />
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><div className="flex gap-1">{[2,3,4].map(mult => <Button key={mult} size="sm" variant="ghost" disabled={busy} onClick={() => setRaise(Math.min(max, Math.max(min, table.bigBlind * mult)))} className="text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground">{mult}× BB</Button>)}</div><Button className={GOLD_BUTTON} disabled={busy || !validRaise} onClick={() => void request('action',table.legal.includes('raise')?'raise':'bet',raise)}><ChevronUp size={16} /> {table.legal.includes('raise')?'Raise':'Bet'} T${raise.toLocaleString()}</Button></div>
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><div className="flex flex-wrap gap-2">{[2,3,4].map(mult => <Button data-game-command key={mult} size="sm" variant="ghost" disabled={busy} onClick={() => setRaise(Math.min(max, Math.max(min, table.bigBlind * mult)))} className="text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground">{mult}× BB</Button>)}</div><Button data-game-command className={GOLD_BUTTON} disabled={busy || !validRaise} onClick={() => void request('action',table.legal.includes('raise')?'raise':'bet',raise)}><ChevronUp size={16} /> {table.legal.includes('raise')?'Raise':'Bet'} T${raise.toLocaleString()}</Button></div>
               </div>}
             </div>
           )}
         </section>
         <div className="mt-7 grid gap-7 border-t pt-6 md:grid-cols-2">
-          <section><h2 className="mb-3 font-serif text-xl font-bold">Table action</h2><ol className="space-y-1 text-sm text-muted-foreground" data-testid="tournament-log">{table?.log.length ? [...table.log].reverse().map((entry,i)=><li key={`${table.version}-${i}`}>{entry}</li>) : <li>No hands dealt.</li>}</ol></section>
-          <section><h2 className="mb-3 font-serif text-xl font-bold">Your last hands</h2>{table?.recent.length ? <ul className="space-y-2 text-sm">{table.recent.map(h=><li className="flex justify-between gap-3" key={h.hand}><span className="min-w-0 text-muted-foreground">#{h.hand} · {h.result}</span><span className={cn('shrink-0 font-semibold tabular-nums',h.net>0?'text-jade':'text-muted-foreground')}>{h.net>0?'+':''}{h.net.toLocaleString()}</span></li>)}</ul> : <p className="text-sm text-muted-foreground">No completed hands.</p>}</section>
+          <section><h2 className="mb-3 font-serif text-xl font-bold">Table action</h2><ol className="space-y-1 text-base text-muted-foreground" data-testid="tournament-log">{table?.log.length ? [...table.log].reverse().map((entry,i)=><li key={`${table.version}-${i}`}>{entry}</li>) : <li>No hands dealt.</li>}</ol></section>
+          <section><h2 className="mb-3 font-serif text-xl font-bold">Your last hands</h2>{table?.recent.length ? <ul className="space-y-2 text-base">{table.recent.map(h=><li className="flex justify-between gap-3" key={h.hand}><span className="min-w-0 text-muted-foreground">#{h.hand} · {h.result}</span><span className={cn('shrink-0 font-semibold tabular-nums',h.net>0?'text-jade':'text-muted-foreground')}>{h.net>0?'+':''}{h.net.toLocaleString()}</span></li>)}</ul> : <p className="text-base text-muted-foreground">No completed hands.</p>}</section>
         </div>
-        <details className="mt-7 border-y py-4 text-sm"><summary className="cursor-pointer font-semibold">Tournament structure</summary><p className="mt-3 text-muted-foreground">Free entry. Six seats, T$10,000 each. No rebuys. Blinds rise every {HANDS_PER_LEVEL} hands. Tournament chips cannot be spent, exchanged or cashed out. Five computer opponents; not a live multiplayer table.</p><div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-muted-foreground">{BLIND_LEVELS.map((bb,i)=><span key={bb}>Level {i+1}: {bb/2}/{bb}</span>)}</div></details>
-        <p className="mt-4 text-center text-xs text-muted-foreground">Independent MiyTube tournament. Not affiliated with WSOP or the World Series of Poker.</p>
+        <details className="mt-7 border-y py-4 text-base"><summary className="cursor-pointer font-semibold">Tournament structure</summary><p className="mt-3 text-muted-foreground">Free entry. Six seats, T$10,000 each. No rebuys. Blinds rise every {HANDS_PER_LEVEL} hands. Tournament chips cannot be spent, exchanged or cashed out. Five computer opponents; not a live multiplayer table.</p><div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-muted-foreground">{BLIND_LEVELS.map((bb,i)=><span key={bb}>Level {i+1}: {bb/2}/{bb}</span>)}</div></details>
+        <p className="mt-4 text-center text-base text-muted-foreground">Independent MiyTube tournament. Not affiliated with WSOP or the World Series of Poker.</p>
       </div>
     </Layout>
   );

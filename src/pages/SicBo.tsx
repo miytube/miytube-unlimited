@@ -142,13 +142,14 @@ const SicBo = () => {
     const amount = bets[betKey(type, value)]?.amount;
     const o = outcome(type, value);
     return (
-      <button
+      <Button
+        variant="ghost"
         type="button"
         aria-label={`${label}${amount ? `, ${amount} coins on it` : ''}`}
         onClick={() => place(type, value)}
         disabled={rolling || !user}
         className={cn(
-          'relative flex flex-col items-center justify-center rounded-lg border border-gold/40 bg-felt-deep/40 px-2 py-2 text-felt-foreground transition-all hover:border-gold hover:bg-felt-deep/70 disabled:cursor-not-allowed',
+          'sicbo-spot relative flex h-auto min-h-24 flex-col whitespace-normal items-center justify-center rounded-lg border border-gold/40 bg-felt-deep/40 px-2 py-3 text-base text-felt-foreground transition-all hover:border-gold hover:bg-felt-deep/70 hover:text-felt-foreground disabled:cursor-not-allowed',
           o === 'win' && 'border-gold bg-gold/25 ring-2 ring-gold',
           o === 'lose' && 'opacity-50',
           className,
@@ -156,11 +157,11 @@ const SicBo = () => {
       >
         {children}
         {amount ? (
-          <span className="absolute -right-1.5 -top-1.5 flex h-7 min-w-7 items-center justify-center rounded-full border-2 border-dashed border-gold-foreground/40 bg-gold px-1 text-[11px] font-bold text-gold-foreground shadow">
+          <span className="mt-2 flex min-h-8 min-w-10 items-center justify-center rounded-full border-2 border-dashed border-gold-foreground/40 bg-gold px-2 text-base font-bold text-gold-foreground shadow">
             {amount}
           </span>
         ) : null}
-      </button>
+      </Button>
     );
   };
 
@@ -169,19 +170,19 @@ const SicBo = () => {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-5xl px-4 py-6">
+      <div className="game-page mx-auto max-w-5xl px-4 py-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <Link to="/game-room" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+          <Link to="/game-room" className="inline-flex items-center gap-1 text-base text-muted-foreground hover:text-foreground">
             <ArrowLeft size={16} /> Gaming Room
           </Link>
           {user && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {wallet.dailyAvailable && (
-                <Button size="sm" variant="outline" onClick={claimDaily} className="gap-1">
+                <Button data-game-command size="sm" variant="outline" onClick={claimDaily} className="gap-1">
                   <Gift size={14} /> Claim {COIN_DAILY_BONUS}
                 </Button>
               )}
-              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-sm font-semibold">
+              <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-base font-semibold">
                 <Coins size={16} className="text-gold" />
                 <span data-testid="coin-balance">{wallet.balance === null ? '…' : balance.toLocaleString()}</span>
               </span>
@@ -190,14 +191,14 @@ const SicBo = () => {
         </div>
 
         <section className="overflow-hidden rounded-[2rem] border-4 border-gold/70 bg-table-felt px-3 py-6 text-felt-foreground shadow-2xl sm:px-6">
-          <h1 className="text-center font-serif text-3xl font-bold tracking-wide">
+          <h1 className="text-center font-serif text-3xl font-bold">
             Sic Bo <span className="text-gold">骰寶</span>
           </h1>
-          <p className="text-center text-xs uppercase tracking-[0.25em] text-gold">Three dice · Big or small · Triples pay 180 to 1</p>
+          <p className="text-center text-base uppercase text-gold">Three dice · Big or small · Triples pay 180 to 1</p>
 
           {/* Dice */}
           <div className="mt-5 flex flex-col items-center gap-3">
-            <div className="flex gap-3 rounded-full border border-gold/40 bg-felt-deep/60 px-6 py-4">
+            <div className="sicbo-dice flex max-w-full gap-2 rounded-lg border border-gold/40 bg-felt-deep/60 px-2 py-4 sm:gap-3 sm:px-6">
               {dice.map((d, i) => (
                 <Die key={i} value={d} rolling={rolling} className={rolling ? `[animation-delay:${i * 80}ms]` : ''} />
               ))}
@@ -218,36 +219,36 @@ const SicBo = () => {
 
           {/* Board */}
           <div className="mt-2 space-y-2">
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-3">
               <Spot type="small" label="Small, 4 to 10" className="py-4">
-                <span className="font-serif text-base font-bold sm:text-xl">SMALL 小</span>
-                <span className="text-xs text-felt-foreground/75">4–10 · {ODDS_LABEL.small}</span>
+                <span className="font-serif text-xl font-bold">SMALL 小</span>
+                <span className="text-base text-felt-foreground">4–10 · {ODDS_LABEL.small}</span>
               </Spot>
               <Spot type="any_triple" label="Any triple" className="py-4">
-                <span className="font-serif text-sm font-bold sm:text-lg">ANY TRIPLE</span>
-                <span className="text-xs text-felt-foreground/75">{ODDS_LABEL.any_triple}</span>
+                <span className="font-serif text-lg font-bold">ANY TRIPLE</span>
+                <span className="text-base text-felt-foreground">{ODDS_LABEL.any_triple}</span>
               </Spot>
               <Spot type="big" label="Big, 11 to 17" className="py-4">
-                <span className="font-serif text-base font-bold sm:text-xl">BIG 大</span>
-                <span className="text-xs text-felt-foreground/75">11–17 · {ODDS_LABEL.big}</span>
+                <span className="font-serif text-xl font-bold">BIG 大</span>
+                <span className="text-base text-felt-foreground">11–17 · {ODDS_LABEL.big}</span>
               </Spot>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <Spot type="odd" label="Odd total">
                 <span className="font-serif font-bold">ODD 單</span>
-                <span className="text-xs text-felt-foreground/75">{ODDS_LABEL.odd}</span>
+                <span className="text-base text-felt-foreground">{ODDS_LABEL.odd}</span>
               </Spot>
               <Spot type="even" label="Even total">
                 <span className="font-serif font-bold">EVEN 雙</span>
-                <span className="text-xs text-felt-foreground/75">{ODDS_LABEL.even}</span>
+                <span className="text-base text-felt-foreground">{ODDS_LABEL.even}</span>
               </Spot>
             </div>
 
-            <p className="pt-1 text-center text-[11px] uppercase tracking-widest text-gold">Doubles · {ODDS_LABEL.double}</p>
-            <div className="grid grid-cols-6 gap-2">
+            <p className="pt-1 text-center text-base uppercase text-gold">Doubles · {ODDS_LABEL.double}</p>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {FACES.map((f) => (
                 <Spot key={`d${f}`} type="double" value={f} label={`Double ${f}`}>
-                  <span className="flex gap-0.5">
+                  <span className="flex flex-wrap justify-center gap-0.5">
                     <Die value={f} size="sm" />
                     <Die value={f} size="sm" />
                   </span>
@@ -255,31 +256,31 @@ const SicBo = () => {
               ))}
             </div>
 
-            <p className="pt-1 text-center text-[11px] uppercase tracking-widest text-gold">Triples · {ODDS_LABEL.triple}</p>
-            <div className="grid grid-cols-6 gap-2">
+            <p className="pt-1 text-center text-base uppercase text-gold">Triples · {ODDS_LABEL.triple}</p>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {FACES.map((f) => (
                 <Spot key={`t${f}`} type="triple" value={f} label={`Triple ${f}`}>
-                  <span className="flex gap-0.5">
+                  <span className="flex flex-wrap justify-center gap-0.5">
                     <Die value={f} size="sm" />
-                    <Die value={f} size="sm" className="hidden sm:grid" />
-                    <Die value={f} size="sm" className="hidden sm:grid" />
+                    <Die value={f} size="sm" />
+                    <Die value={f} size="sm" />
                   </span>
                 </Spot>
               ))}
             </div>
 
-            <p className="pt-1 text-center text-[11px] uppercase tracking-widest text-gold">Totals</p>
-            <div className="grid grid-cols-7 gap-2">
+            <p className="pt-1 text-center text-base uppercase text-gold">Totals</p>
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
               {TOTALS.map((t) => (
                 <Spot key={`s${t}`} type="total" value={t} label={`Total ${t}`}>
                   <span className="font-serif text-lg font-bold">{t}</span>
-                  <span className="text-[10px] text-felt-foreground/75">{totalOdds(t)}:1</span>
+                  <span className="text-base text-felt-foreground">{totalOdds(t)}:1</span>
                 </Spot>
               ))}
             </div>
 
-            <p className="pt-1 text-center text-[11px] uppercase tracking-widest text-gold">Single number · {ODDS_LABEL.single}</p>
-            <div className="grid grid-cols-6 gap-2">
+            <p className="pt-1 text-center text-base uppercase text-gold">Single number · {ODDS_LABEL.single}</p>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
               {FACES.map((f) => (
                 <Spot key={`n${f}`} type="single" value={f} label={`Single ${f}`}>
                   <Die value={f} size="sm" />
@@ -292,8 +293,8 @@ const SicBo = () => {
           <div className="mt-5 border-t border-gold/30 pt-5">
             {authLoading ? null : !user ? (
               <div className="flex flex-col items-center gap-3 text-center">
-                <p className="text-felt-foreground/85">Sign in to play. New members get 500 free coins.</p>
-                <Button asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
+                <p className="text-felt-foreground">Sign in to play. New members get 500 free coins.</p>
+                <Button data-game-command asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
                   <Link to="/auth">Sign in to play</Link>
                 </Button>
               </div>
@@ -301,22 +302,23 @@ const SicBo = () => {
               <div className="flex flex-col items-center gap-4">
                 <div className="flex flex-wrap justify-center gap-2" role="radiogroup" aria-label="Choose your chip">
                   {SICBO_CHIPS.map((v) => (
-                    <button
+                    <Button
+                      variant="ghost"
                       key={v}
                       type="button"
                       role="radio"
                       aria-checked={chip === v}
                       onClick={() => setChip(v)}
                       className={cn(
-                        'flex h-12 w-12 items-center justify-center rounded-full border-4 border-dashed font-bold shadow-md transition-transform',
-                        chip === v ? 'scale-110 border-gold-foreground/40 bg-gold text-gold-foreground' : 'border-felt-foreground/40 bg-felt-deep text-felt-foreground hover:scale-105',
+                        'flex h-14 w-14 rounded-full p-0 text-lg items-center justify-center rounded-full border-4 border-dashed font-bold shadow-md transition-transform',
+                        chip === v ? 'scale-110 border-gold-foreground/40 bg-gold text-gold-foreground' : 'border-felt-foreground/40 bg-felt-deep text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground hover:scale-105',
                       )}
                     >
                       {v}
-                    </button>
+                    </Button>
                   ))}
                 </div>
-                <p className="text-sm text-felt-foreground/85">
+                <p className="text-base text-felt-foreground">
                   {betList.length ? (
                     <>
                       On the table: <strong>{stake.toLocaleString()}</strong> / {SICBO_MAX_STAKE} coins
@@ -326,7 +328,7 @@ const SicBo = () => {
                   )}
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
-                  <Button
+                  <Button data-game-command
                     size="lg"
                     onClick={roll}
                     disabled={rolling || !betList.length || stake > balance}
@@ -334,7 +336,7 @@ const SicBo = () => {
                   >
                     {rolling ? <Loader2 className="animate-spin" /> : result ? 'Roll again' : 'Roll the dice'}
                   </Button>
-                  <Button
+                  <Button data-game-command
                     size="lg"
                     variant="outline"
                     onClick={() => {
@@ -348,7 +350,7 @@ const SicBo = () => {
                   </Button>
                 </div>
                 {stake > balance && wallet.balance !== null && (
-                  <p className="text-sm text-felt-foreground/85">
+                  <p className="text-base text-felt-foreground">
                     Not enough coins for these bets.{' '}
                     <Link to="/shop" className="font-semibold text-gold underline">
                       Get more coins
@@ -361,7 +363,7 @@ const SicBo = () => {
         </section>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">How to play</h2>
             <ul className="list-disc space-y-1 pl-5 text-muted-foreground">
               <li>Three dice are rolled. Bet on the total, a number, or a pair or triple.</li>
@@ -370,7 +372,7 @@ const SicBo = () => {
               <li>Each bet at least 10 coins, up to {SICBO_MAX_STAKE} coins per roll. Your bets stay on the table so you can roll again.</li>
             </ul>
           </div>
-          <div className="rounded-xl border bg-card p-4 text-sm">
+          <div className="rounded-xl border bg-card p-4 text-base">
             <h2 className="mb-2 font-serif text-lg font-bold">Your last rolls</h2>
             {recent.length === 0 ? (
               <p className="text-muted-foreground">No rolls yet.</p>
@@ -379,7 +381,7 @@ const SicBo = () => {
                 {recent.map((r, i) => {
                   const n = r.payout - r.stake;
                   return (
-                    <li key={i} className="flex items-center justify-between">
+                    <li key={i} className="flex flex-wrap items-center justify-between gap-2">
                       <span className="flex items-center gap-1">
                         {r.dice.map((d, j) => (
                           <Die key={j} value={d} size="sm" />
@@ -398,7 +400,7 @@ const SicBo = () => {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
+        <p className="mt-6 text-center text-base text-muted-foreground">For fun only. MiyTube Coins have no cash value and can't be cashed out.</p>
       </div>
     </Layout>
   );

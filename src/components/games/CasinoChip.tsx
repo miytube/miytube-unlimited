@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@/components/ui/button';
 import { ChipDenomination, chipBreakdown, chipDenomination } from '@/lib/chips';
 import { cn } from '@/lib/utils';
 
@@ -15,8 +16,8 @@ export const chipStyle = (value: number): React.CSSProperties => {
 
 const SIZES = {
   sm: 'h-8 w-8',
-  md: 'h-11 w-11',
-  lg: 'h-11 w-11 min-[400px]:h-14 min-[400px]:w-14 sm:h-16 sm:w-16',
+  md: 'h-14 w-14',
+  lg: 'h-14 w-14 sm:h-16 sm:w-16',
 } as const;
 
 interface CasinoChipProps {
@@ -30,7 +31,7 @@ interface CasinoChipProps {
 /** A molded clay casino chip in the denomination's color. */
 export const CasinoChip: React.FC<CasinoChipProps> = ({ value, size = 'md', label = true, className, style }) => (
   <span className={cn('casino-chip shrink-0', SIZES[size], className)} style={{ ...chipStyle(value), ...style }} aria-hidden="true">
-    {label && <span className="font-serif text-[30cqw] font-extrabold tracking-tight">{value}</span>}
+    {label && <span className="casino-chip-value font-serif font-extrabold">{value}</span>}
   </span>
 );
 
@@ -47,7 +48,7 @@ export const ChipStack: React.FC<{ amount: number; className?: string; animation
   if (chips.length === 0) return null;
   return (
     <div className={cn('flex flex-col items-center', animation, className)} style={{ animationDelay: `${delay}ms` }}>
-      <div className="relative h-11 w-11" style={{ marginTop: `${(chips.length - 1) * 4}px` }}>
+      <div className="relative h-14 w-14" style={{ marginTop: `${(chips.length - 1) * 4}px` }}>
         {chips.map((v, i) => (
           <CasinoChip
             key={i}
@@ -58,7 +59,7 @@ export const ChipStack: React.FC<{ amount: number; className?: string; animation
           />
         ))}
       </div>
-      <span className="mt-1 rounded-full bg-rail-leather/80 px-2 text-[11px] font-bold tabular-nums text-gold">{amount.toLocaleString()}</span>
+      <span className="mt-1 rounded-md bg-rail-leather px-2 py-0.5 text-lg font-bold tabular-nums text-gold">{amount.toLocaleString()}</span>
     </div>
   );
 };
@@ -84,7 +85,7 @@ export const BetSpot: React.FC<{
           <ChipStack key={amount} amount={amount} />
         </div>
       ) : (
-        <span className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-gold/80">{label}</span>
+        <span className="px-2 text-center font-serif text-base font-bold text-gold">{label}</span>
       )}
     </div>
     {payout > 0 && (
@@ -110,7 +111,8 @@ export const ChipPicker: React.FC<{
     {values.map((v) => {
       const selected = value === v;
       return (
-        <button
+        <Button
+          variant="ghost"
           key={v}
           type="button"
           role="radio"
@@ -119,13 +121,13 @@ export const ChipPicker: React.FC<{
           onClick={() => onChange(v)}
           disabled={disabled}
           className={cn(
-            'rounded-full transition-transform duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
+            'h-auto rounded-full p-0 text-base transition-transform duration-200 hover:bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
             selected ? '-translate-y-2 drop-shadow-[0_0_10px_hsl(var(--gold)/0.7)]' : 'hover:-translate-y-1',
             !isAffordable(v) && 'opacity-40',
           )}
         >
           <CasinoChip value={v} size="lg" className={cn(selected && 'ring-2 ring-gold ring-offset-2 ring-offset-rail-leather')} />
-        </button>
+        </Button>
       );
     })}
   </div>
