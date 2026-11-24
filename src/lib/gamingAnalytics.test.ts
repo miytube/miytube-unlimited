@@ -43,6 +43,11 @@ describe('Gaming Room analytics', () => {
   it('rejects incomplete totals instead of presenting false zero activity', () => {
     assert.equal(gamingAnalyticsSchema.safeParse({ games: [] }).success, false);
   });
+  it('includes Lucky 9 rounds in table popularity without exposing cards', () => {
+    const lucky = { ...table, game: 'lucky-9' as const, rounds: 5 };
+    assert.equal(gamingAnalyticsSchema.parse({ ...data, games: [lucky] }).games[0].game, 'lucky-9');
+    assert.equal(popularCoinTable({ ...data, games: [table, lucky] })?.game, 'lucky-9');
+  });
   it('rejects any private player or card details in the summary', () => {
     assert.equal(gamingAnalyticsSchema.safeParse({ ...data, user_id: 'private-user' }).success, false);
     assert.equal(gamingAnalyticsSchema.safeParse({ ...data, games: [{ ...table, dealer: [0, 12] }] }).success, false);

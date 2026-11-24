@@ -12,6 +12,7 @@ export interface GameTable {
 
 export const GAME_TABLES: GameTable[] = [
   { id: 'blackjack', name: 'Blackjack', tagline: 'Beat the dealer to 21. Blackjack pays 3 to 2.', path: '/game-room/blackjack', status: 'open', group: 'Cards' },
+  { id: 'lucky-9', name: 'Lucky 9', tagline: 'Two cards or three. Closest to nine wins.', path: '/game-room/lucky-9', status: 'open', group: 'Cards' },
   { id: 'poker', name: "Texas Hold'em", tagline: 'You vs the dealer. Royal flush pays 100 to 1.', path: '/game-room/texas-holdem', status: 'open', group: 'Cards' },
   { id: 'tournament', name: 'Championship Poker', tagline: 'Free six-seat Sit & Go. Five bots. One champion.', path: '/game-room/tournament', status: 'open', group: 'Cards' },
   { id: 'sic-bo', name: 'Sic Bo', tagline: 'Three dice, big or small. Triples pay 180 to 1.', path: '/game-room/sic-bo', status: 'open', group: 'Chinese games' },

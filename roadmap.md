@@ -1,3 +1,8 @@
+## Lucky 9
+- [x] Add secure 10–500 coin bets, two-card natural 8/9, one optional draw, banker draws on 0–5, even-money wins and returned ties.
+- [x] Add casino table, lobby link, hand history, refresh resume and admin analytics; frontend awaits publishing.
+- [x] Verify 79 card-game regression tests and 6 hosted Lucky 9 checks; real test-member draw/stand, natural/win/tie/loss, hidden-card denial, concurrent settlement, exact coin ledger and reload history passed. Admin shows 16 rounds; settled cards fit 320/390/768/1800px screens. No owner's coins spent.
+
 ## Championship poker tournament
 - [x] Build six-seat Sit & Go with secure hidden cards, five bots, four betting streets, side pots, rising blinds and refresh resume.
 - [x] Add championship table, lobby entry, hand results and tournament standings; frontend awaits publishing.

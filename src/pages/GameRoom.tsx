@@ -72,7 +72,7 @@ const GameRoom = () => {
   usePageSEO({
     title: 'Gaming Room — Blackjack, Chinese games, golf & bowling | MiyTube',
     description:
-      'Play Blackjack, poker, Sic Bo and Pai Gow with MiyTube Coins, or join free Championship Poker Sit & Go tournaments and Mahjong in the MiyTube Gaming Room.',
+      'Play Blackjack, Lucky 9, poker, Sic Bo and Pai Gow with MiyTube Coins, or join free Championship Poker Sit & Go tournaments and Mahjong in the MiyTube Gaming Room.',
     path: '/game-room',
   });
   const { user } = useAuth();

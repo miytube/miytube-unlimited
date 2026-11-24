@@ -31,6 +31,7 @@ import AvatarStudio from "@/pages/AvatarStudio";
 import MiyTubeShop from "@/pages/MiyTubeShop";
 import GameRoom from "@/pages/GameRoom";
 import Blackjack from "@/pages/Blackjack";
+import Lucky9 from "@/pages/Lucky9";
 import SicBo from "@/pages/SicBo";
 import TexasHoldem from "@/pages/TexasHoldem";
 import PokerTournament from "@/pages/PokerTournament";
@@ -269,6 +270,7 @@ export const mainRoutes = [
   // Gaming Room — coin table games
   <Route key="game-room" path="/game-room" element={<GameRoom />} />,
   <Route key="game-room-blackjack" path="/game-room/blackjack" element={<Blackjack />} />,
+  <Route key="game-room-lucky-9" path="/game-room/lucky-9" element={<Lucky9 />} />,
   <Route key="game-room-sic-bo" path="/game-room/sic-bo" element={<SicBo />} />,
   <Route key="game-room-texas-holdem" path="/game-room/texas-holdem" element={<TexasHoldem />} />,
   <Route key="game-room-tournament" path="/game-room/tournament" element={<PokerTournament />} />,

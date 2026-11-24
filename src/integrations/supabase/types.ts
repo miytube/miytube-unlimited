@@ -1302,6 +1302,48 @@ export type Database = {
         }
         Relationships: []
       }
+      lucky9_hands: {
+        Row: {
+          bet: number
+          created_at: string
+          dealer: number[]
+          deck: number[]
+          id: string
+          is_natural: boolean
+          payout: number
+          player: number[]
+          settled_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          bet: number
+          created_at?: string
+          dealer: number[]
+          deck: number[]
+          id?: string
+          is_natural?: boolean
+          payout?: number
+          player: number[]
+          settled_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          bet?: number
+          created_at?: string
+          dealer?: number[]
+          deck?: number[]
+          id?: string
+          is_natural?: boolean
+          payout?: number
+          player?: number[]
+          settled_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       music_videos: {
         Row: {
           category: string | null
@@ -2520,6 +2562,19 @@ export type Database = {
       holdem_fold: { Args: { _hand_id: string }; Returns: Json }
       holdem_view: {
         Args: { _h: Database["public"]["Tables"]["holdem_hands"]["Row"] }
+        Returns: Json
+      }
+      lucky9_current: { Args: never; Returns: Json }
+      lucky9_deal: { Args: { _bet: number }; Returns: Json }
+      lucky9_draw: { Args: { _hand_id: string }; Returns: Json }
+      lucky9_finish: {
+        Args: { _draw: boolean; _hand_id: string }
+        Returns: Json
+      }
+      lucky9_stand: { Args: { _hand_id: string }; Returns: Json }
+      lucky9_value: { Args: { _cards: number[] }; Returns: number }
+      lucky9_view: {
+        Args: { _h: Database["public"]["Tables"]["lucky9_hands"]["Row"] }
         Returns: Json
       }
       move_to_dlq: {

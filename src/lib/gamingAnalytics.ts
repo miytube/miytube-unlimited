@@ -14,7 +14,7 @@ export const gamingAnalyticsSchema = z.object({
   returned: count,
   net_retained: z.number().int(),
   games: z.array(z.object({
-    game: z.enum(['blackjack', 'poker', 'sic-bo', 'pai-gow', 'pai-gow-tiles', 'mahjong']),
+    game: z.enum(['blackjack', 'lucky-9', 'poker', 'sic-bo', 'pai-gow', 'pai-gow-tiles', 'mahjong']),
     rounds: count,
     players: count,
     settled: count,
@@ -30,6 +30,7 @@ export type GamingTableAnalytics = GamingAnalytics['games'][number];
 
 export const GAMING_TABLE_NAMES: Record<GamingTableAnalytics['game'], string> = {
   blackjack: 'Blackjack',
+  'lucky-9': 'Lucky 9',
   poker: "Texas Hold’em",
   'sic-bo': 'Sic Bo',
   'pai-gow': 'Pai Gow Poker',
