@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { LAYOUT, Tile, findHint, isFree, newBoard, reshuffle } from './mahjong';
+import { LAYOUT, Tile, countOpenPairs, findHint, isFree, newBoard, reshuffle } from './mahjong';
 
 // Small seeded random so the test is repeatable.
 const seeded = (seed: number) => () => {
@@ -48,5 +48,16 @@ describe('mahjong solitaire', () => {
     const again = reshuffle(half, seeded(6));
     assert.equal(again.length, 40);
     assert.ok(findHint(again));
+  });
+
+  test('open pairs counts only free tiles, two per pair', () => {
+    const face = (id: string) => ({ id, suit: 'dots' as const, rank: 1 });
+    // Row of four in one layer: only the two ends are free.
+    const row: Tile[] = [0, 1, 2, 3].map((x, key) => ({ key, x, y: 0, z: 0, face: face(x === 1 || x === 2 ? 'mid' : 'end') }));
+    assert.equal(countOpenPairs(row), 1);
+    // Three free matching tiles still make just one pair.
+    const three: Tile[] = [0, 2, 4].map((x, key) => ({ key, x, y: 0, z: 0, face: face('a') }));
+    assert.equal(countOpenPairs(three), 1);
+    assert.equal(countOpenPairs([]), 0);
   });
 });

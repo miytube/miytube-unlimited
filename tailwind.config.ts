@@ -48,6 +48,7 @@ export default {
 				},
 				jade: 'hsl(var(--jade))',
 				'tile-blue': 'hsl(var(--tile-blue))',
+				'mj-night': 'hsl(var(--mj-night))',
 				suit: {
 					red: 'hsl(var(--suit-red))',
 					black: 'hsl(var(--suit-black))'

@@ -123,6 +123,15 @@ export function findHint(tiles: Tile[]): [Tile, Tile] | null {
   return null;
 }
 
+/** How many pairs can be taken right now: free tiles grouped by face, two per pair. */
+export function countOpenPairs(tiles: Tile[]): number {
+  const counts = new Map<string, number>();
+  for (const t of tiles) if (isFree(t, tiles)) counts.set(t.face.id, (counts.get(t.face.id) ?? 0) + 1);
+  let pairs = 0;
+  for (const n of counts.values()) pairs += Math.floor(n / 2);
+  return pairs;
+}
+
 export const WIND_CHARS = ['東', '南', '西', '北'];
 export const DRAGON_CHARS = ['中', '發', ''];
 export const CHINESE_NUMERALS = ['一', '二', '三', '四', '五', '六', '七', '八', '九'];

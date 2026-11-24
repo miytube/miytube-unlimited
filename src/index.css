@@ -60,6 +60,19 @@
     --suit-black: 222 30% 12%;
     --jade: 150 70% 28%;
     --tile-blue: 212 75% 40%;
+    /* Mahjong (Vita-style): ivory tiles with a jade back, calm starry emerald board */
+    --mj-ivory-hi: 45 60% 99.5%;
+    --mj-ivory: 44 40% 96%;
+    --mj-gold-hi: 48 95% 78%;
+    --mj-gold-lo: 36 80% 38%;
+    --mj-gold-ink: 30 70% 22%;
+    --mj-ivory-shade: 40 26% 84%;
+    --mj-ivory-edge: 38 24% 72%;
+    --mj-tile-back: 162 58% 26%;
+    --mj-tile-back-deep: 165 68% 13%;
+    --mj-night: 168 58% 7%;
+    --mj-night-glow: 162 42% 19%;
+    --mj-select: 150 55% 86%;
     --table-felt: radial-gradient(ellipse at 50% 30%, hsl(152 50% 28%), hsl(156 58% 12%) 75%);
     /* Casino tables: padded leather rail, mahogany bumper, card backs, clay chips */
     --rail-leather: 18 22% 9%;
@@ -419,5 +432,104 @@
   @media (prefers-reduced-motion: reduce) {
     .animate-deal-in, .animate-chip-drop, .animate-payout-slide { animation: none; }
     .card-3d-inner { transition: none; }
+  }
+}
+
+/* Mahjong — Vita-style board: big beveled ivory tiles, dim blocked tiles, starry emerald night */
+@layer components {
+  .mj-board {
+    background:
+      radial-gradient(1.5px 1.5px at 8% 14%, hsl(var(--gold) / 0.7), transparent 60%),
+      radial-gradient(1px 1px at 22% 68%, hsl(var(--felt-foreground) / 0.55), transparent 60%),
+      radial-gradient(1.5px 1.5px at 37% 9%, hsl(var(--felt-foreground) / 0.5), transparent 60%),
+      radial-gradient(1px 1px at 51% 88%, hsl(var(--gold) / 0.55), transparent 60%),
+      radial-gradient(2px 2px at 66% 18%, hsl(var(--gold) / 0.45), transparent 60%),
+      radial-gradient(1px 1px at 79% 56%, hsl(var(--felt-foreground) / 0.55), transparent 60%),
+      radial-gradient(1.5px 1.5px at 91% 8%, hsl(var(--felt-foreground) / 0.6), transparent 60%),
+      radial-gradient(1px 1px at 94% 79%, hsl(var(--gold) / 0.6), transparent 60%),
+      radial-gradient(1px 1px at 4% 92%, hsl(var(--felt-foreground) / 0.45), transparent 60%),
+      radial-gradient(ellipse 70% 55% at 50% 42%, hsl(var(--mj-night-glow)), transparent 75%),
+      hsl(var(--mj-night));
+    box-shadow:
+      0 0 0 1px hsl(var(--gold) / 0.35),
+      inset 0 0 90px hsl(var(--mj-night) / 0.9),
+      0 30px 60px -30px hsl(var(--mj-night) / 0.9);
+  }
+
+  /* Tile face sits inside its cell; the leftover strip shows the tile's ivory edge and jade back. */
+  .mj-tile {
+    --mj-depth: 0.95cqw;
+    width: calc(100% - var(--mj-depth));
+    height: calc(100% - var(--mj-depth));
+    border-radius: 1.1cqw;
+    background: linear-gradient(150deg, hsl(var(--mj-ivory-hi)) 0%, hsl(var(--mj-ivory)) 38%, hsl(var(--mj-ivory-shade)) 100%);
+    box-shadow:
+      inset 0 0 0 0.12cqw hsl(var(--mj-ivory-edge) / 0.8),
+      inset 0.25cqw 0.25cqw 0.2cqw hsl(var(--mj-ivory-hi) / 0.9),
+      inset -0.25cqw -0.3cqw 0.35cqw hsl(var(--mj-ivory-edge) / 0.55),
+      0.25cqw 0.3cqw 0 hsl(var(--mj-ivory-shade)),
+      0.5cqw 0.6cqw 0 hsl(var(--mj-ivory-edge)),
+      0.75cqw 0.85cqw 0 hsl(var(--mj-tile-back)),
+      0.95cqw 1.05cqw 0 hsl(var(--mj-tile-back-deep)),
+      1.2cqw 1.6cqw 1.6cqw hsl(var(--mj-night) / 0.6);
+    transition: transform 0.16s ease, filter 0.2s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mj-tile[data-free='false'] { filter: brightness(0.66) saturate(0.65); }
+  .mj-tile[data-free='true']:hover { transform: translate(-0.15cqw, -0.3cqw); }
+  .mj-tile[data-selected='true'] {
+    transform: translate(-0.35cqw, -0.6cqw);
+    background: linear-gradient(150deg, hsl(var(--mj-ivory-hi)) 0%, hsl(var(--mj-select)) 45%, hsl(var(--mj-ivory-shade)) 100%);
+    box-shadow:
+      0 0 0 0.45cqw hsl(var(--gold)),
+      0 0 2.2cqw 0.4cqw hsl(var(--gold) / 0.65),
+      0.25cqw 0.3cqw 0 hsl(var(--mj-ivory-shade)),
+      0.5cqw 0.6cqw 0 hsl(var(--mj-ivory-edge)),
+      0.75cqw 0.85cqw 0 hsl(var(--mj-tile-back)),
+      0.95cqw 1.05cqw 0 hsl(var(--mj-tile-back-deep)),
+      1.6cqw 2.2cqw 1.8cqw hsl(var(--mj-night) / 0.65);
+  }
+  .mj-tile[data-hint='true'] {
+    outline: 0.5cqw solid hsl(var(--gold));
+    outline-offset: 0.15cqw;
+    animation: mj-hint 1s ease-in-out infinite;
+  }
+  .mj-tile[data-wrong='true'] { animation: mj-shake 0.36s ease; }
+  .mj-tile-vanish { animation: mj-vanish 0.38s ease-out forwards; pointer-events: none; }
+
+  @keyframes mj-hint {
+    0%, 100% { outline-color: hsl(var(--gold) / 0.35); transform: none; }
+    50% { outline-color: hsl(var(--gold)); filter: brightness(1.08); transform: translateY(-0.5cqw); }
+  }
+  @keyframes mj-shake {
+    0%, 100% { transform: none; }
+    25% { transform: translateX(-0.6cqw) rotate(-2deg); }
+    75% { transform: translateX(0.6cqw) rotate(2deg); }
+  }
+  @keyframes mj-vanish {
+    0% { opacity: 1; transform: translateY(-0.6cqw) scale(1); }
+    40% { opacity: 1; transform: translateY(-1.4cqw) scale(1.12); filter: brightness(1.25) drop-shadow(0 0 1.6cqw hsl(var(--gold))); }
+    100% { opacity: 0; transform: translateY(-2.4cqw) scale(0.6); }
+  }
+
+  .mj-booster {
+    display: grid;
+    place-items: center;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 9999px;
+    color: hsl(var(--gold-foreground));
+    background: radial-gradient(circle at 35% 30%, hsl(var(--mj-gold-hi)), hsl(var(--gold)) 55%, hsl(var(--mj-gold-lo)));
+    box-shadow: inset 0 -3px 0 hsl(var(--mj-gold-ink) / 0.45), inset 0 2px 0 hsl(var(--mj-ivory-hi) / 0.5), 0 8px 18px -6px hsl(var(--mj-night) / 0.9);
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .mj-booster:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.06); }
+  .mj-booster:active:not(:disabled) { transform: translateY(1px) scale(0.97); }
+  .mj-booster:disabled { filter: grayscale(0.8) brightness(0.6); cursor: not-allowed; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mj-tile, .mj-booster { transition: none; }
+    .mj-tile[data-hint='true'], .mj-tile[data-wrong='true'], .mj-tile-vanish { animation: none; }
+    .mj-tile-vanish { opacity: 0; }
   }
 }
