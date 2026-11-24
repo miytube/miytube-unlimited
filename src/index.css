@@ -93,6 +93,9 @@
     --chip-100: 222 22% 13%;
     --chip-250: 330 65% 46%;
     --chip-500: 270 50% 38%;
+    --championship-felt: radial-gradient(ellipse at 50% 40%, hsl(158 24% 18%), hsl(160 22% 8%) 85%);
+    --championship-rail: linear-gradient(180deg, hsl(var(--rail-leather-highlight)), hsl(var(--rail-leather)));
+    --championship-shadow: inset 0 0 0 2px hsl(var(--gold) / .55), inset 0 0 0 8px hsl(var(--rail-leather)), 0 18px 35px -18px hsl(var(--suit-black) / .65);
   }
 
   .dark {
@@ -433,6 +436,46 @@
     .animate-deal-in, .animate-chip-drop, .animate-payout-slide { animation: none; }
     .card-3d-inner { transition: none; }
   }
+}
+
+/* Six-seat championship poker. Fixed grid tracks prevent card and action changes shifting seats. */
+.championship-table.casino-rail { background: var(--championship-rail); box-shadow: var(--championship-shadow); }
+.championship-table .casino-felt { background: var(--championship-felt); overflow: hidden; }
+.tournament-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 145px 205px 175px; grid-template-areas: "s3 s2 s1" "board board board" "s4 s0 s5"; align-items: center; gap: 0 6px; padding: 18px 8px; }
+.tournament-seat { min-width: 0; width: 100%; padding: 6px 3px; border-radius: 8px; border: 1px solid transparent; color: hsl(var(--felt-foreground)); }
+.tournament-seat[data-seat="0"] { grid-area: s0; }
+.tournament-seat[data-seat="1"] { grid-area: s1; }
+.tournament-seat[data-seat="2"] { grid-area: s2; }
+.tournament-seat[data-seat="3"] { grid-area: s3; }
+.tournament-seat[data-seat="4"] { grid-area: s4; }
+.tournament-seat[data-seat="5"] { grid-area: s5; }
+.tournament-active { border-color: hsl(var(--gold)); background: hsl(var(--gold) / .08); }
+.tournament-out { opacity: .5; }
+.tournament-seat-label { display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 34px; }
+.tournament-avatar { display: grid; place-items: center; width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; color: hsl(var(--gold)); background: hsl(var(--rail-leather)); border: 1px solid hsl(var(--gold) / .35); }
+.tournament-human .tournament-seat-label { flex-wrap: wrap; gap: 3px; }
+.tournament-human .tournament-seat-label > .min-w-0 { flex-shrink: 0; }
+.tournament-button { display: grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; font-size: 9px; font-weight: bold; color: hsl(var(--suit-black)); background: hsl(var(--playing-card)); flex-shrink: 0; }
+.tournament-hole { height: 59px; display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 5px; }
+.tournament-hole .card-3d { width: 32px; height: 45px; }
+.tournament-human .tournament-hole { height: 76px; }
+.tournament-human .tournament-hole .card-3d { width: 38px; height: 54px; }
+.tournament-action { height: 26px; margin-top: 5px; font-size: 10px; line-height: 13px; text-align: center; overflow-wrap: anywhere; text-transform: capitalize; color: hsl(var(--felt-foreground) / .8); }
+.tournament-board { grid-area: board; display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; align-self: stretch; container-type: inline-size; }
+.tournament-community { display: flex; justify-content: center; gap: 5px; }
+.tournament-community .card-3d, .tournament-empty-card { width: min(42px, calc((100cqw - 20px) / 5)); height: auto; aspect-ratio: 42 / 59; }
+.tournament-empty-card { border: 1px dashed hsl(var(--gold) / .3); border-radius: 4px; background: hsl(var(--felt-deep) / .2); }
+@media (min-width: 640px) {
+  .tournament-grid { grid-template-columns: 1fr 2.25fr 1fr; grid-template-rows: 155px 200px 165px; grid-template-areas: "s3 s2 s1" "s4 board s5" ". s0 ."; gap: 0 12px; padding: 24px; }
+  .tournament-seat { max-width: 220px; justify-self: center; padding: 8px; }
+  .tournament-hole .card-3d { width: 40px; height: 56px; }
+  .tournament-human .tournament-hole .card-3d { width: 54px; height: 76px; }
+  .tournament-community .card-3d, .tournament-empty-card { width: min(48px, calc((100cqw - 20px) / 5)); }
+  .tournament-avatar { width: 32px; height: 32px; }
+  .tournament-action { font-size: 12px; line-height: 14px; }
+}
+@media (min-width: 1000px) {
+  .tournament-community .card-3d, .tournament-empty-card { width: min(60px, calc((100cqw - 20px) / 5)); }
 }
 
 /* Mahjong — Vita-style board: big beveled ivory tiles, dim blocked tiles, starry emerald night */

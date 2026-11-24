@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 const ICONS: Record<string, LucideIcon> = {
   blackjack: Spade,
   poker: Club,
+  tournament: Trophy,
   'sic-bo': Dices,
   'pai-gow': Grid3x3,
   mahjong: Grid3x3,
@@ -71,7 +72,7 @@ const GameRoom = () => {
   usePageSEO({
     title: 'Gaming Room — Blackjack, Chinese games, golf & bowling | MiyTube',
     description:
-      'Play Blackjack with your MiyTube Coins. Sic Bo, Pai Gow, Mahjong, poker, mini golf and bowling are coming to the MiyTube Gaming Room.',
+      'Play Blackjack, poker, Sic Bo and Pai Gow with MiyTube Coins, or join free Championship Poker Sit & Go tournaments and Mahjong in the MiyTube Gaming Room.',
     path: '/game-room',
   });
   const { user } = useAuth();

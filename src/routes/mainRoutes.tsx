@@ -33,6 +33,7 @@ import GameRoom from "@/pages/GameRoom";
 import Blackjack from "@/pages/Blackjack";
 import SicBo from "@/pages/SicBo";
 import TexasHoldem from "@/pages/TexasHoldem";
+import PokerTournament from "@/pages/PokerTournament";
 import Mahjong from "@/pages/Mahjong";
 import PaiGow from "@/pages/PaiGow";
 import Educational from "@/pages/Educational";
@@ -270,6 +271,8 @@ export const mainRoutes = [
   <Route key="game-room-blackjack" path="/game-room/blackjack" element={<Blackjack />} />,
   <Route key="game-room-sic-bo" path="/game-room/sic-bo" element={<SicBo />} />,
   <Route key="game-room-texas-holdem" path="/game-room/texas-holdem" element={<TexasHoldem />} />,
+  <Route key="game-room-tournament" path="/game-room/tournament" element={<PokerTournament />} />,
+  <Route key="game-room-wsop-alias" path="/game-room/wsop" element={<Navigate to="/game-room/tournament" replace />} />,
   <Route key="game-room-mahjong" path="/game-room/mahjong" element={<Mahjong />} />,
   <Route key="game-room-pai-gow" path="/game-room/pai-gow" element={<PaiGow />} />,
 

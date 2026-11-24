@@ -1,3 +1,9 @@
+## Championship poker tournament
+- [x] Build six-seat Sit & Go with secure hidden cards, five bots, four betting streets, side pots, rising blinds and refresh resume.
+- [x] Add championship table, lobby entry, hand results and tournament standings; frontend awaits publishing.
+- [x] Verify rules and security: 56 card-game tests, 400 full-tournament stress runs, real signed-in championship win, saved 60,000-chip result and unchanged coin wallet; table fits 320/390/768/1800px screens. Existing global header overflow at 320px is outside this tournament change.
+- [x] Tournament entry confirmed free by the user: 10,000 chips per seat, no wallet charges or coin prizes.
+
 - [x] Add optional structured media canvas output to The Room's AI host.
 - [x] Render and verify the canvas in the live room, resetting it when a new room begins.
 - [x] Integrate the uploaded Room studio layout and launch/reply/wrap-up flow without simulated recordings or canned host replies.
