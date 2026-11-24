@@ -30,6 +30,7 @@
 - [x] Mahjong restyled after Vita Mahjong: big 3D ivory tiles, dimmed blocked tiles, starry emerald board, round Hint/Shuffle/Undo/New buttons, open-pairs counter.
 - [x] Blackjack Split: split a same-rank pair into two hands (one split, split aces one card each, double after split).
 - [ ] Casino look for Sic Bo (3D dice, shaker); table sounds — waiting on the user to say go.
+- [x] Gaming Room admin analytics: admin-only rounds, players, table popularity, visits, wagers/returns/net flow, and Today/7-day/30-day/all-time filters; real totals checked on desktop and phone, access denied for guests and ordinary members; 101 tests passed.
 
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.

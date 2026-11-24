@@ -6,6 +6,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { ContentEngagementSection } from './ContentEngagementSection';
+import { GamingAnalyticsSection } from './GamingAnalyticsSection';
 
 interface AnalyticsData {
   activeUsers: number;
@@ -242,6 +243,8 @@ export const AnalyticsDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      <GamingAnalyticsSection />
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

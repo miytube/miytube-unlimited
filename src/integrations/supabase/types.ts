@@ -2438,6 +2438,10 @@ export type Database = {
           likes: number
         }[]
       }
+      get_gaming_analytics: {
+        Args: { _since?: string; _until?: string }
+        Returns: Json
+      }
       get_user_avatars: {
         Args: { _user_ids: string[] }
         Returns: {
