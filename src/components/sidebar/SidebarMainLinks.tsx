@@ -18,7 +18,7 @@ export const SidebarMainLinks: React.FC<SidebarMainLinksProps> = ({ className, c
     { id: 'shorts', icon: Film, label: 'Shorts', path: '/shorts' },
     { id: 'the-room', icon: Armchair, label: 'The Room', path: '/the-room' },
     { id: 'avatar', icon: Sparkles, label: 'Avatar Studio', path: '/avatar' },
-    { id: 'shop', icon: Store, label: 'MiyTube Shop', path: '/shop' },
+    { id: 'shop', icon: Store, label: 'MiyTube Mall', path: '/shop' },
     { id: 'game-room', icon: Spade, label: 'Gaming Room', path: '/game-room' },
     { id: 'watchlist', icon: Clock, label: 'Watchlist', path: '/watchlist' },
     { id: 'upload', icon: Upload, label: 'Universal Upload', path: '/upload' },
@@ -30,7 +30,7 @@ export const SidebarMainLinks: React.FC<SidebarMainLinksProps> = ({ className, c
       <TooltipProvider>
         <div className={`space-y-1 mb-6 ${className}`}>
           {mainLinks.map(link => {
-            const isActive = location.pathname === link.path;
+            const isActive = location.pathname === link.path || (link.id === 'shop' && (location.pathname.startsWith('/shop/') || location.pathname === '/mall' || location.pathname.startsWith('/mall/')));
             const Icon = link.icon;
             
             return (
@@ -59,7 +59,7 @@ export const SidebarMainLinks: React.FC<SidebarMainLinksProps> = ({ className, c
   return (
     <div className={`space-y-1 mb-6 ${className}`}>
       {mainLinks.map(link => {
-        const isActive = location.pathname === link.path;
+        const isActive = location.pathname === link.path || (link.id === 'shop' && (location.pathname.startsWith('/shop/') || location.pathname === '/mall' || location.pathname.startsWith('/mall/')));
         const Icon = link.icon;
         
         return (

@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Check, Coins, ExternalLink, Gift, Loader2, Lock, ShoppingBag, Sparkles, Store } from 'lucide-react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, ArrowUpRight, Check, Coins, Gift, Loader2, Search, ShoppingBag, Sparkles, Store } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,7 +25,9 @@ import { setCachedAvatar, useAvatarCatalog, useSavedAvatars } from '@/hooks/useA
 import { refreshCoinWallet, setCoinBalance, useCoinWallet } from '@/hooks/useCoinWallet';
 import { CoinPacks } from '@/components/shop/CoinPacks';
 import { BooksemPassCard } from '@/components/shop/BooksemPassCard';
-import { SPORTS_LEGENDS } from '@/data/sportsBeginEndLegends';
+import { MallStorefronts } from '@/components/shop/MallStorefronts';
+import { ShopProductCard } from '@/components/shop/ShopProductCard';
+import { browseMallItems, findMallStore, MALL_STORES } from '@/lib/mall';
 import {
   AvatarConfig,
   AvatarEquipped,
@@ -32,28 +35,18 @@ import {
   COIN_DAILY_BONUS,
   COIN_WELCOME_BONUS,
   DEFAULT_AVATAR_CONFIG,
-  Rarity,
-  SHOP_KIOSKS,
-  itemsInKiosk,
   resolveEquippedItems,
   sanitizeEquipped,
   shopStatus,
 } from '@/lib/avatar';
-import { cn } from '@/lib/utils';
-
-const RARITY_CLASS: Record<Rarity, string> = {
-  common: 'border-rarity-common text-rarity-common',
-  rare: 'border-rarity-rare text-rarity-rare',
-  epic: 'border-rarity-epic text-rarity-epic',
-  legendary: 'border-rarity-legendary text-rarity-legendary',
-};
 
 const MiyTubeShop = () => {
+  const { storeId } = useParams<{ storeId: string }>();
+  const store = findMallStore(storeId);
   usePageSEO({
-    title: 'MiyTube Shop — Legend jerseys and avatar gear | MiyTube',
-    description:
-      'Spend MiyTube Coins on legend jerseys, boxing gloves, gold gear and backdrops for your MiyTube avatar. 500 free coins when you join.',
-    path: '/shop',
+    title: store ? `${store.label} | MiyTube Mall` : 'MiyTube Mall — Avatar gear & Booksem | MiyTube',
+    description: store?.blurb ?? 'Shop Legends Locker, Fight & Fitness, MiyTube Exclusives and the Booksem member offer with MiyTube Coins.',
+    path: store ? `/shop/${store.id}` : '/shop',
   });
 
   const { user, loading: authLoading } = useAuth();
@@ -67,6 +60,16 @@ const MiyTubeShop = () => {
   const [confirmItem, setConfirmItem] = useState<AvatarItem | null>(null);
   const [busySku, setBusySku] = useState<string | null>(null);
   const [claiming, setClaiming] = useState(false);
+  const [query, setQuery] = useState('');
+  const [inventoryView, setInventoryView] = useState('all');
+  const [sort, setSort] = useState('featured');
+
+  useEffect(() => {
+    setQuery('');
+    setInventoryView('all');
+    setSort('featured');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [storeId]);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const returnedFromCheckout = searchParams.get('coins') === 'success';
@@ -100,6 +103,7 @@ const MiyTubeShop = () => {
   }, [returnedFromCheckout, user?.id, wallet.balance === null]);
 
   const allItems = useMemo(() => (catalog ? Array.from(catalog.values()) : []), [catalog]);
+  const visibleItems = useMemo(() => browseMallItems(allItems, { storeId, query, ownedOnly: inventoryView === 'owned', ownedSkus, sort }), [allItems, storeId, query, inventoryView, ownedSkus, sort]);
 
   const loadOwned = useCallback(async () => {
     if (!user || !catalog) return;
@@ -192,92 +196,71 @@ const MiyTubeShop = () => {
 
   return (
     <Layout>
-      <div className="mx-auto max-w-6xl space-y-6 p-4 md:p-6">
-        <header className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
-          <div className="space-y-1">
-            <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-primary">
-              <Sparkles className="h-4 w-4" /> MiyTube Passport
-            </p>
-            <h1 className="flex items-center gap-3 text-3xl font-black tracking-tight md:text-4xl">
-              <Store className="h-8 w-8" /> MiyTube Shop
+      <div className="mx-auto max-w-6xl space-y-8 py-6 md:py-8">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <Link to="/" className="hover:text-primary">MiyTube</Link><span>/</span>
+          {store ? <><Link to="/shop" className="hover:text-primary">Mall</Link><span>/</span><span className="text-foreground">{store.label}</span></> : <span className="text-foreground">Mall</span>}
+        </nav>
+        <header className="grid gap-5 border-b pb-6 md:grid-cols-[1fr_auto] md:items-center">
+          <div className="min-w-0 space-y-3">
+            <h1 className="flex items-center gap-3 text-3xl font-black md:text-4xl">
+              <Store className="h-8 w-8 shrink-0 text-primary" />{store?.label ?? 'MiyTube Mall'}
             </h1>
-            <p className="max-w-2xl text-muted-foreground">
-              Legend jerseys, fight gear and gold drops for your avatar. Buy with MiyTube Coins, wear it everywhere you comment.
-            </p>
+            <p className="max-w-xl text-sm text-muted-foreground">{store?.blurb ?? 'Legends Locker. Fight & Fitness. Booksem. Your next stop.'}</p>
+            <div className="flex flex-wrap gap-2">
+              {store && <Button asChild variant="outline" size="sm"><Link to="/shop"><ArrowLeft />All stores</Link></Button>}
+              <Button asChild variant="outline" size="sm"><Link to="/avatar"><Sparkles />My Avatar</Link></Button>
+              <Button asChild variant="ghost" size="sm"><a href="#mall-coins"><Coins />Get coins</a></Button>
+            </div>
           </div>
-
           {user ? (
-            <div className="flex items-center gap-4 rounded-2xl bg-studio-stage p-4 text-primary-foreground shadow-lg">
-              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl ring-1 ring-primary-foreground/15">
-                <AvatarFigure config={config} items={resolvedNow} crop="head" className="h-full w-full" title="Your avatar" />
+            <div className="flex min-w-0 items-center gap-4 border-l-2 border-primary pl-4">
+              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
+                {saved?.portraitUrl ? <img src={saved.portraitUrl} alt="Your avatar" className="h-full w-full object-cover" /> : <AvatarFigure config={config} items={resolvedNow} crop="head" className="h-full w-full" title="Your avatar" />}
               </div>
-              <div className="space-y-1.5">
-                <p className="text-xs uppercase tracking-wider text-primary-foreground/60">Your coins</p>
-                <p className="flex items-center gap-1.5 text-2xl font-black tabular-nums" aria-label={`${balance} MiyTube Coins`}>
-                  <Coins className="h-5 w-5 text-rarity-legendary" /> {balance.toLocaleString()}
-                </p>
-                <Button size="sm" variant="secondary" disabled={!wallet.dailyAvailable || claiming} onClick={claimDaily} className="h-7 gap-1.5">
-                  {claiming ? <Loader2 className="h-3 w-3 animate-spin" /> : wallet.dailyAvailable ? <Gift className="h-3 w-3" /> : <Check className="h-3 w-3" />}
+              <div className="min-w-0 space-y-1.5">
+                <p className="text-xs font-medium text-muted-foreground">MiyTube Coins</p>
+                <p className="flex items-center gap-1.5 text-2xl font-black tabular-nums" aria-label={`${balance} MiyTube Coins`}><Coins className="h-5 w-5 text-rarity-legendary" />{balance.toLocaleString()}</p>
+                <Button size="sm" variant="secondary" disabled={!wallet.dailyAvailable || claiming} onClick={claimDaily} className="h-auto min-h-8 whitespace-normal">
+                  {claiming ? <Loader2 className="animate-spin" /> : wallet.dailyAvailable ? <Gift /> : <Check />}
                   {wallet.dailyAvailable ? `Claim +${COIN_DAILY_BONUS} daily` : 'Daily bonus claimed'}
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="flex flex-col gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4">
-              <p className="text-sm">
-                <span className="font-semibold">{COIN_WELCOME_BONUS} free coins</span> when you sign in, plus {COIN_DAILY_BONUS} every day.
-              </p>
-              <Button asChild size="sm">
-                <Link to="/auth">Sign in to shop</Link>
-              </Button>
+            <div className="space-y-3 border-l-2 border-primary pl-4">
+              <p className="text-sm"><strong>{COIN_WELCOME_BONUS} free coins</strong> on joining<br /><span className="text-muted-foreground">Plus {COIN_DAILY_BONUS} coins daily</span></p>
+              <Button asChild size="sm"><Link to="/auth">Sign in to shop</Link></Button>
             </div>
           )}
         </header>
 
-        <Tabs defaultValue={SHOP_KIOSKS[0].id}>
-          <TabsList className="grid h-auto w-full grid-cols-3">
-            {SHOP_KIOSKS.map((k) => (
-              <TabsTrigger key={k.id} value={k.id} className="whitespace-normal py-2 text-xs sm:text-sm">
-                {k.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {SHOP_KIOSKS.map((k) => (
-            <TabsContent key={k.id} value={k.id} className="space-y-4 pt-4">
-              <p className="text-sm text-muted-foreground">{k.blurb}</p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {itemsInKiosk(allItems, k.id).map((item) => (
-                  <ShopCard
-                    key={item.sku}
-                    item={item}
-                    config={config}
-                    equipped={equipped}
-                    catalog={catalog}
-                    signedIn={Boolean(user)}
-                    status={shopStatus(item, ownedSkus, balance)}
-                    balance={balance}
-                    busy={busySku === item.sku}
-                    onBuy={() => setConfirmItem(item)}
-                    onWear={() => toggleWear(item)}
-                  />
-                ))}
-              </div>
-            </TabsContent>
-          ))}
-        </Tabs>
-
-        <BooksemPassCard userId={user?.id ?? null} balance={balance} />
-
-        <CoinPacks signedIn={Boolean(user)} />
-
-        <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-          Every item carries its own permanent item code, so it can move to a crypto wallet later. Your look and the rest of your
-          closet live in the{' '}
-          <Link to="/avatar" className="font-medium text-primary hover:underline">
-            Avatar Studio
-          </Link>
-          .
-        </p>
+        {!storeId && <MallStorefronts catalog={catalog} />}
+        {store && (
+          <nav aria-label="Mall storefronts" className="flex flex-wrap gap-2 border-b pb-4">
+            {MALL_STORES.map((s) => <Button key={s.id} asChild size="sm" variant={s.id === storeId ? 'default' : 'outline'}><Link to={`/shop/${s.id}`} aria-current={s.id === storeId ? 'page' : undefined}>{s.label}</Link></Button>)}
+          </nav>
+        )}
+        {storeId && !store ? (
+          <section className="space-y-3 py-8 text-center"><h2 className="text-xl font-bold">Store not found</h2><Button asChild variant="outline"><Link to="/shop"><ArrowLeft />Back to the Mall</Link></Button></section>
+        ) : store?.kind !== 'books' && (
+          <section aria-labelledby="mall-products-title" className="space-y-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div><h2 id="mall-products-title" className="text-xl font-bold">{store ? 'Avatar gear' : 'Browse avatar gear'}</h2><p className="mt-1 text-xs text-muted-foreground">{visibleItems.length} item{visibleItems.length === 1 ? '' : 's'} · Digital gear for your MiyTube avatar</p></div>
+              {user && <Tabs value={inventoryView} onValueChange={setInventoryView}><TabsList><TabsTrigger value="all">Shop</TabsTrigger><TabsTrigger value="owned">My gear</TabsTrigger></TabsList></Tabs>}
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="relative flex-1"><Search className="pointer-events-none absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><Input aria-label="Search avatar gear" placeholder="Search gear" value={query} onChange={(e) => setQuery(e.target.value)} className="pl-9" /></div>
+              <Select value={sort} onValueChange={setSort}><SelectTrigger aria-label="Sort avatar gear" className="w-full sm:w-48"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="featured">Store order</SelectItem><SelectItem value="price-low">Price: low to high</SelectItem><SelectItem value="price-high">Price: high to low</SelectItem></SelectContent></Select>
+            </div>
+            {visibleItems.length > 0 ? <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {visibleItems.map((item) => <ShopProductCard key={item.sku} item={item} config={config} equipped={equipped} catalog={catalog} signedIn={Boolean(user)} status={shopStatus(item, ownedSkus, balance)} balance={balance} busy={busySku === item.sku} onBuy={() => setConfirmItem(item)} onWear={() => toggleWear(item)} />)}
+            </div> : <div className="flex flex-col items-center gap-3 border-y py-12 text-center"><ShoppingBag className="h-8 w-8 text-muted-foreground" /><p className="text-sm text-muted-foreground">{query ? 'No gear matches your search.' : inventoryView === 'owned' ? 'No owned gear in this store yet.' : 'No gear available right now.'}</p>{(query || inventoryView === 'owned') && <Button variant="outline" onClick={() => { setQuery(''); setInventoryView('all'); }}>Show store gear</Button>}</div>}
+          </section>
+        )}
+        {(!storeId || store?.kind === 'books') && <div className="border-y py-6"><BooksemPassCard userId={user?.id ?? null} balance={balance} />{store?.kind === 'books' && <Button asChild variant="link" className="mt-3"><a href="https://booksem.com" target="_blank" rel="noopener noreferrer">Browse audiobooks on Booksem<ArrowUpRight /></a></Button>}</div>}
+        <div id="mall-coins" className="scroll-mt-40 border-t pt-6"><CoinPacks signedIn={Boolean(user)} /></div>
+        {!storeId && <section className="flex flex-wrap items-center justify-between gap-3 border-t pt-5"><div><h2 className="font-bold">Creator storefronts</h2><p className="mt-1 text-sm text-muted-foreground">Creator merchandise · Coming soon</p></div><Button asChild variant="outline" size="sm"><Link to="/avatar"><Sparkles />Avatar Studio<ArrowUpRight /></Link></Button></section>}
       </div>
 
       <AlertDialog open={Boolean(confirmItem)} onOpenChange={(open) => !open && !busySku && setConfirmItem(null)}>
@@ -309,80 +292,6 @@ const MiyTubeShop = () => {
         </AlertDialogContent>
       </AlertDialog>
     </Layout>
-  );
-};
-
-const ShopCard: React.FC<{
-  item: AvatarItem;
-  config: AvatarConfig;
-  equipped: AvatarEquipped;
-  catalog: Map<string, AvatarItem>;
-  signedIn: boolean;
-  status: ReturnType<typeof shopStatus>;
-  balance: number;
-  busy: boolean;
-  onBuy: () => void;
-  onWear: () => void;
-}> = ({ item, config, equipped, catalog, signedIn, status, balance, busy, onBuy, onWear }) => {
-  const preview = resolveEquippedItems({ ...equipped, [item.slot]: item.sku }, catalog);
-  const legend = item.legend_id ? SPORTS_LEGENDS.find((l) => l.id === item.legend_id) : undefined;
-  const wearing = equipped[item.slot] === item.sku;
-  return (
-    <div className={cn('flex flex-col overflow-hidden rounded-xl border bg-card', wearing && 'border-primary ring-2 ring-primary/20')}>
-      <div className="relative aspect-square overflow-hidden bg-muted">
-        <AvatarFigure config={config} items={preview} className="h-full w-full" title={`Preview: ${item.name}`} />
-        {status === 'owned' && (
-          <span className="absolute left-2 top-2 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground">
-            {wearing ? 'Wearing' : 'Owned'}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <div className="flex items-start justify-between gap-2">
-          <p className="font-semibold leading-tight">{item.name}</p>
-          <Badge variant="outline" className={cn('shrink-0 capitalize', RARITY_CLASS[item.rarity])}>
-            {item.rarity}
-          </Badge>
-        </div>
-        {item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}
-        {legend && (
-          <a
-            href={`https://sportsbeginend.com/profile/${legend.id}?utm_source=miytube&utm_medium=shop&utm_campaign=legend_gear`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-          >
-            {legend.name}'s story <ExternalLink className="h-3 w-3" />
-          </a>
-        )}
-        <div className="mt-auto flex items-center justify-between gap-2 pt-1">
-          <span className="flex items-center gap-1 font-bold tabular-nums">
-            <Coins className="h-4 w-4 text-rarity-legendary" /> {item.price_credits.toLocaleString()}
-          </span>
-          <span className="font-mono text-[10px] text-muted-foreground">{item.sku}</span>
-        </div>
-        {!signedIn ? (
-          <Button asChild size="sm" variant="outline">
-            <Link to="/auth">
-              <Lock className="mr-1 h-3 w-3" /> Sign in to buy
-            </Link>
-          </Button>
-        ) : status === 'owned' ? (
-          <Button size="sm" variant={wearing ? 'outline' : 'default'} disabled={busy} onClick={onWear}>
-            {busy && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
-            {wearing ? 'Take off' : 'Wear it'}
-          </Button>
-        ) : status === 'affordable' ? (
-          <Button size="sm" disabled={busy} onClick={onBuy} className="gap-1">
-            <ShoppingBag className="h-3 w-3" /> Buy
-          </Button>
-        ) : (
-          <Button size="sm" variant="outline" disabled>
-            Need {(item.price_credits - balance).toLocaleString()} more coins
-          </Button>
-        )}
-      </div>
-    </div>
   );
 };
 

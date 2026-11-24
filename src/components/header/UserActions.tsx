@@ -35,7 +35,7 @@ export const UserActions: React.FC = () => {
       <UploadDropdown />
 
       <Button variant="ghost" size="icon" asChild className="md:hidden">
-        <Link to="/shop" aria-label="MiyTube Shop"><Store size={20} /></Link>
+        <Link to="/shop" aria-label="MiyTube Mall"><Store size={20} /></Link>
       </Button>
       <Button variant="ghost" size="icon" asChild className="md:hidden">
         <Link to="/game-room" aria-label="Gaming Room"><Spade size={20} /></Link>
@@ -68,7 +68,7 @@ export const UserActions: React.FC = () => {
             <DropdownMenuItem asChild>
               <Link to="/shop" className="flex items-center gap-2">
                 <Store size={16} />
-                MiyTube Shop
+                MiyTube Mall
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

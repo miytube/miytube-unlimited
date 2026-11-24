@@ -81,14 +81,14 @@ export const BooksemPassCard: React.FC<Props> = ({ userId, balance }) => {
   };
 
   return (
-    <section aria-labelledby="booksem-pass-title" className="overflow-hidden rounded-2xl border bg-card">
-      <div className="grid gap-6 p-5 md:grid-cols-[auto_1fr_auto] md:items-center md:p-6">
-        <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10 text-primary">
+    <section aria-labelledby="booksem-pass-title">
+      <div className="grid gap-6 md:grid-cols-[auto_1fr_auto] md:items-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-primary/10 text-primary">
           <BookOpen className="h-8 w-8" />
         </div>
         <div className="space-y-1.5">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary">Booksem partner kiosk</p>
-          <h2 id="booksem-pass-title" className="text-xl font-black tracking-tight md:text-2xl">
+          <p className="text-xs font-semibold text-primary">Booksem member offer</p>
+          <h2 id="booksem-pass-title" className="text-xl font-black md:text-2xl">
             Booksem {BOOKSEM_PASS_DISCOUNT_PERCENT}% Off Pass
           </h2>
           <p className="max-w-xl text-sm text-muted-foreground">
@@ -111,15 +111,15 @@ export const BooksemPassCard: React.FC<Props> = ({ userId, balance }) => {
             <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           ) : unused ? (
             <>
-              <button
-                type="button"
+              <Button
+                variant="outline"
                 onClick={() => copyCode(unused.code)}
-                className="flex items-center gap-2 rounded-lg border border-dashed border-primary px-3 py-2 font-mono text-sm font-bold tracking-wider"
+                className="h-auto min-h-10 whitespace-normal break-all border-dashed border-primary font-mono text-sm font-bold"
                 aria-label={`Pass code ${unused.code}, tap to copy`}
               >
                 {unused.code}
                 {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4 text-muted-foreground" />}
-              </button>
+              </Button>
               <p className="text-xs text-muted-foreground">{unused.status === 'reserved' ? 'Checkout in progress' : 'Ready to use · 1 book'}</p>
               <Button asChild>
                 <a href={BOOKSEM_URL} target="_blank" rel="noopener">

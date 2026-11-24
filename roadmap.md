@@ -38,5 +38,7 @@
 - [x] Include the hub and all 27 legends in the sitemap from the shared roster; live dynamic sitemap verified, 12,506 video links use real destinations, and the submitted static sitemap copy awaits publishing.
 
 ## Done
+- [x] Expand the existing Shop into MiyTube Mall with real avatar-gear storefronts and Booksem, preserving coin purchases and one-tap wear; creator merchandise remains coming soon, with no invented listings. Awaiting publishing.
+- [x] Verify Mall navigation, storefront filtering, and member shopping on desktop and phone; 21 tests passed, test member bought/wore/removed gear and redeemed a Booksem pass, both persisted on reload without spending the owner's coins.
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.
 - [x] College football watchpage fix: /sports/college/* now matches category college-sports + child subcategory; 201 regular-season games on College Football, CFP/championships moved to new /sports/college/cfp page (sidebar link added), 2 mislabeled bowl games recategorized to football-bowl-games. Verified via Playwright, build OK. Not yet published.

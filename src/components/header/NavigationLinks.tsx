@@ -33,7 +33,7 @@ export const NavigationLinks: React.FC = () => {
       </Link>
       <Link to="/shop" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
         <Store size={16} />
-        <span>Shop</span>
+        <span>Mall</span>
       </Link>
       <Link to="/game-room" className="text-foreground hover:text-primary transition-colors flex items-center gap-1">
         <Spade size={16} />

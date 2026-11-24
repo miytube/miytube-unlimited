@@ -262,6 +262,9 @@ export const mainRoutes = [
   // Avatar Studio — MiyTube Passport characters
   <Route key="avatar-studio" path="/avatar" element={<AvatarStudio />} />,
   <Route key="miytube-shop" path="/shop" element={<MiyTubeShop />} />,
+  <Route key="miytube-store" path="/shop/:storeId" element={<MiyTubeShop />} />,
+  <Route key="miytube-mall" path="/mall" element={<MiyTubeShop />} />,
+  <Route key="miytube-mall-store" path="/mall/:storeId" element={<MiyTubeShop />} />,
   // Gaming Room — coin table games
   <Route key="game-room" path="/game-room" element={<GameRoom />} />,
   <Route key="game-room-blackjack" path="/game-room/blackjack" element={<Blackjack />} />,
