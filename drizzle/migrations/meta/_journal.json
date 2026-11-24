@@ -134,6 +134,13 @@
       "when": 1795472891318,
       "tag": "0018_gaming_room_pai_gow_tiles",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1795484950472,
+      "tag": "0019_blackjack_split",
+      "breakpoints": true
     }
   ]
 }

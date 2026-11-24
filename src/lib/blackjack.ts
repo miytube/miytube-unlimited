@@ -13,6 +13,10 @@ export const SUIT_SYMBOL: Record<Suit, string> = { spades: '♠', hearts: '♥',
 const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
 export type HandStatus = 'playing' | 'blackjack' | 'win' | 'push' | 'lose' | 'bust' | 'dealer_blackjack';
+/** Result of one split hand; split hands never pay blackjack 3:2. */
+export type SplitStatus = 'win' | 'push' | 'lose' | 'bust';
+/** "split" only appears in history, where both hands are summed. */
+export type HistoryStatus = HandStatus | 'split';
 
 export interface BlackjackView {
   id: string;
@@ -26,11 +30,21 @@ export interface BlackjackView {
   player_total: number;
   dealer_total: number;
   can_double: boolean;
+  /** Second hand after a split, or null. `player` is then the first hand. */
+  split: number[] | null;
+  split_bet: number;
+  split_doubled: boolean;
+  split_status: SplitStatus | null;
+  split_payout: number;
+  split_total: number | null;
+  /** 1 or 2: which hand Hit/Stand/Double act on. */
+  active_hand: 1 | 2;
+  can_split: boolean;
   balance: number;
 }
 
 export interface RecentHand {
-  status: HandStatus;
+  status: HistoryStatus;
   bet: number;
   payout: number;
 }
@@ -78,6 +92,29 @@ export function payoutFor(status: HandStatus, bet: number): number {
     default:
       return 0;
   }
+}
+
+/** A pair can be split when both cards share a rank (8-8, K-K; K-Q does not). */
+export function canSplitPair(cards: number[]): boolean {
+  return cards.length === 2 && cards[0] % 13 === cards[1] % 13;
+}
+
+/** Split aces get one card each and the hand ends; other pairs are played out. */
+export function isSplitAces(cards: number[]): boolean {
+  return canSplitPair(cards) && cards[0] % 13 === 0;
+}
+
+/** Coins returned for one finished split hand (stake included). */
+export function splitPayoutFor(status: SplitStatus, bet: number): number {
+  return status === 'win' ? bet * 2 : status === 'push' ? bet : 0;
+}
+
+/** Banner for a finished split: both hands summed. */
+export function splitResultLabel(totalBet: number, totalPayout: number): { title: string; tone: 'win' | 'push' | 'lose' } {
+  const net = totalPayout - totalBet;
+  if (net > 0) return { title: `Split hands: +${net.toLocaleString()} coins`, tone: 'win' };
+  if (net === 0) return { title: 'Split hands: even — your bets are back', tone: 'push' };
+  return { title: `Split hands: −${Math.abs(net).toLocaleString()} coins`, tone: 'lose' };
 }
 
 export function isValidBet(bet: number): boolean {

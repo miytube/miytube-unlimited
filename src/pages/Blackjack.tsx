@@ -12,15 +12,17 @@ import { UserAvatarBubble } from '@/components/avatar/UserAvatarBubble';
 import { PlayingCard } from '@/components/games/PlayingCard';
 import { BetSpot, ChipPicker } from '@/components/games/CasinoChip';
 import { CasinoTable, ChipRack, DealerShoe, DiscardTray, ResultBanner, SeatTag, TableArc } from '@/components/games/CasinoTable';
-import { BET_MAX, BET_MIN, BlackjackView, CHIP_VALUES, RecentHand, resultLabel } from '@/lib/blackjack';
+import { BET_MAX, BET_MIN, BlackjackView, CHIP_VALUES, RecentHand, canSplitPair, resultLabel, splitResultLabel } from '@/lib/blackjack';
 import { COIN_DAILY_BONUS } from '@/lib/avatar';
 import { cn } from '@/lib/utils';
 
-type Action = 'deal' | 'hit' | 'stand' | 'double';
+type Action = 'deal' | 'hit' | 'stand' | 'double' | 'split';
 
 const DEAL_STEP = 180;
 const DEALER_DRAW_START = 700;
 const DEALER_DRAW_STEP = 450;
+const SPLIT_DEAL_FIRST = 250;
+const SPLIT_DEAL_SECOND = 550;
 
 
 const errorText = (e: unknown) => {
@@ -44,6 +46,7 @@ const Blackjack = () => {
   const [busy, setBusy] = useState<Action | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [justDealt, setJustDealt] = useState(false);
+  const [justSplit, setJustSplit] = useState(false);
 
   const live = hand?.status === 'playing';
   const balance = wallet.balance ?? 0;
@@ -71,7 +74,10 @@ const Blackjack = () => {
     setHand(view);
     setCoinBalance(view.balance);
     if (view.status !== 'playing') {
-      setRecent((r) => [{ status: view.status, bet: view.bet, payout: view.payout }, ...r].slice(0, 10));
+      const entry: RecentHand = view.split
+        ? { status: 'split', bet: view.bet + view.split_bet, payout: view.payout + view.split_payout }
+        : { status: view.status, bet: view.bet, payout: view.payout };
+      setRecent((r) => [entry, ...r].slice(0, 10));
     }
   };
 
@@ -85,9 +91,12 @@ const Blackjack = () => {
             ? await supabase.rpc('blackjack_hit', { _hand_id: hand!.id })
             : action === 'stand'
               ? await supabase.rpc('blackjack_stand', { _hand_id: hand!.id })
-              : await supabase.rpc('blackjack_double', { _hand_id: hand!.id });
+              : action === 'split'
+                ? await supabase.rpc('blackjack_split', { _hand_id: hand!.id })
+                : await supabase.rpc('blackjack_double', { _hand_id: hand!.id });
       if (res.error) throw res.error;
       setJustDealt(action === 'deal');
+      if (action === 'deal' || action === 'split') setJustSplit(action === 'split');
       apply(res.data as unknown as BlackjackView);
     } catch (e) {
       toast({ title: "Couldn't do that", description: errorText(e), variant: 'destructive' });
@@ -106,7 +115,15 @@ const Blackjack = () => {
     }
   };
 
-  const result = hand && !live ? resultLabel(hand.status, hand.bet, hand.payout) : null;
+  const isSplit = !!hand?.split;
+  const result =
+    hand && !live
+      ? isSplit
+        ? splitResultLabel(hand.bet + hand.split_bet, hand.payout + hand.split_payout)
+        : resultLabel(hand.status, hand.bet, hand.payout)
+      : null;
+  const activeStake = hand ? (isSplit && hand.active_hand === 2 ? hand.split_bet : hand.bet) : 0;
+  const showSplit = !!hand && live && !isSplit && canSplitPair(hand.player);
 
   // Deal order like a real table: player, dealer, player, dealer (hole card).
   // Dealer draws after a stand land one by one once the hole card has turned.
@@ -120,7 +137,9 @@ const Blackjack = () => {
   const extraDealer = hand ? Math.max(0, hand.dealer.length - 2) : 0;
   const resultDelay = justDealt
     ? 4 * DEAL_STEP + 500
-    : extraDealer > 0
+    : justSplit && extraDealer === 0 && isSplit && hand!.player.length === 2 && hand!.split!.length === 2
+      ? SPLIT_DEAL_SECOND + 600
+      : extraDealer > 0
       ? DEALER_DRAW_START + (extraDealer - 1) * DEALER_DRAW_STEP + 550
       : 650;
   const canAffordBet = balance >= bet;
@@ -188,18 +207,69 @@ const Blackjack = () => {
 
             {/* Player */}
             <div className="mt-1 flex flex-col items-center gap-3">
-              <div className="flex min-h-28 gap-2 sm:min-h-36">
-                {hand?.player.map((c, i) => (
-                  <PlayingCard key={`p-${hand.id}-${i}`} card={c} dealDelay={dealDelay('player', i)} />
-                ))}
-              </div>
-              <BetSpot
-                label="Bet"
-                amount={hand ? hand.bet : bet}
-                payout={result?.tone === 'win' ? hand!.payout - hand!.bet : 0}
-                payoutDelay={resultDelay}
-                lost={result?.tone === 'lose'}
-              />
+              {hand && isSplit ? (
+                <div className="grid w-full grid-cols-2 gap-2 sm:gap-6" data-testid="split-hands">
+                  {[
+                    { n: 1 as const, cards: hand.player, stake: hand.bet, total: hand.player_total, doubled: hand.doubled, status: !live ? hand.status : null, payout: hand.payout },
+                    { n: 2 as const, cards: hand.split!, stake: hand.split_bet, total: hand.split_total ?? 0, doubled: hand.split_doubled, status: hand.split_status, payout: hand.split_payout },
+                  ].map((h) => {
+                    const active = live && hand.active_hand === h.n;
+                    const won = h.status === 'win';
+                    const lost = h.status === 'lose' || h.status === 'bust';
+                    const outcome = h.status ?? (h.total > 21 ? 'bust' : null);
+                    return (
+                      <div
+                        key={h.n}
+                        aria-current={active ? 'true' : undefined}
+                        aria-label={`Hand ${h.n}`}
+                        className={cn(
+                          'flex flex-col items-center gap-2 rounded-2xl px-1 py-3 transition-all duration-300',
+                          active && 'bg-felt-deep/40 ring-2 ring-gold shadow-[0_0_24px_hsl(var(--gold)/0.45)]',
+                          live && !active && 'opacity-70',
+                        )}
+                      >
+                        <div className="flex min-h-24 justify-center sm:min-h-36">
+                          {h.cards.map((c, i) => (
+                            <PlayingCard
+                              key={`p-${hand.id}-${c}`}
+                              card={c}
+                              dealDelay={i === 1 && justSplit ? (h.n === 1 ? SPLIT_DEAL_FIRST : SPLIT_DEAL_SECOND) : 0}
+                              className={cn('h-24 w-[4.25rem] sm:h-36 sm:w-[6.5rem]', i > 0 && '-ml-12 sm:-ml-16')}
+                            />
+                          ))}
+                        </div>
+                        <BetSpot
+                          label={`Hand ${h.n}`}
+                          amount={h.stake}
+                          payout={won ? h.payout - h.stake : 0}
+                          payoutDelay={resultDelay}
+                          lost={lost}
+                          className="-my-3 scale-75 sm:my-0 sm:scale-100"
+                        />
+                        <SeatTag
+                          label={`Hand ${h.n}`}
+                          value={`${h.total}${h.doubled ? ' · doubled' : ''}${outcome ? ` · ${outcome}` : active ? ' · your turn' : ''}`}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <>
+                  <div className="flex min-h-28 gap-2 sm:min-h-36">
+                    {hand?.player.map((c, i) => (
+                      <PlayingCard key={`p-${hand.id}-${c}`} card={c} dealDelay={dealDelay('player', i)} />
+                    ))}
+                  </div>
+                  <BetSpot
+                    label="Bet"
+                    amount={hand ? hand.bet : bet}
+                    payout={result?.tone === 'win' ? hand!.payout - hand!.bet : 0}
+                    payoutDelay={resultDelay}
+                    lost={result?.tone === 'lose'}
+                  />
+                </>
+              )}
               <div className="flex items-center gap-2">
                 {user && (
                   <UserAvatarBubble
@@ -212,7 +282,16 @@ const Blackjack = () => {
                     }
                   />
                 )}
-                <SeatTag label="You" value={hand ? `${hand.player_total}${hand.doubled ? ' · doubled' : ''}` : undefined} />
+                <SeatTag
+                  label="You"
+                  value={
+                    hand
+                      ? isSplit
+                        ? `${(hand.bet + hand.split_bet).toLocaleString()} bet`
+                        : `${hand.player_total}${hand.doubled ? ' · doubled' : ''}`
+                      : undefined
+                  }
+                />
               </div>
             </div>
           </div>
@@ -228,6 +307,12 @@ const Blackjack = () => {
               </Button>
             </div>
           ) : live ? (
+            <div className="flex flex-col items-center gap-3">
+            {isSplit && (
+              <p className="font-serif text-sm font-semibold uppercase tracking-widest text-gold" aria-live="polite">
+                Playing hand {hand!.active_hand} of 2
+              </p>
+            )}
             <div className="flex flex-wrap justify-center gap-3">
               <Button size="lg" onClick={() => run('hit')} disabled={!!busy} className="min-w-28 bg-gold text-gold-foreground hover:bg-gold/90">
                 {busy === 'hit' ? <Loader2 className="animate-spin" /> : 'Hit'}
@@ -242,8 +327,21 @@ const Blackjack = () => {
                 disabled={!!busy || !hand?.can_double}
                 className="min-w-28 border-gold bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground"
               >
-                {busy === 'double' ? <Loader2 className="animate-spin" /> : `Double (${hand!.bet.toLocaleString()})`}
+                {busy === 'double' ? <Loader2 className="animate-spin" /> : `Double (${activeStake.toLocaleString()})`}
               </Button>
+              {showSplit && (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => run('split')}
+                  disabled={!!busy || !hand?.can_split}
+                  title={hand?.can_split ? undefined : 'Not enough coins to split'}
+                  className="min-w-28 border-gold bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground"
+                >
+                  {busy === 'split' ? <Loader2 className="animate-spin" /> : `Split (${hand!.bet.toLocaleString()})`}
+                </Button>
+              )}
+            </div>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-4">
@@ -283,6 +381,8 @@ const Blackjack = () => {
               <li>Blackjack pays 3 to 2. Other wins pay 1 to 1. Ties give your bet back.</li>
               <li>Dealer draws to 16 and stands on all 17s.</li>
               <li>Double down on your first two cards for one more card.</li>
+              <li>Split two cards of the same rank into two hands with a second equal bet. One split per hand.</li>
+              <li>Split aces get one card each. Double after split is allowed. 21 after a split pays 1 to 1.</li>
             </ul>
           </div>
           <div className="rounded-xl border bg-card p-4 text-sm">

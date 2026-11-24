@@ -28,6 +28,7 @@
 - [ ] Gaming Room: Mini Golf and Bowling — waiting on the user to say when to start.
 - [x] Casino look for card tables: leather rail + felt, illustrated cards with deal/flip, clay chips and bet circles on Blackjack and Hold'em (Pai Gow gets the rail, cards and chips).
 - [x] Mahjong restyled after Vita Mahjong: big 3D ivory tiles, dimmed blocked tiles, starry emerald board, round Hint/Shuffle/Undo/New buttons, open-pairs counter.
+- [x] Blackjack Split: split a same-rank pair into two hands (one split, split aces one card each, double after split).
 - [ ] Casino look for Sic Bo (3D dice, shaker); table sounds — waiting on the user to say go.
 
 ## Done

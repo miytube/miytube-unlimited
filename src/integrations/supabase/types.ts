@@ -316,6 +316,7 @@ export type Database = {
       }
       blackjack_hands: {
         Row: {
+          active_hand: number
           bet: number
           created_at: string
           dealer: number[]
@@ -325,10 +326,16 @@ export type Database = {
           payout: number
           player: number[]
           settled_at: string | null
+          split_bet: number
+          split_doubled: boolean
+          split_hand: number[] | null
+          split_payout: number
+          split_status: string | null
           status: string
           user_id: string
         }
         Insert: {
+          active_hand?: number
           bet: number
           created_at?: string
           dealer: number[]
@@ -338,10 +345,16 @@ export type Database = {
           payout?: number
           player: number[]
           settled_at?: string | null
+          split_bet?: number
+          split_doubled?: boolean
+          split_hand?: number[] | null
+          split_payout?: number
+          split_status?: string | null
           status?: string
           user_id: string
         }
         Update: {
+          active_hand?: number
           bet?: number
           created_at?: string
           dealer?: number[]
@@ -351,6 +364,11 @@ export type Database = {
           payout?: number
           player?: number[]
           settled_at?: string | null
+          split_bet?: number
+          split_doubled?: boolean
+          split_hand?: number[] | null
+          split_payout?: number
+          split_status?: string | null
           status?: string
           user_id?: string
         }
@@ -2257,10 +2275,10 @@ export type Database = {
         Args: { _pass_id: string; _session_id: string }
         Returns: undefined
       }
-      bj_hand_value: { Args: { _cards: number[] }; Returns: number }
-      bj_settle: {
+      bj_finish_active: {
         Args: { _hand_id: string }
         Returns: {
+          active_hand: number
           bet: number
           created_at: string
           dealer: number[]
@@ -2270,6 +2288,40 @@ export type Database = {
           payout: number
           player: number[]
           settled_at: string | null
+          split_bet: number
+          split_doubled: boolean
+          split_hand: number[] | null
+          split_payout: number
+          split_status: string | null
+          status: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "blackjack_hands"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      bj_hand_value: { Args: { _cards: number[] }; Returns: number }
+      bj_settle: {
+        Args: { _hand_id: string }
+        Returns: {
+          active_hand: number
+          bet: number
+          created_at: string
+          dealer: number[]
+          deck: number[]
+          doubled: boolean
+          id: string
+          payout: number
+          player: number[]
+          settled_at: string | null
+          split_bet: number
+          split_doubled: boolean
+          split_hand: number[] | null
+          split_payout: number
+          split_status: string | null
           status: string
           user_id: string
         }
@@ -2288,6 +2340,7 @@ export type Database = {
       blackjack_deal: { Args: { _bet: number }; Returns: Json }
       blackjack_double: { Args: { _hand_id: string }; Returns: Json }
       blackjack_hit: { Args: { _hand_id: string }; Returns: Json }
+      blackjack_split: { Args: { _hand_id: string }; Returns: Json }
       blackjack_stand: { Args: { _hand_id: string }; Returns: Json }
       charge_portrait: {
         Args: { _price: number; _user_id: string }
