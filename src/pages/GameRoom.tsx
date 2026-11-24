@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Club, Coins, Dices, Flag, Grid3x3, Lock, Spade, Trophy, type LucideIcon } from 'lucide-react';
+import { Club, Coins, Dices, Flag, Grid3x3, Lock, RefreshCw, Spade, Trophy, type LucideIcon } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,8 @@ import { useCoinWallet } from '@/hooks/useCoinWallet';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { GAME_TABLES, GameTable } from '@/lib/gameRoom';
 import { cn } from '@/lib/utils';
+import { LobbyTableActivity } from '@/components/games/TableActivity';
+import { useGamingPresence } from '@/context/GamingPresenceContext';
 
 const ICONS: Record<string, LucideIcon> = {
   blackjack: Spade,
@@ -25,7 +27,8 @@ const GROUPS: GameTable['group'][] = ['Cards', 'Chinese games', 'Sports'];
 
 const TableTile: React.FC<{ table: GameTable }> = ({ table }) => {
   const Icon = ICONS[table.id] ?? Spade;
-  const open = table.status === 'open' && table.path;
+  const path = table.status === 'open' ? table.path : undefined;
+  const open = Boolean(path);
   const body = (
     <div
       className={cn(
@@ -56,11 +59,14 @@ const TableTile: React.FC<{ table: GameTable }> = ({ table }) => {
         <h3 className="font-serif text-xl font-bold">{table.name}</h3>
         <p className={cn('mt-1 text-sm', open ? 'text-felt-foreground/80' : 'text-muted-foreground')}>{table.tagline}</p>
       </div>
-      {open && <span className="mt-auto text-sm font-semibold text-gold group-hover:underline">Take a seat →</span>}
+      {open && <div className="mt-auto space-y-2">
+        <LobbyTableActivity tableId={table.id} />
+        <span className="block text-base font-semibold text-gold group-hover:underline">Take a seat →</span>
+      </div>}
     </div>
   );
-  return open ? (
-    <Link to={table.path!} className="block h-full" aria-label={`Play ${table.name}`}>
+  return path ? (
+    <Link to={path} className="block h-full" aria-label={`Play ${table.name}`}>
       {body}
     </Link>
   ) : (
@@ -77,6 +83,7 @@ const GameRoom = () => {
   });
   const { user } = useAuth();
   const wallet = useCoinWallet(user?.id);
+  const { connection, retry } = useGamingPresence();
 
   return (
     <Layout>
@@ -105,6 +112,10 @@ const GameRoom = () => {
           <Spade aria-hidden className="pointer-events-none absolute -right-6 -top-6 h-48 w-48 text-gold/10" />
         </section>
 
+        {connection === 'unavailable' && <div className="mt-6 flex flex-wrap items-center gap-3 text-base" role="status">
+          <span>Live table activity is unavailable.</span>
+          <Button variant="outline" onClick={retry}><RefreshCw size={18} /> Reconnect activity</Button>
+        </div>}
         {GROUPS.map((group) => (
           <section key={group} className="mt-10">
             <h2 className="mb-4 font-serif text-2xl font-bold">{group}</h2>

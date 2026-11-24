@@ -1,6 +1,10 @@
+## Live gaming table activity
+- [x] Show real live visitors and explicit waiting-to-play choices on all seven tables and lobby tiles; no simulated spectators or multiplayer seat allocation. Frontend awaits publishing.
+- [x] Verify signed-in table, real cross-browser joining/leaving, duplicate tabs, waiting on/off, reconnect, cleanup outside gaming, and 320/390/768/1803px layouts; 70 regression tests passed with no uncaught browser errors.
+
 ## Gaming table readability
-- [ ] Enlarge text, card values, wagers and action controls across all seven tables without changing game rules.
-- [ ] Verify real play, contrast and unclipped layouts on desktop and phone.
+- [x] Enlarge text, card values, wagers and action controls across all seven tables without changing game rules (completed in prior readability request).
+- [x] Verify real play, contrast and unclipped layouts on desktop and phone (completed in prior readability request).
 
 ## Lucky 9
 - [x] Add secure 10–500 coin bets, two-card natural 8/9, one optional draw, banker draws on 0–5, even-money wins and returned ties.

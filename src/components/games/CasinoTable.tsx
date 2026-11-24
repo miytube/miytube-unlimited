@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { chipStyle } from './CasinoChip';
+import { TableActivity } from './TableActivity';
 
 /**
  * A casino table: mahogany bumper, padded leather armrest and felt under an
@@ -19,9 +20,12 @@ export const CasinoTable: React.FC<{ shape?: 'half-moon' | 'oval' | 'rounded'; c
         ? 'rounded-[2.5rem] sm:rounded-[7rem]'
         : 'rounded-[2rem] sm:rounded-[3rem]';
   return (
+    <>
+    <TableActivity />
     <div className={cn('casino-rail p-3 sm:p-5', radius, className)}>
       <div className={cn('casino-felt overflow-hidden text-felt-foreground', radius)}>{children}</div>
     </div>
+    </>
   );
 };
 

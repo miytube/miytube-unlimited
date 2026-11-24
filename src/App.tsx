@@ -15,6 +15,7 @@ import { AnalyticsTracker } from "./components/AnalyticsTracker";
 import { CookieBanner } from "./components/consent/CookieBanner";
 import { HelmetProvider } from 'react-helmet-async';
 import { PageSEOHead } from './components/seo/PageSEOHead';
+import { GamingPresenceProvider } from './context/GamingPresenceContext';
 
 
 const queryClient = new QueryClient();
@@ -35,7 +36,9 @@ const App = () => (
                 <AnalyticsTracker />
                 <PaymentTestModeBanner />
                 <VignetteAd />
-                <AppRoutes />
+                <GamingPresenceProvider>
+                  <AppRoutes />
+                </GamingPresenceProvider>
                 <CookieBanner />
               </SidebarProvider>
             </BrowserRouter>

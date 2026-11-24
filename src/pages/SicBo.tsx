@@ -9,6 +9,7 @@ import { usePageSEO } from '@/hooks/usePageSEO';
 import { supabase } from '@/integrations/supabase/client';
 import { setCoinBalance, useCoinWallet } from '@/hooks/useCoinWallet';
 import { Die } from '@/components/games/Die';
+import { TableActivity } from '@/components/games/TableActivity';
 import { COIN_DAILY_BONUS } from '@/lib/avatar';
 import {
   ODDS_LABEL,
@@ -190,6 +191,7 @@ const SicBo = () => {
           )}
         </div>
 
+        <TableActivity />
         <section className="overflow-hidden rounded-[2rem] border-4 border-gold/70 bg-table-felt px-3 py-6 text-felt-foreground shadow-2xl sm:px-6">
           <h1 className="text-center font-serif text-3xl font-bold">
             Sic Bo <span className="text-gold">骰寶</span>

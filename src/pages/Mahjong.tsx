@@ -5,6 +5,7 @@ import { Layout } from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { TileArt, faceLabel } from '@/components/games/MahjongTile';
+import { TableActivity } from '@/components/games/TableActivity';
 import { LAYOUT_COLS, LAYOUT_ROWS, Tile, countOpenPairs, findHint, isFree, newBoard, reshuffle } from '@/lib/mahjong';
 import { cn } from '@/lib/utils';
 
@@ -142,6 +143,7 @@ const Mahjong = () => {
           <ArrowLeft size={16} /> Gaming Room
         </Link>
 
+        <TableActivity />
         <section className="mj-board overflow-hidden rounded-[2rem] px-2 pb-6 pt-5 text-felt-foreground sm:px-8">
           <div className="flex flex-wrap items-center justify-between gap-3 px-2">
             <div>
