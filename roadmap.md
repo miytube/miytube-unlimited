@@ -26,6 +26,8 @@
 - [x] Gaming Room: Mahjong table.
 - [x] Gaming Room: Pai Gow table (Pai Gow Poker).
 - [ ] Gaming Room: Mini Golf and Bowling — waiting on the user to say when to start.
+- [x] Casino look for card tables: leather rail + felt, illustrated cards with deal/flip, clay chips and bet circles on Blackjack and Hold'em (Pai Gow gets the rail, cards and chips).
+- [ ] Casino look for Sic Bo (3D dice, shaker) and Mahjong (carved tiles); table sounds — waiting on the user to say go.
 
 ## Done
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.

@@ -4,9 +4,10 @@ import { chipStyle } from './CasinoChip';
 
 /**
  * A casino table: mahogany bumper, padded leather armrest and felt under an
- * overhead spotlight. "half-moon" is a blackjack table; "oval" a poker table.
+ * overhead spotlight. "half-moon" is a blackjack table, "oval" a poker table,
+ * "rounded" a banker table with room for two hands each.
  */
-export const CasinoTable: React.FC<{ shape?: 'half-moon' | 'oval'; className?: string; children: React.ReactNode }> = ({
+export const CasinoTable: React.FC<{ shape?: 'half-moon' | 'oval' | 'rounded'; className?: string; children: React.ReactNode }> = ({
   shape = 'oval',
   className,
   children,
@@ -14,7 +15,9 @@ export const CasinoTable: React.FC<{ shape?: 'half-moon' | 'oval'; className?: s
   const radius =
     shape === 'half-moon'
       ? 'rounded-t-[1.75rem] rounded-b-[3.5rem] sm:rounded-b-[50%_22%]'
-      : 'rounded-[2.5rem] sm:rounded-[7rem]';
+      : shape === 'oval'
+        ? 'rounded-[2.5rem] sm:rounded-[7rem]'
+        : 'rounded-[2rem] sm:rounded-[3rem]';
   return (
     <div className={cn('casino-rail p-3 sm:p-5', radius, className)}>
       <div className={cn('casino-felt overflow-hidden text-felt-foreground', radius)}>{children}</div>
@@ -26,10 +29,10 @@ export const CasinoTable: React.FC<{ shape?: 'half-moon' | 'oval'; className?: s
 export const TableArc: React.FC<{ lines: [string, string?]; className?: string }> = ({ lines, className }) => {
   const id = useId().replace(/:/g, '');
   return (
-    <svg viewBox="0 0 600 110" className={cn('w-full max-w-2xl text-gold', className)} aria-hidden="true">
+    <svg viewBox="0 0 600 120" className={cn('w-full max-w-2xl text-gold', className)} aria-hidden="true">
       <defs>
-        <path id={`${id}-a`} d="M30 14 Q300 120 570 14" />
-        <path id={`${id}-b`} d="M80 40 Q300 132 520 40" />
+        <path id={`${id}-a`} d="M20 12 Q300 112 580 12" />
+        <path id={`${id}-b`} d="M30 50 Q300 150 570 50" />
       </defs>
       <text fill="currentColor" fontSize="25" fontWeight="700" letterSpacing="5" fontFamily="Georgia, 'Times New Roman', serif" textAnchor="middle">
         <textPath href={`#${id}-a`} startOffset="50%">
@@ -37,7 +40,7 @@ export const TableArc: React.FC<{ lines: [string, string?]; className?: string }
         </textPath>
       </text>
       {lines[1] && (
-        <text fill="currentColor" fillOpacity="0.75" fontSize="14" letterSpacing="3" fontFamily="Georgia, 'Times New Roman', serif" textAnchor="middle">
+        <text fill="currentColor" fillOpacity="0.75" fontSize="13" letterSpacing="2.5" fontFamily="Georgia, 'Times New Roman', serif" textAnchor="middle">
           <textPath href={`#${id}-b`} startOffset="50%">
             {lines[1]}
           </textPath>
@@ -93,4 +96,12 @@ export const ResultBanner: React.FC<{ title: string; tone: 'win' | 'push' | 'los
   >
     {title}
   </div>
+);
+
+/** Small leather tag naming a seat and its total or hand. */
+export const SeatTag: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
+  <span className="rounded-full bg-rail-leather/70 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-felt-foreground/90 shadow-inner">
+    {label}
+    {value && <span className="ml-1.5 text-gold">{value}</span>}
+  </span>
 );

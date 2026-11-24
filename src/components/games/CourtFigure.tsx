@@ -56,13 +56,16 @@ const Half: React.FC<{ rank: Court; suit: Suit }> = ({ rank, suit }) => {
       )}
 
       {/* Robe and center panel */}
-      <path d="M8 70 C10 58 16 50 28 47 L40 44 L50 50 L60 44 L72 47 C84 50 90 58 92 70 Z" className={cn(robe, INK)} strokeWidth={0.8} />
+      <path d="M15 70 L16.5 58 C18 51.5 23 48.5 31 46.8 L40 44 L50 50 L60 44 L69 46.8 C77 48.5 82 51.5 83.5 58 L85 70 Z" className={cn(robe, INK)} strokeWidth={0.8} />
+      {/* Sleeves */}
+      <path d="M16.5 58 C18 51.5 23 48.5 27 48 L29 70 L15 70 Z" className={cn(panel, INK)} strokeWidth={0.5} opacity={0.9} />
+      <path d="M83.5 58 C82 51.5 77 48.5 73 48 L71 70 L85 70 Z" className={cn(panel, INK)} strokeWidth={0.5} opacity={0.9} />
       <path d="M40 44 L50 50 L60 44 L62.5 70 L37.5 70 Z" className={cn(panel, INK)} strokeWidth={0.6} />
       {[54, 60, 66].map((y) => (
         <path key={y} d={`M50 ${y - 2.4} L52.2 ${y} L50 ${y + 2.4} L47.8 ${y} Z`} className="fill-gold" />
       ))}
-      <path d="M14 66 C18 60 22 56 30 53" fill="none" className="stroke-gold" strokeWidth={1.2} />
-      <path d="M86 66 C82 60 78 56 70 53" fill="none" className="stroke-gold" strokeWidth={1.2} />
+      <path d="M29 70 L31 47" fill="none" className="stroke-gold" strokeWidth={1.2} />
+      <path d="M71 70 L69 47" fill="none" className="stroke-gold" strokeWidth={1.2} />
       {/* Ermine collar */}
       <path d="M27 47.5 L40 44 L50 50.5 L60 44 L73 47.5" fill="none" className="stroke-playing-card" strokeWidth={3.4} />
       {[31, 37, 63, 69].map((x) => (

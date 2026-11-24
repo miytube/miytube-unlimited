@@ -10,11 +10,18 @@ import { supabase } from '@/integrations/supabase/client';
 import { setCoinBalance, useCoinWallet } from '@/hooks/useCoinWallet';
 import { UserAvatarBubble } from '@/components/avatar/UserAvatarBubble';
 import { PlayingCard } from '@/components/games/PlayingCard';
+import { BetSpot, ChipPicker } from '@/components/games/CasinoChip';
+import { CasinoTable, ChipRack, DealerShoe, DiscardTray, ResultBanner, SeatTag, TableArc } from '@/components/games/CasinoTable';
 import { BET_MAX, BET_MIN, BlackjackView, CHIP_VALUES, RecentHand, resultLabel } from '@/lib/blackjack';
 import { COIN_DAILY_BONUS } from '@/lib/avatar';
 import { cn } from '@/lib/utils';
 
 type Action = 'deal' | 'hit' | 'stand' | 'double';
+
+const DEAL_STEP = 180;
+const DEALER_DRAW_START = 700;
+const DEALER_DRAW_STEP = 450;
+
 
 const errorText = (e: unknown) => {
   const msg = (e as { message?: string })?.message ?? '';
@@ -36,6 +43,7 @@ const Blackjack = () => {
   const [bet, setBet] = useState(25);
   const [busy, setBusy] = useState<Action | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [justDealt, setJustDealt] = useState(false);
 
   const live = hand?.status === 'playing';
   const balance = wallet.balance ?? 0;
@@ -79,6 +87,7 @@ const Blackjack = () => {
               ? await supabase.rpc('blackjack_stand', { _hand_id: hand!.id })
               : await supabase.rpc('blackjack_double', { _hand_id: hand!.id });
       if (res.error) throw res.error;
+      setJustDealt(action === 'deal');
       apply(res.data as unknown as BlackjackView);
     } catch (e) {
       toast({ title: "Couldn't do that", description: errorText(e), variant: 'destructive' });
@@ -98,6 +107,22 @@ const Blackjack = () => {
   };
 
   const result = hand && !live ? resultLabel(hand.status, hand.bet, hand.payout) : null;
+
+  // Deal order like a real table: player, dealer, player, dealer (hole card).
+  // Dealer draws after a stand land one by one once the hole card has turned.
+  const dealerSlots: (number | undefined)[] = hand
+    ? [...hand.dealer, ...Array<undefined>(hand.dealer_hidden).fill(undefined)]
+    : [];
+  const dealDelay = (who: 'player' | 'dealer', i: number) => {
+    if (i < 2) return (i * 2 + (who === 'dealer' ? 1 : 0)) * DEAL_STEP;
+    return who === 'dealer' ? DEALER_DRAW_START + (i - 2) * DEALER_DRAW_STEP : 0;
+  };
+  const extraDealer = hand ? Math.max(0, hand.dealer.length - 2) : 0;
+  const resultDelay = justDealt
+    ? 4 * DEAL_STEP + 500
+    : extraDealer > 0
+      ? DEALER_DRAW_START + (extraDealer - 1) * DEALER_DRAW_STEP + 550
+      : 650;
   const canAffordBet = balance >= bet;
 
   return (
@@ -122,146 +147,133 @@ const Blackjack = () => {
           )}
         </div>
 
-        <section className="relative overflow-hidden rounded-[2rem] border-4 border-gold/70 bg-table-felt px-4 py-6 text-felt-foreground shadow-2xl sm:px-8">
-          <h1 className="text-center font-serif text-3xl font-bold tracking-wide">Blackjack</h1>
-          <p className="text-center text-xs uppercase tracking-[0.25em] text-gold">
-            Blackjack pays 3 to 2 · Dealer stands on 17
-          </p>
+        <CasinoTable shape="half-moon">
+          <div className="relative px-3 pb-10 sm:px-10 sm:pb-20">
+            <div className="grid grid-cols-3 items-start">
+              <DiscardTray className="mt-5 hidden justify-self-start sm:block" />
+              <ChipRack className="justify-self-center" />
+              <DealerShoe className="mt-4 hidden justify-self-end sm:block" />
+            </div>
+            <h1 className="mt-2 text-center font-serif text-2xl font-bold uppercase tracking-[0.3em] text-gold drop-shadow sm:text-3xl">Blackjack</h1>
 
-          {/* Dealer */}
-          <div className="mt-6 flex flex-col items-center gap-2">
-            <span className="text-sm font-semibold uppercase tracking-widest text-felt-foreground/80">
-              Dealer{hand ? ` · ${hand.dealer_total}${live ? ' showing' : ''}` : ''}
-            </span>
-            <div className="flex min-h-28 gap-2 sm:min-h-36">
-              {hand ? (
-                <>
-                  {hand.dealer.map((c, i) => (
-                    <PlayingCard key={`d-${hand.id}-${i}`} card={c} index={i} />
-                  ))}
-                  {Array.from({ length: hand.dealer_hidden }).map((_, i) => (
-                    <PlayingCard key={`dh-${hand.id}-${i}`} faceDown index={hand.dealer.length + i} />
-                  ))}
-                </>
-              ) : (
-                <div className="flex items-center gap-2 opacity-40">
-                  <PlayingCard faceDown />
-                  <PlayingCard faceDown />
-                </div>
-              )}
+            {/* Dealer */}
+            <div className="mt-3 flex flex-col items-center gap-2">
+              <SeatTag label="Dealer" value={hand ? `${hand.dealer_total}${live ? ' showing' : ''}` : undefined} />
+              <div className="flex min-h-28 gap-2 sm:min-h-36">
+                {hand ? (
+                  dealerSlots.map((c, i) => (
+                    <PlayingCard
+                      key={`d-${hand.id}-${i}`}
+                      card={c}
+                      faceDown={c === undefined}
+                      dealDelay={dealDelay('dealer', i)}
+                      flipDelay={0}
+                    />
+                  ))
+                ) : (
+                  <div className="flex items-center gap-2 opacity-40">
+                    <PlayingCard faceDown dealDelay={0} />
+                    <PlayingCard faceDown dealDelay={0} />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <TableArc lines={['BLACKJACK PAYS 3 TO 2', 'DEALER MUST DRAW TO 16 AND STAND ON ALL 17s']} className="mx-auto -mb-3 mt-1" />
+
+            {/* Result */}
+            <div className="flex min-h-12 items-center justify-center" aria-live="polite">
+              {result && <ResultBanner key={hand!.id} title={result.title} tone={result.tone} delay={resultDelay} />}
+            </div>
+
+            {/* Player */}
+            <div className="mt-1 flex flex-col items-center gap-3">
+              <div className="flex min-h-28 gap-2 sm:min-h-36">
+                {hand?.player.map((c, i) => (
+                  <PlayingCard key={`p-${hand.id}-${i}`} card={c} dealDelay={dealDelay('player', i)} />
+                ))}
+              </div>
+              <BetSpot
+                label="Bet"
+                amount={hand ? hand.bet : bet}
+                payout={result?.tone === 'win' ? hand!.payout - hand!.bet : 0}
+                payoutDelay={resultDelay}
+                lost={result?.tone === 'lose'}
+              />
+              <div className="flex items-center gap-2">
+                {user && (
+                  <UserAvatarBubble
+                    userId={user.id}
+                    className="h-9 w-9 ring-2 ring-gold"
+                    fallback={
+                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-felt-deep ring-2 ring-gold">
+                        <User size={18} />
+                      </span>
+                    }
+                  />
+                )}
+                <SeatTag label="You" value={hand ? `${hand.player_total}${hand.doubled ? ' · doubled' : ''}` : undefined} />
+              </div>
             </div>
           </div>
+        </CasinoTable>
 
-          {/* Result */}
-          <div className="my-5 flex min-h-12 items-center justify-center" aria-live="polite">
-            {result && (
-              <div
-                className={cn(
-                  'rounded-full px-6 py-2 font-serif text-lg font-bold shadow-lg animate-in zoom-in-90 duration-300',
-                  result.tone === 'win' && 'bg-gold text-gold-foreground',
-                  result.tone === 'push' && 'bg-felt-foreground text-felt-deep',
-                  result.tone === 'lose' && 'bg-felt-deep text-felt-foreground ring-1 ring-felt-foreground/30',
-                )}
+        {/* Controls */}
+        <div className="casino-console mt-4 rounded-2xl px-2 py-5 text-felt-foreground sm:px-4">
+          {authLoading ? null : !user ? (
+            <div className="flex flex-col items-center gap-3 text-center">
+              <p className="text-felt-foreground/85">Sign in to play. New members get 500 free coins.</p>
+              <Button asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
+                <Link to="/auth">Sign in to play</Link>
+              </Button>
+            </div>
+          ) : live ? (
+            <div className="flex flex-wrap justify-center gap-3">
+              <Button size="lg" onClick={() => run('hit')} disabled={!!busy} className="min-w-28 bg-gold text-gold-foreground hover:bg-gold/90">
+                {busy === 'hit' ? <Loader2 className="animate-spin" /> : 'Hit'}
+              </Button>
+              <Button size="lg" onClick={() => run('stand')} disabled={!!busy} className="min-w-28 bg-felt-foreground text-felt-deep hover:bg-felt-foreground/90">
+                {busy === 'stand' ? <Loader2 className="animate-spin" /> : 'Stand'}
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => run('double')}
+                disabled={!!busy || !hand?.can_double}
+                className="min-w-28 border-gold bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground"
               >
-                {result.title}
-              </div>
-            )}
-          </div>
-
-          {/* Player */}
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex min-h-28 gap-2 sm:min-h-36">
-              {hand?.player.map((c, i) => <PlayingCard key={`p-${hand.id}-${i}`} card={c} index={i} />)}
+                {busy === 'double' ? <Loader2 className="animate-spin" /> : `Double (${hand!.bet.toLocaleString()})`}
+              </Button>
             </div>
-            <div className="flex items-center gap-2">
-              {user && (
-                <UserAvatarBubble
-                  userId={user.id}
-                  className="h-9 w-9 ring-2 ring-gold"
-                  fallback={
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-felt-deep ring-2 ring-gold">
-                      <User size={18} />
-                    </span>
-                  }
-                />
+          ) : (
+            <div className="flex flex-col items-center gap-4">
+              <ChipPicker
+                values={CHIP_VALUES}
+                value={bet}
+                onChange={setBet}
+                disabled={!!busy}
+                isAffordable={(v) => v <= balance}
+                label="Choose your bet"
+              />
+              <Button
+                size="lg"
+                onClick={() => run('deal')}
+                disabled={!!busy || !loaded || !canAffordBet}
+                className="min-w-48 bg-gold text-lg font-bold text-gold-foreground hover:bg-gold/90"
+              >
+                {busy === 'deal' ? <Loader2 className="animate-spin" /> : `${hand ? 'Deal again' : 'Deal'} · ${bet} coins`}
+              </Button>
+              {!canAffordBet && wallet.balance !== null && (
+                <p className="text-sm text-felt-foreground/85">
+                  Not enough coins for this bet.{' '}
+                  <Link to="/shop" className="font-semibold text-gold underline">
+                    Get more coins
+                  </Link>
+                </p>
               )}
-              <span className="text-sm font-semibold uppercase tracking-widest text-felt-foreground/80">
-                You{hand ? ` · ${hand.player_total}` : ''}
-                {hand ? ` · bet ${hand.bet.toLocaleString()}${hand.doubled ? ' (doubled)' : ''}` : ''}
-              </span>
             </div>
-          </div>
-
-          {/* Controls */}
-          <div className="mt-6 border-t border-gold/30 pt-5">
-            {authLoading ? null : !user ? (
-              <div className="flex flex-col items-center gap-3 text-center">
-                <p className="text-felt-foreground/85">Sign in to play. New members get 500 free coins.</p>
-                <Button asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
-                  <Link to="/auth">Sign in to play</Link>
-                </Button>
-              </div>
-            ) : live ? (
-              <div className="flex flex-wrap justify-center gap-3">
-                <Button size="lg" onClick={() => run('hit')} disabled={!!busy} className="min-w-28 bg-gold text-gold-foreground hover:bg-gold/90">
-                  {busy === 'hit' ? <Loader2 className="animate-spin" /> : 'Hit'}
-                </Button>
-                <Button size="lg" onClick={() => run('stand')} disabled={!!busy} className="min-w-28 bg-felt-foreground text-felt-deep hover:bg-felt-foreground/90">
-                  {busy === 'stand' ? <Loader2 className="animate-spin" /> : 'Stand'}
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => run('double')}
-                  disabled={!!busy || !hand?.can_double}
-                  className="min-w-28 border-gold bg-transparent text-felt-foreground hover:bg-felt-deep hover:text-felt-foreground"
-                >
-                  {busy === 'double' ? <Loader2 className="animate-spin" /> : `Double (${hand!.bet.toLocaleString()})`}
-                </Button>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-4">
-                <div className="flex flex-wrap justify-center gap-2" role="radiogroup" aria-label="Choose your bet">
-                  {CHIP_VALUES.map((v) => (
-                    <button
-                      key={v}
-                      type="button"
-                      role="radio"
-                      aria-checked={bet === v}
-                      onClick={() => setBet(v)}
-                      disabled={!!busy}
-                      className={cn(
-                        'flex h-14 w-14 items-center justify-center rounded-full border-4 border-dashed font-bold shadow-md transition-transform',
-                        bet === v
-                          ? 'scale-110 border-gold-foreground/40 bg-gold text-gold-foreground'
-                          : 'border-felt-foreground/40 bg-felt-deep text-felt-foreground hover:scale-105',
-                        v > balance && 'opacity-40',
-                      )}
-                    >
-                      {v}
-                    </button>
-                  ))}
-                </div>
-                <Button
-                  size="lg"
-                  onClick={() => run('deal')}
-                  disabled={!!busy || !loaded || !canAffordBet}
-                  className="min-w-48 bg-gold text-lg font-bold text-gold-foreground hover:bg-gold/90"
-                >
-                  {busy === 'deal' ? <Loader2 className="animate-spin" /> : `${hand ? 'Deal again' : 'Deal'} · ${bet} coins`}
-                </Button>
-                {!canAffordBet && wallet.balance !== null && (
-                  <p className="text-sm text-felt-foreground/85">
-                    Not enough coins for this bet.{' '}
-                    <Link to="/shop" className="font-semibold text-gold underline">
-                      Get more coins
-                    </Link>
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        </section>
+          )}
+        </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border bg-card p-4 text-sm">

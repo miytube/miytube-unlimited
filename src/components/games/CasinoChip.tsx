@@ -16,7 +16,7 @@ export const chipStyle = (value: number): React.CSSProperties => {
 const SIZES = {
   sm: 'h-8 w-8',
   md: 'h-11 w-11',
-  lg: 'h-14 w-14 sm:h-16 sm:w-16',
+  lg: 'h-11 w-11 min-[400px]:h-14 min-[400px]:w-14 sm:h-16 sm:w-16',
 } as const;
 
 interface CasinoChipProps {
@@ -103,7 +103,7 @@ export const ChipPicker: React.FC<{
   label: string;
 }> = ({ values, value, onChange, disabled, isAffordable, label }) => (
   <div
-    className="flex flex-wrap justify-center gap-2 rounded-2xl bg-rail-leather/70 px-3 py-2.5 shadow-[inset_0_2px_6px_hsl(var(--suit-black)/0.6)] sm:gap-3"
+    className="flex flex-wrap justify-center gap-2 rounded-2xl bg-rail-leather/70 px-2 py-2.5 sm:px-3 shadow-[inset_0_2px_6px_hsl(var(--suit-black)/0.6)] max-[399px]:gap-1 sm:gap-3"
     role="radiogroup"
     aria-label={label}
   >

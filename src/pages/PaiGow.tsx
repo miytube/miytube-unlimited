@@ -10,6 +10,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { setCoinBalance, useCoinWallet } from '@/hooks/useCoinWallet';
 import { UserAvatarBubble } from '@/components/avatar/UserAvatarBubble';
 import { PlayingCard } from '@/components/games/PlayingCard';
+import { ChipPicker } from '@/components/games/CasinoChip';
+import { CasinoTable } from '@/components/games/CasinoTable';
 import { COIN_DAILY_BONUS } from '@/lib/avatar';
 import { handName, score5 } from '@/lib/poker';
 import { PAIGOW_BET_MAX, PAIGOW_BET_MIN, PAIGOW_CHIPS, PaiGowStatus, lowName, score2, splitIsValid } from '@/lib/paigow';
@@ -180,7 +182,8 @@ const PaiGow = () => {
           )}
         </div>
 
-        <section className="overflow-hidden rounded-[2rem] border-4 border-gold/70 bg-table-felt px-3 py-6 text-felt-foreground shadow-2xl sm:px-8">
+        <CasinoTable shape="rounded">
+        <div className="px-3 py-6 sm:px-10">
           <h1 className="text-center font-serif text-3xl font-bold tracking-wide">
             Pai Gow Poker <span className="text-gold">牌九</span>
           </h1>
@@ -297,25 +300,14 @@ const PaiGow = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center gap-4">
-                <div className="flex flex-wrap justify-center gap-2" role="radiogroup" aria-label="Choose your bet">
-                  {PAIGOW_CHIPS.map((v) => (
-                    <button
-                      key={v}
-                      type="button"
-                      role="radio"
-                      aria-checked={bet === v}
-                      onClick={() => setBet(v)}
-                      disabled={!!busy}
-                      className={cn(
-                        'flex h-14 w-14 items-center justify-center rounded-full border-4 border-dashed font-bold shadow-md transition-transform',
-                        bet === v ? 'scale-110 border-gold-foreground/40 bg-gold text-gold-foreground' : 'border-felt-foreground/40 bg-felt-deep text-felt-foreground hover:scale-105',
-                        v > balance && 'opacity-40',
-                      )}
-                    >
-                      {v}
-                    </button>
-                  ))}
-                </div>
+                <ChipPicker
+                  values={PAIGOW_CHIPS}
+                  value={bet}
+                  onChange={setBet}
+                  disabled={!!busy}
+                  isAffordable={(v) => v <= balance}
+                  label="Choose your bet"
+                />
                 <Button
                   size="lg"
                   onClick={deal}
@@ -327,7 +319,8 @@ const PaiGow = () => {
               </div>
             )}
           </div>
-        </section>
+        </div>
+        </CasinoTable>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <div className="rounded-xl border bg-card p-4 text-sm">
