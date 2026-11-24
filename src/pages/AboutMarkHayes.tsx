@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout } from '@/components/Layout';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { Mail, Globe, MapPin } from 'lucide-react';
+import founderPortrait from '@/assets/mark-hayes-founder.jpg.asset.json';
 
 const AboutMarkHayes = () => {
   usePageSEO({
@@ -18,11 +19,27 @@ const AboutMarkHayes = () => {
         </h1>
 
         <div className="space-y-8">
-          <section>
-            <h2 className="text-2xl font-semibold mb-3">Who I Am</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              I’m Mark Hayes, the creator and founder of MiyTube, an independent video platform built for simplicity, speed, and creator freedom. MiyTube is my personal project — designed, developed, and maintained by me — with a focus on giving users a clean, distraction-free space to watch and share videos.
-            </p>
+          <section className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
+            <figure className="w-full max-w-[256px] shrink-0 self-center sm:self-start">
+              <img
+                src={founderPortrait.url}
+                alt="Mark Hayes, founder of MiyTube, seated in a suit"
+                width={400}
+                height={400}
+                fetchPriority="high"
+                className="block w-full aspect-square rounded-lg border border-border object-contain"
+              />
+              <figcaption className="mt-3 text-center sm:text-left">
+                <p className="font-semibold">Mark Hayes</p>
+                <p className="text-sm text-muted-foreground">Founder of MiyTube</p>
+              </figcaption>
+            </figure>
+            <div className="min-w-0">
+              <h2 className="text-2xl font-semibold mb-3">Who I Am</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                I’m Mark Hayes, the creator and founder of MiyTube, an independent video platform built for simplicity, speed, and creator freedom. MiyTube is my personal project — designed, developed, and maintained by me — with a focus on giving users a clean, distraction-free space to watch and share videos.
+              </p>
+            </div>
           </section>
 
           <section>
