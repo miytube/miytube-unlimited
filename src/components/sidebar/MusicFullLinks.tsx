@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Music, Mic, Headphones, Guitar, Radio, Piano, Disc } from 'lucide-react';
+import { Music, Mic, Headphones, Guitar, Radio, Piano, Disc, Star } from 'lucide-react';
+import { MUSIC_LEGENDS_ALPHABETICAL, MUSIC_LEGENDS_BASE_PATH, musicLegendPath } from '@/data/musicLegends';
 import { SidebarCategoryLinks } from './SidebarCategoryLinks';
 
 export const MusicFullLinks: React.FC = () => {
@@ -35,6 +36,13 @@ export const MusicFullLinks: React.FC = () => {
         { id: 'music-soundtracks', label: 'Soundtracks & Movie Music', path: '/music/soundtracks' },
         { id: 'music-history', label: 'Music History', path: '/music/history' }
       ]
+    },
+    {
+      id: 'music-legends',
+      icon: Star,
+      label: 'Music Legends',
+      path: MUSIC_LEGENDS_BASE_PATH,
+      subItems: MUSIC_LEGENDS_ALPHABETICAL.map((item) => ({ id: `ml-${item.slug}`, label: item.name, path: musicLegendPath(item) })),
     },
     { 
       id: 'music-international', 

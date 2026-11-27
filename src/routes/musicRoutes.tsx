@@ -4,6 +4,7 @@ import Music from "@/pages/Music";
 import MusicGenre from "@/pages/MusicGenre";
 import MusicUpload from "@/pages/MusicUpload";
 import MusicMeditation from "@/pages/MusicMeditation";
+import MusicLegends from "@/pages/MusicLegends";
 
 // All music genre routes
 const musicGenres = [
@@ -19,6 +20,8 @@ const musicGenres = [
 
 export const musicRoutes = [
   <Route key="music-main" path="/music" element={<Music />} />,
+  <Route key="music-legends" path="/music-legends" element={<MusicLegends />} />,
+  <Route key="music-legend" path="/music-legends/:artistSlug" element={<MusicLegends />} />,
   <Route key="music-upload" path="/upload/music" element={<MusicUpload />} />,
   <Route key="music-mexican-spanish-redirect" path="/music/mexican-spanish" element={<Navigate to="/music/spanish" replace />} />,
   <Route key="musical-instruments" path="/musical-instruments" element={<MusicGenre />} />,

@@ -11,6 +11,9 @@ import { VideoCard } from '@/components/VideoCard';
 import { filterVideosByCategory } from '@/utils/videoFiltering';
 import { usePageSEO } from '@/hooks/usePageSEO';
 import { AdSlot } from '@/components/ads/AdSlot';
+import { Link } from 'react-router-dom';
+import { Star, ChevronRight } from 'lucide-react';
+import { MUSIC_LEGENDS_BASE_PATH, MUSIC_LEGENDS_TAGLINE } from '@/data/musicLegends';
 
 const Music = () => {
   const { uploadedVideos } = useUploadedVideos();
@@ -31,6 +34,20 @@ const Music = () => {
     <Layout>
       <div className="py-6 animate-fade-in w-full max-w-[1400px] mx-auto px-4">
         <MusicHeader />
+
+        <Link
+          to={MUSIC_LEGENDS_BASE_PATH}
+          className="mb-8 flex items-center justify-between gap-4 rounded-lg border border-primary/40 bg-primary/5 p-4 transition-colors hover:bg-primary/10"
+        >
+          <div className="flex items-center gap-3">
+            <Star className="h-6 w-6 shrink-0 text-primary" />
+            <div>
+              <p className="font-semibold">Music Legends</p>
+              <p className="text-sm text-muted-foreground">{MUSIC_LEGENDS_TAGLINE} Hendrix, The Beatles, Michael Jackson, Prince and more.</p>
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 shrink-0 text-primary" />
+        </Link>
         
         <MusicVideosNeedingUpdate />
         

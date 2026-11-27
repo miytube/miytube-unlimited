@@ -1,4 +1,8 @@
-import { LEGENDS_SITEMAP_PATHS } from '../_shared/sportsBeginEndLegends.ts';
+import { LEGENDS_SITEMAP_PATHS as SPORTS_LEGENDS_SITEMAP_PATHS } from '../_shared/sportsBeginEndLegends.ts';
+import { MUSIC_LEGENDS_SITEMAP_PATHS } from '../_shared/musicLegends.ts';
+
+// Sports and music legend pages come from their shared rosters.
+const LEGENDS_SITEMAP_PATHS = [...SPORTS_LEGENDS_SITEMAP_PATHS, ...MUSIC_LEGENDS_SITEMAP_PATHS];
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

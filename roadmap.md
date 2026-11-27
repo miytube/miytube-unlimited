@@ -61,3 +61,8 @@
 - [x] Verify Mall navigation, storefront filtering, and member shopping on desktop and phone; 21 tests passed, test member bought/wore/removed gear and redeemed a Booksem pass, both persisted on reload without spending the owner's coins.
 - [x] Add Debate under Government & Politics, its watchpage, and matching upload choices; category isolation tests passed. Awaiting publishing.
 - [x] College football watchpage fix: /sports/college/* now matches category college-sports + child subcategory; 201 regular-season games on College Football, CFP/championships moved to new /sports/college/cfp page (sidebar link added), 2 mislabeled bowl games recategorized to football-bowl-games. Verified via Playwright, build OK. Not yet published.
+
+## Music Legends
+- [x] Music Legends hub (/music-legends) and 11 artist pages with automatic video shelves, genre filter, Music page and side menu links, search listings; 31 tests passed, checked on computer and phone. Awaiting publishing.
+- [ ] Forward miytubemusiclegends.com to miytube.com/music-legends — owner sets this at the domain registrar/Contabo.
+- [ ] Music page drop-down menus vs plain links — waiting on the owner's answer.
