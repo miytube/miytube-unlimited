@@ -34,7 +34,6 @@ export const normalizeCategoryValue = (value?: string | null): string | undefine
     'music-lyrics-spanish-and-mexican': 'music-lyrics-spanish',
     'alternative-and-others': 'alternative',
     'alternative-music': 'alternative',
-    'alternative-pop-and-electropop': 'alternative',
     'indie-alternative': 'alternative',
     'eulogy-or-funeral-honor': 'eulogy',
     'eulogy-or-funeral': 'eulogy',

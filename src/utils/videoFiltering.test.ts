@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { filterVideosBySubcategory } from './videoFiltering';
+import { filterVideosBySubcategory, filterVideosByMusicGenre } from './videoFiltering';
 import type { UploadedVideo } from '@/context/UploadedVideosContext';
 import { canonicalizeCategoryAssignment, getKnownParentCategoryOptions } from './categoryAssignment';
 import { getSubcategoryOptionsForCategory } from './subcategoryOptions';
@@ -18,6 +18,20 @@ const makeVideo = (over: Partial<UploadedVideo> & { id: string }): UploadedVideo
   }) as unknown as UploadedVideo;
 
 describe('subcategory filtering integrity', () => {
+  test('Alternative Pop & Electropop keeps its own page and stays off Alternative, Others', () => {
+    assert.deepEqual(canonicalizeCategoryAssignment('Music', 'Alternative Pop & Electropop'), {
+      category: 'music', subcategory: 'alternative-pop-and-electropop',
+    });
+    const videos = [
+      makeVideo({ id: 'electropop', category: 'music', subcategory: 'alternative-pop-and-electropop' }),
+      makeVideo({ id: 'others', category: 'music', subcategory: 'alternative' }),
+    ];
+    assert.deepEqual(
+      filterVideosBySubcategory(videos, 'Alternative Pop & Electropop', 'music/alternative-pop-and-electropop').map((v) => v.id),
+      ['electropop'],
+    );
+    assert.deepEqual(filterVideosByMusicGenre(videos, 'alternative').map((v) => v.id), ['others']);
+  });
   test('both Calisthenics upload batches reach both watchpage aliases without unrelated workouts', () => {
     const videos = [
       makeVideo({ id: 'earlier', category: 'fitness-and-workout', subcategory: 'fitness-calisthenics' }),

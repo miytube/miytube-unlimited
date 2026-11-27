@@ -169,6 +169,13 @@
       "when": 1795551733075,
       "tag": "0023_lucky9_game_and_analytics",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1795746271266,
+      "tag": "0024_stop_renaming_alternative_pop_electropop",
+      "breakpoints": true
     }
   ]
 }
