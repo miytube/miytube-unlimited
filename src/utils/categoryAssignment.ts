@@ -1,6 +1,12 @@
 import { subcategoryMappings } from '@/data/subcategoryMappings';
 import { sidebarMainCategoryOptions, sidebarMainCategorySlugs } from '@/data/sidebarMainCategories';
 import { normalizeCategoryValue } from '@/utils/normalizeCategory';
+import {
+  MUSIC_LEGENDS_ALPHABETICAL,
+  MUSIC_LEGENDS_CATEGORY_SLUG,
+  MUSIC_LEGENDS_NAME,
+  getMusicLegendBySubcategory,
+} from '@/data/musicLegends';
 
 export interface CanonicalCategoryAssignment {
   category?: string;
@@ -148,6 +154,15 @@ export const canonicalizeCategoryAssignment = (
   subcategory?: string | null,
   textHints: Array<string | null | undefined> = []
 ): CanonicalCategoryAssignment => {
+  // Music Legends uploads keep their own category and the picked artist's slug;
+  // an artist name must never be re-filed under a look-alike page elsewhere.
+  if (normalizeCategoryValue(category) === MUSIC_LEGENDS_CATEGORY_SLUG) {
+    return {
+      category: MUSIC_LEGENDS_CATEGORY_SLUG,
+      subcategory: getMusicLegendBySubcategory(subcategory)?.slug || normalizeCategoryValue(subcategory),
+    };
+  }
+
   const normalizedCategory = resolveSidebarCategorySlug(category ?? undefined);
   const inferredSubcategory = normalizedCategory === 'autos-vehicles'
     ? inferCarsMajorRepairSubcategory([subcategory, ...textHints])
@@ -277,6 +292,7 @@ export const getKnownParentCategoryOptions = (): { id: string; name: string }[] 
     { id: 'mathematics', name: 'Mathematics' },
     { id: 'nfl', name: 'NFL' },
     { id: 'nfl-football', name: 'NFL Football' },
+    { id: MUSIC_LEGENDS_CATEGORY_SLUG, name: MUSIC_LEGENDS_NAME },
   ];
   for (const parent of midLevelParents) {
     if (!options.has(parent.id)) {
@@ -288,10 +304,19 @@ export const getKnownParentCategoryOptions = (): { id: string; name: string }[] 
 };
 
 export const getKnownSubcategoryOptionsForParent = (category?: string): { id: string; name: string }[] => {
+  const normalizedParent = normalizeCategoryValue(category);
+  // Music Legends lists its artists straight from the shared roster.
+  if (normalizedParent === MUSIC_LEGENDS_CATEGORY_SLUG) {
+    return MUSIC_LEGENDS_ALPHABETICAL.map((item) => ({ id: item.slug, name: item.name }));
+  }
+
   const parentRoutes = getCategoryRouteAliases(category);
   if (parentRoutes.size === 0) return [];
 
   const options = new Map<string, { id: string; name: string }>();
+  if (normalizedParent === 'music') {
+    options.set(MUSIC_LEGENDS_CATEGORY_SLUG, { id: MUSIC_LEGENDS_CATEGORY_SLUG, name: MUSIC_LEGENDS_NAME });
+  }
   let foundNewParent = true;
 
   // Include direct children and every nested watch page beneath them. This

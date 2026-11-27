@@ -1,4 +1,6 @@
-import { MUSIC_LEGENDS, type MusicLegend } from '@/data/musicLegends';
+import {
+  MUSIC_LEGENDS, MUSIC_LEGENDS_CATEGORY_SLUG, getMusicLegendBySubcategory, type MusicLegend,
+} from '@/data/musicLegends';
 
 export interface MusicLegendVideoLike {
   id: string;
@@ -28,11 +30,18 @@ const opensWith = (title: string, alias: string) =>
   new RegExp(`^[^a-z0-9]*(the\\s+)?${escapeRe(alias)}\\s*([-–—:|,(&]|$)`, 'i').test(title);
 
 /**
- * Which legend a music video belongs to: the artist named first in the title,
+ * Which legend a music video belongs to: the artist picked on a Music Legends
+ * upload, otherwise the artist named first in the title,
  * otherwise an exact artist tag. Non-music videos never match.
  */
 export const resolveVideoMusicLegend = (video: MusicLegendVideoLike): MusicLegend | undefined => {
   if (!isMusicCategoryVideo(video)) return undefined;
+  // An upload filed under Music Legends with an artist picked goes to that
+  // artist, whatever the title says.
+  if (norm(video.category) === MUSIC_LEGENDS_CATEGORY_SLUG) {
+    const picked = getMusicLegendBySubcategory(video.subcategory);
+    if (picked) return picked;
+  }
   const rawTitle = video.title || '';
   const title = normalizeText(rawTitle);
   let winner: MusicLegend | undefined;

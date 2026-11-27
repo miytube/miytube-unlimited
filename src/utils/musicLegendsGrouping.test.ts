@@ -4,6 +4,11 @@ import assert from 'node:assert/strict';
 import { groupVideosByMusicLegend, resolveVideoMusicLegend } from './musicLegendsGrouping';
 import { MUSIC_LEGENDS, MUSIC_LEGENDS_SITEMAP_PATHS, getMusicLegendBySlug } from '@/data/musicLegends';
 import { buildMusicLegendSchema } from '@/lib/musicLegendSEO';
+import {
+  canonicalizeCategoryAssignment, getKnownParentCategoryOptions, getKnownSubcategoryOptionsForParent,
+} from '@/utils/categoryAssignment';
+import { getSubcategoryOptionsForCategory } from '@/utils/subcategoryOptions';
+import { getUploadDestinationRoute } from '@/utils/categoryRoute';
 
 const v = (title: string, category = 'music', extra: Record<string, unknown> = {}) =>
   ({ id: title, title, category, subcategory: 'randb-and-soul', ...extra });
@@ -55,5 +60,24 @@ describe('Music Legends', () => {
     assert.ok(types('beatles').includes('MusicGroup'));
     assert.ok(types('prince').includes('Person'));
     assert.ok(!types('prince').includes('VideoObject'));
+  });
+
+  test('the upload lists offer Music Legends and all eleven artists without typing', () => {
+    assert.ok(getKnownParentCategoryOptions().some((o) => o.id === 'music-legends' && o.name === 'Music Legends'));
+    for (const options of [getKnownSubcategoryOptionsForParent('music-legends'), getSubcategoryOptionsForCategory('Music Legends')]) {
+      assert.deepEqual(options.map((o) => o.name).sort(), MUSIC_LEGENDS.map((item) => item.name).sort());
+    }
+    assert.ok(getSubcategoryOptionsForCategory('music').some((o) => o.name === 'Music Legends'));
+  });
+
+  test('an artist picked on a Music Legends upload lands on that artist page', () => {
+    for (const item of MUSIC_LEGENDS) {
+      assert.deepEqual(canonicalizeCategoryAssignment('Music Legends', item.name), { category: 'music-legends', subcategory: item.slug });
+      assert.equal(getUploadDestinationRoute('music-legends', item.slug), `/music-legends/${item.slug}`);
+    }
+    assert.equal(who(v('November 27', 'music-legends', { subcategory: 'jimi-hendrix' })), 'Jimi Hendrix');
+    assert.equal(who(v('Guitar Store Said These Aren\'t for Street Musicians', 'music-legends', { subcategory: 'the-beatles' })), 'The Beatles');
+    assert.equal(who(v('November 27', 'news', { subcategory: 'jimi-hendrix' })), undefined);
+    assert.equal(getUploadDestinationRoute('music-legends'), '/music-legends');
   });
 });

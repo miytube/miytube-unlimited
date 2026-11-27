@@ -11,6 +11,12 @@ import {
   getLegendBySlug,
 } from '@/data/sportsBeginEndLegends';
 
+import {
+  MUSIC_LEGENDS_BASE_PATH,
+  MUSIC_LEGENDS_CATEGORY_SLUG,
+  getMusicLegendBySubcategory,
+} from '@/data/musicLegends';
+
 const trimSlashes = (value: string) => value.replace(/^\/+|\/+$/g, '');
 
 const CUSTOM_PAGE_CATEGORIES = new Set(sidebarMainCategoryOptions.map((o) => o.slug));
@@ -52,6 +58,12 @@ export const getUploadDestinationRoute = (category?: string, subcategory?: strin
     if (legendItem) return `${LEGENDS_BASE_PATH}/${legendItem.slug}`;
     if (cleanSubcategory === LEGENDS_SUBCATEGORY_SLUG) return LEGENDS_BASE_PATH;
   }
+
+  if (cleanCategory === MUSIC_LEGENDS_CATEGORY_SLUG) {
+    const artist = getMusicLegendBySubcategory(cleanSubcategory);
+    return artist ? `${MUSIC_LEGENDS_BASE_PATH}/${artist.slug}` : MUSIC_LEGENDS_BASE_PATH;
+  }
+  if (cleanCategory === 'music' && cleanSubcategory === MUSIC_LEGENDS_CATEGORY_SLUG) return MUSIC_LEGENDS_BASE_PATH;
 
   if (CUSTOM_ONLY_CATEGORY_ROUTES.has(cleanCategory)) {
     return cleanSubcategory ? `/c/${cleanCategory}/${cleanSubcategory}` : `/c/${cleanCategory}`;

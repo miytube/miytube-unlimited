@@ -18,6 +18,8 @@ export interface MusicLegend {
 export const MUSIC_LEGENDS_NAME = 'Music Legends';
 export const MUSIC_LEGENDS_TAGLINE = 'From the first chord to the Hall of Fame.';
 export const MUSIC_LEGENDS_BASE_PATH = '/music-legends';
+/** Stored category for uploads filed straight under Music Legends. */
+export const MUSIC_LEGENDS_CATEGORY_SLUG = 'music-legends';
 
 const legend = (
   id: number, name: string, kind: MusicLegend['kind'], genre: string, group: string,
@@ -68,6 +70,14 @@ export const MUSIC_LEGENDS_ALPHABETICAL = [...MUSIC_LEGENDS].sort((a, b) =>
 export const MUSIC_LEGEND_GROUPS = [...new Set(MUSIC_LEGENDS.map((item) => item.group))];
 export const getMusicLegendBySlug = (slug?: string | null) =>
   MUSIC_LEGENDS.find((item) => item.slug === (slug || '').toLowerCase().trim());
+const slugify = (value?: string | null) =>
+  (value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+/** The artist an upload's subcategory names: "jimi-hendrix", "The Beatles" or "the-beatles". */
+export const getMusicLegendBySubcategory = (subcategory?: string | null) => {
+  const value = slugify(subcategory);
+  if (!value) return undefined;
+  return MUSIC_LEGENDS.find((item) => item.slug === value || slugify(item.name) === value);
+};
 export const musicLegendPath = (item: MusicLegend) => `${MUSIC_LEGENDS_BASE_PATH}/${item.slug}`;
 
 export const MUSIC_LEGENDS_SITEMAP_PATHS = [MUSIC_LEGENDS_BASE_PATH, ...MUSIC_LEGENDS.map(musicLegendPath)];
